@@ -1,0 +1,143 @@
+<?php
+
+namespace App\Http\Controllers\Registrar;
+
+use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+
+class ClassSubjectsController extends Controller
+{
+    public function index (Request $request, $id) 
+    {
+        $ClassDetail = NULL;
+        $ClassSubjectDetail = \App\ClassSubjectDetail::join('subject_details', 'subject_details.id', '=' ,'class_subject_details.subject_id')
+            ->join('class_details', 'class_details.id', '=' ,'class_subject_details.class_details_id')
+            ->join('faculty_informations', 'faculty_informations.id', '=' ,'class_subject_details.faculty_id')
+            // ->join('rooms', 'rooms.id', '=' ,'class_subject_details.room_id')
+
+            // class_details.room_id,
+                // rooms.room_code,
+                // rooms.room_description
+            ->selectRaw("
+                class_details.id,
+                class_details.school_year_id,
+                class_details.grade_level,
+                CONCAT(faculty_informations.last_name, ' ', faculty_informations.first_name) as faculty_name,
+                subject_details.subject_code,
+                subject_details.subject,
+                class_subject_details.class_time
+            ")
+            ->where('class_subject_details.class_details_id', $id)
+            ->where('class_subject_details.status', 1);
+        if ($request->ajax())
+        {            
+            $ClassSubjectDetail = $ClassSubjectDetail->paginate(10);
+            return view('control_panel_registrar.class_subjects.partials.data_list', compact('ClassSubjectDetail'))->render();
+        }
+        else 
+        {
+            $ClassDetail = \App\ClassDetail::join('section_details', 'section_details.id', '=' ,'class_details.section_id')
+            ->join('rooms', 'rooms.id', '=' ,'class_details.room_id')
+            ->join('school_years', 'school_years.id', '=' ,'class_details.school_year_id')
+            ->selectRaw('
+                class_details.id,
+                class_details.section_id,
+                class_details.room_id,
+                class_details.school_year_id,
+                class_details.grade_level,
+                class_details.current,
+                section_details.section,
+                section_details.grade_level as section_grade_level,
+                school_years.school_year,
+                rooms.room_code,
+                rooms.room_description
+            ')
+            ->where('class_details.id', $id)
+            ->where('section_details.status', 1)
+            ->first();
+        }
+
+        $ClassSubjectDetail = $ClassSubjectDetail->paginate(10);
+        return view('control_panel_registrar.class_subjects.index', compact('ClassSubjectDetail', 'id', 'ClassDetail'));
+    }
+    public function modal_data (Request $request) 
+    {
+        $ClassSubjectDetail = NULL;
+        if ($request->class_subject_details_id)
+        {
+            $ClassSubjectDetail = \App\ClassSubjectDetail::where('id', $request->class_subject_details_id)->first();
+        }
+        $class_details_id = $request->class_details_id;
+        $FacultyInformation = \App\FacultyInformation::where('status', 1)->get();
+        $SubjectDetail = \App\SubjectDetail::where('status', 1)->get();
+        // return json_encode($ClassSubjectDetail);
+        return view('control_panel_registrar.class_subjects.partials.modal_data', compact('ClassSubjectDetail', 'FacultyInformation', 'SubjectDetail', 'class_details_id'))->render();
+    }
+
+    public function modal_manage_subjects (Request $request) 
+    {
+        $ClassSubjectDetail = NULL;
+        if ($request->class_subject_details_id)
+        {
+            $ClassSubjectDetail = \App\ClassSubjectDetail::where('id', $request->class_subject_details_id)->first();
+        }
+        
+        $FacultyInformation = \App\FacultyInformation::where('status', 1)->get();
+        $ClassSubjectDetail = \App\ClassSubjectDetail::where('status', 1)->get();
+        $SectionDetail = \App\SectionDetail::where('status', 1)->get();
+        $Room = \App\Room::where('status', 1)->get();
+        $SchoolYear = \App\SchoolYear::where('status', 1)->get();
+        return view('control_panel_registrar.class_subjects.partials.modal_manage_subjects', compact('ClassSubjectDetail', 'FacultyInformation', 'ClassSubjectDetail', 'SectionDetail', 'Room', 'SchoolYear'))->render();
+    }
+
+    public function save_data (Request $request) 
+    {
+        $rules = [
+            'faculty'       => 'required',
+            'subject'          => 'required',
+            'subject_time'   => 'required'
+        ];
+        
+        
+        $Validator = \Validator($request->all(), $rules);
+
+        if ($Validator->fails())
+        {
+            return response()->json(['res_code' => 1, 'res_msg' => 'Please fill all required fields.', 'res_error_msg' => $Validator->getMessageBag()]);
+        }
+
+        $sectionDetail = \App\sectionDetail::where('id', $request->section)->first();
+
+        if ($request->id)
+        {
+            $ClassSubjectDetail = \App\ClassSubjectDetail::where('id', $request->id)->first();
+            $ClassSubjectDetail->class_time		    = date('H:i', strtotime($request->subject_time));
+            $ClassSubjectDetail->subject_id	        = $request->subject;
+            $ClassSubjectDetail->faculty_id		    = $request->faculty;
+            $ClassSubjectDetail->class_details_id   = $request->class_details_id;
+            $ClassSubjectDetail->save();
+            return response()->json(['res_code' => 0, 'res_msg' => 'Data successfully saved.']);
+        }
+
+        $ClassSubjectDetail = new \App\ClassSubjectDetail();
+        $ClassSubjectDetail->class_time		    = date('H:i', strtotime($request->subject_time));
+        $ClassSubjectDetail->subject_id	        = $request->subject;
+        $ClassSubjectDetail->faculty_id		    = $request->faculty;
+        $ClassSubjectDetail->class_details_id   = $request->class_details_id;
+        $ClassSubjectDetail->save();
+        return response()->json(['res_code' => 0, 'res_msg' => 'Data successfully saved.']);
+    }
+
+    public function deactivate_data (Request $request) 
+    {
+        $ClassSubjectDetail = \App\ClassSubjectDetail::where('id', $request->id)->first();
+
+        if ($ClassSubjectDetail)
+        {
+            $ClassSubjectDetail->status = 0;
+            $ClassSubjectDetail->save();
+            return response()->json(['res_code' => 0, 'res_msg' => 'Data successfully deactivated.']);
+        }
+        return response()->json(['res_code' => 1, 'res_msg' => 'Invalid request.']);
+    }
+}
