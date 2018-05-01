@@ -42,7 +42,7 @@ class FacultyController extends Controller
             'middle_name' => 'required',
             'last_name' => 'required',
             'department' => 'required',
-            'email' => 'required|unique',
+            'email' => 'required|unique:users,username',
         ];
         
         

@@ -33,11 +33,13 @@ Route::group(['prefix' => 'registrar', 'middleware' => ['auth', 'userroles'], 'r
         Route::post('deactivate-data', 'Registrar\ClassListController@deactivate_data')->name('registrar.class_details.deactivate_data');
     });
 
-    Route::group(['prefix' => 'class-subjects/{id}', 'middleware' => 'auth'], function() {
+    Route::group(['prefix' => 'class-subjects/{class_id}', 'middleware' => 'auth'], function() {
         Route::get('', 'Registrar\ClassSubjectsController@index')->name('registrar.class_subjects');
         Route::post('', 'Registrar\ClassSubjectsController@index')->name('registrar.class_subjects');
         Route::post('modal-data', 'Registrar\ClassSubjectsController@modal_data')->name('registrar.class_subjects.modal_data');
         Route::post('save-data', 'Registrar\ClassSubjectsController@save_data')->name('registrar.class_subjects.save_data');
+        Route::post('deactivate-data', 'Registrar\ClassSubjectsController@deactivate_data')->name('registrar.class_subjects.deactivate_data');
+        
     });
 
     Route::group(['prefix' => 'student-enrollment/{id}', 'middleware' => ['auth']], function() {
@@ -51,6 +53,13 @@ Route::group(['prefix' => 'registrar', 'middleware' => ['auth', 'userroles'], 'r
     });
     
 });
+
+
+Route::group(['prefix' => 'faculty'], function() {
+    //
+    Route::get('dashboard', 'Faculty\FacultyDashboardController@index')->name('faculty.dashboard');
+});
+
 
 
 Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'userroles'], 'roles' => ['admin', 'root']], function() {

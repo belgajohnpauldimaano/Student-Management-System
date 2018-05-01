@@ -7,7 +7,7 @@ use App\Http\Controllers\Controller;
 
 class ClassSubjectsController extends Controller
 {
-    public function index (Request $request, $id) 
+    public function index (Request $request, $class_id) 
     {
         $ClassDetail = NULL;
         $ClassSubjectDetail = \App\ClassSubjectDetail::join('subject_details', 'subject_details.id', '=' ,'class_subject_details.subject_id')
@@ -19,7 +19,7 @@ class ClassSubjectsController extends Controller
                 // rooms.room_code,
                 // rooms.room_description
             ->selectRaw("
-                class_details.id,
+                class_subject_details.id,
                 class_details.school_year_id,
                 class_details.grade_level,
                 CONCAT(faculty_informations.last_name, ' ', faculty_informations.first_name) as faculty_name,
@@ -27,7 +27,7 @@ class ClassSubjectsController extends Controller
                 subject_details.subject,
                 class_subject_details.class_time
             ")
-            ->where('class_subject_details.class_details_id', $id)
+            ->where('class_subject_details.class_details_id', $class_id)
             ->where('class_subject_details.status', 1);
         if ($request->ajax())
         {            
@@ -52,13 +52,13 @@ class ClassSubjectsController extends Controller
                 rooms.room_code,
                 rooms.room_description
             ')
-            ->where('class_details.id', $id)
+            ->where('class_details.id', $class_id)
             ->where('section_details.status', 1)
             ->first();
         }
 
         $ClassSubjectDetail = $ClassSubjectDetail->paginate(10);
-        return view('control_panel_registrar.class_subjects.index', compact('ClassSubjectDetail', 'id', 'ClassDetail'));
+        return view('control_panel_registrar.class_subjects.index', compact('ClassSubjectDetail', 'class_id', 'ClassDetail'));
     }
     public function modal_data (Request $request) 
     {
@@ -106,7 +106,8 @@ class ClassSubjectsController extends Controller
             return response()->json(['res_code' => 1, 'res_msg' => 'Please fill all required fields.', 'res_error_msg' => $Validator->getMessageBag()]);
         }
 
-        $sectionDetail = \App\sectionDetail::where('id', $request->section)->first();
+        // return json_encode($request->id);
+        // $sectionDetail = \App\sectionDetail::where('id', $request->section)->first();
 
         if ($request->id)
         {
@@ -116,7 +117,7 @@ class ClassSubjectsController extends Controller
             $ClassSubjectDetail->faculty_id		    = $request->faculty;
             $ClassSubjectDetail->class_details_id   = $request->class_details_id;
             $ClassSubjectDetail->save();
-            return response()->json(['res_code' => 0, 'res_msg' => 'Data successfully saved.']);
+            return response()->json(['res_code' => 0, 'res_msg' => 'Data successfully updated.']);
         }
 
         $ClassSubjectDetail = new \App\ClassSubjectDetail();

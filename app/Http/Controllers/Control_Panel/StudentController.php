@@ -38,7 +38,7 @@ class StudentController extends Controller
     public function save_data (Request $request) 
     {
         $rules = [
-            'username' => 'required',
+            'email' => 'required|unique:users,username',
             'first_name' => 'required',
             'middle_name' => 'required',
             'last_name' => 'required',

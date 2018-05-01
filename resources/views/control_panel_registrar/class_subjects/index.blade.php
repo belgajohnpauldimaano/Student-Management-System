@@ -39,7 +39,7 @@
             formData.append('page', page);
             loader_overlay();
             $.ajax({
-                url : "{{ route('registrar.class_subjects', $id) }}",
+                url : "{{ route('registrar.class_subjects', $class_id) }}",
                 type : 'POST',
                 data : formData,
                 processData : false,
@@ -56,9 +56,9 @@
                 {{--  loader_overlay();  --}}
                 var class_subject_details_id = $(this).data('id');
                 $.ajax({
-                    url : "{{ route('registrar.class_subjects.modal_data', $id) }}",
+                    url : "{{ route('registrar.class_subjects.modal_data', $class_id) }}",
                     type : 'POST',
-                    data : { _token : '{{ csrf_token() }}', class_subject_details_id : class_subject_details_id, class_details_id: {{ $id }} },
+                    data : { _token : '{{ csrf_token() }}', class_subject_details_id : class_subject_details_id, class_details_id: {{ $class_id }} },
                     success : function (res) {
                         $('.js-modal_holder').html(res);
                         $('.js-modal_holder .modal').modal({ backdrop : 'static' });
@@ -76,7 +76,7 @@
                 e.preventDefault();
                 var formData = new FormData($(this)[0]);
                 $.ajax({
-                    url         : "{{ route('registrar.class_subjects.save_data', $id) }}",
+                    url         : "{{ route('registrar.class_subjects.save_data', $class_id) }}",
                     type        : 'POST',
                     data        : formData,
                     processData : false,
@@ -116,7 +116,7 @@
                 alertify.defaults.theme.cancel = "btn btn-danger btn-flat";
                 alertify.confirm('Confirmation', 'Are you sure you want to deactivate?', function(){  
                     $.ajax({
-                        url         : "{{ route('registrar.class_details.deactivate_data') }}",
+                        url         : "{{ route('registrar.class_subjects.deactivate_data', $class_id) }}",
                         type        : 'POST',
                         data        : { _token : '{{ csrf_token() }}', id : id },
                         success     : function (res) {

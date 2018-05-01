@@ -4,7 +4,7 @@
             <form id="js-form_subject_details">
                 {{ csrf_field() }}
                 @if ($FacultyInformation)
-                    <input type="hidden" name="id" value="{{ $FacultyInformation->id }}">
+                    <input type="hidden" name="fid" value="{{ $FacultyInformation->id }}">
                 @endif
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
