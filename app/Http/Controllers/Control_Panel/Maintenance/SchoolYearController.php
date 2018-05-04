@@ -57,7 +57,25 @@ class SchoolYearController extends Controller
         $SchoolYear->save();
         return response()->json(['res_code' => 0, 'res_msg' => 'Data successfully saved.']);
     }
-
+    public function toggle_current_sy (Request $request)
+    {
+        $SchoolYear = \App\SchoolYear::where('id', $request->id)->first();
+        if ($SchoolYear) 
+        {
+            if ($SchoolYear->current == 0) 
+            {
+                $SchoolYear->current = 1; 
+                $SchoolYear->save(); 
+                return response()->json(['res_code' => 0, 'res_msg' => 'Data successfully added to current active SY.']);
+            }
+            else 
+            {
+                $SchoolYear->current = 0; 
+                $SchoolYear->save(); 
+                return response()->json(['res_code' => 0, 'res_msg' => 'Data successfully removed from current active SY.']);
+            }
+        }
+    }
     public function deactivate_data (Request $request) 
     {
         $SchoolYear = \App\SchoolYear::where('id', $request->id)->first();

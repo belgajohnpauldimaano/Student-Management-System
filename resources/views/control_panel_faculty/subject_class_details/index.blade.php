@@ -1,7 +1,10 @@
 @extends('control_panel.layouts.master')
 
+@section ('styles') 
+@endsection
+
 @section ('content_title')
-    School Year
+    Subject Class Details
 @endsection
 
 @section ('content')
@@ -10,32 +13,49 @@
             <h3 class="box-title">Search</h3>
             <form id="js-form_search">
                 {{ csrf_field() }}
-                <div id="js-form_search" class="form-group col-sm-12 col-md-3" style="padding-left:0;padding-right:0">
+                {{--  <div id="js-form_search" class="form-group col-sm-12 col-md-3" style="padding-right:0">
                     <input type="text" class="form-control" name="search">
+                </div>  --}}
+                
+                <div id="js-form_search" class="form-group col-sm-12 col-md-3" style="padding-right:0">
+                    <select name="search_sy" id="search_sy" class="form-control">
+                        <option value="">Select SY</option>
+                        @foreach ($SchoolYear as $data)
+                            <option value="{{ $data->id }}">{{ $data->school_year }}</option>
+                        @endforeach
+                    </select>
+                </div> 
+                &nbsp;
+                <div id="js-form_search" class="form-group col-sm-12 col-md-5" style="padding-right:0">
+                    <select name="search_class_subject" id="search_class_subject" class="form-control">
+                        <option value="">Select Class Subject</option>
+                    </select>
                 </div>
-                <button type="submit" class="btn btn-flat btn-success">Search</button>
+                &nbsp;
+                <button type="submit" class=" btn btn-flat btn-success">Search</button>
                 <button type="button" class="pull-right btn btn-flat btn-danger btn-sm" id="js-button-add"><i class="fa fa-plus"></i> Add</button>
             </form>
         </div>
         <div class="overlay hidden" id="js-loader-overlay"><i class="fa fa-refresh fa-spin"></i></div>
         <div class="box-body">
             <div class="js-data-container">
-                @include('control_panel.school_year.partials.data_list')
+                {{--  @include('control_panel_faculty.subject_class_details.partials.data_list')  --}}
             </div>
         </div>
+        
     </div>
 @endsection
 
 @section ('scripts')
+    <script src="{{ asset('cms/plugins/timepicker/bootstrap-timepicker.min.js') }}"></script>
     <script>
-        
         var page = 1;
         function fetch_data () {
             var formData = new FormData($('#js-form_search')[0]);
             formData.append('page', page);
             loader_overlay();
             $.ajax({
-                url : "{{ route('admin.maintenance.school_year') }}",
+                url : "{{ route('faculty.subject_class.list_students_by_class') }}",
                 type : 'POST',
                 data : formData,
                 processData : false,
@@ -47,26 +67,32 @@
             });
         }
         $(function () {
-            $('body').on('click', '#js-button-add, .js-btn_update_sy', function (e) {
+            $('body').on('click', '#js-button-add, .js-btn_update', function (e) {
                 e.preventDefault();
                 {{--  loader_overlay();  --}}
                 var id = $(this).data('id');
                 $.ajax({
-                    url : "{{ route('admin.maintenance.school_year.modal_data') }}",
+                    url : "{{ route('registrar.class_details.modal_data') }}",
                     type : 'POST',
                     data : { _token : '{{ csrf_token() }}', id : id },
                     success : function (res) {
                         $('.js-modal_holder').html(res);
                         $('.js-modal_holder .modal').modal({ backdrop : 'static' });
+                        $('.js-modal_holder .modal').on('shown.bs.modal', function () {
+                            //Timepicker
+                            $('.timepicker').timepicker({
+                            showInputs: false
+                            })
+                        })
                     }
                 });
             });
 
-            $('body').on('submit', '#js-form_school_year', function (e) {
+            $('body').on('submit', '#js-form_subject_details', function (e) {
                 e.preventDefault();
                 var formData = new FormData($(this)[0]);
                 $.ajax({
-                    url         : "{{ route('admin.maintenance.school_year.save_data') }}",
+                    url         : "{{ route('registrar.class_details.save_data') }}",
                     type        : 'POST',
                     data        : formData,
                     processData : false,
@@ -106,7 +132,7 @@
                 alertify.defaults.theme.cancel = "btn btn-danger btn-flat";
                 alertify.confirm('Confirmation', 'Are you sure you want to deactivate?', function(){  
                     $.ajax({
-                        url         : "{{ route('admin.maintenance.school_year.deactivate_data') }}",
+                        url         : "{{ route('registrar.class_details.deactivate_data') }}",
                         type        : 'POST',
                         data        : { _token : '{{ csrf_token() }}', id : id },
                         success     : function (res) {
@@ -135,45 +161,18 @@
 
                 });
             });
-            
-            $('body').on('click', '.js-btn_toggle_current', function (e) {
-                e.preventDefault();
-                var id = $(this).data('id');
-                var toggle_title = $(this).data('toggle_title');
-                alertify.defaults.transition = "slide";
-                alertify.defaults.theme.ok = "btn btn-primary btn-flat";
-                alertify.defaults.theme.cancel = "btn btn-danger btn-flat";
-                alertify.confirm('Confirmation', 'Are you sure you want to '+toggle_title+' ?', function(){  
-                    $.ajax({
-                        url         : "{{ route('admin.maintenance.school_year.toggle_current_sy') }}",
-                        type        : 'POST',
-                        data        : { _token : '{{ csrf_token() }}', id : id },
-                        success     : function (res) {
-                            $('.help-block').html('');
-                            if (res.res_code == 1)
-                            {
-                                show_toast_alert({
-                                    heading : 'Error',
-                                    message : res.res_msg,
-                                    type    : 'error'
-                                });
-                            }
-                            else
-                            {
-                                show_toast_alert({
-                                    heading : 'Success',
-                                    message : res.res_msg,
-                                    type    : 'success'
-                                });
-                                $('.js-modal_holder .modal').modal('hide');
-                                fetch_data();
-                            }
-                        }
-                    });
-                }, function(){  
+            $('body').on('change', '#search_sy', function () {
+                $.ajax({
+                    url : "{{ route('faculty.subject_class.list_class_subject_details') }}",
+                    type : 'POST',
+                    {{--  dataType    : 'JSON',  --}}
+                    data        : {_token: '{{ csrf_token() }}', search_sy: $('#search_sy').val()},
+                    success     : function (res) {
 
-                });
-            });
+                        $('#search_class_subject').html(res);
+                    }
+                })
+            })
         });
     </script>
 @endsection

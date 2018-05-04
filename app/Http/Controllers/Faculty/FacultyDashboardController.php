@@ -61,7 +61,10 @@ class FacultyDashboardController extends Controller
             ->first();
 
         $ClassSubjectDetail_count = \App\ClassSubjectDetail::join('class_details', 'class_details.id', '=', 'class_subject_details.class_details_id')
-            ->where('faculty_id', $FacultyInformation->id)->where('class_subject_details.status', 1)
+            ->where('faculty_id', $FacultyInformation->id)
+            ->where('class_subject_details.status', 1)
+            ->where('class_details.status', 1)
+            ->where('class_details.current', 1)
             ->selectRaw('
                 COUNT(class_subject_details.id) AS subject_count
             ')

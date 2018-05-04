@@ -57,6 +57,15 @@ Route::group(['prefix' => 'registrar', 'middleware' => ['auth', 'userroles'], 'r
 Route::group(['prefix' => 'faculty'], function() {
     //
     Route::get('dashboard', 'Faculty\FacultyDashboardController@index')->name('faculty.dashboard');
+    
+    Route::group(['prefix' => 'subject-class'], function() {
+        Route::get('', 'Faculty\SubjectClassController@index')->name('faculty.subject_class');
+        Route::post('list-class-subject-details', 'Faculty\SubjectClassController@list_class_subject_details')->name('faculty.subject_class.list_class_subject_details');
+        Route::post('list-students-by-class', 'Faculty\SubjectClassController@list_students_by_class')->name('faculty.subject_class.list_students_by_class');
+        // Route::post('modal-data', 'Control_Panel\SubjectClassController@modal_data')->name('admin.subject_class.modal_data');
+        // Route::post('save-data', 'Control_Panel\SubjectClassController@save_data')->name('admin.subject_class.save_data');
+    });
+
 });
 
 
@@ -95,6 +104,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'userroles'], 'roles
             Route::post('modal-data', 'Control_Panel\Maintenance\SchoolYearController@modal_data')->name('admin.maintenance.school_year.modal_data');
             Route::post('save-data', 'Control_Panel\Maintenance\SchoolYearController@save_data')->name('admin.maintenance.school_year.save_data');
             Route::post('deactivate-data', 'Control_Panel\Maintenance\SchoolYearController@deactivate_data')->name('admin.maintenance.school_year.deactivate_data');
+            Route::post('toggle-current-sy', 'Control_Panel\Maintenance\SchoolYearController@toggle_current_sy')->name('admin.maintenance.school_year.toggle_current_sy');
         });
 
         Route::group(['prefix' => 'subjects'], function() {

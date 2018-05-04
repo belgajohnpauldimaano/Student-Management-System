@@ -87,6 +87,12 @@
           <li><a href="{{ route('registrar.dashboard') }}"><i class="fa fa-circle-o"></i> <span>Dashboard</span></a></li>
         @endif
         
+        {{--  Faculty Menu  --}}
+        @if (Auth::user()->role == 4)
+          <li><a href="{{ route('faculty.dashboard') }}"><i class="fa fa-circle-o"></i> <span>Dashboard</span></a></li>
+          <li><a href="{{ route('faculty.subject_class') }}"><i class="fa fa-circle-o"></i> <span>Subject Class</span></a></li>
+        @endif
+
         @if (Auth::user()->role == 3)
           <li><a href="{{ route('registrar.class_details') }}"><i class="fa fa-circle-o"></i> <span>Class Details</span></a></li>   
         @endif             
