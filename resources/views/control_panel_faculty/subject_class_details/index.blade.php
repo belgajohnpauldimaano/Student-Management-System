@@ -32,8 +32,8 @@
                     </select>
                 </div>
                 &nbsp;
-                <button type="submit" class=" btn btn-flat btn-success">Search</button>
-                <button type="button" class="pull-right btn btn-flat btn-danger btn-sm" id="js-button-add"><i class="fa fa-plus"></i> Add</button>
+                <button type="submit" class="pull-right btn btn-flat btn-success">Search</button>
+                {{--  <button type="button" class="pull-right btn btn-flat btn-danger btn-sm" id="js-button-add"><i class="fa fa-plus"></i> Add</button>  --}}
             </form>
         </div>
         <div class="overlay hidden" id="js-loader-overlay"><i class="fa fa-refresh fa-spin"></i></div>
@@ -67,56 +67,13 @@
             });
         }
         $(function () {
-            $('body').on('click', '#js-button-add, .js-btn_update', function (e) {
-                e.preventDefault();
-                {{--  loader_overlay();  --}}
-                var id = $(this).data('id');
-                $.ajax({
-                    url : "{{ route('registrar.class_details.modal_data') }}",
-                    type : 'POST',
-                    data : { _token : '{{ csrf_token() }}', id : id },
-                    success : function (res) {
-                        $('.js-modal_holder').html(res);
-                        $('.js-modal_holder .modal').modal({ backdrop : 'static' });
-                        $('.js-modal_holder .modal').on('shown.bs.modal', function () {
-                            //Timepicker
-                            $('.timepicker').timepicker({
-                            showInputs: false
-                            })
-                        })
-                    }
-                });
-            });
-
-            $('body').on('submit', '#js-form_subject_details', function (e) {
-                e.preventDefault();
-                var formData = new FormData($(this)[0]);
-                $.ajax({
-                    url         : "{{ route('registrar.class_details.save_data') }}",
-                    type        : 'POST',
-                    data        : formData,
-                    processData : false,
-                    contentType : false,
-                    success     : function (res) {
-                        $('.help-block').html('');
-                        if (res.res_code == 1)
-                        {
-                            for (var err in res.res_error_msg)
-                            {
-                                $('#js-' + err).html('<code> '+ res.res_error_msg[err] +' </code>');
-                            }
-                        }
-                        else
-                        {
-                            $('.js-modal_holder .modal').modal('hide');
-                            fetch_data();
-                        }
-                    }
-                });
-            });
 
             $('body').on('submit', '#js-form_search', function (e) {
                 e.preventDefault();
+                if (!$('#search_class_subject').val()) {
+                    alert('Please select a subject');
+                    return;
+                }
                 fetch_data();
             });
             $('body').on('click', '.pagination a', function (e) {

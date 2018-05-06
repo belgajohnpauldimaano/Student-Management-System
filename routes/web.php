@@ -56,7 +56,7 @@ Route::group(['prefix' => 'registrar', 'middleware' => ['auth', 'userroles'], 'r
 });
 
 
-Route::group(['prefix' => 'faculty'], function() {
+Route::group(['prefix' => 'faculty', 'middleware' => ['auth', 'userroles'], 'roles' => ['faculty']], function() {
     //
     Route::get('dashboard', 'Faculty\FacultyDashboardController@index')->name('faculty.dashboard');
     
@@ -64,9 +64,14 @@ Route::group(['prefix' => 'faculty'], function() {
         Route::get('', 'Faculty\SubjectClassController@index')->name('faculty.subject_class');
         Route::post('list-class-subject-details', 'Faculty\SubjectClassController@list_class_subject_details')->name('faculty.subject_class.list_class_subject_details');
         Route::post('list-students-by-class', 'Faculty\SubjectClassController@list_students_by_class')->name('faculty.subject_class.list_students_by_class');
-        // Route::post('modal-data', 'Control_Panel\SubjectClassController@modal_data')->name('admin.subject_class.modal_data');
-        // Route::post('save-data', 'Control_Panel\SubjectClassController@save_data')->name('admin.subject_class.save_data');
     });
+
+    Route::group(['prefix' => 'class-schedules'], function() {
+        Route::get('', 'Faculty\SubjectClassController@class_schedules')->name('faculty.class_schedules');
+        // Route::post('list-class-subject-details', 'Faculty\SubjectClassController@list_class_subject_details')->name('faculty.subject_class.list_class_subject_details');
+        // Route::post('list-students-by-class', 'Faculty\SubjectClassController@list_students_by_class')->name('faculty.subject_class.list_students_by_class');
+    });
+    
 
 });
 
