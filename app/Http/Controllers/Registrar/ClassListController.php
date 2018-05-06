@@ -34,7 +34,7 @@ class ClassListController extends Controller
             return view('control_panel_registrar.class_details.partials.data_list', compact('ClassDetail'))->render();
         }
         $ClassDetail = $ClassDetail->paginate(10);
-
+        
         // return json_encode($ClassDetail);
         return view('control_panel_registrar.class_details.index', compact('ClassDetail'));
     }
@@ -45,13 +45,18 @@ class ClassListController extends Controller
         {
             $ClassDetail = \App\ClassDetail::where('id', $request->id)->first();
         }
-        // return json_encode($ClassDetail);
-        $FacultyInformation = \App\FacultyInformation::where('status', 1)->get();
-        $SubjectDetail = \App\SubjectDetail::where('status', 1)->get();
-        $SectionDetail = \App\SectionDetail::where('status', 1)->get();
+        // $FacultyInformation = \App\FacultyInformation::where('status', 1)->get();
+        // $SubjectDetail = \App\SubjectDetail::where('status', 1)->get();
+
+        $SectionDetail = \App\SectionDetail::where('status', 1)->orderBy('grade_level')->get();
+        $SectionDetail_grade_levels = \DB::table('section_details')->select(\DB::raw('DISTINCT(grade_level) as grade_level'))->whereRaw('status = 1')->orderByRaw('grade_level ASC')->get();
+        if ($ClassDetail) 
+        {
+            $SectionDetail = \App\SectionDetail::where('status', 1)->where('grade_level', $ClassDetail->grade_level)->orderBy('grade_level')->get();
+        }
         $Room = \App\Room::where('status', 1)->get();
         $SchoolYear = \App\SchoolYear::where('status', 1)->where('current', 1)->get();
-        return view('control_panel_registrar.class_details.partials.modal_data', compact('ClassDetail', 'FacultyInformation', 'SubjectDetail', 'SectionDetail', 'Room', 'SchoolYear'))->render();
+        return view('control_panel_registrar.class_details.partials.modal_data', compact('ClassDetail', 'SectionDetail', 'Room', 'SchoolYear', 'SectionDetail_grade_levels'))->render();
     }
 
     public function modal_manage_subjects (Request $request) 
@@ -75,7 +80,8 @@ class ClassListController extends Controller
         $rules = [
             'section'       => 'required',
             'room'          => 'required',
-            'school_year'   => 'required'
+            'school_year'   => 'required',
+            'grade_level'   => 'required',
         ];
 
         $Validator = \Validator($request->all(), $rules);
@@ -93,7 +99,7 @@ class ClassListController extends Controller
             $ClassDetail->section_id	 = $request->section;
             $ClassDetail->room_id	 = $request->room;
             $ClassDetail->school_year_id = $request->school_year;
-            $ClassDetail->grade_level = $sectionDetail->grade_level;
+            $ClassDetail->grade_level = $request->grade_level;
             $ClassDetail->save();
             return response()->json(['res_code' => 0, 'res_msg' => 'Data successfully saved.']);
         }
@@ -102,7 +108,7 @@ class ClassListController extends Controller
         $ClassDetail->section_id	 = $request->section;
         $ClassDetail->room_id	 = $request->room;
         $ClassDetail->school_year_id = $request->school_year;
-        $ClassDetail->grade_level = $sectionDetail->grade_level;
+        $ClassDetail->grade_level = $request->grade_level;
         $ClassDetail->save();
         return response()->json(['res_code' => 0, 'res_msg' => 'Data successfully saved.']);
     }
@@ -118,5 +124,21 @@ class ClassListController extends Controller
             return response()->json(['res_code' => 0, 'res_msg' => 'Data successfully deactivated.']);
         }
         return response()->json(['res_code' => 1, 'res_msg' => 'Invalid request.']);
+    }
+
+    public function fetch_section_by_grade_level (Request $request)
+    {
+        $SectionDetail = \App\SectionDetail::where('grade_level', $request->grade_level)->where('status', 1)->get();
+        if ($request->type == 'json') 
+        {
+            return response()->json(compact('SectionDetail'));
+        }
+
+        $section_details_elem = '<option value="">Select section</option>';
+        foreach($SectionDetail as $data) 
+        {
+            $section_details_elem .= '<option value="'. $data->id .'">' . $data->section . '</option>';
+        }
+        return $section_details_elem;
     }
 }

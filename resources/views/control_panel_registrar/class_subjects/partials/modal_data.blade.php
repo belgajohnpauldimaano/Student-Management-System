@@ -40,23 +40,73 @@
                         <div class="help-block text-red text-center" id="js-subject">
                         </div>
                     </div>
-                                       
-                    <div class="bootstrap-timepicker">
-                        <div class="form-group">
-                        <label>Time</label>
+                    <div class="row no-margin">
+                        <div class="col-md-6  no-padding">
+                            <div class="bootstrap-timepicker">
+                                <div class="form-group">
+                                <label>Class Time (<i>from</i>)</label>
 
-                        <div class="input-group">
-                            <input type="text" class="form-control timepicker" name="subject_time">
+                                <div class="input-group">
+                                    <input type="text" class="form-control timepicker" name="subject_time_from" value="{{ $ClassSubjectDetail ? strftime('%r',strtotime($ClassSubjectDetail->class_time_from)) : '' }}">
 
-                            <div class="input-group-addon">
-                            <i class="fa fa-clock-o"></i>
+                                    <div class="input-group-addon">
+                                    <i class="fa fa-clock-o"></i>
+                                    </div>
+                                </div>
+                                </div>
                             </div>
                         </div>
+                        <div class="col-md-6">
+                            <div class="bootstrap-timepicker">
+                                <div class="form-group">
+                                <label>Class Time (<i>to</i>)</label>
+
+                                <div class="input-group">
+                                    <input type="text" class="form-control timepicker" name="subject_time_to" value="{{ $ClassSubjectDetail ? strftime('%r',strtotime($ClassSubjectDetail->class_time_to)) : '' }}">
+
+                                    <div class="input-group-addon">
+                                    <i class="fa fa-clock-o"></i>
+                                    </div>
+                                </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
-
-
-
+                    <div class="form-group">
+                        <label for="">Schedule</label>
+                    </div>
+                    <div class="checkbox">
+                        <label>
+                        <input id="check_all_days" type="checkbox" data-checked-all="true"> Check All days
+                        </label>
+                    </div>
+                    <div class="form-inline">
+                        <div class="checkbox">
+                            <label>
+                            <input name="sched_mon" id="sched_mon" class="sched_days" type="checkbox"> Monday
+                            </label>
+                        </div>
+                        <div class="checkbox">
+                            <label>
+                            <input name="sched_tue" id="sched_tue" class="sched_days" type="checkbox"> Tuesday
+                            </label>
+                        </div>
+                        <div class="checkbox">
+                            <label>
+                            <input name="sched_wed" id="sched_wed" class="sched_days" type="checkbox"> Wednesday
+                            </label>
+                        </div>
+                        <div class="checkbox">
+                            <label>
+                            <input name="sched_thu" id="sched_thu" class="sched_days" type="checkbox"> Thursday
+                            </label>
+                        </div>
+                        <div class="checkbox">
+                            <label>
+                            <input name="sched_fri" id="sched_fri" class="sched_days" type="checkbox"> Friday
+                            </label>
+                        </div>
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default btn-flat" data-dismiss="modal">Close</button>

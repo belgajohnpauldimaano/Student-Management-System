@@ -37,6 +37,18 @@
                         <div class="help-block text-red text-center" id="js-subject">
                         </div>
                     </div>  --}}
+                       
+                    <div class="form-group">
+                        <label for="">Grade Level</label>
+                        <select name="grade_level" id="grade_level" class="form-control">
+                            <option value="">Select grade level</option>
+                            @foreach ($SectionDetail_grade_levels as $data) 
+                                <option value="{{ $data->grade_level }}" {{ $ClassDetail ? $ClassDetail->grade_level == $data->grade_level ? 'selected' : '' : '' }}>Grade {{ $data->grade_level }}</option>
+                            @endforeach
+                        </select>
+                        <div class="help-block text-red text-center" id="js-section">
+                        </div>
+                    </div>
                                         
                     <div class="form-group">
                         <label for="">Section</label>

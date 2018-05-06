@@ -16,7 +16,8 @@ class CreateClassSubjectDetailsTable extends Migration
         Schema::create('class_subject_details', function (Blueprint $table) {
             $table->increments('id');
             $table->string('class_days')->nullable();
-            $table->time('class_time')->nullable();
+            $table->time('class_time_from')->nullable();
+            $table->time('class_time_to')->nullable();
             $table->integer('subject_id')->unsigned();
             $table->integer('faculty_id')->unsigned()->nullable();
             $table->integer('room_id')->unsigned();

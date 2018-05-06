@@ -145,6 +145,19 @@
 
                 });
             });
+            
+            $('body').on('change', '#grade_level', function (e) {
+                e.preventDefault();
+                $.ajax({
+                    url         : "{{ route('registrar.class_details.fetch_section_by_grade_level') }}",
+                    type        : 'POST',
+                    data        : { _token : '{{ csrf_token() }}', grade_level : $(this).val() },
+                    success     : function (res) {
+                        console.log(res);
+                        $('#section').html(res);
+                    }
+                });
+            });
         });
     </script>
 @endsection

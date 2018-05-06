@@ -17,7 +17,7 @@
                                         <tr>
                                             <td>{{ $data->subject_code }}</td>
                                             <td>{{ $data->subject }}</td>
-                                            <td>{{ $data->class_time }}</td>
+                                            <td>{{ $data->class_time_from . ' - ' . $data->class_time_to }}</td>
                                             <td>{{ $data->faculty_name }}</td>
                                             <td>
                                                 <div class="input-group-btn pull-left text-left">

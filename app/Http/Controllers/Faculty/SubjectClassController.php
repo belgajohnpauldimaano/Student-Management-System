@@ -9,19 +9,55 @@ class SubjectClassController extends Controller
 {
     public function index (Request $request) 
     {
+        // $FacultyInformation = \App\FacultyInformation::where('user_id', \Auth::user()->id)->first();
+        // return json_encode(['FacultyInformation' => $FacultyInformation, 'Auth' => \Auth::user()]);
         $SchoolYear         = \App\SchoolYear::where('status', 1)->get();
         return view('control_panel_faculty.subject_class_details.index', compact('SchoolYear'));
     }
     public function list_students_by_class (Request $request) 
     {
-        $Enrollment = \App\Enrollment::join('student_informations', 'student_informations.id', '=', 'enrollments.student_information_id')
-            ->where('class_details_id', $request->search_class_subject)
-            ->select(\DB::raw("
-                student_informations.id,
-                CONCAT(student_informations.last_name, ' ', student_informations.first_name, ' ', student_informations.middle_name) as student_name
-            "))
-            ->paginate(50);
-        return view('control_panel_faculty.subject_class_details.partials.data_list', compact('Enrollment'))->render();
+        // $Enrollment = \App\Enrollment::join('student_informations', 'student_informations.id', '=', 'enrollments.student_information_id')
+        //     ->where('class_details_id', $request->search_class_subject)
+        //     ->select(\DB::raw("
+        //         student_informations.id,
+        //         CONCAT(student_informations.last_name, ' ', student_informations.first_name, ' ', student_informations.middle_name) as student_name
+        //     "))
+        //     ->paginate(50);
+        $FacultyInformation = \App\FacultyInformation::where('user_id', \Auth::user()->id)->first();
+
+        $Enrollment = \App\Enrollment::join('class_subject_details', 'class_subject_details.class_details_id', '=', 'enrollments.class_details_id')
+                    ->join('class_details', 'class_details.id', '=', 'class_subject_details.class_details_id')
+                    ->join('student_informations', 'student_informations.id', '=', 'enrollments.student_information_id')
+                    ->whereRaw('class_subject_details.faculty_id = '. $FacultyInformation->id)
+                    ->whereRaw('class_subject_details.id = '. $request->search_class_subject)
+                    ->whereRaw('class_details.current = 1')
+                    ->whereRaw('class_details.status = 1')
+                    ->select(\DB::raw("
+                        student_informations.id,
+                        CONCAT(student_informations.last_name, ' ', student_informations.first_name, ' ', student_informations.middle_name) as student_name
+                    "))
+                    ->paginate(50);
+
+        $ClassSubjectDetail = \App\ClassSubjectDetail::join('class_details', 'class_details.id', '=', 'class_subject_details.class_details_id')
+            ->join('subject_details', 'subject_details.id', '=', 'class_subject_details.subject_id')
+            ->join('section_details', 'section_details.id', '=', 'class_details.section_id')
+            ->where('class_subject_details.id', $request->search_class_subject)
+            ->where('faculty_id', $FacultyInformation->id)
+            ->where('class_details.school_year_id', $request->search_sy)
+            ->where('class_subject_details.status', 1)
+            ->where('class_details.status', 1)
+            ->select(\DB::raw('
+                class_subject_details.id,
+                class_subject_details.class_time_from,
+                class_subject_details.class_time_to,
+                class_subject_details.class_days,
+                subject_details.subject_code,
+                subject_details.subject,
+                section_details.section,
+                class_details.grade_level
+            '))
+            ->first();
+        return view('control_panel_faculty.subject_class_details.partials.data_list', compact('Enrollment', 'ClassSubjectDetail'))->render();
     }
     public function list_class_subject_details (Request $request) 
     {
@@ -33,9 +69,11 @@ class SubjectClassController extends Controller
             ->where('class_details.school_year_id', $request->search_sy)
             ->where('class_subject_details.status', 1)
             ->where('class_details.status', 1)
-            ->select(\DB::raw('
-                class_details.id,
-                class_subject_details.class_time,
+            ->select(\DB::raw('  
+                class_subject_details.id,
+                class_subject_details.class_time_from,
+                class_subject_details.class_time_to,
+                class_subject_details.class_days,
                 subject_details.subject_code,
                 subject_details.subject,
                 section_details.section,
@@ -48,7 +86,7 @@ class SubjectClassController extends Controller
         {
             foreach ($ClassSubjectDetail as $data) 
             {
-                $class_details_elements .= '<option value="'. $data->id .'">'. $data->subject_code . ' ' . $data->subject . ' - grade ' .  $data->grade_level . ' sec ' . $data->section   .'</option>';
+                $class_details_elements .= '<option value="'. $data->id .'">'. $data->subject_code . ' ' . $data->subject . ' - Grade ' .  $data->grade_level . ' Section ' . $data->section . ' -- Schedule ' . $data->class_time_from . '-' . $data->class_time_to . '-' . $data->class_days   .'</option>';
             }
 
             return $class_details_elements;

@@ -30,6 +30,8 @@ Route::group(['prefix' => 'registrar', 'middleware' => ['auth', 'userroles'], 'r
         Route::post('modal-data', 'Registrar\ClassListController@modal_data')->name('registrar.class_details.modal_data');
         Route::post('save-data', 'Registrar\ClassListController@save_data')->name('registrar.class_details.save_data');
         Route::post('deactivate-data', 'Registrar\ClassListController@deactivate_data')->name('registrar.class_details.deactivate_data');
+        Route::post('fetch_section-by-grade-level', 'Registrar\ClassListController@fetch_section_by_grade_level')->name('registrar.class_details.fetch_section_by_grade_level');
+        
     });
 
     Route::group(['prefix' => 'class-subjects/{class_id}', 'middleware' => 'auth'], function() {

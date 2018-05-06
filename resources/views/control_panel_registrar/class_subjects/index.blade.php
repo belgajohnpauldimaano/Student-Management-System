@@ -145,6 +145,15 @@
 
                 });
             });
+            $('body').on('click', '#check_all_days', function () {
+                if ($(this).data('checked-all')) {
+                    $('.sched_days').prop('checked', true);
+                    $(this).data('checked-all', !$(this).data('checked-all'));
+                } else {
+                    $('.sched_days').prop('checked', false);
+                    $(this).data('checked-all', !$(this).data('checked-all'));
+                }
+            })
         });
     </script>
 @endsection

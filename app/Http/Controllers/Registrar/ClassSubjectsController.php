@@ -25,7 +25,8 @@ class ClassSubjectsController extends Controller
                 CONCAT(faculty_informations.last_name, ' ', faculty_informations.first_name) as faculty_name,
                 subject_details.subject_code,
                 subject_details.subject,
-                class_subject_details.class_time
+                class_subject_details.class_time_from,
+                class_subject_details.class_time_to
             ")
             ->where('class_subject_details.class_details_id', $class_id)
             ->where('class_subject_details.status', 1);
@@ -92,10 +93,12 @@ class ClassSubjectsController extends Controller
 
     public function save_data (Request $request) 
     {
+        // return json_encode($request->all());
         $rules = [
-            'faculty'       => 'required',
-            'subject'          => 'required',
-            'subject_time'   => 'required'
+            'faculty'           => 'required',
+            'subject'           => 'required',
+            'subject_time_from' => 'required',
+            'subject_time_to'   => 'required'
         ];
         
         
@@ -112,19 +115,45 @@ class ClassSubjectsController extends Controller
         if ($request->id)
         {
             $ClassSubjectDetail = \App\ClassSubjectDetail::where('id', $request->id)->first();
-            $ClassSubjectDetail->class_time		    = date('H:i', strtotime($request->subject_time));
+            $ClassSubjectDetail->class_time_from		    = date('H:i', strtotime($request->subject_time_from));
+            $ClassSubjectDetail->class_time_to		    = date('H:i', strtotime($request->subject_time_to));
             $ClassSubjectDetail->subject_id	        = $request->subject;
             $ClassSubjectDetail->faculty_id		    = $request->faculty;
             $ClassSubjectDetail->class_details_id   = $request->class_details_id;
+
+            $class_days = '';
+            $class_days .= $request->sched_mon ? 'm/' : '';
+            $class_days .= $request->sched_tue ? 'tu/' : '';
+            $class_days .= $request->sched_wed ? 'w/' : '';
+            $class_days .= $request->sched_thu ? 'th/' : '';
+            $class_days .= $request->sched_fri ? 'f' : '';
+            
+            $class_days .= !$request->sched_mon && !$request->sched_tue && !$request->sched_wed && !$request->sched_thu && !$request->sched_fri ? 'm/tu/w/th/f' : '';
+
+            $ClassSubjectDetail->class_days = $class_days;
+
             $ClassSubjectDetail->save();
             return response()->json(['res_code' => 0, 'res_msg' => 'Data successfully updated.']);
         }
 
         $ClassSubjectDetail = new \App\ClassSubjectDetail();
-        $ClassSubjectDetail->class_time		    = date('H:i', strtotime($request->subject_time));
+        $ClassSubjectDetail->class_time_from		    = date('H:i', strtotime($request->subject_time_from));
+        $ClassSubjectDetail->class_time_to		    = date('H:i', strtotime($request->subject_time_to));
         $ClassSubjectDetail->subject_id	        = $request->subject;
         $ClassSubjectDetail->faculty_id		    = $request->faculty;
         $ClassSubjectDetail->class_details_id   = $request->class_details_id;
+
+        $class_days = '';
+        $class_days .= $request->sched_mon ? 'm/' : '';
+        $class_days .= $request->sched_tue ? 'tu/' : '';
+        $class_days .= $request->sched_wed ? 'w/' : '';
+        $class_days .= $request->sched_thu ? 'th/' : '';
+        $class_days .= $request->sched_fri ? 'f' : '';
+        
+        $class_days .= !$request->sched_mon && !$request->sched_tue && !$request->sched_wed && !$request->sched_thu && !$request->sched_fri ? 'm/tu/w/th/f' : '';
+
+        $ClassSubjectDetail->class_days = $class_days;
+
         $ClassSubjectDetail->save();
         return response()->json(['res_code' => 0, 'res_msg' => 'Data successfully saved.']);
     }
