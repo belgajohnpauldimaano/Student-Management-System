@@ -9,52 +9,43 @@
 
             <div class="carousel-inner" role="listbox">
 
-              <div class="carousel-item active" style="background-image: url('{{ asset('theme/img/intro-carousel/1.jpg') }}');">
+              <div class="carousel-item active" style="background-image: url('{{ asset('img/intro-banner/1.jpg') }}');">
                 <div class="carousel-container">
                   <div class="carousel-content">
-                    <h2>We to St. John Academy</h2>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
-                    <a href="#featured-services" class="btn-get-started scrollto">Get Started</a>
+                    <h2>Saint John Academy</h2>
+                    <p>Striving for Academic Excellence and Christian Formation</p>
+                    {{-- <a href="#featured-services" class="btn-get-started scrollto">Get Started</a> --}}
+                    <a href="#" class="btn-get-started scrollto">About SJA</a>
                   </div>
                 </div>
               </div>
 
-              <div class="carousel-item" style="background-image: url('{{ asset('theme/img/intro-carousel/2.jpg') }}');">
+              <div class="carousel-item" style="background-image: url('{{ asset('img/intro-banner/2.jpg') }}');">
                 <div class="carousel-container">
                   <div class="carousel-content">
-                    <h2>At vero eos et accusamus</h2>
-                    <p>Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus id quod maxime placeat facere possimus, omnis voluptas assumenda est, omnis dolor repellendus. Temporibus autem quibusdam et aut officiis debitis aut.</p>
-                    <a href="#featured-services" class="btn-get-started scrollto">Get Started</a>
+                    <h2>Academic Excellence</h2>
+                    <p>life-long learners able to think critically</p>
+                    {{-- <a href="#featured-services" class="btn-get-started scrollto">Get Started</a> --}}
                   </div>
                 </div>
               </div>
 
-              <div class="carousel-item" style="background-image: url('{{ asset('theme/img/intro-carousel/3.jpg') }}');">
+              <div class="carousel-item" style="background-image: url('{{ asset('img/intro-banner/3.jpg') }}');">
                 <div class="carousel-container">
                   <div class="carousel-content">
-                    <h2>Temporibus autem quibusdam</h2>
-                    <p>Beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt omnis iste natus error sit voluptatem accusantium.</p>
-                    <a href="#featured-services" class="btn-get-started scrollto">Get Started</a>
+                    <h2>Well-rounded Leaders</h2>
+                    <p>with Catholic values</p>
+                    {{-- <a href="#featured-services" class="btn-get-started scrollto">Get Started</a> --}}
                   </div>
                 </div>
               </div>
 
-              <div class="carousel-item" style="background-image: url('{{ asset('theme/img/intro-carousel/4.jpg') }}');">
+              <div class="carousel-item" style="background-image: url('{{ asset('img/intro-banner/4.jpg') }}');">
                 <div class="carousel-container">
                   <div class="carousel-content">
-                    <h2>Nam libero tempore</h2>
-                    <p>Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum.</p>
-                    <a href="#featured-services" class="btn-get-started scrollto">Get Started</a>
-                  </div>
-                </div>
-              </div>
-
-              <div class="carousel-item" style="background-image: url('{{ asset('theme/img/intro-carousel/5.jpg') }}');">
-                <div class="carousel-container">
-                  <div class="carousel-content">
-                    <h2>Magnam aliquam quaerat</h2>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
-                    <a href="#featured-services" class="btn-get-started scrollto">Get Started</a>
+                    <h2>Personalized Attention</h2>
+                    <p>to maximize learning</p>
+                    {{-- <a href="#featured-services" class="btn-get-started scrollto">Get Started</a> --}}
                   </div>
                 </div>
               </div>
@@ -75,7 +66,7 @@
         </div>
     </section>
     <main id="main">
-        <section id="featured-services">
+       {{--  <section id="featured-services">
             <div class="container">
                 <div class="row">
                     <div class="col-lg-4 box">
@@ -95,48 +86,50 @@
                     </div>
                 </div>
             </div>
-        </section>
+        </section> --}}
 
         <section id="about">
             <div class="container">
                 <header class="section-header">
                     <h3>About Us</h3>
                     <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+                    {{-- <h3>Saint John Academy</h3>
+                    <p>Striving for Academic Excellence & Christian Formation</p> --}}
                 </header>
                 <div class="row about-cols">
                     <div class="col-md-4 wow fadeInUp">
                         <div class="about-col">
                             <div class="img">
-                                <img src="{{ asset('theme/img/about-mission.jpg') }}" alt="" class="img-fluid">
+                                <img src="{{ asset('img/mission.jpg') }}" alt="" class="img-fluid">
                                 <div class="icon"><i class="ion-ios-speedometer-outline"></i></div>
                             </div>
                             <h2 class="title"><a href="#">Our Mission</a></h2>
                             <p>
-                                Lorem ipsum dolor sit amet, consectetur elit, sed do eiusmod tempor ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+                                Lorem ipsum dolor sit amet, consectetur elit, sed do eiusmod tempor ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip... <a href="#">readmore</a>
                             </p>
                         </div>
                     </div>
                     <div class="col-md-4 wow fadeInUp" data-wow-delay="0.1s">
                         <div class="about-col">
                             <div class="img">
-                                <img src="{{ asset('theme/img/about-plan.jpg') }}" alt="" class="img-fluid">
+                                <img src="{{ asset('img/history.jpg') }}" alt="" class="img-fluid">
                                 <div class="icon"><i class="ion-ios-list-outline"></i></div>
                             </div>
-                            <h2 class="title"><a href="#">Our Plan</a></h2>
+                            <h2 class="title"><a href="#">Our History</a></h2>
                             <p>
-                                Sed ut perspiciatis unde omnis iste natus error sit voluptatem doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.
+                                Sed ut perspiciatis unde omnis iste natus error sit voluptatem doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo... <a href="#">readmore</a>
                             </p>
                         </div>
                     </div>
                     <div class="col-md-4 wow fadeInUp" data-wow-delay="0.2s">
                         <div class="about-col">
                             <div class="img">
-                                <img src="{{ asset('theme/img/about-vision.jpg') }}" alt="" class="img-fluid">
+                                <img src="{{ asset('img/vision.jpg') }}" alt="" class="img-fluid">
                                 <div class="icon"><i class="ion-ios-eye-outline"></i></div>
                             </div>
                             <h2 class="title"><a href="#">Our Vision</a></h2>
                             <p>
-                                Nemo enim ipsam voluptatem quia voluptas sit aut odit aut fugit, sed quia magni dolores eos qui ratione voluptatem sequi nesciunt Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet.
+                                Nemo enim ipsam voluptatem quia voluptas sit aut odit aut fugit, sed quia magni dolores eos qui ratione voluptatem sequi nesciunt Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet... <a href="#">readmore</a>
                             </p>
                         </div>
                     </div>
@@ -144,7 +137,7 @@
             </div>
         </section>
 
-        <section id="services">
+        {{-- <section id="services">
             <div class="container">
                 <header class="section-header wow fadeInUp">
                     <h3>Services</h3>
@@ -252,9 +245,9 @@
                     <img src="{{ asset('theme/img/facts-img.png') }}" alt="" class="img-fluid">
                 </div>
             </div>
-        </section>
+        </section> --}}
 
-        <section id="portfolio" class="section-bg">
+        {{-- <section id="portfolio" class="section-bg">
             <div class="container">
                 <header class="section-header">
                     <h3 class="section-title">Our Portfolio</h3>
@@ -407,9 +400,9 @@
                     <img src="{{ asset('theme/img/clients/client-8.png') }}" alt="">
                 </div>
             </div>
-        </section>
+        </section> --}}
 
-        <section id="testimonials" class="section-bg wow fadeInUp">
+        {{-- <section id="testimonials" class="section-bg wow fadeInUp">
             <div class="container">
                 <header class="section-header">
                     <h3>Testimonials</h3>
@@ -462,22 +455,22 @@
                     </div>
                 </div>
             </div>
-        </section>
+        </section> --}}
 
         <section id="team">
             <div class="container">
                 <div class="section-header wow fadeInUp">
-                    <h3>Team</h3>
+                    <h3>Faculty & Staff</h3>
                     <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque</p>
                 </div>
                 <div class="row">
                     <div class="col-lg-3 col-md-6 wow fadeInUp">
                         <div class="member">
-                            <img src="{{ asset('theme/img/team-1.jpg') }}" class="img-fluid" alt="">
+                            <img src="{{ asset('img/faculty/Agustin-Annalyn-D.jpg') }}" class="img-fluid" alt="">
                             <div class="member-info">
                                 <div class="member-info-content">
-                                    <h4>Walter White</h4>
-                                    <span>Chief Executive Officer</span>
+                                    <h4>Annalyn Agustin</h4>
+                                    <span>Position</span>
                                     <div class="social">
                                         <a href=""><i class="fa fa-twitter"></i></a>
                                         <a href=""><i class="fa fa-facebook"></i></a>
@@ -490,11 +483,11 @@
                     </div>
                     <div class="col-lg-3 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
                         <div class="member">
-                            <img src="{{ asset('theme/img/team-2.jpg') }}" class="img-fluid" alt="">
+                            <img src="{{ asset('img/faculty/Ancheta-Maria-Fatima-Nadine-G.jpg') }}" class="img-fluid" alt="">
                             <div class="member-info">
                                 <div class="member-info-content">
-                                    <h4>Sarah Jhonson</h4>
-                                    <span>Product Manager</span>
+                                    <h4>Maria Ancheta</h4>
+                                    <span>Position</span>
                                     <div class="social">
                                         <a href=""><i class="fa fa-twitter"></i></a>
                                         <a href=""><i class="fa fa-facebook"></i></a>
@@ -507,11 +500,11 @@
                     </div>
                     <div class="col-lg-3 col-md-6 wow fadeInUp" data-wow-delay="0.2s">
                         <div class="member">
-                            <img src="{{ asset('theme/img/team-3.jpg') }}" class="img-fluid" alt="">
+                            <img src="{{ asset('img/faculty/Antonio-Arjay-A.jpg') }}" class="img-fluid" alt="">
                             <div class="member-info">
                                 <div class="member-info-content">
-                                    <h4>William Anderson</h4>
-                                    <span>CTO</span>
+                                    <h4>Arjay Arjay</h4>
+                                    <span>Position</span>
                                     <div class="social">
                                         <a href=""><i class="fa fa-twitter"></i></a>
                                         <a href=""><i class="fa fa-facebook"></i></a>
@@ -524,11 +517,79 @@
                     </div>
                     <div class="col-lg-3 col-md-6 wow fadeInUp" data-wow-delay="0.3s">
                         <div class="member">
-                            <img src="{{ asset('theme/img/team-4.jpg') }}" class="img-fluid" alt="">
+                            <img src="{{ asset('img/faculty/Anulao-Raymond.jpg') }}" class="img-fluid" alt="">
                             <div class="member-info">
                                 <div class="member-info-content">
-                                    <h4>Amanda Jepson</h4>
-                                    <span>Accountant</span>
+                                    <h4>Raymond Anulao</h4>
+                                    <span>Position</span>
+                                    <div class="social">
+                                        <a href=""><i class="fa fa-twitter"></i></a>
+                                        <a href=""><i class="fa fa-facebook"></i></a>
+                                        <a href=""><i class="fa fa-google-plus"></i></a>
+                                        <a href=""><i class="fa fa-linkedin"></i></a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-6 wow fadeInUp" data-wow-delay="0.3s">
+                        <div class="member">
+                            <img src="{{ asset('img/faculty/Aquino-Roger-M.jpg') }}" class="img-fluid" alt="">
+                            <div class="member-info">
+                                <div class="member-info-content">
+                                    <h4>Roger Aquino</h4>
+                                    <span>Position</span>
+                                    <div class="social">
+                                        <a href=""><i class="fa fa-twitter"></i></a>
+                                        <a href=""><i class="fa fa-facebook"></i></a>
+                                        <a href=""><i class="fa fa-google-plus"></i></a>
+                                        <a href=""><i class="fa fa-linkedin"></i></a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-6 wow fadeInUp" data-wow-delay="0.3s">
+                        <div class="member">
+                            <img src="{{ asset('img/faculty/Barugsay-Eris-C.jpg') }}" class="img-fluid" alt="">
+                            <div class="member-info">
+                                <div class="member-info-content">
+                                    <h4>Eris Barugsay</h4>
+                                    <span>Position</span>
+                                    <div class="social">
+                                        <a href=""><i class="fa fa-twitter"></i></a>
+                                        <a href=""><i class="fa fa-facebook"></i></a>
+                                        <a href=""><i class="fa fa-google-plus"></i></a>
+                                        <a href=""><i class="fa fa-linkedin"></i></a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-6 wow fadeInUp" data-wow-delay="0.3s">
+                        <div class="member">
+                            <img src="{{ asset('img/faculty/Bayani-Rolaida-B.jpg') }}" class="img-fluid" alt="">
+                            <div class="member-info">
+                                <div class="member-info-content">
+                                    <h4>Rolaida Bayani</h4>
+                                    <span>Position</span>
+                                    <div class="social">
+                                        <a href=""><i class="fa fa-twitter"></i></a>
+                                        <a href=""><i class="fa fa-facebook"></i></a>
+                                        <a href=""><i class="fa fa-google-plus"></i></a>
+                                        <a href=""><i class="fa fa-linkedin"></i></a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-6 wow fadeInUp" data-wow-delay="0.3s">
+                        <div class="member">
+                            <img src="{{ asset('img/faculty/Bombon-Vanessa-B.jpg') }}" class="img-fluid" alt="">
+                            <div class="member-info">
+                                <div class="member-info-content">
+                                    <h4>Vanessa Bombon</h4>
+                                    <span>Position</span>
                                     <div class="social">
                                         <a href=""><i class="fa fa-twitter"></i></a>
                                         <a href=""><i class="fa fa-facebook"></i></a>

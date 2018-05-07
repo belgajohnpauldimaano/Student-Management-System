@@ -21,7 +21,7 @@
     <link href="{{ asset('theme/lib/owlcarousel/assets/owl.carousel.min.css') }}" rel="stylesheet">
     <link href="{{ asset('theme/lib/lightbox/css/lightbox.min.css') }}" rel="stylesheet">
     <!-- Main Stylesheet File -->
-    <link href="{{ asset('theme/css/style.css') }}" rel="stylesheet">
+    <link href="{{ asset('theme/css/style.css?v=1') }}" rel="stylesheet">
 </head>
 
 <body>

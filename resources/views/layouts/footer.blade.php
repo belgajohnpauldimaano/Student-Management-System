@@ -12,7 +12,7 @@
                         <ul>
                             <li><i class="ion-ios-arrow-right"></i> <a href="#">Home</a></li>
                             <li><i class="ion-ios-arrow-right"></i> <a href="#">About us</a></li>
-                            <li><i class="ion-ios-arrow-right"></i> <a href="#">Services</a></li>
+                            <li><i class="ion-ios-arrow-right"></i> <a href="#">Vision Mission</a></li>
                             <li><i class="ion-ios-arrow-right"></i> <a href="#">Terms of service</a></li>
                             <li><i class="ion-ios-arrow-right"></i> <a href="#">Privacy policy</a></li>
                         </ul>
@@ -48,9 +48,9 @@
             <div class="copyright">
                 &copy; Copyright <strong>St. John</strong>. All Rights Reserved
             </div>
-            <div class="credits">
+            {{-- <div class="credits">
                 Best <a href="https://bootstrapmade.com/">Bootstrap Templates</a> by BootstrapMade
-            </div>
+            </div> --}}
         </div>
     </footer>
     <!-- #footer -->
