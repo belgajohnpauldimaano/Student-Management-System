@@ -38,19 +38,54 @@
             <nav id="nav-menu-container">
                 <ul class="nav-menu">
                     <li class="menu-active"><a href="#intro">Home</a></li>
-                    <li><a href="#about">About Us</a></li>
-                    <li><a href="#services">Services</a></li>
-                    <li><a href="#portfolio">Portfolio</a></li>
-                    <li><a href="#team">Team</a></li>
-                    <li class="menu-has-children"><a href="">Drop Down</a>
+                    <li class="menu-has-children"><a href="">About SJA</a>
+                        <ul>
+                            <li><a href="#">School Profile</a></li>
+                            <li><a href="#">Vision  Mission</a></li>
+                            <li><a href="#">History</a></li>
+                            <li><a href="#">Hymn</a></li>
+                            <li><a href="#">Awards & Recognition</a></li>
+                            <li><a href="#">Administration & Offices</a></li>
+                        </ul>
+                    </li>
+                    <li class="menu-has-children"><a href="">Academic</a>
+                        <ul>
+                            <li><a href="#">Junior High</a></li>
+                            <li><a href="#">Senior High</a></li>
+                        </ul>
+                    </li>
+                    <li class="menu-has-children"><a href="">Students</a>
+                        <ul>
+                            <li><a href="#">Students Organizations</a></li>
+                            <li><a href="#">Students Services</a></li>
+                            <li><a href="#">Publication</a></li>
+                            <li><a href="#">Students Council</a></li>
+                            <li><a href="#">Students Handbook</a></li>
+                        </ul>
+                    </li>
+                    <li class="menu-has-children"><a href="">Alumni</a>
+                        <ul>
+                            <li><a href="#">Alumni Association</a></li>
+                            <li><a href="#">Alumni Achievers</a></li>
+                            <li><a href="#">Stay Connected</a></li>
+                            <li><a href="#">Transport & Diploma</a></li>
+                        </ul>
+                    </li>
+                    <li class="menu-has-children"><a href="">Links</a>
+                        <ul>
+                            <li><a href="#">Administration</a></li>
+                            <li><a href="#">Faculty</a></li>
+                            <li><a href="#">Student</a></li>
+                        </ul>
+                    </li>
+                    {{-- <li class="menu-has-children"><a href="">Drop Down</a>
                         <ul>
                             <li><a href="#">Drop Down 1</a></li>
                             <li><a href="#">Drop Down 3</a></li>
                             <li><a href="#">Drop Down 4</a></li>
                             <li><a href="#">Drop Down 5</a></li>
                         </ul>
-                    </li>
-                    <li><a href="#contact">Contact</a></li>
+                    </li> --}}
                 </ul>
             </nav>
             <!-- #nav-menu-container -->
