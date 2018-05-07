@@ -85,6 +85,8 @@
         {{--  Registrar Menu  --}}
         @if (Auth::user()->role == 3)
           <li><a href="{{ route('registrar.dashboard') }}"><i class="fa fa-circle-o"></i> <span>Dashboard</span></a></li>
+          <li><a href="{{ route('admin.faculty_information') }}"><i class="fa fa-circle-o"></i> <span>Faculty Information</span></a></li>
+          <li><a href="{{ route('admin.student.information') }}"><i class="fa fa-circle-o"></i> <span>Student Information</span></a></li>
         @endif
         
         {{--  Faculty Menu  --}}

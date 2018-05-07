@@ -76,17 +76,24 @@ Route::group(['prefix' => 'faculty', 'middleware' => ['auth', 'userroles'], 'rol
 });
 
 
+Route::group(['prefix' => 'admin/student-information', 'middleware' => ['auth', 'userroles'], 'roles' => ['admin', 'root', 'registrar']], function() {
+    Route::get('', 'Control_Panel\StudentController@index')->name('admin.student.information');
+    Route::post('', 'Control_Panel\StudentController@index')->name('admin.student.information');
+    Route::post('modal-data', 'Control_Panel\StudentController@modal_data')->name('admin.student.information.modal_data');
+    Route::post('save-data', 'Control_Panel\StudentController@save_data')->name('admin.student.information.save_data');
+    Route::post('deactivate-data', 'Control_Panel\StudentController@deactivate_data')->name('admin.student.information.deactivate_data');
+});
+
+Route::group(['prefix' => 'admin/faculty-information', 'middleware' => ['auth', 'userroles'], 'roles' => ['admin', 'root', 'registrar']], function() {
+    Route::get('', 'Control_Panel\FacultyController@index')->name('admin.faculty_information');
+    Route::post('', 'Control_Panel\FacultyController@index')->name('admin.faculty_information');
+    Route::post('modal-data', 'Control_Panel\FacultyController@modal_data')->name('admin.faculty_information.modal_data');
+    Route::post('save-data', 'Control_Panel\FacultyController@save_data')->name('admin.faculty_information.save_data');
+    Route::post('deactivate-data', 'Control_Panel\FacultyController@deactivate_data')->name('admin.faculty_information.deactivate_data');
+});
 
 Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'userroles'], 'roles' => ['admin', 'root']], function() {
     Route::get('dashboard', 'Control_Panel\DashboardController@index')->name('admin.dashboard');
-
-    Route::group(['prefix' => 'faculty-information'], function() {
-        Route::get('', 'Control_Panel\FacultyController@index')->name('admin.faculty_information');
-        Route::post('', 'Control_Panel\FacultyController@index')->name('admin.faculty_information');
-        Route::post('modal-data', 'Control_Panel\FacultyController@modal_data')->name('admin.faculty_information.modal_data');
-        Route::post('save-data', 'Control_Panel\FacultyController@save_data')->name('admin.faculty_information.save_data');
-        Route::post('deactivate-data', 'Control_Panel\FacultyController@deactivate_data')->name('admin.faculty_information.deactivate_data');
-    });
 
     Route::group(['prefix' => 'registrar-information'], function() {
         Route::get('', 'Control_Panel\RegistrarController@index')->name('admin.registrar_information');
@@ -96,13 +103,6 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'userroles'], 'roles
         Route::post('deactivate-data', 'Control_Panel\RegistrarController@deactivate_data')->name('admin.registrar_information.deactivate_data');
     });
 
-    Route::group(['prefix' => 'student-information'], function() {
-        Route::get('', 'Control_Panel\StudentController@index')->name('admin.student.information');
-        Route::post('', 'Control_Panel\StudentController@index')->name('admin.student.information');
-        Route::post('modal-data', 'Control_Panel\StudentController@modal_data')->name('admin.student.information.modal_data');
-        Route::post('save-data', 'Control_Panel\StudentController@save_data')->name('admin.student.information.save_data');
-        Route::post('deactivate-data', 'Control_Panel\StudentController@deactivate_data')->name('admin.student.information.deactivate_data');
-    });
     
     Route::group(['prefix' => 'maintenance'], function() {
         Route::group(['prefix' => 'school-year'], function() {
