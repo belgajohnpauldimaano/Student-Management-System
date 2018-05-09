@@ -56,11 +56,11 @@
                     </li>
                     <li class="menu-has-children"><a href="">Students</a>
                         <ul>
-                            <li><a href="#">Students Organizations</a></li>
-                            <li><a href="#">Students Services</a></li>
-                            <li><a href="#">Publication</a></li>
-                            <li><a href="#">Students Council</a></li>
-                            <li><a href="#">Students Handbook</a></li>
+                            <li><a href="{{ route('students_organizations') }}">Students Organizations</a></li>
+                            <li><a href="{{ route('students_services') }}">Students Services</a></li>
+                            <li><a href="{{ route('publication') }}">Publication</a></li>
+                            <li><a href="{{ route('students_council') }}">Students Council</a></li>
+                            <li><a href="{{ route('students_handbook') }}">Students Handbook</a></li>
                         </ul>
                     </li>
                     <li class="menu-has-children"><a href="">Alumni</a>

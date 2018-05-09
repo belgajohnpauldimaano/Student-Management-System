@@ -39,6 +39,16 @@ Route::get('/administration-and-offices', 'AboutController@administration_office
 Route::get('/junior-high', 'AcademicController@junior_high')->name('junior_high');
 Route::get('/senior-high', 'AcademicController@senior_high')->name('senior_high');
 
+/*
+|Students Pages --------------------------------------------------------------------------
+*/
+
+Route::get('/students-organizations', 'StudentsController@students_organizations')->name('students_organizations');
+Route::get('/students-services', 'StudentsController@students_services')->name('students_services');
+Route::get('/publication', 'StudentsController@publication')->name('publication');
+Route::get('/students-council', 'StudentsController@students_council')->name('students_council');
+Route::get('/students-handbook', 'StudentsController@students_handbook')->name('students_handbook');
+
 
 Route::group(['prefix' => 'registrar', 'middleware' => ['auth', 'userroles'], 'roles' => ['registrar']], function() {
     Route::get('dashboard', 'Registrar\RegistrarDashboardController@index')->name('registrar.dashboard');
