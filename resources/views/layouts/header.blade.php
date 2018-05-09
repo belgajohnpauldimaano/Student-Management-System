@@ -50,8 +50,8 @@
                     </li>
                     <li class="menu-has-children"><a href="">Academic</a>
                         <ul>
-                            <li><a href="#">Junior High</a></li>
-                            <li><a href="#">Senior High</a></li>
+                            <li><a href="{{ route('junior_high') }}">Junior High</a></li>
+                            <li><a href="{{ route('senior_high') }}">Senior High</a></li>
                         </ul>
                     </li>
                     <li class="menu-has-children"><a href="">Students</a>

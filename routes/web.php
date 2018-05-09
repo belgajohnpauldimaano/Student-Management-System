@@ -32,6 +32,13 @@ Route::get('/hymn', 'AboutController@hymn')->name('hymn');
 Route::get('/award-and-recognition', 'AboutController@award_recognition')->name('award_recognition');
 Route::get('/administration-and-offices', 'AboutController@administration_offices')->name('administration_offices');
 
+/*
+|Academic Pages --------------------------------------------------------------------------
+*/
+
+Route::get('/junior-high', 'AcademicController@junior_high')->name('junior_high');
+Route::get('/senior-high', 'AcademicController@senior_high')->name('senior_high');
+
 
 Route::group(['prefix' => 'registrar', 'middleware' => ['auth', 'userroles'], 'roles' => ['registrar']], function() {
     Route::get('dashboard', 'Registrar\RegistrarDashboardController@index')->name('registrar.dashboard');
