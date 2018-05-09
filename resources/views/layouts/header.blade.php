@@ -40,12 +40,12 @@
                     <li class="menu-active"><a href="#intro">Home</a></li>
                     <li class="menu-has-children"><a href="">About SJA</a>
                         <ul>
-                            <li><a href="#">School Profile</a></li>
-                            <li><a href="#">Vision  Mission</a></li>
-                            <li><a href="#">History</a></li>
-                            <li><a href="#">Hymn</a></li>
-                            <li><a href="#">Awards & Recognition</a></li>
-                            <li><a href="#">Administration & Offices</a></li>
+                            <li><a href="{{ route('school_profile') }}">School Profile</a></li>
+                            <li><a href="{{ route('vision_mission') }}">Vision  Mission</a></li>
+                            <li><a href="{{ route('history') }}">History</a></li>
+                            <li><a href="{{ route('hymn') }}">Hymn</a></li>
+                            <li><a href="{{ route('award_recognition') }}">Awards & Recognition</a></li>
+                            <li><a href="{{ route('administration_offices') }}">Administration & Offices</a></li>
                         </ul>
                     </li>
                     <li class="menu-has-children"><a href="">Academic</a>

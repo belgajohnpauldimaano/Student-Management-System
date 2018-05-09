@@ -12,13 +12,25 @@
 */
 
 Route::get('/', function () {
-    return view('welcome');;
+    return view('welcome');
 });
 
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 
+
+
+/*
+|About SJA Pages --------------------------------------------------------------------------
+*/
+
+Route::get('/school-profile', 'AboutController@school_profile')->name('school_profile');
+Route::get('/vision-mission', 'AboutController@vision_mission')->name('vision_mission');
+Route::get('/history', 'AboutController@history')->name('history');
+Route::get('/hymn', 'AboutController@hymn')->name('hymn');
+Route::get('/award-and-recognition', 'AboutController@award_recognition')->name('award_recognition');
+Route::get('/administration-and-offices', 'AboutController@administration_offices')->name('administration_offices');
 
 
 Route::group(['prefix' => 'registrar', 'middleware' => ['auth', 'userroles'], 'roles' => ['registrar']], function() {

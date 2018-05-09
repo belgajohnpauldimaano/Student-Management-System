@@ -1456,3 +1456,51 @@ body.mobile-nav-active #mobile-nav-toggle {
   font-size: 13px;
   color: #ddd;
 }
+
+
+
+/*--------------------------------------------------------------
+# custom
+--------------------------------------------------------------*/
+
+/* 
+========================================================
+Center vertical */
+
+.va-block {
+    display: table;
+    height: 100%;
+    width: 100%;
+}
+
+.va-middle,
+.va-bottom {
+    display: table-cell;
+}
+
+.va-middle {
+    vertical-align: middle;
+}
+
+.va-bottom {
+    vertical-align: bottom;
+}
+
+.global-header{
+  background-position: center center;  
+  background-repeat: no-repeat;
+  background-size: cover;
+  height: 300px;
+  margin-bottom: 30px;
+}
+
+.global-header__block{
+  height: 100%;
+  width: 100%;
+  background: rgba(0, 0, 0, 0.58);
+  color: #fff;
+}
+
+.global-header__block h1{
+  margin-top: 25px;
+}
