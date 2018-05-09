@@ -13,6 +13,14 @@
             <h3 class="box-title">Search</h3>
             <form id="js-form_search">
                 {{ csrf_field() }}
+                <div class="form-group col-sm-12 col-md-3">
+                    <select name="sy_search" id="sy_search" class="form-control">
+                        <option value="">Select School Year</option>
+                        @foreach ($SchoolYear as $data)
+                            <option value="{{ $data->id }}">{{ $data->school_year }}</option>
+                        @endforeach
+                    </select>
+                </div>
                 <div id="js-form_search" class="form-group col-sm-12 col-md-3" style="padding-left:0;padding-right:0">
                     <input type="text" class="form-control" name="search">
                 </div>

@@ -9,6 +9,7 @@ class ClassListController extends Controller
 {
     public function index (Request $request) 
     {
+
         $ClassDetail = \App\ClassDetail::join('section_details', 'section_details.id', '=' ,'class_details.section_id')
             ->join('rooms', 'rooms.id', '=' ,'class_details.room_id')
             ->join('school_years', 'school_years.id', '=' ,'class_details.school_year_id')
@@ -26,17 +27,31 @@ class ClassListController extends Controller
                 rooms.room_description
             ')
             ->where('section_details.status', 1)
-            ->where('class_details.current', 1);
+            ->where('class_details.current', 1)
+            ->where(function ($query) use($request) {
+                if ($request->sy_search) 
+                {
+                    $query->where('school_years.id', $request->sy_search);
+                }
+                if ($request->search) 
+                {
+                    $query->orWhere('section_details.section', 'like', '%' . $request->search . '%');
+                    $query->orWhere('rooms.room_code', 'like', '%' . $request->search . '%');
+                }
+            });
         if ($request->ajax())
         {            
             $ClassDetail = $ClassDetail->paginate(10);
             // return json_encode($ClassDetail);
             return view('control_panel_registrar.class_details.partials.data_list', compact('ClassDetail'))->render();
         }
+
+        $SchoolYear = \App\SchoolYear::where('status', 1)->where('current', 1)->orderBy('current', 'DESC')->get();
+
         $ClassDetail = $ClassDetail->paginate(10);
         
         // return json_encode($ClassDetail);
-        return view('control_panel_registrar.class_details.index', compact('ClassDetail'));
+        return view('control_panel_registrar.class_details.index', compact('ClassDetail', 'SchoolYear'));
     }
     public function modal_data (Request $request) 
     {

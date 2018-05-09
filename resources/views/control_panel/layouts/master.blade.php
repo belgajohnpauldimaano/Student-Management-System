@@ -97,7 +97,7 @@
         @endif
 
         @if (Auth::user()->role == 3)
-          <li><a href="{{ route('registrar.class_details') }}"><i class="fa fa-circle-o"></i> <span>Class Details</span></a></li>   
+          <li><a href="{{ route('registrar.class_details') }}"><i class="fa fa-circle-o"></i> <span>Class Lists</span></a></li>   
         @endif             
           {{--  Registrar Menu End  --}}
         @if (Auth::user()->role == 1 || Auth::user()->role == 0)
@@ -118,6 +118,8 @@
               </ul>
           </li>
         @endif
+        <li><a href="{{ route('my_account.index') }}"><i class="fa fa-circle-o"></i> <span>My Account</span></a></li>
+        
       </ul>
     </section>
     <!-- /.sidebar -->
