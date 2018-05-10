@@ -3,7 +3,9 @@
 @section ('content_title')
     My Account
 @endsection
-
+@section ('styles')
+    <link rel="stylesheet" href="{{ asset('cms/plugins/datepicker/datepicker3.css')}}">
+@endsection
 @section ('content')
     <div class="row">
         <div class="col-sm-12 col-md-6 col-lg-4">
@@ -19,7 +21,7 @@
                 <div class="overlay hidden" id="js-loader-overlay"><i class="fa fa-refresh fa-spin"></i></div>
                 <div class="box-body">
                     <img class="profile-user-img img-responsive img-circle" src="https://adminlte.io/themes/AdminLTE/dist/img/user4-128x128.jpg" alt="User profile picture">
-                    <h3 class="profile-username text-center">{{ $Profile->first_name . ' ' . $Profile->middle_name . ' ' .  $Profile->last_name }}</h3>
+                    <h3 class="profile-username text-center" id="display__full_name">{{ $Profile->first_name . ' ' . $Profile->middle_name . ' ' .  $Profile->last_name }}</h3>
                     <p class="text-muted text-center">Faculty Member</p>
                     <div class="form-group">
                         <label for="">Department</label>
@@ -27,19 +29,19 @@
                     </div>
                     <div class="form-group">
                         <label for="">Contact Number</label>
-                        <div class="form-control">{{ $Profile->contact_number }}</div>
+                        <div class="form-control" id="display__contact_number">{{ $Profile->contact_number }}</div>
                     </div>
                     <div class="form-group">
                         <label for="">E-mail</label>
-                        <div class="form-control">{{ $Profile->email }}</div>
+                        <div class="form-control" id="display__email">{{ $Profile->email }}</div>
                     </div>
                     <div class="form-group">
                         <label for="">Address</label>
-                        <div class="form-control">{{ $Profile->address }}</div>
+                        <div class="form-control" id="display__address">{{ $Profile->address }}</div>
                     </div>
                     <div class="form-group">
                         <label for="">Birthday</label>
-                        <div class="form-control">{{ $Profile->birthday }}</div>
+                        <div class="form-control" id="display__birthday">{{ $Profile->birthday }}</div>
                     </div>
                 </div>
             </div>
@@ -122,33 +124,32 @@
                                 
                         <div class="form-group">
                             <label for="">First name</label>
-                            <input type="text" class="form-control" name="first_name">
+                            <input type="text" class="form-control" name="first_name" id="first_name">
                         </div>
                         <div class="form-group">
                             <label for="">Middle name</label>
-                            <input type="text" class="form-control" name="middle_name">
+                            <input type="text" class="form-control" name="middle_name" id="middle_name">
                         </div>
                         <div class="form-group">
                             <label for="">Last name</label>
-                            <input type="text" class="form-control" name="last_name">
+                            <input type="text" class="form-control" name="last_name" id="last_name">
                         </div>
                         <div class="form-group">
-                            <label for="">Last name</label>
-                            <input type="text" class="form-control" name="contact_number">
+                            <label for="">Contact Number</label>
+                            <input type="text" class="form-control" name="contact_number" id="contact_number">
                         </div>
                         <div class="form-group">
-                            <label for="">Last name</label>
-                            <input type="text" class="form-control" name="email">
+                            <label for="">Email Address</label>
+                            <input type="text" class="form-control" name="email" id="email">
                         </div>
                         <div class="form-group">
-                            <label for="">Last name</label>
-                            <input type="text" class="form-control" name="address">
+                            <label for="">Address</label>
+                            <input type="text" class="form-control" name="address" id="address">
                         </div>
                         <div class="form-group">
-                            <label for="">Last name</label>
-                            <input type="text" class="form-control" name="birthday">
+                            <label>Birthday</label>
+                            <input type="text" name="birthday" id="birthday" class="form-control pull-right">
                         </div>
-
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-default btn-flat" data-dismiss="modal">Close</button>
@@ -161,8 +162,13 @@
 @endsection
 
 @section ('scripts')
+    <script src="{{ asset('cms/plugins/datepicker/bootstrap-datepicker.js')}}"></script>
     <script>
         
+
+        $('#birthday').datepicker({
+            autoclose: true
+        })
         var page = 1;
         function fetch_data () {
             var formData = new FormData($('#js-form_search')[0]);
@@ -212,8 +218,70 @@
 
             $('body').on('click', '.btn--update-profile', function (e) {
                 e.preventDefault();
-                $('.modal-update-profile').modal({ backdrop : 'static' });
+                $.ajax({
+                    url : "{{ route('my_account.fetch_profile') }}",
+                    type : 'POST',
+                    data        : {_token: '{{ csrf_token() }}'},
+                    success     : function (res) {
+                        $('.help-block').html('');
+                        $('.modal-update-profile').modal({ backdrop : 'static' });
+                        $('#first_name').val(res.Profile.first_name);
+                        $('#middle_name').val(res.Profile.middle_name);
+                        $('#last_name').val(res.Profile.last_name);
+                        $('#contact_number').val(res.Profile.contact_number);
+                        $('#email').val(res.Profile.email);
+                        $('#address').val(res.Profile.address);
+                        $('#birthday').val(res.Profile.birthday);
+                        
+                    }
+                })
             })
+            $('body').on('submit', '#form--update-profile', function (e) {
+                e.preventDefault();
+                var formData = new FormData($(this)[0]);
+                $.ajax({
+                    url : "{{ route('my_account.update_profile') }}",
+                    type : 'POST',
+                    data        : formData,
+                    processData : false,
+                    contentType : false,
+                    success     : function (res) {
+                        $('.help-block').html('');
+                        if (res.res_code == 1)
+                        {
+                            for (var err in res.res_error_msg)
+                            {
+                                $('#js-' + err).html('<code> '+ res.res_error_msg[err] +' </code>');
+                            }
+                        }
+                        else
+                        {
+                            $.ajax({
+                                url : "{{ route('my_account.fetch_profile') }}",
+                                type : 'POST',
+                                dataType : 'JSON',
+                                data        : {_token: '{{ csrf_token() }}'},
+                                success     : function (res) {
+                                    console.log(res)
+                                    $('#display__full_name').text((res.Profile.first_name != null ? res.Profile.first_name : '') + ' ' + (res.Profile.middle_name != null ? res.Profile.middle_name : '') + ' '  + (res.Profile.last_name != null ? res.Profile.last_name : ''));
+                                    $('#display__contact_number').text((res.Profile.contact_number != null ? res.Profile.contact_number : ''));
+                                    $('#display__email').text((res.Profile.email != null ? res.Profile.email : ''));
+                                    $('#display__address').text((res.Profile.address != null ? res.Profile.address : ''));
+                                    $('#display__birthday').text((res.Profile.birthday != null ? res.Profile.birthday : ''));
+                                }
+                            })
+                            $('.modal-update-profile').modal('hide');
+                        }
+                        
+                        show_toast_alert({
+                            heading : res.res_code == 1 ? 'Error' : 'Success',
+                            message : res.res_msg,
+                            type    : res.res_code == 1 ? 'error' : 'success'
+                        });
+                    }
+                });
+            })
+
 
             $('body').on('submit', '#js-form_subject_details', function (e) {
                 e.preventDefault();

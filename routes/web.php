@@ -168,10 +168,16 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'userroles'], 'roles
         });
     });
     
-    Route::group(['prefix' => 'my_account', 'middleware' => ['auth']], function() {
+    Route::group(['prefix' => 'my-account', 'middleware' => ['auth']], function() {
         Route::get('', 'Control_Panel\UserProfileController@view_my_profile')->name('my_account.index');
-        Route::post('change-my-password', 'Control_Panel\UserProfileController@change_my_password')->name('my_account.change_my_password');
+        // Route::post('change-my-password', 'Control_Panel\UserProfileController@change_my_password')->name('my_account.change_my_password');
+        Route::post('update-profile', 'Control_Panel\UserProfileController@update_profile')->name('my_account.update_profile');
+        Route::post('fetch-profile', 'Control_Panel\UserProfileController@fetch_profile')->name('my_account.fetch_profile');
     });
+});
+
+Route::group(['prefix' => 'my-account', 'middleware' => ['auth']], function() {
+    Route::post('change-my-password', 'Control_Panel\UserProfileController@change_my_password')->name('my_account.change_my_password');
 });
 
 
