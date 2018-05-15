@@ -81,12 +81,21 @@ Route::group(['prefix' => 'registrar', 'middleware' => ['auth', 'userroles'], 'r
         Route::post('enrolled-student', 'Registrar\StudentEnrollmentController@fetch_enrolled_student')->name('registrar.student_enrollment.fetch_enrolled_student');
         Route::post('cancel-enroll-student', 'Registrar\StudentEnrollmentController@cancel_enroll_student')->name('registrar.student_enrollment.cancel_enroll_student');
     });
+
+    Route::group(['prefix' => 'my-account', 'middleware' => ['auth']], function() {
+        Route::get('', 'Registrar\UserProfileController@view_my_profile')->name('registrar.my_account.index');
+        // Route::post('change-my-password', 'Registrar\UserProfileController@change_my_password')->name('my_account.change_my_password');
+        Route::post('update-profile', 'Registrar\UserProfileController@update_profile')->name('registrar.my_account.update_profile');
+        Route::post('fetch-profile', 'Registrar\UserProfileController@fetch_profile')->name('registrar.my_account.fetch_profile');
+        Route::post('change-my-photo', 'Registrar\UserProfileController@change_my_photo')->name('registrar.my_account.change_my_photo');
+        Route::post('change-my-password', 'Registrar\UserProfileController@change_my_password')->name('registrar.my_account.change_my_password');
+    });
     
 });
 
 
 Route::group(['prefix' => 'faculty', 'middleware' => ['auth', 'userroles'], 'roles' => ['faculty']], function() {
-    //
+    
     Route::get('dashboard', 'Faculty\FacultyDashboardController@index')->name('faculty.dashboard');
     
     Route::group(['prefix' => 'subject-class'], function() {
@@ -101,7 +110,14 @@ Route::group(['prefix' => 'faculty', 'middleware' => ['auth', 'userroles'], 'rol
         // Route::post('list-students-by-class', 'Faculty\SubjectClassController@list_students_by_class')->name('faculty.subject_class.list_students_by_class');
     });
     
-
+    Route::group(['prefix' => 'my-account', 'middleware' => ['auth']], function() {
+        Route::get('', 'Faculty\UserProfileController@view_my_profile')->name('faculty.my_account.index');
+        // Route::post('change-my-password', 'Faculty\UserProfileController@change_my_password')->name('my_account.change_my_password');
+        Route::post('update-profile', 'Faculty\UserProfileController@update_profile')->name('faculty.my_account.update_profile');
+        Route::post('fetch-profile', 'Faculty\UserProfileController@fetch_profile')->name('faculty.my_account.fetch_profile');
+        Route::post('change-my-photo', 'Faculty\UserProfileController@change_my_photo')->name('faculty.my_account.change_my_photo');
+        Route::post('change-my-password', 'Faculty\UserProfileController@change_my_password')->name('faculty.my_account.change_my_password');
+    });
 });
 
 
@@ -173,11 +189,9 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'userroles'], 'roles
         // Route::post('change-my-password', 'Control_Panel\UserProfileController@change_my_password')->name('my_account.change_my_password');
         Route::post('update-profile', 'Control_Panel\UserProfileController@update_profile')->name('my_account.update_profile');
         Route::post('fetch-profile', 'Control_Panel\UserProfileController@fetch_profile')->name('my_account.fetch_profile');
+        Route::post('change-my-photo', 'Control_Panel\UserProfileController@change_my_photo')->name('my_account.change_my_photo');
+        Route::post('change-my-password', 'Control_Panel\UserProfileController@change_my_password')->name('my_account.change_my_password');
     });
-});
-
-Route::group(['prefix' => 'my-account', 'middleware' => ['auth']], function() {
-    Route::post('change-my-password', 'Control_Panel\UserProfileController@change_my_password')->name('my_account.change_my_password');
 });
 
 

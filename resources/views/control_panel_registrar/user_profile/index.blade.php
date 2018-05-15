@@ -19,6 +19,7 @@
                         </button>
                         <form class="hidden" id="form_user_photo_uploader">
                             <input type="file" id="user--photo" name="user_photo">
+                            <button type="submit">fsdfasd</button>
                         </form>
                         <button type="button" class="btn btn-flat btn-box-tool btn--update-profile" title="Update info">
                             <i class="fa fa-wrench"></i>
@@ -29,7 +30,7 @@
                 <div class="box-body">
                     <img class="profile-user-img img-responsive img-circle" id="img--user_photo" src="{{ $Profile->photo ? \File::exists(public_path('/img/account/photo/'.$Profile->photo)) ? asset('/img/account/photo/'.$Profile->photo) : asset('/img/account/photo/blank-user.gif') : asset('/img/account/photo/blank-user.gif') }}" alt="User profile picture">
                     <h3 class="profile-username text-center" id="display__full_name">{{ $Profile->first_name . ' ' . $Profile->middle_name . ' ' .  $Profile->last_name }}</h3>
-                    <p class="text-muted text-center">{{ \Auth::user()->get_user_role_display() }}</p>
+                    <p class="text-muted text-center">Registrar</p>
                     {{--  <div class="form-group">
                         <label for="">Department</label>
                         <div class="form-control">{{ collect(\App\FacultyInformation::DEPARTMENTS)->firstWhere('id', $Profile->department_id)['department_name'] }}</div>
@@ -203,7 +204,7 @@
                 e.preventDefault();
                 var formData = new FormData($(this)[0]);
                 $.ajax({
-                    url : "{{ route('my_account.change_my_password') }}",
+                    url : "{{ route('registrar.my_account.change_my_password') }}",
                     type : 'POST',
                     data : formData,
                     processData : false,
@@ -226,7 +227,7 @@
             $('body').on('click', '.btn--update-profile', function (e) {
                 e.preventDefault();
                 $.ajax({
-                    url : "{{ route('my_account.fetch_profile') }}",
+                    url : "{{ route('registrar.my_account.fetch_profile') }}",
                     type : 'POST',
                     data        : {_token: '{{ csrf_token() }}'},
                     success     : function (res) {
@@ -247,7 +248,7 @@
                 e.preventDefault();
                 var formData = new FormData($(this)[0]);
                 $.ajax({
-                    url : "{{ route('my_account.update_profile') }}",
+                    url : "{{ route('registrar.my_account.update_profile') }}",
                     type : 'POST',
                     data        : formData,
                     processData : false,
@@ -264,7 +265,7 @@
                         else
                         {
                             $.ajax({
-                                url : "{{ route('my_account.fetch_profile') }}",
+                                url : "{{ route('registrar.my_account.fetch_profile') }}",
                                 type : 'POST',
                                 dataType : 'JSON',
                                 data        : {_token: '{{ csrf_token() }}'},
@@ -344,7 +345,7 @@
                         formData.append('_token', '{{ csrf_token() }}');
                         console.log(formData)
                         $.ajax({
-                            url : "{{ route('my_account.change_my_photo') }}",
+                            url : "{{ route('registrar.my_account.change_my_photo') }}",
                             type : 'POST',
                             data : formData,
                             processData : false,

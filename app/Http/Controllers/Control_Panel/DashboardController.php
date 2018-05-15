@@ -39,13 +39,13 @@ class DashboardController extends Controller
             ->select(\DB::raw('COUNT(id) as rooms_count'))
             ->where('status', 1)
             ->first();
-            
-        // return json_encode($StudentInformation_all_male);
+        // return json_encode(\Auth::user()->get_user_data());
         return view('control_panel.dashboard.index', compact('StudentInformation_all'
         ,'StudentInformation_all_male',
         'StudentInformation_all_female',
         'registrar',
         'faculty',
-        'rooms'));
+        'rooms'
+        ));
     }
 }

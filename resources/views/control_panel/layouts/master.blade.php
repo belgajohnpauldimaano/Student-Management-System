@@ -26,21 +26,21 @@
               <li class="dropdown user user-menu">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                     {{-- <img src="dist/img/user2-160x160.jpg" class="user-image" alt="User Image"> --}}
-                    <span class="hidden-xs">St. John Academy</span>
+                    <span class="hidden-xs">{{ \Auth::user()->get_user_data()->first_name . ' ' . \Auth::user()->get_user_data()->last_name }}</span>
                 </a>
                 <ul class="dropdown-menu">
                     <!-- User image -->
                     <li class="user-header">
-                        <img src="http://via.placeholder.com/100x100" class="img-circle" alt="User Image">
+                        <img src="{{ \Auth::user()->get_user_data()->photo ? \File::exists(public_path('/img/account/photo/'. \Auth::user()->get_user_data()->photo)) ? asset('/img/account/photo/'. \Auth::user()->get_user_data()->photo) : asset('/img/account/photo/blank-user.gif') : asset('/img/account/photo/blank-user.gif') }}" class="img-circle" alt="User Image">
                         <p>
-                          <small>Administrador</small>
+                          <small>{{ \Auth::user()->get_user_role_display() }}</small>
                         </p>
                     </li>
                     <!-- Menu Footer-->
                     <li class="user-footer">
-                        <div class="pull-left">
+                        {{--  <div class="pull-left">
                             <a href="#" class="btn btn-default btn-flat js-view_profile">Profile</a>
-                        </div>
+                        </div>  --}}
                         <div class="pull-right">
                             {{-- <a href="#" class="btn btn-default btn-flat">Sign out</a> --}}
                             <a href="{{ route('logout') }}"
@@ -71,11 +71,8 @@
       <ul class="sidebar-menu" data-widget="tree">
         <li class="header">MAIN NAVIGATION</li>
         {{--  Admin Menu  --}}
-        @if (Auth::user()->role == 1)
-          <li><a href="{{ route('admin.dashboard') }}"><i class="fa fa-circle-o"></i> <span>Dashboard</span></a></li>
-        @endif
-        
         @if (Auth::user()->role == 1 || Auth::user()->role == 0)
+          <li><a href="{{ route('admin.dashboard') }}"><i class="fa fa-circle-o"></i> <span>Dashboard</span></a></li>
           <li><a href="{{ route('admin.faculty_information') }}"><i class="fa fa-circle-o"></i> <span>Faculty Information</span></a></li>
           <li><a href="{{ route('admin.registrar_information') }}"><i class="fa fa-circle-o"></i> <span>Registrar Information</span></a></li>
           <li><a href="{{ route('admin.student.information') }}"><i class="fa fa-circle-o"></i> <span>Student Information</span></a></li>
@@ -118,7 +115,14 @@
               </ul>
           </li>
         @endif
-        <li><a href="{{ route('my_account.index') }}"><i class="fa fa-circle-o"></i> <span>My Account</span></a></li>
+        <li>
+          @if (Auth::user()->role == 3)
+            <a href="{{ route('registrar.my_account.index') }}"><i class="fa fa-circle-o"></i> <span>My Account</span></a></li>
+          @elseif (Auth::user()->role == 4)
+            <a href="{{ route('faculty.my_account.index') }}"><i class="fa fa-circle-o"></i> <span>My Account</span></a></li>
+          @elseif (Auth::user()->role == 0 || Auth::user()->role == 1)
+            <a href="{{ route('my_account.index') }}"><i class="fa fa-circle-o"></i> <span>My Account</span></a></li>
+          @endif
         
       </ul>
     </section>

@@ -19,6 +19,7 @@
                         </button>
                         <form class="hidden" id="form_user_photo_uploader">
                             <input type="file" id="user--photo" name="user_photo">
+                            <button type="submit">fsdfasd</button>
                         </form>
                         <button type="button" class="btn btn-flat btn-box-tool btn--update-profile" title="Update info">
                             <i class="fa fa-wrench"></i>
@@ -29,11 +30,11 @@
                 <div class="box-body">
                     <img class="profile-user-img img-responsive img-circle" id="img--user_photo" src="{{ $Profile->photo ? \File::exists(public_path('/img/account/photo/'.$Profile->photo)) ? asset('/img/account/photo/'.$Profile->photo) : asset('/img/account/photo/blank-user.gif') : asset('/img/account/photo/blank-user.gif') }}" alt="User profile picture">
                     <h3 class="profile-username text-center" id="display__full_name">{{ $Profile->first_name . ' ' . $Profile->middle_name . ' ' .  $Profile->last_name }}</h3>
-                    <p class="text-muted text-center">{{ \Auth::user()->get_user_role_display() }}</p>
-                    {{--  <div class="form-group">
+                    <p class="text-muted text-center">Faculty Member</p>
+                    <div class="form-group">
                         <label for="">Department</label>
                         <div class="form-control">{{ collect(\App\FacultyInformation::DEPARTMENTS)->firstWhere('id', $Profile->department_id)['department_name'] }}</div>
-                    </div>  --}}
+                    </div>
                     <div class="form-group">
                         <label for="">Contact Number</label>
                         <div class="form-control" id="display__contact_number">{{ $Profile->contact_number }}</div>
@@ -46,10 +47,10 @@
                         <label for="">Address</label>
                         <div class="form-control" id="display__address">{{ $Profile->address }}</div>
                     </div>
-                    {{--  <div class="form-group">
+                    <div class="form-group">
                         <label for="">Birthday</label>
                         <div class="form-control" id="display__birthday">{{ $Profile->birthday }}</div>
-                    </div>  --}}
+                    </div>
                 </div>
             </div>
         </div>
@@ -153,10 +154,10 @@
                             <label for="">Address</label>
                             <input type="text" class="form-control" name="address" id="address">
                         </div>
-                        {{--  <div class="form-group">
+                        <div class="form-group">
                             <label>Birthday</label>
                             <input type="text" name="birthday" id="birthday" class="form-control pull-right">
-                        </div>  --}}
+                        </div>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-default btn-flat" data-dismiss="modal">Close</button>
@@ -203,7 +204,7 @@
                 e.preventDefault();
                 var formData = new FormData($(this)[0]);
                 $.ajax({
-                    url : "{{ route('my_account.change_my_password') }}",
+                    url : "{{ route('faculty.my_account.change_my_password') }}",
                     type : 'POST',
                     data : formData,
                     processData : false,
@@ -226,7 +227,7 @@
             $('body').on('click', '.btn--update-profile', function (e) {
                 e.preventDefault();
                 $.ajax({
-                    url : "{{ route('my_account.fetch_profile') }}",
+                    url : "{{ route('faculty.my_account.fetch_profile') }}",
                     type : 'POST',
                     data        : {_token: '{{ csrf_token() }}'},
                     success     : function (res) {
@@ -247,7 +248,7 @@
                 e.preventDefault();
                 var formData = new FormData($(this)[0]);
                 $.ajax({
-                    url : "{{ route('my_account.update_profile') }}",
+                    url : "{{ route('faculty.my_account.update_profile') }}",
                     type : 'POST',
                     data        : formData,
                     processData : false,
@@ -264,7 +265,7 @@
                         else
                         {
                             $.ajax({
-                                url : "{{ route('my_account.fetch_profile') }}",
+                                url : "{{ route('faculty.my_account.fetch_profile') }}",
                                 type : 'POST',
                                 dataType : 'JSON',
                                 data        : {_token: '{{ csrf_token() }}'},
@@ -344,7 +345,7 @@
                         formData.append('_token', '{{ csrf_token() }}');
                         console.log(formData)
                         $.ajax({
-                            url : "{{ route('my_account.change_my_photo') }}",
+                            url : "{{ route('faculty.my_account.change_my_photo') }}",
                             type : 'POST',
                             data : formData,
                             processData : false,
