@@ -17,7 +17,7 @@
     <main id="main">
 		<div class="container">
 			<div class="row">
-				<div class="col-md-8 mx-auto">
+				<div class="col-md-8">
 					<h2>Vision</h2>
 					<p>We envision to develop morally, socially upright, and competitive Filipino citizens equipped with total quality  education and Christian formation in the service of a humane and peaceful society.</p>
 
@@ -33,6 +33,9 @@
 					</ol>			
 					<br>
 					<br>
+				</div>
+				<div class="col-md-4">
+                    @include('pages.about.partials.sidebar')
 				</div>
 			</div>
 		</div>
