@@ -1,11 +1,15 @@
 @extends('layouts.main')
 
+@section('title')
+	Hymn
+@endsection
+
 @section('content')
 	<div class="global-header" style="background-image: url('{{ asset('img/intro-banner/1.jpg') }}');">
 		<div class="global-header__block">
 			<div class="va-block">
 				<div class="va-middle text-center">
-					<h1>Temporary background</h1>
+					<h1>Hymn</h1>
 				</div>
 			</div>
 		</div>
