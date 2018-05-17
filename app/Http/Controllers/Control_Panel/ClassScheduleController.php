@@ -58,7 +58,7 @@ class ClassScheduleController extends Controller
         ')
         ->where('class_subject_details.status', 1)
         ->get();
-        return response()->json(['res_code' => 0, 'res_msg' => '', 'FacultyInformation' => $ClassSubjectDetail]);
+        // return response()->json(['res_code' => 0, 'res_msg' => '', 'FacultyInformation' => $ClassSubjectDetail]);
         return view('control_panel.class_schedule.partials.modal_data_class_schedule', compact('ClassSubjectDetail'))->render();
     }
 }

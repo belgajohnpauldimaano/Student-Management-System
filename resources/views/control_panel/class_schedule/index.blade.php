@@ -106,7 +106,6 @@
                     type        : 'POST',
                     data        : { _token : '{{ csrf_token() }}', id : id },
                     success     : function (res) {
-                        alert('fs')
                         $('.js-modal_holder').html(res);    
                         $('.js-modal_holder .modal').modal({ backdrop : 'static' });
                         {{--  $('.help-block').html('');

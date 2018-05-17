@@ -6,7 +6,7 @@
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                     <h4 class="modal-title">
-                        {{--  Class Schedule  --}}
+                        Subject Schedule
                     </h4>
                 </div>
                 <div class="modal-body">
@@ -14,6 +14,7 @@
                         <tr>
                             <th>Time</th>
                             <th>Day</th>
+                            <th>Subject</th>
                         </tr>
                         <tbody>
                             @foreach($ClassSubjectDetail as $data) 
@@ -21,7 +22,6 @@
                                     <td>{{ $data->class_time_from . '-' . $data->class_time_to }}</td>
                                     <td>{{ $data->class_days }}</td>
                                     <td>{{ $data->subject }}</td>
-                                    subject
                                 </tr>
                             @endforeach
                         </tbody>
