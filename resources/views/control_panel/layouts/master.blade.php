@@ -73,6 +73,7 @@
         {{--  Admin Menu  --}}
         @if (Auth::user()->role == 1 || Auth::user()->role == 0)
           <li><a href="{{ route('admin.dashboard') }}"><i class="fa fa-circle-o"></i> <span>Dashboard</span></a></li>
+          <li><a href="{{ route('shared.class_schedule.index') }}"><i class="fa fa-circle-o"></i> <span>Class Schedule</span></a></li>
           <li><a href="{{ route('admin.faculty_information') }}"><i class="fa fa-circle-o"></i> <span>Faculty Information</span></a></li>
           <li><a href="{{ route('admin.registrar_information') }}"><i class="fa fa-circle-o"></i> <span>Registrar Information</span></a></li>
           <li><a href="{{ route('admin.student.information') }}"><i class="fa fa-circle-o"></i> <span>Student Information</span></a></li>
@@ -82,6 +83,7 @@
         {{--  Registrar Menu  --}}
         @if (Auth::user()->role == 3)
           <li><a href="{{ route('registrar.dashboard') }}"><i class="fa fa-circle-o"></i> <span>Dashboard</span></a></li>
+          <li><a href="{{ route('shared.class_schedule.index') }}"><i class="fa fa-circle-o"></i> <span>Class Schedule</span></a></li>
           <li><a href="{{ route('admin.faculty_information') }}"><i class="fa fa-circle-o"></i> <span>Faculty Information</span></a></li>
           <li><a href="{{ route('admin.student.information') }}"><i class="fa fa-circle-o"></i> <span>Student Information</span></a></li>
         @endif

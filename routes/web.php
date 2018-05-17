@@ -192,9 +192,23 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'userroles'], 'roles
         Route::post('change-my-photo', 'Control_Panel\UserProfileController@change_my_photo')->name('my_account.change_my_photo');
         Route::post('change-my-password', 'Control_Panel\UserProfileController@change_my_password')->name('my_account.change_my_password');
     });
+    
+    
+
 });
 
 
+Route::group(['prefix' => 'shared/class-schedule', 'middleware' => ['auth', 'userroles'], 'roles' => ['admin', 'root', 'registrar']], function() {
+    Route::get('', 'Control_Panel\ClassScheduleController@index')->name('shared.class_schedule.index');
+    Route::post('', 'Control_Panel\ClassScheduleController@index')->name('shared.class_schedule.index');
+    Route::post('get-faculty-class-schedule', 'Control_Panel\ClassScheduleController@get_faculty_class_schedule')->name('shared.class_schedule.get_faculty_class_schedule');
+    
+    // Route::post('change-my-password', 'Control_Panel\ClassScheduleController@change_my_password')->name('my_account.change_my_password');
+    // Route::post('update-profile', 'Control_Panel\ClassScheduleController@update_profile')->name('my_account.update_profile');
+    // Route::post('fetch-profile', 'Control_Panel\ClassScheduleController@fetch_profile')->name('my_account.fetch_profile');
+    // Route::post('change-my-photo', 'Control_Panel\ClassScheduleController@change_my_photo')->name('my_account.change_my_photo');
+    // Route::post('change-my-password', 'Control_Panel\ClassScheduleController@change_my_password')->name('my_account.change_my_password');
+});
 
 
 
