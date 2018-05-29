@@ -31,19 +31,18 @@ class StudentController extends Controller
         {
             $StudentInformation = \App\StudentInformation::with(['user'])->where('id', $request->id)->first();
         }
-        echo json_encode($StudentInformation);
         return view('control_panel.student_information.partials.modal_data', compact('StudentInformation'))->render();
     }
 
     public function save_data (Request $request) 
     {
         $rules = [
-            'email' => 'required|unique:users,username',
+            'username' => 'required',
             'first_name' => 'required',
-            'middle_name' => 'required',
+            // 'middle_name' => 'required',
             'last_name' => 'required',
-            'address'   => 'required',
-            'birthdate' => 'required',
+            // 'address'   => 'required',
+            // 'birthdate' => 'required',
             'gender'    => 'required',
         ];
         
@@ -58,6 +57,16 @@ class StudentController extends Controller
         if ($request->id)
         {
             $StudentInformation                 = \App\StudentInformation::where('id', $request->id)->first();
+            
+            $User = \App\User::where('username', $request->username)->where('id', '!=', $StudentInformation->user_id)->first();
+            if ($User) 
+            {
+                return response()->json(['res_code' => 1,'res_msg' => 'Username already used.']);
+            }
+            $User = \App\User::where('id', $StudentInformation->user_id)->first();
+            $User->username = $request->username;
+            $User->save();
+
             $StudentInformation->first_name     = $request->first_name;
             $StudentInformation->middle_name    = $request->middle_name;
             $StudentInformation->last_name      = $request->last_name;
@@ -68,6 +77,11 @@ class StudentController extends Controller
             return response()->json(['res_code' => 0, 'res_msg' => 'Data successfully saved.']);
         }
 
+        $User = \App\User::where('username', $request->username)->first();
+        if ($User) 
+        {
+            return response()->json(['res_code' => 1,'res_msg' => 'Username already used.']);
+        }
         $User = new \App\User();
         $User->username = $request->username;
         $User->password = bcrypt($request->first_name . '.' . $request->last_name);

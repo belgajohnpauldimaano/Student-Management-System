@@ -39,10 +39,9 @@ class FacultyController extends Controller
         $rules = [
             'username' => 'required',
             'first_name' => 'required',
-            'middle_name' => 'required',
+            'middle_name' => 'nullable',
             'last_name' => 'required',
             'department' => 'required',
-            'email' => 'required|unique:users,username',
         ];
         
         
@@ -53,9 +52,20 @@ class FacultyController extends Controller
             return response()->json(['res_code' => 1, 'res_msg' => 'Please fill all required fields.', 'res_error_msg' => $Validator->getMessageBag()]);
         }
 
-        if ($request->id)
+        if ($request->fid)
         {
-            $FacultyInformation = \App\FacultyInformation::where('id', $request->id)->first();
+         
+            $FacultyInformation = \App\FacultyInformation::where('id', $request->fid)->first();
+               
+            $User = \App\User::where('username', $request->username)->where('id', '!=', $FacultyInformation->user_id)->first();
+            if ($User) 
+            {
+                return response()->json(['res_code' => 1,'res_msg' => 'Username already used.']);
+            }
+            $User = \App\User::where('id', $FacultyInformation->user_id)->first();
+            $User->username = $request->username;
+            $User->save();
+
             $FacultyInformation->first_name = $request->first_name;
             $FacultyInformation->middle_name = $request->middle_name;
             $FacultyInformation->last_name = $request->last_name;
@@ -63,6 +73,13 @@ class FacultyController extends Controller
             $FacultyInformation->save();
             return response()->json(['res_code' => 0, 'res_msg' => 'Data successfully saved.']);
         }
+
+        $User = \App\User::where('username', $request->username)->first();
+        if ($User) 
+        {
+            return response()->json(['res_code' => 1,'res_msg' => 'Username already used.']);
+        }
+
 
         $User = new \App\User();
         $User->username = $request->username;

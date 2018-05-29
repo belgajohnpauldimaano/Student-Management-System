@@ -106,10 +106,14 @@ Route::group(['prefix' => 'faculty', 'middleware' => ['auth', 'userroles'], 'rol
 
     Route::group(['prefix' => 'class-schedules'], function() {
         Route::get('', 'Faculty\SubjectClassController@class_schedules')->name('faculty.class_schedules');
-        // Route::post('list-class-subject-details', 'Faculty\SubjectClassController@list_class_subject_details')->name('faculty.subject_class.list_class_subject_details');
-        // Route::post('list-students-by-class', 'Faculty\SubjectClassController@list_students_by_class')->name('faculty.subject_class.list_students_by_class');
     });
     
+    Route::group(['prefix' => 'student-grade-sheet'], function() {
+        Route::get('', 'Faculty\GradeSheetController@index')->name('faculty.student_grade_sheet');
+        Route::post('list-class-subject-details', 'Faculty\GradeSheetController@list_class_subject_details')->name('faculty.student_grade_sheet.list_class_subject_details');
+        Route::post('list-students-by-class', 'Faculty\GradeSheetController@list_students_by_class')->name('faculty.student_grade_sheet.list_students_by_class');
+    });
+
     Route::group(['prefix' => 'my-account', 'middleware' => ['auth']], function() {
         Route::get('', 'Faculty\UserProfileController@view_my_profile')->name('faculty.my_account.index');
         // Route::post('change-my-password', 'Faculty\UserProfileController@change_my_password')->name('my_account.change_my_password');

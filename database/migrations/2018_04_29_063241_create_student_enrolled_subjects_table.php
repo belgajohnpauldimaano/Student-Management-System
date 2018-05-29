@@ -17,6 +17,16 @@ class CreateStudentEnrolledSubjectsTable extends Migration
             $table->increments('id');
             $table->integer('subject_id')->unsigned();
             $table->integer('enrollments_id')->unsigned();
+            $table->decimal('fir_g', 2)->default('0.00');
+            $table->integer('fir_g_status')->default(0);
+            $table->decimal('sec_g', 2)->default('0.00');
+            $table->integer('sec_g_status')->default(0);
+            $table->decimal('thi_g', 2)->default('0.00');
+            $table->integer('thi_g_status')->default(0);
+            $table->decimal('fou_g', 2)->default('0.00');
+            $table->integer('fou_g_status')->default(0);
+            $table->decimal('fin_g', 2)->default('0.00');
+            $table->integer('fin_g_status')->default(0);
             $table->integer('current')->default(1);
             $table->integer('status')->default(1);
             $table->timestamps();

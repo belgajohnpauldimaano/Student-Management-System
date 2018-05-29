@@ -93,6 +93,7 @@
           <li><a href="{{ route('faculty.dashboard') }}"><i class="fa fa-circle-o"></i> <span>Dashboard</span></a></li>
           <li><a href="{{ route('faculty.subject_class') }}"><i class="fa fa-circle-o"></i> <span>Subject Class</span></a></li>
           <li><a href="{{ route('faculty.class_schedules') }}"><i class="fa fa-circle-o"></i> <span>Class Schedules</span></a></li>
+          <li><a href="{{ route('faculty.student_grade_sheet') }}"><i class="fa fa-circle-o"></i> <span>Students Grade Sheet</span></a></li>
         @endif
 
         @if (Auth::user()->role == 3)
