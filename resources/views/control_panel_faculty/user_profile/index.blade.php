@@ -53,9 +53,7 @@
                     </div>
                 </div>
             </div>
-        </div>
-        
-        <div class="col-sm-12 col-md-6 col-lg-4">
+
             <div class="box box-danger">
                 <div class="box-header">
                     <h3 class="box-title">User Account</h3>
@@ -77,6 +75,36 @@
                         <label for="">Password</label>
                         <div class="form-control">******</div>
                     </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-sm-12 col-md-6 col-lg-8">
+            <div class="box box-danger">
+                <div class="box-header">
+                    <h3 class="box-title">Educational Attainment</h3>
+                    <div class="box-tools pull-right">
+                        <button type="button" class="btn btn-flat btn-box-tool btn-add-educ" title="Add eductational attainment">
+                            <i class="fa fa-plus"></i>
+                        </button>
+                    </div>
+                </div> 
+                
+
+                <div class="overlay hidden" id="js-loader-overlay-education"><i class="fa fa-refresh fa-spin"></i></div>
+                <div class="box-body">
+                    <table class="table table-bordered table-condensed text-center">
+                        <tr>
+                            <th>Course</th>
+                            <th>School</th>
+                            <th>Years</th>
+                            <th>Awards</th>
+                            <th>Actions</th>
+                        </tr>
+                        <tbody id="education_attainment_container">
+
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>
@@ -167,6 +195,56 @@
             </div><!-- /.modal-content -->
         </div><!-- /.modal-dialog -->
     </div><!-- /.modal -->
+
+
+    <div class="modal fade modal-education-attainment" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <form id="form--education-attainment">
+                    {{ csrf_field() }}
+                    <input type="hidden" class="form-control" name="educ_id" id="educ_id">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title">
+                            Educational Attainment
+                        </h4>
+                    </div>
+                    <div class="modal-body">   
+                                
+                        <div class="form-group">
+                            <label for="">Course</label>
+                            <input type="text" class="form-control" name="course" id="course">
+                            <div class="help-block text-red text-center" id="js-course"></div>
+                        </div>
+                        <div class="form-group">
+                            <label for="">School</label>
+                            <input type="text" class="form-control" name="school" id="school">
+                            <div class="help-block text-red text-center" id="js-school"></div>
+                        </div>
+                        <div class="form-group">
+                            <label for="">Date from</label>
+                            <input type="text" class="form-control date_picker_input" name="date_from" id="date_from">
+                            <div class="help-block text-red text-center" id="js-date_from"></div>
+                        </div>
+                        <div class="form-group">
+                            <label for="">Date To</label>
+                            <input type="text" class="form-control date_picker_input" name="date_to" id="date_to">
+                            <div class="help-block text-red text-center" id="js-date_to"></div>
+                        </div>
+                        <div class="form-group">
+                            <label for="">Awards</label>
+                            <input type="text" class="form-control" name="awards" id="awards">
+                            <div class="help-block text-red text-center" id="js-awards"></div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default btn-flat" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary btn-flat">Save</button>
+                    </div>
+                </form>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
 @endsection
 
 @section ('scripts')
@@ -175,6 +253,10 @@
         
 
         $('#birthday').datepicker({
+            autoclose: true
+        })
+        
+        $('.date_picker_input').datepicker({
             autoclose: true
         })
         var page = 1;
@@ -194,7 +276,20 @@
                 }
             });
         }
+        function fetch_educ_attainment () {
+            loader_overlay('js-loader-overlay-education');
+            $.ajax({
+                url : "{{ route('faculty.my_account.educational_attainment') }}",
+                type : 'POST',
+                data : {_token : '{{ csrf_token() }}'},
+                success     : function (res) {
+                    loader_overlay('js-loader-overlay-education');
+                    $('#education_attainment_container').html(res);
+                }
+            });
+        }
         $(function () {
+            fetch_educ_attainment()
             $('body').on('click', '.btn-change-password', function (e) {
                 e.preventDefault();
                 $('.modal-change-pw-modal').modal({ backdrop : 'static' });
@@ -361,6 +456,65 @@
                     $('#img--user_photo').attr('src', '/assets/no_preview.png');
                 }
             }
+
+
+            $('body').on('click', '.btn-add-educ', function (e) {
+                e.preventDefault()
+                $('.modal-education-attainment').modal({ backdrop : 'static' })
+            })
+
+            $('body').on('submit', '#form--education-attainment', function (e) {
+                e.preventDefault()
+                var frm = $(this);
+                var formData = new FormData(frm[0]);
+                formData.append('_token', '{{ csrf_token() }}');
+                $.ajax({
+                    url : "{{ route('faculty.my_account.educational_attainment_save') }}",
+                    type : 'POST',
+                    data : formData,
+                    processData : false,
+                    contentType : false,
+                    success     : function (res) {
+                        $('.help-block').html('');
+                        if (res.res_code == 1)
+                        {
+                            for (var err in res.res_error_msg)
+                            {
+                                $('#js-' + err).html('<code> '+ res.res_error_msg[err] +' </code>');
+                            }
+                        } else {
+                            frm[0].reset();
+                            $('.modal-education-attainment').modal('hide')
+                            fetch_educ_attainment()
+                        }
+                    }
+                })
+            })
+
+            $('body').on('click', '.js-btn_educ_edit', function (e) {
+                e.preventDefault()
+                var educ_id = $(this).data('id');
+                
+                $.ajax({
+                    url : "{{ route('faculty.my_account.educational_attainment_fetch_by_id') }}",
+                    type : 'POST',
+                    data : { _token : '{{ csrf_token() }}', educ_id : educ_id },
+                    success     : function (res) {
+                        $('.modal-education-attainment').modal({ backdrop : 'static' });
+                        $('#educ_id').val(educ_id);
+                        $('#course').val(res.FacultyEducation.course);
+                        $('#school').val(res.FacultyEducation.school);
+                        $('#date_from').val(res.FacultyEducation.from);
+                        $('#date_to').val(res.FacultyEducation.to);
+                        $('#awards').val(res.FacultyEducation.awards);
+                    }
+                })
+            })
+            
+            btn_educ_delete     
         });
+
+
+        
     </script>
 @endsection

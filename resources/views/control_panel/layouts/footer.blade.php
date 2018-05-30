@@ -46,12 +46,20 @@
 @yield('scripts')
 
 <script>
-    function loader_overlay() {
-        if ($('#js-loader-overlay').hasClass('hidden')) {
-            $('#js-loader-overlay').removeClass('hidden')
-        } else {
-            $('#js-loader-overlay').addClass('hidden')
-        }
+    function loader_overlay($target_class = '') {
+		if (!$target_class) {
+			if ($('#js-loader-overlay').hasClass('hidden')) {
+				$('#js-loader-overlay').removeClass('hidden')
+			} else {
+				$('#js-loader-overlay').addClass('hidden')
+			}
+		} else {
+			if ($('#' + $target_class).hasClass('hidden')) {
+				$('#' + $target_class).removeClass('hidden')
+			} else {
+				$('#' + $target_class).addClass('hidden')
+			}
+		}
     }
         
 		/*

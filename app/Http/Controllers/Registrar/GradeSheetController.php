@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Faculty;
+namespace App\Http\Controllers\Registrar;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -12,13 +12,13 @@ class GradeSheetController extends Controller
     {
         // $FacultyInformation = \App\FacultyInformation::where('user_id', \Auth::user()->id)->first();
         // return json_encode(['FacultyInformation' => $FacultyInformation, 'Auth' => \Auth::user()]);
-        $SchoolYear         = \App\SchoolYear::where('status', 1)->where('current', 1)->orderBy('current', 'ASC')->orderBy('school_year', 'ASC')->get();
-        return view('control_panel_faculty.student_grade_sheet.index', compact('SchoolYear'));
+        $SchoolYear         = \App\SchoolYear::where('status', 1)->orderBy('current', 'ASC')->orderBy('school_year', 'ASC')->get();
+        return view('control_panel_registrar.student_grade_sheet.index', compact('SchoolYear'));
     }
     public function list_students_by_class (Request $request) 
     {
-        $FacultyInformation = \App\FacultyInformation::where('user_id', \Auth::user()->id)->first();
-
+        // $FacultyInformation = \App\FacultyInformation::where('user_id', \Auth::user()->id)->first();
+        
         $Enrollment = \App\Enrollment::join('class_subject_details', 'class_subject_details.class_details_id', '=', 'enrollments.class_details_id')
                     ->join('class_details', 'class_details.id', '=', 'class_subject_details.class_details_id')
                     ->join('student_informations', 'student_informations.id', '=', 'enrollments.student_information_id')
@@ -29,7 +29,7 @@ class GradeSheetController extends Controller
                         $join->on('student_enrolled_subjects.enrollments_id', '=', 'enrollments.id')
                         ->on('student_enrolled_subjects.subject_id', '=', 'class_subject_details.subject_id');
                     })
-                    ->whereRaw('class_subject_details.faculty_id = '. $FacultyInformation->id)
+                    // ->whereRaw('class_subject_details.faculty_id = '. $FacultyInformation->id)
                     ->whereRaw('class_subject_details.id = '. $request->search_class_subject)
                     ->whereRaw('class_details.current = 1')
                     ->whereRaw('class_details.status = 1')
@@ -54,7 +54,7 @@ class GradeSheetController extends Controller
             ->join('subject_details', 'subject_details.id', '=', 'class_subject_details.subject_id')
             ->join('section_details', 'section_details.id', '=', 'class_details.section_id')
             ->where('class_subject_details.id', $request->search_class_subject)
-            ->where('faculty_id', $FacultyInformation->id)
+            // ->where('faculty_id', $FacultyInformation->id)
             ->where('class_details.school_year_id', $request->search_sy)
             ->where('class_subject_details.status', 1)
             ->where('class_details.status', 1)
@@ -69,15 +69,15 @@ class GradeSheetController extends Controller
                 class_details.grade_level
             '))
             ->first();
-        return view('control_panel_faculty.student_grade_sheet.partials.data_list', compact('Enrollment', 'ClassSubjectDetail'))->render();
+        return view('control_panel_registrar.student_grade_sheet.partials.data_list', compact('Enrollment', 'ClassSubjectDetail'))->render();
     }
     public function list_class_subject_details (Request $request) 
     {
-        $FacultyInformation = \App\FacultyInformation::where('user_id', \Auth::user()->id)->first();
+        // $FacultyInformation = \App\FacultyInformation::where('user_id', \Auth::user()->id)->first();
         $ClassSubjectDetail = \App\ClassSubjectDetail::join('class_details', 'class_details.id', '=', 'class_subject_details.class_details_id')
             ->join('subject_details', 'subject_details.id', '=', 'class_subject_details.subject_id')
             ->join('section_details', 'section_details.id', '=', 'class_details.section_id')
-            ->where('faculty_id', $FacultyInformation->id)
+            // ->where('faculty_id', $FacultyInformation->id)
             ->where('class_details.school_year_id', $request->search_sy)
             ->where('class_subject_details.status', 1)
             ->where('class_details.status', 1)

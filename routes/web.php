@@ -90,6 +90,13 @@ Route::group(['prefix' => 'registrar', 'middleware' => ['auth', 'userroles'], 'r
         Route::post('change-my-photo', 'Registrar\UserProfileController@change_my_photo')->name('registrar.my_account.change_my_photo');
         Route::post('change-my-password', 'Registrar\UserProfileController@change_my_password')->name('registrar.my_account.change_my_password');
     });
+
+    
+    Route::group(['prefix' => 'student-grade-sheet'], function() {
+        Route::get('', 'Registrar\GradeSheetController@index')->name('registrar.student_grade_sheet');
+        Route::post('list-class-subject-details', 'Registrar\GradeSheetController@list_class_subject_details')->name('registrar.student_grade_sheet.list_class_subject_details');
+        Route::post('list-students-by-class', 'Registrar\GradeSheetController@list_students_by_class')->name('registrar.student_grade_sheet.list_students_by_class');
+    });
     
 });
 
@@ -121,6 +128,10 @@ Route::group(['prefix' => 'faculty', 'middleware' => ['auth', 'userroles'], 'rol
         Route::post('fetch-profile', 'Faculty\UserProfileController@fetch_profile')->name('faculty.my_account.fetch_profile');
         Route::post('change-my-photo', 'Faculty\UserProfileController@change_my_photo')->name('faculty.my_account.change_my_photo');
         Route::post('change-my-password', 'Faculty\UserProfileController@change_my_password')->name('faculty.my_account.change_my_password');
+        Route::post('educational-attainment', 'Faculty\UserProfileController@educational_attainment')->name('faculty.my_account.educational_attainment');
+        Route::post('educational-attainment-save', 'Faculty\UserProfileController@educational_attainment_save')->name('faculty.my_account.educational_attainment_save');
+        Route::post('educational-attainment-fetch-by-id', 'Faculty\UserProfileController@educational_attainment_fetch_by_id')->name('faculty.my_account.educational_attainment_fetch_by_id');
+        
     });
 });
 

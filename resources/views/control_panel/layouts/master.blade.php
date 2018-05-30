@@ -86,6 +86,8 @@
           <li><a href="{{ route('shared.class_schedule.index') }}"><i class="fa fa-circle-o"></i> <span>Class Schedule</span></a></li>
           <li><a href="{{ route('admin.faculty_information') }}"><i class="fa fa-circle-o"></i> <span>Faculty Information</span></a></li>
           <li><a href="{{ route('admin.student.information') }}"><i class="fa fa-circle-o"></i> <span>Student Information</span></a></li>
+          <li><a href="{{ route('registrar.class_details') }}"><i class="fa fa-circle-o"></i> <span>Class Lists</span></a></li>   
+          <li><a href="{{ route('registrar.student_grade_sheet') }}"><i class="fa fa-circle-o"></i> <span>Students Grade Sheet</span></a></li>
         @endif
         
         {{--  Faculty Menu  --}}
@@ -95,10 +97,9 @@
           <li><a href="{{ route('faculty.class_schedules') }}"><i class="fa fa-circle-o"></i> <span>Class Schedules</span></a></li>
           <li><a href="{{ route('faculty.student_grade_sheet') }}"><i class="fa fa-circle-o"></i> <span>Students Grade Sheet</span></a></li>
         @endif
-
+{{--  
         @if (Auth::user()->role == 3)
-          <li><a href="{{ route('registrar.class_details') }}"><i class="fa fa-circle-o"></i> <span>Class Lists</span></a></li>   
-        @endif             
+        @endif               --}}
           {{--  Registrar Menu End  --}}
         @if (Auth::user()->role == 1 || Auth::user()->role == 0)
           <li class="treeview">

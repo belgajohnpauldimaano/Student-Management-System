@@ -118,4 +118,100 @@ class UserProfileController extends Controller
             return response()->json(['res_code' => 1, 'res_msg' => 'Incorrect old password.']);
         }
     }
+
+    public function educational_attainment (Request $request) 
+    {
+        $User = \Auth::user();
+        $Profile = \App\FacultyInformation::where('user_id', $User->id)->first();
+        $FacultyEducation = \App\FacultyEducation::where('faculty_id', $Profile->id)->get();
+
+        $data = '
+        ';
+
+        if ($FacultyEducation) 
+        {
+            foreach ($FacultyEducation as $educ) 
+            {
+                
+                $data .= '
+                <tr>
+                    <td>'. $educ->course .'</td>
+                    <td>'. $educ->school .'</td>
+                    <td>'. $educ->from . ' / ' . $educ->to  .'</td>
+                    <td>'. $educ->awards .'</td>
+                    <td>
+                        
+                        <div class="input-group-btn pull-left text-left">
+                        <button type="button" class="btn btn-xs btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="true">Action
+                            <span class="fa fa-caret-down"></span></button>
+                            <ul class="dropdown-menu">
+                                <li><a href="#" class="js-btn_educ_edit" data-id="'. $educ->id .'">Edit</a></li>
+                                <li><a href="#" class="js-btn_educ_delete" data-id="'. $educ->id .'">Delete</a></li>
+                            </ul>
+                        </div>
+                    </td>
+                </tr>
+            ';
+            }
+        } 
+        else 
+        {
+            $data = '
+            <tr>
+                <td colspan="4">No record found</td>
+            </tr>
+            ';
+        }
+        return $data;
+    }
+    public function educational_attainment_save (Request $request) 
+    {
+        $rules = [
+            'course'    => 'required',
+            'school'    => 'required',
+            'date_from' => 'nullable',
+            'date_to'   => 'nullable',
+            'awards'    => 'nullable',
+        ];
+
+        $validator = \Validator::make($request->all(), $rules);
+        
+        if ($validator->fails()) 
+        {
+            return response()->json(['res_code' => 1, 'res_msg' => 'Please fill required fields', 'res_error_msg' => $validator->getMessageBag()]);
+        }
+
+        $User = \Auth::user();
+        $Profile = \App\FacultyInformation::where('user_id', $User->id)->first();
+
+        if ($request->educ_id) 
+        {
+            $FacultyEducation = \App\FacultyEducation::where('id', $request->educ_id)->first();
+            $FacultyEducation->course = $request->course;
+            $FacultyEducation->school = $request->school;
+            $FacultyEducation->from = $request->date_from ? date('Y-m-d', strtotime($request->date_from)) : NULL;
+            $FacultyEducation->to = $request->date_to ? date('Y-m-d', strtotime($request->date_to)) : NULL;
+            $FacultyEducation->awards = $request->awards;
+            $FacultyEducation->save();
+            return response()->json(['res_code' => 0, 'res_msg' => 'Educational attainment successfully added.']);
+        }
+
+        $FacultyEducation = new \App\FacultyEducation();
+        $FacultyEducation->course = $request->course;
+        $FacultyEducation->school = $request->school;
+        $FacultyEducation->from = $request->date_from ? date('Y-m-d', strtotime($request->date_from)) : NULL;
+        $FacultyEducation->to = $request->date_to ? date('Y-m-d', strtotime($request->date_to)) : NULL;
+        $FacultyEducation->awards = $request->awards;
+        $FacultyEducation->faculty_id = $Profile->id;
+        $FacultyEducation->save();
+        return response()->json(['res_code' => 0, 'res_msg' => 'Educational attainment successfully added.']);
+    }
+    public function educational_attainment_fetch_by_id (Request $request)
+    {
+        if ($request->educ_id) {
+            $FacultyEducation = \App\FacultyEducation::where('id', $request->educ_id)->first();
+            return response()->json(['res_code' => 0, 'res_msg' => 'Data available.', 'FacultyEducation' => $FacultyEducation]);
+        }
+        return response()->json(['res_code' => 1, 'res_msg' => 'Unable to fetch data']);
+    }
 }
