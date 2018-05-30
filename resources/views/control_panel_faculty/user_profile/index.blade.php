@@ -511,7 +511,63 @@
                 })
             })
             
-            btn_educ_delete     
+            $('body').on('click', '.js-btn_educ_edit', function (e) {
+                e.preventDefault()
+                var educ_id = $(this).data('id');
+                
+                $.ajax({
+                    url : "{{ route('faculty.my_account.educational_attainment_fetch_by_id') }}",
+                    type : 'POST',
+                    data : { _token : '{{ csrf_token() }}', educ_id : educ_id },
+                    success     : function (res) {
+                        $('.modal-education-attainment').modal({ backdrop : 'static' });
+                        $('#educ_id').val(educ_id);
+                        $('#course').val(res.FacultyEducation.course);
+                        $('#school').val(res.FacultyEducation.school);
+                        $('#date_from').val(res.FacultyEducation.from);
+                        $('#date_to').val(res.FacultyEducation.to);
+                        $('#awards').val(res.FacultyEducation.awards);
+                    }
+                })
+            })
+            
+            $('body').on('click', '.js-btn_educ_delete', function (e) {
+                e.preventDefault();
+                var id = $(this).data('id');
+                alertify.defaults.transition = "slide";
+                alertify.defaults.theme.ok = "btn btn-primary btn-flat";
+                alertify.defaults.theme.cancel = "btn btn-danger btn-flat";
+                alertify.confirm('Confirmation', 'Are you sure you want to delete?', function(){  
+                    $.ajax({
+                        url         : "{{ route('faculty.my_account.educational_attainment_delete_by_id') }}",
+                        type        : 'POST',
+                        data        : { _token : '{{ csrf_token() }}', educ_id : id },
+                        success     : function (res) {
+                            $('.help-block').html('');
+                            if (res.res_code == 1)
+                            {
+                                show_toast_alert({
+                                    heading : 'Error',
+                                    message : res.res_msg,
+                                    type    : 'error'
+                                });
+                            }
+                            else
+                            {
+                                show_toast_alert({
+                                    heading : 'Success',
+                                    message : res.res_msg,
+                                    type    : 'success'
+                                });
+                                $('.js-modal_holder .modal').modal('hide');
+                                fetch_educ_attainment() 
+                            }
+                        }
+                    });
+                }, function(){  
+
+                });   
+            })  
         });
 
 

@@ -214,4 +214,13 @@ class UserProfileController extends Controller
         }
         return response()->json(['res_code' => 1, 'res_msg' => 'Unable to fetch data']);
     }
+    public function educational_attainment_delete_by_id (Request $request)
+    {
+        if ($request->educ_id) {
+            $FacultyEducation = \App\FacultyEducation::where('id', $request->educ_id)->first();
+            $FacultyEducation->delete();
+            return response()->json(['res_code' => 0, 'res_msg' => 'Data successfully deleted.']);
+        }
+        return response()->json(['res_code' => 1, 'res_msg' => 'Unable to fetch data']);
+    }
 }

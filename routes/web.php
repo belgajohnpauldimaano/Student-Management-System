@@ -131,6 +131,7 @@ Route::group(['prefix' => 'faculty', 'middleware' => ['auth', 'userroles'], 'rol
         Route::post('educational-attainment', 'Faculty\UserProfileController@educational_attainment')->name('faculty.my_account.educational_attainment');
         Route::post('educational-attainment-save', 'Faculty\UserProfileController@educational_attainment_save')->name('faculty.my_account.educational_attainment_save');
         Route::post('educational-attainment-fetch-by-id', 'Faculty\UserProfileController@educational_attainment_fetch_by_id')->name('faculty.my_account.educational_attainment_fetch_by_id');
+        Route::post('educational-attainment-delete-by-id', 'Faculty\UserProfileController@educational_attainment_delete_by_id')->name('faculty.my_account.educational_attainment_delete_by_id');
         
     });
 });
