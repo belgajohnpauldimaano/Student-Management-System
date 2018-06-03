@@ -25,33 +25,33 @@
                                             {{--  <td>{{ $data->student_enrolled_subject_id }}</td>  --}}
                                             <td>
                                                 <div class="input-group">
-                                                    <input type="number" {{ $data->fir_g_status ? "readonly='readonly'" : '' }} class="input-sm form-control" value="{{ $data->fir_g }}" id="fig_{{ $data->student_enrolled_subject_id }}">
+                                                    <input type="number" {{ $data->fir_g_status ? "readonly='readonly'" : '' }} class="input-sm form-control grade-input-{{ $data->student_enrolled_subject_id }}" value="{{ $data->fir_g }}" id="first_grading_{{ $data->student_enrolled_subject_id }}">
                                                     <span class="input-group-btn">
-                                                        <button class="btn btn-sm btn-primary btn-flat" {{ $data->fir_g_status ? "disabled='disabled'" : '' }} title="Save grade and finalize"><i class="fa fa-check"></i> Save</button>
+                                                        <button class="btn btn-sm btn-primary btn-flat btn--save-grade" data-grading="first" {{ $data->fir_g_status ? "disabled='disabled'" : '' }} title="Save grade and finalize"><i class="fa fa-check"></i> Save</button>
                                                     </span>
                                                 </div>
                                             </td>
                                             <td>
                                                 <div class="input-group">
-                                                    <input type="number" {{ $data->sec_g_status ? "readonly='readonly'" : '' }}  class="input-sm form-control" value="{{ $data->sec_g }}" id="sg_{{ $data->student_enrolled_subject_id }}">
+                                                    <input type="number" {{ $data->sec_g_status ? "readonly='readonly'" : '' }}  class="input-sm form-control" value="{{ $data->sec_g }}" id="second_grading_{{ $data->student_enrolled_subject_id }}">
                                                     <span class="input-group-btn">
-                                                        <button  class="btn btn-sm bg-purple btn-flat" {{ $data->sec_g_status ? "disabled='disabled'" : '' }} title="Save grade and finalize"><i class="fa fa-check"></i> Save</button>
+                                                        <button  class="btn btn-sm bg-purple btn-flat btn--save-grade" data-grading="second" {{ $data->sec_g_status ? "disabled='disabled'" : '' }} title="Save grade and finalize"><i class="fa fa-check"></i> Save</button>
                                                     </span>
                                                 </div>
                                             </td>
                                             <td>
                                                 <div class="input-group">
-                                                    <input type="number" {{ $data->thi_g_status ? "readonly='readonly'" : '' }} class="input-sm form-control" value="{{ $data->thi_g }}" id="tg_{{ $data->student_enrolled_subject_id }}">
+                                                    <input type="number" {{ $data->thi_g_status ? "readonly='readonly'" : '' }} class="input-sm form-control" value="{{ $data->thi_g }}" id="third_grading_{{ $data->student_enrolled_subject_id }}">
                                                     <span class="input-group-btn">
-                                                        <button class="btn btn-sm bg-orange btn-flat" {{ $data->thi_g_status ? "disabled='disabled'" : '' }} title="Save grade and finalize"><i class="fa fa-check"></i> Save</button>
+                                                        <button class="btn btn-sm bg-orange btn-flat btn--save-grade" data-grading="third" {{ $data->thi_g_status ? "disabled='disabled'" : '' }} title="Save grade and finalize"><i class="fa fa-check"></i> Save</button>
                                                     </span>
                                                 </div>
                                             </td>
                                             <td>
                                                 <div class="input-group">
-                                                <input type="number" {{ $data->fou_g_status ? "readonly='readonly'" : '' }} class="input-sm form-control" value="{{ $data->fou_g }}" id="fog_{{ $data->student_enrolled_subject_id }}">
+                                                <input type="number" {{ $data->fou_g_status ? "readonly='readonly'" : '' }} class="input-sm form-control" value="{{ $data->fou_g }}" id="fourth_grading_{{ $data->student_enrolled_subject_id }}">
                                                     <span class="input-group-btn">
-                                                        <button class="btn btn-sm bg-green btn-flat" {{ $data->fou_g_status ? "disabled='disabled'" : '' }} title="Save grade and finalize"><i class="fa fa-check"></i> Save</button>
+                                                        <button class="btn btn-sm bg-green btn-flat btn--save-grade" data-grading="fourth" {{ $data->fou_g_status ? "disabled='disabled'" : '' }} title="Save grade and finalize"><i class="fa fa-check"></i> Save</button>
                                                     </span>
                                                 </div>
                                             </td>

@@ -108,6 +108,39 @@
                 </div>
             </div>
         </div>
+
+
+        <div class="col-sm-12 col-md-6 col-lg-8">
+            <div class="box box-danger">
+                <div class="box-header">
+                    <h3 class="box-title">Trainings and Seminars</h3>
+                    <div class="box-tools pull-right">
+                        <button type="button" class="btn btn-flat btn-box-tool btn-trainings_seminars" title="Add eductational attainment">
+                            <i class="fa fa-plus"></i>
+                        </button>
+                    </div>
+                </div> 
+                
+
+                <div class="overlay hidden" id="js-loader-overlay-trainings_seminars"><i class="fa fa-refresh fa-spin"></i></div>
+                <div class="box-body">
+                    <table class="table table-bordered table-condensed text-center">
+                        <tr>
+                            <th>Title</th>
+                            <th>Date</th>
+                            <th>Venue</th>
+                            <th>Sponsor</th>
+                            <th>Facilitator</th>
+                            <th>Type</th>
+                            <th>Actions</th>
+                        </tr>
+                        <tbody id="trainings_seminars_container">
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
     </div>
     <div class="modal fade modal-change-pw-modal" tabindex="-1" role="dialog">
         <div class="modal-dialog" role="document">
@@ -197,6 +230,71 @@
     </div><!-- /.modal -->
 
 
+    <div class="modal fade modal-trainings_seminar" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <form id="form--training-seminar">
+                    {{ csrf_field() }}
+                    <input type="hidden" class="form-control" name="seminar_id" id="seminar_id">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title">
+                            Trainings and Seminars
+                        </h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="">Title</label>
+                            <input type="text" class="form-control" name="title" id="title" autocomplete="off">
+                            <div class="help-block text-red text-center" id="js-title"></div>
+                        </div>
+                        <div class="form-group">
+                            <label for="">Date from</label>
+                            <input type="text" class="form-control date_picker_input" name="seminar_date_from" id="seminar_date_from" autocomplete="off">
+                            <div class="help-block text-red text-center" id="js-seminar_date_from"></div>
+                        </div>
+                        <div class="form-group">
+                            <label for="">Date To</label>
+                            <input type="text" class="form-control date_picker_input" name="seminar_date_to" id="seminar_date_to" autocomplete="off">
+                            <div class="help-block text-red text-center" id="js-seminar_date_to"></div>
+                        </div>
+                        <div class="form-group">
+                            <label for="">Venue</label>
+                            <input type="text" class="form-control" name="venue" id="venue" autocomplete="off">
+                            <div class="help-block text-red text-center" id="js-venue"></div>
+                        </div>
+                        <div class="form-group">
+                            <label for="">Sponsor</label>
+
+                            <input type="text" class="form-control" name="sponsor" id="sponsor" autocomplete="off">
+                            <div class="help-block text-red text-center" id="js-sponsor"></div>
+                        </div>
+                        <div class="form-group">
+                            <label for="">Facilitator</label>
+                            <input type="text" class="form-control" name="facilitator" id="facilitator" autocomplete="off">
+                            <div class="help-block text-red text-center" id="js-facilitator"></div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="">Seminar Type</label>
+                            <select class="form-control" name="seminar_type" id="seminar_type">
+                                <option value="0">Select a seminar / training type</option>
+                                <option value="1">Local</option>
+                                <option value="2">National</option>
+                                <option value="3">International</option>
+                            </select>
+                            <div class="help-block text-red text-center" id="js-seminar_type"></div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default btn-flat" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary btn-flat">Save</button>
+                    </div>
+                </form>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+
     <div class="modal fade modal-education-attainment" tabindex="-1" role="dialog">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
@@ -213,27 +311,27 @@
                                 
                         <div class="form-group">
                             <label for="">Course</label>
-                            <input type="text" class="form-control" name="course" id="course">
+                            <input type="text" class="form-control" name="course" id="course" autocomplete="off">
                             <div class="help-block text-red text-center" id="js-course"></div>
                         </div>
                         <div class="form-group">
                             <label for="">School</label>
-                            <input type="text" class="form-control" name="school" id="school">
+                            <input type="text" class="form-control" name="school" id="school" autocomplete="off">
                             <div class="help-block text-red text-center" id="js-school"></div>
                         </div>
                         <div class="form-group">
                             <label for="">Date from</label>
-                            <input type="text" class="form-control date_picker_input" name="date_from" id="date_from">
+                            <input type="text" class="form-control date_picker_input" name="date_from" id="date_from" autocomplete="off">
                             <div class="help-block text-red text-center" id="js-date_from"></div>
                         </div>
                         <div class="form-group">
                             <label for="">Date To</label>
-                            <input type="text" class="form-control date_picker_input" name="date_to" id="date_to">
+                            <input type="text" class="form-control date_picker_input" name="date_to" id="date_to" autocomplete="off">
                             <div class="help-block text-red text-center" id="js-date_to"></div>
                         </div>
                         <div class="form-group">
                             <label for="">Awards</label>
-                            <input type="text" class="form-control" name="awards" id="awards">
+                            <input type="text" class="form-control" name="awards" id="awards" autocomplete="off">
                             <div class="help-block text-red text-center" id="js-awards"></div>
                         </div>
                     </div>
@@ -288,8 +386,21 @@
                 }
             });
         }
+        function fetch_trainings_seminar_attainment () {
+            loader_overlay('js-loader-overlay-trainings_seminars');
+            $.ajax({
+                url : "{{ route('faculty.my_account.trainings_seminars') }}",
+                type : 'POST',
+                data : {_token : '{{ csrf_token() }}'},
+                success     : function (res) {
+                    loader_overlay('js-loader-overlay-trainings_seminars');
+                    $('#trainings_seminars_container').html(res);
+                }
+            });
+        }
         $(function () {
             fetch_educ_attainment()
+            fetch_trainings_seminar_attainment()
             $('body').on('click', '.btn-change-password', function (e) {
                 e.preventDefault();
                 $('.modal-change-pw-modal').modal({ backdrop : 'static' });
@@ -461,6 +572,12 @@
             $('body').on('click', '.btn-add-educ', function (e) {
                 e.preventDefault()
                 $('.modal-education-attainment').modal({ backdrop : 'static' })
+                $('#educ_id').val(educ_id);
+                $('#course').val('');
+                $('#school').val('');
+                $('#date_from').val('');
+                $('#date_to').val('');
+                $('#awards').val('');
             })
 
             $('body').on('submit', '#form--education-attainment', function (e) {
@@ -491,7 +608,7 @@
                 })
             })
 
-            $('body').on('click', '.js-btn_educ_edit', function (e) {
+            {{--  $('body').on('click', '.js-btn_educ_edit', function (e) {
                 e.preventDefault()
                 var educ_id = $(this).data('id');
                 
@@ -509,7 +626,7 @@
                         $('#awards').val(res.FacultyEducation.awards);
                     }
                 })
-            })
+            })  --}}
             
             $('body').on('click', '.js-btn_educ_edit', function (e) {
                 e.preventDefault()
@@ -561,6 +678,123 @@
                                 });
                                 $('.js-modal_holder .modal').modal('hide');
                                 fetch_educ_attainment() 
+                            }
+                        }
+                    });
+                }, function(){  
+
+                });   
+            })  
+
+            $('body').on('click', '.btn-trainings_seminars', function (e) {
+                e.preventDefault();
+                const training_seminar_id = $(this).data('id')
+                if (training_seminar_id) {
+                    $.ajax({
+                        url : "{{ route('faculty.my_account.fetch_training_seminar_by_id') }}",
+                        type : 'POST',
+                        data : { _token:'{{ csrf_token() }}', id : training_seminar_id },
+                        success : function (res) {
+                            if (res.res_code) {
+                                show_toast_alert({
+                                    heading : 'Invalid',
+                                    message : res.res_msg,
+                                    type    : 'error'
+                                });
+                            } else {
+                                $('#seminar_id').val(res.FacultySeminar.id)
+                                $('#title').val(res.FacultySeminar.title)
+                                $('#seminar_date_from').val(res.FacultySeminar.date_from)
+                                $('#seminar_date_to').val(res.FacultySeminar.date_to)
+                                $('#venue').val(res.FacultySeminar.venue)
+                                $('#sponsor').val(res.FacultySeminar.sponsor)
+                                $('#facilitator').val(res.FacultySeminar.facilitator)
+                                $('#seminar_type').val(res.FacultySeminar.type)
+                                $('.modal-trainings_seminar').modal({ backdrop:'static' })
+                            }
+                        }
+                    })
+                } else {
+                    $('#seminar_id').val('')
+                    $('#title').val('')
+                    $('#seminar_date_from').val('')
+                    $('#seminar_date_to').val('')
+                    $('#venue').val('')
+                    $('#sponsor').val('')
+                    $('#facilitator').val('')
+                    $('#seminar_type').val('')
+                    $('.modal-trainings_seminar').modal({ backdrop:'static' })
+                }
+            })
+            $('body').on('submit', '#form--training-seminar', function (e) {
+                e.preventDefault()
+                const seminar_id = $('#seminar_id').val()
+                const frm = $(this)
+                const formData = new FormData(frm[0])
+                $.ajax({
+                    url : "{{ route('faculty.my_account.save_training_seminar') }}",
+                    type : 'POST',
+                    data : formData,
+                    processData : false,
+                    contentType : false,
+                    success : function (res) {
+                        $('.help-block').html('');
+                        if (res.res_code) {
+                            show_toast_alert({
+                                heading : 'Invalid',
+                                message : res.res_msg,
+                                type    : 'error'
+                            });
+                            
+                            for (var err in res.res_error_msg)
+                            {
+                                $('#js-' + err).html('<code> '+ res.res_error_msg[err] +' </code>');
+                            }
+                        } else {
+                            show_toast_alert({
+                                heading : 'Success',
+                                message : res.res_msg,
+                                type    : 'success'
+                            });
+                            $('.modal-trainings_seminar').modal('hide')
+                            frm[0].reset();
+                            fetch_trainings_seminar_attainment()
+                        }
+                    }
+                })
+            })
+            
+            
+            $('body').on('click', '.btn-seminar_delete', function (e) {
+                e.preventDefault();
+                var id = $(this).data('id');
+                alertify.defaults.transition = "slide";
+                alertify.defaults.theme.ok = "btn btn-primary btn-flat";
+                alertify.defaults.theme.cancel = "btn btn-danger btn-flat";
+                alertify.confirm('Confirmation', 'Are you sure you want to delete?', function(){  
+                    $.ajax({
+                        url         : "{{ route('faculty.my_account.delete_training_seminar_by_id') }}",
+                        type        : 'POST',
+                        data        : { _token : '{{ csrf_token() }}', id : id },
+                        success     : function (res) {
+                            $('.help-block').html('');
+                            if (res.res_code == 1)
+                            {
+                                show_toast_alert({
+                                    heading : 'Error',
+                                    message : res.res_msg,
+                                    type    : 'error'
+                                });
+                            }
+                            else
+                            {
+                                show_toast_alert({
+                                    heading : 'Success',
+                                    message : res.res_msg,
+                                    type    : 'success'
+                                });
+                                $('.js-modal_holder .modal').modal('hide');
+                                fetch_trainings_seminar_attainment()
                             }
                         }
                     });

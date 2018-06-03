@@ -223,4 +223,166 @@ class UserProfileController extends Controller
         }
         return response()->json(['res_code' => 1, 'res_msg' => 'Unable to fetch data']);
     }
+    public function trainings_seminars (Request $request) 
+    {   
+        $User = \Auth::user();
+        $Profile = \App\FacultyInformation::where('user_id', $User->id)->first();
+        $FacultySeminar = \App\FacultySeminar::where('faculty_id', $Profile->id)->get();
+
+        $seminars_trainings = '';
+        if ($FacultySeminar)
+        {
+            foreach ($FacultySeminar as $data) 
+            {
+                $type = '';
+                if ($data->type == 1)
+                {
+                    $type = 'Local';
+                }
+                else if ($data->type == 2)
+                {
+                    $type = 'National';
+                }
+                else if ($data->type == 3)
+                {
+                    $type = 'International';
+                }
+                $seminars_trainings .= '
+                    <tr>
+                        <td>'. $data->title .'</td>
+                        <td>'. $data->date_from . ' / ' . $data->date_to  .'</td>
+                        <td>'. $data->venue .'</td>
+                        <td>'. $data->sponsor .'</td>
+                        <td>'. $data->facilitator .'</td>
+                        <td>' . $type .'</td>
+                        <td>
+                            <div class="input-group-btn pull-left text-left">
+                                <button type="button" class="btn btn-xs btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="true">Action
+                                <span class="fa fa-caret-down"></span></button>
+                                <ul class="dropdown-menu">
+                                    <li><a href="#" class="btn-trainings_seminars" data-id="'. $data->id .'">Edit</a></li>
+                                    <li><a href="#" class="btn-seminar_delete" data-id="'. base64_encode($data->id) .'">Delete</a></li>
+                                </ul>
+                            </div>
+                        </td>
+                    </tr>
+                ';
+            }
+            
+            return $seminars_trainings;
+        }
+        else 
+        {
+            $seminars_trainings = '
+            <tr>
+                <td colspan="7">no record found</td>
+            </tr>';
+            return $seminars_trainings;
+        }
+    }
+    public function fetch_training_seminar_by_id (Request $request) 
+    {
+        if ($request->id) 
+        {
+            $FacultySeminar = \App\FacultySeminar::where('id', $request->id)->first();
+            if ($FacultySeminar) 
+            {
+                return response()->json(['res_code' => 0, 'res_msg' => '', 'FacultySeminar' => $FacultySeminar]);
+            }
+            else 
+            {
+                return response()->json(['res_code' => 1, 'res_msg' => 'Invalid request']);
+            }
+        }
+        else 
+        {
+            return response()->json(['res_code' => 1, 'res_msg' => 'Invalid request']);
+        }
+    }
+    public function save_training_seminar (Request $request) 
+    {
+        $rules = [
+            'title'             => 'required',
+            'seminar_date_from' => 'required',
+            'seminar_date_to'   => 'required',
+            'venue'             => 'required',
+            'sponsor'           => 'required',
+            'facilitator'       => 'required',
+            'seminar_type'      => 'required|numeric|between:1,3',
+        ];
+        $messages = [
+            'seminar_type.between' => 'Invalid seminart/training type'
+        ];
+        $validator = \Validator::make($request->all(), $rules, $messages);
+        
+        if ($validator->fails()) 
+        {
+            return response()->json(['res_code' => 1, 'res_msg' => 'Invalid inputs', 'res_error_msg' => $validator->getMessageBag()]);
+        }
+
+        if ($request->seminar_id) 
+        {
+            $FacultySeminar = \App\FacultySeminar::where('id', $request->seminar_id)->first();
+            if ($FacultySeminar)
+            {
+                $FacultySeminar->title          = $request->title;
+                $FacultySeminar->date_from      = $request->seminar_date_from ? date('Y-m-d', strtotime($request->seminar_date_from)) : NULL;
+                $FacultySeminar->date_to        = $request->seminar_date_to ? date('Y-m-d', strtotime($request->seminar_date_to)) : NULL;
+                $FacultySeminar->venue          = $request->venue;
+                $FacultySeminar->sponsor        = $request->sponsor;
+                $FacultySeminar->facilitator    = $request->facilitator;
+                $FacultySeminar->type           = $request->seminar_type;
+                $FacultySeminar->save();
+                return response()->json(['res_code' => 0, 'res_msg' => 'Seminar/Training successfully updated']); 
+            }
+            else
+            {
+                return response()->json(['res_code' => 1, 'res_msg' => 'Invalid request']); 
+            }
+        }
+        else 
+        {
+            $User = \Auth::user();
+            $Profile = \App\FacultyInformation::where('user_id', $User->id)->first();
+            $FacultySeminar = new \App\FacultySeminar();
+            $FacultySeminar->title          = $request->title;
+            $FacultySeminar->date_from      = $request->seminar_date_from ? date('Y-m-d', strtotime($request->seminar_date_from)) : NULL;
+            $FacultySeminar->date_to        = $request->seminar_date_to ? date('Y-m-d', strtotime($request->seminar_date_to)) : NULL;
+            $FacultySeminar->venue          = $request->venue;
+            $FacultySeminar->sponsor        = $request->sponsor;
+            $FacultySeminar->facilitator    = $request->facilitator;
+            $FacultySeminar->type           = $request->seminar_type;
+            $FacultySeminar->faculty_id     = $Profile->id;
+            $FacultySeminar->save();
+            return response()->json(['res_code' => 0, 'res_msg' => 'Seminar/Training successfully added']); 
+        }
+    }
+    public function delete_training_seminar_by_id (Request $request) 
+    {
+        if ($request->id) 
+        {
+            $id = base64_decode($request->id);
+            
+            $FacultySeminar = \App\FacultySeminar::where('id', $id)->first();
+            if ($FacultySeminar) 
+            {
+                if ($FacultySeminar->delete()) 
+                {
+                    return response()->json(['res_code' => 0, 'res_msg' => 'Data successfully deleted.']);
+                }
+                else 
+                {
+                    return response()->json(['res_code' => 1, 'res_msg' => 'Invalid request']);
+                }
+            }
+            else 
+            {
+                return response()->json(['res_code' => 1, 'res_msg' => 'Invalid request']);
+            }
+        }
+        else 
+        {
+            return response()->json(['res_code' => 1, 'res_msg' => 'Invalid request']);
+        }
+    }
 }

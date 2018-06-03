@@ -105,4 +105,52 @@ class GradeSheetController extends Controller
         }
         return $class_details_elements;
     }
+    public function save_grade (Request $request)
+    {
+        if (!$request->student_enrolled_subject_id || !$request->enrollment_id || !$request->grading || !$request->grade) 
+        {
+            return response()->json(['res_code' => 1, 'res_msg' => 'Invalid request.',]);
+        }
+
+        $validator = \Validator::make($request->all(), [
+            'grade' => 'numeric|between:65,100.00'
+        ], [
+            'grade.between' => 'grade is invalid. 65 - 100.00'
+        ]);
+        
+        if ($validator->fails())
+        {
+            return response()->json(['res_code' => 1, 'res_msg' => 'grade is invalid. 65 - 100.00.', 'res_error_msg' => $validator->getMessageBag()]);
+        }
+
+        $StudentEnrolledSubject = \App\StudentEnrolledSubject::where('id', $request->student_enrolled_subject_id)->where('enrollments_id', $request->enrollment_id)->first();
+
+        if (!$StudentEnrolledSubject)
+        {
+            return response()->json(['res_code' => 1, 'res_msg' => 'Invalid request.',]);
+        }
+
+        if ($request->grading == 'first') 
+        {
+            $StudentEnrolledSubject->fir_g = $request->grade;
+            $StudentEnrolledSubject->fir_g_status = 1;
+        } 
+        else if ($request->grading == 'second') 
+        {
+            $StudentEnrolledSubject->sec_g = $request->grade;
+            $StudentEnrolledSubject->sec_g_status = 1;
+        }
+        else if ($request->grading == 'third') 
+        {
+            $StudentEnrolledSubject->thi_g = $request->grade;
+            $StudentEnrolledSubject->thi_g_status = 1;
+        }
+        else if ($request->grading == 'fourth') 
+        {
+            $StudentEnrolledSubject->for_g = $request->grade;
+            $StudentEnrolledSubject->for_g_status = 1;
+        }
+        $StudentEnrolledSubject->save();
+        return response()->json(['res_code' => 0, 'res_msg' => 'Grade successfully saved.',]);
+    }
 }

@@ -119,6 +119,7 @@ Route::group(['prefix' => 'faculty', 'middleware' => ['auth', 'userroles'], 'rol
         Route::get('', 'Faculty\GradeSheetController@index')->name('faculty.student_grade_sheet');
         Route::post('list-class-subject-details', 'Faculty\GradeSheetController@list_class_subject_details')->name('faculty.student_grade_sheet.list_class_subject_details');
         Route::post('list-students-by-class', 'Faculty\GradeSheetController@list_students_by_class')->name('faculty.student_grade_sheet.list_students_by_class');
+        Route::post('save-grade', 'Faculty\GradeSheetController@save_grade')->name('faculty.student_grade_sheet.save_grade');
     });
 
     Route::group(['prefix' => 'my-account', 'middleware' => ['auth']], function() {
@@ -132,6 +133,11 @@ Route::group(['prefix' => 'faculty', 'middleware' => ['auth', 'userroles'], 'rol
         Route::post('educational-attainment-save', 'Faculty\UserProfileController@educational_attainment_save')->name('faculty.my_account.educational_attainment_save');
         Route::post('educational-attainment-fetch-by-id', 'Faculty\UserProfileController@educational_attainment_fetch_by_id')->name('faculty.my_account.educational_attainment_fetch_by_id');
         Route::post('educational-attainment-delete-by-id', 'Faculty\UserProfileController@educational_attainment_delete_by_id')->name('faculty.my_account.educational_attainment_delete_by_id');
+        
+        Route::post('trainings-seminars', 'Faculty\UserProfileController@trainings_seminars')->name('faculty.my_account.trainings_seminars');
+        Route::post('fetch-training-seminar-by-id', 'Faculty\UserProfileController@fetch_training_seminar_by_id')->name('faculty.my_account.fetch_training_seminar_by_id');
+        Route::post('save-training-seminar', 'Faculty\UserProfileController@save_training_seminar')->name('faculty.my_account.save_training_seminar');
+        Route::post('delete-training-seminar-by-id', 'Faculty\UserProfileController@delete_training_seminar_by_id')->name('faculty.my_account.delete_training_seminar_by_id');
         
     });
 });

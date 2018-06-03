@@ -130,6 +130,51 @@
                     }
                 })
             })
+
+            $('body').on('click', '.btn--save-grade', function (e) {
+                e.preventDefault()
+                const self =  $(this);
+                const student_enrolled_subject_id = $(this).parents('tr').data('student_enrolled_subject_id');
+                const enrollment_id = $(this).parents('tr').data('enrollment_id');
+                const grading = $(this).data('grading');
+                const grade_input = $('#'+grading+'_grading_' + student_enrolled_subject_id)
+                const grade = grade_input.val()
+                
+                alertify.defaults.transition = "slide";
+                alertify.defaults.theme.ok = "btn btn-primary btn-flat";
+                alertify.defaults.theme.cancel = "btn btn-danger btn-flat";
+                alertify.confirm('Confirmation', 'Are you sure you want to save?', function(){  
+                    $.ajax({
+                        url         : "{{ route('faculty.student_grade_sheet.save_grade') }}",
+                        type        : 'POST',
+                        data        : { _token : '{{ csrf_token() }}', student_enrolled_subject_id : student_enrolled_subject_id, enrollment_id : enrollment_id, grade : grade, grading : grading },
+                        success     : function (res) {
+                            
+                            $('.help-block').html('');
+                            if (res.res_code == 1)
+                            {
+                                show_toast_alert({
+                                    heading : 'Error',
+                                    message : res.res_msg,
+                                    type    : 'error'
+                                });
+                            }
+                            else
+                            {
+                                show_toast_alert({
+                                    heading : 'Success',
+                                    message : res.res_msg,
+                                    type    : 'success'
+                                });
+                                self.prop('disabled', true)
+                                grade_input.prop('readonly', true) 
+                            }
+                        }
+                    });
+                }, function(){  
+
+                });
+            })
         });
     </script>
 @endsection
