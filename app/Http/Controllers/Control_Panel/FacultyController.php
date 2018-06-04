@@ -116,5 +116,12 @@ class FacultyController extends Controller
         }
         return response()->json(['res_code' => 1, 'res_msg' => 'Invalid request.']);
     }
+    public function additional_information (Request $request)
+    {
+        $FacultyInformation = \App\FacultyInformation::where('id', $request->id)->first();
+        $FacultyEducation = \App\FacultyEducation::where('faculty_id', $request->id)->get();
+        $FacultySeminar = \App\FacultySeminar::where('faculty_id', $request->id)->get();
+        return view('control_panel.faculty_information.partials.modal_additional_information', compact('FacultyEducation', 'FacultySeminar', 'FacultyInformation'))->render();
+    }
 }
 

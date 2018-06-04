@@ -28,6 +28,7 @@
                                                     <ul class="dropdown-menu">
                                                         <li><a href="#" class="js-btn_update_sy" data-id="{{ $data->id }}">Edit</a></li>
                                                         <li><a href="#" class="js-btn_deactivate" data-id="{{ $data->id }}">Deactivate</a></li>
+                                                        <li><a href="#" class="js-btn_view_additional_info" data-id="{{ $data->id }}">View Information</a></li>
                                                     </ul>>
                                                 </div>
                                             </td>

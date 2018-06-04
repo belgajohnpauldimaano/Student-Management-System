@@ -135,6 +135,20 @@
 
                 });
             });
+
+            $('body').on('click', '.js-btn_view_additional_info', function (e) {
+                e.preventDefault()
+                var id = $(this).data('id');
+                $.ajax({
+                    url : "{{ route('admin.faculty_information.additional_information') }}",
+                    type : 'POST',
+                    data : { _token : '{{ csrf_token() }}', id : id },
+                    success : function (res) {
+                        $('.js-modal_holder').html(res);
+                        $('.js-modal_holder .modal').modal({ backdrop : 'static' });
+                    }
+                });
+            })
         });
     </script>
 @endsection
