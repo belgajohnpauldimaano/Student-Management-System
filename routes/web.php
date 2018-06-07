@@ -19,7 +19,7 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 
-
+Route::get('/transcript-of-record', 'TranscriptOfRecordController@tor')->name('tor');
 
 /*
 |About SJA Pages --------------------------------------------------------------------------
