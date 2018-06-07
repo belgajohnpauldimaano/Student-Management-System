@@ -75,6 +75,10 @@ class User extends Authenticatable
         {
             $UserInformation = \App\FacultyInformation::where('user_id', $this->id)->first();
         }
+        else if ($this->role == 5)
+        {
+            $UserInformation = \App\StudentInformation::where('user_id', $this->id)->first();
+        }
         return $UserInformation;
     }
     public function get_user_role_display ()

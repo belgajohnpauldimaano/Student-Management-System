@@ -37,7 +37,7 @@ class RegistrarController extends Controller
     public function save_data (Request $request) 
     {
         $rules = [
-            'email' => 'required|unique:users,username',
+            'username' => 'required',
             'first_name' => 'required',
             'middle_name' => 'required',
             'last_name' => 'required',
@@ -50,10 +50,15 @@ class RegistrarController extends Controller
         {
             return response()->json(['res_code' => 1, 'res_msg' => 'Please fill all required fields.', 'res_error_msg' => $Validator->getMessageBag()]);
         }
-
+        
         if ($request->id)
         {
             $RegistrarInformation = \App\RegistrarInformation::where('id', $request->id)->first();
+            $User = \App\User::where('username', $request->username)->where('id', '!=', $RegistrarInformation->user_id)->first();
+            if ($User) 
+            {
+                return response()->json(['res_code' => 1,'res_msg' => 'Username already used.']);
+            }
             $RegistrarInformation->first_name = $request->first_name;
             $RegistrarInformation->middle_name = $request->middle_name;
             $RegistrarInformation->last_name = $request->last_name;

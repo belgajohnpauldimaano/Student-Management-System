@@ -250,6 +250,7 @@ class StudentEnrollmentController extends Controller
                     $StudentEnrolledSubject = new \App\StudentEnrolledSubject();
                     $StudentEnrolledSubject->subject_id = $data->subject_id;
                     $StudentEnrolledSubject->enrollments_id = $Enrollment->id;
+                    // $StudentEnrolledSubject->student_information_id = $StudentInformation->id;
                     $StudentEnrolledSubject->save();
                 }
             }

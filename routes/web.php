@@ -234,4 +234,18 @@ Route::group(['prefix' => 'shared/class-schedule', 'middleware' => ['auth', 'use
 });
 
 
+Route::group(['prefix' => 'stuent', 'middleware' => ['auth', 'userroles'], 'roles' => ['student']], function() {
+    Route::get('dashboard', 'Control_Panel_Student\DashboardController@index')->name('student.dashboard');
+
+    Route::group(['prefix' => 'class-schedule'], function() {
+        Route::get('', 'Control_Panel_Student\ClassScheduleController@index')->name('student.class_schedule.index');
+        Route::post('', 'Control_Panel_Student\ClassScheduleController@index')->name('student.class_schedule.index');
+    });
+    Route::group(['prefix' => 'grade-sheet'], function() {
+        Route::get('', 'Control_Panel_Student\GradeSheetController@index')->name('student.grade_sheet.index');
+        Route::post('', 'Control_Panel_Student\GradeSheetController@index')->name('student.grade_sheet.index');
+    });
+});
+
+
 

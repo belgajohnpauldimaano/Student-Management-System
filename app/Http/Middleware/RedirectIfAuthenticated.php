@@ -30,6 +30,10 @@ class RedirectIfAuthenticated
             {
                 return redirect()->route('faculty.dashboard');
             }
+            else if ($request->user()->role == 5) 
+            {
+                return redirect()->route('student.dashboard');
+            }
         }
 
         return $next($request);
