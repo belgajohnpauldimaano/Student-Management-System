@@ -81,43 +81,6 @@
                 page = $(this).attr('href').split('=')[1];
                 fetch_data();
             });
-            $('body').on('click', '.js-btn_deactivate', function (e) {
-                e.preventDefault();
-                var id = $(this).data('id');
-                alertify.defaults.transition = "slide";
-                alertify.defaults.theme.ok = "btn btn-primary btn-flat";
-                alertify.defaults.theme.cancel = "btn btn-danger btn-flat";
-                alertify.confirm('Confirmation', 'Are you sure you want to deactivate?', function(){  
-                    $.ajax({
-                        url         : "{{ route('registrar.class_details.deactivate_data') }}",
-                        type        : 'POST',
-                        data        : { _token : '{{ csrf_token() }}', id : id },
-                        success     : function (res) {
-                            $('.help-block').html('');
-                            if (res.res_code == 1)
-                            {
-                                show_toast_alert({
-                                    heading : 'Error',
-                                    message : res.res_msg,
-                                    type    : 'error'
-                                });
-                            }
-                            else
-                            {
-                                show_toast_alert({
-                                    heading : 'Success',
-                                    message : res.res_msg,
-                                    type    : 'success'
-                                });
-                                $('.js-modal_holder .modal').modal('hide');
-                                fetch_data();
-                            }
-                        }
-                    });
-                }, function(){  
-
-                });
-            });
             $('body').on('change', '#search_sy', function () {
                 $.ajax({
                     url : "{{ route('registrar.student_grade_sheet.list_class_subject_details') }}",

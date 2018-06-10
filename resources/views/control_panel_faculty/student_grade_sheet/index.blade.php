@@ -81,43 +81,6 @@
                 page = $(this).attr('href').split('=')[1];
                 fetch_data();
             });
-            $('body').on('click', '.js-btn_deactivate', function (e) {
-                e.preventDefault();
-                var id = $(this).data('id');
-                alertify.defaults.transition = "slide";
-                alertify.defaults.theme.ok = "btn btn-primary btn-flat";
-                alertify.defaults.theme.cancel = "btn btn-danger btn-flat";
-                alertify.confirm('Confirmation', 'Are you sure you want to deactivate?', function(){  
-                    $.ajax({
-                        url         : "{{ route('registrar.class_details.deactivate_data') }}",
-                        type        : 'POST',
-                        data        : { _token : '{{ csrf_token() }}', id : id },
-                        success     : function (res) {
-                            $('.help-block').html('');
-                            if (res.res_code == 1)
-                            {
-                                show_toast_alert({
-                                    heading : 'Error',
-                                    message : res.res_msg,
-                                    type    : 'error'
-                                });
-                            }
-                            else
-                            {
-                                show_toast_alert({
-                                    heading : 'Success',
-                                    message : res.res_msg,
-                                    type    : 'success'
-                                });
-                                $('.js-modal_holder .modal').modal('hide');
-                                fetch_data();
-                            }
-                        }
-                    });
-                }, function(){  
-
-                });
-            });
             $('body').on('change', '#search_sy', function () {
                 $.ajax({
                     url : "{{ route('faculty.student_grade_sheet.list_class_subject_details') }}",
@@ -131,13 +94,90 @@
                 })
             })
 
+            $('body').on('change', '.txt-grade_input', function () {
+                const self =  $(this);
+                const student_enrolled_subject_id = $(this).parents('tr').data('student_enrolled_subject_id');
+                const enrollment_id = self.parents('tr').data('enrollment_id');
+                const grading = self.parents('.input-group').data('grading');
+                const grade = self.val()
+                const parent_elem = self.parents('tr')
+                
+                $.ajax({
+                    url         : "{{ route('faculty.student_grade_sheet.temporary_save_grade') }}",
+                    type        : 'POST',
+                    data        : { _token : '{{ csrf_token() }}', student_enrolled_subject_id : student_enrolled_subject_id, enrollment_id : enrollment_id, grade : grade, grading : grading },
+                    success     : function (res) {
+                        
+                        $('.help-block').html('');
+                        if (res.res_code == 1)
+                        {
+                            show_toast_alert({
+                                heading : 'Error',
+                                message : res.res_msg,
+                                type    : 'error'
+                            });
+                        }
+                        else
+                        {
+                            show_toast_alert({
+                                heading : 'Success',
+                                message : res.res_msg,
+                                type    : 'success'
+                            });
+                            
+                
+                            const input_first_grading = $('#first_grading_' + atob(student_enrolled_subject_id))
+                            const input_second_grading = $('#second_grading_' + atob(student_enrolled_subject_id))
+                            const input_third_grading = $('#third_grading_' + atob(student_enrolled_subject_id))
+                            const input_fourth_grading = $('#fourth_grading_' + atob(student_enrolled_subject_id))
+                            const display_final_ratings = $('.final-ratings_' + atob(student_enrolled_subject_id))
+                            console.log($('#first_grading_' + atob(student_enrolled_subject_id)))
+                            console.log($('#second_grading_' + atob(student_enrolled_subject_id)))
+                            console.log($('#third_grading_' + atob(student_enrolled_subject_id)))
+                            console.log($('#fourth_grading_' + atob(student_enrolled_subject_id)))
+                            console.log(display_final_ratings)
+                            let g_ctr = 0
+                            let ratings = 0
+                            if (input_first_grading.length > 0 && +input_first_grading.val() > 0) {
+                                g_ctr++;
+                                ratings += +input_first_grading.val() > 0 ? +input_first_grading.val() : 0
+                            }
+                            
+                            if (input_second_grading.length > 0 && +input_second_grading.val() > 0) {
+                                g_ctr++;
+                                ratings += +input_second_grading.val() > 0 ?  +input_second_grading.val() : 0
+                            }
+                            
+                            if (input_third_grading.length > 0 && +input_third_grading.val() > 0) {
+                                g_ctr++;
+                                ratings += +input_third_grading.val() > 0 ?  +input_third_grading.val() : 0
+                            }
+                            
+                            if (input_fourth_grading.length > 0 && +input_fourth_grading.val() > 0) {
+                                g_ctr++;
+                                ratings += +input_fourth_grading.val() > 0 ?  +input_fourth_grading.val() : 0
+                            }
+                            
+                            console.log(g_ctr)
+                            console.log(ratings)
+
+                            if (g_ctr > 0) {
+                                ratings = ratings / g_ctr
+                            }
+                            display_final_ratings.html(`<strong>${ratings.toFixed(2)}</strong>`)
+                            console.log(ratings)
+                        }
+                    }
+                })
+            })
+
             $('body').on('click', '.btn--save-grade', function (e) {
                 e.preventDefault()
                 const self =  $(this);
                 const student_enrolled_subject_id = $(this).parents('tr').data('student_enrolled_subject_id');
                 const enrollment_id = $(this).parents('tr').data('enrollment_id');
                 const grading = $(this).data('grading');
-                const grade_input = $('#'+grading+'_grading_' + student_enrolled_subject_id)
+                const grade_input = $('#'+grading+'_grading_' + atob(student_enrolled_subject_id))
                 const grade = grade_input.val()
                 
                 alertify.defaults.transition = "slide";
@@ -166,6 +206,48 @@
                                     message : res.res_msg,
                                     type    : 'success'
                                 });
+                                
+                
+                                const input_first_grading = $('#first_grading_' + atob(student_enrolled_subject_id))
+                                const input_second_grading = $('#second_grading_' + atob(student_enrolled_subject_id))
+                                const input_third_grading = $('#third_grading_' + atob(student_enrolled_subject_id))
+                                const input_fourth_grading = $('#fourth_grading_' + atob(student_enrolled_subject_id))
+                                const display_final_ratings = $('.final-ratings_' + atob(student_enrolled_subject_id))
+                                console.log($('#first_grading_' + atob(student_enrolled_subject_id)))
+                                console.log($('#second_grading_' + atob(student_enrolled_subject_id)))
+                                console.log($('#third_grading_' + atob(student_enrolled_subject_id)))
+                                console.log($('#fourth_grading_' + atob(student_enrolled_subject_id)))
+                                console.log(display_final_ratings)
+                                let g_ctr = 0
+                                let ratings = 0
+                                if (input_first_grading.length > 0 && +input_first_grading.val() > 0) {
+                                    g_ctr++;
+                                    ratings += +input_first_grading.val() > 0 ? +input_first_grading.val() : 0
+                                }
+                                
+                                if (input_second_grading.length > 0 && +input_second_grading.val() > 0) {
+                                    g_ctr++;
+                                    ratings += +input_second_grading.val() > 0 ?  +input_second_grading.val() : 0
+                                }
+                                
+                                if (input_third_grading.length > 0 && +input_third_grading.val() > 0) {
+                                    g_ctr++;
+                                    ratings += +input_third_grading.val() > 0 ?  +input_third_grading.val() : 0
+                                }
+                                
+                                if (input_fourth_grading.length > 0 && +input_fourth_grading.val() > 0) {
+                                    g_ctr++;
+                                    ratings += +input_fourth_grading.val() > 0 ?  +input_fourth_grading.val() : 0
+                                }
+                                
+                                console.log(g_ctr)
+                                console.log(ratings)
+
+                                if (g_ctr > 0) {
+                                    ratings = ratings / g_ctr
+                                }
+                                display_final_ratings.html(`<strong>${ratings.toFixed(2)}</strong>`)
+                                console.log(ratings)
                                 self.prop('disabled', true)
                                 grade_input.prop('readonly', true) 
                             }

@@ -53,35 +53,6 @@ Route::get('/students-handbook', 'StudentsController@students_handbook')->name('
 Route::group(['prefix' => 'registrar', 'middleware' => ['auth', 'userroles'], 'roles' => ['registrar']], function() {
     Route::get('dashboard', 'Registrar\RegistrarDashboardController@index')->name('registrar.dashboard');
 
-    Route::group(['prefix' => 'class-details', 'middleware' => 'auth'], function() {
-        Route::get('', 'Registrar\ClassListController@index')->name('registrar.class_details');
-        Route::post('', 'Registrar\ClassListController@index')->name('registrar.class_details');
-        Route::post('modal-data', 'Registrar\ClassListController@modal_data')->name('registrar.class_details.modal_data');
-        Route::post('save-data', 'Registrar\ClassListController@save_data')->name('registrar.class_details.save_data');
-        Route::post('deactivate-data', 'Registrar\ClassListController@deactivate_data')->name('registrar.class_details.deactivate_data');
-        Route::post('fetch_section-by-grade-level', 'Registrar\ClassListController@fetch_section_by_grade_level')->name('registrar.class_details.fetch_section_by_grade_level');
-        
-    });
-
-    Route::group(['prefix' => 'class-subjects/{class_id}', 'middleware' => 'auth'], function() {
-        Route::get('', 'Registrar\ClassSubjectsController@index')->name('registrar.class_subjects');
-        Route::post('', 'Registrar\ClassSubjectsController@index')->name('registrar.class_subjects');
-        Route::post('modal-data', 'Registrar\ClassSubjectsController@modal_data')->name('registrar.class_subjects.modal_data');
-        Route::post('save-data', 'Registrar\ClassSubjectsController@save_data')->name('registrar.class_subjects.save_data');
-        Route::post('deactivate-data', 'Registrar\ClassSubjectsController@deactivate_data')->name('registrar.class_subjects.deactivate_data');
-        
-    });
-
-    Route::group(['prefix' => 'student-enrollment/{id}', 'middleware' => ['auth']], function() {
-        Route::get('', 'Registrar\StudentEnrollmentController@index')->name('registrar.student_enrollment');
-        Route::post('', 'Registrar\StudentEnrollmentController@index')->name('registrar.student_enrollment');
-        Route::post('modal-data', 'Registrar\StudentEnrollmentController@modal_data')->name('registrar.student_enrollment.modal_data');
-        Route::post('save-data', 'Registrar\StudentEnrollmentController@save_data')->name('registrar.student_enrollment.save_data');
-        Route::post('enroll-student', 'Registrar\StudentEnrollmentController@enroll_student')->name('registrar.student_enrollment.enroll_student');
-        Route::post('enrolled-student', 'Registrar\StudentEnrollmentController@fetch_enrolled_student')->name('registrar.student_enrollment.fetch_enrolled_student');
-        Route::post('cancel-enroll-student', 'Registrar\StudentEnrollmentController@cancel_enroll_student')->name('registrar.student_enrollment.cancel_enroll_student');
-    });
-
     Route::group(['prefix' => 'my-account', 'middleware' => ['auth']], function() {
         Route::get('', 'Registrar\UserProfileController@view_my_profile')->name('registrar.my_account.index');
         // Route::post('change-my-password', 'Registrar\UserProfileController@change_my_password')->name('my_account.change_my_password');
@@ -100,6 +71,32 @@ Route::group(['prefix' => 'registrar', 'middleware' => ['auth', 'userroles'], 'r
     
 });
 
+Route::group(['prefix' => 'registrar/class-details', 'middleware' => 'auth', 'roles' => ['admin', 'root', 'registrar']], function() {
+    Route::get('', 'Registrar\ClassListController@index')->name('registrar.class_details');
+    Route::post('', 'Registrar\ClassListController@index')->name('registrar.class_details');
+    Route::post('modal-data', 'Registrar\ClassListController@modal_data')->name('registrar.class_details.modal_data');
+    Route::post('save-data', 'Registrar\ClassListController@save_data')->name('registrar.class_details.save_data');
+    Route::post('deactivate-data', 'Registrar\ClassListController@deactivate_data')->name('registrar.class_details.deactivate_data');
+    Route::post('fetch_section-by-grade-level', 'Registrar\ClassListController@fetch_section_by_grade_level')->name('registrar.class_details.fetch_section_by_grade_level');
+});
+
+Route::group(['prefix' => 'registrar/class-subjects/{class_id}', 'middleware' => 'auth'], function() {
+    Route::get('', 'Registrar\ClassSubjectsController@index')->name('registrar.class_subjects');
+    Route::post('', 'Registrar\ClassSubjectsController@index')->name('registrar.class_subjects');
+    Route::post('modal-data', 'Registrar\ClassSubjectsController@modal_data')->name('registrar.class_subjects.modal_data');
+    Route::post('save-data', 'Registrar\ClassSubjectsController@save_data')->name('registrar.class_subjects.save_data');
+    Route::post('deactivate-data', 'Registrar\ClassSubjectsController@deactivate_data')->name('registrar.class_subjects.deactivate_data');
+});
+
+Route::group(['prefix' => 'registrar/student-enrollment/{id}', 'middleware' => ['auth'], 'roles' => ['admin', 'root', 'registrar']], function() {
+    Route::get('', 'Registrar\StudentEnrollmentController@index')->name('registrar.student_enrollment');
+    Route::post('', 'Registrar\StudentEnrollmentController@index')->name('registrar.student_enrollment');
+    Route::post('modal-data', 'Registrar\StudentEnrollmentController@modal_data')->name('registrar.student_enrollment.modal_data');
+    Route::post('save-data', 'Registrar\StudentEnrollmentController@save_data')->name('registrar.student_enrollment.save_data');
+    Route::post('enroll-student', 'Registrar\StudentEnrollmentController@enroll_student')->name('registrar.student_enrollment.enroll_student');
+    Route::post('enrolled-student', 'Registrar\StudentEnrollmentController@fetch_enrolled_student')->name('registrar.student_enrollment.fetch_enrolled_student');
+    Route::post('cancel-enroll-student', 'Registrar\StudentEnrollmentController@cancel_enroll_student')->name('registrar.student_enrollment.cancel_enroll_student');
+});
 
 Route::group(['prefix' => 'faculty', 'middleware' => ['auth', 'userroles'], 'roles' => ['faculty']], function() {
     
@@ -112,7 +109,7 @@ Route::group(['prefix' => 'faculty', 'middleware' => ['auth', 'userroles'], 'rol
     });
 
     Route::group(['prefix' => 'class-schedules'], function() {
-        Route::get('', 'Faculty\SubjectClassController@class_schedules')->name('faculty.class_schedules');
+        Route::get('', 'Faculty\SubjectClassController@class_schedules')->name('faculty.faculty_class_schedules');
     });
     
     Route::group(['prefix' => 'student-grade-sheet'], function() {
@@ -120,6 +117,7 @@ Route::group(['prefix' => 'faculty', 'middleware' => ['auth', 'userroles'], 'rol
         Route::post('list-class-subject-details', 'Faculty\GradeSheetController@list_class_subject_details')->name('faculty.student_grade_sheet.list_class_subject_details');
         Route::post('list-students-by-class', 'Faculty\GradeSheetController@list_students_by_class')->name('faculty.student_grade_sheet.list_students_by_class');
         Route::post('save-grade', 'Faculty\GradeSheetController@save_grade')->name('faculty.student_grade_sheet.save_grade');
+        Route::post('temporary-save-grade', 'Faculty\GradeSheetController@temporary_save_grade')->name('faculty.student_grade_sheet.temporary_save_grade');
     });
 
     Route::group(['prefix' => 'my-account', 'middleware' => ['auth']], function() {
@@ -216,25 +214,18 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'userroles'], 'roles
         Route::post('change-my-password', 'Control_Panel\UserProfileController@change_my_password')->name('my_account.change_my_password');
     });
     
-    
 
 });
 
 
-Route::group(['prefix' => 'shared/class-schedule', 'middleware' => ['auth', 'userroles'], 'roles' => ['admin', 'root', 'registrar']], function() {
-    Route::get('', 'Control_Panel\ClassScheduleController@index')->name('shared.class_schedule.index');
-    Route::post('', 'Control_Panel\ClassScheduleController@index')->name('shared.class_schedule.index');
-    Route::post('get-faculty-class-schedule', 'Control_Panel\ClassScheduleController@get_faculty_class_schedule')->name('shared.class_schedule.get_faculty_class_schedule');
-    
-    // Route::post('change-my-password', 'Control_Panel\ClassScheduleController@change_my_password')->name('my_account.change_my_password');
-    // Route::post('update-profile', 'Control_Panel\ClassScheduleController@update_profile')->name('my_account.update_profile');
-    // Route::post('fetch-profile', 'Control_Panel\ClassScheduleController@fetch_profile')->name('my_account.fetch_profile');
-    // Route::post('change-my-photo', 'Control_Panel\ClassScheduleController@change_my_photo')->name('my_account.change_my_photo');
-    // Route::post('change-my-password', 'Control_Panel\ClassScheduleController@change_my_password')->name('my_account.change_my_password');
+Route::group(['prefix' => 'shared/faculty-class-schedule', 'middleware' => ['auth', 'userroles'], 'roles' => ['admin', 'root', 'registrar']], function() {
+    Route::get('', 'Control_Panel\ClassScheduleController@index')->name('shared.faculty_class_schedules.index');
+    Route::post('', 'Control_Panel\ClassScheduleController@index')->name('shared.faculty_class_schedules.index');
+    Route::post('get-faculty-class-schedule', 'Control_Panel\ClassScheduleController@get_faculty_class_schedule')->name('shared.faculty_class_schedules.get_faculty_class_schedule');
 });
 
 
-Route::group(['prefix' => 'stuent', 'middleware' => ['auth', 'userroles'], 'roles' => ['student']], function() {
+Route::group(['prefix' => 'student', 'middleware' => ['auth', 'userroles'], 'roles' => ['student']], function() {
     Route::get('dashboard', 'Control_Panel_Student\DashboardController@index')->name('student.dashboard');
 
     Route::group(['prefix' => 'class-schedule'], function() {
@@ -244,6 +235,15 @@ Route::group(['prefix' => 'stuent', 'middleware' => ['auth', 'userroles'], 'role
     Route::group(['prefix' => 'grade-sheet'], function() {
         Route::get('', 'Control_Panel_Student\GradeSheetController@index')->name('student.grade_sheet.index');
         Route::post('', 'Control_Panel_Student\GradeSheetController@index')->name('student.grade_sheet.index');
+    });
+    
+    Route::group(['prefix' => 'my-account', 'middleware' => ['auth']], function() {
+        Route::get('', 'Control_Panel_Student\AccountProfileController@view_my_profile')->name('student.my_account.index');
+        // Route::post('change-my-password', 'Control_Panel_Student\AccountProfileController@change_my_password')->name('my_account.change_my_password');
+        Route::post('update-profile', 'Control_Panel_Student\AccountProfileController@update_profile')->name('student.my_account.update_profile');
+        Route::post('fetch-profile', 'Control_Panel_Student\AccountProfileController@fetch_profile')->name('student.my_account.fetch_profile');
+        Route::post('change-my-photo', 'Control_Panel_Student\AccountProfileController@change_my_photo')->name('student.my_account.change_my_photo');
+        Route::post('change-my-password', 'Control_Panel_Student\AccountProfileController@change_my_password')->name('student.my_account.change_my_password');
     });
 });
 

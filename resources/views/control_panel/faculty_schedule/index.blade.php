@@ -20,7 +20,7 @@
         <div class="overlay hidden" id="js-loader-overlay"><i class="fa fa-refresh fa-spin"></i></div>
         <div class="box-body">
             <div class="js-data-container">
-                @include('control_panel.class_schedule.partials.data_list')
+                @include('control_panel.faculty_schedule.partials.data_list')
             </div>
         </div>
     </div>
@@ -35,7 +35,7 @@
             formData.append('page', page);
             loader_overlay();
             $.ajax({
-                url : "{{ route('shared.class_schedule.index') }}",
+                url : "{{ route('shared.faculty_class_schedules.index') }}",
                 type : 'POST',
                 data : formData,
                 processData : false,
@@ -62,32 +62,6 @@
                 });
             });
 
-            $('body').on('submit', '#js-form_subject_details', function (e) {
-                e.preventDefault();
-                var formData = new FormData($(this)[0]);
-                $.ajax({
-                    url         : "{{ route('admin.faculty_information.save_data') }}",
-                    type        : 'POST',
-                    data        : formData,
-                    processData : false,
-                    contentType : false,
-                    success     : function (res) {
-                        $('.help-block').html('');
-                        if (res.res_code == 1)
-                        {
-                            for (var err in res.res_error_msg)
-                            {
-                                $('#js-' + err).html('<code> '+ res.res_error_msg[err] +' </code>');
-                            }
-                        }
-                        else
-                        {
-                            $('.js-modal_holder .modal').modal('hide');
-                            fetch_data();
-                        }
-                    }
-                });
-            });
 
             $('body').on('submit', '#js-form_search', function (e) {
                 e.preventDefault();
@@ -102,7 +76,7 @@
                 e.preventDefault();
                 var id = $(this).data('id');
                 $.ajax({
-                    url         : "{{ route('shared.class_schedule.get_faculty_class_schedule') }}",
+                    url         : "{{ route('shared.faculty_class_schedules.get_faculty_class_schedule') }}",
                     type        : 'POST',
                     data        : { _token : '{{ csrf_token() }}', id : id },
                     success     : function (res) {

@@ -74,7 +74,7 @@
           <li><a href="{{ route('student.class_schedule.index') }}"><i class="fa fa-circle-o"></i> <span>Class Schedule</span></a></li>
           <li><a href="{{ route('student.grade_sheet.index') }}"><i class="fa fa-circle-o"></i> <span>Grade Sheet</span></a></li>
           <li><a href="{{ route('admin.faculty_information') }}"><i class="fa fa-circle-o"></i> <span>Balances</span></a></li>
-          <li><a href="{{ route('admin.student.information') }}"><i class="fa fa-circle-o"></i> <span>My Profile</span></a></li>
+          <li><a href="{{ route('student.my_account.index') }}"><i class="fa fa-circle-o"></i> <span>My Profile</span></a></li>
       </ul>
     </section>
     <!-- /.sidebar -->

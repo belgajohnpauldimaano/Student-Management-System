@@ -73,28 +73,28 @@
         {{--  Admin Menu  --}}
         @if (Auth::user()->role == 1 || Auth::user()->role == 0)
           <li><a href="{{ route('admin.dashboard') }}"><i class="fa fa-circle-o"></i> <span>Dashboard</span></a></li>
-          <li><a href="{{ route('shared.class_schedule.index') }}"><i class="fa fa-circle-o"></i> <span>Class Schedule</span></a></li>
+          <li><a href="{{ route('shared.faculty_class_schedules.index') }}"><i class="fa fa-circle-o"></i> <span>Faculty Class Schedule</span></a></li>
           <li><a href="{{ route('admin.faculty_information') }}"><i class="fa fa-circle-o"></i> <span>Faculty Information</span></a></li>
           <li><a href="{{ route('admin.registrar_information') }}"><i class="fa fa-circle-o"></i> <span>Registrar Information</span></a></li>
           <li><a href="{{ route('admin.student.information') }}"><i class="fa fa-circle-o"></i> <span>Student Information</span></a></li>
+          <li><a href="{{ route('registrar.class_details') }}"><i class="fa fa-circle-o"></i> <span>Class Lists</span></a></li>
         @endif
         {{--  Admin Menu End  --}}
         
         {{--  Registrar Menu  --}}
         @if (Auth::user()->role == 3)
           <li><a href="{{ route('registrar.dashboard') }}"><i class="fa fa-circle-o"></i> <span>Dashboard</span></a></li>
-          <li><a href="{{ route('shared.class_schedule.index') }}"><i class="fa fa-circle-o"></i> <span>Class Schedule</span></a></li>
+          <li><a href="{{ route('shared.faculty_class_schedules.index') }}"><i class="fa fa-circle-o"></i> <span>Faculty Class Schedule</span></a></li>
           <li><a href="{{ route('admin.faculty_information') }}"><i class="fa fa-circle-o"></i> <span>Faculty Information</span></a></li>
           <li><a href="{{ route('admin.student.information') }}"><i class="fa fa-circle-o"></i> <span>Student Information</span></a></li>
           <li><a href="{{ route('registrar.class_details') }}"><i class="fa fa-circle-o"></i> <span>Class Lists</span></a></li>   
-          <li><a href="{{ route('registrar.student_grade_sheet') }}"><i class="fa fa-circle-o"></i> <span>Students Grade Sheet</span></a></li>
         @endif
         
         {{--  Faculty Menu  --}}
         @if (Auth::user()->role == 4)
           <li><a href="{{ route('faculty.dashboard') }}"><i class="fa fa-circle-o"></i> <span>Dashboard</span></a></li>
           <li><a href="{{ route('faculty.subject_class') }}"><i class="fa fa-circle-o"></i> <span>Subject Class</span></a></li>
-          <li><a href="{{ route('faculty.class_schedules') }}"><i class="fa fa-circle-o"></i> <span>Class Schedules</span></a></li>
+          <li><a href="{{ route('faculty.faculty_class_schedules') }}"><i class="fa fa-circle-o"></i> <span>Faculty Class Schedules</span></a></li>
           <li><a href="{{ route('faculty.student_grade_sheet') }}"><i class="fa fa-circle-o"></i> <span>Students Grade Sheet</span></a></li>
         @endif
 {{--  

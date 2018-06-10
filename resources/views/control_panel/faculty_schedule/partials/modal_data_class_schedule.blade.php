@@ -1,5 +1,5 @@
 <div class="modal fade class_schedules" tabindex="-1" role="dialog">
-    <div class="modal-dialog" role="document">
+    <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <form id="js-form_subject_details">
                 {{ csrf_field() }}
@@ -15,6 +15,10 @@
                             <th>Time</th>
                             <th>Day</th>
                             <th>Subject</th>
+                            <th>Grade Level</th>
+                            <th>Section</th>
+                            <th>Room</th>
+                            <th>School Year</th>
                         </tr>
                         <tbody>
                             @foreach($ClassSubjectDetail as $data) 
@@ -22,6 +26,10 @@
                                     <td>{{ $data->class_time_from . '-' . $data->class_time_to }}</td>
                                     <td>{{ $data->class_days }}</td>
                                     <td>{{ $data->subject }}</td>
+                                    <td>{{ $data->grade_level }}</td>
+                                    <td>{{ $data->section }}</td>
+                                    <td>{{ $data->room_code }}</td>
+                                    <td>{{ $data->school_year }}</td>
                                 </tr>
                             @endforeach
                         </tbody>
@@ -29,7 +37,6 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default btn-flat" data-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary btn-flat">Save</button>
                 </div>
             </form>
         </div><!-- /.modal-content -->

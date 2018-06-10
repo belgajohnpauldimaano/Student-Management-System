@@ -70,8 +70,8 @@ class StudentController extends Controller
             $StudentInformation->first_name     = $request->first_name;
             $StudentInformation->middle_name    = $request->middle_name;
             $StudentInformation->last_name      = $request->last_name;
-            $StudentInformation->address        = $request->address;
-            $StudentInformation->birthdate      = date('Y-m-d', strtotime($request->birthdate));
+            // $StudentInformation->address        = $request->address;
+            // $StudentInformation->birthdate      = date('Y-m-d', strtotime($request->birthdate));
             $StudentInformation->gender         = $request->gender;
             $StudentInformation->save();
             return response()->json(['res_code' => 0, 'res_msg' => 'Data successfully saved.']);
@@ -92,8 +92,8 @@ class StudentController extends Controller
         $StudentInformation->first_name     = $request->first_name;
         $StudentInformation->middle_name    = $request->middle_name;
         $StudentInformation->last_name      = $request->last_name;
-        $StudentInformation->address        = $request->address;
-        $StudentInformation->birthdate      = date('Y-m-d', strtotime($request->birthdate));
+        // $StudentInformation->address        = $request->address;
+        // $StudentInformation->birthdate      = date('Y-m-d', strtotime($request->birthdate));
         $StudentInformation->gender         = $request->gender;
         $StudentInformation->user_id        = $User->id;
         $StudentInformation->save();

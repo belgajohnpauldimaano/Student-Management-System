@@ -17,9 +17,7 @@
                                         <tr>
                                             <td>{{ $data->last_name . ' ' .$data->first_name . ' ' . $data->middle_name }}</td>
                                             <td>{{ $data->user->username }}</td>
-                                            <td>Department Placeholder</td>
-                                            {{--  <td> {{ \App\FacultyInformation::DEPARTMENTS[$data->department_id]['department_name'] }} {{ $data->department_id }}</td>  --}}
-                                            {{--  <td>{{ $data->current == 1 ? 'Yes' : 'No' }}</td>  --}}
+                                            <td>{{ (collect(\App\FacultyInformation::DEPARTMENTS)->firstWhere('id', $data->department_id)['department_name']) }}</td>
                                             <td>{{ $data->status == 1 ? 'Active' : 'Inactive' }}</td>
                                             <td>
                                                 <div class="input-group-btn pull-left text-left">

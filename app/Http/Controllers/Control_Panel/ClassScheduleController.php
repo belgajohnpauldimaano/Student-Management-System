@@ -39,19 +39,23 @@ class ClassScheduleController extends Controller
             })
             ->paginate(10);
             
-            return view('control_panel.class_schedule.partials.data_list', compact('FacultyInformation'))->render();
+            return view('control_panel.faculty_schedule.partials.data_list', compact('FacultyInformation'))->render();
             return response()->json(['res_code' => 0, 'res_msg' => '', 'FacultyInformation' => $FacultyInformation]);
         }
         
         $FacultyInformation = $FacultyInformation->paginate(10);
 
         // return response()->json(['res_code' => 0, 'res_msg' => '', 'FacultyInformation' => $FacultyInformation]);
-        return view('control_panel.class_schedule.index', compact('FacultyInformation'));
+        return view('control_panel.faculty_schedule.index', compact('FacultyInformation'));
     }
     public function get_faculty_class_schedule (Request $request)
     {
         $SchoolYear = \App\SchoolYear::where('current', 1)->first();
         $ClassSubjectDetail = \App\ClassSubjectDetail::join('subject_details', 'subject_details.id', '=', 'class_subject_details.subject_id')
+        ->join('class_details', 'class_details.id', '=', 'class_subject_details.class_details_id')
+        ->join('section_details', 'section_details.id', '=', 'class_details.section_id')
+        ->join('rooms', 'rooms.id', '=', 'class_details.room_id')
+        ->join('school_years', 'school_years.id', '=', 'class_details.school_year_id')
         ->where('faculty_id', $request->id)
         ->whereRaw('
             class_details_id IN ( SELECT id from class_details WHERE school_year_id IN ( SELECT id FROM school_years WHERE status = 1 AND current = 1 ) )
@@ -59,6 +63,6 @@ class ClassScheduleController extends Controller
         ->where('class_subject_details.status', 1)
         ->get();
         // return response()->json(['res_code' => 0, 'res_msg' => '', 'FacultyInformation' => $ClassSubjectDetail]);
-        return view('control_panel.class_schedule.partials.modal_data_class_schedule', compact('ClassSubjectDetail'))->render();
+        return view('control_panel.faculty_schedule.partials.modal_data_class_schedule', compact('ClassSubjectDetail'))->render();
     }
 }
