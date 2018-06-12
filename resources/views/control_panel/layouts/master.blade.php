@@ -78,6 +78,7 @@
           <li><a href="{{ route('admin.registrar_information') }}"><i class="fa fa-circle-o"></i> <span>Registrar Information</span></a></li>
           <li><a href="{{ route('admin.student.information') }}"><i class="fa fa-circle-o"></i> <span>Student Information</span></a></li>
           <li><a href="{{ route('registrar.class_details') }}"><i class="fa fa-circle-o"></i> <span>Class Lists</span></a></li>
+          <li><a href="{{ route('admin.transcript_archieve') }}"><i class="fa fa-circle-o"></i> <span>Transcript Archieve</span></a></li>|
         @endif
         {{--  Admin Menu End  --}}
         

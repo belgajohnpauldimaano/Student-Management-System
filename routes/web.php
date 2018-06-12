@@ -168,7 +168,14 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'userroles'], 'roles
         Route::post('save-data', 'Control_Panel\RegistrarController@save_data')->name('admin.registrar_information.save_data');
         Route::post('deactivate-data', 'Control_Panel\RegistrarController@deactivate_data')->name('admin.registrar_information.deactivate_data');
     });
-
+    
+    Route::group(['prefix' => 'transcript-of-record-archieve'], function() {
+        Route::get('', 'Control_Panel\TranscriptArchiveController@index')->name('admin.transcript_archieve');
+        Route::post('', 'Control_Panel\TranscriptArchiveController@index')->name('admin.transcript_archieve');
+        Route::post('modal-data', 'Control_Panel\TranscriptArchiveController@modal_data')->name('admin.transcript_archieve.modal_data');
+        Route::post('save-transcript', 'Control_Panel\TranscriptArchiveController@save_transcript')->name('admin.transcript_archieve.save_transcript');
+        // Route::post('deactivate-data', 'Control_Panel\TranscriptArchiveController@deactivate_data')->name('admin.registrar_information.deactivate_data');
+    });
     
     Route::group(['prefix' => 'maintenance'], function() {
         Route::group(['prefix' => 'school-year'], function() {
