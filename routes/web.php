@@ -174,7 +174,8 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'userroles'], 'roles
         Route::post('', 'Control_Panel\TranscriptArchiveController@index')->name('admin.transcript_archieve');
         Route::post('modal-data', 'Control_Panel\TranscriptArchiveController@modal_data')->name('admin.transcript_archieve.modal_data');
         Route::post('save-transcript', 'Control_Panel\TranscriptArchiveController@save_transcript')->name('admin.transcript_archieve.save_transcript');
-        // Route::post('deactivate-data', 'Control_Panel\TranscriptArchiveController@deactivate_data')->name('admin.registrar_information.deactivate_data');
+        Route::post('delete-data', 'Control_Panel\TranscriptArchiveController@delete_data')->name('admin.transcript_archieve.delete_data');
+        Route::post('download-tor', 'Control_Panel\TranscriptArchiveController@download_tor')->name('admin.transcript_archieve.download_tor');
     });
     
     Route::group(['prefix' => 'maintenance'], function() {

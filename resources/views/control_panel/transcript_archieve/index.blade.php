@@ -32,7 +32,10 @@
                 {{ csrf_field() }}
                 <div class="form-group col-sm-12 col-md-3">
                     <select name="search_sy" id="search_sy" class="form-control">
-                        <option value="">select school year</option>
+                        <option value="">select year graduated</option>
+                        @for ($i=1990;$i<=2018;$i++)
+                            <option value="{{ $i }}">{{ $i }}</option>
+                        @endfor
                     </select>
                 </div>
                 <div id="js-form_search" class="form-group col-sm-12 col-md-3" style="padding-left:0;padding-right:0">
@@ -45,7 +48,7 @@
         <div class="overlay hidden" id="js-loader-overlay"><i class="fa fa-refresh fa-spin"></i></div>
         <div class="box-body">
             <div class="js-data-container">
-                {{--  @include('control_panel.transcript_archieve.partials.data_list')  --}}
+                @include('control_panel.transcript_archieve.partials.data_list')
             </div>
         </div>
     </div>
@@ -63,7 +66,7 @@
             formData.append('page', page);
             loader_overlay();
             $.ajax({
-                url : "{{ route('admin.faculty_information') }}",
+                url : "{{ route('admin.transcript_archieve') }}",
                 type : 'POST',
                 data : formData,
                 processData : false,
@@ -108,6 +111,35 @@
                     }
                 });
             });
+            
+            $('body').on('click', '.js-btn_download', function (e) {
+                e.preventDefault();
+                var id = $(this).data('id');
+                var file = $(this).data('file');
+                $.ajax({
+                    url : "{{ route('admin.transcript_archieve.download_tor') }}",
+                    type : 'POST',
+                    data : { _token : '{{ csrf_token() }}', id : id, file_name: file },
+                    success : function (res) {
+                        if (res.res_code == 1) {
+                            show_toast_alert({
+                                heading : 'Error',
+                                message : res.res_msg,
+                                type    : 'error'
+                            });
+                        } else {
+                            show_toast_alert({
+                                heading : 'Success',
+                                message : res.res_msg,
+                                type    : 'success'
+                            });
+                            console.log(res)
+                            window.location = res.file_path;
+                        }
+                    }
+                });
+            });
+            
 
             $('body').on('submit', '#js-form_transcript', function (e) {
                 e.preventDefault();
@@ -146,7 +178,7 @@
                 page = $(this).attr('href').split('=')[1];
                 fetch_data();
             });
-            $('body').on('click', '.js-btn_deactivate', function (e) {
+            $('body').on('click', '.js-btn_delete', function (e) {
                 e.preventDefault();
                 var id = $(this).data('id');
                 alertify.defaults.transition = "slide";
@@ -154,7 +186,7 @@
                 alertify.defaults.theme.cancel = "btn btn-danger btn-flat";
                 alertify.confirm('Confirmation', 'Are you sure you want to deactivate?', function(){  
                     $.ajax({
-                        url         : "{{ route('admin.faculty_information.deactivate_data') }}",
+                        url         : "{{ route('admin.transcript_archieve.delete_data') }}",
                         type        : 'POST',
                         data        : { _token : '{{ csrf_token() }}', id : id },
                         success     : function (res) {

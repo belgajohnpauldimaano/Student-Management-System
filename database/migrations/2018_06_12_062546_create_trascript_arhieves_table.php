@@ -20,6 +20,7 @@ class CreateTrascriptArhievesTable extends Migration
             $table->string('last_name', 191)->nullable();
             $table->integer('school_year_graduated')->nullable();
             $table->string('file_name', 191)->nullable();
+            $table->tinyInteger('status')->default(1)->nullble();
             // $table->string('personal_information', 191)->nullable();
             // $table->text('credentials_information')->nullable();
             $table->timestamps();
