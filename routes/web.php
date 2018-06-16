@@ -183,6 +183,13 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'userroles'], 'roles
         Route::post('download-tor', 'Control_Panel\TranscriptArchiveController@download_tor')->name('admin.transcript_archieve.download_tor');
     });
     
+    Route::group(['prefix' => 'articles'], function() {
+        Route::get('', 'Control_Panel\ArticlesController@index')->name('admin.articles');
+        Route::post('', 'Control_Panel\ArticlesController@index')->name('admin.articles');
+        Route::post('modal-data', 'Control_Panel\ArticlesController@modal_data')->name('admin.articles.modal_data');
+        Route::post('save-data', 'Control_Panel\ArticlesController@save_data')->name('admin.articles.save_data');
+    });
+    
     Route::group(['prefix' => 'maintenance'], function() {
         Route::group(['prefix' => 'school-year'], function() {
             Route::get('', 'Control_Panel\Maintenance\SchoolYearController@index')->name('admin.maintenance.school_year');
