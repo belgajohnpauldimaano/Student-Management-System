@@ -1,7 +1,7 @@
 @extends('control_panel.layouts.master')
 
 @section ('content_title')
-    Faculty List
+    Faculty Class Schedule
 @endsection
 
 @section ('content')
@@ -14,7 +14,7 @@
                     <input type="text" class="form-control" name="search">
                 </div>
                 <button type="submit" class="btn btn-flat btn-success">Search</button>
-                {{--  <button type="button" class="pull-right btn btn-flat btn-danger btn-sm" id="js-button-add"><i class="fa fa-plus"></i> Add</button>  --}}
+                <button type="button" class="pull-right btn btn-flat btn-danger" id="js-button-print_all"><i class="fa fa-download"></i> Print</button>
             </form>
         </div>
         <div class="overlay hidden" id="js-loader-overlay"><i class="fa fa-refresh fa-spin"></i></div>
@@ -105,6 +105,12 @@
                     }
                 });
             });
+
+            $('body').on('click', '.js-btn_report', function (e) {
+                e.preventDefault()
+                const id = $(this).data('id')
+                window.open("{{ route('shared.faculty_class_schedules.print_handled_subject') }}?id=" + id, '', 'height=800,width=800')
+            })
         });
     </script>
 @endsection

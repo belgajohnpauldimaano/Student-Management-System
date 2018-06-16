@@ -65,4 +65,55 @@ class ClassScheduleController extends Controller
         // return response()->json(['res_code' => 0, 'res_msg' => '', 'FacultyInformation' => $ClassSubjectDetail]);
         return view('control_panel.faculty_schedule.partials.modal_data_class_schedule', compact('ClassSubjectDetail'))->render();
     }
+
+    public function print_handled_subject (Request $request) 
+    {
+        $FacultyInformation = \App\FacultyInformation::where('status', 1)
+            ->where('id', $request->id)
+            ->first();
+        $SchoolYear = \App\SchoolYear::where('current', 1)->first();
+        $ClassSubjectDetail = \App\ClassSubjectDetail::join('subject_details', 'subject_details.id', '=', 'class_subject_details.subject_id')
+        ->join('class_details', 'class_details.id', '=', 'class_subject_details.class_details_id')
+        ->join('section_details', 'section_details.id', '=', 'class_details.section_id')
+        ->join('rooms', 'rooms.id', '=', 'class_details.room_id')
+        ->join('school_years', 'school_years.id', '=', 'class_details.school_year_id')
+        ->where('faculty_id', $request->id)
+        ->whereRaw('
+            class_details_id IN ( SELECT id from class_details WHERE school_year_id IN ( SELECT id FROM school_years WHERE status = 1 AND current = 1 ) )
+        ')
+        ->where('class_subject_details.status', 1)
+        ->get();
+
+        $pdf = \PDF::loadView('control_panel.faculty_schedule.partials.report', compact('FacultyInformation', 'ClassSubjectDetail'));
+        return $pdf->stream();
+        return $pdf->download('invoice.pdf');   
+    }
+
+    public function print_handled_subject_all (Request $request) 
+    {
+        $FacultyInformation = \App\FacultyInformation::where('status', 1)->get();
+        $SchoolYear = \App\SchoolYear::where('current', 1)->first();
+
+        $faculty_subjects = [];
+
+        foreach ($FacultyInformation as $fa) 
+        {
+            $ClassSubjectDetail = \App\ClassSubjectDetail::join('subject_details', 'subject_details.id', '=', 'class_subject_details.subject_id')
+            ->join('class_details', 'class_details.id', '=', 'class_subject_details.class_details_id')
+            ->join('section_details', 'section_details.id', '=', 'class_details.section_id')
+            ->join('rooms', 'rooms.id', '=', 'class_details.room_id')
+            ->join('school_years', 'school_years.id', '=', 'class_details.school_year_id')
+            ->where('faculty_id', $fa->id)
+            ->whereRaw('
+                class_details_id IN ( SELECT id from class_details WHERE school_year_id IN ( SELECT id FROM school_years WHERE status = 1 AND current = 1 ) )
+            ')
+            ->where('class_subject_details.status', 1)
+            ->get();
+            $faculty_subjects[] = ['faculty' => $fa, 'subjects' => $ClassSubjectDetail]
+        }
+
+        $pdf = \PDF::loadView('control_panel.faculty_schedule.partials.report', compact('faculty_subjects'));
+        return $pdf->stream();
+        return $pdf->download('invoice.pdf');   
+    }
 }

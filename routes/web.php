@@ -230,6 +230,7 @@ Route::group(['prefix' => 'shared/faculty-class-schedule', 'middleware' => ['aut
     Route::get('', 'Control_Panel\ClassScheduleController@index')->name('shared.faculty_class_schedules.index');
     Route::post('', 'Control_Panel\ClassScheduleController@index')->name('shared.faculty_class_schedules.index');
     Route::post('get-faculty-class-schedule', 'Control_Panel\ClassScheduleController@get_faculty_class_schedule')->name('shared.faculty_class_schedules.get_faculty_class_schedule');
+    Route::get('print-handled-subject', 'Control_Panel\ClassScheduleController@print_handled_subject')->name('shared.faculty_class_schedules.print_handled_subject');
 });
 
 

@@ -24,7 +24,7 @@
                                                         <span class="fa fa-caret-down"></span></button>
                                                     <ul class="dropdown-menu">
                                                         <li><a href="#" class="js-btn_view_class_schedule" data-id="{{ $data->id }}">View Handled Subjects</a></li>
-                                                        {{--  <li><a href="#" class="js-btn_deactivate" data-id="{{ $data->id }}">Deactivate</a></li>  --}}
+                                                        <li><a href="#" target="_blank" class="js-btn_report" data-id="{{ $data->id }}">Print Subjects</a></li>
                                                     </ul>>
                                                 </div>
                                             </td>
