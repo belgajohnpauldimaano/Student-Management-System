@@ -257,6 +257,37 @@
 
                 });
             })
+            $('body').on('click', '#js-btn_finalize', function (e) {
+                e.preventDefault()
+                const id = $(this).data('id')
+                alertify.defaults.transition = "slide";
+                alertify.defaults.theme.ok = "btn btn-primary btn-flat";
+                alertify.defaults.theme.cancel = "btn btn-danger btn-flat";
+                alertify.confirm('Confirmation', 'Are you sure you want to finalize?', function(){  
+                    $.ajax({
+                        url         : "{{ route('faculty.student_grade_sheet.finalize_grade') }}",
+                        type        : 'POST',
+                        data        : { _token : '{{ csrf_token() }}', id:id },
+                        success     : function (res) {
+                            
+                            show_toast_alert({
+                                heading : res.res_code == 0 ? 'Success' : 'Invalid',
+                                message : res.res_msg,
+                                type    : res.res_code == 0 ? 'success' : 'error'
+                            });
+                            fetch_data();
+                        }
+                    });
+                }, function(){  
+
+                });
+            })
+            $('body').on('click', '#js-btn_print', function (e) {
+                e.preventDefault()
+                const search_class_subject = $('#search_class_subject').val()
+                const search_sy = $('#search_sy').val()
+                window.open("{{ route('faculty.student_grade_sheet.list_students_by_class_print') }}?search_class_subject="+search_class_subject+'&search_sy='+search_sy, '', 'height=800,width=800')
+            })
         });
     </script>
 @endsection

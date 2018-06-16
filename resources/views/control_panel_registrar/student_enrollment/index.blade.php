@@ -31,7 +31,7 @@
                         <input type="text" class="form-control" name="search_ln" placeholder="Last name">
                     </div>
                     <div class="col-sm-12 col-md-2">
-                        <button type="submit" class="btn btn-block  btn-flat btn-success">Search</button>
+                        <button type="submit" class="btn btn-block  btn-flat btn-success"><div class="fa fa-search"></div> Search</button>
                     </div>
                 </div>
             </form>
@@ -65,8 +65,11 @@
                     <div id="js-form_search" class="form-group col-sm-12 col-md-3" style="">
                         <input type="text" class="form-control" name="search_ln" placeholder="Last name">
                     </div>
-                    <div class="col-sm-12 col-md-2">
-                        <button type="submit" class="btn btn-block  btn-flat btn-success">Search</button>
+                    <div class="col-sm-12 col-md-1">
+                        <button type="submit" class="btn btn-block  btn-flat btn-success"><i class="fa fa-search"></i> Search</button>
+                    </div>
+                    <div class="col-sm-12 col-md-1">
+                        <button type="button" class="btn btn-block  btn-flat btn-primary" id="js-btn_print"><i class="fa fa-file-pdf"></i> Print</button>
                     </div>
                     {{--  <div class="col-sm-12 col-md-1">
                         <button type="button" class="btn btn-block btn-flat btn-danger btn-sm" id="js-button-add"><i class="fa fa-plus"></i> Add</button>
@@ -279,6 +282,11 @@
 
                 });
             });
+            
+            $('body').on('click', '#js-btn_print', function (e) {
+                e.preventDefault()
+                window.open("{{ route('registrar.student_enrollment.print_enrolled_students',$id) }}", '', 'height=800,width=800')
+            })
         });
     </script>
 @endsection

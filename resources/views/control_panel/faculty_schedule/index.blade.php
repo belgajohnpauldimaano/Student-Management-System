@@ -14,7 +14,7 @@
                     <input type="text" class="form-control" name="search">
                 </div>
                 <button type="submit" class="btn btn-flat btn-success">Search</button>
-                <button type="button" class="pull-right btn btn-flat btn-danger" id="js-button-print_all"><i class="fa fa-download"></i> Print</button>
+                <button type="button" class="pull-right btn btn-flat btn-danger" id="js-btn_report_all"><i class="fa fa-download"></i> Print</button>
             </form>
         </div>
         <div class="overlay hidden" id="js-loader-overlay"><i class="fa fa-refresh fa-spin"></i></div>
@@ -110,6 +110,11 @@
                 e.preventDefault()
                 const id = $(this).data('id')
                 window.open("{{ route('shared.faculty_class_schedules.print_handled_subject') }}?id=" + id, '', 'height=800,width=800')
+            })
+            
+            $('body').on('click', '#js-btn_report_all', function (e) {
+                e.preventDefault()
+                window.open("{{ route('shared.faculty_class_schedules.print_handled_subject_all') }}", '', 'height=800,width=800')
             })
         });
     </script>

@@ -17,7 +17,7 @@ class CreateSubjectDetailsTable extends Migration
             $table->increments('id');
             $table->string('subject_code', 15);
             $table->string('subject');
-            $table->tinyInteger('unit');
+            $table->tinyInteger('units');
             $table->tinyInteger('current')->default('1');
             $table->tinyInteger('status')->default('1');
             $table->timestamps();

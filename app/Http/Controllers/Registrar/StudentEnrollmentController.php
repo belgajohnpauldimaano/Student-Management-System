@@ -270,4 +270,44 @@ class StudentEnrollmentController extends Controller
         }
         return response()->json(['res_code' => 1, 'res_msg' => 'There is a problem in enrolling student.']);   
     }
+    public function print_enrolled_students (Request $request, $id) 
+    {
+        $ClassDetail = \App\ClassDetail::join('section_details', 'section_details.id', '=' ,'class_details.section_id')
+            ->join('rooms', 'rooms.id', '=' ,'class_details.room_id')
+            ->join('school_years', 'school_years.id', '=' ,'class_details.school_year_id')
+            ->selectRaw('
+                class_details.id,
+                class_details.section_id,
+                class_details.room_id,
+                class_details.school_year_id,
+                class_details.grade_level,
+                class_details.current,
+                section_details.section,
+                section_details.grade_level as section_grade_level,
+                school_years.school_year,
+                rooms.room_code,
+                rooms.room_description
+            ')
+            ->where('section_details.status', 1)
+            ->where('school_years.current', 1)
+            ->where('class_details.id', $request->id)
+            ->first();
+        $Enrollment = \App\Enrollment::join('student_informations', 'student_informations.id', '=', 'enrollments.student_information_id')
+            ->join('users', 'users.id', '=', 'student_informations.user_id')
+            // ->whereRaw('student_informations.id NOT IN ((SELECT  * from enrollments where enrollments.class_details_id = 3))')
+            ->selectRaw("
+                student_informations.id AS student_information_id,
+                users.username,
+                UPPER(CONCAT(student_informations.last_name, ' ', student_informations.first_name, ', ', student_informations.middle_name)) AS fullname,
+                enrollments.id AS enrollment_id
+            ")
+            ->where('class_details_id', $request->id)
+            ->orderByRaw('fullname')
+            // ->orWhere('first_name', 'like', '%'.$request->search.'%')
+            ->get(); //
+
+        $pdf = \PDF::loadView('control_panel_registrar.student_enrollment.partials.print', compact('Enrollment', 'ClassDetail'));
+        return $pdf->stream();
+        return $pdf->download('invoice.pdf');   
+    }
 }

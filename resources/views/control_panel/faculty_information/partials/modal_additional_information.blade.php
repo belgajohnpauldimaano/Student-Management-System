@@ -8,7 +8,7 @@
                 </h4>
             </div>
             <div class="modal-body">
-                <h3>{{ $FacultyInformation->last_name . ', ' . $FacultyInformation->first_name . ' ' . $FacultyInformation->middle_name }}</h3>
+                <h3>{{ ucfirst($FacultyInformation->last_name) . ', ' . ucfirst($FacultyInformation->first_name) . ' ' . ucfirst($FacultyInformation->middle_name) }}</h3>
                 <hr>
                 <h4>Basic Information</h4>
                 <table class="table table-bordered table-condensed">

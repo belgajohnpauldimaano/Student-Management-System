@@ -32,7 +32,8 @@
                     </select>
                 </div>
                 &nbsp;
-                <button type="submit" class="pull-right btn btn-flat btn-success">Search</button>
+                <button type="submit" class=" btn btn-flat btn-success"><i class="fa fa-search"></i> Search</button>
+                <button type="button" class=" btn btn-flat btn-primary" id="js-btn_print"><i class="fa fa-file-pdf"></i> Print</button>
                 {{--  <button type="button" class="pull-right btn btn-flat btn-danger btn-sm" id="js-button-add"><i class="fa fa-plus"></i> Add</button>  --}}
             </form>
         </div>
@@ -129,6 +130,16 @@
                         $('#search_class_subject').html(res);
                     }
                 })
+            })
+            $('body').on('click', '#js-btn_print', function (e) {
+                e.preventDefault()
+                const search_class_subject = $('#search_class_subject').val()
+                const search_sy = $('#search_sy').val()
+                if (!search_class_subject || !search_sy) {
+                    alert('Please select a subject');
+                    return;
+                }
+                window.open("{{ route('faculty.subject_class.list_students_by_class_print') }}?search_class_subject="+search_class_subject+"&search_sy="+search_sy, '', 'height=800,width=800')
             })
         });
     </script>

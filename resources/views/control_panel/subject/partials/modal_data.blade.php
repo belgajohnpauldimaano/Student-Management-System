@@ -26,6 +26,13 @@
                         <div class="help-block text-red text-center" id="js-subject">
                         </div>
                     </div>
+
+                    <div class="form-group">
+                        <label for="">Subject</label>
+                        <input type="number" step="any" class="form-control" name="units" value="{{ $SubjectDetail ? $SubjectDetail->units : '' }}">
+                        <div class="help-block text-red text-center" id="js-units">
+                        </div>
+                    </div>
                     
                 </div>
                 <div class="modal-footer">

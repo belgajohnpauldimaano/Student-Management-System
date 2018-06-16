@@ -96,6 +96,7 @@ Route::group(['prefix' => 'registrar/student-enrollment/{id}', 'middleware' => [
     Route::post('enroll-student', 'Registrar\StudentEnrollmentController@enroll_student')->name('registrar.student_enrollment.enroll_student');
     Route::post('enrolled-student', 'Registrar\StudentEnrollmentController@fetch_enrolled_student')->name('registrar.student_enrollment.fetch_enrolled_student');
     Route::post('cancel-enroll-student', 'Registrar\StudentEnrollmentController@cancel_enroll_student')->name('registrar.student_enrollment.cancel_enroll_student');
+    Route::get('print-enrolled-students', 'Registrar\StudentEnrollmentController@print_enrolled_students')->name('registrar.student_enrollment.print_enrolled_students');
 });
 
 Route::group(['prefix' => 'faculty', 'middleware' => ['auth', 'userroles'], 'roles' => ['faculty']], function() {
@@ -106,10 +107,12 @@ Route::group(['prefix' => 'faculty', 'middleware' => ['auth', 'userroles'], 'rol
         Route::get('', 'Faculty\SubjectClassController@index')->name('faculty.subject_class');
         Route::post('list-class-subject-details', 'Faculty\SubjectClassController@list_class_subject_details')->name('faculty.subject_class.list_class_subject_details');
         Route::post('list-students-by-class', 'Faculty\SubjectClassController@list_students_by_class')->name('faculty.subject_class.list_students_by_class');
+        Route::get('list-students-by-class-print', 'Faculty\SubjectClassController@list_students_by_class_print')->name('faculty.subject_class.list_students_by_class_print');
     });
 
     Route::group(['prefix' => 'class-schedules'], function() {
         Route::get('', 'Faculty\SubjectClassController@class_schedules')->name('faculty.faculty_class_schedules');
+        Route::get('class-schedules-print', 'Faculty\SubjectClassController@class_schedules_print')->name('faculty.faculty_class_schedules.class_schedules_print');
     });
     
     Route::group(['prefix' => 'student-grade-sheet'], function() {
@@ -118,6 +121,8 @@ Route::group(['prefix' => 'faculty', 'middleware' => ['auth', 'userroles'], 'rol
         Route::post('list-students-by-class', 'Faculty\GradeSheetController@list_students_by_class')->name('faculty.student_grade_sheet.list_students_by_class');
         Route::post('save-grade', 'Faculty\GradeSheetController@save_grade')->name('faculty.student_grade_sheet.save_grade');
         Route::post('temporary-save-grade', 'Faculty\GradeSheetController@temporary_save_grade')->name('faculty.student_grade_sheet.temporary_save_grade');
+        Route::post('finalize-grade', 'Faculty\GradeSheetController@finalize_grade')->name('faculty.student_grade_sheet.finalize_grade');
+        Route::get('list-students-by-class-print', 'Faculty\GradeSheetController@list_students_by_class_print')->name('faculty.student_grade_sheet.list_students_by_class_print');    
     });
 
     Route::group(['prefix' => 'my-account', 'middleware' => ['auth']], function() {
@@ -231,6 +236,7 @@ Route::group(['prefix' => 'shared/faculty-class-schedule', 'middleware' => ['aut
     Route::post('', 'Control_Panel\ClassScheduleController@index')->name('shared.faculty_class_schedules.index');
     Route::post('get-faculty-class-schedule', 'Control_Panel\ClassScheduleController@get_faculty_class_schedule')->name('shared.faculty_class_schedules.get_faculty_class_schedule');
     Route::get('print-handled-subject', 'Control_Panel\ClassScheduleController@print_handled_subject')->name('shared.faculty_class_schedules.print_handled_subject');
+    Route::get('print-handled-subject-all', 'Control_Panel\ClassScheduleController@print_handled_subject_all')->name('shared.faculty_class_schedules.print_handled_subject_all');
 });
 
 

@@ -7,6 +7,7 @@
                             <thead>
                                 <tr>
                                     <th>#</th>
+                                    <th>Username</th>
                                     <th>Student Name</th>
                                 </tr>
                             </thead>
@@ -15,6 +16,7 @@
                                     @foreach ($Enrollment as $key => $data)
                                         <tr>
                                             <td>{{ $key + 1 }}</td>
+                                            <td>{{ $data->username }}</td>
                                             <td>{{ $data->student_name }}</td>
                                         </tr>
                                     @endforeach

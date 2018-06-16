@@ -9,39 +9,10 @@
 
 @section ('content')
     <div class="box">
-        {{--  <div class="box-header with-border">
-            <h3 class="box-title">Search</h3>
-            <form id="js-form_search">
-                {{ csrf_field() }}  --}}
-                {{--  <div id="js-form_search" class="form-group col-sm-12 col-md-3" style="padding-right:0">
-                    <input type="text" class="form-control" name="search">
-                </div>  --}}
-                
-                {{--  <div id="js-form_search" class="form-group col-sm-12 col-md-3" style="padding-right:0">
-                    <select name="search_sy" id="search_sy" class="form-control">
-                        <option value="">Select SY</option>
-                        @foreach ($SchoolYear as $data)
-                            <option value="{{ $data->id }}">{{ $data->school_year }}</option>
-                        @endforeach
-                    </select>
-                </div> 
-                &nbsp;
-                <div id="js-form_search" class="form-group col-sm-12 col-md-5" style="padding-right:0">
-                    <select name="search_class_subject" id="search_class_subject" class="form-control">
-                        <option value="">Select Class Subject</option>
-                    </select>
-                </div>
-                &nbsp;
-                <button type="submit" class="pull-right btn btn-flat btn-success">Search</button>  --}}
-                {{--  <button type="button" class="pull-right btn btn-flat btn-danger btn-sm" id="js-button-add"><i class="fa fa-plus"></i> Add</button>  --}}
-            {{--  </form>
-        </div>  --}}
         <div class="overlay hidden" id="js-loader-overlay"><i class="fa fa-refresh fa-spin"></i></div>
         <div class="box-body">
             <div class="js-data-container">
-                {{--  @include('control_panel_faculty.subject_class_details.partials.data_list')  --}}
-                
-
+                <button id="js-btn_print" class="btn btn-primary btn-flat pull-right"><i class="fa fa-file-pdf"></i> Print</button>
                 <table class="table no-margin">
                     <thead>
                         <tr>
@@ -115,6 +86,11 @@
                         $('#search_class_subject').html(res);
                     }
                 })
+            })
+            
+            $('body').on('click', '#js-btn_print', function (e) {
+                e.preventDefault()
+                window.open("{{ route('faculty.faculty_class_schedules.class_schedules_print') }}", '', 'height=800,width=800')
             })
         });
     </script>

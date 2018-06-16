@@ -36,7 +36,8 @@ class SubjectController extends Controller
     {
         $rules = [
             'subject_code' => 'required',
-            'subject' => 'required'
+            'subject' => 'required',
+            'units' => 'required'
         ];
 
         $Validator = \Validator($request->all(), $rules);
@@ -51,6 +52,7 @@ class SubjectController extends Controller
             $SubjectDetail = \App\SubjectDetail::where('id', $request->id)->first();
             $SubjectDetail->subject_code = $request->subject_code;
             $SubjectDetail->subject = $request->subject;
+            $SubjectDetail->units = $request->units;
             $SubjectDetail->save();
             return response()->json(['res_code' => 0, 'res_msg' => 'Data successfully saved.']);
         }
@@ -58,6 +60,7 @@ class SubjectController extends Controller
         $SubjectDetail = new \App\SubjectDetail();
         $SubjectDetail->subject_code = $request->subject_code;
         $SubjectDetail->subject = $request->subject;
+        $SubjectDetail->units = $request->units;
         $SubjectDetail->save();
         return response()->json(['res_code' => 0, 'res_msg' => 'Data successfully saved.']);
     }

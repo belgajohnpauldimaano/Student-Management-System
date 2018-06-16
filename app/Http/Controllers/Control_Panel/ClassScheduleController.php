@@ -109,10 +109,15 @@ class ClassScheduleController extends Controller
             ')
             ->where('class_subject_details.status', 1)
             ->get();
-            $faculty_subjects[] = ['faculty' => $fa, 'subjects' => $ClassSubjectDetail]
+            if (count($ClassSubjectDetail) > 0) 
+            {
+                $faculty_subjects[] = ['faculty' => $fa, 'subjects' => $ClassSubjectDetail];
+            }
         }
+        $faculty_subjects = json_decode(json_encode($faculty_subjects));
 
-        $pdf = \PDF::loadView('control_panel.faculty_schedule.partials.report', compact('faculty_subjects'));
+        // return json_encode($faculty_subjects);
+        $pdf = \PDF::loadView('control_panel.faculty_schedule.partials.report_all', compact('faculty_subjects'));
         return $pdf->stream();
         return $pdf->download('invoice.pdf');   
     }
