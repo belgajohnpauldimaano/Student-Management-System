@@ -15,12 +15,10 @@
                 <div class="modal-body">
                     <div class="form-group">
                         <label for="">Article Type</label>
-                        <div>
-                            <select name="article_type" id="article_type" class="form-control">
-                                <option value="1" {{ ($Article ? ($Article->article_type == 1 ? 'selected' : '') : '') }}>News</option>
-                                <option value="2" {{ ($Article ? ($Article->article_type == 2 ? 'selected' : '') : '') }}>Events</option>
-                            </select>
-                        </div>
+                        <select name="article_type" id="article_type" class="form-control">
+                            <option value="1" {{ ($Article ? ($Article->article_type == 1 ? 'selected' : '') : '') }}>News</option>
+                            <option value="2" {{ ($Article ? ($Article->article_type == 2 ? 'selected' : '') : '') }}>Events</option>
+                        </select>
                     </div>
                     <div class="form-group">
                         <label for="">Article Status</label> <span class="text-muted"></span>
@@ -62,15 +60,31 @@
                     </div>
                     <div class="form-group">
                         <label for="">Article Title</label>
-                            <input type="text" class="form-control" name="content_content" value="{{ $Article ? $Article->content : '' }}">
-                            <div class="help-block text-red text-center" id="js-content_content">
+                            <input type="text" class="form-control" name="title" value="{{ $Article ? $Article->title : '' }}">
+                            <div class="help-block text-red text-center" id="title-error">
                         </div>
                     </div>
+
                     <div class="form-group">
-                        <label for="">Article Content</label>
-                            <input type="text" class="form-control" name="content_content" value="{{ $Article ? $Article->content : '' }}">
-                            <div class="help-block text-red text-center" id="js-content_content">
-                        </div>
+                        <label for="">Article Content</label> <span class="text-red">(Required)</span>
+                        {{-- <input type="text" class="form-control" name="description" id="description" value="{{ ($HomePageCarousel ? $HomePageCarousel->description : '') }}" placeholder="Description"> --}}
+                        <textarea placeholder="Content" style="width: 100%; height: 250px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;" name="content" id="content" cols="30" rows="10" class="js-wysiwyg_editor">{{ ($Article ? $Article->content : '') }}</textarea>
+                        <div class="help-block text-center" id="content-error"></div>
+                    </div>
+                
+                    <div class="form-group">
+                        <label>Level</label> <span class="text-red">(Required)</span> <span class="pull-right"><label for=""><input type="checkbox" name="all_level" id="all_level"> Select All</label></span>
+                        <?php
+                            $article_levels = ($Article ? explode(',',$Article->level) : []);
+                        ?>
+                        <select name="level" id="level" style="width: 100%;" data-placeholder="Select level" class="form-control js-select2-multiple_level" multiple="multiple">
+                            @foreach (App\Article::LEVEL as $key => $val)
+                                <option value="{{ $key }}" {{ (in_array($key, $article_levels) ? 'selected' : '') }}>
+                                    {{ $val }}
+                                </option>
+                            @endforeach
+                        </select>
+                        <div class="help-block text-center" id="level-error"></div>
                     </div>
                 </div>
                 <div class="modal-footer">
