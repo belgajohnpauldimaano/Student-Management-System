@@ -256,6 +256,7 @@ Route::group(['prefix' => 'student', 'middleware' => ['auth', 'userroles'], 'rol
     Route::group(['prefix' => 'grade-sheet'], function() {
         Route::get('', 'Control_Panel_Student\GradeSheetController@index')->name('student.grade_sheet.index');
         Route::post('', 'Control_Panel_Student\GradeSheetController@index')->name('student.grade_sheet.index');
+        Route::get('print-grades', 'Control_Panel_Student\GradeSheetController@print_grades')->name('student.grade_sheet.print_grades');
     });
     
     Route::group(['prefix' => 'my-account', 'middleware' => ['auth']], function() {
