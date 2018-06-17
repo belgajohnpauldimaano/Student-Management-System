@@ -8,7 +8,7 @@
     <meta content="" name="keywords">
     <meta content="" name="description">
     <!-- Favicons -->
-    <link href="{{ asset('theme/img/favicon.png') }}" rel="icon">
+    {{-- <link href="{{ asset('theme/img/favicon.png') }}" rel="icon"> --}}
     <link href="{{ asset('theme/img/apple-touch-icon.png') }}" rel="apple-touch-icon">
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,700,700i|Montserrat:300,400,500,700" rel="stylesheet">
@@ -69,7 +69,7 @@
                             <li><a href="#">Alumni Association</a></li>
                             <li><a href="#">Alumni Achievers</a></li>
                             <li><a href="#">Stay Connected</a></li>
-                            <li><a href="#">Transport & Diploma</a></li>
+                            {{-- <li><a href="#">Transport & Diploma</a></li> --}}
                         </ul>
                     </li>
                     {{-- <li class="menu-has-children"><a href="">Links</a>
