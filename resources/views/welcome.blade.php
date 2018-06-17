@@ -92,7 +92,7 @@
             <div class="container">
                 <header class="section-header">
                     <h3>About Us</h3>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+                    <p>The establishment of Catholic schools in Bataan goes back to 1959 when the late Fr. Conrado Ma. Quiambao founded St. Catherine of Siena Academy of Samal.</p>
                     {{-- <h3>Saint John Academy</h3>
                     <p>Striving for Academic Excellence & Christian Formation</p> --}}
                 </header>
@@ -105,7 +105,7 @@
                             </div>
                             <h2 class="title"><a href="#">Our Mission</a></h2>
                             <p>
-                                Lorem ipsum dolor sit amet, consectetur elit, sed do eiusmod tempor ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip... <a href="#">readmore</a>
+                                To provide the total Christian formation of the youth that will lead them to a deeper knowledge and to a closer imitation of the life and mission of Jesus Christ; To provide various faith-experiences... <a href="#">readmore</a>
                             </p>
                         </div>
                     </div>
@@ -117,7 +117,7 @@
                             </div>
                             <h2 class="title"><a href="#">Our History</a></h2>
                             <p>
-                                Sed ut perspiciatis unde omnis iste natus error sit voluptatem doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo... <a href="#">readmore</a>
+                                SAINT JOHN ACADEMY was born out of a clamor for a Catholic educational institution which will provide a deeply-rooted Christian formation to the young and which can supply the volunteers... <a href="{{ route('history') }}">readmore</a>
                             </p>
                         </div>
                     </div>
@@ -129,7 +129,7 @@
                             </div>
                             <h2 class="title"><a href="#">Our Vision</a></h2>
                             <p>
-                                Nemo enim ipsam voluptatem quia voluptas sit aut odit aut fugit, sed quia magni dolores eos qui ratione voluptatem sequi nesciunt Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet... <a href="#">readmore</a>
+                                The Diocesan Schools of Bataan envision themselves as a Communion of Educational Institutions committed to form each and everyone of their members to be a HERO. (We envision every Diocesan... <a href="{{ route('vision_mission') }}">readmore</a>
                             </p>
                         </div>
                     </div>
