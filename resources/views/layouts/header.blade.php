@@ -37,7 +37,7 @@
             </div>
             <nav id="nav-menu-container">
                 <ul class="nav-menu">
-                    <li class="menu-active"><a href="#intro">Home</a></li>
+                    <li class="menu-active"><a href="{{ route('home_page') }}">Home</a></li>
                     <li class="menu-has-children"><a href="">About SJA</a>
                         <ul>
                             <li><a href="{{ route('school_profile') }}">School Profile</a></li>
