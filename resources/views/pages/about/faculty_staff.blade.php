@@ -214,6 +214,7 @@
                             <div class="member-info">
                                 <div class="member-info-content">
                                     <h4>Jennielyn Gallardo</h4>
+                                    <span>Guidance Councilor</span>
                                 </div>
                             </div>
                         </div>
@@ -224,6 +225,7 @@
                             <div class="member-info">
                                 <div class="member-info-content">
                                     <h4>Katrina Nelma Garcia</h4>
+                                    <span>Student Services Coordinator</span>
                                 </div>
                             </div>
                         </div>
@@ -294,6 +296,7 @@
                             <div class="member-info">
                                 <div class="member-info-content">
                                     <h4>Rosalina Navarro</h4>
+                                    <span>Registrar</span>
                                 </div>
                             </div>
                         </div>
@@ -314,6 +317,7 @@
                             <div class="member-info">
                                 <div class="member-info-content">
                                     <h4>Mica Collen Pabalan</h4>
+                                    <span>Cashier</span>
                                 </div>
                             </div>
                         </div>
@@ -324,6 +328,7 @@
                             <div class="member-info">
                                 <div class="member-info-content">
                                     <h4>Anrea Pangilinan</h4>
+                                    <span>Finance Officer</span>
                                 </div>
                             </div>
                         </div>
@@ -335,6 +340,7 @@
                             <div class="member-info">
                                 <div class="member-info-content">
                                     <h4>Bernadette Pangilinan</h4>
+                                    <span>School Nurse</span>
                                 </div>
                             </div>
                         </div>
@@ -395,6 +401,7 @@
                             <div class="member-info">
                                 <div class="member-info-content">
                                     <h4>Christel Silvestre</h4>
+                                    <span>Administrative Staff</span>
                                 </div>
                             </div>
                         </div>
@@ -445,6 +452,7 @@
                             <div class="member-info">
                                 <div class="member-info-content">
                                     <h4>Jenelyn Tolentino</h4>
+                                    <span>Librarian</span>
                                 </div>
                             </div>
                         </div>
@@ -465,6 +473,7 @@
                             <div class="member-info">
                                 <div class="member-info-content">
                                     <h4>Gemma Yao</h4>
+                                    <span>Principal</span>
                                 </div>
                             </div>
                         </div>
