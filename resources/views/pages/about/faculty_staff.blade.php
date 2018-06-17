@@ -9,7 +9,7 @@
 		<div class="global-header__block">
 			<div class="va-block">
 				<div class="va-middle text-center">
-					<h1>Faculty and Staff</h1>
+					<h1>Teachers</h1>
 				</div>
 			</div>
 		</div>
@@ -20,21 +20,11 @@
 
         <section id="team">
             <div class="container">
-                {{-- <div class="section-header wow fadeInUp">
-                    <h3>Faculty & Staff</h3>
-                    <p>Our faculty</p>
-                </div> --}}
+                <div class="section-header wow fadeInUp">
+                    <h3>Faculty and Staff</h3>
+                    <p class="mb-0">&nbsp;</p>
+                </div>
                 <div class="row">
-                    <div class="col-lg-3 col-md-6 wow fadeInUp">
-                        <div class="member">
-                            <img src="{{ asset('img/faculty/Agustin-Annalyn-D.jpg') }}" class="img-fluid" alt="">
-                            <div class="member-info">
-                                <div class="member-info-content">
-                                    <h4>Annalyn Agustin</h4>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
                     <div class="col-lg-3 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
                         <div class="member">
                             <img src="{{ asset('img/faculty/Ancheta-Maria-Fatima-Nadine-G.jpg') }}" class="img-fluid" alt="">
@@ -50,7 +40,7 @@
                             <img src="{{ asset('img/faculty/Antonio-Arjay-A.jpg') }}" class="img-fluid" alt="">
                             <div class="member-info">
                                 <div class="member-info-content">
-                                    <h4>Arjay Arjay</h4>
+                                    <h4>Arjay Antonio</h4>
                                 </div>
                             </div>
                         </div>
@@ -61,16 +51,6 @@
                             <div class="member-info">
                                 <div class="member-info-content">
                                     <h4>Raymond Anulao</h4>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-3 col-md-6 wow fadeInUp" data-wow-delay="0.3s">
-                        <div class="member">
-                            <img src="{{ asset('img/faculty/Aquino-Roger-M.jpg') }}" class="img-fluid" alt="">
-                            <div class="member-info">
-                                <div class="member-info-content">
-                                    <h4>Roger Aquino</h4>
                                 </div>
                             </div>
                         </div>
@@ -250,16 +230,6 @@
                     </div>
                     <div class="col-lg-3 col-md-6 wow fadeInUp" data-wow-delay="0.3s">
                         <div class="member">
-                            <img src="{{ asset('img/faculty/Javier-Ronald-B.jpg') }}" class="img-fluid" alt="">
-                            <div class="member-info">
-                                <div class="member-info-content">
-                                    <h4>Ronald Javier</h4>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-3 col-md-6 wow fadeInUp" data-wow-delay="0.3s">
-                        <div class="member">
                             <img src="{{ asset('img/faculty/Jorda-Jelene-M.jpg') }}" class="img-fluid" alt="">
                             <div class="member-info">
                                 <div class="member-info-content">
@@ -284,17 +254,6 @@
                             <div class="member-info">
                                 <div class="member-info-content">
                                     <h4>Kate Lusung</h4>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-lg-3 col-md-6 wow fadeInUp" data-wow-delay="0.3s">
-                        <div class="member">
-                            <img src="{{ asset('img/faculty/Mendaro-Efren-B.jpg') }}" class="img-fluid" alt="">
-                            <div class="member-info">
-                                <div class="member-info-content">
-                                    <h4>Efren Mendaro</h4>
                                 </div>
                             </div>
                         </div>
@@ -355,26 +314,6 @@
                             <div class="member-info">
                                 <div class="member-info-content">
                                     <h4>Mica Collen Pabalan</h4>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-3 col-md-6 wow fadeInUp" data-wow-delay="0.3s">
-                        <div class="member">
-                            <img src="{{ asset('img/faculty/Paguio-Jerwin-M.jpg') }}" class="img-fluid" alt="">
-                            <div class="member-info">
-                                <div class="member-info-content">
-                                    <h4>Jerwin Paguio</h4>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-3 col-md-6 wow fadeInUp" data-wow-delay="0.3s">
-                        <div class="member">
-                            <img src="{{ asset('img/faculty/Paguio-Lito-L.jpg') }}" class="img-fluid" alt="">
-                            <div class="member-info">
-                                <div class="member-info-content">
-                                    <h4>Lito Paguio</h4>
                                 </div>
                             </div>
                         </div>
@@ -526,6 +465,73 @@
                             <div class="member-info">
                                 <div class="member-info-content">
                                     <h4>Gemma Yao</h4>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="pt-5 mt-5"></div>
+                <div class="section-header wow fadeInUp">
+                    <h3>Utility and Maintenance</h3>
+                    <p class="mb-0">&nbsp;</p>
+                </div>
+                <div class="row">
+                    <div class="col-lg-3 col-md-6 wow fadeInUp">
+                        <div class="member">
+                            <img src="{{ asset('img/faculty/Agustin-Annalyn-D.jpg') }}" class="img-fluid" alt="">
+                            <div class="member-info">
+                                <div class="member-info-content">
+                                    <h4>Annalyn Agustin</h4>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-6 wow fadeInUp" data-wow-delay="0.3s">
+                        <div class="member">
+                            <img src="{{ asset('img/faculty/Aquino-Roger-M.jpg') }}" class="img-fluid" alt="">
+                            <div class="member-info">
+                                <div class="member-info-content">
+                                    <h4>Roger Aquino</h4>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-6 wow fadeInUp" data-wow-delay="0.3s">
+                        <div class="member">
+                            <img src="{{ asset('img/faculty/Javier-Ronald-B.jpg') }}" class="img-fluid" alt="">
+                            <div class="member-info">
+                                <div class="member-info-content">
+                                    <h4>Ronald Javier</h4>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-6 wow fadeInUp" data-wow-delay="0.3s">
+                        <div class="member">
+                            <img src="{{ asset('img/faculty/Mendaro-Efren-B.jpg') }}" class="img-fluid" alt="">
+                            <div class="member-info">
+                                <div class="member-info-content">
+                                    <h4>Efren Mendaro</h4>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-6 wow fadeInUp" data-wow-delay="0.3s">
+                        <div class="member">
+                            <img src="{{ asset('img/faculty/Paguio-Jerwin-M.jpg') }}" class="img-fluid" alt="">
+                            <div class="member-info">
+                                <div class="member-info-content">
+                                    <h4>Jerwin Paguio</h4>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-6 wow fadeInUp" data-wow-delay="0.3s">
+                        <div class="member">
+                            <img src="{{ asset('img/faculty/Paguio-Lito-L.jpg') }}" class="img-fluid" alt="">
+                            <div class="member-info">
+                                <div class="member-info-content">
+                                    <h4>Lito Paguio</h4>
                                 </div>
                             </div>
                         </div>

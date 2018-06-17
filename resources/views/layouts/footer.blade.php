@@ -19,22 +19,20 @@
                     <div class="col-lg-4 col-md-6 footer-contact">
                         <h4>Contact Us</h4>
                         <p>
-                            A108 Adam Street
-                            <br> New York, NY 535022
-                            <br> United States
+                            Rizal Street, Dinalupihan
+                            <br> Bataan, 2110 Dinalupihan
+                            <br> Bataan
                             <br>
-                            <strong>Phone:</strong> +1 5589 55488 55
-                            <br>
-                            <strong>Email:</strong> info@example.com
+                            <strong>Phone:</strong> (047) 481 1762
                             <br>
                         </p>
-                        <div class="social-links">
+                        {{-- <div class="social-links">
                             <a href="#" class="twitter"><i class="fa fa-twitter"></i></a>
                             <a href="#" class="facebook"><i class="fa fa-facebook"></i></a>
                             <a href="#" class="instagram"><i class="fa fa-instagram"></i></a>
                             <a href="#" class="google-plus"><i class="fa fa-google-plus"></i></a>
                             <a href="#" class="linkedin"><i class="fa fa-linkedin"></i></a>
-                        </div>
+                        </div> --}}
                     </div>
                     <div {{-- class="col-lg-3 col-md-6 footer-newsletter">
                         <h4>Our Newsletter</h4>
