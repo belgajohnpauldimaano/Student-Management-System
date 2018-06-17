@@ -144,7 +144,7 @@
                         <h3>News and Events</h3>
                         <p class="mb-0">&nbsp;</p>
                     </header>
-                    <pre>{{ json_encode($Article, JSON_PRETTY_PRINT)}}</pre>
+                    {{-- <pre>{{ json_encode($Article, JSON_PRETTY_PRINT)}}</pre> --}}
                     <div class="row articles-cols">
                         @foreach($Article as $item)
                             <div class="col-lg-4 wow fadeInUp">
