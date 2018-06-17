@@ -470,6 +470,8 @@ h1, h2, h3, h4, h5, h6 {
   padding: 15px;
   cursor: pointer;
   color: #fff;
+  width: 100%;
+  text-align: right;
 }
 
 #mobile-nav ul .menu-has-children i.fa-chevron-up {
@@ -1503,6 +1505,7 @@ Center vertical */
 
 .global-header__block h1{
   margin-top: 25px;
+  padding: 0 15px;
 }
 
 .list-group-sidebar .list-group-item{
@@ -1514,4 +1517,23 @@ Center vertical */
 .list-group-sidebar .list-group-item.selected{
   border-left: 4px solid #e00c04;
   border-radius: 0 !important;
+}
+
+.card-background{
+    background-color: #dddddd;
+    background-position: center center;
+    background-repeat: no-repeat;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+    position: relative;
+}
+
+.articles {
+  padding: 60px 0 40px 0;
+}
+
+.articles-cols .title{
+  font-size: 20px;
 }

@@ -19,17 +19,16 @@
 			<div class="row">
 				<div class="col-md-8">
 					<h2>Vision</h2>
-					<p>We envision to develop morally, socially upright, and competitive Filipino citizens equipped with total quality  education and Christian formation in the service of a humane and peaceful society.</p>
+					<p>The Diocesan Schools of Bataan envision themselves as a Communion of Educational Institutions committed to form each and everyone of their members to be a HERO.</p>
+					<p>(We envision every Diocesan School to be an educational Christian community which integrates the Gospel of Jesus Christ into the life of its members and which offers quality education that will fully develop their human potentials.)</p>
 
-					<h2>Vision</h2>
-					<p>Commitment to develop morally, socially upright and globally competitive Filipino citizens.</p>
-					
-					<h2>Goals</h2>	
+					<h2>Mission</h2>
+					<p>The Diocesan Schools of Bataan are committed:</p>
 					<ol>
-						<li>To provide the total Christian formation to the youth by giving them various faith avenues that will develop them to become authentic Catholic / Christians.</li>
-						<li>To provide a curriculum and instructional facilities that will develop their skills to become globally competitive Filipino citizens.</li>
-						<li>To develop a roster of excellent administrative and faculty members who will continually engage in their holistic development.</li>
-						<li>To foster an environment of social, economic and political awareness responsive to the changing needs of the society.</li>
+						<li>To provide the total Christian formation of the youth that will lead them to a deeper knowledge and to a closer imitation of the life and mission of Jesus Christ;</li>
+						<li>To provide various faith-experiences that will produce Catholics/ Christians who understand and practice their religion;</li>
+						<li>To provide competent teachers and instructional facilities that will prepare the students academically for their chosen career/vocation;</li>
+						<li>To provide communal activities that will enable the faculty and the	students to become individuals who can lead, relate and respond to the 		needs of the community and the environment.</li>
 					</ol>			
 					<br>
 					<br>

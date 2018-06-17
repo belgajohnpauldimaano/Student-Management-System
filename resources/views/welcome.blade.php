@@ -92,7 +92,7 @@
             <div class="container">
                 <header class="section-header">
                     <h3>About Us</h3>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+                    <p>The establishment of Catholic schools in Bataan goes back to 1959 when the late Fr. Conrado Ma. Quiambao founded St. Catherine of Siena Academy of Samal.</p>
                     {{-- <h3>Saint John Academy</h3>
                     <p>Striving for Academic Excellence & Christian Formation</p> --}}
                 </header>
@@ -105,7 +105,7 @@
                             </div>
                             <h2 class="title"><a href="#">Our Mission</a></h2>
                             <p>
-                                Lorem ipsum dolor sit amet, consectetur elit, sed do eiusmod tempor ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip... <a href="#">readmore</a>
+                                To provide the total Christian formation of the youth that will lead them to a deeper knowledge and to a closer imitation of the life and mission of Jesus Christ; To provide various faith-experiences... <a href="#">readmore</a>
                             </p>
                         </div>
                     </div>
@@ -117,7 +117,7 @@
                             </div>
                             <h2 class="title"><a href="#">Our History</a></h2>
                             <p>
-                                Sed ut perspiciatis unde omnis iste natus error sit voluptatem doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo... <a href="#">readmore</a>
+                                SAINT JOHN ACADEMY was born out of a clamor for a Catholic educational institution which will provide a deeply-rooted Christian formation to the young and which can supply the volunteers... <a href="{{ route('history') }}">readmore</a>
                             </p>
                         </div>
                     </div>
@@ -129,13 +129,34 @@
                             </div>
                             <h2 class="title"><a href="#">Our Vision</a></h2>
                             <p>
-                                Nemo enim ipsam voluptatem quia voluptas sit aut odit aut fugit, sed quia magni dolores eos qui ratione voluptatem sequi nesciunt Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet... <a href="#">readmore</a>
+                                The Diocesan Schools of Bataan envision themselves as a Communion of Educational Institutions committed to form each and everyone of their members to be a HERO. (We envision every Diocesan... <a href="{{ route('vision_mission') }}">readmore</a>
                             </p>
                         </div>
                     </div>
                 </div>
             </div>
         </section>
+
+        @if($Article->count())
+            <section class="articles">
+                <div class="container">
+                    <header class="section-header">
+                        <h3>News and Events</h3>
+                        <p class="mb-0">&nbsp;</p>
+                    </header>
+                    {{-- <pre>{{ json_encode($Article, JSON_PRETTY_PRINT)}}</pre> --}}
+                    <div class="row articles-cols">
+                        @foreach($Article as $item)
+                            <div class="col-lg-4 wow fadeInUp">
+                                <div class="card-background mb-3" style="background-image: url({{ asset('content/articles/featured_image') . '/' . $item->featured_image }}); height: 240px;"></div>
+                                <h4 class="title"><a href="#">{{ str_limit($item->title, 50) }}</a></h4>
+                                <p>{!! str_limit(html_entity_decode(strip_tags($item->content)), 170) !!}</p>
+                            </div>
+                        @endforeach
+                    </div>
+                </div>
+            </section>
+        @endif()
 
         {{-- <section id="services">
             <div class="container">
@@ -457,7 +478,7 @@
             </div>
         </section> --}}
 
-        <section id="team">
+        {{-- <section id="team">
             <div class="container">
                 <div class="section-header wow fadeInUp">
                     <h3>Faculty & Staff</h3>
@@ -1321,34 +1342,34 @@
                     </div>
                 </div>
             </div>
-        </section>
+        </section> --}}
 
         <section id="contact" class="section-bg wow fadeInUp">
             <div class="container">
                 <div class="section-header">
                     <h3>Contact Us</h3>
-                    <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque</p>
+                    <p>Please contact us if you have any questions</p>
                 </div>
                 <div class="row contact-info">
                     <div class="col-md-4">
                         <div class="contact-address">
                             <i class="ion-ios-location-outline"></i>
                             <h3>Address</h3>
-                            <address>A108 Adam Street, NY 535022, USA</address>
+                            <address>Rizal Street, Dinalupihan Bataan, 2110 </address>
                         </div>
                     </div>
                     <div class="col-md-4">
                         <div class="contact-phone">
                             <i class="ion-ios-telephone-outline"></i>
                             <h3>Phone Number</h3>
-                            <p><a href="tel:+155895548855">+1 5589 55488 55</a></p>
+                            <p><a href="tel:0474811762">(047) 481 1762</a></p>
                         </div>
                     </div>
                     <div class="col-md-4">
                         <div class="contact-email">
                             <i class="ion-ios-email-outline"></i>
                             <h3>Email</h3>
-                            <p><a href="mailto:info@example.com">info@example.com</a></p>
+                            <p><a href="mailto:info@sja.com">info@sja.com</a></p>
                         </div>
                     </div>
                 </div>
