@@ -40,9 +40,11 @@
 @endsection
 
 @section ('scripts')
-    <script src="http://loc.student-management-system/cms/plugins/datepicker/bootstrap-datepicker.js"></script>
+    {{--  <script src="http://loc.student-management-system/cms/plugins/datepicker/bootstrap-datepicker.js"></script>  --}}
+    <script src="{{ asset('cms/plugins/datepicker/bootstrap-datepicker.js') }}"></script>
+    <script src="{{ asset('cms/plugins/iCheck/icheck.min.js') }}"></script>
     <!-- iCheck 1.0.1 -->
-    <script src="http://loc.everestacademy/cms/plugins/iCheck/icheck.min.js"></script>
+    {{--  <script src="http://loc.everestacademy/cms/plugins/iCheck/icheck.min.js"></script>  --}}
     <!-- bootstrap3 wysihtml5 -->
     <script src="{{ asset('cms/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.js') }}"></script>
     <script>

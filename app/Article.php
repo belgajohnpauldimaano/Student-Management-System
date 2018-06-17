@@ -29,10 +29,12 @@ class Article extends Model
     ];
 
     const LEVEL = [
-        '1' => 'Kindergarten',
-        '2' => 'Lower School',
-        '3' => 'Middle School',
-        '4' => 'High School'
+        // '1' => 'Kindergarten',
+        // '2' => 'Lower School',
+        // '3' => 'Middle School',
+        // '4' => 'High School'
+        '1' => 'Junior High',
+        '2' => 'Senior Hig',
     ];
     const LEVEL_DESIGN = [
         '1' => 'bg-light-blue color-palette',
