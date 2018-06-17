@@ -137,6 +137,27 @@
             </div>
         </section>
 
+        @if($Article->count())
+            <section class="articles">
+                <div class="container">
+                    <header class="section-header">
+                        <h3>News and Events</h3>
+                        <p class="mb-0">&nbsp;</p>
+                    </header>
+                    <pre>{{ json_encode($Article, JSON_PRETTY_PRINT)}}</pre>
+                    <div class="row articles-cols">
+                        @foreach($Article as $item)
+                            <div class="col-lg-4 wow fadeInUp">
+                                <div class="card-background mb-3" style="background-image: url({{ asset('content/articles/featured_image') . '/' . $item->featured_image }}); height: 240px;"></div>
+                                <h4 class="title"><a href="#">{{ str_limit($item->title, 50) }}</a></h4>
+                                <p>{!! str_limit(html_entity_decode(strip_tags($item->content)), 170) !!}</p>
+                            </div>
+                        @endforeach
+                    </div>
+                </div>
+            </section>
+        @endif()
+
         {{-- <section id="services">
             <div class="container">
                 <header class="section-header wow fadeInUp">
@@ -1327,28 +1348,28 @@
             <div class="container">
                 <div class="section-header">
                     <h3>Contact Us</h3>
-                    <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque</p>
+                    <p>Please contact us if you have any questions</p>
                 </div>
                 <div class="row contact-info">
                     <div class="col-md-4">
                         <div class="contact-address">
                             <i class="ion-ios-location-outline"></i>
                             <h3>Address</h3>
-                            <address>A108 Adam Street, NY 535022, USA</address>
+                            <address>Rizal Street, Dinalupihan Bataan, 2110 </address>
                         </div>
                     </div>
                     <div class="col-md-4">
                         <div class="contact-phone">
                             <i class="ion-ios-telephone-outline"></i>
                             <h3>Phone Number</h3>
-                            <p><a href="tel:+155895548855">+1 5589 55488 55</a></p>
+                            <p><a href="tel:0474811762">(047) 481 1762</a></p>
                         </div>
                     </div>
                     <div class="col-md-4">
                         <div class="contact-email">
                             <i class="ion-ios-email-outline"></i>
                             <h3>Email</h3>
-                            <p><a href="mailto:info@example.com">info@example.com</a></p>
+                            <p><a href="mailto:info@sja.com">info@sja.com</a></p>
                         </div>
                     </div>
                 </div>

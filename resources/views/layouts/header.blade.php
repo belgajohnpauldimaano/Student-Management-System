@@ -31,7 +31,7 @@
     <header id="header">
         <div class="container-fluid">
             <div id="logo" class="pull-left">
-                <h1><a href="{{ route('index') }}" class="scrollto">St. John</a></h1>
+                <h1><a href="{{ route('home_page') }}" class="scrollto">St. John</a></h1>
                 <!-- Uncomment below if you prefer to use an image logo -->
                 <!-- <a href="#intro"><img src="img/logo.png" alt="" title="" /></a>-->
             </div>

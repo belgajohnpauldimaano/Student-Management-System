@@ -1518,3 +1518,22 @@ Center vertical */
   border-left: 4px solid #e00c04;
   border-radius: 0 !important;
 }
+
+.card-background{
+    background-color: #dddddd;
+    background-position: center center;
+    background-repeat: no-repeat;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+    position: relative;
+}
+
+.articles {
+  padding: 60px 0 40px 0;
+}
+
+.articles-cols .title{
+  font-size: 20px;
+}

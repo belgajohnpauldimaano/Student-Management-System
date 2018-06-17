@@ -10,7 +10,7 @@
                     <div class="col-lg-4 col-md-6 footer-links">
                         <h4>About SJA</h4>
                         <ul>
-                            <li><i class="ion-ios-arrow-right"></i> <a href="{{ route('index') }}">Home</a></li>
+                            <li><i class="ion-ios-arrow-right"></i> <a href="{{ route('home_page') }}">Home</a></li>
                             <li><i class="ion-ios-arrow-right"></i> <a href="{{ route('vision_mission') }}">Vision Mission</a></li>
                             <li><i class="ion-ios-arrow-right"></i> <a href="{{ route('history') }}">Hymn</a></li>
                             <li><i class="ion-ios-arrow-right"></i> <a href="{{ route('faculty_staff') }}">Faculty and Staff</a></li>
