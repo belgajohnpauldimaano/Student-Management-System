@@ -28,6 +28,10 @@ class AboutController extends Controller
     }
     public function administration_offices()
     {
-    	return view('pages.about.administration_offices');
+        return view('pages.about.administration_offices');
+    }
+    public function faculty_staff()
+    {
+        return view('pages.about.faculty_staff');
     }
 }

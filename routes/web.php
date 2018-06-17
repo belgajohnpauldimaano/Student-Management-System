@@ -13,7 +13,7 @@
 
 Route::get('/', function () {
     return view('welcome');
-});
+})->name('index');;
 
 Auth::routes();
 
@@ -31,6 +31,7 @@ Route::get('/history', 'AboutController@history')->name('history');
 Route::get('/hymn', 'AboutController@hymn')->name('hymn');
 Route::get('/award-and-recognition', 'AboutController@award_recognition')->name('award_recognition');
 Route::get('/administration-and-offices', 'AboutController@administration_offices')->name('administration_offices');
+Route::get('/faculty-and-staff', 'AboutController@faculty_staff')->name('faculty_staff');
 
 /*
 |Academic Pages --------------------------------------------------------------------------

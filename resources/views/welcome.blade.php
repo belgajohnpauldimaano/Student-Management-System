@@ -457,7 +457,7 @@
             </div>
         </section> --}}
 
-        <section id="team">
+        {{-- <section id="team">
             <div class="container">
                 <div class="section-header wow fadeInUp">
                     <h3>Faculty & Staff</h3>
@@ -1321,7 +1321,7 @@
                     </div>
                 </div>
             </div>
-        </section>
+        </section> --}}
 
         <section id="contact" class="section-bg wow fadeInUp">
             <div class="container">
