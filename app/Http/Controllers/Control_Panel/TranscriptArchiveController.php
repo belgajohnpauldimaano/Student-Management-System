@@ -99,8 +99,9 @@ class TranscriptArchiveController extends Controller
                     \File::delete($path);
                 }
 
-                $file_name = base64_encode(date('U') . '-'. $request->last_name .'-'. $request->first_name .'-'. $request->middle_name . '-' . $request->school_year_graduated.'.').'.'.$request->tor->getClientOriginalExtension();
-                $request->tor->move(public_path('data\files'), $file_name);
+                // $file_name = base64_encode(date('U') . '-'. $request->last_name .'-'. $request->first_name .'-'. $request->middle_name . '-' . $request->school_year_graduated.'.').'.'.$request->tor->getClientOriginalExtension();
+                $file_name = $request->tor->getClientOriginalName();
+                $request->tor->move(public_path('data/files'), $file_name);
                 $TrascriptArhieve->file_name = encrypt($file_name);
             }
 
@@ -125,7 +126,7 @@ class TranscriptArchiveController extends Controller
             return response()->json(['res_code' => 1, 'res_msg' => 'Something wrong in saving data', 'res_error_msg' => $Validator->getMessageBag()]);
         }
         $file_name = base64_encode(date('U') . '-'. $request->last_name .'-'. $request->first_name .'-'. $request->middle_name . '-' . $request->school_year_graduated.'.').'.'.$request->tor->getClientOriginalExtension();
-        $request->tor->move(public_path('data\files'), $file_name);
+        $request->tor->move(public_path('data/files'), $file_name);
         
         $TrascriptArhieve = new \App\TrascriptArhieve();
         $TrascriptArhieve->first_name           = $request->first_name;

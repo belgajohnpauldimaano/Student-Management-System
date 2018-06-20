@@ -1,7 +1,7 @@
 @extends('control_panel.layouts.master')
 
 @section ('content_title')
-    Faculty List
+    Transcript of Record Archive
 @endsection
 
 @section('styles')
