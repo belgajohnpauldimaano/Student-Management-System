@@ -41,7 +41,7 @@
                                 <tr>
                                     <td>{{ $data->subject_code . ' ' . $data->subject }}</td>
                                     @if ($data->grade_status != 2)
-                                        <td colspan="6" class="text-center text-red">Grade not yet finilized</td>
+                                        <td colspan="6" class="text-center text-red">Grade not yet finalized</td>
                                     @else 
                                     
                                         @if ($grade_level >= 11) 
