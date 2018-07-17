@@ -4,7 +4,7 @@
 @endsection
 
 @section ('content_title')
-    Subject Class Details
+    Students Grade Sheet
 @endsection
 
 @section ('content')
