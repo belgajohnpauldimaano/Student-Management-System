@@ -34,7 +34,9 @@ class ClassScheduleController extends Controller
             $FacultyInformation = $FacultyInformation->where(function ($query) use ($request) {
                 if ($request->search)
                 {
-                    $query->where('first_name', 'LIKE', '%'. $request->search . '%');
+                    $query->where('faculty_informations.first_name', 'LIKE', '%'. $request->search . '%');
+                    $query->orWhere('faculty_informations.middle_name', 'LIKE', '%'. $request->search . '%');
+                    $query->orWhere('faculty_informations.last_name', 'LIKE', '%'. $request->search . '%');
                 }
             })
             ->paginate(10);
