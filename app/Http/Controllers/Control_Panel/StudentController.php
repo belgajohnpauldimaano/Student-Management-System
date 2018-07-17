@@ -39,7 +39,7 @@ class StudentController extends Controller
         $rules = [
             'username' => 'required',
             'first_name' => 'required',
-            // 'middle_name' => 'required',
+            'middle_name' => 'required',
             'last_name' => 'required',
             // 'address'   => 'required',
             // 'birthdate' => 'required',

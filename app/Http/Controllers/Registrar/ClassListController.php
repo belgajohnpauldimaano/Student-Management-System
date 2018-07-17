@@ -28,6 +28,7 @@ class ClassListController extends Controller
             ')
             ->where('section_details.status', 1)
             ->where('class_details.current', 1)
+            ->where('class_details.status', 1)
             ->where(function ($query) use($request) {
                 if ($request->sy_search) 
                 {
@@ -69,9 +70,10 @@ class ClassListController extends Controller
         {
             $SectionDetail = \App\SectionDetail::where('status', 1)->where('grade_level', $ClassDetail->grade_level)->orderBy('grade_level')->get();
         }
+        $GradeLevel = \App\GradeLevel::where('status', 1)->get();
         $Room = \App\Room::where('status', 1)->get();
         $SchoolYear = \App\SchoolYear::where('status', 1)->where('current', 1)->get();
-        return view('control_panel_registrar.class_details.partials.modal_data', compact('ClassDetail', 'SectionDetail', 'Room', 'SchoolYear', 'SectionDetail_grade_levels'))->render();
+        return view('control_panel_registrar.class_details.partials.modal_data', compact('ClassDetail', 'SectionDetail', 'Room', 'SchoolYear', 'SectionDetail_grade_levels', 'GradeLevel'))->render();
     }
 
     public function modal_manage_subjects (Request $request) 
@@ -106,7 +108,7 @@ class ClassListController extends Controller
             return response()->json(['res_code' => 1, 'res_msg' => 'Please fill all required fields.', 'res_error_msg' => $Validator->getMessageBag()]);
         }
 
-        $sectionDetail = \App\sectionDetail::where('id', $request->section)->first();
+        $sectionDetail = \App\SectionDetail::where('id', $request->section)->first();
 
         if ($request->id)
         {
@@ -129,6 +131,18 @@ class ClassListController extends Controller
     }
 
     public function deactivate_data (Request $request) 
+    {
+        $ClassDetail = \App\ClassDetail::where('id', $request->id)->first();
+
+        if ($ClassDetail)
+        {
+            $ClassDetail->current = 0;
+            $ClassDetail->save();
+            return response()->json(['res_code' => 0, 'res_msg' => 'Data successfully deactivated.']);
+        }
+        return response()->json(['res_code' => 1, 'res_msg' => 'Invalid request.']);
+    }
+    public function delete_data (Request $request)
     {
         $ClassDetail = \App\ClassDetail::where('id', $request->id)->first();
 

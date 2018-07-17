@@ -12,7 +12,6 @@ class FacultyDashboardController extends Controller
         $FacultyInformation = \App\FacultyInformation::where('user_id', \Auth::user()->id)->first();
         $SchoolYear         = \App\SchoolYear::where('current', 1)->first();
 
-        
         $StudentInformation_tagged_student = \DB::table('student_informations')
             ->select(\DB::raw('COUNT(student_informations.id) AS total_students'))
             ->whereRaw('student_informations.id 
@@ -27,7 +26,7 @@ class FacultyDashboardController extends Controller
                 )
             ->where('student_informations.status', 1)
             ->first();
-
+        // return json_encode(['StudentInformation_tagged_student' => $StudentInformation_tagged_student, 'FacultyInformation' => $FacultyInformation]);
         $StudentInformation_tagged_student_male = \DB::table('student_informations')
             ->select(\DB::raw('COUNT(student_informations.id) AS total_students'))
             ->whereRaw('student_informations.id 

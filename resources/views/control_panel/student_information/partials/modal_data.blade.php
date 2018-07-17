@@ -38,13 +38,13 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="">Address</label>
+                        <label for="">Address <small class="text-red">Optional</small></label>
                         <input type="text" class="form-control" name="address" value="{{ $StudentInformation ? $StudentInformation->address : '' }}">
                         <div class="help-block text-red text-center" id="js-address">
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="">Date of Birth</label>
+                        <label for="">Date of Birth <small class="text-red">Optional</small></label>
                         {{--  <input type="text" class="form-control" name="birthdate" value="{{ $StudentInformation ? $StudentInformation->birthdate : '' }}">  --}}
                         <div class="input-group date">
                             <div class="input-group-addon">
@@ -56,7 +56,7 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="">Gender</label>
+                        <label for="">Gender </label>
                         <select name="gender" id="gender" class="form-control">
                             <option value="">Select gender</option>
                             <option value="1" {{ $StudentInformation ? $StudentInformation->gender == 1 ? 'selected' : '' : '' }}>Male</option>

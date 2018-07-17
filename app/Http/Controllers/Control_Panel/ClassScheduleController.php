@@ -61,8 +61,25 @@ class ClassScheduleController extends Controller
             class_details_id IN ( SELECT id from class_details WHERE school_year_id IN ( SELECT id FROM school_years WHERE status = 1 AND current = 1 ) )
         ')
         ->where('class_subject_details.status', 1)
+        // ->orderByRaw('SUBSTRING(class_subject_details.class_days, 0, 1) DESC')
+        ->orderBy('class_subject_details.class_time_from', 'ASC')
         ->get();
-        // return response()->json(['res_code' => 0, 'res_msg' => '', 'FacultyInformation' => $ClassSubjectDetail]);
+        // $ClassSubjectDetailTmp = $ClassSubjectDetail;
+        // $ClassSubjectDetail = [];
+        // while (count($ClassSubjectDetailTmp) > 0) {
+        //     foreach ($ClassSubjectDetailTmp as $k => $d) 
+        //     {
+        //         $dTmp = substr($d->class_days, 0, 1);
+        //         if ($dTmp == 't') 
+        //         {
+        //             echo $dTmp;
+        //             $ClassSubjectDetail[] = [$dTmp];
+        //             $ClassSubjectDetailTmp->forget($k);
+        //         }
+        //     }
+        // }
+        
+        // return response()->json(['res_code' => 0, 'res_msg' => '', 'FacultyInformation' => $ClassSubjectDetail, 'ClassSubjectDetailTmp' => count($ClassSubjectDetailTmp), 'ClassSubjectDetailTmp' => $ClassSubjectDetailTmp]);
         return view('control_panel.faculty_schedule.partials.modal_data_class_schedule', compact('ClassSubjectDetail'))->render();
     }
 

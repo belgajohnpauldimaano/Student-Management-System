@@ -237,6 +237,10 @@ class StudentEnrollmentController extends Controller
         $StudentInformation = \App\StudentInformation::where('id', $request->student_id)->first();
         $ClassDetail = \App\ClassDetail::with('class_subjects')->where('id', $id)->first();
 
+        // $ClassDetail = \App\ClassDetail::with('class_subjects')->get();
+        // return response()->json(['res_code' => 1, 'res_msg' => 'There is a problem in enrolling student.', 'ClassDetail' => $ClassDetail]);
+
+
         $Enrollment = new \App\Enrollment();
         $Enrollment->student_information_id = $StudentInformation->id;
         $Enrollment->class_details_id = $ClassDetail->id;
@@ -254,7 +258,12 @@ class StudentEnrollmentController extends Controller
                     $StudentEnrolledSubject->save();
                 }
             }
-            return response()->json(['res_code' => 0, 'res_msg' => 'Student successfully enrolled.']);
+            return response()->json(['res_code' => 0, 
+                'res_msg' => 'Student successfully enrolled.', 
+                'StudentInformation' => $StudentInformation, 
+                'ClassDetail' => $ClassDetail,
+                'Enrollment' => $Enrollment,
+            ]);
         }
 
         return response()->json(['res_code' => 1, 'res_msg' => 'There is a problem in enrolling student.']);

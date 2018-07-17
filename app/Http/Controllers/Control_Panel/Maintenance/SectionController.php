@@ -30,7 +30,7 @@ class SectionController extends Controller
         $SectionDetail = NULL;
         if ($request->id)
         {
-            $SectionDetail = \App\SectionDetail::with(['user'])->where('id', $request->id)->first();
+            $SectionDetail = \App\SectionDetail::where('id', $request->id)->first();
         }
         $GradeLevel = \App\GradeLevel::where('status', 1)->get();
         return view('control_panel.section_details.partials.modal_data', compact('SectionDetail', 'GradeLevel'))->render();

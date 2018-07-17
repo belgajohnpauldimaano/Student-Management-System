@@ -25,7 +25,7 @@
                         <select name="grade_level" id="grade_level" class="form-control">
                             <option value="">Select a Grade Level</option>
                             @foreach ($GradeLevel as $gl) 
-                                <option value="{{$gl->grade}}">Grade {{ $gl->grade }}</option>
+                                <option value="{{$gl->grade}}" {{ $SectionDetail ? $SectionDetail->grade_level == $gl->grade ? 'selected' : '' : '' }}>Grade {{ $gl->grade }}</option>
                             @endforeach
                         </select>
                         <div class="help-block text-red text-center" id="js-grade_level">

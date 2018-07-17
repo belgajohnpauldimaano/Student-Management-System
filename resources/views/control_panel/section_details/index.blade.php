@@ -1,7 +1,7 @@
 @extends('control_panel.layouts.master')
 
 @section ('content_title')
-    Class Room List
+    Section Details
 @endsection
 
 @section ('content')

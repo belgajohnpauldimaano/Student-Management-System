@@ -8,6 +8,6 @@ class ClassDetail extends Model
 {
     public function class_subjects () 
     {
-        return $this->hasMany(ClassSubjectDetail::class, 'class_details_id', 'id')->where('status', 1);
+        return $this->hasMany(ClassSubjectDetail::class, 'class_details_id', 'id')->where('status', '!=', 0);
     }
 }
