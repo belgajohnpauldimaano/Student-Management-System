@@ -6,6 +6,7 @@
                                 <tr>
                                     <th>Subject Code</th>
                                     <th>Subject</th>
+                                    <th>Days</th>
                                     <th>Time</th>
                                     <th>Faculty</th>
                                     <th>Actions</th>
@@ -17,6 +18,7 @@
                                         <tr>
                                             <td>{{ $data->subject_code }}</td>
                                             <td>{{ $data->subject }}</td>
+                                            <td>{{ $data->class_days }}</td>
                                             <td>{{ $data->class_time_from . ' - ' . $data->class_time_to }}</td>
                                             <td>{{ $data->faculty_name }}</td>
                                             <td>

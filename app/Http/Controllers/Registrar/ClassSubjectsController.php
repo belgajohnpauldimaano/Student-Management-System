@@ -26,10 +26,12 @@ class ClassSubjectsController extends Controller
                 subject_details.subject_code,
                 subject_details.subject,
                 class_subject_details.class_time_from,
-                class_subject_details.class_time_to
+                class_subject_details.class_time_to,
+                class_subject_details.class_days
             ")
             ->where('class_subject_details.class_details_id', $class_id)
-            ->where('class_subject_details.status', 1);
+            ->where('class_subject_details.status', 1)
+            ->orderBy('class_subject_details.class_time_from', 'ASC');
         if ($request->ajax())
         {            
             $ClassSubjectDetail = $ClassSubjectDetail->paginate(10);
