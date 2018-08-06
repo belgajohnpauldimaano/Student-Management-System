@@ -34,7 +34,7 @@ class GradeSheetController extends Controller
                     ->whereRaw('class_details.current = 1')
                     ->whereRaw('class_details.status != 0')
                     ->select(\DB::raw("
-                        student_informations.id,
+                        DISTINCT student_informations.id,
                         CONCAT(student_informations.last_name, ' ', student_informations.first_name, ' ', student_informations.middle_name) as student_name,
                         student_enrolled_subjects.id as student_enrolled_subject_id,
                         enrollments.id as enrollment_id,
@@ -48,7 +48,7 @@ class GradeSheetController extends Controller
                         student_enrolled_subjects.fou_g_status,
                         student_enrolled_subjects.fin_g,
                         student_enrolled_subjects.fin_g_status,
-                        class_subject_details.status as grading_status
+                        class_subject_details.status as grading_status 
                     "))
                     ->paginate(50);
         // $ClassSubjectDetail_status = \App\ClassSubjectDetail::where('id', $request->search_class_subject)->first();

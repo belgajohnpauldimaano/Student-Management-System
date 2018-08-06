@@ -95,12 +95,33 @@ class ClassSubjectsController extends Controller
 
     public function save_data (Request $request) 
     {
-        // return json_encode($request->all());
+        $scheds = '';
+        if ($request->sched_mon) 
+        {
+            $scheds .= '1@'.date('H:i', strtotime($request->subject_time_from_mon)).'-'.date('H:i', strtotime($request->subject_time_to_mon)).';';
+        }
+        if ($request->sched_tue) 
+        {
+            $scheds .= '2@'.date('H:i', strtotime($request->subject_time_from_tue)).'-'.date('H:i', strtotime($request->subject_time_to_tue)).';';
+        }
+        if ($request->sched_wed) 
+        {
+            $scheds .= '3@'.date('H:i', strtotime($request->subject_time_from_wed)).'-'.date('H:i', strtotime($request->subject_time_to_wed)).';';
+        }
+        if ($request->sched_thur) 
+        {
+            $scheds .= '4@'.date('H:i', strtotime($request->subject_time_from_thur)).'-'.date('H:i', strtotime($request->subject_time_to_thur)).';';
+        }
+        if ($request->sched_fri) 
+        {
+            $scheds .= '5@'.date('H:i', strtotime($request->subject_time_from_fri)).'-'.date('H:i', strtotime($request->subject_time_to_fri)).';';
+        }
+        // return json_encode(['a' => $request->all(), 'scheds' => $scheds]);
         $rules = [
             'faculty'           => 'required',
             'subject'           => 'required',
-            'subject_time_from' => 'required',
-            'subject_time_to'   => 'required'
+            // 'subject_time_from' => 'required',
+            // 'subject_time_to'   => 'required'
         ];
         
         
@@ -122,17 +143,18 @@ class ClassSubjectsController extends Controller
             $ClassSubjectDetail->subject_id	        = $request->subject;
             $ClassSubjectDetail->faculty_id		    = $request->faculty;
             $ClassSubjectDetail->class_details_id   = $request->class_details_id;
+            $ClassSubjectDetail->class_schedule   = $scheds;
 
-            $class_days = '';
-            $class_days .= $request->sched_mon ? 'm/' : '';
-            $class_days .= $request->sched_tue ? 'tu/' : '';
-            $class_days .= $request->sched_wed ? 'w/' : '';
-            $class_days .= $request->sched_thu ? 'th/' : '';
-            $class_days .= $request->sched_fri ? 'f' : '';
+            // $class_days = '';
+            // $class_days .= $request->sched_mon ? 'm/' : '';
+            // $class_days .= $request->sched_tue ? 'tu/' : '';
+            // $class_days .= $request->sched_wed ? 'w/' : '';
+            // $class_days .= $request->sched_thu ? 'th/' : '';
+            // $class_days .= $request->sched_fri ? 'f' : '';
             
-            $class_days .= !$request->sched_mon && !$request->sched_tue && !$request->sched_wed && !$request->sched_thu && !$request->sched_fri ? 'm/tu/w/th/f' : '';
+            // $class_days .= !$request->sched_mon && !$request->sched_tue && !$request->sched_wed && !$request->sched_thu && !$request->sched_fri ? 'm/tu/w/th/f' : '';
 
-            $ClassSubjectDetail->class_days = $class_days;
+            // $ClassSubjectDetail->class_days = $class_days;
 
             $ClassSubjectDetail->save();
             return response()->json(['res_code' => 0, 'res_msg' => 'Data successfully updated.']);
@@ -144,17 +166,18 @@ class ClassSubjectsController extends Controller
         $ClassSubjectDetail->subject_id	        = $request->subject;
         $ClassSubjectDetail->faculty_id		    = $request->faculty;
         $ClassSubjectDetail->class_details_id   = $request->class_details_id;
+        $ClassSubjectDetail->class_schedule   = $scheds;
 
-        $class_days = '';
-        $class_days .= $request->sched_mon ? 'm/' : '';
-        $class_days .= $request->sched_tue ? 'tu/' : '';
-        $class_days .= $request->sched_wed ? 'w/' : '';
-        $class_days .= $request->sched_thu ? 'th/' : '';
-        $class_days .= $request->sched_fri ? 'f' : '';
+        // $class_days = '';
+        // $class_days .= $request->sched_mon ? 'm/' : '';
+        // $class_days .= $request->sched_tue ? 'tu/' : '';
+        // $class_days .= $request->sched_wed ? 'w/' : '';
+        // $class_days .= $request->sched_thu ? 'th/' : '';
+        // $class_days .= $request->sched_fri ? 'f' : '';
         
-        $class_days .= !$request->sched_mon && !$request->sched_tue && !$request->sched_wed && !$request->sched_thu && !$request->sched_fri ? 'm/tu/w/th/f' : '';
+        // $class_days .= !$request->sched_mon && !$request->sched_tue && !$request->sched_wed && !$request->sched_thu && !$request->sched_fri ? 'm/tu/w/th/f' : '';
 
-        $ClassSubjectDetail->class_days = $class_days;
+        // $ClassSubjectDetail->class_days = $class_days;
 
         $ClassSubjectDetail->save();
         return response()->json(['res_code' => 0, 'res_msg' => 'Data successfully saved.']);

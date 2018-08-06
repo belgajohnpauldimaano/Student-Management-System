@@ -61,7 +61,6 @@
                         <div class="help-block text-red text-center" id="js-room">
                         </div>
                     </div>
-                            
                     <div class="form-group">
                         <label for="">School Year</label>
                         <select name="school_year" id="school_year" class="form-control">

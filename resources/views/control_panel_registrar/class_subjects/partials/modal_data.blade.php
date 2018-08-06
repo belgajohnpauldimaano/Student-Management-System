@@ -40,7 +40,7 @@
                         <div class="help-block text-red text-center" id="js-subject">
                         </div>
                     </div>
-                    <div class="row no-margin">
+                    {{--  <div class="row no-margin">
                         <div class="col-md-6  no-padding">
                             <div class="bootstrap-timepicker">
                                 <div class="form-group">
@@ -71,8 +71,8 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="form-group">
+                    </div>  --}}
+                    {{--  <div class="form-group">
                         <label for="">Schedule</label>
                     </div>
                     <div class="checkbox">
@@ -106,7 +106,197 @@
                             <input name="sched_fri" id="sched_fri" class="sched_days" type="checkbox"> Friday
                             </label>
                         </div>
-                    </div>
+                    </div>  --}}
+
+                    
+
+                    <?php
+                        $days = $ClassSubjectDetail ? $ClassSubjectDetail->class_schedule ? explode(';', rtrim($ClassSubjectDetail->class_schedule,";")) : [] : [];
+                        $daysObj = [];
+                        if ($days) 
+                        {
+                            foreach($days as $day) 
+                            {
+                                $day_sched = explode('@', $day);
+                                $d = $day_sched[0];
+                                $t = explode('-', $day_sched[1]);
+                                $daysObj[$d]['from'] = $t[0];
+                                $daysObj[$d]['to'] = $t[1];
+                            }
+                        }
+                    ?>
+                        
+                    <table class="table table-bordered">
+                        <tr>
+                            <td>Day</td>
+                            <td>Time From</td>
+                            <td>Time To</td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label for="sched_mon" role="button">
+                                    <input name="sched_mon" id="sched_mon" class="sched_days" {{ $daysObj[1] ? 'checked' : '' }} type="checkbox"> Monday
+                                </label>
+                            </td>
+                            <td>
+                                <div class="bootstrap-timepicker">
+                                    <div class="form-group">
+                                        <div class="input-group">
+                                            <input type="text" class="form-control timepicker" name="subject_time_from_mon" value="{{ $daysObj[1] ? strftime('%r',strtotime($daysObj[1]['from'])) : '' }}">
+
+                                            <div class="input-group-addon">
+                                            <i class="fa fa-clock-o"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="bootstrap-timepicker">
+                                    <div class="form-group">
+                                        <div class="input-group">
+                                            <input type="text" class="form-control timepicker" name="subject_time_to_mon" value="{{ $daysObj[1] ? strftime('%r',strtotime($daysObj[1]['to'])) : '' }}">
+
+                                            <div class="input-group-addon">
+                                            <i class="fa fa-clock-o"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+
+
+                        <tr>
+                            <td>
+                                <label for="sched_tue" role="button">
+                                    <input name="sched_tue" id="sched_tue" class="sched_days" {{ $daysObj[2] ? 'checked' : '' }} type="checkbox"> Tuesday
+                                </label>
+                            </td>
+                            <td>
+                                <div class="bootstrap-timepicker">
+                                    <div class="form-group">
+                                        <div class="input-group">
+                                            <input type="text" class="form-control timepicker" name="subject_time_from_tue" value="{{ $daysObj[2] ? strftime('%r',strtotime($daysObj[2]['from'])) : '' }}">
+
+                                            <div class="input-group-addon">
+                                            <i class="fa fa-clock-o"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="bootstrap-timepicker">
+                                    <div class="form-group">
+                                        <div class="input-group">
+                                            <input type="text" class="form-control timepicker" name="subject_time_to_tue" value="{{ $daysObj[2] ? strftime('%r',strtotime($daysObj[2]['to'])) : '' }}">
+
+                                            <div class="input-group-addon">
+                                            <i class="fa fa-clock-o"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>
+                                <label for="sched_wed" role="button">
+                                    <input name="sched_wed" id="sched_wed" class="sched_days" {{ $daysObj[3] ? 'checked' : '' }} type="checkbox"> Wednesday
+                                </label>
+                            </td>
+                            <td>
+                                <div class="bootstrap-timepicker">
+                                    <div class="form-group">
+                                        <div class="input-group">
+                                            <input type="text" class="form-control timepicker" name="subject_time_from_wed" value="{{ $daysObj[3] ? strftime('%r',strtotime($daysObj[3]['from'])) : '' }}">
+
+                                            <div class="input-group-addon">
+                                            <i class="fa fa-clock-o"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="bootstrap-timepicker">
+                                    <div class="form-group">
+                                        <div class="input-group">
+                                            <input type="text" class="form-control timepicker" name="subject_time_to_wed" value="{{ $daysObj[3] ? strftime('%r',strtotime($daysObj[3]['to'])) : '' }}">
+
+                                            <div class="input-group-addon">
+                                            <i class="fa fa-clock-o"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>
+                                <label for="sched_thur" role="button">
+                                    <input name="sched_thur" id="sched_thur" class="sched_days" {{ $daysObj[4] ? 'checked' : '' }} type="checkbox"> Thursday
+                                </label>
+                            </td>
+                            <td>
+                                <div class="bootstrap-timepicker">
+                                    <div class="form-group">
+                                        <div class="input-group">
+                                            <input type="text" class="form-control timepicker" name="subject_time_from_thur" value="{{ $daysObj[4] ? strftime('%r',strtotime($daysObj[4]['from'])) : '' }}">
+
+                                            <div class="input-group-addon">
+                                            <i class="fa fa-clock-o"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="bootstrap-timepicker">
+                                    <div class="form-group">
+                                        <div class="input-group">
+                                            <input type="text" class="form-control timepicker" name="subject_time_to_thur" value="{{ $daysObj[4] ? strftime('%r',strtotime($daysObj[4]['to'])) : '' }}">
+
+                                            <div class="input-group-addon">
+                                            <i class="fa fa-clock-o"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label for="sched_fri" role="button">
+                                    <input name="sched_fri" id="sched_fri" class="sched_days" {{ $daysObj[5] ? 'checked' : '' }} type="checkbox"> Friday
+                                </label>
+                            </td>
+                            <td>
+                                <div class="bootstrap-timepicker">
+                                    <div class="form-group">
+                                        <div class="input-group">
+                                            <input type="text" class="form-control timepicker" name="subject_time_from_fri" value="{{ $daysObj[5] ? strftime('%r',strtotime($daysObj[5]['from'])) : '' }}">
+
+                                            <div class="input-group-addon">
+                                            <i class="fa fa-clock-o"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="bootstrap-timepicker">
+                                    <div class="form-group">
+                                        <div class="input-group">
+                                            <input type="text" class="form-control timepicker" name="subject_time_to_fri" value="{{ $daysObj[5] ? strftime('%r',strtotime($daysObj[5]['to'])) : '' }}">
+
+                                            <div class="input-group-addon">
+                                            <i class="fa fa-clock-o"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default btn-flat" data-dismiss="modal">Close</button>
