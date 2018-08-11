@@ -8,7 +8,7 @@
 @endsection
 
 @section ('content')
-    <h3>School Year: {{ $ClassDetail->school_year }}, Grade: {{ $ClassDetail->grade_level }}, Section: {{ $ClassDetail->section }}, Room: {{ $ClassDetail->room_code }} </h3>
+    {{--  <h3>School Year: {{ $ClassDetail->school_year }}, Grade: {{ $ClassDetail->grade_level }}, Section: {{ $ClassDetail->section }}, Room: {{ $ClassDetail->room_code }} </h3>  --}}
     <h4>Enroll Student</h4>
     <div class="box">
         <div class="box-header with-border">
@@ -65,7 +65,7 @@
                     <div id="js-form_search" class="form-group col-sm-12 col-md-3" style="">
                         <input type="text" class="form-control" name="search_ln" placeholder="Last name">
                     </div>
-                    <div class="col-sm-12 col-md-1">
+                    <div class="col-sm-12 col-md-2">
                         <button type="submit" class="btn btn-block  btn-flat btn-success"><i class="fa fa-search"></i> Search</button>
                     </div>
                     <div class="col-sm-12 col-md-1">

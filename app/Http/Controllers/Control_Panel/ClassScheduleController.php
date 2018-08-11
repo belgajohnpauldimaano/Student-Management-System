@@ -80,7 +80,7 @@ class ClassScheduleController extends Controller
         //         }
         //     }
         // }
-        
+        // return json_encode(['x' => $ClassSubjectDetail]);
         // return response()->json(['res_code' => 0, 'res_msg' => '', 'FacultyInformation' => $ClassSubjectDetail, 'ClassSubjectDetailTmp' => count($ClassSubjectDetailTmp), 'ClassSubjectDetailTmp' => $ClassSubjectDetailTmp]);
         return view('control_panel.faculty_schedule.partials.modal_data_class_schedule', compact('ClassSubjectDetail'))->render();
     }

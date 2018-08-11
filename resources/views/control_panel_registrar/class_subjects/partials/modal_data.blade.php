@@ -135,14 +135,14 @@
                         <tr>
                             <td>
                                 <label for="sched_mon" role="button">
-                                    <input name="sched_mon" id="sched_mon" class="sched_days" {{ $daysObj[1] ? 'checked' : '' }} type="checkbox"> Monday
+                                    <input name="sched_mon" id="sched_mon" class="sched_days" {{ isset($daysObj[1]) ? $daysObj[1] ? 'checked' : '' : '' }} type="checkbox"> Monday
                                 </label>
                             </td>
                             <td>
                                 <div class="bootstrap-timepicker">
                                     <div class="form-group">
                                         <div class="input-group">
-                                            <input type="text" class="form-control timepicker" name="subject_time_from_mon" value="{{ $daysObj[1] ? strftime('%r',strtotime($daysObj[1]['from'])) : '' }}">
+                                            <input type="text" class="form-control timepicker" name="subject_time_from_mon" value="{{ isset($daysObj[1]) ? $daysObj[1] ? strftime('%r',strtotime($daysObj[1]['from'])) : '' : '' }}">
 
                                             <div class="input-group-addon">
                                             <i class="fa fa-clock-o"></i>
@@ -155,7 +155,7 @@
                                 <div class="bootstrap-timepicker">
                                     <div class="form-group">
                                         <div class="input-group">
-                                            <input type="text" class="form-control timepicker" name="subject_time_to_mon" value="{{ $daysObj[1] ? strftime('%r',strtotime($daysObj[1]['to'])) : '' }}">
+                                            <input type="text" class="form-control timepicker" name="subject_time_to_mon" value="{{ isset($daysObj[1]) ? $daysObj[1] ? strftime('%r',strtotime($daysObj[1]['to'])) : '' : '' }}">
 
                                             <div class="input-group-addon">
                                             <i class="fa fa-clock-o"></i>
@@ -169,14 +169,14 @@
                         <tr>
                             <td>
                                 <label for="sched_tue" role="button">
-                                    <input name="sched_tue" id="sched_tue" class="sched_days" {{ $daysObj[2] ? 'checked' : '' }} type="checkbox"> Tuesday
+                                    <input name="sched_tue" id="sched_tue" class="sched_days" {{ isset($daysObj[2]) ? $daysObj[2] ? 'checked' : '' : '' }} type="checkbox"> Tuesday
                                 </label>
                             </td>
                             <td>
                                 <div class="bootstrap-timepicker">
                                     <div class="form-group">
                                         <div class="input-group">
-                                            <input type="text" class="form-control timepicker" name="subject_time_from_tue" value="{{ $daysObj[2] ? strftime('%r',strtotime($daysObj[2]['from'])) : '' }}">
+                                            <input type="text" class="form-control timepicker" name="subject_time_from_tue" value="{{ isset($daysObj[2]) ? $daysObj[2] ? strftime('%r',strtotime($daysObj[2]['from'])) : '': '' }}">
 
                                             <div class="input-group-addon">
                                             <i class="fa fa-clock-o"></i>
@@ -189,7 +189,7 @@
                                 <div class="bootstrap-timepicker">
                                     <div class="form-group">
                                         <div class="input-group">
-                                            <input type="text" class="form-control timepicker" name="subject_time_to_tue" value="{{ $daysObj[2] ? strftime('%r',strtotime($daysObj[2]['to'])) : '' }}">
+                                            <input type="text" class="form-control timepicker" name="subject_time_to_tue" value="{{ isset($daysObj[2]) ? $daysObj[2] ? strftime('%r',strtotime($daysObj[2]['to'])) : '': '' }}">
 
                                             <div class="input-group-addon">
                                             <i class="fa fa-clock-o"></i>
@@ -202,14 +202,14 @@
                         <tr>
                             <td>
                                 <label for="sched_wed" role="button">
-                                    <input name="sched_wed" id="sched_wed" class="sched_days" {{ $daysObj[3] ? 'checked' : '' }} type="checkbox"> Wednesday
+                                    <input name="sched_wed" id="sched_wed" class="sched_days" {{ isset($daysObj[3]) ? $daysObj[3] ? 'checked' : '' : '' }} type="checkbox"> Wednesday
                                 </label>
                             </td>
                             <td>
                                 <div class="bootstrap-timepicker">
                                     <div class="form-group">
                                         <div class="input-group">
-                                            <input type="text" class="form-control timepicker" name="subject_time_from_wed" value="{{ $daysObj[3] ? strftime('%r',strtotime($daysObj[3]['from'])) : '' }}">
+                                            <input type="text" class="form-control timepicker" name="subject_time_from_wed" value="{{ isset($daysObj[3]) ? $daysObj[3] ? strftime('%r',strtotime($daysObj[3]['from'])) : '' : '' }}">
 
                                             <div class="input-group-addon">
                                             <i class="fa fa-clock-o"></i>
@@ -222,7 +222,7 @@
                                 <div class="bootstrap-timepicker">
                                     <div class="form-group">
                                         <div class="input-group">
-                                            <input type="text" class="form-control timepicker" name="subject_time_to_wed" value="{{ $daysObj[3] ? strftime('%r',strtotime($daysObj[3]['to'])) : '' }}">
+                                            <input type="text" class="form-control timepicker" name="subject_time_to_wed" value="{{ isset($daysObj[3]) ? $daysObj[3] ? strftime('%r',strtotime($daysObj[3]['to'])) : '' : '' }}">
 
                                             <div class="input-group-addon">
                                             <i class="fa fa-clock-o"></i>
@@ -235,14 +235,14 @@
                         <tr>
                             <td>
                                 <label for="sched_thur" role="button">
-                                    <input name="sched_thur" id="sched_thur" class="sched_days" {{ $daysObj[4] ? 'checked' : '' }} type="checkbox"> Thursday
+                                    <input name="sched_thur" id="sched_thur" class="sched_days" {{ isset($daysObj[4]) ? $daysObj[4] ? 'checked' : '' : '' }} type="checkbox"> Thursday
                                 </label>
                             </td>
                             <td>
                                 <div class="bootstrap-timepicker">
                                     <div class="form-group">
                                         <div class="input-group">
-                                            <input type="text" class="form-control timepicker" name="subject_time_from_thur" value="{{ $daysObj[4] ? strftime('%r',strtotime($daysObj[4]['from'])) : '' }}">
+                                            <input type="text" class="form-control timepicker" name="subject_time_from_thur" value="{{ isset($daysObj[4]) ? $daysObj[4] ? strftime('%r',strtotime($daysObj[4]['from'])) : '' : '' }}">
 
                                             <div class="input-group-addon">
                                             <i class="fa fa-clock-o"></i>
@@ -255,7 +255,7 @@
                                 <div class="bootstrap-timepicker">
                                     <div class="form-group">
                                         <div class="input-group">
-                                            <input type="text" class="form-control timepicker" name="subject_time_to_thur" value="{{ $daysObj[4] ? strftime('%r',strtotime($daysObj[4]['to'])) : '' }}">
+                                            <input type="text" class="form-control timepicker" name="subject_time_to_thur" value="{{ isset($daysObj[4]) ? $daysObj[4] ? strftime('%r',strtotime($daysObj[4]['to'])) : '' : '' }}">
 
                                             <div class="input-group-addon">
                                             <i class="fa fa-clock-o"></i>
@@ -267,14 +267,14 @@
                         <tr>
                             <td>
                                 <label for="sched_fri" role="button">
-                                    <input name="sched_fri" id="sched_fri" class="sched_days" {{ $daysObj[5] ? 'checked' : '' }} type="checkbox"> Friday
+                                    <input name="sched_fri" id="sched_fri" class="sched_days" {{ isset($daysObj[5]) ? $daysObj[5] ? 'checked' : '' : '' }} type="checkbox"> Friday
                                 </label>
                             </td>
                             <td>
                                 <div class="bootstrap-timepicker">
                                     <div class="form-group">
                                         <div class="input-group">
-                                            <input type="text" class="form-control timepicker" name="subject_time_from_fri" value="{{ $daysObj[5] ? strftime('%r',strtotime($daysObj[5]['from'])) : '' }}">
+                                            <input type="text" class="form-control timepicker" name="subject_time_from_fri" value="{{ isset($daysObj[5]) ? $daysObj[5] ? strftime('%r',strtotime($daysObj[5]['from'])) : '' : '' }}">
 
                                             <div class="input-group-addon">
                                             <i class="fa fa-clock-o"></i>
@@ -287,7 +287,7 @@
                                 <div class="bootstrap-timepicker">
                                     <div class="form-group">
                                         <div class="input-group">
-                                            <input type="text" class="form-control timepicker" name="subject_time_to_fri" value="{{ $daysObj[5] ? strftime('%r',strtotime($daysObj[5]['to'])) : '' }}">
+                                            <input type="text" class="form-control timepicker" name="subject_time_to_fri" value="{{ isset($daysObj[5]) ? $daysObj[5] ? strftime('%r',strtotime($daysObj[5]['to'])) : '' : '' }}">
 
                                             <div class="input-group-addon">
                                             <i class="fa fa-clock-o"></i>

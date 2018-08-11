@@ -29,6 +29,7 @@ class ClassScheduleController extends Controller
             ->select(\DB::raw("
                 enrollments.id as enrollment_id,
                 class_details.grade_level,
+                class_subject_details.class_schedule,
                 class_subject_details.class_days,
                 class_subject_details.class_time_from,
                 class_subject_details.class_time_to,

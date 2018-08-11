@@ -25,9 +25,6 @@
 </head>
 
 <body>
-    <!--==========================
-    Header
-  ============================-->
     <header id="header">
         <div class="container-fluid">
             <div id="logo" class="pull-left">

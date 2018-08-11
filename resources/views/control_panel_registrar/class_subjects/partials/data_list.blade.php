@@ -6,8 +6,7 @@
                                 <tr>
                                     <th>Subject Code</th>
                                     <th>Subject</th>
-                                    <th>Days</th>
-                                    <th>Time</th>
+                                    <th>Schedule</th>
                                     <th>Faculty</th>
                                     <th>Actions</th>
                                 </tr>
@@ -15,11 +14,47 @@
                             <tbody>
                                 @if ($ClassSubjectDetail)
                                     @foreach ($ClassSubjectDetail as $data)
+                                        <?php
+                                            $days = $data ? $data->class_schedule ? explode(';', rtrim($data->class_schedule,";")) : [] : [];
+                                            $daysObj = [];
+                                            $daysDisplay = '';
+                                            if ($days) 
+                                            {
+                                                foreach($days as $day)
+                                                {
+                                                    $day_sched = explode('@', $day);
+                                                    $d = $day_sched[0];
+                                                    $day = '';
+                                                    if ($day_sched[0] == 1) {
+                                                        $day = 'M';
+                                                        $daysObj[$d]['day'] = 'M';
+                                                    } else if ($day_sched[0] == 2) {
+                                                        $day = 'T';
+                                                        $daysObj[$d]['day'] = 'T';
+                                                    } else if ($day_sched[0] == 3) {
+                                                        $day = 'W';
+                                                        $daysObj[$d]['day'] = 'W';
+                                                    } else if ($day_sched[0] == 4) {
+                                                        $day = 'TH';
+                                                        $daysObj[$d]['day'] = 'TH';
+                                                    } else if ($day_sched[0] == 5) {
+                                                        $day = 'F';
+                                                        $daysObj[$d]['day'] = 'F';
+                                                    }
+                                                    $t = explode('-', $day_sched[1]);
+                                                    /*$daysObj[$d]['from'] = $t[0];
+                                                    $daysObj[$d]['to'] = $t[1];*/
+
+                                                    $daysDisplay .= $day . '@' . $t[0] . '-' . $t[1] . '/';
+                                                }
+                                            }
+
+                                        ?>
                                         <tr>
                                             <td>{{ $data->subject_code }}</td>
                                             <td>{{ $data->subject }}</td>
-                                            <td>{{ $data->class_days }}</td>
-                                            <td>{{ $data->class_time_from . ' - ' . $data->class_time_to }}</td>
+                                            {{--  <td>{{ $data->class_days }}</td>  --}}
+                                            <td> {{ rtrim($daysDisplay, '/') }} </td>
                                             <td>{{ $data->faculty_name }}</td>
                                             <td>
                                                 <div class="input-group-btn pull-left text-left">

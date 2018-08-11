@@ -300,7 +300,7 @@
             <div class="modal-content">
                 <form id="form--education-attainment">
                     {{ csrf_field() }}
-                    <input type="hidden" class="form-control" name="educ_id" id="educ_id">
+                    <input type="hidden" class="form-control" name="educ_id" id="educ_id" value="">
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                         <h4 class="modal-title">
@@ -572,7 +572,7 @@
             $('body').on('click', '.btn-add-educ', function (e) {
                 e.preventDefault()
                 $('.modal-education-attainment').modal({ backdrop : 'static' })
-                $('#educ_id').val(educ_id);
+                $('#educ_id').val('');
                 $('#course').val('');
                 $('#school').val('');
                 $('#date_from').val('');

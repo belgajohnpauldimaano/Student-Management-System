@@ -43,6 +43,7 @@ class SubjectClassController extends Controller
             ->where('class_details.status', 1)
             ->select(\DB::raw('
                 class_subject_details.id,
+                class_subject_details.class_schedule,
                 class_subject_details.class_time_from,
                 class_subject_details.class_time_to,
                 class_subject_details.class_days,
@@ -83,6 +84,7 @@ class SubjectClassController extends Controller
             ->where('class_details.status', 1)
             ->select(\DB::raw('
                 class_subject_details.id,
+                class_subject_details.class_schedule,
                 class_subject_details.class_time_from,
                 class_subject_details.class_time_to,
                 class_subject_details.class_days,
@@ -108,6 +110,7 @@ class SubjectClassController extends Controller
             ->where('class_details.status', 1)
             ->select(\DB::raw('  
                 class_subject_details.id,
+                class_subject_details.class_schedule,
                 class_subject_details.class_time_from,
                 class_subject_details.class_time_to,
                 class_subject_details.class_days,
@@ -123,7 +126,7 @@ class SubjectClassController extends Controller
         {
             foreach ($ClassSubjectDetail as $data) 
             {
-                $class_details_elements .= '<option value="'. $data->id .'">'. $data->subject_code . ' ' . $data->subject . ' - Grade ' .  $data->grade_level . ' Section ' . $data->section . ' -- Schedule ' . $data->class_time_from . '-' . $data->class_time_to . '-' . $data->class_days   .'</option>';
+                $class_details_elements .= '<option value="'. $data->id .'">'. $data->subject_code . ' ' . $data->subject . ' - Grade ' .  $data->grade_level . ' Section ' . $data->section .'</option>';
             }
 
             return $class_details_elements;
@@ -174,6 +177,7 @@ class SubjectClassController extends Controller
             ->join('subject_details', 'subject_details.id', '=', 'class_subject_details.subject_id')
             ->select(\DB::raw('
                 class_subject_details.id,
+                class_subject_details.class_schedule,
                 class_subject_details.class_days,
                 class_subject_details.class_time_from,
                 class_subject_details.class_time_to,
@@ -207,6 +211,7 @@ class SubjectClassController extends Controller
             ->join('subject_details', 'subject_details.id', '=', 'class_subject_details.subject_id')
             ->select(\DB::raw('
                 class_subject_details.id,
+                class_subject_details.class_schedule,
                 class_subject_details.class_days,
                 class_subject_details.class_time_from,
                 class_subject_details.class_time_to,

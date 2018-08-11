@@ -62,6 +62,7 @@ class GradeSheetController extends Controller
             ->where('class_details.status', '!=', 0)
             ->select(\DB::raw('
                 class_subject_details.id,
+                class_subject_details.class_schedule,
                 class_subject_details.class_time_from,
                 class_subject_details.class_time_to,
                 class_subject_details.class_days,
@@ -119,6 +120,7 @@ class GradeSheetController extends Controller
             ->where('class_details.status', '!=', 0)
             ->select(\DB::raw('
                 class_subject_details.id,
+                class_subject_details.class_schedule,
                 class_subject_details.class_time_from,
                 class_subject_details.class_time_to,
                 class_subject_details.class_days,
@@ -147,6 +149,7 @@ class GradeSheetController extends Controller
             ->where('class_details.status', '!=', 0)
             ->select(\DB::raw('  
                 class_subject_details.id,
+                class_subject_details.class_schedule,
                 class_subject_details.class_time_from,
                 class_subject_details.class_time_to,
                 class_subject_details.class_days,
@@ -162,7 +165,7 @@ class GradeSheetController extends Controller
         {
             foreach ($ClassSubjectDetail as $data) 
             {
-                $class_details_elements .= '<option value="'. $data->id .'">'. $data->subject_code . ' ' . $data->subject . ' - Grade ' .  $data->grade_level . ' Section ' . $data->section . ' -- Schedule ' . $data->class_time_from . '-' . $data->class_time_to . '-' . $data->class_days   .'</option>';
+                $class_details_elements .= '<option value="'. $data->id .'">'. $data->subject_code . ' ' . $data->subject . ' - Grade ' .  $data->grade_level . ' Section ' . $data->section .'</option>';
             }
 
             return $class_details_elements;
@@ -171,19 +174,19 @@ class GradeSheetController extends Controller
     }
     public function temporary_save_grade(Request $request)
     {
-        if (!$request->student_enrolled_subject_id || !$request->enrollment_id || !$request->grading || !$request->grade >= 65) 
+        if (!$request->student_enrolled_subject_id || !$request->enrollment_id || !$request->grading) 
         {
             return response()->json(['res_code' => 1, 'res_msg' => 'Invalid request.',]);
         } 
 
         $validator = \Validator::make($request->all(), [
-            'grade' => 'numeric|between:65,100.00'
+            'grade' => 'numeric|between:0,100.00'
         ], [
-            'grade.between' => 'grade is invalid. 65 - 100.00'
+            'grade.between' => 'grade is invalid. 0 - 100.00'
         ]);
         if ($validator->fails())
         {
-            return response()->json(['res_code' => 1, 'res_msg' => 'grade is invalid. 65 - 100.00.', 'res_error_msg' => $validator->getMessageBag()]);
+            return response()->json(['res_code' => 1, 'res_msg' => 'grade is invalid. 0 - 100.00.', 'res_error_msg' => $validator->getMessageBag()]);
         }
 
         $student_enrolled_subject_id = base64_decode($request->student_enrolled_subject_id);
@@ -215,8 +218,8 @@ class GradeSheetController extends Controller
         }
         else if ($grading == 'fourth') 
         {
-            $StudentEnrolledSubject->for_g = $grade;
-            // $StudentEnrolledSubject->for_g_status = 1;
+            $StudentEnrolledSubject->fou_g = $grade;
+            // $StudentEnrolledSubject->fou_g_status = 1;
         }
         $StudentEnrolledSubject->save();
         return response()->json(['res_code' => 0, 'res_msg' => 'Grade successfully saved temporarily.',]);
@@ -270,8 +273,8 @@ class GradeSheetController extends Controller
         }
         else if ($request->grading == 'fourth') 
         {
-            $StudentEnrolledSubject->for_g = $request->grade;
-            $StudentEnrolledSubject->for_g_status = 1;
+            $StudentEnrolledSubject->fou_g = $request->grade;
+            $StudentEnrolledSubject->fou_g_status = 1;
         }
         $StudentEnrolledSubject->save();
         return response()->json(['res_code' => 0, 'res_msg' => 'Grade successfully saved.',]);

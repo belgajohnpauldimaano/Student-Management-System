@@ -25,6 +25,7 @@ class ClassSubjectsController extends Controller
                 CONCAT(faculty_informations.last_name, ' ', faculty_informations.first_name) as faculty_name,
                 subject_details.subject_code,
                 subject_details.subject,
+                class_subject_details.class_schedule,
                 class_subject_details.class_time_from,
                 class_subject_details.class_time_to,
                 class_subject_details.class_days
