@@ -67,6 +67,54 @@
                     }
                 });
             });
+            
+            $('body').on('click', '.js-btn_print_grade', function (e) {
+                e.preventDefault();
+                {{--  loader_overlay();  --}}
+                var id = $(this).data('id');
+                $.ajax({
+                    url : "{{ route('admin.student.information.print_student_grade_modal') }}",
+                    type : 'POST',
+                    data : { _token : '{{ csrf_token() }}', id : id },
+                    success : function (res) {
+                        $('.js-modal_holder').html(res);
+                        $('.js-modal_holder .modal').modal({ backdrop : 'static' });
+                        $('.js-modal_holder .modal').on('shown.bs.modal', function () {
+                            //Date picker
+                            $('#datepicker').datepicker({
+                                autoclose: true
+                            })  
+                        });
+                    }
+                });
+            })
+
+            $('body').on('click', '#js-btn_print_student_grade', function (e) {
+                e.preventDefault();
+                {{--  loader_overlay();  --}}
+                var id = $('#print_student_id').val();
+                var print_sy = $('#print_sy').val();
+                if (print_sy < 1) {
+                    alert('Please select school year')
+                    return
+                }
+                window.open("{{ route('admin.student.information.print_student_grades') }}?id="+id+"&cid="+print_sy, '', 'height=800,width=800')
+                {{--  $.ajax({
+                    url : "{{ route('admin.student.information.print_student_grade_modal') }}",
+                    type : 'POST',
+                    data : { _token : '{{ csrf_token() }}', id : id },
+                    success : function (res) {
+                        $('.js-modal_holder').html(res);
+                        $('.js-modal_holder .modal').modal({ backdrop : 'static' });
+                        $('.js-modal_holder .modal').on('shown.bs.modal', function () {
+                            //Date picker
+                            $('#datepicker').datepicker({
+                                autoclose: true
+                            })
+                        });
+                    }
+                });  --}}
+            })
 
             $('body').on('submit', '#js-form_subject_details', function (e) {
                 e.preventDefault();

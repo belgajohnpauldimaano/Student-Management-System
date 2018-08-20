@@ -28,6 +28,9 @@
                                                     <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="true">Action
                                                         <span class="fa fa-caret-down"></span></button>
                                                     <ul class="dropdown-menu">
+                                                        @if ($data->enrolled_class) 
+                                                            <li><a href="#" class="js-btn_print_grade" data-id="{{ $data->id }}">Print Grade</a></li>
+                                                        @endif
                                                         <li><a href="#" class="js-btn_update_sy" data-id="{{ $data->id }}">Edit</a></li>
                                                         <li><a href="#" class="js-btn_deactivate" data-id="{{ $data->id }}">Deactivate</a></li>
                                                     </ul>>

@@ -136,6 +136,7 @@ class GradeSheetController extends Controller
             ->where('class_details.school_year_id', $SchoolYear->id)
             ->select(\DB::raw("
                 enrollments.id as enrollment_id,
+                enrollments.class_details_id as cid,
                 class_details.grade_level,
                 class_subject_details.class_days,
                 class_subject_details.class_time_from,
@@ -150,9 +151,38 @@ class GradeSheetController extends Controller
             "))
             ->orderBy('class_subject_details.class_time_from', 'ASC')
             ->get();
+            $ClassDetail = [];
+            if ($Enrollment)
+            {
+                
+                $ClassDetail = \App\ClassDetail::join('section_details', 'section_details.id', '=' ,'class_details.section_id')
+                ->join('rooms', 'rooms.id', '=' ,'class_details.room_id')
+                ->join('school_years', 'school_years.id', '=' ,'class_details.school_year_id')
+                ->selectRaw('
+                    class_details.id,
+                    class_details.section_id,
+                    class_details.room_id,
+                    class_details.school_year_id,
+                    class_details.grade_level,
+                    class_details.current,
+                    section_details.section,
+                    section_details.grade_level as section_grade_level,
+                    school_years.school_year,
+                    rooms.room_code,
+                    rooms.room_description
+                ')
+                ->where('section_details.status', 1)
+                // ->where('school_years.current', 1)
+                ->where('class_details.id', $Enrollment[0]->cid)
+                ->first();
+            }
+
             $GradeSheetData = [];
             $grade_level = 1;
-                $grade_status = $Enrollment[0]->grade_status;
+            $sub_total = 0;
+            $general_avg = 0;
+            $subj_count = 0;
+            $grade_status = $Enrollment[0]->grade_status;
             // return json_encode(['Enrollment' => $Enrollment,'StudentInformation' => $StudentInformation, 'SchoolYear' => $SchoolYear]);
             if ($StudentInformation && count($Enrollment)>0)
             {
@@ -215,10 +245,22 @@ class GradeSheetController extends Controller
                     ];
                     return $data;
                 });
+                for ($i=0; $i<count($GradeSheetData); $i++)
+                {
+                    if ($GradeSheetData[$i]['final_g'] > 0 && $GradeSheetData[$i]['grade_status'] == 2) 
+                    {
+                        $subj_count++;
+                        $sub_total =  $GradeSheetData[$i]['final_g'];
+                    }
+                }
+                if ($subj_count > 0) 
+                {
+                    $general_avg = $sub_total / $subj_count;
+                }
             }
 
             $GradeSheetData = json_decode(json_encode($GradeSheetData));
-            $pdf = \PDF::loadView('control_panel_student.grade_sheet.partials.print', compact('GradeSheetData', 'grade_level', 'StudentInformation'));
+            $pdf = \PDF::loadView('control_panel_student.grade_sheet.partials.print', compact('GradeSheetData', 'grade_level', 'StudentInformation', 'ClassDetail', 'general_avg'));
             return $pdf->stream();
             return view('control_panel_student.grade_sheet.index', compact('GradeSheetData'));
             return json_encode(['GradeSheetData' => $GradeSheetData,]);

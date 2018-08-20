@@ -11,6 +11,28 @@ class StudentEnrollmentController extends Controller
     {
         // echo json_encode($request->user()->get_user_role('admin'), $request->user()->role);
         // return;
+        
+        $ClassDetail = \App\ClassDetail::join('section_details', 'section_details.id', '=' ,'class_details.section_id')
+            ->join('rooms', 'rooms.id', '=' ,'class_details.room_id')
+            ->join('school_years', 'school_years.id', '=' ,'class_details.school_year_id')
+            ->selectRaw('
+                class_details.id,
+                class_details.section_id,
+                class_details.room_id,
+                class_details.school_year_id,
+                class_details.grade_level,
+                class_details.current,
+                section_details.section,
+                section_details.grade_level as section_grade_level,
+                school_years.id AS sy_id,
+                school_years.school_year,
+                rooms.room_code,
+                rooms.room_description
+            ')
+            ->where('section_details.status', 1)
+            // ->where('school_years.current', 1)
+            ->where('class_details.id', $id)
+            ->first();
         if ($request->ajax())
         {
             if (!$request->search_fn &&
@@ -24,7 +46,14 @@ class StudentEnrollmentController extends Controller
 
             $StudentInformation = \App\StudentInformation::with(['user'])
             ->join('users', 'users.id', '=', 'student_informations.user_id')
-            ->leftJoin('enrollments', 'enrollments.student_information_id', '=', 'student_informations.id')
+            // ->leftJoin('enrollments', 'enrollments.student_information_id', '=', 'student_informations.id')
+            // ->leftJoin('class_details', 'class_details.id', '=', 'enrollments.class_details_id')
+            // ->leftJoin('school_years', 'school_years.id', '=', 'class_details.school_year_id')
+            ->selectRaw("
+                student_informations.id,
+                users.username,
+                CONCAT(student_informations.last_name, ' ', student_informations.first_name, ', ', student_informations.middle_name) AS fullname
+            ")
             ->where(function ($query) use ($request) {
                 if ($request->search_fn)
                 {
@@ -46,41 +75,36 @@ class StudentEnrollmentController extends Controller
                     $query->where('users.username', 'like', '%'.$request->search_student_id.'%');
                 }
             })
-            // ->whereRaw('student_informations.id NOT IN ((SELECT  * from enrollments where enrollments.class_details_id = 3))')
-            ->selectRaw("
-                student_informations.id,
-                users.username,
-                CONCAT(student_informations.last_name, ' ', student_informations.first_name, ', ', student_informations.middle_name) AS fullname,
-                enrollments.id AS enrollment_id
-            ")
-            ->whereRaw('enrollments.id IS NULL')
+            ->where(function ($query) use ($id) {
+                // $query->whereRaw('enrollments.class_details_id IS NULL OR enrollments.class_details_id != '.$id);
+                // $query->whereRaw('enrollments.class_details_id IS NULL AND enrollments.class_details_id != '.$id);
+            })
+            // ->where(function ($query) use ($id, $ClassDetail) {
+            //     $query->whereRaw('
+            //             enrollments.id IS NULL 
+            //         OR 
+            //             enrollments.class_details_id != '.$id
+            //     );
+            // })
+            // ->where(function ($query) use ($id, $ClassDetail) {
+            //     $query->whereRaw('
+            //             (SELECT 
+            //                 class_details_id 
+            //             FROM
+            //                 enrollments
+            //             WHERE 
+            //                 (
+            //                     enrollments.student_information_id = student_informations.id
+            //                 )
+            //             ) = '. $id
+            //     );
+            // })
             ->orderByRaw('fullname')
-            // ->orWhere('first_name', 'like', '%'.$request->search.'%')
-            ->paginate(10); //
+            ->paginate(10);
 
-            // return json_encode($StudentInformation);
+            // return json_encode(['s' => $StudentInformation, 'req' => $request->all(), 'class_details_id' => $id]);
             return view('control_panel_registrar.student_enrollment.partials.data_list', compact('StudentInformation'))->render();
         }
-        $ClassDetail = \App\ClassDetail::join('section_details', 'section_details.id', '=' ,'class_details.section_id')
-            ->join('rooms', 'rooms.id', '=' ,'class_details.room_id')
-            ->join('school_years', 'school_years.id', '=' ,'class_details.school_year_id')
-            ->selectRaw('
-                class_details.id,
-                class_details.section_id,
-                class_details.room_id,
-                class_details.school_year_id,
-                class_details.grade_level,
-                class_details.current,
-                section_details.section,
-                section_details.grade_level as section_grade_level,
-                school_years.school_year,
-                rooms.room_code,
-                rooms.room_description
-            ')
-            ->where('section_details.status', 1)
-            ->where('school_years.current', 1)
-            ->where('class_details.id', $id)
-            ->first();
         // $StudentInformation = \App\StudentInformation::with(['user'])->where('status', 1)->paginate(10);
         $StudentInformation = [];
 
