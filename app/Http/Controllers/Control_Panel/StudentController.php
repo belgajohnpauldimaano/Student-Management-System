@@ -220,7 +220,7 @@ class StudentController extends Controller
                     $second = $grade->sec_g > 0 ? $grade->sec_g : 0;
                     $third = 0;
                     $fourth = 0;
-                    if ($grade_level >= 11)
+                    if ($grade_level <= 11)
                     {
                         $third = $grade->thi_g > 0 ? $grade->thi_g : 0;
                         $fourth = $grade->fou_g > 0 ? $grade->fou_g : 0;
@@ -228,7 +228,7 @@ class StudentController extends Controller
                     
                     $sum += $grade->fir_g > 0 ? $grade->fir_g : 0;
                     $sum += $grade->sec_g > 0 ? $grade->sec_g : 0;
-                    if ($grade_level >= 11)
+                    if ($grade_level <= 11)
                     {
                         $sum += $grade->thi_g > 0 ? $grade->thi_g : 0;
                         $sum += $grade->fou_g > 0 ? $grade->fou_g : 0;
@@ -274,7 +274,7 @@ class StudentController extends Controller
                     if ($GradeSheetData[$i]['final_g'] > 0 && $GradeSheetData[$i]['grade_status'] == 2) 
                     {
                         $subj_count++;
-                        $sub_total =  $GradeSheetData[$i]['final_g'];
+                        $sub_total +=  $GradeSheetData[$i]['final_g'];
                     }
                 }
                 if ($subj_count > 0) 

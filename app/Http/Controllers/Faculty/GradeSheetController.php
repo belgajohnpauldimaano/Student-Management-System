@@ -34,7 +34,7 @@ class GradeSheetController extends Controller
                     ->whereRaw('class_details.current = 1')
                     ->whereRaw('class_details.status != 0')
                     ->select(\DB::raw("
-                        DISTINCT student_informations.id,
+                        student_informations.id,
                         CONCAT(student_informations.last_name, ' ', student_informations.first_name, ' ', student_informations.middle_name) as student_name,
                         student_enrolled_subjects.id as student_enrolled_subject_id,
                         enrollments.id as enrollment_id,
@@ -50,6 +50,7 @@ class GradeSheetController extends Controller
                         student_enrolled_subjects.fin_g_status,
                         class_subject_details.status as grading_status 
                     "))
+                    ->orderBy('student_informations.last_name', 'ASC')
                     ->paginate(50);
         // $ClassSubjectDetail_status = \App\ClassSubjectDetail::where('id', $request->search_class_subject)->first();
         $ClassSubjectDetail = \App\ClassSubjectDetail::join('class_details', 'class_details.id', '=', 'class_subject_details.class_details_id')
@@ -222,7 +223,7 @@ class GradeSheetController extends Controller
             // $StudentEnrolledSubject->fou_g_status = 1;
         }
         $StudentEnrolledSubject->save();
-        return response()->json(['res_code' => 0, 'res_msg' => 'Grade successfully saved temporarily.',]);
+        return response()->json(['res_code' => 0, 'res_msg' => 'Grade successfully saved temporarily.', 'aa' => $student_enrolled_subject_id]);
     }
     public function save_grade (Request $request)
     {

@@ -4,7 +4,7 @@
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-    <title>Faculty Schedule</title>
+    <title>Student Gradesheet</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" type="text/css" media="screen" href="main.css" />
     <script src="main.js"></script>
@@ -119,6 +119,9 @@
                     </thead>
                     <tbody>
                         @if ($GradeSheetData)
+                            <?php
+                                $showGenAvg = 0;
+                            ?>
                             @foreach ($GradeSheetData as $key => $data)
                                 <tr>
                                     <td>{{ $data->subject_code . ' ' . $data->subject }}</td>
@@ -129,14 +132,37 @@
                                         @if ($grade_level >= 11) 
                                             <td>{{ number_format($data->fir_g, 2) }}</td>
                                             <td>{{ number_format($data->sec_g, 2) }}</td>
-                                            <td style="color:{{ $data->final_g >= 75 ? 'green' : 'red' }};"><strong>{{ $data->final_g >= 75 ? 'Passed' : 'Failed' }}</strong></td>
+                                            @if ($data->fou_g > 0)
+                                                <?php
+                                                    $showGenAvg = 1;
+                                                ?>
+                                                <td>{{ number_format($data->final_g, 2) }}</td>
+                                                <td style="color:{{ $data->final_g >= 75 ? 'green' : 'red' }};"><strong>{{ $data->final_g >= 75 ? 'Passed' : 'Failed' }}</strong></td>
+                                            @else
+                                                <?php
+                                                    $showGenAvg = 0;
+                                                ?>
+                                                <td></td>
+                                                <td></td>
+                                            @endif
                                         @else
                                             <td>{{ number_format($data->fir_g, 2) }}</td>
                                             <td>{{ number_format($data->sec_g, 2) }}</td>
                                             <td>{{ number_format($data->thi_g, 2) }}</td>
                                             <td>{{ number_format($data->fou_g, 2) }}</td>
-                                            <td>{{ number_format($data->final_g, 2) }}</td>
-                                            <td style="color:{{ $data->final_g >= 75 ? 'green' : 'red' }};"><strong>{{ $data->final_g >= 75 ? 'Passed' : 'Failed' }}</strong></td>
+                                            @if ($data->fou_g > 0)
+                                                <?php
+                                                    $showGenAvg = 1;
+                                                ?>
+                                                <td>{{ number_format($data->final_g, 2) }}</td>
+                                                <td style="color:{{ $data->final_g >= 75 ? 'green' : 'red' }};"><strong>{{ $data->final_g >= 75 ? 'Passed' : 'Failed' }}</strong></td>
+                                            @else
+                                                <?php
+                                                    $showGenAvg = 0;
+                                                ?>
+                                                <td></td>
+                                                <td></td>
+                                            @endif
                                         @endif
                                     @endif
                                     {{--  <td>{{ $data->class_time_from . ' -  ' . $data->class_time_to }}</td>
@@ -149,7 +175,16 @@
                                 <tr class="text-center">
                                     <td></td>
                                     <td colspan="{{$ClassDetail ? $ClassDetail->section_grade_level <= 10 ? '4' : '2' : '4'}}"><b>General Average</b></td>
-                                    <td colspan="2"><b>{{$general_avg == 0 ? '' : $general_avg }}</b></td>
+                                    <td><b>{{$showGenAvg ? $general_avg == 0 ? '' : $general_avg : '' }}</b></td>
+                                    <td>
+                                        <b>
+                                            @if($showGenAvg && $general_avg > 75) 
+                                                <td style="color:'green';"><strong>Passed</strong></td>
+                                            @elseif($showGenAvg && $general_avg < 75) 
+                                                <td style="color:'red';"><strong>Failed</strong></td>
+                                            @endif
+                                        </b>
+                                    </td>
                                     <td></td>
                                 </tr>
                         @else
