@@ -146,10 +146,11 @@
                                                 <td></td>
                                             @endif
                                         @else
-                                            <td>{{ number_format($data->fir_g, 2) }}</td>
-                                            <td>{{ number_format($data->sec_g, 2) }}</td>
-                                            <td>{{ number_format($data->thi_g, 2) }}</td>
-                                            <td>{{ number_format($data->fou_g, 2) }}</td>
+                                            <td>{{ $data->fir_g ? number_format($data->fir_g, 2) : '' }}</td>
+                                            <td>{{ $data->sec_g ? number_format($data->sec_g, 2) : '' }}</td>
+                                            <td>{{ $data->thi_g ? number_format($data->thi_g, 2) : '' }}</td>
+                                            <td>{{ $data->fou_g ? number_format($data->fou_g, 2) : '' }}</td>
+                                            <td>{{ $data->fou_g ? number_format($data->final_g, 2) : '' }}</td>
                                             @if ($data->fou_g > 0)
                                                 <?php
                                                     $showGenAvg = 1;

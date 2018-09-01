@@ -39,7 +39,7 @@ class SubjectClassController extends Controller
             ->where('class_subject_details.id', $request->search_class_subject)
             ->where('faculty_id', $FacultyInformation->id)
             ->where('class_details.school_year_id', $request->search_sy)
-            ->where('class_subject_details.status', 1)
+            ->where('class_subject_details.status', '!=', 0)
             ->where('class_details.status', 1)
             ->select(\DB::raw('
                 class_subject_details.id,
@@ -80,7 +80,7 @@ class SubjectClassController extends Controller
             ->where('class_subject_details.id', $request->search_class_subject)
             ->where('faculty_id', $FacultyInformation->id)
             ->where('class_details.school_year_id', $request->search_sy)
-            ->where('class_subject_details.status', 1)
+            ->where('class_subject_details.status', '!=', 0)
             ->where('class_details.status', 1)
             ->select(\DB::raw('
                 class_subject_details.id,
@@ -106,7 +106,7 @@ class SubjectClassController extends Controller
             ->join('section_details', 'section_details.id', '=', 'class_details.section_id')
             ->where('faculty_id', $FacultyInformation->id)
             ->where('class_details.school_year_id', $request->search_sy)
-            ->where('class_subject_details.status', 1)
+            ->where('class_subject_details.status', '!=', 0)
             ->where('class_details.status', 1)
             ->select(\DB::raw('  
                 class_subject_details.id,
@@ -192,7 +192,7 @@ class SubjectClassController extends Controller
             ->where('class_details.current', 1)
             ->where('school_years.status', 1)
             ->where('school_years.current', 1)
-            ->where('class_subject_details.status', 1)
+            ->where('class_subject_details.status', '!=', 0)
             ->orderBy('class_time_from', 'ASC')
             ->get();
         // return json_encode($ClassSubjectDetail);
@@ -226,7 +226,7 @@ class SubjectClassController extends Controller
             ->where('class_details.current', 1)
             ->where('school_years.status', 1)
             ->where('school_years.current', 1)
-            ->where('class_subject_details.status', 1)
+            ->where('class_subject_details.status', '!=', 0)
             ->orderBy('class_time_from', 'ASC')
             ->get();
         // return json_encode($ClassSubjectDetail);

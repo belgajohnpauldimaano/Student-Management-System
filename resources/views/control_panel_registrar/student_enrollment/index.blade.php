@@ -243,7 +243,64 @@
 
                 });
             });
-
+            
+            $('body').on('click', '.js-btn_re_enroll_all_student', function (e) {
+                 e.preventDefault();
+                var enrollment_ids = `{{ $Enrollment_ids ? $Enrollment_ids : '' }}`;
+                $.ajax({
+                        url         : "{{ route('registrar.student_enrollment.re_enroll_student_all', $id) }}",
+                        type        : 'POST',
+                        data        : { _token : '{{ csrf_token() }}', enrollment_ids : enrollment_ids, class_detail_id : '{{ $ClassDetail->id }}' },
+                        success     : function (res) {
+                            $('.help-block').html('');
+                            if (res.res_code == 1)
+                            {
+                                show_toast_alert({
+                                    heading : 'Error',
+                                    message : res.res_msg,
+                                    type    : 'error'
+                                });
+                            }
+                            else
+                            {
+                                show_toast_alert({
+                                    heading : 'Success',
+                                    message : res.res_msg,
+                                    type    : 'success'
+                                });
+                            }
+                        }
+                    });
+            });
+            $('body').on('click', '.js-btn_re_enroll_student', function (e) {
+                e.preventDefault();
+                var enrollment_id = $(this).data('id');
+                $.ajax({
+                        url         : "{{ route('registrar.student_enrollment.re_enroll_student', $id) }}",
+                        type        : 'POST',
+                        data        : { _token : '{{ csrf_token() }}', enrollment_id : enrollment_id, class_detail_id : '{{ $ClassDetail->id }}' },
+                        success     : function (res) {
+                            $('.help-block').html('');
+                            if (res.res_code == 1)
+                            {
+                                show_toast_alert({
+                                    heading : 'Error',
+                                    message : res.res_msg,
+                                    type    : 'error'
+                                });
+                            }
+                            else
+                            {
+                                show_toast_alert({
+                                    heading : 'Success',
+                                    message : res.res_msg,
+                                    type    : 'success'
+                                });
+                            }
+                        }
+                    });
+            });
+            
             $('body').on('click', '.js-btn_deactivate', function (e) {
                 e.preventDefault();
                 var id = $(this).data('id');

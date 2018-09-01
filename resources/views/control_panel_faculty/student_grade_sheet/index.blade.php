@@ -17,7 +17,7 @@
                     <input type="text" class="form-control" name="search">
                 </div>  --}}
                 
-                <div id="js-form_search" class="form-group col-sm-12 col-md-3" style="padding-right:0">
+                <div class="form-group col-sm-12 col-md-3" style="padding-right:0">
                     <select name="search_sy" id="search_sy" class="form-control">
                         <option value="">Select SY</option>
                         @foreach ($SchoolYear as $data)
@@ -26,7 +26,7 @@
                     </select>
                 </div> 
                 &nbsp;
-                <div id="js-form_search" class="form-group col-sm-12 col-md-5" style="padding-right:0">
+                <div class="form-group col-sm-12 col-md-5" style="padding-right:0">
                     <select name="search_class_subject" id="search_class_subject" class="form-control">
                         <option value="">Select Class Subject</option>
                     </select>

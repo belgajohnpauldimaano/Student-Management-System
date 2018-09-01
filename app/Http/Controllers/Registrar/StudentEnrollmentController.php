@@ -139,8 +139,14 @@ class StudentEnrollmentController extends Controller
             ")
             ->where('class_details_id', $id)
             ->orderByRaw('fullname')
-            ->paginate(10); //
-        return view('control_panel_registrar.student_enrollment.index', compact('StudentInformation', 'ClassDetail', 'id', 'Enrollment'));
+            ->paginate(70);
+
+        $Enrollment_ids = '';
+        foreach($Enrollment as $data)
+        {
+            $Enrollment_ids .= $data->enrollment_id . '@';
+        }
+        return view('control_panel_registrar.student_enrollment.index', compact('StudentInformation', 'ClassDetail', 'id', 'Enrollment', 'Enrollment_ids'));
     }
     public function fetch_enrolled_student (Request $request, $id)
     {
@@ -177,7 +183,7 @@ class StudentEnrollmentController extends Controller
             ->where('class_details_id', $id)
             ->orderByRaw('fullname')
             // ->orWhere('first_name', 'like', '%'.$request->search.'%')
-            ->paginate(10); //
+            ->paginate(70); //
 
             // return json_encode($StudentInformation);
         return view('control_panel_registrar.student_enrollment.partials.data_list_enrolled', compact('Enrollment'))->render();
@@ -278,6 +284,7 @@ class StudentEnrollmentController extends Controller
                     $StudentEnrolledSubject = new \App\StudentEnrolledSubject();
                     $StudentEnrolledSubject->subject_id = $data->subject_id;
                     $StudentEnrolledSubject->enrollments_id = $Enrollment->id;
+                    $StudentEnrolledSubject->class_subject_details_id = $data->id;
                     // $StudentEnrolledSubject->student_information_id = $StudentInformation->id;
                     $StudentEnrolledSubject->save();
                 }
@@ -290,7 +297,68 @@ class StudentEnrollmentController extends Controller
             ]);
         }
 
-        return response()->json(['res_code' => 1, 'res_msg' => 'There is a problem in enrolling student.']);
+        return response()->json(['res_code' => 1, 'res_msg' => 'There is a problem in enrolling student.', 'Enrollment' => $Enrollment]);
+    }
+    public function re_enroll_student (Request $request, $id)
+    {
+        $ClassDetail = \App\ClassDetail::with('class_subjects')->where('id', $id)->first();
+        $StudentEnrolledSubject_list = [];
+        if ($ClassDetail->class_subjects)
+        {
+            $StudentEnrolledSubject = \App\StudentEnrolledSubject::where('enrollments_id', $request->enrollment_id)
+                // ->where('subject_id', $class_subject->subject_id)
+                ->get();
+            foreach ($ClassDetail->class_subjects as $key => $class_subject)
+            {
+                if ($StudentEnrolledSubject[$key]) 
+                {
+                    $StudentEnrolledSubject_tmp = $StudentEnrolledSubject[$key];
+                    $StudentEnrolledSubject_tmp->class_subject_details_id = $class_subject->id;
+                    $StudentEnrolledSubject_tmp->save();
+                    $StudentEnrolledSubject_list[] = $StudentEnrolledSubject_tmp;
+                }
+
+                // $StudentEnrolledSubject = \App\StudentEnrolledSubject::where('enrollments_id', $request->enrollment_id)
+                //     ->where('subject_id', $class_subject->subject_id)
+                //     ->first();
+                // $StudentEnrolledSubject->class_subject_details_id = $class_subject->id;
+                // $StudentEnrolledSubject->save();
+                // $StudentEnrolledSubject_list[] = $StudentEnrolledSubject;
+            }
+            return response()->json(['res_code' => 0, 'res_msg' => 'Successfully re-enrolled.']);
+        }
+        return response()->json(['res_code' => 1, 'res_msg' => 'Unable to perform action.']);
+
+        return json_encode(['ClassDetail' => $ClassDetail, 'StudentEnrolledSubject_list' => $StudentEnrolledSubject_list, 'StudentEnrolledSubject' => $StudentEnrolledSubject, 'class_subjects' => $ClassDetail->class_subjects]);
+    }
+    public function re_enroll_student_all (Request $request, $id)
+    {
+        $ClassDetail = \App\ClassDetail::with('class_subjects')->where('id', $id)->first();
+        $enrollment_ids = explode('@', $request->enrollment_ids);
+        array_pop($enrollment_ids);
+
+        $StudentEnrolledSubject_list = [];
+        if ($ClassDetail->class_subjects)
+        {
+            foreach($enrollment_ids as $enrollment_id)
+            {
+                $StudentEnrolledSubject = \App\StudentEnrolledSubject::where('enrollments_id', $enrollment_id)->get();
+                foreach ($ClassDetail->class_subjects as $key => $class_subject)
+                {
+                    if ($StudentEnrolledSubject[$key]) 
+                    {
+                        $StudentEnrolledSubject_tmp = $StudentEnrolledSubject[$key];
+                        $StudentEnrolledSubject_tmp->class_subject_details_id = $class_subject->id;
+                        $StudentEnrolledSubject_tmp->save();
+                        $StudentEnrolledSubject_list[] = $StudentEnrolledSubject_tmp;
+                    }
+                }
+            }
+            return response()->json(['res_code' => 0, 'res_msg' => 'Successfully re-enrolled.']);
+        }
+        return response()->json(['res_code' => 1, 'res_msg' => 'Unable to perform action.']);
+
+        return json_encode(['ClassDetail' => $ClassDetail, 'StudentEnrolledSubject_list' => $StudentEnrolledSubject_list, 'StudentEnrolledSubject' => $StudentEnrolledSubject, 'class_subjects' => $ClassDetail->class_subjects]);
     }
     public function cancel_enroll_student (Request $request, $id) 
     {

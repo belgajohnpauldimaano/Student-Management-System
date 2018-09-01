@@ -1,4 +1,7 @@
                         <div class="pull-right">
+                            <button type="button" style="margin-right:2px" class="btn btn-danger js-btn_re_enroll_all_student" aria-expanded="true">
+                                Re-Enroll All
+                            </button>
                             {{ $Enrollment ? $Enrollment->links() : '' }}
                         </div>
                         <table class="table no-margin">
@@ -17,8 +20,11 @@
                                             <td>{{ $data->fullname }}</td>
                                             <td>
                                                 <div class="input-group-btn pull-left text-left">
-                                                    <button type="button" class="btn btn-danger js-btn_cancel_enroll_student" data-id="{{ $data->enrollment_id }}" aria-expanded="true">
+                                                    <button type="button" style="margin-right:2px" class="btn btn-danger js-btn_cancel_enroll_student" data-id="{{ $data->enrollment_id }}" aria-expanded="true">
                                                         Cancel Enroll
+                                                    </button>
+                                                    <button type="button" style="margin-right:2px" class="btn btn-danger js-btn_re_enroll_student" data-id="{{ $data->enrollment_id }}" aria-expanded="true">
+                                                        Re-Enroll
                                                     </button>
                                                         {{--  <span class="fa fa-caret-down"></span></button>
                                                     <ul class="dropdown-menu">

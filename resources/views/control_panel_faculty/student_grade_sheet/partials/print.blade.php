@@ -85,8 +85,34 @@
         </thead>
         <tbody>
             @if ($ClassSubjectDetail->grade_level >= 11) 
-                @if ($Enrollment)
-                    @foreach ($Enrollment as $key => $data)
+                @if ($EnrollmentMale)
+                    @foreach ($EnrollmentMale as $key => $data)
+                        <tr data-student_enrolled_subject_id="{{ base64_encode($data->student_enrolled_subject_id) }}" data-student_id="{{ base64_encode($data->id) }}" data-enrollment_id="{{ base64_encode($data->enrollment_id) }}">
+                            <td>{{ $key + 1 }}</td>
+                            <td>{{ $data->student_name }}</td>
+                            <td>
+                                {{ $data->fir_g }}
+                            </td>
+                            <td>
+                                {{ $data->sec_g }}
+                            </td>
+                            <td>
+                                <span class="text-red final-ratings_{{ $data->student_enrolled_subject_id }}">
+                                    <strong>
+                                        <?php
+                                            $g_ctr = 0;
+                                            $g_ctr += $data->fir_g > 0 ? 1 : 0;
+                                            $g_ctr += $data->sec_g > 0 ? 1 : 0;
+                                        ?>
+                                        {{ ($g_ctr ? (($data->fir_g + $data->sec_g) / $g_ctr) : 0)  }}
+                                    </strong>
+                                </span>
+                            </td>
+                        </tr>
+                    @endforeach
+                @endif
+                @if ($EnrollmentFemale)
+                    @foreach ($EnrollmentFemale as $key => $data)
                         <tr data-student_enrolled_subject_id="{{ base64_encode($data->student_enrolled_subject_id) }}" data-student_id="{{ base64_encode($data->id) }}" data-enrollment_id="{{ base64_encode($data->enrollment_id) }}">
                             <td>{{ $key + 1 }}</td>
                             <td>{{ $data->student_name }}</td>
@@ -112,8 +138,42 @@
                     @endforeach
                 @endif
             @elseif($ClassSubjectDetail->grade_level <= 10)
-                @if ($Enrollment)
-                    @foreach ($Enrollment as $key => $data)
+                @if ($EnrollmentMale)
+                    @foreach ($EnrollmentMale as $key => $data)
+                        <tr data-student_enrolled_subject_id="{{ base64_encode($data->student_enrolled_subject_id) }}" data-student_id="{{ base64_encode($data->id) }}" data-enrollment_id="{{ base64_encode($data->enrollment_id) }}">
+                            <td>{{ $key + 1 }}</td>
+                            <td>{{ $data->student_name }}</td>
+                            <td>
+                                {{$data->fir_g}}
+                            </td>
+                            <td>
+                                {{$data->sec_g}}
+                            </td>
+                            <td>
+                                {{$data->thi_g}}
+                            </td>
+                            <td>
+                                {{$data->fou_g}}
+                            </td>
+                            <td>
+                                <span class="text-red final-ratings_{{ $data->student_enrolled_subject_id }}">
+                                    <strong>
+                                        <?php
+                                            $g_ctr = 0;
+                                            $g_ctr += $data->fir_g > 0 ? 1 : 0;
+                                            $g_ctr += $data->sec_g > 0 ? 1 : 0;
+                                            $g_ctr += $data->thi_g > 0 ? 1 : 0;
+                                            $g_ctr += $data->fou_g > 0 ? 1 : 0;
+                                        ?>
+                                        {{ ($g_ctr ? (($data->fir_g + $data->sec_g + $data->thi_g + $data->fou_g) / $g_ctr) : 0)  }}
+                                    </strong>
+                                </span>
+                            </td>
+                        </tr>
+                    @endforeach
+                @endif
+                @if ($EnrollmentFemale)
+                    @foreach ($EnrollmentFemale as $key => $data)
                         <tr data-student_enrolled_subject_id="{{ base64_encode($data->student_enrolled_subject_id) }}" data-student_id="{{ base64_encode($data->id) }}" data-enrollment_id="{{ base64_encode($data->enrollment_id) }}">
                             <td>{{ $key + 1 }}</td>
                             <td>{{ $data->student_name }}</td>

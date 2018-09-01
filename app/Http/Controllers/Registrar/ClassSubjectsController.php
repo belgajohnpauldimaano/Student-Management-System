@@ -158,7 +158,7 @@ class ClassSubjectsController extends Controller
             // $ClassSubjectDetail->class_days = $class_days;
 
             $ClassSubjectDetail->save();
-            return response()->json(['res_code' => 0, 'res_msg' => 'Data successfully updated.']);
+            return response()->json(['res_code' => 0, 'res_msg' => 'Data successfully updated.', 'ClassSubjectDetail' => $ClassSubjectDetail]);
         }
 
         $ClassSubjectDetail = new \App\ClassSubjectDetail();
@@ -181,7 +181,7 @@ class ClassSubjectsController extends Controller
         // $ClassSubjectDetail->class_days = $class_days;
 
         $ClassSubjectDetail->save();
-        return response()->json(['res_code' => 0, 'res_msg' => 'Data successfully saved.']);
+        return response()->json(['res_code' => 0, 'res_msg' => 'Data successfully saved.', 'ClassSubjectDetail' => $ClassSubjectDetail]);
     }
 
     public function deactivate_data (Request $request) 

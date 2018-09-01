@@ -49,12 +49,16 @@
                                             <td>{{ number_format($data->sec_g, 2) }}</td>
                                             <td style="color:{{ $data->final_g >= 75 ? 'green' : 'red' }};"><strong>{{ $data->final_g >= 75 ? 'Passed' : 'Failed' }}</strong></td>
                                         @else
-                                            <td>{{ number_format($data->fir_g, 2) }}</td>
-                                            <td>{{ number_format($data->sec_g, 2) }}</td>
-                                            <td>{{ number_format($data->thi_g, 2) }}</td>
-                                            <td>{{ number_format($data->fou_g, 2) }}</td>
-                                            <td>{{ number_format($data->final_g, 2) }}</td>
-                                            <td style="color:{{ $data->final_g >= 75 ? 'green' : 'red' }};"><strong>{{ $data->final_g >= 75 ? 'Passed' : 'Failed' }}</strong></td>
+                                            <td>{{ $data->fir_g ? number_format($data->fir_g, 2) : '' }}</td>
+                                            <td>{{ $data->sec_g ? number_format($data->sec_g, 2) : '' }}</td>
+                                            <td>{{ $data->thi_g ? number_format($data->thi_g, 2) : '' }}</td>
+                                            <td>{{ $data->fou_g ? number_format($data->fou_g, 2) : '' }}</td>
+                                            <td>{{ $data->fou_g ? number_format($data->final_g, 2) : '' }}</td>
+                                            @if (!$data->fir_g || !$data->sec_g || !$data->thi_g || !$data->fou_g)
+                                                <td></td>
+                                            @else
+                                                <td style="color:{{ $data->final_g >= 75 ? 'green' : 'red' }};"><strong>{{ $data->final_g >= 75 ? 'Passed' : 'Failed' }}</strong></td>
+                                            @endif
                                         @endif
                                     @endif
                                     {{--  <td>{{ $data->class_time_from . ' -  ' . $data->class_time_to }}</td>
