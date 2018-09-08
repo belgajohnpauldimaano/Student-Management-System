@@ -196,7 +196,8 @@ class StudentController extends Controller
                 subject_details.subject_code,
                 subject_details.subject,
                 rooms.room_code,
-                section_details.section
+                section_details.section,
+                class_details.school_year_id as school_year_id
             "))
             ->orderBy('class_subject_details.class_time_from', 'ASC')
             ->get();
@@ -206,13 +207,13 @@ class StudentController extends Controller
             $general_avg = 0;
             $subj_count = 0;
                 $grade_status = $Enrollment[0]->grade_status;
-            // return json_encode(['Enrollment' => $Enrollment,'StudentInformation' => $StudentInformation, 'SchoolYear' => $SchoolYear]);
+            // return json_encode(['c' => count($Enrollment),'Enrollment' => $Enrollment,'StudentInformation' => $StudentInformation, ]);
             if ($StudentInformation && count($Enrollment)>0)
             {
                 $StudentEnrolledSubject = \App\StudentEnrolledSubject::where('enrollments_id', $Enrollment[0]->enrollment_id)
                 ->get();
                 $grade_level = $Enrollment[0]->grade_level;
-                // return json_encode(['StudentEnrolledSubject'=> $StudentEnrolledSubject, 'Enrollment' => $Enrollment]);
+                // return json_encode(['a' => $StudentEnrolledSubject->count(), 'b' => $Enrollment->count(), 'StudentEnrolledSubject'=> $StudentEnrolledSubject, 'Enrollment' => $Enrollment]);
                 $GradeSheetData = $Enrollment->map(function ($item, $key) use ($StudentEnrolledSubject, $grade_level, $grade_status) {
                     $grade = $StudentEnrolledSubject->firstWhere('subject_id', $item->subject_id);
                     $sum = 0;

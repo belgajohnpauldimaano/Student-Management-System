@@ -40,24 +40,29 @@
                             @foreach ($GradeSheetData as $key => $data)
                                 <tr>
                                     <td>{{ $data->subject_code . ' ' . $data->subject }}</td>
-                                    @if ($data->grade_status != 2)
+                                    @if ($data->grade_status === -1)
                                         <td colspan="6" class="text-center text-red">Grade not yet finalized</td>
                                     @else 
                                     
                                         @if ($grade_level >= 11) 
-                                            <td>{{ number_format($data->fir_g, 2) }}</td>
-                                            <td>{{ number_format($data->sec_g, 2) }}</td>
-                                            <td style="color:{{ $data->final_g >= 75 ? 'green' : 'red' }};"><strong>{{ $data->final_g >= 75 ? 'Passed' : 'Failed' }}</strong></td>
+                                            <td>{{ round($data->fir_g) }}</td>
+                                            <td>{{ round($data->sec_g) }}</td>
+                                            @if (!$data->fir_g || !$data->sec_g)
+                                                <td></td>
+                                            @else
+                                                <td>{{ round($data->final_g) }}</td>
+                                            @endif
+                                            <td style="color:{{ round($data->final_g) >= 75 ? 'green' : 'red' }};"><strong>{{ round($data->final_g) >= 75 ? 'Passed' : 'Failed' }}</strong></td>
                                         @else
-                                            <td>{{ $data->fir_g ? number_format($data->fir_g, 2) : '' }}</td>
-                                            <td>{{ $data->sec_g ? number_format($data->sec_g, 2) : '' }}</td>
-                                            <td>{{ $data->thi_g ? number_format($data->thi_g, 2) : '' }}</td>
-                                            <td>{{ $data->fou_g ? number_format($data->fou_g, 2) : '' }}</td>
-                                            <td>{{ $data->fou_g ? number_format($data->final_g, 2) : '' }}</td>
+                                            <td>{{ $data->fir_g ? round($data->fir_g) : '' }}</td>
+                                            <td>{{ $data->sec_g ? round($data->sec_g) : '' }}</td>
+                                            <td>{{ $data->thi_g ? round($data->thi_g) : '' }}</td>
+                                            <td>{{ $data->fou_g ? round($data->fou_g) : '' }}</td>
+                                            <td>{{ $data->fou_g ? round($data->final_g) : '' }}</td>
                                             @if (!$data->fir_g || !$data->sec_g || !$data->thi_g || !$data->fou_g)
                                                 <td></td>
                                             @else
-                                                <td style="color:{{ $data->final_g >= 75 ? 'green' : 'red' }};"><strong>{{ $data->final_g >= 75 ? 'Passed' : 'Failed' }}</strong></td>
+                                                <td style="color:{{ round($data->final_g) >= 75 ? 'green' : 'red' }};"><strong>{{ round($data->final_g) >= 75 ? 'Passed' : 'Failed' }}</strong></td>
                                             @endif
                                         @endif
                                     @endif

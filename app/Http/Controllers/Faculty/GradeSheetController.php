@@ -205,6 +205,7 @@ class GradeSheetController extends Controller
         $ClassSubjectDetail = \App\ClassSubjectDetail::join('class_details', 'class_details.id', '=', 'class_subject_details.class_details_id')
             ->join('subject_details', 'subject_details.id', '=', 'class_subject_details.subject_id')
             ->join('section_details', 'section_details.id', '=', 'class_details.section_id')
+            ->join('school_years', 'school_years.id', '=' ,'class_details.school_year_id')
             ->whereRaw('class_subject_details.id = '. $request->search_class_subject)
             // ->whereRaw('class_details.id = '. $search_class_subject[1])
             ->where('faculty_id', $FacultyInformation->id)
@@ -221,12 +222,14 @@ class GradeSheetController extends Controller
                 subject_details.subject,
                 section_details.section,
                 class_details.grade_level,
-                class_subject_details.status as grading_status
+                class_subject_details.status as grading_status,
+                school_years.school_year
             '))
             ->first();
         if (count($EnrollmentFemale) == 0 || count($EnrollmentMale) == 0) {
             return "invalid request";
         }
+        return view('control_panel_faculty.student_grade_sheet.partials.print', compact('EnrollmentFemale', 'EnrollmentMale', 'ClassSubjectDetail', 'FacultyInformation'));
         $pdf = \PDF::loadView('control_panel_faculty.student_grade_sheet.partials.print', compact('EnrollmentFemale', 'EnrollmentMale', 'ClassSubjectDetail', 'FacultyInformation'));
         return $pdf->stream();
     }

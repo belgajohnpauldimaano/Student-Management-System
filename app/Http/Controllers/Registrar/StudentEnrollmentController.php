@@ -314,6 +314,7 @@ class StudentEnrollmentController extends Controller
                 {
                     $StudentEnrolledSubject_tmp = $StudentEnrolledSubject[$key];
                     $StudentEnrolledSubject_tmp->class_subject_details_id = $class_subject->id;
+                    $StudentEnrolledSubject_tmp->subject_id = $class_subject->subject_id;
                     $StudentEnrolledSubject_tmp->save();
                     $StudentEnrolledSubject_list[] = $StudentEnrolledSubject_tmp;
                 }
@@ -326,10 +327,11 @@ class StudentEnrollmentController extends Controller
                 // $StudentEnrolledSubject_list[] = $StudentEnrolledSubject;
             }
             return response()->json(['res_code' => 0, 'res_msg' => 'Successfully re-enrolled.']);
+            
+            return json_encode(['ClassDetail' => $ClassDetail, 'StudentEnrolledSubject_list' => $StudentEnrolledSubject_list, 'StudentEnrolledSubject' => $StudentEnrolledSubject, 'class_subjects' => $ClassDetail->class_subjects]);
         }
         return response()->json(['res_code' => 1, 'res_msg' => 'Unable to perform action.']);
 
-        return json_encode(['ClassDetail' => $ClassDetail, 'StudentEnrolledSubject_list' => $StudentEnrolledSubject_list, 'StudentEnrolledSubject' => $StudentEnrolledSubject, 'class_subjects' => $ClassDetail->class_subjects]);
     }
     public function re_enroll_student_all (Request $request, $id)
     {
@@ -349,6 +351,7 @@ class StudentEnrollmentController extends Controller
                     {
                         $StudentEnrolledSubject_tmp = $StudentEnrolledSubject[$key];
                         $StudentEnrolledSubject_tmp->class_subject_details_id = $class_subject->id;
+                        $StudentEnrolledSubject_tmp->subject_id = $class_subject->subject_id;
                         $StudentEnrolledSubject_tmp->save();
                         $StudentEnrolledSubject_list[] = $StudentEnrolledSubject_tmp;
                     }

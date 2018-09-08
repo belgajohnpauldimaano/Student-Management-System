@@ -125,43 +125,41 @@
                             @foreach ($GradeSheetData as $key => $data)
                                 <tr>
                                     <td>{{ $data->subject_code . ' ' . $data->subject }}</td>
-                                    @if ($data->grade_status != 2)
+                                    @if ($data->grade_status === -1)
                                         <td colspan="{{$ClassDetail ? $ClassDetail->section_grade_level <= 10 ? '6' : '4' : '6'}}" class="text-center text-red">Grade not yet finalized</td>
                                     @else 
                                     
                                         @if ($grade_level >= 11) 
-                                            <td>{{ number_format($data->fir_g, 2) }}</td>
-                                            <td>{{ number_format($data->sec_g, 2) }}</td>
+                                            <td>{{ $data->fir_g ? $data->fir_g > 0 ? round($data->fir_g) : '' : '' }}</td>
+                                            <td>{{ $data->sec_g ? $data->sec_g > 0 ? round($data->sec_g) : '' : ''}}</td>
                                             @if ($data->fou_g > 0)
                                                 <?php
                                                     $showGenAvg = 1;
                                                 ?>
-                                                <td>{{ number_format($data->final_g, 2) }}</td>
+                                                <td>{{ round($data->final_g) }}</td>
                                                 <td style="color:{{ $data->final_g >= 75 ? 'green' : 'red' }};"><strong>{{ $data->final_g >= 75 ? 'Passed' : 'Failed' }}</strong></td>
                                             @else
                                                 <?php
                                                     $showGenAvg = 0;
                                                 ?>
-                                                <td></td>
                                                 <td></td>
                                             @endif
                                         @else
-                                            <td>{{ $data->fir_g ? number_format($data->fir_g, 2) : '' }}</td>
-                                            <td>{{ $data->sec_g ? number_format($data->sec_g, 2) : '' }}</td>
-                                            <td>{{ $data->thi_g ? number_format($data->thi_g, 2) : '' }}</td>
-                                            <td>{{ $data->fou_g ? number_format($data->fou_g, 2) : '' }}</td>
-                                            <td>{{ $data->fou_g ? number_format($data->final_g, 2) : '' }}</td>
+                                            <td>{{ $data->fir_g ? $data->fir_g > 0  ? round($data->fir_g) : '' : '' }}</td>
+                                            <td>{{ $data->sec_g ? $data->sec_g > 0  ? round($data->sec_g) : '' : '' }}</td>
+                                            <td>{{ $data->thi_g ? $data->thi_g > 0  ? round($data->thi_g) : '' : '' }}</td>
+                                            <td>{{ $data->fou_g ? $data->fou_g > 0  ? round($data->fou_g) : '' : '' }}</td>
+                                            <td>{{ $data->fou_g ? $data->fou_g > 0  ? round($data->final_g) : '' : '' }}</td>
                                             @if ($data->fou_g > 0)
                                                 <?php
                                                     $showGenAvg = 1;
                                                 ?>
-                                                <td>{{ number_format($data->final_g, 2) }}</td>
+                                                <td>{{ round($data->final_g) }}</td>
                                                 <td style="color:{{ $data->final_g >= 75 ? 'green' : 'red' }};"><strong>{{ $data->final_g >= 75 ? 'Passed' : 'Failed' }}</strong></td>
                                             @else
                                                 <?php
                                                     $showGenAvg = 0;
                                                 ?>
-                                                <td></td>
                                                 <td></td>
                                             @endif
                                         @endif
@@ -190,8 +188,8 @@
                                 </tr>
                         @else
                             
-                        @endif
-                    </tbody>
-                </table>
+                    @endif
+                </tbody>
+            </table>
 </body>
 </html>
