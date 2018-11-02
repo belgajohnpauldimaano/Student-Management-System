@@ -204,25 +204,25 @@
                                                 $fQrtCtr = 0;
                                                 if ($data->fir_g && $data->fir_g > 0) 
                                                 {
-                                                    $fQrtTotal += $data->fir_g;
+                                                    $fQrtTotal += round($data->fir_g);
                                                     $fQrtCtr++;
                                                 }
 
                                                 if ($data->sec_g && $data->sec_g > 0) 
                                                 {
-                                                    $fQrtTotal += $data->sec_g;
+                                                    $fQrtTotal += round($data->sec_g);
                                                     $fQrtCtr++;
                                                 }
 
                                                 if ($fQrtCtr > 1) 
                                                 {
-                                                    $fQrtFinal = $fQrtTotal / $fQrtCtr;
+                                                    $fQrtFinal = round($fQrtTotal) / ($fQrtCtr);
                                                 }
                                             ?>
-                                            <td>{{ $data->fir_g ? $data->fir_g > 0  ? round($data->fir_g) : '' : '' }}</td>
-                                            <td>{{ $data->sec_g ? $data->sec_g > 0  ? round($data->sec_g) : '' : '' }}</td>
-                                            <td>{{ $fQrtFinal ? round($fQrtFinal)   : '' }}</td>
-                                            <td>{{ $fQrtFinal ? $fQrtFinal > 74  ? 'Passed' : 'Failed' : '' }}</td>
+                                            <td class="text-center">{{ $data->fir_g ? $data->fir_g > 0  ? round($data->fir_g) : '' : '' }}</td>
+                                            <td class="text-center">{{ $data->sec_g ? $data->sec_g > 0  ? round($data->sec_g) : '' : '' }}</td>
+                                            <td class="text-center">{{ $fQrtFinal ? round($fQrtFinal)   : '' }}</td>
+                                            <td class="text-center">{{ $fQrtFinal ? $fQrtFinal > 74  ? 'Passed' : 'Failed' : '' }}</td>
 
                                             
                                             <?php

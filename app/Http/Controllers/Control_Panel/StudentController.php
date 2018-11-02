@@ -272,7 +272,7 @@ class StudentController extends Controller
                         'sec_g'             =>  $grade->sec_g,
                         'thi_g'             =>  $grade->thi_g,
                         'fou_g'             =>  $grade->fou_g,
-                        'final_g'           =>  $final,
+                        'final_g'           =>  round($final),
                         'grade_status'      =>  $grade_status,
                         'divisor' => $divisor
                     ];
