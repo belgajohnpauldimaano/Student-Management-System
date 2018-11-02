@@ -149,20 +149,20 @@
                 <th>#</th>
                 <th>Student Name</th>
                 
-            @if ($ClassSubjectDetail->grade_level >= 11) 
+            {{--  @if ($ClassSubjectDetail->grade_level >= 11) 
                 <th>First Semister</th>
                 <th>Second Semister</th>
-            @elseif($ClassSubjectDetail->grade_level <= 10)
+            @elseif($ClassSubjectDetail->grade_level <= 10)  --}}
                 <th>First Grading</th>
                 <th>Second Grading</th>
                 <th>Third Grading</th>
                 <th>Fourth Grading</th>
-            @endif
+            {{--  @endif  --}}
                 <th>Final Grading</th>
             </tr>
         </thead>
         <tbody>
-            @if ($ClassSubjectDetail->grade_level >= 11) 
+            {{--  @if ($ClassSubjectDetail->grade_level >= 11) 
                 @if ($EnrollmentMale)
                     @foreach ($EnrollmentMale as $key => $data)
                         <tr data-student_enrolled_subject_id="{{ base64_encode($data->student_enrolled_subject_id) }}" data-student_id="{{ base64_encode($data->id) }}" data-enrollment_id="{{ base64_encode($data->enrollment_id) }}">
@@ -179,11 +179,9 @@
                                     @if ($data->fir_g > 0 && $data->sec_g > 0)
                                         <span class="text-red final-ratings_{{ $data->student_enrolled_subject_id }}">
                                             <strong>
-                                                <?php
                                                     $g_ctr = 0;
                                                     $g_ctr += $data->fir_g ? $data->fir_g > 0 ? 1 : 0 : 0;
                                                     $g_ctr += $data->sec_g ? $data->sec_g > 0 ? 1 : 0 : 0;
-                                                ?>
                                                 {{ ($g_ctr ? round(($data->fir_g + $data->sec_g) / $g_ctr) : '')  }}
                                             </strong>
                                         </span>
@@ -209,11 +207,9 @@
                                     @if ($data->fir_g > 0 && $data->sec_g > 0)
                                         <span class="text-red final-ratings_{{ $data->student_enrolled_subject_id }}">
                                             <strong>
-                                                <?php
                                                     $g_ctr = 0;
                                                     $g_ctr += $data->fir_g ? $data->fir_g > 0 ? 1 : 0 : 0;
                                                     $g_ctr += $data->sec_g ? $data->sec_g > 0 ? 1 : 0 : 0;
-                                                ?>
                                                 {{ ($g_ctr ? round(($data->fir_g + $data->sec_g) / $g_ctr) : '')  }}
                                             </strong>
                                         </span>
@@ -223,7 +219,7 @@
                         </tr>
                     @endforeach
                 @endif
-            @elseif($ClassSubjectDetail->grade_level <= 10)
+            @elseif($ClassSubjectDetail->grade_level <= 10)  --}}
                 @if ($EnrollmentMale)
                     @foreach ($EnrollmentMale as $key => $data)
                         <tr data-student_enrolled_subject_id="{{ base64_encode($data->student_enrolled_subject_id) }}" data-student_id="{{ base64_encode($data->id) }}" data-enrollment_id="{{ base64_encode($data->enrollment_id) }}">
@@ -296,7 +292,7 @@
                         </tr>
                     @endforeach
                 @endif
-            @endif
+            {{--  @endif  --}}
         </tbody>
     </table>
 </body>

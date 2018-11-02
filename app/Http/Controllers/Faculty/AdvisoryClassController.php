@@ -1,15 +1,16 @@
 <?php
 
-namespace App\Http\Controllers\Registrar;
+namespace App\Http\Controllers\Faculty;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
-class ClassListController extends Controller
+class AdvisoryClassController extends Controller
 {
     public function index (Request $request) 
     {
-
+        
+        $FacultyInformation = \App\FacultyInformation::where('user_id', \Auth::user()->id)->first();
 
         $ClassDetail = \App\ClassDetail::join('section_details', 'section_details.id', '=' ,'class_details.section_id')
             ->join('rooms', 'rooms.id', '=' ,'class_details.room_id')
@@ -32,6 +33,7 @@ class ClassListController extends Controller
             ->where('section_details.status', 1)
             ->where('class_details.current', 1)
             ->where('class_details.status', 1)
+            ->where('class_details.adviser_id', $FacultyInformation->id)
             ->where(function ($query) use($request) {
                 if ($request->sy_search) 
                 {
@@ -47,7 +49,7 @@ class ClassListController extends Controller
         {            
             $ClassDetail = $ClassDetail->paginate(10);
             // return json_encode($ClassDetail);
-            return view('control_panel_registrar.class_details.partials.data_list', compact('ClassDetail'))->render();
+            return view('control_panel_faculty.class_details.partials.data_list', compact('ClassDetail'))->render();
         }
 
         $SchoolYear = \App\SchoolYear::where('status', 1)->where('current', 1)->orderBy('current', 'DESC')->get();
@@ -55,7 +57,7 @@ class ClassListController extends Controller
         $ClassDetail = $ClassDetail->paginate(10);
         
         // return json_encode($ClassDetail);
-        return view('control_panel_registrar.class_details.index', compact('ClassDetail', 'SchoolYear'));
+        return view('control_panel_faculty.class_details.index', compact('ClassDetail', 'SchoolYear'));
     }
     public function modal_data (Request $request) 
     {
@@ -77,7 +79,7 @@ class ClassListController extends Controller
         $GradeLevel = \App\GradeLevel::where('status', 1)->get();
         $Room = \App\Room::where('status', 1)->get();
         $SchoolYear = \App\SchoolYear::where('status', 1)->where('current', 1)->get();
-        return view('control_panel_registrar.class_details.partials.modal_data', compact('ClassDetail', 'SectionDetail', 'Room', 'SchoolYear', 'SectionDetail_grade_levels', 'GradeLevel', 'FacultyInformation'))->render();
+        return view('control_panel_faculty.class_details.partials.modal_data', compact('ClassDetail', 'SectionDetail', 'Room', 'SchoolYear', 'SectionDetail_grade_levels', 'GradeLevel', 'FacultyInformation'))->render();
     }
 
     public function modal_manage_subjects (Request $request) 
@@ -93,7 +95,7 @@ class ClassListController extends Controller
         $SectionDetail = \App\SectionDetail::where('status', 1)->get();
         $Room = \App\Room::where('status', 1)->get();
         $SchoolYear = \App\SchoolYear::where('status', 1)->get();
-        return view('control_panel_registrar.class_details.partials.modal_manage_subjects', compact('ClassDetail', 'FacultyInformation', 'SubjectDetail', 'SectionDetail', 'Room', 'SchoolYear'))->render();
+        return view('control_panel_faculty.class_details.partials.modal_manage_subjects', compact('ClassDetail', 'FacultyInformation', 'SubjectDetail', 'SectionDetail', 'Room', 'SchoolYear'))->render();
     }
 
     public function save_data (Request $request) 

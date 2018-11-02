@@ -57,21 +57,25 @@ class GradeSheetController extends Controller
                     $sum = 0;
                     $first = $grade->fir_g > 0 ? $grade->fir_g : 0;
                     $second = $grade->sec_g > 0 ? $grade->sec_g : 0;
-                    $third = 0;
-                    $fourth = 0;
-                    if ($grade_level >= 11)
-                    {
-                        $third = $grade->thi_g > 0 ? $grade->thi_g : 0;
-                        $fourth = $grade->fou_g > 0 ? $grade->fou_g : 0;
-                    }
+                    $third = $grade->thi_g > 0 ? $grade->thi_g : 0;
+                    $fourth = $grade->fou_g > 0 ? $grade->fou_g : 0;
+                    // $third = 0;
+                    // $fourth = 0;
+                    // if ($grade_level >= 11)
+                    // {
+                    //     $third = $grade->thi_g > 0 ? $grade->thi_g : 0;
+                    //     $fourth = $grade->fou_g > 0 ? $grade->fou_g : 0;
+                    // }
                     
                     $sum += $grade->fir_g > 0 ? $grade->fir_g : 0;
                     $sum += $grade->sec_g > 0 ? $grade->sec_g : 0;
-                    if ($grade_level >= 11)
-                    {
-                        $sum += $grade->thi_g > 0 ? $grade->thi_g : 0;
-                        $sum += $grade->fou_g > 0 ? $grade->fou_g : 0;
-                    }
+                    $sum += $grade->thi_g > 0 ? $grade->thi_g : 0;
+                    $sum += $grade->fou_g > 0 ? $grade->fou_g : 0;
+                    // if ($grade_level >= 11)
+                    // {
+                    //     $sum += $grade->thi_g > 0 ? $grade->thi_g : 0;
+                    //     $sum += $grade->fou_g > 0 ? $grade->fou_g : 0;
+                    // }
 
                     $divisor = 0;
                     $divisor += $first > 0 ? 1 : 0;
@@ -138,6 +142,7 @@ class GradeSheetController extends Controller
                 enrollments.id as enrollment_id,
                 enrollments.class_details_id as cid,
                 class_details.grade_level,
+                class_subject_details.id as class_subject_details_id,
                 class_subject_details.class_days,
                 class_subject_details.class_time_from,
                 class_subject_details.class_time_to,
@@ -149,7 +154,7 @@ class GradeSheetController extends Controller
                 rooms.room_code,
                 section_details.section
             "))
-            ->orderBy('class_subject_details.class_time_from', 'ASC')
+            ->orderBy('class_subject_details.class_subject_order', 'ASC')
             ->get();
             $ClassDetail = [];
             if ($Enrollment)
@@ -191,25 +196,30 @@ class GradeSheetController extends Controller
                 $grade_level = $Enrollment[0]->grade_level;
                 // return json_encode(['StudentEnrolledSubject'=> $StudentEnrolledSubject]);
                 $GradeSheetData = $Enrollment->map(function ($item, $key) use ($StudentEnrolledSubject, $grade_level, $grade_status) {
-                    $grade = $StudentEnrolledSubject->firstWhere('subject_id', $item->subject_id);
+                    // $grade = $StudentEnrolledSubject->firstWhere('subject_id', $item->subject_id);
+                    $grade = $StudentEnrolledSubject->firstWhere('class_subject_details_id', $item->class_subject_details_id);
                     $sum = 0;
                     $first = $grade->fir_g > 0 ? $grade->fir_g : 0;
                     $second = $grade->sec_g > 0 ? $grade->sec_g : 0;
-                    $third = 0;
-                    $fourth = 0;
-                    if ($grade_level <= 11)
-                    {
-                        $third = $grade->thi_g > 0 ? $grade->thi_g : 0;
-                        $fourth = $grade->fou_g > 0 ? $grade->fou_g : 0;
-                    }
+                    $third = $grade->thi_g > 0 ? $grade->thi_g : 0;
+                    $fourth = $grade->fou_g > 0 ? $grade->fou_g : 0;
+                    // $third = 0;
+                    // $fourth = 0;
+                    // if ($grade_level <= 11)
+                    // {
+                    //     $third = $grade->thi_g > 0 ? $grade->thi_g : 0;
+                    //     $fourth = $grade->fou_g > 0 ? $grade->fou_g : 0;
+                    // }
                     
                     $sum += $grade->fir_g > 0 ? $grade->fir_g : 0;
                     $sum += $grade->sec_g > 0 ? $grade->sec_g : 0;
-                    if ($grade_level <= 11)
-                    {
-                        $sum += $grade->thi_g > 0 ? $grade->thi_g : 0;
-                        $sum += $grade->fou_g > 0 ? $grade->fou_g : 0;
-                    }
+                    $sum += $grade->thi_g > 0 ? $grade->thi_g : 0;
+                    $sum += $grade->fou_g > 0 ? $grade->fou_g : 0;
+                    // if ($grade_level <= 11)
+                    // {
+                    //     $sum += $grade->thi_g > 0 ? $grade->thi_g : 0;
+                    //     $sum += $grade->fou_g > 0 ? $grade->fou_g : 0;
+                    // }
 
                     $divisor = 0;
                     $divisor += $first > 0 ? 1 : 0;

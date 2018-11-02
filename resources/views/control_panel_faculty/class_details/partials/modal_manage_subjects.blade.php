@@ -37,18 +37,6 @@
                         <div class="help-block text-red text-center" id="js-subject">
                         </div>
                     </div>  --}}
-                       
-                    <div class="form-group">
-                        <label for="">Grade Level</label>
-                        <select name="grade_level" id="grade_level" class="form-control">
-                            <option value="">Select grade level</option>
-                            @foreach ($SectionDetail_grade_levels as $data) 
-                                <option value="{{ $data->grade_level }}" {{ $ClassDetail ? $ClassDetail->grade_level == $data->grade_level ? 'selected' : '' : '' }}>Grade {{ $data->grade_level }}</option>
-                            @endforeach
-                        </select>
-                        <div class="help-block text-red text-center" id="js-section">
-                        </div>
-                    </div>
                                         
                     <div class="form-group">
                         <label for="">Section</label>
@@ -68,17 +56,6 @@
                             <option value="">Select room</option>
                             @foreach ($Room as $data) 
                                 <option value="{{ $data->id }}" {{ $ClassDetail ? $ClassDetail->room_id == $data->id ? 'selected' : '' : '' }}>{{ $data->room_code }}</option>
-                            @endforeach
-                        </select>
-                        <div class="help-block text-red text-center" id="js-room">
-                        </div>
-                    </div>     
-                    <div class="form-group">
-                        <label for="">Class Adviser</label>
-                        <select name="adviser" id="adviser" class="form-control">
-                            <option value="">Adviser</option>
-                            @foreach ($FacultyInformation as $data) 
-                                <option value="{{ $data->id }}" {{ $ClassDetail ? $ClassDetail->adviser_id == $data->id ? 'selected' : '' : '' }}>{{ $data->last_name . ' '  . $data->first_name . ', '  . $data->middle_nam }}</option>
                             @endforeach
                         </select>
                         <div class="help-block text-red text-center" id="js-room">

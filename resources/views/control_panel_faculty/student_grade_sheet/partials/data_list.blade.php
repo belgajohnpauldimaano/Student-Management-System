@@ -47,20 +47,20 @@
                                     <th>Student Name</th>
                                     {{--  <th>Subject ID</th>  --}}
                                     
-                                @if ($ClassSubjectDetail->grade_level >= 11) 
+                                {{--  @if ($ClassSubjectDetail->grade_level >= 11) 
                                     <th>First Semister</th>
                                     <th>Second Semister</th>
-                                @elseif($ClassSubjectDetail->grade_level <= 10)
+                                @elseif($ClassSubjectDetail->grade_level <= 10)  --}}
                                     <th>First Grading</th>
                                     <th>Second Grading</th>
                                     <th>Third Grading</th>
                                     <th>Fourth Grading</th>
-                                @endif
+                                {{--  @endif  --}}
                                     <th>Final Grading</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                @if ($ClassSubjectDetail->grade_level >= 11) 
+                                {{--  @if ($ClassSubjectDetail->grade_level >= 11) 
                                     @if ($EnrollmentMale)
                                         @if ($ClassSubjectDetail->grading_status == 2)
                                             @foreach ($EnrollmentMale as $key => $data)
@@ -76,11 +76,9 @@
                                                     <td>
                                                         <span class="text-red final-ratings_{{ $data->student_enrolled_subject_id }}">
                                                             <strong>
-                                                                <?php
-                                                                    $g_ctr = 0;
+                                                                    /*$g_ctr = 0;
                                                                     $g_ctr += $data->fir_g > 0 ? 1 : 0;
-                                                                    $g_ctr += $data->sec_g > 0 ? 1 : 0;
-                                                                ?>
+                                                                    $g_ctr += $data->sec_g > 0 ? 1 : 0;*/
                                                                 {{ ($g_ctr ? (($data->fir_g + $data->sec_g) / $g_ctr) : 0)  }}
                                                             </strong>
                                                         </span>
@@ -95,27 +93,21 @@
                                                     <td>
                                                         <div class="input-group" data-grading="{{ base64_encode('first') }}">
                                                         <input type="number" {{ $data->fir_g_status ? "readonly='readonly'" : '' }} class="input-sm txt-grade_input form-control grade-input-{{ $data->student_enrolled_subject_id }}" value="{{ $data->fir_g }}" id="first_grading_{{ $data->student_enrolled_subject_id }}">
-                                                            {{--  <span class="input-group-btn">
-                                                                <button class="btn btn-sm btn-primary btn-flat btn--save-grade" data-grading="first" {{ $data->fir_g_status ? "disabled='disabled'" : '' }} title="Save grade and finalize"><i class="fa fa-check"></i> Save</button>
-                                                            </span>  --}}
+                                                            
                                                         </div>
                                                     </td>
                                                     <td>
                                                         <div class="input-group" data-grading="{{ base64_encode('second') }}">
                                                             <input type="number" {{ $data->sec_g_status ? "readonly='readonly'" : '' }}  class="input-sm txt-grade_input form-control" value="{{ round($data->sec_g) }}" id="second_grading_{{ $data->student_enrolled_subject_id }}">
-                                                            {{--  <span class="input-group-btn">
-                                                                <button  class="btn btn-sm bg-purple btn-flat btn--save-grade" data-grading="second" {{ $data->sec_g_status ? "disabled='disabled'" : '' }} title="Save grade and finalize"><i class="fa fa-check"></i> Save</button>
-                                                            </span>  --}}
+                                                            
                                                         </div>
                                                     </td>
                                                     <td>
                                                         <span class="text-red final-ratings_{{ $data->student_enrolled_subject_id }}">
                                                             <strong>
-                                                                <?php
-                                                                    $g_ctr = 0;
+                                                                    /*$g_ctr = 0;
                                                                     $g_ctr += $data->fir_g > 0 ? 1 : 0;
-                                                                    $g_ctr += $data->sec_g > 0 ? 1 : 0;
-                                                                ?>
+                                                                    $g_ctr += $data->sec_g > 0 ? 1 : 0;*/
                                                                 {{ ($g_ctr ? (($data->fir_g + $data->sec_g) / $g_ctr) : 0)  }}
                                                             </strong>
                                                         </span>
@@ -139,11 +131,9 @@
                                                     <td>
                                                         <span class="text-red final-ratings_{{ $data->student_enrolled_subject_id }}">
                                                             <strong>
-                                                                <?php
-                                                                    $g_ctr = 0;
+                                                                    /*$g_ctr = 0;
                                                                     $g_ctr += $data->fir_g > 0 ? 1 : 0;
-                                                                    $g_ctr += $data->sec_g > 0 ? 1 : 0;
-                                                                ?>
+                                                                    $g_ctr += $data->sec_g > 0 ? 1 : 0;*/
                                                                 {{ ($g_ctr ? (($data->fir_g + $data->sec_g) / $g_ctr) : 0)  }}
                                                             </strong>
                                                         </span>
@@ -158,27 +148,21 @@
                                                     <td>
                                                         <div class="input-group" data-grading="{{ base64_encode('first') }}">
                                                         <input type="number" {{ $data->fir_g_status ? "readonly='readonly'" : '' }} class="input-sm txt-grade_input form-control grade-input-{{ $data->student_enrolled_subject_id }}" value="{{ $data->fir_g }}" id="first_grading_{{ $data->student_enrolled_subject_id }}">
-                                                            {{--  <span class="input-group-btn">
-                                                                <button class="btn btn-sm btn-primary btn-flat btn--save-grade" data-grading="first" {{ $data->fir_g_status ? "disabled='disabled'" : '' }} title="Save grade and finalize"><i class="fa fa-check"></i> Save</button>
-                                                            </span>  --}}
+                                                            
                                                         </div>
                                                     </td>
                                                     <td>
                                                         <div class="input-group" data-grading="{{ base64_encode('second') }}">
                                                             <input type="number" {{ $data->sec_g_status ? "readonly='readonly'" : '' }}  class="input-sm txt-grade_input form-control" value="{{ round($data->sec_g) }}" id="second_grading_{{ $data->student_enrolled_subject_id }}">
-                                                            {{--  <span class="input-group-btn">
-                                                                <button  class="btn btn-sm bg-purple btn-flat btn--save-grade" data-grading="second" {{ $data->sec_g_status ? "disabled='disabled'" : '' }} title="Save grade and finalize"><i class="fa fa-check"></i> Save</button>
-                                                            </span>  --}}
+                                                            
                                                         </div>
                                                     </td>
                                                     <td>
                                                         <span class="text-red final-ratings_{{ $data->student_enrolled_subject_id }}">
                                                             <strong>
-                                                                <?php
-                                                                    $g_ctr = 0;
+                                                                    /*$g_ctr = 0;
                                                                     $g_ctr += $data->fir_g > 0 ? 1 : 0;
-                                                                    $g_ctr += $data->sec_g > 0 ? 1 : 0;
-                                                                ?>
+                                                                    $g_ctr += $data->sec_g > 0 ? 1 : 0;*/
                                                                 {{ ($g_ctr ? (($data->fir_g + $data->sec_g) / $g_ctr) : 0)  }}
                                                             </strong>
                                                         </span>
@@ -187,7 +171,7 @@
                                             @endforeach
                                         @endif
                                     @endif
-                                @elseif($ClassSubjectDetail->grade_level <= 10)
+                                @elseif($ClassSubjectDetail->grade_level <= 10)  --}}
                                     @if ($EnrollmentMale)
                                         @if ($ClassSubjectDetail->grading_status == 2)
                                             @foreach ($EnrollmentMale as $key => $data)
@@ -216,7 +200,7 @@
                                                                     $g_ctr += $data->thi_g > 0 ? 1 : 0;
                                                                     $g_ctr += $data->fou_g > 0 ? 1 : 0;
                                                                 ?>
-                                                                {{ ($g_ctr ? (($data->fir_g + $data->sec_g + $data->thi_g + $data->fou_g) / $g_ctr) : 0)  }}
+                                                                {{ ($g_ctr ? round(($data->fir_g + $data->sec_g + $data->thi_g + $data->fou_g) / $g_ctr) : 0)  }}
                                                             </strong>
                                                         </span>
                                                     </td>
@@ -368,7 +352,7 @@
                                             @endforeach
                                         @endif
                                     @endif
-                                @endif
+                                {{--  @endif  --}}
 
                             </tbody>
                         </table>

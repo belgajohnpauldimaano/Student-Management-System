@@ -17,15 +17,15 @@
                     <thead>
                         <tr>
                             <th>Subject</th>
-                            @if ($grade_level >= 11) 
+                            {{--  @if ($grade_level >= 11) 
                                 <th>First Semister</th>
                                 <th>Second Semister</th>
-                            @elseif($grade_level <= 10)
+                            @elseif($grade_level <= 10)  --}}
                                 <th>First Grading</th>
                                 <th>Second Grading</th>
                                 <th>Third Grading</th>
                                 <th>Fourth Grading</th>
-                            @endif
+                            {{--  @endif  --}}
                             <th>Final Grading</th>
                             <th>Remarks</th>
                             {{--  <th>Time</th>
@@ -44,7 +44,7 @@
                                         <td colspan="6" class="text-center text-red">Grade not yet finalized</td>
                                     @else 
                                     
-                                        @if ($grade_level >= 11) 
+                                        {{--  @if ($grade_level >= 11) 
                                             <td>{{ round($data->fir_g) }}</td>
                                             <td>{{ round($data->sec_g) }}</td>
                                             @if (!$data->fir_g || !$data->sec_g)
@@ -53,7 +53,7 @@
                                                 <td>{{ round($data->final_g) }}</td>
                                             @endif
                                             <td style="color:{{ round($data->final_g) >= 75 ? 'green' : 'red' }};"><strong>{{ round($data->final_g) >= 75 ? 'Passed' : 'Failed' }}</strong></td>
-                                        @else
+                                        @else  --}}
                                             <td>{{ $data->fir_g ? round($data->fir_g) : '' }}</td>
                                             <td>{{ $data->sec_g ? round($data->sec_g) : '' }}</td>
                                             <td>{{ $data->thi_g ? round($data->thi_g) : '' }}</td>
@@ -64,7 +64,7 @@
                                             @else
                                                 <td style="color:{{ round($data->final_g) >= 75 ? 'green' : 'red' }};"><strong>{{ round($data->final_g) >= 75 ? 'Passed' : 'Failed' }}</strong></td>
                                             @endif
-                                        @endif
+                                        {{--  @endif  --}}
                                     @endif
                                     {{--  <td>{{ $data->class_time_from . ' -  ' . $data->class_time_to }}</td>
                                     <td>{{ $data->class_days }}</td>

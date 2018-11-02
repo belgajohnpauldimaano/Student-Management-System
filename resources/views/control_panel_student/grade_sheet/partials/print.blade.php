@@ -25,6 +25,15 @@
             border-collapse: collapse;
             font-size : 11px;
         }
+
+        .table-student-info {
+            width: 600px;
+        }
+        
+        .table-student-info th, .table-student-info td {
+            border: none;
+            padding: 0 2px 2px 2px;
+        }
         .text-red {
             color : #dd4b39 !important;
         }
@@ -64,6 +73,12 @@
 
         .logo {
             position: absolute;
+        }
+        .sja-logo {
+            top: 10px;
+            right: 10px;
+        }
+        .deped-bataan-logo {
             top: 10px;
             left: 10px;
         }
@@ -85,11 +100,50 @@
     <br/>
     <p class="report-progress m0">REPORT ON LEARNING PROGRESS AND ACHIEVEMENT</p>
     <p class="report-progress m0">( {{ $ClassDetail ?  $ClassDetail->section_grade_level >= 11 ? 'SENIOR HIGH SCHOOL' : 'JUNIOR HIGH SCHOOL' : ''}} )</p>
-    <img class="logo" width="100" src="{{ asset('img/sja-logo.png') }}" />
+    <img class="logo sja-logo" width="100" src="{{ asset('img/sja-logo.png') }}" />
+    <img class="logo deped-bataan-logo" width="100" src="{{ asset('img/deped-bataan-logo.png') }}" />
     <br/>
-    <p class="p0 m0 student-info">School Year : <b>{{ $ClassDetail ? $ClassDetail->school_year : '' }}</b</p>
-    <p class="p0 m0 student-info">Grade & Section : <b>{{ $ClassDetail ? $ClassDetail->section_grade_level : '' }} - {{ $ClassDetail ? $ClassDetail->section : '' }}</b</p>
-    <p class="p0 m0 student-info">Student Name : <b>{{ ucfirst($StudentInformation->last_name). ', ' .ucfirst($StudentInformation->first_name). ' ' . ucfirst($StudentInformation->middle_name) }}</b</p>
+    <table class="table-student-info">
+        <tr>
+            <td>
+                <p class="p0 m0 student-info"><b>Name</b> : {{ ucfirst($StudentInformation->last_name). ', ' .ucfirst($StudentInformation->first_name). ' ' . ucfirst($StudentInformation->middle_name) }}</p>
+            </td>
+            <td>
+                <p class="p0 m0 student-info"><b>LRN</b> : {{ $StudentInformation->user->username }}</p>
+            </td>
+        </tr>
+        
+        <tr>
+            <td>
+                <p class="p0 m0 student-info"><b>Birthdate</b> : {{ $StudentInformation->birthdate ? date_format(date_create($StudentInformation->birthdate), 'M d, Y') : '' }}</p>
+            </td>
+            <td>
+                <p class="p0 m0 student-info"><b>Age</b> : 
+                 {{ $StudentInformation->birthdate ? date_diff(date_create($StudentInformation->birthdate), date_create(date("Y-m-d H:i:s")))->format('%y years old') : '' }}</p>
+            </td>
+        </tr>
+        
+        <tr>
+            <td>
+                <p class="p0 m0 student-info"><b>Grade & Section </b>: {{ $ClassDetail ? $ClassDetail->section_grade_level : '' }} - {{ $ClassDetail ? $ClassDetail->section : '' }}</p>
+            </td>
+            <td>
+                <p class="p0 m0 student-info"><b>Sex</b> : {{ $StudentInformation->gender == 1 ? "Male" : "Female" }}</p>
+            </td>
+        </tr>
+        
+        <tr>
+            <td>
+                <p class="p0 m0 student-info"><b>School</b> Year : {{ $ClassDetail ? $ClassDetail->school_year : '' }}</p>
+            </td>
+            <td>
+                <p class="p0 m0 student-info"><b>Curriculum</b> : K to 12 BASIC EDUCATION CURRICULUM</p>
+            </td>
+        </tr>
+    </table>
+    
+    
+    
     
     <br/>
     {{--  <h4>Subject : <span class="text-red"><i>{{ $ClassSubjectDetail->subject }}</i></span> Time : <span class="text-red"><i>{{ strftime('%r',strtotime($ClassSubjectDetail->class_time_from)) . ' - ' . strftime('%r',strtotime($ClassSubjectDetail->class_time_to)) }}</i></span> Days : <span class="text-red"><i>{{ $ClassSubjectDetail->class_days }}</i></span></h4>  --}}
@@ -97,25 +151,39 @@
     
                 <table class="table no-margin">
                     <thead>
-                        <tr>
-                            <th>Subject</th>
-                            @if ($grade_level >= 11) 
-                                <th>First Semister</th>
-                                <th>Second Semister</th>
-                            @elseif($grade_level <= 10)
+                        @if ($grade_level >= 11) 
+                            <tr>
+                                <th>Subject</th>
+                                <th colspan="4">First Semester</th>
+                                {{--  <th colspan="4">Second Semester</th>  --}}
+                            </tr>
+                            <tr>
+                                <th></th>
+                                <th>First Quarter</th>
+                                <th>Second Quarter</th>
+                                <th>Final Grade</th>
+                                <th>Remarks</th>
+
+                                {{--  <th>First Quarter</th>
+                                <th>Second Quarter</th>
+                                <th>Final Grade</th>
+                                <th>Remarks</th>  --}}
+                                {{--  <th>Final Average</th>
+                                <th>Final Remarks</th>
+                                <th>Faculty</th>  --}}
+                            </tr>
+                        @elseif($grade_level <= 10)
+                            <tr>
+                                <th>Subject</th>
                                 <th>First Grading</th>
                                 <th>Second Grading</th>
                                 <th>Third Grading</th>
                                 <th>Fourth Grading</th>
-                            @endif
-                            <th>Final Grading</th>
-                            <th>Remarks</th>
-                            {{--  <th>Time</th>
-                            <th>Days</th>
-                            <th>Room</th>  --}}
-                            {{--  <th>Grade & Section</th>  --}}
-                            <th>Faculty</th>
-                        </tr>
+                                <th>Final Grading</th>
+                                <th>Remarks</th>
+                                {{--  <th>Faculty</th>  --}}
+                            </tr>
+                        @endif
                     </thead>
                     <tbody>
                         @if ($GradeSheetData)
@@ -124,26 +192,87 @@
                             ?>
                             @foreach ($GradeSheetData as $key => $data)
                                 <tr>
-                                    <td>{{ $data->subject_code . ' ' . $data->subject }}</td>
+                                    <td>{{ $data->subject }}</td>
+
                                     @if ($data->grade_status === -1)
                                         <td colspan="{{$ClassDetail ? $ClassDetail->section_grade_level <= 10 ? '6' : '4' : '6'}}" class="text-center text-red">Grade not yet finalized</td>
                                     @else 
-                                    
-                                        @if ($grade_level >= 11) 
-                                            <td>{{ $data->fir_g ? $data->fir_g > 0 ? round($data->fir_g) : '' : '' }}</td>
-                                            <td>{{ $data->sec_g ? $data->sec_g > 0 ? round($data->sec_g) : '' : ''}}</td>
-                                            @if ($data->fou_g > 0)
-                                                <?php
+                                        @if ($grade_level > 10)
+                                            <?php
+                                                $fQrtFinal = 0;
+                                                $fQrtTotal = 0;
+                                                $fQrtCtr = 0;
+                                                if ($data->fir_g && $data->fir_g > 0) 
+                                                {
+                                                    $fQrtTotal += $data->fir_g;
+                                                    $fQrtCtr++;
+                                                }
+
+                                                if ($data->sec_g && $data->sec_g > 0) 
+                                                {
+                                                    $fQrtTotal += $data->sec_g;
+                                                    $fQrtCtr++;
+                                                }
+
+                                                if ($fQrtCtr > 1) 
+                                                {
+                                                    $fQrtFinal = $fQrtTotal / $fQrtCtr;
+                                                }
+                                            ?>
+                                            <td>{{ $data->fir_g ? $data->fir_g > 0  ? round($data->fir_g) : '' : '' }}</td>
+                                            <td>{{ $data->sec_g ? $data->sec_g > 0  ? round($data->sec_g) : '' : '' }}</td>
+                                            <td>{{ $fQrtFinal ? round($fQrtFinal)   : '' }}</td>
+                                            <td>{{ $fQrtFinal ? $fQrtFinal > 74  ? 'Passed' : 'Failed' : '' }}</td>
+
+                                            
+                                            <?php
+                                                /*$sQrtFinal = 0;
+                                                $sQrtTotal = 0;
+                                                $sQrtCtr = 0;
+                                                if ($data->thi_g && $data->thi_g > 0) 
+                                                {
+                                                    $sQrtFinal += $data->thi_g;
+                                                    $sQrtCtr++;
+                                                }
+
+                                                if ($data->fou_g && $data->fou_g > 0) 
+                                                {
+                                                    $sQrtTotal += $data->fou_g;
+                                                    $sQrtCtr++;
+                                                }
+
+                                                if ($sQrtCtr > 1) 
+                                                {
+                                                    $sQrtTotal = $sQrtTotal / $sQrtCtr;
+                                                }**/
+                                            ?>
+                                            {{--  <td>{{ $data->thi_g ? $data->thi_g > 0  ? round($data->thi_g) : '' : '' }}</td>
+                                            <td>{{ $data->fou_g ? $data->fou_g > 0  ? round($data->fou_g) : '' : '' }}</td>
+                                            <td>{{ $sQrtFinal ? $sQrtFinal   : '' }}</td>
+                                            <td>{{ $sQrtFinal ? $sQrtFinal > 74  ? 'Passed' : 'Failed' : '' }}</td>  --}}
+                                            <?php
+                                                /*$finalAvgCtr = 0;
+                                                $finalAvg = 0;
+                                                if ($fQrtFinal) 
+                                                {
+                                                    $finalAvg += $fQrtFinal;
+                                                    $finalAvgCtr++;
+                                                }
+                                                
+                                                if ($sQrtFinal) 
+                                                {
+                                                    $finalAvg += $sQrtFinal;
+                                                    $finalAvgCtr++;
+                                                }
+
+                                                if ($finalAvgCtr > 1) 
+                                                {
                                                     $showGenAvg = 1;
-                                                ?>
-                                                <td>{{ round($data->final_g) }}</td>
-                                                <td style="color:{{ $data->final_g >= 75 ? 'green' : 'red' }};"><strong>{{ $data->final_g >= 75 ? 'Passed' : 'Failed' }}</strong></td>
-                                            @else
-                                                <?php
-                                                    $showGenAvg = 0;
-                                                ?>
-                                                <td></td>
-                                            @endif
+                                                    $finalAvg = 90;
+                                                }*/
+                                            ?>
+                                            {{--  <td>{{ $finalAvg ? $finalAvg   : '' }}</td>  --}}
+                                            {{--  <td style="color:{{ $finalAvg >= 75 ? 'green' : 'red' }};"><strong>{{ $finalAvg ? $finalAvg > 74  ? 'Passed' : 'Failed' : '' }}</strong></td>  --}}
                                         @else
                                             <td>{{ $data->fir_g ? $data->fir_g > 0  ? round($data->fir_g) : '' : '' }}</td>
                                             <td>{{ $data->sec_g ? $data->sec_g > 0  ? round($data->sec_g) : '' : '' }}</td>
@@ -151,40 +280,31 @@
                                             <td>{{ $data->fou_g ? $data->fou_g > 0  ? round($data->fou_g) : '' : '' }}</td>
                                             <td>{{ $data->fou_g ? $data->fou_g > 0  ? round($data->final_g) : '' : '' }}</td>
                                             @if ($data->fou_g > 0)
-                                                <?php
-                                                    $showGenAvg = 1;
-                                                ?>
                                                 <td>{{ round($data->final_g) }}</td>
                                                 <td style="color:{{ $data->final_g >= 75 ? 'green' : 'red' }};"><strong>{{ $data->final_g >= 75 ? 'Passed' : 'Failed' }}</strong></td>
                                             @else
-                                                <?php
-                                                    $showGenAvg = 0;
-                                                ?>
                                                 <td></td>
-                                            @endif
+                                            @endif  
                                         @endif
                                     @endif
                                     {{--  <td>{{ $data->class_time_from . ' -  ' . $data->class_time_to }}</td>
                                     <td>{{ $data->class_days }}</td>
                                     <td>{{ 'Room' . $data->room_code }}</td>  --}}
                                     {{--  <td>{{ $data->grade_level . ' - ' . $data->section }}</td>  --}}
-                                    <td>{{ $data->faculty_name }}</td>
+                                    {{--  <td>{{ $data->faculty_name }}</td>  --}}
                                 </tr>
                             @endforeach
                                 <tr class="text-center">
-                                    <td></td>
-                                    <td colspan="{{$ClassDetail ? $ClassDetail->section_grade_level <= 10 ? '4' : '2' : '4'}}"><b>General Average</b></td>
-                                    <td><b>{{$showGenAvg ? $general_avg == 0 ? '' : $general_avg : '' }}</b></td>
-                                    <td>
-                                        <b>
-                                            @if($showGenAvg && $general_avg > 75) 
-                                                <td style="color:'green';"><strong>Passed</strong></td>
-                                            @elseif($showGenAvg && $general_avg < 75) 
-                                                <td style="color:'red';"><strong>Failed</strong></td>
-                                            @endif
-                                        </b>
-                                    </td>
-                                    <td></td>
+                                    <td colspan="{{$grade_level <= 10 ? '5' : '3'}}"><b>General Average</b></td>
+                                    {{--  <td colspan="{{$ClassDetail ? $ClassDetail->section_grade_level <= 10 ? '8' : '2' : '4'}}"><b>General Average</b></td>  --}}
+                                    <td><b>{{$general_avg && $general_avg >= 0 ? round($general_avg) : '' }}</b></td>
+                                    @if($general_avg && $general_avg > 75) 
+                                        <td style="color:'green';"><strong>Passed</strong></td>
+                                    @elseif($general_avg && $general_avg < 75) 
+                                        <td style="color:'red';"><strong>Failed</strong></td>
+                                    @else 
+                                        <td></td>
+                                    @endif
                                 </tr>
                         @else
                             

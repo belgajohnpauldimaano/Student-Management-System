@@ -51,7 +51,7 @@
 
                                         ?>
                                         <tr>
-                                            <td>{{ $data->subject_code }}</td>
+                                            <td>{{ $data->subject_code }} {{ $data->id }}</td>
                                             <td>{{ $data->subject }}</td>
                                             {{--  <td>{{ $data->class_days }}</td>  --}}
                                             <td> {{ rtrim($daysDisplay, '/') }} </td>

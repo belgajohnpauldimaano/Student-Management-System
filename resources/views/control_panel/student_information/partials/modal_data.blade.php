@@ -39,7 +39,7 @@
                     </div>
                     <div class="form-group">
                         <label for="">Address <small class="text-red">Optional</small></label>
-                        <input type="text" class="form-control" name="address" value="{{ $StudentInformation ? $StudentInformation->address : '' }}">
+                        <input type="text" class="form-control" name="address" value="{{ $StudentInformation ? $StudentInformation->c_address : '' }}">
                         <div class="help-block text-red text-center" id="js-address">
                         </div>
                     </div>
@@ -50,7 +50,7 @@
                             <div class="input-group-addon">
                                 <i class="fa fa-calendar"></i>
                             </div>
-                            <input type="text" name="birthdate" class="form-control pull-right" id="datepicker">
+                            <input type="text" name="birthdate" class="form-control pull-right" id="datepicker" value="{{ $StudentInformation ? date_format(date_create($StudentInformation->birthdate), 'm/d/Y') : '' }}">
                         </div>
                         <div class="help-block text-red text-center" id="js-birthdate">
                         </div>

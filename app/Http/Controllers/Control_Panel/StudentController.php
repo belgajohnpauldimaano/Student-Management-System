@@ -72,8 +72,8 @@ class StudentController extends Controller
             $StudentInformation->first_name     = $request->first_name;
             $StudentInformation->middle_name    = $request->middle_name;
             $StudentInformation->last_name      = $request->last_name;
-            // $StudentInformation->address        = $request->address;
-            // $StudentInformation->birthdate      = date('Y-m-d', strtotime($request->birthdate));
+            $StudentInformation->c_address        = $request->address;
+            $StudentInformation->birthdate      = $request->birthdate ? date('Y-m-d', strtotime($request->birthdate)) : NULL;
             $StudentInformation->gender         = $request->gender;
             $StudentInformation->save();
             return response()->json(['res_code' => 0, 'res_msg' => 'Data successfully saved.']);
@@ -144,7 +144,8 @@ class StudentController extends Controller
             return "Invalid request";
         }
 
-        $StudentInformation = \App\StudentInformation::where('id', $request->id)->first();
+        $StudentInformation = \App\StudentInformation::with(['user'])->where('id', $request->id)->first();
+        // $StudentInformation = \App\StudentInformation::with('user')->where('id', $request->id)->first();
         // $SchoolYear = \App\SchoolYear::where('current', $request->cid)->first();
         // // return json_encode(['xx'=> $request->all(), 's' => $StudentInformation]);
 
@@ -187,6 +188,7 @@ class StudentController extends Controller
             ->select(\DB::raw("
                 enrollments.id as enrollment_id,
                 class_details.grade_level,
+                class_subject_details.id as class_subject_details_id,
                 class_subject_details.class_days,
                 class_subject_details.class_time_from,
                 class_subject_details.class_time_to,
@@ -199,7 +201,7 @@ class StudentController extends Controller
                 section_details.section,
                 class_details.school_year_id as school_year_id
             "))
-            ->orderBy('class_subject_details.class_time_from', 'ASC')
+            ->orderBy('class_subject_details.class_subject_order', 'ASC')
             ->get();
             $GradeSheetData = [];
             $grade_level = 1;
@@ -215,25 +217,31 @@ class StudentController extends Controller
                 $grade_level = $Enrollment[0]->grade_level;
                 // return json_encode(['a' => $StudentEnrolledSubject->count(), 'b' => $Enrollment->count(), 'StudentEnrolledSubject'=> $StudentEnrolledSubject, 'Enrollment' => $Enrollment]);
                 $GradeSheetData = $Enrollment->map(function ($item, $key) use ($StudentEnrolledSubject, $grade_level, $grade_status) {
-                    $grade = $StudentEnrolledSubject->firstWhere('subject_id', $item->subject_id);
+                    // $grade = $StudentEnrolledSubject->firstWhere('subject_id', $item->subject_id);
+                    $grade = $StudentEnrolledSubject->firstWhere('class_subject_details_id', $item->class_subject_details_id);
                     $sum = 0;
                     $first = $grade->fir_g > 0 ? $grade->fir_g : 0;
                     $second = $grade->sec_g > 0 ? $grade->sec_g : 0;
-                    $third = 0;
-                    $fourth = 0;
-                    if ($grade_level <= 11)
-                    {
-                        $third = $grade->thi_g > 0 ? $grade->thi_g : 0;
-                        $fourth = $grade->fou_g > 0 ? $grade->fou_g : 0;
-                    }
+                    $third = $grade->thi_g > 0 ? $grade->thi_g : 0;
+                    $fourth = $grade->fou_g > 0 ? $grade->fou_g : 0;
+                    // $third = 0;
+                    // $fourth = 0;
+                    // if ($grade_level <= 11)
+                    // {
+                    //     $third = $grade->thi_g > 0 ? $grade->thi_g : 0;
+                    //     $fourth = $grade->fou_g > 0 ? $grade->fou_g : 0;
+                    // }
                     
                     $sum += $grade->fir_g > 0 ? $grade->fir_g : 0;
                     $sum += $grade->sec_g > 0 ? $grade->sec_g : 0;
-                    if ($grade_level <= 11)
-                    {
-                        $sum += $grade->thi_g > 0 ? $grade->thi_g : 0;
-                        $sum += $grade->fou_g > 0 ? $grade->fou_g : 0;
-                    }
+                    $sum += $grade->thi_g > 0 ? $grade->thi_g : 0;
+                    $sum += $grade->fou_g > 0 ? $grade->fou_g : 0;
+
+                    // if ($grade_level <= 11)
+                    // {
+                    //     $sum += $grade->thi_g > 0 ? $grade->thi_g : 0;
+                    //     $sum += $grade->fou_g > 0 ? $grade->fou_g : 0;
+                    // }
 
                     $divisor = 0;
                     $divisor += $first > 0 ? 1 : 0;
@@ -272,7 +280,7 @@ class StudentController extends Controller
                 });
                 for ($i=0; $i<count($GradeSheetData); $i++)
                 {
-                    if ($GradeSheetData[$i]['final_g'] > 0 && $GradeSheetData[$i]['grade_status'] == 2) 
+                    if ($GradeSheetData[$i]['final_g'] > 0) // && $GradeSheetData[$i]['grade_status'] == 2) 
                     {
                         $subj_count++;
                         $sub_total +=  $GradeSheetData[$i]['final_g'];

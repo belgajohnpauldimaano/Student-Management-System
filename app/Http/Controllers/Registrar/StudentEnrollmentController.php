@@ -308,16 +308,34 @@ class StudentEnrollmentController extends Controller
             $StudentEnrolledSubject = \App\StudentEnrolledSubject::where('enrollments_id', $request->enrollment_id)
                 // ->where('subject_id', $class_subject->subject_id)
                 ->get();
+                
+            // return json_encode(['ClassDetail' => $ClassDetail, 'StudentEnrolledSubject' => $StudentEnrolledSubject, 'class_subjects' => $ClassDetail->class_subjects]);
             foreach ($ClassDetail->class_subjects as $key => $class_subject)
             {
-                if ($StudentEnrolledSubject[$key]) 
+                
+                $StudentEnrolledSubject = \App\StudentEnrolledSubject::where('enrollments_id', $request->enrollment_id)
+                ->where('class_subject_details_id', $class_subject->id)
+                ->first();
+                if ($StudentEnrolledSubject) {
+                    $StudentEnrolledSubject_list[] = $StudentEnrolledSubject;
+                } 
+                else 
                 {
-                    $StudentEnrolledSubject_tmp = $StudentEnrolledSubject[$key];
-                    $StudentEnrolledSubject_tmp->class_subject_details_id = $class_subject->id;
-                    $StudentEnrolledSubject_tmp->subject_id = $class_subject->subject_id;
-                    $StudentEnrolledSubject_tmp->save();
-                    $StudentEnrolledSubject_list[] = $StudentEnrolledSubject_tmp;
+                    $newStudentEnrolledSubject = new \App\StudentEnrolledSubject();
+                    $newStudentEnrolledSubject->class_subject_details_id = $class_subject->id;
+                    $newStudentEnrolledSubject->subject_id = $class_subject->subject_id;
+                    $newStudentEnrolledSubject->enrollments_id = $request->enrollment_id;
+                    $newStudentEnrolledSubject->save();
+                    $StudentEnrolledSubject_list[] = $newStudentEnrolledSubject;
                 }
+                // if ($StudentEnrolledSubject[$key]) 
+                // {
+                //     $StudentEnrolledSubject_tmp = $StudentEnrolledSubject[$key];
+                //     $StudentEnrolledSubject_tmp->class_subject_details_id = $class_subject->id;
+                //     $StudentEnrolledSubject_tmp->subject_id = $class_subject->subject_id;
+                //     $StudentEnrolledSubject_tmp->save();
+                //     $StudentEnrolledSubject_list[] = $StudentEnrolledSubject_tmp;
+                // }
 
                 // $StudentEnrolledSubject = \App\StudentEnrolledSubject::where('enrollments_id', $request->enrollment_id)
                 //     ->where('subject_id', $class_subject->subject_id)
@@ -326,9 +344,10 @@ class StudentEnrollmentController extends Controller
                 // $StudentEnrolledSubject->save();
                 // $StudentEnrolledSubject_list[] = $StudentEnrolledSubject;
             }
+            
+            // return json_encode(['ClassDetail' => $ClassDetail, 'StudentEnrolledSubject_list' => $StudentEnrolledSubject_list, 'StudentEnrolledSubject' => $StudentEnrolledSubject, 'class_subjects' => $ClassDetail->class_subjects]);
             return response()->json(['res_code' => 0, 'res_msg' => 'Successfully re-enrolled.']);
             
-            return json_encode(['ClassDetail' => $ClassDetail, 'StudentEnrolledSubject_list' => $StudentEnrolledSubject_list, 'StudentEnrolledSubject' => $StudentEnrolledSubject, 'class_subjects' => $ClassDetail->class_subjects]);
         }
         return response()->json(['res_code' => 1, 'res_msg' => 'Unable to perform action.']);
 
@@ -344,17 +363,33 @@ class StudentEnrollmentController extends Controller
         {
             foreach($enrollment_ids as $enrollment_id)
             {
-                $StudentEnrolledSubject = \App\StudentEnrolledSubject::where('enrollments_id', $enrollment_id)->get();
+                // $StudentEnrolledSubject = \App\StudentEnrolledSubject::where('enrollments_id', $enrollment_id)->get();
                 foreach ($ClassDetail->class_subjects as $key => $class_subject)
                 {
-                    if ($StudentEnrolledSubject[$key]) 
+                    $StudentEnrolledSubject = \App\StudentEnrolledSubject::where('enrollments_id', $enrollment_id)
+                    ->where('class_subject_details_id', $class_subject->id)
+                    ->first();
+                    
+                    if ($StudentEnrolledSubject) {
+                        $StudentEnrolledSubject_list[] = $StudentEnrolledSubject;
+                    } 
+                    else 
                     {
-                        $StudentEnrolledSubject_tmp = $StudentEnrolledSubject[$key];
-                        $StudentEnrolledSubject_tmp->class_subject_details_id = $class_subject->id;
-                        $StudentEnrolledSubject_tmp->subject_id = $class_subject->subject_id;
-                        $StudentEnrolledSubject_tmp->save();
-                        $StudentEnrolledSubject_list[] = $StudentEnrolledSubject_tmp;
+                        $newStudentEnrolledSubject = new \App\StudentEnrolledSubject();
+                        $newStudentEnrolledSubject->class_subject_details_id = $class_subject->id;
+                        $newStudentEnrolledSubject->subject_id = $class_subject->subject_id;
+                        $newStudentEnrolledSubject->enrollments_id = $enrollment_id;
+                        $newStudentEnrolledSubject->save();
+                        $StudentEnrolledSubject_list[] = $newStudentEnrolledSubject;
                     }
+                    // if ($StudentEnrolledSubject[$key]) 
+                    // {
+                    //     $StudentEnrolledSubject_tmp = $StudentEnrolledSubject[$key];
+                    //     $StudentEnrolledSubject_tmp->class_subject_details_id = $class_subject->id;
+                    //     $StudentEnrolledSubject_tmp->subject_id = $class_subject->subject_id;
+                    //     $StudentEnrolledSubject_tmp->save();
+                    //     $StudentEnrolledSubject_list[] = $StudentEnrolledSubject_tmp;
+                    // }
                 }
             }
             return response()->json(['res_code' => 0, 'res_msg' => 'Successfully re-enrolled.']);

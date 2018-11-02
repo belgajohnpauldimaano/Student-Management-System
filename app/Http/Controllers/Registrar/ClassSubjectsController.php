@@ -28,11 +28,13 @@ class ClassSubjectsController extends Controller
                 class_subject_details.class_schedule,
                 class_subject_details.class_time_from,
                 class_subject_details.class_time_to,
-                class_subject_details.class_days
+                class_subject_details.class_days,
+                class_subject_details.class_subject_order
             ")
             ->where('class_subject_details.class_details_id', $class_id)
             ->where('class_subject_details.status', 1)
-            ->orderBy('class_subject_details.class_time_from', 'ASC');
+            // ->orderBy('class_subject_details.class_time_from', 'ASC');
+            ->orderBy('class_subject_details.class_subject_order', 'ASC');
         if ($request->ajax())
         {            
             $ClassSubjectDetail = $ClassSubjectDetail->paginate(10);
@@ -144,6 +146,7 @@ class ClassSubjectsController extends Controller
             $ClassSubjectDetail->subject_id	        = $request->subject;
             $ClassSubjectDetail->faculty_id		    = $request->faculty;
             $ClassSubjectDetail->class_details_id   = $request->class_details_id;
+            $ClassSubjectDetail->class_subject_order   = $request->order;
             $ClassSubjectDetail->class_schedule   = $scheds;
 
             // $class_days = '';
@@ -167,6 +170,7 @@ class ClassSubjectsController extends Controller
         $ClassSubjectDetail->subject_id	        = $request->subject;
         $ClassSubjectDetail->faculty_id		    = $request->faculty;
         $ClassSubjectDetail->class_details_id   = $request->class_details_id;
+        $ClassSubjectDetail->class_subject_order   = $request->order;
         $ClassSubjectDetail->class_schedule   = $scheds;
 
         // $class_days = '';

@@ -144,6 +144,11 @@ Route::group(['prefix' => 'faculty', 'middleware' => ['auth', 'userroles'], 'rol
         Route::post('delete-training-seminar-by-id', 'Faculty\UserProfileController@delete_training_seminar_by_id')->name('faculty.my_account.delete_training_seminar_by_id');
         
     });
+
+    Route::group(['prefix' => 'advisory-class'], function () {
+        Route::get('', 'Faculty\AdvisoryClassController@index')->name('faculty.advisory_class.index');
+        
+    });
 });
 
 
