@@ -25,8 +25,12 @@
                         @endforeach
                     </select>
                 </div> 
-                &nbsp;
-                
+                &nbsp;                
+                <div class="form-group col-sm-12 col-md-4" style="padding-right:0">
+                    <select name="search_class_subject" id="search_class_subject" class="form-control">
+                        <option value="">Select Class Quarter</option>
+                    </select>
+                </div>                
                 &nbsp;
                 <button type="submit" class="btn btn-flat btn-success">Search</button>
                 {{--  <button type="button" class="pull-right btn btn-flat btn-danger btn-sm" id="js-button-add"><i class="fa fa-plus"></i> Add</button>  --}}

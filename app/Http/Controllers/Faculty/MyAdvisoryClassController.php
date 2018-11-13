@@ -44,14 +44,8 @@ class MyAdvisoryClassController extends Controller
         
             $AdvisorySubject = \App\ClassSubjectDetail::join('subject_details', 'subject_details.id', '=' ,'class_subject_details.subject_id')
             ->join('class_details', 'class_details.id', '=' ,'class_subject_details.class_details_id')
-            ->join('faculty_informations', 'faculty_informations.id', '=' ,'class_subject_details.faculty_id')
-            // ->join('rooms', 'rooms.id', '=' ,'class_subject_details.room_id')
-
-            // class_details.room_id,
-                // rooms.room_code,
-                // rooms.room_description
-            ->selectRaw("
-                
+            ->join('faculty_informations', 'faculty_informations.id', '=' ,'class_subject_details.faculty_id')           
+            ->selectRaw("                
                 subject_details.subject
             ")
             ->where('class_subject_details.class_details_id', $ClassSubjectDetail->id)
@@ -62,25 +56,21 @@ class MyAdvisoryClassController extends Controller
             // ->orderBy('class_subject_details.class_time_from', 'ASC');
             ->get();
 
-            $AdvisorySubjectGrades = \App\ClassSubjectDetail::join('subject_details', 'subject_details.id', '=' ,'class_subject_details.subject_id')
-            ->join('class_details', 'class_details.id', '=' ,'class_subject_details.class_details_id')
-            ->join('faculty_informations', 'faculty_informations.id', '=' ,'class_subject_details.faculty_id')
-            // ->join('student_informations', 'student_informations.id', '=', 'enrollments.student_information_id')
-            // ->join('rooms', 'rooms.id', '=' ,'class_subject_details.room_id')
-
-            // class_details.room_id,
-                // rooms.room_code,
-                // rooms.room_description
-            ->selectRaw("                
-                subject_details.subject
-            ")
-            ->where('class_subject_details.class_details_id', $ClassSubjectDetail->id)
-            ->where('class_subject_details.status', 1)
-            // ->where('faculty_id', $FacultyInformation->id)
-            ->where('class_details.school_year_id', $request->search_sy)
+            // $AdvisorySubjectGrades = \App\StudentEnrolledSubject::join('class_details', 'class_details.id', '=' ,'enrollments.class_details_id')
+            // ->join('faculty_informations', 'faculty_informations.id', '=' ,'enrollments.faculty_id')
+            // ->join('student_enrolled_subjects', 'student_enrolled_subjects.id', '=', 'enrollments.student_information_id')
+         
+            // ->selectRaw("                
+            //     subject_details.subject
+            //     student_enrolled_subjects.fir_g
+            // ")
+            // ->where('class_subject_details.class_details_id', $ClassSubjectDetail->id)
+            // ->where('class_subject_details.status', 1)
+            // // ->where('faculty_id', $FacultyInformation->id)
             // ->where('class_details.school_year_id', $request->search_sy)
-            // ->orderBy('class_subject_details.class_time_from', 'ASC');
-            ->get();
+            // // ->where('class_details.school_year_id', $request->search_sy)
+            // // ->orderBy('class_subject_details.class_time_from', 'ASC');
+            // ->get();
 
            
             
@@ -95,7 +85,7 @@ class MyAdvisoryClassController extends Controller
                     })
                     ->whereRaw('class_subject_details.faculty_id = '. $FacultyInformation->id)
                     ->whereRaw('class_details.school_year_id = '. $request->search_sy)
-                    ->where('class_subject_details.class_details_id', $ClassSubjectDetail->id)
+                    ->whereRaw('class_subject_details.class_details_id', $ClassSubjectDetail->id)
                     // ->whereRaw('class_subject_details.id = '. $request->search_class_subject)
                     // ->whereRaw('student_enrolled_subjects.class_subject_details_id = '. $request->search_class_subject)
                     // ->whereRaw('class_details.id = '. $search_class_subject[1])
