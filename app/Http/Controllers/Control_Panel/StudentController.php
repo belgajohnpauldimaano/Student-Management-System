@@ -187,6 +187,7 @@ class StudentController extends Controller
             ->where('class_details.school_year_id', $ClassDetail->school_year_id)
             ->select(\DB::raw("
                 enrollments.id as enrollment_id,
+                enrollments.attendance,
                 class_details.grade_level,
                 class_subject_details.id as class_subject_details_id,
                 class_subject_details.class_days,
@@ -208,13 +209,31 @@ class StudentController extends Controller
             $sub_total = 0;
             $general_avg = 0;
             $subj_count = 0;
-                $grade_status = $Enrollment[0]->grade_status;
+            $grade_status = $Enrollment[0]->grade_status;
+            $attendance_data = json_decode(json_encode([
+                'days_of_school' => [
+                    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+                ],
+                'days_present' => [
+                    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+                ],
+                'days_absent' => [
+                    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+                ],
+                'times_tardy' => [
+                    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+                ]
+            ]));
+
             // return json_encode(['c' => count($Enrollment),'Enrollment' => $Enrollment,'StudentInformation' => $StudentInformation, ]);
             if ($StudentInformation && count($Enrollment)>0)
             {
                 $StudentEnrolledSubject = \App\StudentEnrolledSubject::where('enrollments_id', $Enrollment[0]->enrollment_id)
                 ->get();
                 $grade_level = $Enrollment[0]->grade_level;
+                if ($Enrollment[0]->attendance) {
+                    $attendance_data = json_decode($Enrollment[0]->attendance);
+                }
                 // return json_encode(['a' => $StudentEnrolledSubject->count(), 'b' => $Enrollment->count(), 'StudentEnrolledSubject'=> $StudentEnrolledSubject, 'Enrollment' => $Enrollment]);
                 $GradeSheetData = $Enrollment->map(function ($item, $key) use ($StudentEnrolledSubject, $grade_level, $grade_status) {
                     // $grade = $StudentEnrolledSubject->firstWhere('subject_id', $item->subject_id);
@@ -292,8 +311,31 @@ class StudentController extends Controller
                 }
             }
             $GradeSheetData = json_decode(json_encode($GradeSheetData));
+            $table_header = [
+                ['key' => 'Jun',],
+                ['key' => 'Jul',],
+                ['key' => 'Aug',],
+                ['key' => 'Sep',],
+                ['key' => 'Oct',],
+                ['key' => 'Nov',],
+                ['key' => 'Dec',],
+                ['key' => 'Jan',],
+                ['key' => 'Feb',],
+                ['key' => 'Mar',],
+                ['key' => 'Apr',],
+                ['key' => 'total',],
+            ];
+            
+            $student_attendance = [
+                'attendance_data'   => $attendance_data,
+                'table_header'      => $table_header,
+                'days_of_school_total' => array_sum($attendance_data->days_of_school),
+                'days_present_total' => array_sum($attendance_data->days_present),
+                'days_absent_total' => array_sum($attendance_data->days_absent),
+                'times_tardy_total' => array_sum($attendance_data->times_tardy),
+            ];
             // return json_encode(['a' => $GradeSheetData, 'subj_count' => $subj_count, 'general_avg' => $general_avg]);
-            return view('control_panel_student.grade_sheet.partials.print', compact('GradeSheetData', 'grade_level', 'StudentInformation', 'ClassDetail', 'general_avg'));
+            return view('control_panel_student.grade_sheet.partials.print', compact('GradeSheetData', 'grade_level', 'StudentInformation', 'ClassDetail', 'general_avg', 'student_attendance', 'table_header'));
             $pdf = \PDF::loadView('control_panel_student.grade_sheet.partials.print', compact('GradeSheetData', 'grade_level', 'StudentInformation', 'ClassDetail'));
             return $pdf->stream();
             return view('control_panel_student.grade_sheet.index', compact('GradeSheetData'));

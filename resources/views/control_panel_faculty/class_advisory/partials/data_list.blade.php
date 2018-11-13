@@ -29,10 +29,7 @@
                                                     <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="true">Action
                                                         <span class="fa fa-caret-down"></span></button>
                                                     <ul class="dropdown-menu">
-                                                        <li><a href="#" class="js-btn_update" data-id="{{ $data->id }}">Edit</a></li>
-                                                        <li><a href="{{ route('registrar.class_subjects', $data->id) }}" data-id="{{ $data->id }}">Manage Subjects</a></li>
-                                                        <li><a href="{{ route('registrar.student_enrollment', $data->id) }}" data-id="{{ $data->id }}">Enroll Student</a></li>
-                                                        <li><a href="#" class="js-btn_deactivate" data-id="{{ $data->id }}">Deactivate</a></li>
+                                                        <li><a href="{{ route('faculty.advisory_class.view') }}?c={{ encrypt($data->id) }}" target="_blank" class="js-btn_view" data-id="{{ encrypt($data->id) }}">View</a></li>
                                                     </ul>
                                                 </div>
                                             </td>

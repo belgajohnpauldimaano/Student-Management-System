@@ -4,34 +4,45 @@
 @endsection
 
 @section ('content_title')
-    Class Details
+    Attendance
 @endsection
 
 @section ('content')
     <div class="box">
         <div class="box-header with-border">
-            <h3 class="box-title">Search</h3>
-            <form id="js-form_search">
-                {{ csrf_field() }}
-                <div class="form-group col-sm-12 col-md-3">
-                    <select name="sy_search" id="sy_search" class="form-control">
-                        <option value="">Select School Year</option>
-                        @foreach ($SchoolYear as $data)
-                            <option value="{{ $data->id }}">{{ $data->school_year }}</option>
-                        @endforeach
-                    </select>
-                </div>
-                <div id="js-form_search" class="form-group col-sm-12 col-md-3" style="padding-left:0;padding-right:0">
-                    <input type="text" class="form-control" name="search">
-                </div>
-                <button type="submit" class="btn btn-flat btn-success">Search</button>
-                <button type="button" class="pull-right btn btn-flat btn-danger btn-sm" id="js-button-add"><i class="fa fa-plus"></i> Add</button>
-            </form>
+            
         </div>
         <div class="overlay hidden" id="js-loader-overlay"><i class="fa fa-refresh fa-spin"></i></div>
         <div class="box-body">
             <div class="js-data-container">
-                @include('control_panel_registrar.class_details.partials.data_list')
+                <table class="table no-margin">
+                    <thead>
+                        <tr>
+                            <th>Username</th>
+                            <th>Student Name</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if ($Enrollment)
+                            @foreach ($Enrollment as $data)
+                                <tr>
+                                    <td>{{ $data->username }}</td>
+                                    <td>{{ $data->student_name }}</td>
+                                    <td>
+                                        <div class="input-group-btn pull-left text-left">
+                                            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="true">Action
+                                                <span class="fa fa-caret-down"></span></button>
+                                            <ul class="dropdown-menu">
+                                                <li><a href="{{ route('faculty.advisory_class.manage_attendance') }}?c={{ encrypt($data->e_id) }}" target="_blank" class="js-btn_manage" data-id="{{ encrypt($data->e_id) }}">Manage Attendance</a></li>
+                                            </ul>
+                                        </div>
+                                    </td>
+                                </tr>
+                            @endforeach
+                        @endif
+                    </tbody>
+                </table>
             </div>
         </div>
         
@@ -59,14 +70,14 @@
             });
         }
         $(function () {
-            $('body').on('click', '#js-button-add, .js-btn_update', function (e) {
+            $('body').on('click', '.js-btn_manage', function (e) {
                 e.preventDefault();
                 {{--  loader_overlay();  --}}
                 var id = $(this).data('id');
                 $.ajax({
-                    url : "{{ route('registrar.class_details.modal_data') }}",
+                    url : "{{ route('faculty.advisory_class.manage_attendance') }}",
                     type : 'POST',
-                    data : { _token : '{{ csrf_token() }}', id : id },
+                    data : { _token : '{{ csrf_token() }}', enr : id, c: '{{ encrypt($class_id) }}' },
                     success : function (res) {
                         $('.js-modal_holder').html(res);
                         $('.js-modal_holder .modal').modal({ backdrop : 'static' });
@@ -79,12 +90,51 @@
                     }
                 });
             });
+            $('body').on('change', '.days_of_school', function(e) {
+                var days_of_school_total = 0
+                $('.days_of_school').each(function (e) {
+                    days_of_school_total += +$(this).val()
+                })
 
-            $('body').on('submit', '#js-form_subject_details', function (e) {
+                $('.days_of_school_total').text(days_of_school_total)
+            })
+            $('body').on('change', '.days_present', function(e) {
+                var days_present_total = 0
+                $('.days_present').each(function (e) {
+                    days_present_total += +$(this).val()
+                })
+
+                $('.days_present_total').text(days_present_total)
+            })
+
+            $('body').on('change', '.days_absent', function(e) {
+                var days_absent_total = 0
+                $('.days_absent').each(function (e) {
+                    days_absent_total += +$(this).val()
+                })
+
+                $('.days_absent_total').text(days_absent_total)
+            })
+
+            $('body').on('change', '.times_tardy', function(e) {
+                var times_tardy_total = 0
+                $('.times_tardy').each(function (e) {
+                    times_tardy_total += +$(this).val()
+                })
+
+                $('.times_tardy_total').text(times_tardy_total)
+            })
+
+
+            
+
+
+
+            $('body').on('submit', '#js-form_attendance', function (e) {
                 e.preventDefault();
                 var formData = new FormData($(this)[0]);
                 $.ajax({
-                    url         : "{{ route('registrar.class_details.save_data') }}",
+                    url         : "{{ route('faculty.advisory_class.save_attendance') }}",
                     type        : 'POST',
                     data        : formData,
                     processData : false,
@@ -101,7 +151,6 @@
                         else
                         {
                             $('.js-modal_holder .modal').modal('hide');
-                            fetch_data();
                         }
                     }
                 });
