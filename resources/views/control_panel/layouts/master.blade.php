@@ -100,7 +100,12 @@
           <li><a href="{{ route('faculty.subject_class') }}"><i class="fa fa-circle-o"></i> <span>Subject Class</span></a></li>
           <li><a href="{{ route('faculty.faculty_class_schedules') }}"><i class="fa fa-circle-o"></i> <span>Faculty Class Schedules</span></a></li>
           <li><a href="{{ route('faculty.student_grade_sheet') }}"><i class="fa fa-circle-o"></i> <span>Students Grade Sheet</span></a></li>
+          
           <li><a href="{{ route('faculty.advisory_class.index') }}"><i class="fa fa-circle-o"></i> <span>My Advisory Class</span></a></li>
+          
+          {{--  <li><a href="{{ route('faculty.my_advisory_class.index') }}"><i class="fa fa-circle-o"></i> <span>My Advisory Class</span></a>  --}}
+            
+          </li>
         @endif
 {{--  
         @if (Auth::user()->role == 3)
