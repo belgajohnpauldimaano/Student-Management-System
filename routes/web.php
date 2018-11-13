@@ -147,6 +147,11 @@ Route::group(['prefix' => 'faculty', 'middleware' => ['auth', 'userroles'], 'rol
 
     Route::group(['prefix' => 'advisory-class'], function () {
         Route::get('', 'Faculty\AdvisoryClassController@index')->name('faculty.advisory_class.index');
+        Route::post('list-students-by-class', 'Faculty\MyAdvisoryClassController@list_students_by_class1')->name('faculty.MyAdvisoryClass.list_students_by_class');
+    });
+
+    Route::group(['prefix' => 'my-advisory-class'], function () {
+        Route::get('', 'Faculty\MyAdvisoryClassController@index')->name('faculty.my_advisory_class.index');
         
     });
 });

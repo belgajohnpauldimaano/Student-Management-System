@@ -57,6 +57,7 @@ class GradeSheetController extends Controller
                     "))
                     ->orderBy('student_informations.last_name', 'ASC')
                     ->paginate(100);
+                    
         $EnrollmentFemale = \App\Enrollment::join('class_subject_details', 'class_subject_details.class_details_id', '=', 'enrollments.class_details_id')
             ->join('class_details', 'class_details.id', '=', 'class_subject_details.class_details_id')
             ->join('student_informations', 'student_informations.id', '=', 'enrollments.student_information_id')
@@ -235,7 +236,7 @@ class GradeSheetController extends Controller
     }
     public function list_class_subject_details (Request $request) 
     {
-        $FacultyInformation = \App\FacultyInformation::where('user_id', \Auth::user()->id)->first();
+        $FacultyInformation = \App\FacultyInformation::where('user_id', \Auth::user()->id)->first();  
         $ClassSubjectDetail = \App\ClassSubjectDetail::join('class_details', 'class_details.id', '=', 'class_subject_details.class_details_id')
             ->join('subject_details', 'subject_details.id', '=', 'class_subject_details.subject_id')
             ->join('section_details', 'section_details.id', '=', 'class_details.section_id')
