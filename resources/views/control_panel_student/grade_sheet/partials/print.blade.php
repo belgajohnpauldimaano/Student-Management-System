@@ -219,10 +219,10 @@
                                                     $fQrtFinal = round($fQrtTotal) / ($fQrtCtr);
                                                 }
                                             ?>
-                                            <td class="text-center">{{ $data->fir_g ? $data->fir_g > 0  ? round($data->fir_g) : '' : '' }}</td>
-                                            <td class="text-center">{{ $data->sec_g ? $data->sec_g > 0  ? round($data->sec_g) : '' : '' }}</td>
-                                            <td class="text-center">{{ $fQrtFinal ? round($fQrtFinal)   : '' }}</td>
-                                            <td class="text-center">{{ $fQrtFinal ? $fQrtFinal > 74  ? 'Passed' : 'Failed' : '' }}</td>
+                                            <td class="text-center"><center>{{ $data->fir_g ? $data->fir_g > 0  ? round($data->fir_g) : '' : '' }}</center></td>
+                                            <td class="text-center"><center>{{ $data->sec_g ? $data->sec_g > 0  ? round($data->sec_g) : '' : '' }}</center></td>
+                                            <td class="text-center"><center>{{ $fQrtFinal ? round($fQrtFinal)   : '' }}</center></td>
+                                            <td class="text-center"><center>{{ $fQrtFinal ? $fQrtFinal > 74  ? 'Passed' : 'Failed' : '' }}</center></td>
 
                                             
                                             <?php
@@ -274,14 +274,14 @@
                                             {{--  <td>{{ $finalAvg ? $finalAvg   : '' }}</td>  --}}
                                             {{--  <td style="color:{{ $finalAvg >= 75 ? 'green' : 'red' }};"><strong>{{ $finalAvg ? $finalAvg > 74  ? 'Passed' : 'Failed' : '' }}</strong></td>  --}}
                                         @else
-                                            <td>{{ $data->fir_g ? $data->fir_g > 0  ? round($data->fir_g) : '' : '' }}</td>
-                                            <td>{{ $data->sec_g ? $data->sec_g > 0  ? round($data->sec_g) : '' : '' }}</td>
-                                            <td>{{ $data->thi_g ? $data->thi_g > 0  ? round($data->thi_g) : '' : '' }}</td>
-                                            <td>{{ $data->fou_g ? $data->fou_g > 0  ? round($data->fou_g) : '' : '' }}</td>
-                                            <td>{{ $data->fou_g ? $data->fou_g > 0  ? round($data->final_g) : '' : '' }}</td>
+                                            <td><center>{{ $data->fir_g ? $data->fir_g > 0  ? round($data->fir_g) : '' : '' }}</center></td>
+                                            <td><center>{{ $data->sec_g ? $data->sec_g > 0  ? round($data->sec_g) : '' : '' }}</center></td>
+                                            <td><center>{{ $data->thi_g ? $data->thi_g > 0  ? round($data->thi_g) : '' : '' }}</center></td>
+                                            <td><center>{{ $data->fou_g ? $data->fou_g > 0  ? round($data->fou_g) : '' : '' }}</center></td>
+                                            <td><center>{{ $data->fou_g ? $data->fou_g > 0  ? round($data->final_g) : '' : '' }}</center></td>
                                             @if ($data->fou_g > 0)
-                                                <td>{{ round($data->final_g) }}</td>
-                                                <td style="color:{{ $data->final_g >= 75 ? 'green' : 'red' }};"><strong>{{ $data->final_g >= 75 ? 'Passed' : 'Failed' }}</strong></td>
+                                                <td><center>{{ round($data->final_g) }}</center></td>
+                                                <td style="color:{{ $data->final_g >= 75 ? 'green' : 'red' }};"><center><strong>{{ $data->final_g >= 75 ? 'Passed' : 'Failed' }}</strong></center></td>
                                             @else
                                                 <td></td>
                                             @endif  

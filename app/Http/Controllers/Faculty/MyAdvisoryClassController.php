@@ -56,23 +56,6 @@ class MyAdvisoryClassController extends Controller
             // ->orderBy('class_subject_details.class_time_from', 'ASC');
             ->get();
 
-            // $AdvisorySubjectGrades = \App\StudentEnrolledSubject::join('class_details', 'class_details.id', '=' ,'enrollments.class_details_id')
-            // ->join('faculty_informations', 'faculty_informations.id', '=' ,'enrollments.faculty_id')
-            // ->join('student_enrolled_subjects', 'student_enrolled_subjects.id', '=', 'enrollments.student_information_id')
-         
-            // ->selectRaw("                
-            //     subject_details.subject
-            //     student_enrolled_subjects.fir_g
-            // ")
-            // ->where('class_subject_details.class_details_id', $ClassSubjectDetail->id)
-            // ->where('class_subject_details.status', 1)
-            // // ->where('faculty_id', $FacultyInformation->id)
-            // ->where('class_details.school_year_id', $request->search_sy)
-            // // ->where('class_details.school_year_id', $request->search_sy)
-            // // ->orderBy('class_subject_details.class_time_from', 'ASC');
-            // ->get();
-
-           
             
 
             $EnrollmentMale = \App\Enrollment::join('class_subject_details', 'class_subject_details.class_details_id', '=', 'enrollments.class_details_id')

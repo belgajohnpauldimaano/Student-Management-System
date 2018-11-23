@@ -115,25 +115,27 @@
                             ?>
                             @foreach ($GradeSheetData as $key => $data)
                                 <tr>
+                                    <center>
                                     <td>{{ $data->subject_code . ' ' . $data->subject }}</td>
                                     @if ($data->grade_status === -1)
                                         <td colspan="{{$ClassDetail ? $ClassDetail->section_grade_level <= 10 ? '6' : '4' : '6'}}" class="text-center text-red">Grade not yet finalized</td>
                                     @else 
-                                            <td>{{ $data->fir_g ? $data->fir_g > 0  ? round($data->fir_g) : '' : '' }}</td>
-                                            <td>{{ $data->sec_g ? $data->sec_g > 0  ? round($data->sec_g) : '' : '' }}</td>
-                                            <td>{{ $data->thi_g ? $data->thi_g > 0  ? round($data->thi_g) : '' : '' }}</td>
-                                            <td>{{ $data->fou_g ? $data->fou_g > 0  ? round($data->fou_g) : '' : '' }}</td>
-                                            <td>{{ $data->fou_g ? $data->fou_g > 0  ? round($data->final_g) : '' : '' }}</td>
+                                            <td><center>{{ $data->fir_g ? $data->fir_g > 0  ? round($data->fir_g) : '' : '' }}</center></td>
+                                            <td><center>{{ $data->sec_g ? $data->sec_g > 0  ? round($data->sec_g) : '' : '' }}</center></td>
+                                            <td><center>{{ $data->thi_g ? $data->thi_g > 0  ? round($data->thi_g) : '' : '' }}</center></td>
+                                            <td><center>{{ $data->fou_g ? $data->fou_g > 0  ? round($data->fou_g) : '' : '' }}</center></td>
+                                            <td><center>{{ $data->fou_g ? $data->fou_g > 0  ? round($data->final_g) : '' : '' }}</center></td>
                                             @if ($data->fou_g > 0)
                                                 <?php
                                                     $showGenAvg = 1;
                                                 ?>
-                                                <td>{{ round($data->final_g) }}</td>
+                                                <td><center>{{ round($data->final_g) }}</center></td>
                                                 <td style="color:{{ $data->final_g >= 75 ? 'green' : 'red' }};"><strong>{{ $data->final_g >= 75 ? 'Passed' : 'Failed' }}</strong></td>
                                             @else
-                                                <?php
+                                            <center><?php
                                                     $showGenAvg = 0;
                                                 ?>
+                                            </center>
                                                 <td></td>
                                             @endif
                                     @endif
@@ -142,6 +144,7 @@
                                     <td>{{ 'Room' . $data->room_code }}</td>  --}}
                                     {{--  <td>{{ $data->grade_level . ' - ' . $data->section }}</td>  --}}
                                     <td>{{ $data->faculty_name }}</td>
+    </center>
                                 </tr>
                             @endforeach
                                 <tr class="text-center">
@@ -150,11 +153,13 @@
                                     <td><b>{{$showGenAvg ? $general_avg == 0 ? '' : $general_avg : '' }}</b></td>
                                     <td>
                                         <b>
-                                            @if($showGenAvg && $general_avg > 75) 
-                                                <td style="color:'green';"><strong>Passed</strong></td>
-                                            @elseif($showGenAvg && $general_avg < 75) 
-                                                <td style="color:'red';"><strong>Failed</strong></td>
-                                            @endif
+                                            <center>
+                                                @if($showGenAvg && $general_avg > 75) 
+                                                    <td style="color:'green';"><strong>Passed</strong></td>
+                                                @elseif($showGenAvg && $general_avg < 75) 
+                                                    <td style="color:'red';"><strong>Failed</strong></td>
+                                                @endif
+                                            </center>
                                         </b>
                                     </td>
                                     <td></td>

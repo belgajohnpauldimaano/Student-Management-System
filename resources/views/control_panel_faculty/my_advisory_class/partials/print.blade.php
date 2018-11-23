@@ -250,8 +250,9 @@
                                                 $g_ctr += $data->fou_g ? $data->fou_g > 0 ? 1 : 0 : 0;
                                             ?>
                                             {{ ($g_ctr ? round(($data->fir_g + $data->sec_g + $data->thi_g + $data->fou_g) / $g_ctr) : '')  }}
-                                        </center>
+                                        
                                         </strong>
+                                    </center>
                                     </span>
                                 @endif
                             </td>
