@@ -27,6 +27,7 @@
                         @if ($Enrollment)
                             @foreach ($Enrollment as $data)
                                 <tr>
+                                        {{-- <td>{{ $data->id }}</td> --}}
                                     <td>{{ $data->username }}</td>
                                     <td>{{ $data->student_name }}</td>
                                     
@@ -36,11 +37,11 @@
                                             <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="true">Action
                                                 <span class="fa fa-caret-down"></span></button>
                                             <ul class="dropdown-menu">
-                                                <input name="print_sy" id="print_sy" value="{{ $ClassDetails->school_year}}" type="hidden" />
+                                                <input name="print_sy" id="print_sy" value="{{ $ClassDetails->id}}" type="hidden" />
 
                                                 <li><a href="{{ route('faculty.advisory_class.manage_attendance') }}?c={{ encrypt($data->e_id) }}" class="js-btn_manage" data-id="{{ encrypt($data->e_id) }}">Manage Attendance</a></li>
                                                 
-                                                <li><a rel="{{  encrypt($data->e_id) }}" class="js-btn_manage1 printGrade" data-id="{{ encrypt($data->e_id) }}">Print Grade</a></li>
+                                                <li><a style="cursor: pointer;" rel="{{ encrypt($data->id) }}" class="printGrade" data-id="{{ encrypt($data->id) }}">Print Grade</a></li>
                                             
                                             </ul>
                                         </div>
