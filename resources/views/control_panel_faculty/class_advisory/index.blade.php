@@ -10,10 +10,10 @@
 @section ('content')
     <div class="box">
         <div class="box-header with-border">
-            <h3 class="box-title">Search</h3>
+            {{--  <h3 class="box-title">Search</h3>  --}}
             <form id="js-form_search">
                 {{ csrf_field() }}
-                <div class="form-group col-sm-12 col-md-3">
+                {{--  <div class="form-group col-sm-12 col-md-3">
                     <select name="sy_search" id="sy_search" class="form-control">
                         <option value="">Select School Year</option>
                         @foreach ($SchoolYear as $data)
@@ -25,13 +25,13 @@
                     <input type="text" class="form-control" name="search">
                 </div>
                 <button type="submit" class="btn btn-flat btn-success">Search</button>
-                <button type="button" class="pull-right btn btn-flat btn-danger btn-sm" id="js-button-add"><i class="fa fa-plus"></i> Add</button>
+                <button type="button" class="pull-right btn btn-flat btn-danger btn-sm" id="js-button-add"><i class="fa fa-plus"></i> Add</button>  --}}
             </form>
         </div>
         <div class="overlay hidden" id="js-loader-overlay"><i class="fa fa-refresh fa-spin"></i></div>
         <div class="box-body">
             <div class="js-data-container">
-                @include('control_panel_registrar.class_details.partials.data_list')
+                @include('control_panel_faculty.class_advisory.partials.data_list')
             </div>
         </div>
         
@@ -59,14 +59,14 @@
             });
         }
         $(function () {
-            $('body').on('click', '#js-button-add, .js-btn_update', function (e) {
+            $('body').on('click', '.js-btn_manage', function (e) {
                 e.preventDefault();
                 {{--  loader_overlay();  --}}
                 var id = $(this).data('id');
                 $.ajax({
-                    url : "{{ route('registrar.class_details.modal_data') }}",
+                    url : "{{ route('faculty.advisory_class.manage_attendance') }}",
                     type : 'POST',
-                    data : { _token : '{{ csrf_token() }}', id : id },
+                    data : { _token : '{{ csrf_token() }}', c : id },
                     success : function (res) {
                         $('.js-modal_holder').html(res);
                         $('.js-modal_holder .modal').modal({ backdrop : 'static' });

@@ -247,9 +247,9 @@
                                                 }**/
                                             ?>
                                             {{--  <td>{{ $data->thi_g ? $data->thi_g > 0  ? round($data->thi_g) : '' : '' }}</td>
-                                            <td>{{ $data->fou_g ? $data->fou_g > 0  ? round($data->fou_g) : '' : '' }}</td>
-                                            <td>{{ $sQrtFinal ? $sQrtFinal   : '' }}</td>
-                                            <td>{{ $sQrtFinal ? $sQrtFinal > 74  ? 'Passed' : 'Failed' : '' }}</td>  --}}
+                                            <td class="text-center">{{ $data->fou_g ? $data->fou_g > 0  ? round($data->fou_g) : '' : '' }}</td>
+                                            <td class="text-center">{{ $sQrtFinal ? $sQrtFinal   : '' }}</td>
+                                            <td class="text-center">{{ $sQrtFinal ? $sQrtFinal > 74  ? 'Passed' : 'Failed' : '' }}</td>  --}}
                                             <?php
                                                 /*$finalAvgCtr = 0;
                                                 $finalAvg = 0;
@@ -279,6 +279,11 @@
                                             <td><center>{{ $data->thi_g ? $data->thi_g > 0  ? round($data->thi_g) : '' : '' }}</center></td>
                                             <td><center>{{ $data->fou_g ? $data->fou_g > 0  ? round($data->fou_g) : '' : '' }}</center></td>
                                             <td><center>{{ $data->fou_g ? $data->fou_g > 0  ? round($data->final_g) : '' : '' }}</center></td>
+                                            {{--  <td class="text-center">{{ $data->fir_g ? $data->fir_g > 0  ? round($data->fir_g) : '' : '' }}</td>
+                                            <td class="text-center">{{ $data->sec_g ? $data->sec_g > 0  ? round($data->sec_g) : '' : '' }}</td>
+                                            <td class="text-center">{{ $data->thi_g ? $data->thi_g > 0  ? round($data->thi_g) : '' : '' }}</td>
+                                            <td class="text-center">{{ $data->fou_g ? $data->fou_g > 0  ? round($data->fou_g) : '' : '' }}</td>
+                                            <td class="text-center">{{ $data->fou_g ? $data->fou_g > 0  ? round($data->final_g) : '' : '' }}</td>  --}}
                                             @if ($data->fou_g > 0)
                                                 <td><center>{{ round($data->final_g) }}</center></td>
                                                 <td style="color:{{ $data->final_g >= 75 ? 'green' : 'red' }};"><center><strong>{{ $data->final_g >= 75 ? 'Passed' : 'Failed' }}</strong></center></td>
@@ -297,19 +302,91 @@
                                 <tr class="text-center">
                                     <td colspan="{{$grade_level <= 10 ? '5' : '3'}}"><b>General Average</b></td>
                                     {{--  <td colspan="{{$ClassDetail ? $ClassDetail->section_grade_level <= 10 ? '8' : '2' : '4'}}"><b>General Average</b></td>  --}}
-                                    <td><b>{{$general_avg && $general_avg >= 0 ? round($general_avg) : '' }}</b></td>
-                                    @if($general_avg && $general_avg > 75) 
-                                        <td style="color:'green';"><strong>Passed</strong></td>
-                                    @elseif($general_avg && $general_avg < 75) 
-                                        <td style="color:'red';"><strong>Failed</strong></td>
-                                    @else 
+                                    <td>
+                                        <b>
+                                            @if($data->fir_g == 0 && $data->sec_g == 0 && $data->thi_g == 0 && $data->fou_g == 0)
+                                                {{$general_avg && $general_avg >= 0 ? round($general_avg) : '' }}
+                                            @else
+                                                
+                                            @endif
+                                        </b>
+                                    </td>
+                                    @if($data->fir_g == 0 && $data->sec_g == 0 && $data->thi_g == 0 && $data->fou_g == 0)
+                                        @if($general_avg && $general_avg > 75) 
+                                            <td style="color:'green';"><strong>Passed</strong></td>
+                                        @elseif($general_avg && $general_avg < 75) 
+                                            <td style="color:'red';"><strong>Failed</strong></td>
+                                        @else 
+                                            <td></td>
+                                        @endif
+                                    @else
                                         <td></td>
                                     @endif
+                                    
                                 </tr>
                         @else
                             
                     @endif
                 </tbody>
             </table>
-</body>
+            <br />
+        <table style="width:100%">
+            <tr>
+                <th>
+                    
+                </th>
+                    @foreach ($student_attendance['table_header'] as $data)
+                            <th>{{ $data['key'] }}</th>
+                    @endforeach
+            </tr>
+            <tr>
+                <th>
+                    Days of School
+                </th>
+                @foreach ($student_attendance['attendance_data']->days_of_school as $key => $data)
+                    <th style="width:7%">{{ $data }}
+                    </th>
+                @endforeach
+                <th class="days_of_school_total">
+                    {{ $student_attendance['days_of_school_total'] }}
+                </th>
+            </tr>
+            <tr>
+                <th>
+                    Days Present
+                </th>
+                @foreach ($student_attendance['attendance_data']->days_present as $key => $data)
+                    <th style="width:7%">{{ $data }} 
+                    </th>
+                @endforeach
+                <th class="days_present_total">
+                    {{ $student_attendance['days_present_total'] }}
+                </th>
+            </tr>
+            <tr>
+                <th>
+                    Days Absent
+                </th>
+                @foreach ($student_attendance['attendance_data']->days_absent as $key => $data)
+                    <th style="width:7%">{{ $data }}  
+                    </th>
+                @endforeach
+                <th class="days_absent_total">
+                    {{ $student_attendance['days_absent_total'] }}
+                </th>
+            </tr>
+            <tr>
+                <th>
+                    Times Tardy
+                </th>
+                @foreach ($student_attendance['attendance_data']->times_tardy as $key => $data)
+                    <th style="width:7%">{{ $data }}  
+                    </th>
+                @endforeach
+                <th class="times_tardy_total">
+                    {{ $student_attendance['times_tardy_total'] }}
+                </th>
+            </tr>
+        </table>
+    </body>
 </html>
