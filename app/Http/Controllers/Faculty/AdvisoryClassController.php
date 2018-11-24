@@ -79,7 +79,8 @@ class AdvisoryClassController extends Controller
 
             $ClassDetails = \App\ClassDetail::join('section_details', 'section_details.id', '=', 'class_details.section_id')
             ->join('school_years', 'school_years.id', '=', 'class_details.school_year_id')
-            ->where('class_details.id', $class_id)->first();
+            ->where('class_details.id', $class_id)
+            ->first();
             
             return view('control_panel_faculty.class_advisory.index_view_class_list', compact('Enrollment', 'ClassDetails', 'class_id'))->render();
         } catch (Illuminate\Contracts\Encryption\DecryptException $e) {
