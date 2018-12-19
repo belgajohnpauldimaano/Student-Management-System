@@ -22,7 +22,7 @@
                             </select>
                         </div>
                     @else
-                        <h3>No Classs tagged</h3>
+                        <h3>No Class tagged</h3>
                     @endif
                 </div>
                 <div class="modal-footer">

@@ -28,7 +28,7 @@
                             </th>
                             @foreach ($student_attendance['attendance_data']->days_of_school as $key => $data)
                                 <th style="width:7%">
-                                    <input type="number" class="form-control days_of_school"  min="0" max="30" id="days_of_school{{ $key }}" name="days_of_school[]"  value="{{ $data }}" />
+                                    <input type="text" class="form-control days_of_school"  min="0" max="30" id="days_of_school{{ $key }}" name="days_of_school[]"  value="{{ $data }}" />
                                 </th>
                             @endforeach
                             <th class="days_of_school_total">
@@ -41,7 +41,7 @@
                             </th>
                             @foreach ($student_attendance['attendance_data']->days_present as $key => $data)
                                 <th style="width:7%">
-                                    <input type="number" class="form-control days_present" min="0" max="30" id="days_present{{ $key }}" name="days_present[]" value="{{ $data }}" />    
+                                    <input type="text" class="form-control days_present" min="0" max="30" id="days_present{{ $key }}" name="days_present[]" value="{{ $data }}" />    
                                 </th>
                             @endforeach
                             <th class="days_present_total">
@@ -54,7 +54,7 @@
                             </th>
                             @foreach ($student_attendance['attendance_data']->days_absent as $key => $data)
                                 <th style="width:7%">
-                                    <input type="number" class="form-control days_absent" min="0" max="30" id="days_present{{ $key }}" name="days_absent[]" value="{{ $data }}" />    
+                                    <input type="text" class="form-control days_absent" min="0" max="30" id="days_present{{ $key }}" name="days_absent[]" value="{{ $data }}" />    
                                 </th>
                             @endforeach
                             <th class="days_absent_total">
@@ -67,7 +67,7 @@
                             </th>
                             @foreach ($student_attendance['attendance_data']->times_tardy as $key => $data)
                                 <th style="width:7%">
-                                    <input type="number" class="form-control times_tardy" min="0" max="30" id="days_present{{ $key }}" name="times_tardy[]" value="{{ $data }}" />    
+                                    <input type="text" class="form-control times_tardy" min="0" max="30" id="days_present{{ $key }}" name="times_tardy[]" value="{{ $data }}" />    
                                 </th>
                             @endforeach
                             <th class="times_tardy_total">

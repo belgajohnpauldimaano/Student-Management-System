@@ -27,8 +27,12 @@
                 </div> 
                 &nbsp;                
                 <div class="form-group col-sm-12 col-md-4" style="padding-right:0">
-                    <select name="search_class_subject" id="search_class_subject" class="form-control">
+                    <select name="quarter_grades" id="quarter_grades" class="form-control">
                         <option value="">Select Class Quarter</option>
+                        <option value="1st">First Quarter</option>
+                        <option value="2nd">Second Quarter</option>
+                        <option value="3rd">Third Quarter</option>
+                        <option value="4th">Fourth Quarter</option>
                     </select>
                 </div>                
                 &nbsp;
@@ -54,35 +58,143 @@
             var formData = new FormData($('#js-form_search')[0]);
             formData.append('page', page);
             loader_overlay();
-            $.ajax({
-                    url : "{{ route('faculty.MyAdvisoryClass.list_students_by_class') }}",
-                    type : 'POST',
-                    data : formData,
-                    processData : false,
-                    contentType : false,
-                    success     : function (res) {
-                        loader_overlay();
-                        $('.js-data-container').html(res);
-                }
-            });
+
+            var quarter_grades = $('#quarter_grades').val();
+                    
+                    if (quarter_grades == '1st') 
+                    {
+                       {{-- alert('1st'); --}}
+                        $.ajax({
+                            url : "{{ route('faculty.MyAdvisoryClass.firstquarter') }}",
+                            type : 'POST',
+                            data : formData,
+                            processData : false,
+                            contentType : false,
+                            success     : function (res) {
+                                loader_overlay();
+                                $('.js-data-container').html(res);
+                        }
+                        
+                        });
+                        return;
+                    }
+                    else if(quarter_grades == '2nd')
+                    {
+                        {{-- alert('2nd'); --}}
+                        $.ajax({
+                            url : "{{ route('faculty.MyAdvisoryClass.secondquarter') }}",
+                            type : 'POST',
+                            data : formData,
+                            processData : false,
+                            contentType : false,
+                            success     : function (res) {
+                                loader_overlay();
+                                $('.js-data-container').html(res);
+                        }
+                        });
+                        return;
+                    }
+                    else if(quarter_grades == '3rd')
+                    {
+                        {{-- alert('3rd'); --}}
+                        $.ajax({
+                            url : "{{ route('faculty.MyAdvisoryClass.thirdquarter') }}",
+                            type : 'POST',
+                            data : formData,
+                            processData : false,
+                            contentType : false,
+                            success     : function (res) {
+                                loader_overlay();
+                                $('.js-data-container').html(res);
+                        }
+                        });
+                        return;
+                    }
+                    else if(quarter_grades == '4th')
+                    {
+                        {{-- alert('4th'); --}}
+                        $.ajax({
+                            url : "{{ route('faculty.MyAdvisoryClass.fourthquarter') }}",
+                            type : 'POST',
+                            data : formData,
+                            processData : false,
+                            contentType : false,
+                            success     : function (res) {
+                                loader_overlay();
+                                $('.js-data-container').html(res);
+                        }
+                        });
+                        return;
+                    }
         }
         $(function(){
+            
+
             $('body').on('submit', '#js-form_search', function (e) {
                 e.preventDefault();
                 if (!$('#search_sy').val()) {
                     alert('Please select a School year');
                     return;
                 }
+                {{--  fetch_data();  --}}
+            });
+
+            $('body').on('submit', '#js-form_search', function (e) {
+                e.preventDefault();
+                if (!$('#quarter_grades').val()) {
+                    alert('Please select a School year');
+                    return;
+                }
                 fetch_data();
             });
+
             $('body').on('click', '.pagination a', function (e) {
                 e.preventDefault();
                 page = $(this).attr('href').split('=')[1];
                 fetch_data();
             });
-
-           
-
         });
+
+        $('body').on('click', '#js-btn_print', function (e) {
+            e.preventDefault()
+            const quarter_grades = $('#quarter_grades').val();
+          
+            const search_class_subject = $('#search_class_subject').val()
+            const search_sy = $('#search_sy').val()
+            
+                    
+                    if (quarter_grades == '1st') 
+                    {
+                       {{--  alert('1st');  --}}
+                       window.open("{{ route('faculty.MyAdvisoryClass.print_first_quarter') }}?search_class_subject="+search_class_subject+'&search_sy='+search_sy, '', 'height=800,width=800')
+                         
+                       
+                        {{--  return;  --}}
+                    }
+                    else if(quarter_grades == '2nd')
+                    {
+                        {{--  alert('2nd');  --}}
+                        window.open("{{ route('faculty.MyAdvisoryClass.print_second_quarter') }}?search_class_subject="+search_class_subject+'&search_sy='+search_sy, '', 'height=800,width=800')
+                         
+                        
+                        {{--  return;  --}}
+                    }
+                    else if(quarter_grades == '3rd')
+                    {
+                        {{--  alert('3rd');  --}}
+                        window.open("{{ route('faculty.MyAdvisoryClass.print_third_quarter') }}?search_class_subject="+search_class_subject+'&search_sy='+search_sy, '', 'height=800,width=800')
+                         
+                        {{--  return;  --}}
+                    }
+                    else if(quarter_grades == '4th')
+                    {
+                        {{--  alert('4th');  --}}
+                        window.open("{{ route('faculty.MyAdvisoryClass.print_fourth_quarter') }}?search_class_subject="+search_class_subject+'&search_sy='+search_sy, '', 'height=800,width=800')
+                         
+                        {{--  return;  --}}
+                    }
+              });
+       
+        
     </script>
 @endsection

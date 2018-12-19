@@ -8,6 +8,7 @@
                                     <th>Username</th>
                                     <th>Gender</th>
                                     <th>Date of Birth</th>
+                                    <th>Parent/Guardian</th>
                                     <th>Address</th>
                                     <th>Status</th>
                                     <th>Actions</th>
@@ -21,7 +22,8 @@
                                             <td>{{ $data->user->username }}</td>
                                             <td>{{ ($data->gender == 1 ? 'Male' : 'Female') }}</td>
                                             <td>{{ date('d-m-Y', strtotime($data->birthdate)) }}</td>
-                                            <td>{{ $data->address }}</td>
+                                            <td>{{ $data->guardian }}</td>
+                                            <td>{{ $data->c_address }}</td>
                                             <td>{{ $data->status == 1 ? 'Active' : 'Inactive' }}</td>
                                             <td>
                                                 <div class="input-group-btn pull-left text-left">

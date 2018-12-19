@@ -4,7 +4,7 @@
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-    <title>Student Gradesheet</title>
+    <title>Student Class Card</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" type="text/css" media="screen" href="main.css" />
     <script src="main.js"></script>
@@ -84,6 +84,11 @@
         }
         .report-progress {
             text-align: center;
+            font-size: 12px;
+            font-weight: 700;
+        }
+        .report-progress-left {
+            text-align: left;
             font-size: 12px;
             font-weight: 700;
         }
@@ -330,63 +335,155 @@
                 </tbody>
             </table>
             <br />
-        <table style="width:100%">
-            <tr>
-                <th>
+
+            @if($ClassDetail->section_grade_level >= 11)
+
+            @else
+                <p class="report-progress-left m0"><b>ATTENDANCE RECORD</b></p>
+                <table style="width:100%">
+                    <tr>
+                        <th>
+                            
+                        </th>
+                            @foreach ($student_attendance['table_header'] as $data)
+                                    <th>{{ $data['key'] }}</th>
+                            @endforeach
+                    </tr>
+                    <tr>
+                        <th>
+                            Days of School
+                        </th>
+                        @foreach ($student_attendance['attendance_data']->days_of_school as $key => $data)
+                            <th style="width:7%">{{ $data }}
+                            </th>
+                        @endforeach
+                        <th class="days_of_school_total">
+                            {{ $student_attendance['days_of_school_total'] }}
+                        </th>
+                    </tr>
+                    <tr>
+                        <th>
+                            Days Present
+                        </th>
+                        @foreach ($student_attendance['attendance_data']->days_present as $key => $data)
+                            <th style="width:7%">{{ $data }} 
+                            </th>
+                        @endforeach
+                        <th class="days_present_total">
+                            {{ $student_attendance['days_present_total'] }}
+                        </th>
+                    </tr>
+                    <tr>
+                        <th>
+                            Days Absent
+                        </th>
+                        @foreach ($student_attendance['attendance_data']->days_absent as $key => $data)
+                            <th style="width:7%">{{ $data }}  
+                            </th>
+                        @endforeach
+                        <th class="days_absent_total">
+                            {{ $student_attendance['days_absent_total'] }}
+                        </th>
+                    </tr>
+                    <tr>
+                        <th>
+                            Times Tardy
+                        </th>
+                        @foreach ($student_attendance['attendance_data']->times_tardy as $key => $data)
+                            <th style="width:7%">{{ $data }}  
+                            </th>
+                        @endforeach
+                        <th class="times_tardy_total">
+                            {{ $student_attendance['times_tardy_total'] }}
+                        </th>
+                    </tr>
+                </table>
+            <br/>
+            <center>
+                <table border="0" style="width: 80%">
+
+                    <tr>
+                        <td style="border: 0">Description</td>
+                        <td style="border: 0">Grading Scale</td>
+                        <td style="border: 0">Remarks</td>                
+                    </tr>
+
+                    <tr>
+                        <td style="border: 0">Outstanding</td>
+                        <td style="border: 0">90-100</td>
+                        <td style="border: 0">Passed</td>                
+                    </tr>
+
+                    <tr>
+                        <td style="border: 0">Very Satisfactory</td>
+                        <td style="border: 0">85-89</td>
+                        <td style="border: 0">Passed</td>                
+                    </tr>
+
+                    <tr>
+                        <td style="border: 0">Satisfactory</td>
+                        <td style="border: 0">80-84</td>
+                        <td style="border: 0">Passed</td>                
+                    </tr>
+
+                    <tr>
+                        <td style="border: 0">Fairly Satisfactory</td>
+                        <td style="border: 0">75-79</td>
+                        <td style="border: 0">Passed</td>                
+                    </tr>
+
+                    <tr>
+                        <td style="border: 0">Did Not Meet expectations</td>
+                        <td style="border: 0">Below 75</td>
+                        <td style="border: 0">Failed</td>                
+                    </tr>
+                    <tr>
+                        <td style="border: 0"></td>
+                        <td style="border: 0"></td>
+                        <td style="border: 0"></td>   
+                    </tr>
+
+                    <tr>
+                        <td colspan="3" style="border: 0">Eligible to transfer admission to:__________________________</td>                
+                    </tr>
+
+                    <tr>
+                        <td colspan="3" style="border: 0">Lacking units in:__________________________</td>                
+                    </tr>
                     
-                </th>
-                    @foreach ($student_attendance['table_header'] as $data)
-                            <th>{{ $data['key'] }}</th>
-                    @endforeach
-            </tr>
-            <tr>
-                <th>
-                    Days of School
-                </th>
-                @foreach ($student_attendance['attendance_data']->days_of_school as $key => $data)
-                    <th style="width:7%">{{ $data }}
-                    </th>
-                @endforeach
-                <th class="days_of_school_total">
-                    {{ $student_attendance['days_of_school_total'] }}
-                </th>
-            </tr>
-            <tr>
-                <th>
-                    Days Present
-                </th>
-                @foreach ($student_attendance['attendance_data']->days_present as $key => $data)
-                    <th style="width:7%">{{ $data }} 
-                    </th>
-                @endforeach
-                <th class="days_present_total">
-                    {{ $student_attendance['days_present_total'] }}
-                </th>
-            </tr>
-            <tr>
-                <th>
-                    Days Absent
-                </th>
-                @foreach ($student_attendance['attendance_data']->days_absent as $key => $data)
-                    <th style="width:7%">{{ $data }}  
-                    </th>
-                @endforeach
-                <th class="days_absent_total">
-                    {{ $student_attendance['days_absent_total'] }}
-                </th>
-            </tr>
-            <tr>
-                <th>
-                    Times Tardy
-                </th>
-                @foreach ($student_attendance['attendance_data']->times_tardy as $key => $data)
-                    <th style="width:7%">{{ $data }}  
-                    </th>
-                @endforeach
-                <th class="times_tardy_total">
-                    {{ $student_attendance['times_tardy_total'] }}
-                </th>
-            </tr>
-        </table>
+                    <tr>
+                        <td colspan="3" style="border: 0">Date:__________________________</td>                
+                    </tr>
+                    <tr> <td colspan="3" style="border: 0">&nbsp;</td>   </tr>
+                    {{-- <tr> <td colspan="3" style="border: 0">&nbsp;</td>   </tr> --}}
+                
+                    <tr>
+                            <table border="0" style="width: 100%">
+                                <tr>
+                                    <td style="border: 0; width: 50%">
+                                        <span style="margin-left: 2em; text-transform: uppercase">
+                                            <center>{{ $ClassDetail->first_name }} {{ $ClassDetail->middle_name }} {{ $ClassDetail->last_name }}</center>
+                                            </br>
+                                            <center style="margin-top: -1em">dviser</center>
+                                        </span>
+                                    </td>
+                                    <td style="border: 0; width: 50%">
+                                        <span style="margin-left: 23em; text-transform: uppercase">
+                                            <center>Gemma R. Yao, Ph.D.</center>
+                                            </br>
+                                            <center style="margin-top: -1em">Principal</center>
+                                        </span>
+                                    </td>
+                                </tr>
+                            </table>
+                        
+                    </tr>
+                    
+
+                </table>
+
+                <div class="page-break"></div>
+            </center>
+    @endif
     </body>
 </html>

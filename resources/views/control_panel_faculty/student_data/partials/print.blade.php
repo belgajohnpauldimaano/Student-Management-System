@@ -241,18 +241,18 @@
                                 @if ($data->fou_g && $data->fou_g > 0)
                                     <span class="text-red final-ratings_{{ $data->student_enrolled_subject_id }}">
                                         <center>
-                                        <strong>
-                                            <?php
-                                                $g_ctr = 0;
-                                                $g_ctr += $data->fir_g ? $data->fir_g > 0 ? 1 : 0 : 0;
-                                                $g_ctr += $data->sec_g ? $data->sec_g > 0 ? 1 : 0 : 0;
-                                                $g_ctr += $data->thi_g ? $data->thi_g > 0 ? 1 : 0 : 0;
-                                                $g_ctr += $data->fou_g ? $data->fou_g > 0 ? 1 : 0 : 0;
-                                            ?>
-                                            {{ ($g_ctr ? round(($data->fir_g + $data->sec_g + $data->thi_g + $data->fou_g) / $g_ctr) : '')  }}
-                                        
-                                        </strong>
-                                    </center>
+                                            <strong>
+                                                <?php
+                                                    $g_ctr = 0;
+                                                    $g_ctr += $data->fir_g ? $data->fir_g > 0 ? 1 : 0 : 0;
+                                                    $g_ctr += $data->sec_g ? $data->sec_g > 0 ? 1 : 0 : 0;
+                                                    $g_ctr += $data->thi_g ? $data->thi_g > 0 ? 1 : 0 : 0;
+                                                    $g_ctr += $data->fou_g ? $data->fou_g > 0 ? 1 : 0 : 0;
+                                                ?>
+                                                {{ ($g_ctr ? round(($data->fir_g + $data->sec_g + $data->thi_g + $data->fou_g) / $g_ctr) : '')  }}
+                                            
+                                            </strong>
+                                        </center>
                                     </span>
                                 @endif
                             </td>

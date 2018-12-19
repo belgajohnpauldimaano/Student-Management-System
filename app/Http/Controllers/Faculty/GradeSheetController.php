@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Faculty;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Grade_sheet_first;
+use PDF;
 
 class GradeSheetController extends Controller
 {
@@ -12,7 +14,7 @@ class GradeSheetController extends Controller
     {
         // $FacultyInformation = \App\FacultyInformation::where('user_id', \Auth::user()->id)->first();
         // return json_encode(['FacultyInformation' => $FacultyInformation, 'Auth' => \Auth::user()]);
-        $SchoolYear         = \App\SchoolYear::where('status', 1)->where('current', 1)->orderBy('current', 'ASC')->orderBy('school_year', 'ASC')->get();
+        $SchoolYear = \App\SchoolYear::where('status', 1)->where('current', 1)->orderBy('current', 'ASC')->orderBy('school_year', 'ASC')->get();
         return view('control_panel_faculty.student_grade_sheet.index', compact('SchoolYear'));
     }
     public function list_students_by_class (Request $request) 
@@ -55,7 +57,7 @@ class GradeSheetController extends Controller
                         student_enrolled_subjects.fin_g_status,
                         class_subject_details.status as grading_status 
                     "))
-                    ->orderBy('student_informations.last_name', 'ASC')
+                    ->orderBy('student_name', 'ASC')
                     ->paginate(100);
                     
         $EnrollmentFemale = \App\Enrollment::join('class_subject_details', 'class_subject_details.class_details_id', '=', 'enrollments.class_details_id')
@@ -94,7 +96,7 @@ class GradeSheetController extends Controller
                 student_enrolled_subjects.fin_g_status,
                 class_subject_details.status as grading_status 
             "))
-            ->orderBy('student_informations.last_name', 'ASC')
+            ->orderBy('student_name', 'ASC')
             ->paginate(100);
         // return json_encode($Enrollment);
         // $ClassSubjectDetail_status = \App\ClassSubjectDetail::where('id', $request->search_class_subject)->first();
@@ -163,8 +165,9 @@ class GradeSheetController extends Controller
                         class_subject_details.status as grading_status 
                     "))
                     ->orderBy('student_informations.gender', 'ASC')
-                    ->orderBy('student_informations.last_name', 'ASC')
+                    ->orderBy('student_name', 'ASC')
                     ->get();
+
         $EnrollmentFemale = \App\Enrollment::join('class_subject_details', 'class_subject_details.class_details_id', '=', 'enrollments.class_details_id')
                     ->join('class_details', 'class_details.id', '=', 'class_subject_details.class_details_id')
                     ->join('student_informations', 'student_informations.id', '=', 'enrollments.student_information_id')
@@ -201,8 +204,9 @@ class GradeSheetController extends Controller
                         class_subject_details.status as grading_status 
                     "))
                     ->orderBy('student_informations.gender', 'ASC')
-                    ->orderBy('student_informations.last_name', 'ASC')
+                    ->orderBy('student_name', 'ASC')
                     ->get();
+                    
         $ClassSubjectDetail = \App\ClassSubjectDetail::join('class_details', 'class_details.id', '=', 'class_subject_details.class_details_id')
             ->join('subject_details', 'subject_details.id', '=', 'class_subject_details.subject_id')
             ->join('section_details', 'section_details.id', '=', 'class_details.section_id')
@@ -232,8 +236,10 @@ class GradeSheetController extends Controller
         }
         return view('control_panel_faculty.student_grade_sheet.partials.print', compact('EnrollmentFemale', 'EnrollmentMale', 'ClassSubjectDetail', 'FacultyInformation'));
         $pdf = \PDF::loadView('control_panel_faculty.student_grade_sheet.partials.print', compact('EnrollmentFemale', 'EnrollmentMale', 'ClassSubjectDetail', 'FacultyInformation'));
+        $pdf->setPaper('Letter', 'landscape');
         return $pdf->stream();
     }
+    
     public function list_class_subject_details (Request $request) 
     {
         $FacultyInformation = \App\FacultyInformation::where('user_id', \Auth::user()->id)->first();  
@@ -270,9 +276,10 @@ class GradeSheetController extends Controller
         }
         return $class_details_elements;
     }
+
     public function temporary_save_grade(Request $request)
     {
-        if (!$request->student_enrolled_subject_id || !$request->enrollment_id || !$request->grading) 
+        if (!$request->student_enrolled_subject_id || !$request->enrollment_id || !$request->grading || !$request->classSubjectDetailID ) 
         {
             return response()->json(['res_code' => 1, 'res_msg' => 'Invalid request.',]);
         } 
@@ -292,39 +299,267 @@ class GradeSheetController extends Controller
         $grading = base64_decode($request->grading);
         $grade = $request->grade;
 
-        $StudentEnrolledSubject = \App\StudentEnrolledSubject::where('id', $student_enrolled_subject_id)->where('enrollments_id', $enrollment_id)->first();
+        $StudentEnrolledSubject = \App\StudentEnrolledSubject::where('id', $student_enrolled_subject_id)->where('enrollments_id', $enrollment_id)
+        ->where('class_subject_details_id', $request->classSubjectDetailID)->first();
+
+        $selectedsubjectid = \App\ClassSubjectDetail::where('id', $StudentEnrolledSubject->class_subject_details_id)->first();
+
+        $SelectedSubject = \App\SubjectDetail::where('id', $selectedsubjectid->subject_id)
+                ->first();
+
+       
 
         if (!$StudentEnrolledSubject)
         {
             return response()->json(['res_code' => 1, 'res_msg' => 'Invalid request.',]);
         }
 
+        
+
         if ($grading == 'first') 
         {
             $StudentEnrolledSubject->fir_g = $grade;
-            // $StudentEnrolledSubject->fir_g_status = 1;
+
+           
+
+            $subject;
+
+            if($SelectedSubject->subject == 'Filipino')//Filipino
+            {
+                $subject = 'filipino';
+            }
+            else if($SelectedSubject->subject == 'MAPEH')//mapeh
+            {
+                $subject = 'mapeh';
+            }
+            else if($SelectedSubject->subject == 'Science')//science
+            {
+                $subject = 'science';
+            }
+            else if($SelectedSubject->subject == 'Religion')//religion
+            {
+                $subject = 'religion';
+            }
+            else if($SelectedSubject->subject == 'English')//english
+            {
+                $subject = 'english';                    
+                      
+            }
+            else if($SelectedSubject->subject == 'Araling Panlipunan')//ap
+            {
+                $subject = 'ap';
+            }
+            else if($SelectedSubject->subject == 'Mathematics')//math
+            {          
+                $subject = 'math';
+            }
+            else if($SelectedSubject->subject == 'ESP')//esp
+            {
+                $subject = 'esp';      
+            }
+            else if($SelectedSubject->subject == 'ICT/Bread and Pastry')//ict
+            {
+                $subject = 'ict';
+            }
+            else if($SelectedSubject->subject == 'ICT/Cookery')//ict
+            {
+                $subject = 'ict';
+            }
+            else if($SelectedSubject->subject == 'ICT/Entrepreneurship')//ict
+            {
+                $subject = 'ict';
+            }
+            else if($SelectedSubject->subject == 'ICT/Accounting')//ict
+            {
+                $subject = 'ict';
+            }            
+
+            $GradesEncode = \App\Grade_sheet_first::where(['enrollment_id'=>$enrollment_id])
+                ->update([$subject => $grade]);
+           
+          
         } 
         else if ($grading == 'second') 
         {
             $StudentEnrolledSubject->sec_g = $grade;
             // $StudentEnrolledSubject->sec_g_status = 1;
+            $subject;
+
+            if($SelectedSubject->subject == 'Filipino')//Filipino
+            {
+                $subject = 'filipino';
+            }
+            else if($SelectedSubject->subject == 'MAPEH')//mapeh
+            {
+                $subject = 'mapeh';
+            }
+            else if($SelectedSubject->subject == 'Science')//science
+            {
+                $subject = 'science';
+            }
+            else if($SelectedSubject->subject == 'Religion')//religion
+            {
+                $subject = 'religion';
+            }
+            else if($SelectedSubject->subject == 'English')//english
+            {
+                $subject = 'english';                
+            }
+            else if($SelectedSubject->subject == 'Araling Panlipunan')//ap
+            {
+                $subject = 'ap';
+            }
+            else if($SelectedSubject->subject == 'Mathematics')//math
+            {          
+                $subject = 'math';
+            }
+            else if($SelectedSubject->subject == 'ESP')//esp
+            {
+                $subject = 'esp';      
+            }
+            else if($SelectedSubject->subject == 'ICT/Bread and Pastry')//ict
+            {
+                $subject = 'ict';
+            }
+            else if($SelectedSubject->subject == 'ICT/Cookery')//ict
+            {
+                $subject = 'ict';
+            }
+            else if($SelectedSubject->subject == 'ICT/Entrepreneurship')//ict
+            {
+                $subject = 'ict';
+            }
+            else if($SelectedSubject->subject == 'ICT/Accounting')//ict
+            {
+                $subject = 'ict';
+            }            
+
+            $GradesEncode = \App\Grade_sheet_second::where(['enrollment_id'=>$enrollment_id])
+            ->update([$subject => $grade]);
         }
         else if ($grading == 'third') 
         {
             $StudentEnrolledSubject->thi_g = $grade;
             // $StudentEnrolledSubject->thi_g_status = 1;
+            $subject;
+
+            if($SelectedSubject->subject == 'Filipino')//Filipino
+            {
+                $subject = 'filipino';
+            }
+            else if($SelectedSubject->subject == 'MAPEH')//mapeh
+            {
+                $subject = 'mapeh';
+            }
+            else if($SelectedSubject->subject == 'Science')//science
+            {
+                $subject = 'science';
+            }
+            else if($SelectedSubject->subject == 'Religion')//religion
+            {
+                $subject = 'religion';
+            }
+            else if($SelectedSubject->subject == 'English')//english
+            {
+                $subject = 'english';                
+            }
+            else if($SelectedSubject->subject == 'Araling Panlipunan')//ap
+            {
+                $subject = 'ap';
+            }
+            else if($SelectedSubject->subject == 'Mathematics')//math
+            {          
+                $subject = 'math';
+            }
+            else if($SelectedSubject->subject == 'ESP')//esp
+            {
+                $subject = 'esp';      
+            }
+            else if($SelectedSubject->subject == 'ICT/Bread and Pastry')//ict
+            {
+                $subject = 'ict';
+            }
+            else if($SelectedSubject->subject == 'ICT/Cookery')//ict
+            {
+                $subject = 'ict';
+            }
+            else if($SelectedSubject->subject == 'ICT/Entrepreneurship')//ict
+            {
+                $subject = 'ict';
+            }
+            else if($SelectedSubject->subject == 'ICT/Accounting')//ict
+            {
+                $subject = 'ict';
+            }            
+
+            $GradesEncode = \App\Grade_sheet_third::where(['enrollment_id'=>$enrollment_id])
+            ->update([$subject => $grade]);
         }
         else if ($grading == 'fourth') 
         {
             $StudentEnrolledSubject->fou_g = $grade;
             // $StudentEnrolledSubject->fou_g_status = 1;
+
+            $subject;
+
+            if($SelectedSubject->subject == 'Filipino')//Filipino
+            {
+                $subject = 'filipino';
+            }
+            else if($SelectedSubject->subject == 'MAPEH')//mapeh
+            {
+                $subject = 'mapeh';
+            }
+            else if($SelectedSubject->subject == 'Science')//science
+            {
+                $subject = 'science';
+            }
+            else if($SelectedSubject->subject == 'Religion')//religion
+            {
+                $subject = 'religion';
+            }
+            else if($SelectedSubject->subject == 'English')//english
+            {
+                $subject = 'english';                
+            }
+            else if($SelectedSubject->subject == 'Araling Panlipunan')//ap
+            {
+                $subject = 'ap';
+            }
+            else if($SelectedSubject->subject == 'Mathematics')//math
+            {          
+                $subject = 'math';
+            }
+            else if($SelectedSubject->subject == 'ESP')//esp
+            {
+                $subject = 'esp';      
+            }
+            else if($SelectedSubject->subject == 'ICT/Bread and Pastry')//ict
+            {
+                $subject = 'ict';
+            }
+            else if($SelectedSubject->subject == 'ICT/Cookery')//ict
+            {
+                $subject = 'ict';
+            }
+            else if($SelectedSubject->subject == 'ICT/Entrepreneurship')//ict
+            {
+                $subject = 'ict';
+            }
+            else if($SelectedSubject->subject == 'ICT/Accounting')//ict
+            {
+                $subject = 'ict';
+            }            
+
+            $GradesEncode = \App\Grade_sheet_fourth::where(['enrollment_id'=>$enrollment_id])
+            ->update([$subject => $grade]);
         }
         $StudentEnrolledSubject->save();
         return response()->json(['res_code' => 0, 'res_msg' => 'Grade successfully saved temporarily.', 'aa' => $student_enrolled_subject_id]);
     }
     public function save_grade (Request $request)
     {
-        if (!$request->student_enrolled_subject_id || !$request->enrollment_id || !$request->grading || !$request->grade) 
+        if (!$request->student_enrolled_subject_id || !$request->enrollment_id || !$request->grading || !$request->grade || !$request->classSubjectDetailID) 
         {
             return response()->json(['res_code' => 1, 'res_msg' => 'Invalid request.',]);
         }
@@ -346,8 +581,15 @@ class GradeSheetController extends Controller
         $grading = base64_decode($request->grading);
         $grade = $request->grade;
         
-        $StudentEnrolledSubject = \App\StudentEnrolledSubject::where('id', $student_enrolled_subject_id)->where('enrollments_id', $enrollment_id)->first();
-        // $StudentEnrolledSubject = \App\StudentEnrolledSubject::where('id', $request->student_enrolled_subject_id)->where('enrollments_id', $request->enrollment_id)->first();
+        $StudentEnrolledSubject = \App\StudentEnrolledSubject::where('id', $student_enrolled_subject_id)->where('enrollments_id', $enrollment_id)
+        ->where('class_subject_details_id', $request->classSubjectDetailID)->first();
+
+        $selectedsubjectid = \App\ClassSubjectDetail::where('id', $StudentEnrolledSubject->class_subject_details_id)->first();
+
+        $SelectedSubject = \App\SubjectDetail::where('id', $selectedsubjectid->subject_id)
+                ->first();
+
+               
 
         if (!$StudentEnrolledSubject)
         {
@@ -357,22 +599,240 @@ class GradeSheetController extends Controller
         if ($request->grading == 'first') 
         {
             $StudentEnrolledSubject->fir_g = $request->grade;
-            $StudentEnrolledSubject->fir_g_status = 1;
+            $StudentEnrolledSubject->fir_g_status = 1;            
+
+            $subject;
+
+            if($SelectedSubject->subject == 'Filipino')//Filipino
+            {
+                $subject = 'filipino';
+            }
+            else if($SelectedSubject->subject == 'MAPEH')//mapeh
+            {
+                $subject = 'mapeh';
+            }
+            else if($SelectedSubject->subject == 'Science')//science
+            {
+                $subject = 'science';
+            }
+            else if($SelectedSubject->subject == 'Religion')//religion
+            {
+                $subject = 'religion';
+            }
+            else if($SelectedSubject->subject == 'English')//english
+            {
+                $subject = 'english';
+               
+            }
+            else if($SelectedSubject->subject == 'Araling Panlipunan')//ap
+            {
+                $subject = 'ap';
+            }
+            else if($SelectedSubject->subject == 'Mathematics')//math
+            {          
+                $subject = 'math';
+            }
+            else if($SelectedSubject->subject == 'ESP')//esp
+            {
+                $subject = 'esp';      
+            }
+            else if($SelectedSubject->subject == 'ICT/Bread and Pastry')//ict
+            {
+                $subject = 'ict';
+            }
+            else if($SelectedSubject->subject == 'ICT/Cookery')//ict
+            {
+                $subject = 'ict';
+            }
+            else if($SelectedSubject->subject == 'ICT/Entrepreneurship')//ict
+            {
+                $subject = 'ict';
+            }
+            else if($SelectedSubject->subject == 'ICT/Accounting')//ict
+            {
+                $subject = 'ict';
+            }   
+            
+            $GradesEncode = \App\Grade_sheet_first::where(['enrollment_id'=>$enrollment_id])
+            ->update([$subject=>$grade]); 
+           
         } 
         else if ($request->grading == 'second') 
         {
             $StudentEnrolledSubject->sec_g = $request->grade;
             $StudentEnrolledSubject->sec_g_status = 1;
+
+            $subject;
+
+            if($SelectedSubject->subject == 'Filipino')//Filipino
+            {
+                $subject = 'filipino';
+            }
+            else if($SelectedSubject->subject == 'MAPEH')//mapeh
+            {
+                $subject = 'mapeh';
+            }
+            else if($SelectedSubject->subject == 'Science')//science
+            {
+                $subject = 'science';
+            }
+            else if($SelectedSubject->subject == 'Religion')//religion
+            {
+                $subject = 'religion';
+            }
+            else if($SelectedSubject->subject == 'English')//english
+            {
+                $subject = 'english';
+            }
+            else if($SelectedSubject->subject == 'Araling Panlipunan')//ap
+            {
+                $subject = 'ap';
+            }
+            else if($SelectedSubject->subject == 'Mathematics')//math
+            {          
+                $subject = 'math';
+            }
+            else if($SelectedSubject->subject == 'ESP')//esp
+            {
+                $subject = 'esp';      
+            }
+            else if($SelectedSubject->subject == 'ICT/Bread and Pastry')//ict
+            {
+                $subject = 'ict';
+            }
+            else if($SelectedSubject->subject == 'ICT/Cookery')//ict
+            {
+                $subject = 'ict';
+            }
+            else if($SelectedSubject->subject == 'ICT/Entrepreneurship')//ict
+            {
+                $subject = 'ict';
+            }
+            else if($SelectedSubject->subject == 'ICT/Accounting')//ict
+            {
+                $subject = 'ict';
+            }   
+                  
+            $GradesEncode = \App\Grade_sheet_second::where(['enrollment_id'=>$enrollment_id])
+            ->update([$subject=>$grade]);
         }
         else if ($request->grading == 'third') 
         {
             $StudentEnrolledSubject->thi_g = $request->grade;
             $StudentEnrolledSubject->thi_g_status = 1;
+
+            $subject;
+
+            if($SelectedSubject->subject == 'Filipino')//Filipino
+            {
+                $subject = 'filipino';
+            }
+            else if($SelectedSubject->subject == 'MAPEH')//mapeh
+            {
+                $subject = 'mapeh';
+            }
+            else if($SelectedSubject->subject == 'Science')//science
+            {
+                $subject = 'science';
+            }
+            else if($SelectedSubject->subject == 'Religion')//religion
+            {
+                $subject = 'religion';
+            }
+            else if($SelectedSubject->subject == 'English')//english
+            {
+                $subject = 'english';
+            }
+            else if($SelectedSubject->subject == 'Araling Panlipunan')//ap
+            {
+                $subject = 'ap';
+            }
+            else if($SelectedSubject->subject == 'Mathematics')//math
+            {          
+                $subject = 'math';
+            }
+            else if($SelectedSubject->subject == 'ESP')//esp
+            {
+                $subject = 'esp';      
+            }
+            else if($SelectedSubject->subject == 'ICT/Bread and Pastry')//ict
+            {
+                $subject = 'ict';
+            }
+            else if($SelectedSubject->subject == 'ICT/Cookery')//ict
+            {
+                $subject = 'ict';
+            }
+            else if($SelectedSubject->subject == 'ICT/Entrepreneurship')//ict
+            {
+                $subject = 'ict';
+            }
+            else if($SelectedSubject->subject == 'ICT/Accounting')//ict
+            {
+                $subject = 'ict';
+            }   
+                  
+            $GradesEncode = \App\Grade_sheet_third::where(['enrollment_id'=>$enrollment_id])
+            ->update([$subject=>$grade]);
         }
         else if ($request->grading == 'fourth') 
         {
             $StudentEnrolledSubject->fou_g = $request->grade;
             $StudentEnrolledSubject->fou_g_status = 1;
+
+            $subject;
+
+            if($SelectedSubject->subject == 'Filipino')//Filipino
+            {
+                $subject = 'filipino';
+            }
+            else if($SelectedSubject->subject == 'MAPEH')//mapeh
+            {
+                $subject = 'mapeh';
+            }
+            else if($SelectedSubject->subject == 'Science')//science
+            {
+                $subject = 'science';
+            }
+            else if($SelectedSubject->subject == 'Religion')//religion
+            {
+                $subject = 'religion';
+            }
+            else if($SelectedSubject->subject == 'English')//english
+            {
+                $subject = 'english';
+            }
+            else if($SelectedSubject->subject == 'Araling Panlipunan')//ap
+            {
+                $subject = 'ap';
+            }
+            else if($SelectedSubject->subject == 'Mathematics')//math
+            {          
+                $subject = 'math';
+            }
+            else if($SelectedSubject->subject == 'ESP')//esp
+            {
+                $subject = 'esp';      
+            }
+            else if($SelectedSubject->subject == 'ICT/Bread and Pastry')//ict
+            {
+                $subject = 'ict';
+            }
+            else if($SelectedSubject->subject == 'ICT/Cookery')//ict
+            {
+                $subject = 'ict';
+            }
+            else if($SelectedSubject->subject == 'ICT/Entrepreneurship')//ict
+            {
+                $subject = 'ict';
+            }
+            else if($SelectedSubject->subject == 'ICT/Accounting')//ict
+            {
+                $subject = 'ict';
+            }   
+                  
+            $GradesEncode = \App\Grade_sheet_fourth::where(['enrollment_id'=>$enrollment_id])
+            ->update([$subject=>$grade]);
         }
         $StudentEnrolledSubject->save();
         return response()->json(['res_code' => 0, 'res_msg' => 'Grade successfully saved.',]);
@@ -393,5 +853,45 @@ class GradeSheetController extends Controller
         {
             return response()->json(['res_code' => 1, 'res_msg' => 'Invalid request',]); 
         }
+    }
+
+    public function view_student_data()
+    {
+        $SchoolYear = \App\SectionDetail::get();
+        return view('control_panel_faculty.student_data.index', compact('SchoolYear'));
+    }
+
+    public function list_class_section (Request $request) 
+    {
+        // $FacultyInformation = \App\FacultyInformation::where('user_id', \Auth::user()->id)->first(); 
+        $sectionID = $request->search_sy; 
+        // $data = $request->all();
+
+        $getIdClassDetails = \App\ClassDetail::where(['section_id'=> $sectionID])->first();
+
+        $EnrollmentID = \App\Enrollment::where(['class_details_id'=>$getIdClassDetails->id])->get();
+
+        foreach($EnrollmentID as $dataID)
+        {
+            $Grade_sheet_first = new Grade_sheet_first();
+            $Grade_sheet_first->enrollment_id =  $dataID->id;
+            $Grade_sheet_first->section_details_id = $sectionID;
+            $Grade_sheet_first->filipino = 0.00;
+            $Grade_sheet_first->english = 0.00;
+            $Grade_sheet_first->math = 0.00;
+            $Grade_sheet_first->science = 0.00;
+            $Grade_sheet_first->ap = 0.00;
+            $Grade_sheet_first->ict = 0.00;
+            $Grade_sheet_first->mapeh = 0.00;
+            $Grade_sheet_first->esp = 0.00;
+            $Grade_sheet_first->religion = 0.00;   
+            $Grade_sheet_first->current = 1;
+            $Grade_sheet_first->status = 1;
+            $Grade_sheet_first->save();
+
+        }
+
+        return redirect()->back()->with('flash_message_success','Room Reserved Successfuly!');
+       
     }
 }

@@ -8,8 +8,7 @@ use App\Http\Controllers\Controller;
 class AdvisoryClassController extends Controller
 {
     public function index (Request $request) 
-    {
-        
+    {        
         $FacultyInformation = \App\FacultyInformation::where('user_id', \Auth::user()->id)->first();
 
         $ClassDetail = \App\ClassDetail::join('section_details', 'section_details.id', '=' ,'class_details.section_id')
@@ -64,17 +63,35 @@ class AdvisoryClassController extends Controller
         $FacultyInformation = \App\FacultyInformation::where('user_id', \Auth::user()->id)->first();
         try {
             $class_id = \Crypt::decrypt($request->c);
-            $Enrollment = \App\Enrollment::join('student_informations', 'student_informations.id', '=', 'enrollments.student_information_id')
+            
+            $EnrollmentMale = \App\Enrollment::join('student_informations', 'student_informations.id', '=', 'enrollments.student_information_id')
             ->join('class_details', 'class_details.id', '=', 'enrollments.class_details_id')
             ->join('users', 'users.id', '=', 'student_informations.user_id')
             ->whereRaw('class_details.adviser_id = '. $FacultyInformation->id)
             ->whereRaw('enrollments.class_details_id = '. $class_id)
+            ->whereRaw('student_informations.gender = 1')       
             ->select(\DB::raw("
                 enrollments.id as e_id,
                 student_informations.id,
                 users.username,
                 CONCAT(student_informations.last_name, ', ', student_informations.first_name, ' ', student_informations.middle_name) as student_name
             "))
+            ->orderBY('student_name', 'ASC')
+            ->paginate(100);
+
+            $EnrollmentFemale = \App\Enrollment::join('student_informations', 'student_informations.id', '=', 'enrollments.student_information_id')
+            ->join('class_details', 'class_details.id', '=', 'enrollments.class_details_id')
+            ->join('users', 'users.id', '=', 'student_informations.user_id')
+            ->whereRaw('class_details.adviser_id = '. $FacultyInformation->id)
+            ->whereRaw('enrollments.class_details_id = '. $class_id)
+            ->whereRaw('student_informations.gender = 2')       
+            ->select(\DB::raw("
+                enrollments.id as e_id,
+                student_informations.id,
+                users.username,
+                CONCAT(student_informations.last_name, ', ', student_informations.first_name, ' ', student_informations.middle_name) as student_name
+            "))
+            ->orderBY('student_name', 'ASC')
             ->paginate(100);
 
             $ClassDetails = \App\ClassDetail::join('section_details', 'section_details.id', '=', 'class_details.section_id')
@@ -82,7 +99,7 @@ class AdvisoryClassController extends Controller
             ->where('class_details.id', $class_id)
             ->first();
             
-            return view('control_panel_faculty.class_advisory.index_view_class_list', compact('Enrollment', 'ClassDetails', 'class_id'))->render();
+            return view('control_panel_faculty.class_advisory.index_view_class_list', compact('EnrollmentMale','EnrollmentFemale', 'ClassDetails', 'class_id'))->render();
         } catch (Illuminate\Contracts\Encryption\DecryptException $e) {
             return "Invalid parameter";
         }
@@ -356,6 +373,7 @@ class AdvisoryClassController extends Controller
             $ClassDetail = \App\ClassDetail::join('section_details', 'section_details.id', '=' ,'class_details.section_id')
             ->join('rooms', 'rooms.id', '=' ,'class_details.room_id')
             ->join('school_years', 'school_years.id', '=' ,'class_details.school_year_id')
+            ->join('faculty_informations', 'faculty_informations.id','=','class_details.adviser_id')
             ->selectRaw('
                 class_details.id,
                 class_details.section_id,
@@ -367,7 +385,8 @@ class AdvisoryClassController extends Controller
                 section_details.grade_level as section_grade_level,
                 school_years.school_year,
                 rooms.room_code,
-                rooms.room_description
+                rooms.room_description,
+                faculty_informations.first_name, faculty_informations.middle_name ,  faculty_informations.last_name
             ')
             ->where('section_details.status', 1)
             // ->where('school_years.current', 1)
@@ -538,8 +557,10 @@ class AdvisoryClassController extends Controller
                 'times_tardy_total' => array_sum($attendance_data->times_tardy),
             ];
             // return json_encode(['a' => $GradeSheetData, 'subj_count' => $subj_count, 'general_avg' => $general_avg]);
-            return view('control_panel_student.grade_sheet.partials.print', compact('GradeSheetData', 'grade_level', 'StudentInformation', 'ClassDetail', 'general_avg', 'student_attendance', 'table_header'));
-            $pdf = \PDF::loadView('control_panel_student.grade_sheet.partials.print', compact('GradeSheetData', 'grade_level', 'StudentInformation', 'ClassDetail'));
+            return view('control_panel_student.grade_sheet.partials.print', compact('GradeSheetData', 'grade_level', 'StudentInformation',
+             'ClassDetail', 'general_avg', 'student_attendance', 'table_header'));
+            $pdf = \PDF::loadView('control_panel_student.grade_sheet.partials.print', compact('GradeSheetData', 'grade_level', 'StudentInformation', 'ClassDetail'
+            , 'general_avg', 'student_attendance', 'table_header'));
             return $pdf->stream();
             return view('control_panel_student.grade_sheet.index', compact('GradeSheetData'));
             return json_encode(['GradeSheetData' => $GradeSheetData,]);

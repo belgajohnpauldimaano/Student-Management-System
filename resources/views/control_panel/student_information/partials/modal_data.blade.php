@@ -38,6 +38,12 @@
                         </div>
                     </div>
                     <div class="form-group">
+                            <label for="">Parent/Guardian</label>
+                            <input type="text" class="form-control" name="guardian" value="{{ $StudentInformation ? $StudentInformation->guardian : '' }}">
+                            <div class="help-block text-red text-center" id="js-guardian">
+                            </div>
+                    </div>
+                    <div class="form-group">
                         <label for="">Address <small class="text-red">Optional</small></label>
                         <input type="text" class="form-control" name="address" value="{{ $StudentInformation ? $StudentInformation->c_address : '' }}">
                         <div class="help-block text-red text-center" id="js-address">

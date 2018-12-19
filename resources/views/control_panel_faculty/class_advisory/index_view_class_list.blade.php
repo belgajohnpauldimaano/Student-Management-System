@@ -18,16 +18,21 @@
                 <table class="table no-margin">
                     <thead>
                         <tr>
+                            <th>#</th>
                             <th>Username</th>
                             <th>Student Name</th>
                             <th>Action</th>
                         </tr>
                     </thead>
                     <tbody>
-                        @if ($Enrollment)
-                            @foreach ($Enrollment as $data)
+                        <tr>
+                            <td colspan="3"><b>Male</b></td>
+                        </tr>
+                        @if ($EnrollmentMale)
+                            @foreach ($EnrollmentMale as $key => $data)
                                 <tr>
                                         {{-- <td>{{ $data->id }}</td> --}}
+                                    <td>{{ $key+1 }}.</td>
                                     <td>{{ $data->username }}</td>
                                     <td>{{ $data->student_name }}</td>
                                     
@@ -37,7 +42,35 @@
                                             <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="true">Action
                                                 <span class="fa fa-caret-down"></span></button>
                                             <ul class="dropdown-menu">
-                                                <input name="print_sy" id="print_sy" value="{{ $class_id}}" type="text" />
+                                                <input name="print_sy" id="print_sy" value="{{ $class_id}}" type="hidden" />
+
+                                                <li><a href="{{ route('faculty.advisory_class.manage_attendance') }}?c={{ encrypt($data->e_id) }}" class="js-btn_manage" data-id="{{ encrypt($data->e_id) }}">Manage Attendance</a></li>
+                                                
+                                                <li><a style="cursor: pointer;" rel="{{ $data->id }}" class="printGrade" data-id="{{ encrypt($data->id) }}">Print Grade</a></li>
+                                            
+                                            </ul>
+                                        </div>
+                                    </td>
+                                </tr>
+                            @endforeach
+                          
+                            <tr>
+                                <td colspan="3"><b>Female</b></td>
+                            </tr>
+                            @foreach ($EnrollmentFemale as $key => $data)
+                                <tr>
+                                        {{-- <td>{{ $data->id }}</td> --}}
+                                    <td>{{ $key+1 }}.</td>
+                                    <td>{{ $data->username }}</td>
+                                    <td>{{ $data->student_name }}</td>
+                                    
+                                    
+                                    <td>
+                                        <div class="input-group-btn pull-left text-left">
+                                            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="true">Action
+                                                <span class="fa fa-caret-down"></span></button>
+                                            <ul class="dropdown-menu">
+                                                <input name="print_sy" id="print_sy" value="{{ $class_id}}" type="hidden" />
 
                                                 <li><a href="{{ route('faculty.advisory_class.manage_attendance') }}?c={{ encrypt($data->e_id) }}" class="js-btn_manage" data-id="{{ encrypt($data->e_id) }}">Manage Attendance</a></li>
                                                 

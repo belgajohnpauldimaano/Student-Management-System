@@ -30,6 +30,10 @@
                                                         <span class="fa fa-caret-down"></span></button>
                                                     <ul class="dropdown-menu">
                                                         <li><a href="{{ route('faculty.advisory_class.view') }}?c={{ encrypt($data->id) }}" class="js-btn_view" data-id="{{ encrypt($data->id) }}">View</a></li>
+
+                                                        <li><a href="{{ route('faculty.my_advisory_class.index') }}?c={{ encrypt($data->id) }}" class="js-btn_view" data-id="{{ encrypt($data->id) }}">Grade Sheet</a></li>
+
+                                                        <li><a href="{{ route('faculty.my_advisory_class.index') }}?c={{ encrypt($data->id) }}" class="js-btn_view" data-id="{{ encrypt($data->id) }}">Demographic Profile</a></li>
                                                     </ul>
                                                 </div>
                                             </td>

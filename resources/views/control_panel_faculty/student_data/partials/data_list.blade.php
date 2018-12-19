@@ -25,7 +25,7 @@
                                 }
 
                             ?>
-                        <h4>Subject : <span class="text-red"><i>{{ $ClassSubjectDetail->id }} {{ $ClassSubjectDetail->subject }}</i></span> 
+                        <h4>Subject : <span class="text-red"><i>{{ $ClassSubjectDetail->subject }}</i></span> 
                         {{--  Time : <span class="text-red"><i>{{ strftime('%r',strtotime($ClassSubjectDetail->class_time_from)) . ' - ' . strftime('%r',strtotime($ClassSubjectDetail->class_time_to)) }}</i></span> Days : <span class="text-red"><i>{{ $ClassSubjectDetail->class_days }}</i></span>  --}}
                         Schedule : <span class="text-red"><i>{{ rtrim($daysDisplay, '/') }}</i></span>
                         </h4>
@@ -222,7 +222,6 @@
                                                     <td>
                                                         <div class="input-group" data-grading="{{ base64_encode('first') }}">
                                                             <input type="number" {{ $data->fir_g_status ? "readonly='readonly'" : '' }} class="input-sm txt-grade_input form-control grade-input-{{ $data->student_enrolled_subject_id }}" value="{{ round($data->fir_g) }}" id="first_grading_{{ $data->student_enrolled_subject_id }}">
-                                                            <input id="classSubjectDetailID" name="classSubjectDetailID" type="hidden" value="{{ $ClassSubjectDetail->id }}">
                                                             {{--  <span class="input-group-btn">
                                                                 <button class="btn btn-sm btn-primary btn-flat btn--save-grade" data-grading="first" {{ $data->fir_g_status ? "disabled='disabled'" : '' }} title="Save grade and finalize"><i class="fa fa-check"></i> Save</button>
                                                             </span>  --}}
@@ -231,7 +230,6 @@
                                                     <td>
                                                         <div class="input-group" data-grading="{{ base64_encode('second') }}">
                                                             <input type="number" {{ $data->sec_g_status ? "readonly='readonly'" : '' }}  class="input-sm txt-grade_input form-control" value="{{ round($data->sec_g) }}" id="second_grading_{{ $data->student_enrolled_subject_id }}">
-                                                            <input id="classSubjectDetailID" name="classSubjectDetailID" type="hidden" value="{{ $ClassSubjectDetail->id }}">
                                                             {{--  <span class="input-group-btn">
                                                                 <button  class="btn btn-sm bg-purple btn-flat btn--save-grade" data-grading="second" {{ $data->sec_g_status ? "disabled='disabled'" : '' }} title="Save grade and finalize"><i class="fa fa-check"></i> Save</button>
                                                             </span>  --}}
@@ -240,7 +238,6 @@
                                                     <td>
                                                         <div class="input-group" data-grading="{{base64_encode('third')}}">
                                                             <input type="number" {{ $data->thi_g_status ? "readonly='readonly'" : '' }} class="input-sm txt-grade_input form-control" value="{{ round($data->thi_g) }}" id="third_grading_{{ $data->student_enrolled_subject_id }}">
-                                                            <input id="classSubjectDetailID" name="classSubjectDetailID" type="hidden" value="{{ $ClassSubjectDetail->id }}">
                                                             {{--  <span class="input-group-btn">
                                                                 <button class="btn btn-sm bg-orange btn-flat btn--save-grade" data-grading="third" {{ $data->thi_g_status ? "disabled='disabled'" : '' }} title="Save grade and finalize"><i class="fa fa-check"></i> Save</button>
                                                             </span>  --}}
@@ -249,8 +246,7 @@
                                                     <td>
                                                         <div class="input-group" data-grading="{{base64_encode('fourth')}}">
                                                         <input type="number" {{ $data->fou_g_status ? "readonly='readonly'" : '' }} class="input-sm txt-grade_input form-control" value="{{ round($data->fou_g) }}" id="fourth_grading_{{ $data->student_enrolled_subject_id }}">
-                                                        <input id="classSubjectDetailID" name="classSubjectDetailID" type="hidden" value="{{ $ClassSubjectDetail->id }}">    
-                                                        {{--  <span class="input-group-btn">
+                                                            {{--  <span class="input-group-btn">
                                                                 <button class="btn btn-sm bg-green btn-flat btn--save-grade" data-grading="fourth" {{ $data->fou_g_status ? "disabled='disabled'" : '' }} title="Save grade and finalize"><i class="fa fa-check"></i> Save</button>
                                                             </span>  --}}
                                                         </div>
@@ -323,7 +319,6 @@
                                                     <td>
                                                         <div class="input-group" data-grading="{{ base64_encode('first') }}">
                                                             <input type="number" {{ $data->fir_g_status ? "readonly='readonly'" : '' }} class="input-sm txt-grade_input form-control grade-input-{{ $data->student_enrolled_subject_id }}" value="{{ round($data->fir_g) }}" id="first_grading_{{ $data->student_enrolled_subject_id }}">
-                                                            <input id="classSubjectDetailID" name="classSubjectDetailID" type="hidden" value="{{ $ClassSubjectDetail->id }}">
                                                             {{--  <span class="input-group-btn">
                                                                 <button class="btn btn-sm btn-primary btn-flat btn--save-grade" data-grading="first" {{ $data->fir_g_status ? "disabled='disabled'" : '' }} title="Save grade and finalize"><i class="fa fa-check"></i> Save</button>
                                                             </span>  --}}
@@ -332,7 +327,6 @@
                                                     <td>
                                                         <div class="input-group" data-grading="{{ base64_encode('second') }}">
                                                             <input type="number" {{ $data->sec_g_status ? "readonly='readonly'" : '' }}  class="input-sm txt-grade_input form-control" value="{{ round($data->sec_g) }}" id="second_grading_{{ $data->student_enrolled_subject_id }}">
-                                                            <input id="classSubjectDetailID" name="classSubjectDetailID" type="hidden" value="{{ $ClassSubjectDetail->id }}">
                                                             {{--  <span class="input-group-btn">
                                                                 <button  class="btn btn-sm bg-purple btn-flat btn--save-grade" data-grading="second" {{ $data->sec_g_status ? "disabled='disabled'" : '' }} title="Save grade and finalize"><i class="fa fa-check"></i> Save</button>
                                                             </span>  --}}
@@ -341,7 +335,6 @@
                                                     <td>
                                                         <div class="input-group" data-grading="{{base64_encode('third')}}">
                                                             <input type="number" {{ $data->thi_g_status ? "readonly='readonly'" : '' }} class="input-sm txt-grade_input form-control" value="{{ round($data->thi_g) }}" id="third_grading_{{ $data->student_enrolled_subject_id }}">
-                                                            <input id="classSubjectDetailID" name="classSubjectDetailID" type="hidden" value="{{ $ClassSubjectDetail->id }}">
                                                             {{--  <span class="input-group-btn">
                                                                 <button class="btn btn-sm bg-orange btn-flat btn--save-grade" data-grading="third" {{ $data->thi_g_status ? "disabled='disabled'" : '' }} title="Save grade and finalize"><i class="fa fa-check"></i> Save</button>
                                                             </span>  --}}
@@ -350,8 +343,7 @@
                                                     <td>
                                                         <div class="input-group" data-grading="{{base64_encode('fourth')}}">
                                                         <input type="number" {{ $data->fou_g_status ? "readonly='readonly'" : '' }} class="input-sm txt-grade_input form-control" value="{{ round($data->fou_g) }}" id="fourth_grading_{{ $data->student_enrolled_subject_id }}">
-                                                        <input id="classSubjectDetailID" name="classSubjectDetailID" type="hidden" value="{{ $ClassSubjectDetail->id }}">    
-                                                        {{--  <span class="input-group-btn">
+                                                            {{--  <span class="input-group-btn">
                                                                 <button class="btn btn-sm bg-green btn-flat btn--save-grade" data-grading="fourth" {{ $data->fou_g_status ? "disabled='disabled'" : '' }} title="Save grade and finalize"><i class="fa fa-check"></i> Save</button>
                                                             </span>  --}}
                                                         </div>

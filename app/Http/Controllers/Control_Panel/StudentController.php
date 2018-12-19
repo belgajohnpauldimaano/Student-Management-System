@@ -43,6 +43,7 @@ class StudentController extends Controller
             'first_name' => 'required',
             'middle_name' => 'required',
             'last_name' => 'required',
+            'guardian' => 'required',
             // 'address'   => 'required',
             // 'birthdate' => 'required',
             'gender'    => 'required',
@@ -58,7 +59,7 @@ class StudentController extends Controller
 
         if ($request->id)
         {
-            $StudentInformation                 = \App\StudentInformation::where('id', $request->id)->first();
+            $StudentInformation = \App\StudentInformation::where('id', $request->id)->first();
             
             $User = \App\User::where('username', $request->username)->where('id', '!=', $StudentInformation->user_id)->first();
             if ($User) 
@@ -72,9 +73,10 @@ class StudentController extends Controller
             $StudentInformation->first_name     = $request->first_name;
             $StudentInformation->middle_name    = $request->middle_name;
             $StudentInformation->last_name      = $request->last_name;
-            $StudentInformation->c_address        = $request->address;
+            $StudentInformation->c_address      = $request->address;
             $StudentInformation->birthdate      = $request->birthdate ? date('Y-m-d', strtotime($request->birthdate)) : NULL;
             $StudentInformation->gender         = $request->gender;
+            $StudentInformation->guardian       = $request->guardian;
             $StudentInformation->save();
             return response()->json(['res_code' => 0, 'res_msg' => 'Data successfully saved.']);
         }
@@ -94,9 +96,10 @@ class StudentController extends Controller
         $StudentInformation->first_name     = $request->first_name;
         $StudentInformation->middle_name    = $request->middle_name;
         $StudentInformation->last_name      = $request->last_name;
-        // $StudentInformation->address        = $request->address;
+        $StudentInformation->address        = $request->address;
         // $StudentInformation->birthdate      = date('Y-m-d', strtotime($request->birthdate));
         $StudentInformation->gender         = $request->gender;
+        $StudentInformation->guardian         = $request->guardian;
         $StudentInformation->user_id        = $User->id;
         $StudentInformation->save();
         
@@ -337,6 +340,7 @@ class StudentController extends Controller
             // return json_encode(['a' => $GradeSheetData, 'subj_count' => $subj_count, 'general_avg' => $general_avg]);
             return view('control_panel_student.grade_sheet.partials.print', compact('GradeSheetData', 'grade_level', 'StudentInformation', 'ClassDetail', 'general_avg', 'student_attendance', 'table_header'));
             $pdf = \PDF::loadView('control_panel_student.grade_sheet.partials.print', compact('GradeSheetData', 'grade_level', 'StudentInformation', 'ClassDetail'));
+            // $pdf->setPaper('Letter', 'landscape');
             return $pdf->stream();
             return view('control_panel_student.grade_sheet.index', compact('GradeSheetData'));
             return json_encode(['GradeSheetData' => $GradeSheetData,]);

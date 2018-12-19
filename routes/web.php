@@ -126,6 +126,8 @@ Route::group(['prefix' => 'faculty', 'middleware' => ['auth', 'userroles'], 'rol
         Route::get('list-students-by-class-print', 'Faculty\GradeSheetController@list_students_by_class_print')->name('faculty.student_grade_sheet.list_students_by_class_print');    
     });
 
+
+
     Route::group(['prefix' => 'my-account', 'middleware' => ['auth']], function() {
         Route::get('', 'Faculty\UserProfileController@view_my_profile')->name('faculty.my_account.index');
         // Route::post('change-my-password', 'Faculty\UserProfileController@change_my_password')->name('my_account.change_my_password');
@@ -150,14 +152,29 @@ Route::group(['prefix' => 'faculty', 'middleware' => ['auth', 'userroles'], 'rol
         Route::get('view', 'Faculty\AdvisoryClassController@view_class_list')->name('faculty.advisory_class.view');
         Route::post('manage_attendance', 'Faculty\AdvisoryClassController@manage_attendance')->name('faculty.advisory_class.manage_attendance');
         Route::post('save_attendance', 'Faculty\AdvisoryClassController@save_attendance')->name('faculty.advisory_class.save_attendance');
-        Route::post('list-students-by-class', 'Faculty\MyAdvisoryClassController@list_students_by_class1')->name('faculty.MyAdvisoryClass.list_students_by_class');
+        
         Route::get('print-class-grades', 'Faculty\AdvisoryClassController@print_student_class_grades')->name('faculty.AdvisoryClass.print_grades');
     });
 
     Route::group(['prefix' => 'my-advisory-class'], function () {
         Route::get('', 'Faculty\MyAdvisoryClassController@index')->name('faculty.my_advisory_class.index');
-        
+        Route::post('first-quarter', 'Faculty\MyAdvisoryClassController@firstquarter')->name('faculty.MyAdvisoryClass.firstquarter');
+        Route::post('second-quarter', 'Faculty\MyAdvisoryClassController@secondquarter')->name('faculty.MyAdvisoryClass.secondquarter');
+        Route::post('third-quarter', 'Faculty\MyAdvisoryClassController@thirdquarter')->name('faculty.MyAdvisoryClass.thirdquarter');
+        Route::post('fourth-quarter', 'Faculty\MyAdvisoryClassController@fourthquarter')->name('faculty.MyAdvisoryClass.fourthquarter');
+        Route::get('print-first-quarter', 'Faculty\MyAdvisoryClassController@print_firstquarter')->name('faculty.MyAdvisoryClass.print_first_quarter');
+        Route::get('print-second-quarter', 'Faculty\MyAdvisoryClassController@print_secondquarter')->name('faculty.MyAdvisoryClass.print_second_quarter');
+        Route::get('print-third-quarter', 'Faculty\MyAdvisoryClassController@print_thirdquarter')->name('faculty.MyAdvisoryClass.print_third_quarter');
+        Route::get('print-fourth-quarter', 'Faculty\MyAdvisoryClassController@print_fourthquarter')->name('faculty.MyAdvisoryClass.print_fourth_quarter');
     });
+    
+
+    Route::group(['prefix' => 'data-student'], function (){
+        Route::get('create-data-grades', 'Faculty\GradeSheetController@view_student_data')->name('faculty.DataStudent');
+        Route::post('section-list', 'Faculty\GradeSheetController@list_class_section')->name('faculty.SectionList');
+        // Route::get('section-list', 'Faculty\GradeSheetController@list_class_section')->name('faculty.SectionList');
+    });
+
 });
 
 

@@ -4,7 +4,7 @@
 @endsection
 
 @section ('content_title')
-    Students Grade Sheet
+    Encode Students Grades
 @endsection
 
 @section ('content')
@@ -98,6 +98,7 @@
                 const self =  $(this);
                 const student_enrolled_subject_id = $(this).parents('tr').data('student_enrolled_subject_id');
                 const enrollment_id = self.parents('tr').data('enrollment_id');
+                var classSubjectDetailID = $('#classSubjectDetailID').val();
                 const grading = self.parents('.input-group').data('grading');
                 const grade = self.val()
                 const parent_elem = self.parents('tr')
@@ -105,7 +106,7 @@
                 $.ajax({
                     url         : "{{ route('faculty.student_grade_sheet.temporary_save_grade') }}",
                     type        : 'POST',
-                    data        : { _token : '{{ csrf_token() }}', student_enrolled_subject_id : student_enrolled_subject_id, enrollment_id : enrollment_id, grade : grade, grading : grading },
+                    data        : { _token : '{{ csrf_token() }}', student_enrolled_subject_id : student_enrolled_subject_id, enrollment_id : enrollment_id, grade : grade, grading : grading, classSubjectDetailID : classSubjectDetailID },
                     success     : function (res) {
                         
                         $('.help-block').html('');
@@ -179,6 +180,7 @@
                 const grading = $(this).data('grading');
                 const grade_input = $('#'+grading+'_grading_' + atob(student_enrolled_subject_id))
                 const grade = grade_input.val()
+                var classSubjectDetailID = $('#classSubjectDetailID').val();
                 
                 alertify.defaults.transition = "slide";
                 alertify.defaults.theme.ok = "btn btn-primary btn-flat";
@@ -187,7 +189,7 @@
                     $.ajax({
                         url         : "{{ route('faculty.student_grade_sheet.save_grade') }}",
                         type        : 'POST',
-                        data        : { _token : '{{ csrf_token() }}', student_enrolled_subject_id : student_enrolled_subject_id, enrollment_id : enrollment_id, grade : grade, grading : grading },
+                        data        : { _token : '{{ csrf_token() }}', student_enrolled_subject_id : student_enrolled_subject_id, enrollment_id : enrollment_id, grade : grade, grading : grading , classSubjectDetailID : classSubjectDetailID},
                         success     : function (res) {
                             
                             $('.help-block').html('');

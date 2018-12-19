@@ -272,6 +272,7 @@ class GradeSheetController extends Controller
 
             $GradeSheetData = json_decode(json_encode($GradeSheetData));
             $pdf = \PDF::loadView('control_panel_student.grade_sheet.partials.print', compact('GradeSheetData', 'grade_level', 'StudentInformation', 'ClassDetail', 'general_avg'));
+            // $pdf->setPaper('Letter', 'landscape');
             return $pdf->stream();
             return view('control_panel_student.grade_sheet.index', compact('GradeSheetData'));
             return json_encode(['GradeSheetData' => $GradeSheetData,]);
