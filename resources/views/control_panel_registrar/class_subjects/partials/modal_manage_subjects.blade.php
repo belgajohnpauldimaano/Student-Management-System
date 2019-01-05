@@ -14,7 +14,7 @@
                 </div>
                 <div class="modal-body">                    
                     
-                    {{--  <div class="form-group">
+                     {{-- <div class="form-group">
                         <label for="">Faculty</label>
                         <select name="faculty" id="faculty" class="form-control">
                             <option value="">Select faculty</option>

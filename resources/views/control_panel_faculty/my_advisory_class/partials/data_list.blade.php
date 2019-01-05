@@ -53,23 +53,23 @@
                                             </center>
                                         </td>
 
-                                        @if($average >= 75 && $average <= 89)
+                                        @if(round($average) >= 75 && round($average) <= 89)
                                             <td>
                                                 <center>Passed</center>
                                             </td>
-                                        @elseif($average >= 90 && $average <= 94)
+                                        @elseif(round($average) >= 90 && round($average) <= 94)
                                             <td>
                                                 <center>with honors</center>
                                             </td>
-                                        @elseif($average >= 95 && $average <= 97)
+                                        @elseif(round($average)>= 95 && round($average) <= 97)
                                             <td>
                                                 <center>with high honors</center>
                                             </td>
-                                        @elseif($average >= 98 && $average <= 100)
+                                        @elseif(round($average) >= 98 && round($average) <= 100)
                                             <td>
                                                 <center>with highest honors</center>
                                             </td>
-                                        @else
+                                        @elseif(round($average) < 75)
                                             <td>
                                                 <center>Failed</center>
                                             </td>
@@ -106,23 +106,23 @@
                                         </td>
                                         
                                        
-                                        @if($average >= 75 && $average <= 89)
+                                        @if(round($average) >= 75 && round($average) <= 89)
                                             <td>
                                                 <center>Passed</center>
                                             </td>
-                                        @elseif($average >= 90 && $average <= 94)
+                                        @elseif(round($average) >= 90 && round($average) <= 94)
                                             <td>
                                                 <center>with honors</center>
                                             </td>
-                                        @elseif($average >= 95 && $average <= 97)
+                                        @elseif(round($average)>= 95 && round($average) <= 97)
                                             <td>
                                                 <center>with high honors</center>
                                             </td>
-                                        @elseif($average >= 98 && $average <= 100)
+                                        @elseif(round($average) >= 98 && round($average) <= 100)
                                             <td>
                                                 <center>with highest honors</center>
                                             </td>
-                                        @else
+                                        @elseif(round($average) < 75)
                                             <td>
                                                 <center>Failed</center>
                                             </td>
