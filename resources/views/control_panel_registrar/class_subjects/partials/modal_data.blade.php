@@ -43,7 +43,7 @@
                     
                     <div class="form-group">
                         <label for="">Order</label>
-                        <input name="order" id="order" class="form-control" value="{{ $ClassSubjectDetail->class_subject_order }}" />
+                        <input name="order" id="order" class="form-control" value="{{ $ClassSubjectDetail ? $ClassSubjectDetail->class_subject_order : '' }}" />
                         <div class="help-block text-red text-center" id="js-order">
                         </div>
                     </div>
