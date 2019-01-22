@@ -57,8 +57,9 @@ class GradeSheetController extends Controller
                         student_enrolled_subjects.fin_g_status,
                         class_subject_details.status as grading_status 
                     "))
-                    ->orderBy('student_name', 'ASC')
+                    ->orderBy('student_name',  'ASC')
                     ->paginate(100);
+                    
                     
         $EnrollmentFemale = \App\Enrollment::join('class_subject_details', 'class_subject_details.class_details_id', '=', 'enrollments.class_details_id')
             ->join('class_details', 'class_details.id', '=', 'class_subject_details.class_details_id')

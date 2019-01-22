@@ -44,6 +44,8 @@
                                             <ul class="dropdown-menu">
                                                 <input name="print_sy" id="print_sy" value="{{ $class_id}}" type="hidden" />
 
+                                                <li><a href="{{ route('faculty.advisory_class.demographic_profile') }}?c={{ encrypt($data->id) }}" class="js-btn_manage_demographic" data-id="{{ encrypt($data->id) }}">Demographic Profile</a></li>
+                                                
                                                 <li><a href="{{ route('faculty.advisory_class.manage_attendance') }}?c={{ encrypt($data->e_id) }}" class="js-btn_manage" data-id="{{ encrypt($data->e_id) }}">Manage Attendance</a></li>
                                                 
                                                 <li><a style="cursor: pointer;" rel="{{ $data->id }}" class="printGrade" data-id="{{ encrypt($data->id) }}">Print Grade</a></li>
@@ -132,6 +134,29 @@
                 });
             });
 
+        $(function () {
+            $('body').on('click', '.js-btn_manage_demographic', function (e) {
+                e.preventDefault();
+                {{--  loader_overlay();  --}}
+                // var id = $(this).data('id');
+                $.ajax({
+                    url : "{{ route('faculty.advisory_class.demographic_profile') }}",
+                    type : 'POST',
+                    data : { _token : '{{ csrf_token() }}', c: '{{ encrypt($data->id) }}' },
+                    success : function (res) {
+                        $('.js-modal_holder').html(res);
+                        $('.js-modal_holder .modal').modal({ backdrop : 'static' });
+                        $('.js-modal_holder .modal').on('shown.bs.modal', function () {
+                            //Timepicker
+                            $('.timepicker').timepicker({
+                            showInputs: false
+                            })
+                        })
+                    }
+                });
+            });
+        });
+
             $('body').on('click', '.printGrade', function (e) {
                 e.preventDefault();
                 {{--  loader_overlay();  --}}
@@ -139,7 +164,6 @@
                 var print_sy = $('#print_sy').val();
                 
                 window.open("{{ route('faculty.AdvisoryClass.print_grades') }}?id="+id+"&cid="+print_sy, '', 'height=800,width=800')
-                
             })
 
            
@@ -152,6 +176,7 @@
 
                 $('.days_of_school_total').text(days_of_school_total)
             })
+
             $('body').on('change', '.days_present', function(e) {
                 var days_present_total = 0
                 $('.days_present').each(function (e) {

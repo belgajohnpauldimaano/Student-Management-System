@@ -151,9 +151,11 @@ Route::group(['prefix' => 'faculty', 'middleware' => ['auth', 'userroles'], 'rol
         Route::get('', 'Faculty\AdvisoryClassController@index')->name('faculty.advisory_class.index');
         Route::get('view', 'Faculty\AdvisoryClassController@view_class_list')->name('faculty.advisory_class.view');
         Route::post('manage_attendance', 'Faculty\AdvisoryClassController@manage_attendance')->name('faculty.advisory_class.manage_attendance');
+        Route::post('view_edit','Faculty\AdvisoryClassController@manage_demographic_profile')->name('faculty.advisory_class.demographic_profile');
         Route::post('save_attendance', 'Faculty\AdvisoryClassController@save_attendance')->name('faculty.advisory_class.save_attendance');
         
         Route::get('print-class-grades', 'Faculty\AdvisoryClassController@print_student_class_grades')->name('faculty.AdvisoryClass.print_grades');
+       
     });
 
     Route::group(['prefix' => 'my-advisory-class'], function () {
@@ -232,6 +234,12 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'userroles'], 'roles
             Route::post('save-data', 'Control_Panel\Maintenance\SchoolYearController@save_data')->name('admin.maintenance.school_year.save_data');
             Route::post('deactivate-data', 'Control_Panel\Maintenance\SchoolYearController@deactivate_data')->name('admin.maintenance.school_year.deactivate_data');
             Route::post('toggle-current-sy', 'Control_Panel\Maintenance\SchoolYearController@toggle_current_sy')->name('admin.maintenance.school_year.toggle_current_sy');
+        });
+
+        Route::group(['prefix' => 'semester'], function () {
+            Route::get('', 'Control_Panel\Maintenance\SemesterController@index')->name('admin.maintenance.semester');
+            Route::post('', 'Control_Panel\Maintenance\SemesterController@index')->name('admin.maintenance.semester');
+            Route::post('toggle-current-sy', 'Control_Panel\Maintenance\SemesterController@toggle_current_sy')->name('admin.maintenance.semester.toggle_current_sy');
         });
 
         Route::group(['prefix' => 'subjects'], function() {

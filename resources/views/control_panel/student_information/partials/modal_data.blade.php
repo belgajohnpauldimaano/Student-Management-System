@@ -50,6 +50,18 @@
                         </div>
                     </div>
                     <div class="form-group">
+                        <label for="">Age June</label>
+                        <input type="text" class="form-control" name="age_june" value="{{ $StudentInformation ? $StudentInformation->age_june : '' }}">
+                        <div class="help-block text-red text-center" id="js-age_june">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="">Age May</label>
+                        <input type="text" class="form-control" name="age_may" value="{{ $StudentInformation ? $StudentInformation->age_may : '' }}">
+                        <div class="help-block text-red text-center" id="js-age_may">
+                        </div>
+                    </div>
+                    <div class="form-group">
                         <label for="">Date of Birth <small class="text-red">Optional</small></label>
                         {{--  <input type="text" class="form-control" name="birthdate" value="{{ $StudentInformation ? $StudentInformation->birthdate : '' }}">  --}}
                         <div class="input-group date">

@@ -74,7 +74,7 @@ class AdvisoryClassController extends Controller
                 enrollments.id as e_id,
                 student_informations.id,
                 users.username,
-                CONCAT(student_informations.last_name, ', ', student_informations.first_name, ' ', student_informations.middle_name) as student_name
+                CONCAT(student_informations.last_name, ' ', student_informations.first_name, ' ', student_informations.middle_name) as student_name
             "))
             ->orderBY('student_name', 'ASC')
             ->paginate(100);
@@ -89,7 +89,7 @@ class AdvisoryClassController extends Controller
                 enrollments.id as e_id,
                 student_informations.id,
                 users.username,
-                CONCAT(student_informations.last_name, ', ', student_informations.first_name, ' ', student_informations.middle_name) as student_name
+                CONCAT(student_informations.last_name, ' ', student_informations.first_name, ' ', student_informations.middle_name) as student_name
             "))
             ->orderBY('student_name', 'ASC')
             ->paginate(100);
@@ -103,7 +103,14 @@ class AdvisoryClassController extends Controller
         } catch (Illuminate\Contracts\Encryption\DecryptException $e) {
             return "Invalid parameter";
         }
-    }    
+    }
+    
+    public function manage_demographic_profile(Request $request)
+    {
+        $class_id = \Crypt::decrypt($request->c);
+        return view('control_panel_faculty.class_advisory.partials.modal_demographic_profile', compact('class_id'));
+    }
+
     public function manage_attendance (Request $request) 
     {
         $FacultyInformation = \App\FacultyInformation::where('user_id', \Auth::user()->id)->first();

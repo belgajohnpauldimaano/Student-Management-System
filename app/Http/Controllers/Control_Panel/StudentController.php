@@ -43,7 +43,10 @@ class StudentController extends Controller
             'first_name' => 'required',
             'middle_name' => 'required',
             'last_name' => 'required',
-            'guardian' => 'required',
+            // 'guardian' => 'required',
+            // 'age_june' => 'required',
+            // 'age_may' => 'required',
+            
             // 'address'   => 'required',
             // 'birthdate' => 'required',
             'gender'    => 'required',
@@ -74,6 +77,8 @@ class StudentController extends Controller
             $StudentInformation->middle_name    = $request->middle_name;
             $StudentInformation->last_name      = $request->last_name;
             $StudentInformation->c_address      = $request->address;
+            $StudentInformation->age_june = $request->age_june;
+            $StudentInformation->age_may = $request->age_may;
             $StudentInformation->birthdate      = $request->birthdate ? date('Y-m-d', strtotime($request->birthdate)) : NULL;
             $StudentInformation->gender         = $request->gender;
             $StudentInformation->guardian       = $request->guardian;
@@ -97,7 +102,9 @@ class StudentController extends Controller
         $StudentInformation->middle_name    = $request->middle_name;
         $StudentInformation->last_name      = $request->last_name;
         $StudentInformation->address        = $request->address;
-        // $StudentInformation->birthdate      = date('Y-m-d', strtotime($request->birthdate));
+        $StudentInformation->age_june = $request->age_june;
+        $StudentInformation->age_may = $request->age_may;
+            // $StudentInformation->birthdate      = date('Y-m-d', strtotime($request->birthdate));
         $StudentInformation->gender         = $request->gender;
         $StudentInformation->guardian         = $request->guardian;
         $StudentInformation->user_id        = $User->id;

@@ -16,7 +16,10 @@
                     </h4>
                 </div>
                 <div class="modal-body">                    
-                    
+                        
+                       
+                    <input type="hidden" name="section_id" value="{{ $ClassDetail->section_id }}">
+
                     <div class="form-group">
                         <label for="">Faculty</label>
                         <select name="faculty" id="faculty" class="form-control">
@@ -141,6 +144,7 @@
                         </tr>
                         <tr>
                             <td>
+                            
                                 <label for="sched_mon" role="button">
                                     <input name="sched_mon" id="sched_mon" class="sched_days" {{ isset($daysObj[1]) ? $daysObj[1] ? 'checked' : '' : '' }} type="checkbox"> Monday
                                 </label>

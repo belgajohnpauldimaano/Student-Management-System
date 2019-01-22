@@ -123,6 +123,7 @@
               <ul class="treeview-menu">
                   {{--  Admin Menu  --}}
                   <li><a href="{{ route('admin.maintenance.school_year') }}"><i class="fa fa-circle-o"></i> <span>School Year</span></a></li>
+                  <li><a href="{{ route('admin.maintenance.semester') }}"><i class="fa fa-circle-o"></i> <span>Semester</span></a></li>
                   <li><a href="{{ route('admin.maintenance.subjects') }}"><i class="fa fa-circle-o"></i> <span>Subjects</span></a></li>
                   <li><a href="{{ route('admin.maintenance.classrooms') }}"><i class="fa fa-circle-o"></i> <span>Class Rooms</span></a></li>
                   <li><a href="{{ route('admin.maintenance.section_details') }}"><i class="fa fa-circle-o"></i> <span>Section Details</span></a></li>

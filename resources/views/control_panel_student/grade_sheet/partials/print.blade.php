@@ -124,7 +124,8 @@
             </td>
             <td>
                 <p class="p0 m0 student-info"><b>Age</b> : 
-                 {{ $StudentInformation->birthdate ? date_diff(date_create($StudentInformation->birthdate), date_create(date("Y-m-d H:i:s")))->format('%y years old') : '' }}</p>
+                 {{ $StudentInformation->age_may }} years old</p>
+                 {{-- {{ $StudentInformation->birthdate ? date_diff(date_create($StudentInformation->birthdate), date_create(date("Y-m-d H:i:s")))->format('%y years old') : '' }} --}}
             </td>
         </tr>
         
