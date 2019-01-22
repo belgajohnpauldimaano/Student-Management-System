@@ -168,8 +168,19 @@ Route::group(['prefix' => 'faculty', 'middleware' => ['auth', 'userroles'], 'rol
         Route::get('print-second-quarter', 'Faculty\MyAdvisoryClassController@print_secondquarter')->name('faculty.MyAdvisoryClass.print_second_quarter');
         Route::get('print-third-quarter', 'Faculty\MyAdvisoryClassController@print_thirdquarter')->name('faculty.MyAdvisoryClass.print_third_quarter');
         Route::get('print-fourth-quarter', 'Faculty\MyAdvisoryClassController@print_fourthquarter')->name('faculty.MyAdvisoryClass.print_fourth_quarter');
+        Route::post('list-class-subject-details', 'Faculty\MyAdvisoryClassController@list_class_subject_details')->name('faculty.MyAdvisoryClass.list_class_subject_details');
+
+        Route::post('list_quarter-details', 'Faculty\MyAdvisoryClassController@list_quarter')->name('faculty.MyAdvisoryClass.list_quarter');
+        Route::post('list_quarter-sem-details', 'Faculty\MyAdvisoryClassController@list_quarter_sem')->name('faculty.MyAdvisoryClass.list_quarter-sem-details');
+
+        Route::post('first_sem_1quarter', 'Faculty\MyAdvisoryClassController@first_sem_1quarter')->name('faculty.MyAdvisoryClass.first_sem_1quarter');
+        Route::post('first_sem_2quarter', 'Faculty\MyAdvisoryClassController@first_sem_2quarter')->name('faculty.MyAdvisoryClass.first_sem_2quarter');
+        Route::post('second_sem_1quarter', 'Faculty\MyAdvisoryClassController@first_sem_3quarter')->name('faculty.MyAdvisoryClass.first_sem_3quarter');
+        Route::post('second_sem_2quarter', 'Faculty\MyAdvisoryClassController@first_sem_4quarter')->name('faculty.MyAdvisoryClass.first_sem_4quarter');
     });
     
+
+
 
     Route::group(['prefix' => 'data-student'], function (){
         Route::get('create-data-grades', 'Faculty\GradeSheetController@view_student_data')->name('faculty.DataStudent');

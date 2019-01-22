@@ -9,45 +9,91 @@
 
 @section ('content')
     <div class="box">
-        <div class="box-header with-border">
-            <h3 class="box-title">Search</h3>
-            <form id="js-form_search">
-                {{ csrf_field() }}
+        
                 {{--  <div id="js-form_search" class="form-group col-sm-12 col-md-3" style="padding-right:0">
                     <input type="text" class="form-control" name="search">
-                </div>  --}}
-                
-                <div class="form-group col-sm-12 col-md-3" style="padding-right:0">
-                    <select name="search_sy" id="search_sy" class="form-control">
-                        <option value="">Select SY</option>
-                        @foreach ($SchoolYear as $data)
-                            <option value="{{ $data->id }}">{{ $data->school_year }}</option>
-                        @endforeach
-                    </select>
-                </div> 
-                &nbsp;                
-                <div class="form-group col-sm-12 col-md-4" style="padding-right:0">
-                    <select name="quarter_grades" id="quarter_grades" class="form-control">
-                        <option value="">Select Class Quarter</option>
-                        <option value="1st">First Quarter</option>
-                        <option value="2nd">Second Quarter</option>
-                        <option value="3rd">Third Quarter</option>
-                        <option value="4th">Fourth Quarter</option>
-                    </select>
-                </div>                
-                &nbsp;
-                <button type="submit" class="btn btn-flat btn-success">Search</button>
+                </div>  --}}                      
+
+                @if($GradeLevel->grade_level  == 11 ||  $GradeLevel->grade_level  == 12)
+                    <div class="box-header with-border">
+                        <h3 class="box-title">Filter</h3>
+                            <form id="js-form_filter">
+                                    {{ csrf_field() }}
+
+                                        <div class="form-group col-sm-12 col-md-3" style="padding-right:0">
+                                            <select name="search_sy1" id="search_sy1" class="form-control">
+                                                <option value="">Select SY</option>
+                                                @foreach ($SchoolYear as $data)
+                                                    <option value="{{ $data->id }}">{{ $data->school_year }}</option>
+                                                @endforeach
+                                            </select>
+                                        </div> 
+                                        &nbsp;
+                                        <div class="form-group col-sm-12 col-md-4" style="padding-right:0">
+                                            <select name="semester_grades" id="semester_grades" class="form-control">                            
+                                                <option value="">Select Semester</option>                      
+                                            </select>
+                                        </div>                
+                                        &nbsp;
+                                        <div class="form-group col-sm-12 col-md-4" style="padding-right:0">
+                                            <select name="quarter_" id="quarter_" class="form-control">
+                                                <option value="">Select Class Quarter</option>
+                                            </select>
+                                        </div>                
+                                    &nbsp;
+
+                                    <button type="submit" class="btn btn-flat btn-success">Search</button>
+                                {{--  <button type="button" class="pull-right btn btn-flat btn-danger btn-sm" id="js-button-add"><i class="fa fa-plus"></i> Add</button>  --}}
+                            </form>
+                    </div>
+                    <div class="overlay hidden" id="js-loader-overlay"><i class="fa fa-refresh fa-spin"></i></div>
+                    <div class="box-body">
+                        <div class="js-data-container1">
+                            {{-- @include('control_panel_faculty.student_grade_sheet_details.partials.data_list')  --}}
+                        </div>
+                    </div>
+                    
+                @else
+
+                <div class="box-header with-border">
+                    <h3 class="box-title">Filter</h3>
+                    <form id="js-form_search">
+                        {{ csrf_field() }}
+                        <div class="form-group col-sm-12 col-md-3" style="padding-right:0">
+                            <select name="search_sy" id="search_sy" class="form-control">
+                                <option value="">Select SY</option>
+                                @foreach ($SchoolYear as $data)
+                                    <option value="{{ $data->id }}">{{ $data->school_year }}</option>
+                                @endforeach
+                            </select>
+                        </div> 
+                        &nbsp;   
+
+                        <div class="form-group col-sm-12 col-md-4" style="padding-right:0">
+                            <select name="quarter_grades" id="quarter_grades" class="form-control">
+                                <option value="">Select Class Quarter</option>                                
+                            </select>
+                        </div>                
+                        &nbsp;
+
+                    <button type="submit" class="btn btn-flat btn-success">Search</button>
                 {{--  <button type="button" class="pull-right btn btn-flat btn-danger btn-sm" id="js-button-add"><i class="fa fa-plus"></i> Add</button>  --}}
-            </form>
-        </div>
-        <div class="overlay hidden" id="js-loader-overlay"><i class="fa fa-refresh fa-spin"></i></div>
-        <div class="box-body">
-            <div class="js-data-container">
-                {{--  @include('control_panel_faculty.student_grade_sheet_details.partials.data_list')  --}}
-            </div>
-        </div>
-        
-    </div>
+                    </form>
+                </div>
+                <div class="overlay hidden" id="js-loader-overlay"><i class="fa fa-refresh fa-spin"></i></div>
+                <div class="box-body">
+                    <div class="js-data-container">
+                         {{-- @include('control_panel_faculty.student_grade_sheet_details.partials.data_list')  --}}
+                    </div>
+                </div>
+                @endif
+                
+            
+            
+            
+        </div>       
+                
+                
 @endsection
 
 @section ('scripts')
@@ -127,32 +173,186 @@
                         return;
                     }
         }
+
+        // var page = 1;
+        function fetch_data1() {
+            var formData = new FormData($('#js-form_filter')[0]);
+            formData.append('page', page);
+            loader_overlay();
+            
+            var semester_grades = $('#semester_grades').val();
+            var quarter_ = $("#quarter_").val();
+                    
+                    if (semester_grades == '1st') 
+                    {
+                       
+                        if (quarter_ == '1st') 
+                        {
+                            // alert('1st'); 
+                            $.ajax({
+                                url : "{{ route('faculty.MyAdvisoryClass.first_sem_1quarter') }}",
+                                type : 'POST',
+                                data : formData,
+                                processData : false,
+                                contentType : false,
+                                success     : function (res)
+                                {
+                                    loader_overlay();
+                                    $('.js-data-container1').html(res);
+                                }                        
+                            });
+                            return;
+                        }
+                        else
+                        {
+                            // alert('2nd');
+                            $.ajax({
+                                url : "{{ route('faculty.MyAdvisoryClass.first_sem_2quarter') }}",
+                                type : 'POST',
+                                data : formData,
+                                processData : false,
+                                contentType : false,
+                                success     : function (res)
+                                {
+                                    loader_overlay();
+                                    $('.js-data-container1').html(res);
+                                }                        
+                            });
+                            return;
+                        }        
+                    
+                    }
+                    else if(semester_grades == '2nd')
+                    {
+                        // alert('2nd');
+                        
+                        if (quarter_ == '1st') 
+                        {
+                            // alert('1st'); 
+                            $.ajax({
+                                url : "{{ route('faculty.MyAdvisoryClass.first_sem_3quarter') }}",
+                                type : 'POST',
+                                data : formData,
+                                processData : false,
+                                contentType : false,
+                                success     : function (res)
+                                {
+                                    loader_overlay();
+                                    $('.js-data-container1').html(res);
+                                }                        
+                            });
+                            return;
+                        }
+                        else
+                        {
+                            // alert('2nd');
+                            $.ajax({
+                                url : "{{ route('faculty.MyAdvisoryClass.first_sem_4quarter') }}",
+                                type : 'POST',
+                                data : formData,
+                                processData : false,
+                                contentType : false,
+                                success     : function (res)
+                                {
+                                    loader_overlay();
+                                    $('.js-data-container1').html(res);
+                                }                        
+                            });
+                            return;
+                        }        
+                    }
+                   
+        }
         $(function(){
             
+            $('body').on('change', '#search_sy1', function () {
+                $.ajax({
+                    url : "{{ route('faculty.MyAdvisoryClass.list_class_subject_details') }}",
+                    type : 'POST',
+                    {{--  dataType    : 'JSON',  --}}
+                    data        : {_token: '{{ csrf_token() }}', search_sy1: $('#search_sy1').val()},
+                    success     : function (res) {
+
+                        $('#semester_grades').html(res);
+                    }
+                })
+            })
+
+            $('body').on('change', '#semester_grades', function () {
+                $.ajax({
+                    url : "{{ route('faculty.MyAdvisoryClass.list_quarter-sem-details') }}",
+                    type : 'POST',
+                    {{--  dataType    : 'JSON',  --}}
+                    data        : {_token: '{{ csrf_token() }}', semester_grades: $('#semester_grades').val()},
+                    success     : function (res) {
+
+                        $('#quarter_').html(res);
+                    }
+                })
+            })
+
+            $('body').on('change', '#search_sy', function () {
+                $.ajax({
+                    url : "{{ route('faculty.MyAdvisoryClass.list_quarter') }}",
+                    type : 'POST',
+                    {{--  dataType    : 'JSON',  --}}
+                    data        : {_token: '{{ csrf_token() }}', search_sy: $('#search_sy').val()},
+                    success     : function (res) {
+
+                        $('#quarter_grades').html(res);
+                    }
+                })
+            })
 
             $('body').on('submit', '#js-form_search', function (e) {
                 e.preventDefault();
                 if (!$('#search_sy').val()) {
-                    alert('Please select a School year');
+                    alert('Please select a School year!');
                     return;
                 }
                 {{--  fetch_data();  --}}
             });
-
             $('body').on('submit', '#js-form_search', function (e) {
                 e.preventDefault();
                 if (!$('#quarter_grades').val()) {
-                    alert('Please select a School year');
+                    alert('Please select Class Quarter!');
                     return;
                 }
                 fetch_data();
             });
-
-            $('body').on('click', '.pagination a', function (e) {
+            //2nd form
+            $('body').on('submit', '#js-form_filter', function (e) {
                 e.preventDefault();
-                page = $(this).attr('href').split('=')[1];
-                fetch_data();
+                if (!$('#search_sy1').val()) {
+                    alert('Please select School year!');
+                    return;
+                }
+                {{--  fetch_data1();  --}}
             });
+
+            $('body').on('submit', '#js-form_filter', function (e) {
+                e.preventDefault();
+                if (!$('#semester_grades').val()) {
+                    alert('Please select Semester!');
+                    return;
+                }
+                // fetch_data1();
+            });
+
+            $('body').on('submit', '#js-form_filter', function (e) {
+                e.preventDefault();
+                if (!$('#quarter_').val()) {
+                    alert('Please select Class Quarter!');
+                    return;
+                }
+                fetch_data1();
+            });
+
+            // $('body').on('click', '.pagination a', function (e) {
+            //     e.preventDefault();
+            //     page = $(this).attr('href').split('=')[1];
+            //     fetch_data();
+            // });
         });
 
         $('body').on('click', '#js-btn_print', function (e) {
