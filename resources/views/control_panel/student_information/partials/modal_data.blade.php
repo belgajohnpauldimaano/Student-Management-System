@@ -1,8 +1,21 @@
 <div class="modal fade" tabindex="-1" role="dialog">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
+
+            <div class="col-md-10 col-md-offset-1">
+                <img src="{{ $Profile->photo ? \File::exists(public_path('/img/account/photo/'.$Profile->photo)) ? asset('/img/account/photo/'.$Profile->photo) : asset('/img/account/photo/blank-user.gif') : asset('/img/account/photo/blank-user.gif') }}" style="width:150px; height:150px; float:left; border-radius:50%; margin-right:25px;">
+                    <h2>{{ $Profile->first_name }}'s Profile</h2>
+                    <form id="form_user_photo_uploader">
+                        <label>Update Profile Image</label>
+                        <input type="file" id="user--photo" name="user_photo">
+                            {{-- <input type="hidden" name="_token" value="{{ csrf_token() }}"> --}}
+                            <input type="submit" class="pull-right btn btn-sm btn-primary">
+                    </form>
+            </div>
+                
             <form id="js-form_subject_details">
                 {{ csrf_field() }}
+                                
                 @if ($StudentInformation)
                     <input type="hidden" name="id" value="{{ $StudentInformation->id }}">
                 @endif
@@ -13,6 +26,11 @@
                     </h4>
                 </div>
                 <div class="modal-body">
+                       
+                        {{-- <img class="profile-user-img img-responsive img-circle" id="img--user_photo" src="{{ $Profile->photo ? \File::exists(public_path('/img/account/photo/'.$Profile->photo)) ? asset('/img/account/photo/'.$Profile->photo) : asset('/img/account/photo/blank-user.gif') : asset('/img/account/photo/blank-user.gif') }}" alt="User profile picture"> --}}
+                        
+                        
+                            
                     <div class="form-group">
                         <label for="">Username</label>
                         <input type="text" class="form-control" name="username" value="{{ $StudentInformation ? $StudentInformation->user->username : '' }}">

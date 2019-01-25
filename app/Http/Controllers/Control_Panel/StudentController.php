@@ -26,14 +26,79 @@ class StudentController extends Controller
         // return json_encode(['student_info' => $StudentInformation]);
         return view('control_panel.student_information.index', compact('StudentInformation'));
     }
+
     public function modal_data (Request $request) 
     {
         $StudentInformation = NULL;
+
         if ($request->id)
         {
-            $StudentInformation = \App\StudentInformation::with(['user'])->where('id', $request->id)->first();
+            $StudentInformation = \App\StudentInformation::with(['user'])->where('id', $request->id)->first();   
+            $Profile = \App\StudentInformation::where('id', $request->id)->first();   
+            
+            
         }
-        return view('control_panel.student_information.partials.modal_data', compact('StudentInformation'))->render();
+
+        if($request->hasFile('avatar')){
+
+            $avatar = $request->file('avatar');
+            $filename = time() . '.' . $avatar->getClientOriginalExtension();
+            Image::make($avatar)->resize(300, 300)->save( public_path('/img/account/photo/'.$filename ) );
+
+            // \App\StudentInformation::where('id', $request->id)->update(['photo'=>$filename]);          
+            $Profile = \App\StudentInformation::where('id', $request->id)->first();
+
+            if ($Profile->photo) 
+            {
+                $delete_photo = public_path('/img/account/photo/'. $Profile->photo);
+                if (\File::exists($delete_photo)) 
+                {
+                    \File::delete($delete_photo);
+                }
+            }
+
+            $Profile->photo = $filename;
+            $Profile->save();
+        }
+       
+    	// return view('profile', array('user' => Auth::user()) );
+        return view('control_panel.student_information.partials.modal_data', compact('StudentInformation','Profile'))->render();
+    }
+
+ 
+
+    public function change_my_photo (Request $request)
+    {
+        $name = time().'.'.$request->user_photo->getClientOriginalExtension();
+        $destinationPath = public_path('/img/account/photo/');
+        $request->user_photo->move($destinationPath, $name);
+
+
+
+    //    / $User = \Auth::user();
+        $Profile = \App\StudentInformation::where('id', $request->id)->first();
+
+        if ($Profile->photo) 
+        {
+            $delete_photo = public_path('/img/account/photo/'. $Profile->photo);
+            if (\File::exists($delete_photo)) 
+            {
+                \File::delete($delete_photo);
+            }
+        }
+
+        $Profile->photo = $name;
+
+        if ($Profile->save())
+        {
+            return response()->json(['res_code' => 0, 'res_msg' => 'User photo successfully updated.']);
+        }
+        else 
+        {
+            return response()->json(['res_code' => 1, 'res_msg' => 'Error in saving photo']);
+        }
+        
+        return json_encode($request->all());
     }
 
     public function save_data (Request $request) 

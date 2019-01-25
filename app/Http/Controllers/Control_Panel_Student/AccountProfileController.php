@@ -61,6 +61,7 @@ class AccountProfileController extends Controller
             return response()->json(['res_code' => 1, 'res_msg' => 'Unable to update profile.']);
         }
     }
+    
     public function change_my_photo (Request $request)
     {
         $name = time().'.'.$request->user_photo->getClientOriginalExtension();
