@@ -35,12 +35,10 @@ class StudentController extends Controller
         {
             $StudentInformation = \App\StudentInformation::with(['user'])->where('id', $request->id)->first();   
             $Profile = \App\StudentInformation::where('id', $request->id)->first();   
-            
-            
+                       
         }
 
-        
-       
+             
     	// return view('profile', array('user' => Auth::user()) );
         return view('control_panel.student_information.partials.modal_data', compact('StudentInformation','Profile'))->render();
     }
@@ -49,6 +47,7 @@ class StudentController extends Controller
 
     public function change_my_photo (Request $request)
     {
+        
         $name = time().'.'.$request->user_photo->getClientOriginalExtension();
         $destinationPath = public_path('/img/account/photo/');
         $request->user_photo->move($destinationPath, $name);

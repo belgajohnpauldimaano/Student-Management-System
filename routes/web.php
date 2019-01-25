@@ -201,7 +201,7 @@ Route::group(['prefix' => 'admin/student-information', 'middleware' => ['auth', 
     Route::post('print-student-grade-modal', 'Control_Panel\StudentController@print_student_grade_modal')->name('admin.student.information.print_student_grade_modal');
     
     Route::get('print-student-grades', 'Control_Panel\StudentController@print_student_grades')->name('admin.student.information.print_student_grades');
-    Route::post('', 'Control_Panel\StudentController@change_my_photo')->name('admin.student.change_my_photo');
+    Route::post('change-student-photo', 'Control_Panel\StudentController@change_my_photo')->name('admin.student.change_my_photo');
 });
 
 Route::group(['prefix' => 'admin/faculty-information', 'middleware' => ['auth', 'userroles'], 'roles' => ['admin', 'root', 'registrar']], function() {

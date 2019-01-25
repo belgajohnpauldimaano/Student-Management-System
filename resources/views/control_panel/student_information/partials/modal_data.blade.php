@@ -1,31 +1,46 @@
 <div class="modal fade" tabindex="-1" role="dialog">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
+                <div class="box-body">
+                <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        
+                        <h4 style="margin-right: 5em;" class="modal-title">
+                            {{ $StudentInformation ? 'Edit Registrar Information' : 'Add Registrar Information' }}
+                        </h4>
 
-            <div class="col-md-10 col-md-offset-1">
-                <img src="{{ $Profile->photo ? \File::exists(public_path('/img/account/photo/'.$Profile->photo)) ? asset('/img/account/photo/'.$Profile->photo) : asset('/img/account/photo/blank-user.gif') : asset('/img/account/photo/blank-user.gif') }}" style="width:150px; height:150px; float:left; border-radius:50%; margin-right:25px;">
-                    <h2>{{ $Profile->first_name }}'s Profile</h2>
-                    <form id="form_user_photo_uploader">
-                        {{ csrf_field() }}
-                        <label>Update Profile Image</label>
-                        <input type="file" id="user--photo" name="user_photo">
-                            {{-- <input type="hidden" name="_token" value="{{ csrf_token() }}"> --}}
-                            <input type="submit" class="pull-right btn btn-sm btn-primary">
-                    </form>
-            </div>
+                        <div style="margin-top: 3em; margin-bottom: 3em" class="col-md-10 col-md-offset-1">
+                                <center>
+                                <img class="profile-user-img img-responsive img-circle" id="img--user_photo" src="{{ $Profile->photo ? \File::exists(public_path('/img/account/photo/'.$Profile->photo)) ? asset('/img/account/photo/'.$Profile->photo) : asset('/img/account/photo/blank-user.gif') : asset('/img/account/photo/blank-user.gif') }}" style="width:150px; height:150px;  border-radius:50%;">
+                                    <h2>{{ $Profile->first_name }}'s Profile</h2>
+                                    <div class="box-body">
+                    {{-- <img class="profile-user-img img-responsive" id="img--user_photo" src="{{ $Profile->photo ? \File::exists(public_path('/img/account/photo/'.$Profile->photo)) ? asset('/img/account/photo/'.$Profile->photo) : asset('/img/account/photo/blank-user.gif') : asset('/img/account/photo/blank-user.gif') }}" alt="User profile picture">
+                    <h3 class="profile-username text-center" id="display__full_name">{{ $Profile->first_name . ' ' . $Profile->middle_name . ' ' .  $Profile->last_name }}</h3> --}}
+                    
+                                    
+                                        <button type="button" class="btn btn-flat btn-success btn--update-photo" title="Change photo">
+                                            browse
+                                        </button>
+                                    </center>
+                                        <form class="hidden" id="form_user_photo_uploader">
+                                            <input type="file" id="user--photo" name="user_photo">
+                                            <input type="hidden" name="id" value="{{ $StudentInformation->id }}">
+                                            <button type="submit">fsdfasd</button>
+                                        </form>
+                            </div>
+                    </div>
+                </div>
+
+           
                 
+           
             <form id="js-form_subject_details">
                 {{ csrf_field() }}
                                 
                 @if ($StudentInformation)
                     <input type="hidden" name="id" value="{{ $StudentInformation->id }}">
                 @endif
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title">
-                        {{ $StudentInformation ? 'Edit Registrar Information' : 'Add Registrar Information' }}
-                    </h4>
-                </div>
+                
                 <div class="modal-body">
                        
                         {{-- <img class="profile-user-img img-responsive img-circle" id="img--user_photo" src="{{ $Profile->photo ? \File::exists(public_path('/img/account/photo/'.$Profile->photo)) ? asset('/img/account/photo/'.$Profile->photo) : asset('/img/account/photo/blank-user.gif') : asset('/img/account/photo/blank-user.gif') }}" alt="User profile picture"> --}}
