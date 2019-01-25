@@ -105,36 +105,7 @@
                 
             })
             
-            function readURL(input) {
-                var url = input[0].value;
-                var ext = url.substring(url.lastIndexOf('.') + 1).toLowerCase();
-                if (input[0].files && input[0].files[0] && (ext == "gif" || ext == "png" || ext == "jpeg" || ext == "jpg")) {
-                    var reader = new FileReader();
-
-                    reader.onload = function (e) {
-                        $('#img--user_photo').attr('src', e.target.result);
-                        var id = $(this).data('id');
-                        var formData = new FormData($('#form_user_photo_uploader')[0]);
-                        {{--  formData.append('user_photo', $('#user--photo'));  --}}
-                        formData.append('_token', '{{ csrf_token() }}');
-                        console.log(formData)
-                        $.ajax({
-                            url : "{{ route('admin.student.change_my_photo') }}",
-                            type : 'POST',
-                            data : formData,
-                            processData : false,
-                            contentType : false,
-                            success     : function (res) {
-                                console.log(res)
-                            }
-                        })
-                    }
-
-                    reader.readAsDataURL(input[0].files[0]);
-                }else{
-                    $('#img--user_photo').attr('src', '/assets/no_preview.png');
-                }
-            }
+            
             
 
             $('body').on('submit', '#js-form_subject_details', function (e) {
@@ -210,6 +181,37 @@
 
                 });
             });
+
+            function readURL(input) {
+                var url = input[0].value;
+                var ext = url.substring(url.lastIndexOf('.') + 1).toLowerCase();
+                if (input[0].files && input[0].files[0] && (ext == "gif" || ext == "png" || ext == "jpeg" || ext == "jpg")) {
+                    var reader = new FileReader();
+
+                    reader.onload = function (e) {
+                        $('#img--user_photo').attr('src', e.target.result);
+                        var id = $(this).data('id');
+                        var formData = new FormData($('#form_user_photo_uploader')[0]);
+                        {{--  formData.append('user_photo', $('#user--photo'));  --}}
+                        formData.append('_token', '{{ csrf_token() }}');
+                        console.log(formData)
+                        $.ajax({
+                            url : "{{ route('admin.student.change_my_photo') }}",
+                            type : 'POST',
+                            data : formData,
+                            processData : false,
+                            contentType : false,
+                            success     : function (res) {
+                                console.log(res)
+                            }
+                        })
+                    }
+
+                    reader.readAsDataURL(input[0].files[0]);
+                }else{
+                    $('#img--user_photo').attr('src', '/assets/no_preview.png');
+                }
+            }
         });
     </script>
 @endsection

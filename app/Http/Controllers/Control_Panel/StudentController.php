@@ -39,27 +39,7 @@ class StudentController extends Controller
             
         }
 
-        if($request->hasFile('avatar')){
-
-            $avatar = $request->file('avatar');
-            $filename = time() . '.' . $avatar->getClientOriginalExtension();
-            Image::make($avatar)->resize(300, 300)->save( public_path('/img/account/photo/'.$filename ) );
-
-            // \App\StudentInformation::where('id', $request->id)->update(['photo'=>$filename]);          
-            $Profile = \App\StudentInformation::where('id', $request->id)->first();
-
-            if ($Profile->photo) 
-            {
-                $delete_photo = public_path('/img/account/photo/'. $Profile->photo);
-                if (\File::exists($delete_photo)) 
-                {
-                    \File::delete($delete_photo);
-                }
-            }
-
-            $Profile->photo = $filename;
-            $Profile->save();
-        }
+        
        
     	// return view('profile', array('user' => Auth::user()) );
         return view('control_panel.student_information.partials.modal_data', compact('StudentInformation','Profile'))->render();
@@ -76,29 +56,33 @@ class StudentController extends Controller
 
 
     //    / $User = \Auth::user();
-        $Profile = \App\StudentInformation::where('id', $request->id)->first();
-
-        if ($Profile->photo) 
+        if($request->id)
         {
-            $delete_photo = public_path('/img/account/photo/'. $Profile->photo);
-            if (\File::exists($delete_photo)) 
+            $Profile = \App\StudentInformation::where('id', $request->id)->first();
+
+            if ($Profile->photo) 
             {
-                \File::delete($delete_photo);
+                $delete_photo = public_path('/img/account/photo/'. $Profile->photo);
+                if (\File::exists($delete_photo)) 
+                {
+                    \File::delete($delete_photo);
+                }
             }
-        }
-
-        $Profile->photo = $name;
-
-        if ($Profile->save())
-        {
-            return response()->json(['res_code' => 0, 'res_msg' => 'User photo successfully updated.']);
-        }
-        else 
-        {
-            return response()->json(['res_code' => 1, 'res_msg' => 'Error in saving photo']);
+    
+            $Profile->photo = $name;
+    
+            if ($Profile->save())
+            {
+                return response()->json(['res_code' => 0, 'res_msg' => 'User photo successfully updated.']);
+            }
+            else 
+            {
+                return response()->json(['res_code' => 1, 'res_msg' => 'Error in saving photo']);
+            }
+            
+            return json_encode($request->all());
         }
         
-        return json_encode($request->all());
     }
 
     public function save_data (Request $request) 
