@@ -14,16 +14,16 @@
                 <div class="box-header">
                     <h3 class="box-title">Personal Information</h3>
                     <div class="box-tools pull-right">
-                        <button type="button" class="btn btn-flat btn-box-tool btn--update-photo" title="Change photo">
+                        {{-- <button type="button" class="btn btn-flat btn-box-tool btn--update-photo" title="Change photo">
                             <i class="fa fa-image"></i>
-                        </button>
+                        </button> --}}
                         <form class="hidden" id="form_user_photo_uploader">
                             <input type="file" id="user--photo" name="user_photo">
                             <button type="submit">fsdfasd</button>
                         </form>
-                        <button type="button" class="btn btn-flat btn-box-tool btn--update-profile" title="Update info">
+                        {{-- <button type="button" class="btn btn-flat btn-box-tool btn--update-profile" title="Update info">
                             <i class="fa fa-wrench"></i>
-                        </button>
+                        </button> --}}
                     </div>
                 </div>
                 <div class="overlay hidden" id="js-loader-overlay"><i class="fa fa-refresh fa-spin"></i></div>
@@ -80,9 +80,9 @@
                 <div class="box-header">
                     <h3 class="box-title">User Account</h3>
                     <div class="box-tools pull-right">
-                        <button type="button" class="btn btn-flat btn-box-tool btn-change-password" title="change password">
+                        {{-- <button type="button" class="btn btn-flat btn-box-tool btn-change-password" title="change password">
                             <i class="fa fa-wrench"></i>
-                        </button>
+                        </button> --}}
                     </div>
                 </div>
                 

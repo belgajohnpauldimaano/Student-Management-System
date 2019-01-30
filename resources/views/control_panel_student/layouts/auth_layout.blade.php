@@ -24,7 +24,7 @@
   <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
   <![endif]-->
 </head>
-<body class="hold-transition login-page">
+<body class="hold-transition login-page"> 
 <div class="login-box">
   <div class="login-logo">
     <a href="#"><b>St. John </b>Academy</a>
@@ -43,14 +43,29 @@
 <script src="{{ asset('cms/bootstrap/js/bootstrap.min.js') }}"></script>
 <!-- iCheck -->
 <script src="{{ asset('cms/plugins/iCheck/icheck.min.js') }}"></script>
+
+
 <script>
-  $(function () {
-    $('input').iCheck({
-      checkboxClass: 'icheckbox_square-blue',
-      radioClass: 'iradio_square-blue',
-      increaseArea: '20%' // optional
-    });
-  });
+
+    // $('input').iCheck({
+    //   checkboxClass: 'icheckbox_square-blue',
+    //   radioClass: 'iradio_square-blue',
+    //   increaseArea: '20%' // optional
+    // });
+
+ 
+ 
+   
+
+
+
+    function showPass(e)
+        {
+            if(!confirm('Are you sure you want to Delete this room?'))e.preventDefault();
+        }
+ 
+
+  
 </script>
 </body>
 </html>

@@ -9,7 +9,8 @@
     <!-- Logo -->
     <a href="#" class="logo">
       <!-- mini logo for sidebar mini 50x50 pixels -->
-      <span class="logo-mini"><img src="{{ asset('frontend/assets/img/mini-logo.jpg') }}" style="height: 35px;"></span>
+      {{-- <span class="logo-mini"><img src="{{ asset('frontend/assets/img/mini-logo.jpg') }}" style="height: 35px;"></span> --}}
+      <span class="logo-mini"><img src="{{ asset('/img/sja-logo.png') }}" style="height: 35px;"></span>
       <!-- logo for regular state and mobile devices -->
       <span class="logo-lg">
       {{--  <img src="{{ asset('frontend/assets/img/mini-logo.jpg') }}" style="height: 35px; margin: -5px 10px 0 -10px;">  --}}

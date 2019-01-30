@@ -12,6 +12,7 @@ class FacultyController extends Controller
         if ($request->ajax())
         {
             $FacultyInformation = \App\FacultyInformation::with(['user'])->where('status', 1)
+            ->orderBY('last_name','ASC')
             ->where(function ($query) use ($request) {
                 $query->where('first_name', 'like', '%'.$request->search.'%');
                 $query->orWhere('middle_name', 'like', '%'.$request->search.'%');
@@ -19,9 +20,10 @@ class FacultyController extends Controller
             })
             // ->orWhere('first_name', 'like', '%'.$request->search.'%')
             ->paginate(10);
+            
             return view('control_panel.faculty_information.partials.data_list', compact('FacultyInformation'))->render();
         }
-        $FacultyInformation = \App\FacultyInformation::with(['user'])->where('status', 1)->paginate(10);
+        $FacultyInformation = \App\FacultyInformation::with(['user'])->where('status', 1)->orderBY('last_name','ASC')->paginate(10);
         return view('control_panel.faculty_information.index', compact('FacultyInformation'));
     }
     public function modal_data (Request $request) 
@@ -30,8 +32,48 @@ class FacultyController extends Controller
         if ($request->id)
         {
             $FacultyInformation = \App\FacultyInformation::with(['user'])->where('id', $request->id)->first();
+            $Esignature = \App\FacultyInformation::where('id', $request->id)->first();   
         }
-        return view('control_panel.faculty_information.partials.modal_data', compact('FacultyInformation'))->render();
+        return view('control_panel.faculty_information.partials.modal_data', compact('FacultyInformation','Esignature'))->render();
+    }
+
+    public function change_esignature (Request $request)
+    {
+        
+        $name = time().'.'.$request->user_photo->getClientOriginalExtension();
+        $destinationPath = public_path('/img/signature/');
+        $request->user_photo->move($destinationPath, $name);
+
+
+
+    //    / $User = \Auth::user();
+        if($request->id)
+        {
+            $Esignature = \App\FacultyInformation::where('id', $request->id)->first();
+
+            if ($Esignature->e_signature) 
+            {
+                $delete_photo = public_path('/img/signature/'. $Esignature->e_signature);
+                if (\File::exists($delete_photo)) 
+                {
+                    \File::delete($delete_photo);
+                }
+            }
+    
+            $Esignature->e_signature = $name;
+    
+            if ($Esignature->save())
+            {
+                return response()->json(['res_code' => 0, 'res_msg' => 'User photo successfully updated.']);
+            }
+            else 
+            {
+                return response()->json(['res_code' => 1, 'res_msg' => 'Error in saving photo']);
+            }
+            
+            return json_encode($request->all());
+        }
+        
     }
 
     public function save_data (Request $request) 

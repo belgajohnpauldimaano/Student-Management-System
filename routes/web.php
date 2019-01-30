@@ -211,6 +211,8 @@ Route::group(['prefix' => 'admin/faculty-information', 'middleware' => ['auth', 
     Route::post('save-data', 'Control_Panel\FacultyController@save_data')->name('admin.faculty_information.save_data');
     Route::post('deactivate-data', 'Control_Panel\FacultyController@deactivate_data')->name('admin.faculty_information.deactivate_data');
     Route::post('additional-information', 'Control_Panel\FacultyController@additional_information')->name('admin.faculty_information.additional_information');
+
+     Route::post('e-signature', 'Control_Panel\FacultyController@change_esignature')->name('admin.faculty.e_signature');
 });
 
 Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'userroles'], 'roles' => ['admin', 'root']], function() {

@@ -149,6 +149,49 @@
                     }
                 });
             })
+
+            $('body').on('submit', '#form_user_photo_uploader', function (e) {
+                e.preventDefault();
+                readURL($(this));
+            });
+
+            $('body').on('click', '.btn--update-photo', function (e) {
+                $('#user--photo').click()
+            })
+            $('body').on('change', '#user--photo', function (e) {
+                readURL($(this))
+            })
+            function readURL(input) {
+                var url = input[0].value;
+                var id = $(this).data('id');
+                var ext = url.substring(url.lastIndexOf('.') + 1).toLowerCase();
+                if (input[0].files && input[0].files[0] && (ext == "gif" || ext == "png" || ext == "jpeg" || ext == "jpg")) {
+                    var reader = new FileReader();
+
+                    reader.onload = function (e) {
+                        $('#img--user_photo').attr('src', e.target.result);
+                        
+                        var formData = new FormData($('#form_user_photo_uploader')[0]);
+                        
+                        formData.append('_token', '{{ csrf_token() }}');
+                        console.log(formData)
+                        $.ajax({
+                            url : "{{ route('admin.faculty.e_signature') }}",
+                            type : 'POST',
+                            data : formData,
+                            processData : false,
+                            contentType : false,
+                            success     : function (res) {
+                                console.log(res)
+                            }
+                        })
+                    }
+
+                    reader.readAsDataURL(input[0].files[0]);
+                }else{
+                    $('#img--user_photo').attr('src', '/assets/no_preview.png');
+                }
+            }
         });
     </script>
 @endsection

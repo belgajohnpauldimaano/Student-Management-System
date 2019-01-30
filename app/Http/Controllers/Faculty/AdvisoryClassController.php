@@ -400,6 +400,40 @@ class AdvisoryClassController extends Controller
             ->where('class_details.id', $request->cid)
             ->orderBY('school_years.id', 'ASC')
             ->first();
+
+            $Signatory = \App\Enrollment::join('class_details', 'class_details.id', '=', 'enrollments.class_details_id')
+            // ->join('student_enrolled_subjects', 'student_enrolled_subjects.enrollments_id', '=', 'enrollments.id')
+            ->join('class_subject_details', 'class_subject_details.class_details_id', '=', 'class_details.id')
+            ->join('rooms', 'rooms.id', '=', 'class_details.room_id')
+            ->join('faculty_informations', 'faculty_informations.id', '=', 'class_subject_details.faculty_id')
+            ->join('section_details', 'section_details.id', '=', 'class_details.section_id')
+            ->join('subject_details', 'subject_details.id', '=', 'class_subject_details.subject_id')
+            ->where('student_information_id', $StudentInformation->id)
+            // ->where('class_subject_details.status', 1)
+            ->where('class_subject_details.status', '!=', 0)
+            ->where('enrollments.status', 1)
+            ->where('class_details.status', 1)
+            ->where('class_details.school_year_id', $ClassDetail->school_year_id)
+            ->select(\DB::raw("
+                enrollments.id as enrollment_id,
+                enrollments.attendance,
+                class_details.grade_level,
+                class_subject_details.id as class_subject_details_id,
+                class_subject_details.class_days,
+                class_subject_details.class_time_from,
+                class_subject_details.class_time_to,
+                class_subject_details.status as grade_status,
+                faculty_informations.last_name,faculty_informations.first_name,faculty_informations.middle_name,
+                faculty_informations.e_signature,
+                subject_details.id AS subject_id,
+                subject_details.subject_code,
+                subject_details.subject,
+                rooms.room_code,
+                section_details.section,
+                class_details.school_year_id as school_year_id
+            "))
+            ->orderBy('class_subject_details.class_subject_order', 'ASC')
+            ->first();
             
             $Enrollment = \App\Enrollment::join('class_details', 'class_details.id', '=', 'enrollments.class_details_id')
             // ->join('student_enrolled_subjects', 'student_enrolled_subjects.enrollments_id', '=', 'enrollments.id')
@@ -565,9 +599,9 @@ class AdvisoryClassController extends Controller
             ];
             // return json_encode(['a' => $GradeSheetData, 'subj_count' => $subj_count, 'general_avg' => $general_avg]);
             return view('control_panel_student.grade_sheet.partials.print', compact('GradeSheetData', 'grade_level', 'StudentInformation',
-             'ClassDetail', 'general_avg', 'student_attendance', 'table_header'));
+             'ClassDetail', 'general_avg', 'student_attendance', 'table_header','Signatory'));
             $pdf = \PDF::loadView('control_panel_student.grade_sheet.partials.print', compact('GradeSheetData', 'grade_level', 'StudentInformation', 'ClassDetail'
-            , 'general_avg', 'student_attendance', 'table_header'));
+            , 'general_avg', 'student_attendance', 'table_header','Signatory'));
             return $pdf->stream();
             return view('control_panel_student.grade_sheet.index', compact('GradeSheetData'));
             return json_encode(['GradeSheetData' => $GradeSheetData,]);
