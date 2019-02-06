@@ -17,7 +17,7 @@
         }
         th, td {
             border: 1px solid #000;
-            padding: 5px;
+            padding: 3px;
         }
         table {
             width: 100%;
@@ -151,11 +151,11 @@
     
     
     
-    <br/>
+    {{-- //<br/> --}}
     {{--  <h4>Subject : <span class="text-red"><i>{{ $ClassSubjectDetail->subject }}</i></span> Time : <span class="text-red"><i>{{ strftime('%r',strtotime($ClassSubjectDetail->class_time_from)) . ' - ' . strftime('%r',strtotime($ClassSubjectDetail->class_time_to)) }}</i></span> Days : <span class="text-red"><i>{{ $ClassSubjectDetail->class_days }}</i></span></h4>  --}}
     {{--  <h4>Grade & Section : <span class="text-red"><i>{{ $ClassSubjectDetail->grade_level . ' ' .$ClassSubjectDetail->section }}</i></span></h4>  --}}
     
-                <table class="table no-margin">
+                <table class="table no-margin" style="margin-top: .5em; margin-bottom: 1em">
                     <thead>
                         @if ($grade_level >= 11) 
                             <tr>
@@ -335,7 +335,7 @@
                     @endif
                 </tbody>
             </table>
-            <br />
+            
 
             @if($ClassDetail->section_grade_level >= 11)
             <center>
@@ -397,23 +397,37 @@
                     {{-- <tr> <td colspan="3" style="border: 0">&nbsp;</td>   </tr> --}}
                 
                     <tr>
-                            <table border="0" style="width: 100%">
+                            <table border="0" style="width: 100%; margin-bottom: 0em">
+                                    <tr>
+                                            <td style="border: 0; width: 50%;">
+                                            <center>
+                                                <img class="profile-user-img img-responsive img-circle" id="img--user_photo" src="{{ $ClassDetail->e_signature ? \File::exists(public_path('/img/signature/'.$ClassDetail->e_signature)) ? asset('/img/signature/'.$ClassDetail->e_signature) : asset('/img/account/photo/blank-user.gif') : asset('/img/account/photo/blank-user.gif') }}" style="width:100px">
+                                            </center>
+                                        </td>
+                                        <td style="border: 0; width: 50%;">
+                                            <center>
+                                                <img class="profile-user-img img-responsive img-circle" id="img--user_photo" src="{{ asset('/img/signature/principal_signature.png') }}" style="width:170px">
+                                               
+                                            </center>
+                                        </td>
+                                    </tr>
+                            </table>
+                            <table border="0" style="width: 100%; margin-top: -6em">
+                                
                                 <tr>
-                                    <td style="border: 0; width: 50%">
+                                    <td style="border: 0; width: 50%; height: 100px">
                                         <span style="margin-left: 2em; text-transform: uppercase">
-                                            <center><img class="profile-user-img img-responsive img-circle" id="img--user_photo" src="{{ $Signatory->e_signature ? \File::exists(public_path('/img/signature/'.$Signatory->e_signature)) ? asset('/img/signature/'.$Signatory->e_signature) : asset('/img/account/photo/blank-user.gif') : asset('/img/account/photo/blank-user.gif') }}" style="width:100px">
-                                        <br/>
-                                            {{ $Signatory->first_name }} {{ $Signatory->middle_name }} {{ $Signatory->last_name }}</center>
+                                            <center>
+                                            {{ $ClassDetail->first_name }} {{ $ClassDetail->middle_name }} {{ $ClassDetail->last_name }}</center>
                                             </br>
                                             <center style="margin-top: -1em">Adviser</center>
                                         </span>
                                     </td>
-                                    <td style="border: 0; width: 50%">
+                                    <td style="border: 0; width: 50%; height: 100px">
                                         <span style="margin-left: 23em; text-transform: uppercase">
-                                            <center><img class="profile-user-img img-responsive img-circle" id="img--user_photo" src="{{ asset('/img/signature/principal_signature.png') }}" style="width:100px">
-                                                <br/>Gemma R. Yao, Ph.D.</center>
+                                            <center><span style=" text-transform: uppercase">Gemma R. Yao,</span> Ph.D.</center>
                                             </br>
-                                            <center style="margin-top: -1em">Principal</center>
+                                            <center style="margin-top: -1em">PRINCIPAL</center>
                                         </span>
                                     </td>
                                 </tr>
@@ -427,8 +441,8 @@
                 <div class="page-break"></div>
             </center>
             @else
-                <p class="report-progress-left m0"><b>ATTENDANCE RECORD</b></p>
-                <table style="width:100%">
+                <p class="report-progress-left m0"  style="margin-top: 0em"><b>ATTENDANCE RECORD</b></p>
+                <table style="width:100%; margin-bottom: 1em">
                     <tr>
                         <th>
                             
@@ -486,85 +500,99 @@
                         </th>
                     </tr>
                 </table>
-            <br/>
+            
             <center>
                 <table border="0" style="width: 80%">
 
-                    <tr>
+                    <tr style="margin-top: .5em">
                         <td style="border: 0">Description</td>
                         <td style="border: 0">Grading Scale</td>
                         <td style="border: 0">Remarks</td>                
                     </tr>
 
-                    <tr>
+                    <tr style="margin-top: .5em">
                         <td style="border: 0">Outstanding</td>
                         <td style="border: 0">90-100</td>
                         <td style="border: 0">Passed</td>                
                     </tr>
 
-                    <tr>
+                    <tr style="margin-top: .5em">
                         <td style="border: 0">Very Satisfactory</td>
                         <td style="border: 0">85-89</td>
                         <td style="border: 0">Passed</td>                
                     </tr>
 
-                    <tr>
+                    <tr style="margin-top: .5em">
                         <td style="border: 0">Satisfactory</td>
                         <td style="border: 0">80-84</td>
                         <td style="border: 0">Passed</td>                
                     </tr>
 
-                    <tr>
+                    <tr style="margin-top: .5em">
                         <td style="border: 0">Fairly Satisfactory</td>
                         <td style="border: 0">75-79</td>
                         <td style="border: 0">Passed</td>                
                     </tr>
 
-                    <tr>
+                    <tr style="margin-top: .5em">
                         <td style="border: 0">Did Not Meet expectations</td>
                         <td style="border: 0">Below 75</td>
                         <td style="border: 0">Failed</td>                
                     </tr>
-                    <tr>
+                    <tr style="margin-top: .5em">
                         <td style="border: 0"></td>
                         <td style="border: 0"></td>
                         <td style="border: 0"></td>   
                     </tr>
 
-                    <tr>
+                    <tr style="margin-top: .5em">
                         <td colspan="3" style="border: 0">Eligible to transfer admission to:__________________________</td>                
                     </tr>
 
-                    <tr>
+                    <tr style="margin-top: .5em">
                         <td colspan="3" style="border: 0">Lacking units in:__________________________</td>                
                     </tr>
                     
-                    <tr>
+                    <tr style="margin-top: .5em">
                         <td colspan="3" style="border: 0">Date:__________________________</td>                
                     </tr>
-                    <tr> <td colspan="3" style="border: 0">&nbsp;</td>   </tr>
+                    <tr style="margin-top: .5em">
+                         <td colspan="3" style="border: 0">&nbsp;</td>   </tr>
                     {{-- <tr> <td colspan="3" style="border: 0">&nbsp;</td>   </tr> --}}
                 
-                    <tr>
-                            <table border="0" style="width: 100%">
+                    <tr style="margin-top: 0em">
+                            <table border="0" style="width: 100%; margin-top: -1em">
+                                    <tr>
+                                            <td style="border: 0; width: 50%;">
+                                            <center>
+                                                <img class="profile-user-img img-responsive img-circle" id="img--user_photo" src="{{ $ClassDetail->e_signature ? \File::exists(public_path('/img/signature/'.$ClassDetail->e_signature)) ? asset('/img/signature/'.$ClassDetail->e_signature) : asset('/img/account/photo/blank-user.gif') : asset('/img/account/photo/blank-user.gif') }}" style="width:100px">
+                                            </center>
+                                        </td>
+                                        <td style="border: 0; width: 50%;">
+                                            <center>
+                                                <img class="profile-user-img img-responsive img-circle" id="img--user_photo" src="{{ asset('/img/signature/principal_signature.png') }}" style="width:170px">
+                                            </center>
+                                        </td>
+                                    </tr>
+                            </table>
+                            <table border="0" style="width: 100%; margin-top: -50px; margin-bottom: 0em">
+                                
                                 <tr>
-                                    <td style="border: 0; width: 50%">
+                                    <td style="border: 0; width: 50%; height: 100px">
                                         <span style="margin-left: 2em; text-transform: uppercase">
-                                            <center><img class="profile-user-img img-responsive img-circle" id="img--user_photo" src="{{ $Signatory->e_signature ? \File::exists(public_path('/img/signature/'.$Signatory->e_signature)) ? asset('/img/signature/'.$Signatory->e_signature) : asset('/img/account/photo/blank-user.gif') : asset('/img/account/photo/blank-user.gif') }}" style="width:100px">
-                                        <br/>
-                                            {{ $Signatory->first_name }} {{ $Signatory->middle_name }} {{ $Signatory->last_name }}</center>
+                                            <center>
+                                            {{ $ClassDetail->first_name }} {{ $ClassDetail->middle_name }} {{ $ClassDetail->last_name }}</center>
                                             </br>
                                             <center style="margin-top: -1em">Adviser</center>
                                         </span>
                                     </td>
-                                    <td style="border: 0; width: 50%">
-                                        <span style="margin-left: 23em; text-transform: uppercase">
-                                            <center><img class="profile-user-img img-responsive img-circle" id="img--user_photo" src="{{ asset('/img/signature/principal_signature.png') }}" style="width:100px">
-                                                <br/>Gemma R. Yao, Ph.D.</center>
-                                            </br>
-                                            <center style="margin-top: -1em">Principal</center>
-                                        </span>
-                                    </td>
+                                    <td style="border: 0; width: 50%; height: 100px">
+                                            <span style="margin-left: 23em;">
+                                                <center><span style=" text-transform: uppercase">Gemma R. Yao,</span> Ph.D.</center>
+                                                </br>
+                                                <center style="margin-top: -1em">PRINCIPAL</center>
+                                            </span>
+                                        </td>
                                 </tr>
                             </table>
                         

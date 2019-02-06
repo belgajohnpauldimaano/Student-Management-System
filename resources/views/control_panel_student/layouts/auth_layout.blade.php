@@ -52,17 +52,25 @@
     //   radioClass: 'iradio_square-blue',
     //   increaseArea: '20%' // optional
     // });
-
+    function showPass(e)
+    {
+        var x = document.getElementById("myInput");
+        if (x.type === "password") {
+            x.type = "text";
+        } else {
+            x.type = "password";
+        }
+    }
  
  
    
 
 
 
-    function showPass(e)
-        {
-            if(!confirm('Are you sure you want to Delete this room?'))e.preventDefault();
-        }
+    // function showPass(e)
+    //     {
+    //         if(!confirm('Are you sure you want to Delete this room?'))e.preventDefault();
+    //     }
  
 
   

@@ -103,7 +103,8 @@
           <li><a href="{{ route('faculty.student_grade_sheet') }}"><i class="fa fa-circle-o"></i> <span>Encode Student Grades</span></a></li>
           
           {{-- <li><a href="{{ route('faculty.DataStudent') }}"><i class="fa fa-circle-o"></i> <span>Make Data for GradeSheet</span></a></li> --}}
-          
+          <li><a href="{{ route('faculty.class-attendance.index') }}"><i class="fa fa-circle-o"></i> <span>Encode Class Attendance</span></a></li>
+          <li><a href="{{ route('faculty.class_demographic_profile.index') }}"><i class="fa fa-circle-o"></i> <span>Student Demographic Profile</span></a></li>
           <li><a href="{{ route('faculty.advisory_class.index') }}"><i class="fa fa-circle-o"></i> <span>My Advisory Class</span></a></li>
           
           {{--  <li><a href="{{ route('faculty.my_advisory_class.index') }}"><i class="fa fa-circle-o"></i> <span>My Advisory Class</span></a>  --}}

@@ -168,6 +168,7 @@ Route::group(['prefix' => 'faculty', 'middleware' => ['auth', 'userroles'], 'rol
         Route::get('print-second-quarter', 'Faculty\MyAdvisoryClassController@print_secondquarter')->name('faculty.MyAdvisoryClass.print_second_quarter');
         Route::get('print-third-quarter', 'Faculty\MyAdvisoryClassController@print_thirdquarter')->name('faculty.MyAdvisoryClass.print_third_quarter');
         Route::get('print-fourth-quarter', 'Faculty\MyAdvisoryClassController@print_fourthquarter')->name('faculty.MyAdvisoryClass.print_fourth_quarter');
+
         Route::post('list-class-subject-details', 'Faculty\MyAdvisoryClassController@list_class_subject_details')->name('faculty.MyAdvisoryClass.list_class_subject_details');
 
         Route::post('list_quarter-details', 'Faculty\MyAdvisoryClassController@list_quarter')->name('faculty.MyAdvisoryClass.list_quarter');
@@ -177,8 +178,22 @@ Route::group(['prefix' => 'faculty', 'middleware' => ['auth', 'userroles'], 'rol
         Route::post('first_sem_2quarter', 'Faculty\MyAdvisoryClassController@first_sem_2quarter')->name('faculty.MyAdvisoryClass.first_sem_2quarter');
         Route::post('second_sem_1quarter', 'Faculty\MyAdvisoryClassController@first_sem_3quarter')->name('faculty.MyAdvisoryClass.first_sem_3quarter');
         Route::post('second_sem_2quarter', 'Faculty\MyAdvisoryClassController@first_sem_4quarter')->name('faculty.MyAdvisoryClass.first_sem_4quarter');
+
+        Route::get('first-sem/print-first-quarter', 'Faculty\MyAdvisoryClassController@print_firstSem_1quarter')->name('faculty.MyAdvisoryClass.print_firstSem_firstq');
+        Route::get('first-sem/print-second-quarter', 'Faculty\MyAdvisoryClassController@print_firstSem_2quarter')->name('faculty.MyAdvisoryClass.print_firstSem_secondq');
+        Route::get('second-sem/print-first-quarter', 'Faculty\MyAdvisoryClassController@print_secondSem_1quarter')->name('faculty.MyAdvisoryClass.print_secondSem_firstq');
+        Route::get('second-sem/print-second-quarter', 'Faculty\MyAdvisoryClassController@print_secondSem_2quarter')->name('faculty.MyAdvisoryClass.print_secondSem_secondq');
+
+
+    });
+
+    Route::group(['prefix' => 'class-attenadance'], function () {
+        Route::get('encode-class-attendance', 'Faculty\ClassAttendanceController@index')->name('faculty.class-attendance.index');
     });
     
+    Route::group(['prefix' => 'class-demographic-profile'], function () {
+        Route::get('encode-class-demographic-profile', 'Faculty\DemographicProfileController@index')->name('faculty.class_demographic_profile.index');
+    });
 
 
 
@@ -195,7 +210,7 @@ Route::group(['prefix' => 'admin/student-information', 'middleware' => ['auth', 
     Route::get('', 'Control_Panel\StudentController@index')->name('admin.student.information');
     Route::post('', 'Control_Panel\StudentController@index')->name('admin.student.information');
     Route::post('modal-data', 'Control_Panel\StudentController@modal_data')->name('admin.student.information.modal_data');
-    // Route::get('modal-data', 'Control_Panel\StudentController@modal_data')->name('admin.student.information.modal_data');
+    Route::get('modal-data', 'Control_Panel\StudentController@modal_data')->name('admin.student.information.modal_data');
     Route::post('save-data', 'Control_Panel\StudentController@save_data')->name('admin.student.information.save_data');
     Route::post('deactivate-data', 'Control_Panel\StudentController@deactivate_data')->name('admin.student.information.deactivate_data');
     Route::post('print-student-grade-modal', 'Control_Panel\StudentController@print_student_grade_modal')->name('admin.student.information.print_student_grade_modal');

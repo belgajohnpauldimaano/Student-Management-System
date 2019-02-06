@@ -40,7 +40,7 @@
                                                 <option value="">Select Class Quarter</option>
                                             </select>
                                         </div>                
-                                    &nbsp;
+                                        &nbsp;
 
                                     <button type="submit" class="btn btn-flat btn-success">Search</button>
                                 {{--  <button type="button" class="pull-right btn btn-flat btn-danger btn-sm" id="js-button-add"><i class="fa fa-plus"></i> Add</button>  --}}
@@ -263,6 +263,7 @@
                     }
                    
         }
+        
         $(function(){
             
             $('body').on('change', '#search_sy1', function () {
@@ -361,7 +362,11 @@
           
             const search_class_subject = $('#search_class_subject').val()
             const search_sy = $('#search_sy').val()
-            
+            const search_sy1 = $('#search_sy1').val();
+            const semester_grades = $('#semester_grades').val()
+            const quarter_ = $('#quarter_').val()
+
+                   
                     
                     if (quarter_grades == '1st') 
                     {
@@ -393,6 +398,31 @@
                          
                         {{--  return;  --}}
                     }
+
+                    if(semester_grades == '1st')
+                    {
+                        if(quarter_ == '1st')
+                        {
+                            // alert('1st');
+                            window.open("{{ route('faculty.MyAdvisoryClass.print_firstSem_firstq') }}?search_sy1="+search_sy1, '', 'height=800,width=800')                       
+                        }
+                        else
+                        {
+                            window.open("{{ route('faculty.MyAdvisoryClass.print_firstSem_secondq') }}?search_sy1="+search_sy1, '', 'height=800,width=800') 
+                        }
+                    }
+                    else
+                    {
+                        if(quarter_ == '1st')
+                        {
+                            window.open("{{ route('faculty.MyAdvisoryClass.print_secondSem_firstq') }}?search_sy1="+search_sy1, '', 'height=800,width=800') 
+                        }
+                        else
+                        {
+                            window.open("{{ route('faculty.MyAdvisoryClass.print_secondSem_secondq') }}?search_sy1="+search_sy1, '', 'height=800,width=800') 
+                        }
+                    }
+            
               });
        
         

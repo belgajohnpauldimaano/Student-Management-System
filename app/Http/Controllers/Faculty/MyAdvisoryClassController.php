@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Faculty;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use DB\PDF;
 
 class MyAdvisoryClassController extends Controller
 {
@@ -113,7 +114,7 @@ class MyAdvisoryClassController extends Controller
             ->where('class_subject_details.sem', 1)
             //  ->where('class_details.school_year_id', $request->search_sy)
             // ->orderBy('class_subject_details.class_time_from', 'ASC');
-            ->orderBY('class_subject_order','ASC')
+            ->orderBY('class_subject_details.class_subject_order','ASC')
             ->get();            
             
 
@@ -163,7 +164,7 @@ class MyAdvisoryClassController extends Controller
             ->where('class_subject_details.sem', 1)
             //  ->where('class_details.school_year_id', $request->search_sy)
             // ->orderBy('class_subject_details.class_time_from', 'ASC');
-            ->orderBY('class_subject_order','DESC')
+            ->orderBY('class_subject_details.class_subject_order','DESC')
             ->first();       
 
            
@@ -212,7 +213,7 @@ class MyAdvisoryClassController extends Controller
             ->where('class_subject_details.sem', 1)
             //  ->where('class_details.school_year_id', $request->search_sy)
             // ->orderBy('class_subject_details.class_time_from', 'ASC');
-            ->orderBY('class_subject_order','ASC')
+            ->orderBY('class_subject_details.class_subject_order','ASC')
             ->get();            
             
 
@@ -311,7 +312,7 @@ class MyAdvisoryClassController extends Controller
             ->where('class_subject_details.sem', 2)
             //  ->where('class_details.school_year_id', $request->search_sy)
             // ->orderBy('class_subject_details.class_time_from', 'ASC');
-            ->orderBY('class_subject_order','ASC')
+            ->orderBY('class_subject_details.class_subject_order','ASC')
             ->get();        
             
             $NumberOfSubject = \App\ClassSubjectDetail::join('subject_details', 'subject_details.id', '=' ,'class_subject_details.subject_id')
@@ -410,7 +411,7 @@ class MyAdvisoryClassController extends Controller
             ->where('class_subject_details.sem', 2)
             //  ->where('class_details.school_year_id', $request->search_sy)
             // ->orderBy('class_subject_details.class_time_from', 'ASC');
-            ->orderBY('class_subject_order','ASC')
+            ->orderBY('class_subject_details.class_subject_order','ASC')
             ->get();            
             
 
@@ -778,6 +779,8 @@ class MyAdvisoryClassController extends Controller
     }
 
 
+
+
     public function print_firstquarter (Request $request) 
     {
         $FacultyInformation = \App\FacultyInformation::where('user_id', \Auth::user()->id)->first();
@@ -1117,4 +1120,426 @@ class MyAdvisoryClassController extends Controller
         // $dompdf->setPaper(array(0,0,612,$height))
         return $pdf->stream();
     }
+
+    public function print_firstSem_1quarter(Request $request)
+    {
+        $FacultyInformation = \App\FacultyInformation::where('user_id', \Auth::user()->id)->first();
+     
+        $ClassSubjectDetail = \App\ClassSubjectDetail::join('class_details', 'class_details.id', '=', 'class_subject_details.class_details_id')
+            // ->join('subject_details', 'subject_details.id', '=', 'class_subject_details.subject_id')
+            ->join('rooms','rooms.id', '=', 'class_details.room_id')
+            ->join('section_details', 'section_details.id', '=', 'class_details.section_id')
+            ->join('school_years', 'school_years.id' ,'=', 'class_details.school_year_id')
+            ->join('faculty_informations', 'faculty_informations.id','=','class_details.adviser_id')
+            // ->whereRaw('class_subject_details.id = '. $request->search_class_subject)
+            // ->whereRaw('class_details.id = '. $search_class_subject[1])
+            ->where('class_details.adviser_id', $FacultyInformation->id)
+            ->where('class_details.school_year_id', $request->search_sy1)
+            // ->where('class_subject_details.status', '!=', 0)
+            ->where('class_details.status', '!=', 0)
+            ->select(\DB::raw('                
+                rooms.room_code,
+                rooms.room_description,
+                section_details.section,
+                class_details.id,
+                class_details.section_id,
+                class_details.grade_level,
+                class_subject_details.status as grading_status,
+                class_subject_details.sem,
+                faculty_informations.first_name, faculty_informations.middle_name ,  faculty_informations.last_name,
+                school_years.school_year
+            '))
+            ->first();
+
+            
+        
+            $AdvisorySubject = \App\ClassSubjectDetail::join('subject_details', 'subject_details.id', '=' ,'class_subject_details.subject_id')
+            ->join('class_details', 'class_details.id', '=' ,'class_subject_details.class_details_id')
+            ->join('faculty_informations', 'faculty_informations.id', '=' ,'class_subject_details.faculty_id')           
+            ->selectRaw("                
+                subject_details.subject, subject_details.id, class_subject_details.class_subject_order
+            ")
+            ->where('class_subject_details.class_details_id', $ClassSubjectDetail->id)
+            ->where('class_subject_details.status', 1)
+            // ->where('faculty_id', $FacultyInformation->id)
+            ->where('class_details.school_year_id', $request->search_sy1)
+            ->where('class_subject_details.sem', 1)
+            //  ->where('class_details.school_year_id', $request->search_sy)
+            // ->orderBy('class_subject_details.class_time_from', 'ASC');
+            ->orderBY('class_subject_order','ASC')
+            ->get();            
+            
+
+            $GradeSheetMale = \App\Grade_sheet_firstsem::join('class_details','class_details.section_id','=','grade_sheet_firstsems.section_details_id')            
+            ->join('enrollments','enrollments.id','=','grade_sheet_firstsems.enrollment_id')
+            ->join('student_informations','student_informations.id','=','enrollments.student_information_id')
+            ->where('class_details.section_id', $ClassSubjectDetail->section_id)
+            ->whereRaw('student_informations.gender = 1')
+            ->selectRaw("                    
+                    CONCAT(student_informations.last_name, ' ', student_informations.first_name, ' ', student_informations.middle_name) as student_name,
+                    grade_sheet_firstsems.subject_1, grade_sheet_firstsems.subject_2, grade_sheet_firstsems.subject_3, grade_sheet_firstsems.subject_4
+                    , grade_sheet_firstsems.subject_5, grade_sheet_firstsems.subject_6, grade_sheet_firstsems.subject_7
+                    , grade_sheet_firstsems.subject_8, grade_sheet_firstsems.subject_9
+                    ")
+            ->distinct()
+            ->orderBY('student_name','ASC')
+            ->get();
+
+            $GradeSheetFeMale = \App\Grade_sheet_firstsem::join('class_details','class_details.section_id','=','grade_sheet_firstsems.section_details_id')            
+            ->join('enrollments','enrollments.id','=','grade_sheet_firstsems.enrollment_id')
+            ->join('student_informations','student_informations.id','=','enrollments.student_information_id')
+            ->where('class_details.section_id', $ClassSubjectDetail->section_id)
+            ->whereRaw('student_informations.gender = 2')
+            ->selectRaw("                    
+                    CONCAT(student_informations.last_name, ' ', student_informations.first_name, ' ', student_informations.middle_name) as student_name,
+                    grade_sheet_firstsems.subject_1, grade_sheet_firstsems.subject_2, grade_sheet_firstsems.subject_3, grade_sheet_firstsems.subject_4
+                    , grade_sheet_firstsems.subject_5, grade_sheet_firstsems.subject_6, grade_sheet_firstsems.subject_7
+                    , grade_sheet_firstsems.subject_8, grade_sheet_firstsems.subject_9
+                    ")
+            ->distinct()
+            ->orderBY('student_name','ASC')
+            ->get();
+
+            $quarter = 'First';
+            $sem = 'First';
+
+            $NumberOfSubject = \App\ClassSubjectDetail::join('subject_details', 'subject_details.id', '=' ,'class_subject_details.subject_id')
+            ->join('class_details', 'class_details.id', '=' ,'class_subject_details.class_details_id')
+            ->join('faculty_informations', 'faculty_informations.id', '=' ,'class_subject_details.faculty_id')           
+            ->selectRaw("                
+                            class_subject_details.class_subject_order
+                        ")
+            ->where('class_subject_details.class_details_id', $ClassSubjectDetail->id)
+            ->where('class_subject_details.status', 1)
+            // ->where('faculty_id', $FacultyInformation->id)
+            ->where('class_details.school_year_id', $request->search_sy1)
+            ->where('class_subject_details.sem', 1)
+            //  ->where('class_details.school_year_id', $request->search_sy)
+            // ->orderBy('class_subject_details.class_time_from', 'ASC');
+            ->orderBY('class_subject_order','DESC')
+            ->first();  
+            
+            // return json_encode($ClassSubjectDetail);
+            // return view('control_panel_faculty.my_advisory_class.partials.data_list', compact( 'ClassSubjectDetail','AdvisorySubject','GradeSheetMale','GradeSheetFeMale','quarter','NumberOfSubject','sem'))->render();
+        
+            $pdf = \PDF::loadView('control_panel_faculty.my_advisory_class.partials.print_senior_gradesheet', compact( 'ClassSubjectDetail','AdvisorySubject','GradeSheetMale','GradeSheetFeMale','quarter','NumberOfSubject','sem'));
+            $pdf->setPaper('Legal', 'portrait');
+            return $pdf->stream();
+    }
+
+    public function print_firstSem_2quarter (Request $request) 
+    {
+        $FacultyInformation = \App\FacultyInformation::where('user_id', \Auth::user()->id)->first();
+     
+        $ClassSubjectDetail = \App\ClassSubjectDetail::join('class_details', 'class_details.id', '=', 'class_subject_details.class_details_id')
+            // ->join('subject_details', 'subject_details.id', '=', 'class_subject_details.subject_id')
+            ->join('rooms','rooms.id', '=', 'class_details.room_id')
+            ->join('section_details', 'section_details.id', '=', 'class_details.section_id')
+            ->join('school_years', 'school_years.id' ,'=', 'class_details.school_year_id')
+            ->join('faculty_informations', 'faculty_informations.id','=','class_details.adviser_id')
+            // ->whereRaw('class_subject_details.id = '. $request->search_class_subject)
+            // ->whereRaw('class_details.id = '. $search_class_subject[1])
+            ->where('class_details.adviser_id', $FacultyInformation->id)
+            ->where('class_details.school_year_id', $request->search_sy1)
+            // ->where('class_subject_details.status', '!=', 0)
+            ->where('class_details.status', '!=', 0)
+            ->select(\DB::raw('                
+                rooms.room_code,
+                rooms.room_description,
+                section_details.section,
+                class_details.id,
+                class_details.section_id,
+                class_details.grade_level,
+                class_subject_details.status as grading_status,
+                class_subject_details.sem,
+                faculty_informations.first_name, faculty_informations.middle_name ,  faculty_informations.last_name,
+                school_years.school_year
+            '))
+            ->first();
+
+            
+        
+            $AdvisorySubject = \App\ClassSubjectDetail::join('subject_details', 'subject_details.id', '=' ,'class_subject_details.subject_id')
+            ->join('class_details', 'class_details.id', '=' ,'class_subject_details.class_details_id')
+            ->join('faculty_informations', 'faculty_informations.id', '=' ,'class_subject_details.faculty_id')           
+            ->selectRaw("                
+                subject_details.subject, subject_details.id, class_subject_details.class_subject_order
+            ")
+            ->where('class_subject_details.class_details_id', $ClassSubjectDetail->id)
+            ->where('class_subject_details.status', 1)
+            // ->where('faculty_id', $FacultyInformation->id)
+            ->where('class_details.school_year_id', $request->search_sy1)
+            ->where('class_subject_details.sem', 1)
+            //  ->where('class_details.school_year_id', $request->search_sy)
+            // ->orderBy('class_subject_details.class_time_from', 'ASC');
+            ->orderBY('class_subject_order','ASC')
+            ->get();            
+            
+
+            $GradeSheetMale = \App\Grade_sheet_firstsemsecond::join('class_details','class_details.section_id','=','grade_sheet_firstsemseconds.section_details_id')            
+            ->join('enrollments','enrollments.id','=','grade_sheet_firstsemseconds.enrollment_id')
+            ->join('student_informations','student_informations.id','=','enrollments.student_information_id')
+            ->where('class_details.section_id', $ClassSubjectDetail->section_id)
+            ->whereRaw('student_informations.gender = 1')
+            ->selectRaw("                    
+                    CONCAT(student_informations.last_name, ' ', student_informations.first_name, ' ', student_informations.middle_name) as student_name,
+                    grade_sheet_firstsemseconds.subject_1, grade_sheet_firstsemseconds.subject_2, grade_sheet_firstsemseconds.subject_3, grade_sheet_firstsemseconds.subject_4
+                    , grade_sheet_firstsemseconds.subject_5, grade_sheet_firstsemseconds.subject_6, grade_sheet_firstsemseconds.subject_7
+                    , grade_sheet_firstsemseconds.subject_8, grade_sheet_firstsemseconds.subject_9
+                    ")
+            ->distinct()
+            ->orderBY('student_name','ASC')
+            ->get();
+
+            $GradeSheetFeMale = \App\Grade_sheet_firstsemsecond::join('class_details','class_details.section_id','=','grade_sheet_firstsemseconds.section_details_id')            
+            ->join('enrollments','enrollments.id','=','grade_sheet_firstsemseconds.enrollment_id')
+            ->join('student_informations','student_informations.id','=','enrollments.student_information_id')
+            ->where('class_details.section_id', $ClassSubjectDetail->section_id)
+            ->whereRaw('student_informations.gender = 2')
+            ->selectRaw("                    
+                    CONCAT(student_informations.last_name, ' ', student_informations.first_name, ' ', student_informations.middle_name) as student_name,
+                    grade_sheet_firstsemseconds.subject_1, grade_sheet_firstsemseconds.subject_2, grade_sheet_firstsemseconds.subject_3, grade_sheet_firstsemseconds.subject_4
+                    , grade_sheet_firstsemseconds.subject_5, grade_sheet_firstsemseconds.subject_6, grade_sheet_firstsemseconds.subject_7
+                    , grade_sheet_firstsemseconds.subject_8, grade_sheet_firstsemseconds.subject_9
+                    ")
+            ->distinct()
+            ->orderBY('student_name','ASC')
+            ->get();
+
+            $quarter = 'Second';
+            $sem = 'First';
+
+            $NumberOfSubject = \App\ClassSubjectDetail::join('subject_details', 'subject_details.id', '=' ,'class_subject_details.subject_id')
+            ->join('class_details', 'class_details.id', '=' ,'class_subject_details.class_details_id')
+            ->join('faculty_informations', 'faculty_informations.id', '=' ,'class_subject_details.faculty_id')           
+            ->selectRaw("                
+                            class_subject_details.class_subject_order
+                        ")
+            ->where('class_subject_details.class_details_id', $ClassSubjectDetail->id)
+            ->where('class_subject_details.status', 1)
+            // ->where('faculty_id', $FacultyInformation->id)
+            ->where('class_details.school_year_id', $request->search_sy1)
+            ->where('class_subject_details.sem', 1)
+            //  ->where('class_details.school_year_id', $request->search_sy)
+            // ->orderBy('class_subject_details.class_time_from', 'ASC');
+            ->orderBY('class_subject_order','DESC')
+            ->first();       
+
+           
+        // return json_encode($ClassSubjectDetail);
+        $pdf = \PDF::loadView('control_panel_faculty.my_advisory_class.partials.print_senior_gradesheet', compact( 'ClassSubjectDetail','AdvisorySubject','GradeSheetMale','GradeSheetFeMale','quarter','NumberOfSubject','sem'));
+        $pdf->setPaper('Legal', 'portrait');
+        return $pdf->stream();    
+    }
+
+    public function print_secondSem_1quarter (Request $request) 
+    {
+        $FacultyInformation = \App\FacultyInformation::where('user_id', \Auth::user()->id)->first();
+     
+        $ClassSubjectDetail = \App\ClassSubjectDetail::join('class_details', 'class_details.id', '=', 'class_subject_details.class_details_id')
+            // ->join('subject_details', 'subject_details.id', '=', 'class_subject_details.subject_id')
+            ->join('rooms','rooms.id', '=', 'class_details.room_id')
+            ->join('section_details', 'section_details.id', '=', 'class_details.section_id')
+            ->join('school_years', 'school_years.id' ,'=', 'class_details.school_year_id')
+            ->join('faculty_informations', 'faculty_informations.id','=','class_details.adviser_id')
+            // ->whereRaw('class_subject_details.id = '. $request->search_class_subject)
+            // ->whereRaw('class_details.id = '. $search_class_subject[1])
+            ->where('class_details.adviser_id', $FacultyInformation->id)
+            ->where('class_details.school_year_id', $request->search_sy1)
+            // ->where('class_subject_details.status', '!=', 0)
+            ->where('class_details.status', '!=', 0)
+            ->select(\DB::raw('                
+                rooms.room_code,
+                rooms.room_description,
+                section_details.section,
+                class_details.id,
+                class_details.section_id,
+                class_details.grade_level,
+                class_subject_details.status as grading_status,
+                class_subject_details.sem,
+                faculty_informations.first_name, faculty_informations.middle_name ,  faculty_informations.last_name,
+                school_years.school_year
+            '))
+            ->first();
+
+            
+        
+            $AdvisorySubject = \App\ClassSubjectDetail::join('subject_details', 'subject_details.id', '=' ,'class_subject_details.subject_id')
+            ->join('class_details', 'class_details.id', '=' ,'class_subject_details.class_details_id')
+            ->join('faculty_informations', 'faculty_informations.id', '=' ,'class_subject_details.faculty_id')           
+            ->selectRaw("                
+                subject_details.subject, subject_details.id, class_subject_details.class_subject_order
+            ")
+            ->where('class_subject_details.class_details_id', $ClassSubjectDetail->id)
+            ->where('class_subject_details.status', 1)
+            // ->where('faculty_id', $FacultyInformation->id)
+            ->where('class_details.school_year_id', $request->search_sy1)
+            ->where('class_subject_details.sem', 2)
+            //  ->where('class_details.school_year_id', $request->search_sy)
+            // ->orderBy('class_subject_details.class_time_from', 'ASC');
+            ->orderBY('class_subject_order','ASC')
+            ->get();        
+            
+            $NumberOfSubject = \App\ClassSubjectDetail::join('subject_details', 'subject_details.id', '=' ,'class_subject_details.subject_id')
+            ->join('class_details', 'class_details.id', '=' ,'class_subject_details.class_details_id')
+            ->join('faculty_informations', 'faculty_informations.id', '=' ,'class_subject_details.faculty_id')           
+            ->selectRaw("                
+                            class_subject_details.class_subject_order
+                        ")
+            ->where('class_subject_details.class_details_id', $ClassSubjectDetail->id)
+            ->where('class_subject_details.status', 1)
+            // ->where('faculty_id', $FacultyInformation->id)
+            ->where('class_details.school_year_id', $request->search_sy1)
+            ->where('class_subject_details.sem', 2)
+            //  ->where('class_details.school_year_id', $request->search_sy)
+            // ->orderBy('class_subject_details.class_time_from', 'ASC');
+            ->orderBY('class_subject_order','DESC')
+            ->first();           
+            
+
+            $GradeSheetMale = \App\Grade11_Second_Sem::join('class_details','class_details.section_id','=','grade11__second__sems.section_details_id')            
+            ->join('enrollments','enrollments.id','=','grade11__second__sems.enrollment_id')
+            ->join('student_informations','student_informations.id','=','enrollments.student_information_id')
+            ->where('class_details.section_id', $ClassSubjectDetail->section_id)
+            ->whereRaw('student_informations.gender = 1')
+            ->selectRaw("                    
+                    CONCAT(student_informations.last_name, ' ', student_informations.first_name, ' ', student_informations.middle_name) as student_name,
+                    grade11__second__sems.subject_1, grade11__second__sems.subject_2, grade11__second__sems.subject_3, grade11__second__sems.subject_4
+                    , grade11__second__sems.subject_5, grade11__second__sems.subject_6, grade11__second__sems.subject_7
+                    , grade11__second__sems.subject_8, grade11__second__sems.subject_9
+                    ")
+            ->distinct()
+            ->orderBY('student_name','ASC')
+            ->get();
+
+            $GradeSheetFeMale = \App\Grade11_Second_Sem::join('class_details','class_details.section_id','=','grade11__second__sems.section_details_id')            
+            ->join('enrollments','enrollments.id','=','grade11__second__sems.enrollment_id')
+            ->join('student_informations','student_informations.id','=','enrollments.student_information_id')
+            ->where('class_details.section_id', $ClassSubjectDetail->section_id)
+            ->whereRaw('student_informations.gender = 2')
+            ->selectRaw("                    
+                    CONCAT(student_informations.last_name, ' ', student_informations.first_name, ' ', student_informations.middle_name) as student_name,
+                    grade11__second__sems.subject_1, grade11__second__sems.subject_2, grade11__second__sems.subject_3, grade11__second__sems.subject_4
+                    , grade11__second__sems.subject_5, grade11__second__sems.subject_6, grade11__second__sems.subject_7
+                    , grade11__second__sems.subject_8, grade11__second__sems.subject_9
+                    ")
+            ->distinct()
+            ->orderBY('student_name','ASC')
+            ->get();
+
+            $quarter = 'First';
+            $sem = 'Second';
+
+           
+        // return json_encode($ClassSubjectDetail);
+        $pdf = \PDF::loadView('control_panel_faculty.my_advisory_class.partials.print_senior_gradesheet', compact( 'ClassSubjectDetail','AdvisorySubject','GradeSheetMale','GradeSheetFeMale','quarter','NumberOfSubject','sem'));
+        $pdf->setPaper('Legal', 'portrait');
+        return $pdf->stream();    
+    }
+
+    public function print_secondSem_2quarter (Request $request) 
+    {
+        $FacultyInformation = \App\FacultyInformation::where('user_id', \Auth::user()->id)->first();
+     
+        $ClassSubjectDetail = \App\ClassSubjectDetail::join('class_details', 'class_details.id', '=', 'class_subject_details.class_details_id')
+            // ->join('subject_details', 'subject_details.id', '=', 'class_subject_details.subject_id')
+            ->join('rooms','rooms.id', '=', 'class_details.room_id')
+            ->join('section_details', 'section_details.id', '=', 'class_details.section_id')
+            ->join('school_years', 'school_years.id' ,'=', 'class_details.school_year_id')
+            ->join('faculty_informations', 'faculty_informations.id','=','class_details.adviser_id')
+            // ->whereRaw('class_subject_details.id = '. $request->search_class_subject)
+            // ->whereRaw('class_details.id = '. $search_class_subject[1])
+            ->where('class_details.adviser_id', $FacultyInformation->id)
+            ->where('class_details.school_year_id', $request->search_sy1)
+            // ->where('class_subject_details.status', '!=', 0)
+            ->where('class_details.status', '!=', 0)
+            ->select(\DB::raw('                
+                rooms.room_code,
+                rooms.room_description,
+                section_details.section,
+                class_details.id,
+                class_details.section_id,
+                class_details.grade_level,
+                class_subject_details.status as grading_status,
+                class_subject_details.sem,
+                faculty_informations.first_name, faculty_informations.middle_name ,  faculty_informations.last_name,
+                school_years.school_year
+            '))
+            ->first();
+
+           
+            
+        
+            $AdvisorySubject = \App\ClassSubjectDetail::join('subject_details', 'subject_details.id', '=' ,'class_subject_details.subject_id')
+            ->join('class_details', 'class_details.id', '=' ,'class_subject_details.class_details_id')
+            ->join('faculty_informations', 'faculty_informations.id', '=' ,'class_subject_details.faculty_id')           
+            ->selectRaw("                
+                subject_details.subject, subject_details.id, class_subject_details.class_subject_order
+            ")
+            ->where('class_subject_details.class_details_id', $ClassSubjectDetail->id)
+            ->where('class_subject_details.status', 1)
+            // ->where('faculty_id', $FacultyInformation->id)
+            ->where('class_details.school_year_id', $request->search_sy1)
+            ->where('class_subject_details.sem', 2)
+            //  ->where('class_details.school_year_id', $request->search_sy)
+            // ->orderBy('class_subject_details.class_time_from', 'ASC');
+            ->orderBY('class_subject_order','ASC')
+            ->get();            
+            
+
+            $GradeSheetMale = \App\Grade_sheet_secondsemsecond::join('class_details','class_details.section_id','=','grade_sheet_secondsemseconds.section_details_id')            
+            ->join('enrollments','enrollments.id','=','grade_sheet_secondsemseconds.enrollment_id')
+            ->join('student_informations','student_informations.id','=','enrollments.student_information_id')
+            ->where('class_details.section_id', $ClassSubjectDetail->section_id)
+            ->whereRaw('student_informations.gender = 1')
+            ->selectRaw("                    
+                    CONCAT(student_informations.last_name, ' ', student_informations.first_name, ' ', student_informations.middle_name) as student_name,
+                    grade_sheet_secondsemseconds.subject_1, grade_sheet_secondsemseconds.subject_2, grade_sheet_secondsemseconds.subject_3, grade_sheet_secondsemseconds.subject_4
+                    , grade_sheet_secondsemseconds.subject_5, grade_sheet_secondsemseconds.subject_6, grade_sheet_secondsemseconds.subject_7
+                    , grade_sheet_secondsemseconds.subject_8, grade_sheet_secondsemseconds.subject_9
+                    ")
+            ->distinct()
+            ->orderBY('student_name','ASC')
+            ->get();
+
+            $GradeSheetFeMale = \App\Grade_sheet_secondsemsecond::join('class_details','class_details.section_id','=','grade_sheet_secondsemseconds.section_details_id')            
+            ->join('enrollments','enrollments.id','=','grade_sheet_secondsemseconds.enrollment_id')
+            ->join('student_informations','student_informations.id','=','enrollments.student_information_id')
+            ->where('class_details.section_id', $ClassSubjectDetail->section_id)
+            ->whereRaw('student_informations.gender = 2')
+            ->selectRaw("                    
+                    CONCAT(student_informations.last_name, ' ', student_informations.first_name, ' ', student_informations.middle_name) as student_name,
+                    grade_sheet_secondsemseconds.subject_1, grade_sheet_secondsemseconds.subject_2, grade_sheet_secondsemseconds.subject_3, grade_sheet_secondsemseconds.subject_4
+                    , grade_sheet_secondsemseconds.subject_5, grade_sheet_secondsemseconds.subject_6, grade_sheet_secondsemseconds.subject_7
+                    , grade_sheet_secondsemseconds.subject_8, grade_sheet_secondsemseconds.subject_9
+                    ")
+            ->distinct()
+            ->orderBY('student_name','ASC')
+            ->get();
+
+            $quarter = 'Second';
+            $sem = 'Second';
+
+            $NumberOfSubject = \App\ClassSubjectDetail::join('subject_details', 'subject_details.id', '=' ,'class_subject_details.subject_id')
+            ->join('class_details', 'class_details.id', '=' ,'class_subject_details.class_details_id')
+            ->join('faculty_informations', 'faculty_informations.id', '=' ,'class_subject_details.faculty_id')           
+            ->selectRaw("                
+                            class_subject_details.class_subject_order
+                        ")
+            ->where('class_subject_details.class_details_id', $ClassSubjectDetail->id)
+            ->where('class_subject_details.status', 1)
+            // ->where('faculty_id', $FacultyInformation->id)
+            ->where('class_details.school_year_id', $request->search_sy1)
+            ->where('class_subject_details.sem', 2)
+            //  ->where('class_details.school_year_id', $request->search_sy)
+            // ->orderBy('class_subject_details.class_time_from', 'ASC');
+            ->orderBY('class_subject_order','DESC')
+            ->first();      
+
+           
+        // return json_encode($ClassSubjectDetail);
+        $pdf = \PDF::loadView('control_panel_faculty.my_advisory_class.partials.print_senior_gradesheet', compact( 'ClassSubjectDetail','AdvisorySubject','GradeSheetMale','GradeSheetFeMale','quarter','NumberOfSubject','sem'));
+            $pdf->setPaper('Legal', 'portrait');
+            return $pdf->stream();
+        }
 }

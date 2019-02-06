@@ -96,7 +96,7 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="">Date of Birth <small class="text-red">Optional</small></label>
+                        {{-- <label for="">Date of Birth <small class="text-red">Optional</small></label> --}}
                         {{--  <input type="text" class="form-control" name="birthdate" value="{{ $StudentInformation ? $StudentInformation->birthdate : '' }}">  --}}
                         <div class="input-group date">
                             <div class="input-group-addon">
@@ -128,6 +128,8 @@
                             </div>
                         @endif
                     @endif
+                    
+                    
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default btn-flat" data-dismiss="modal">Close</button>

@@ -328,7 +328,10 @@ class GradeSheetController extends Controller
                 // ->where('school_years.current', 1)
                 ->where('class_details.id', $Enrollment[0]->cid)
                 ->first();
+
+                
             }
+
 
             $GradeSheetData = [];
             $grade_level = 1;

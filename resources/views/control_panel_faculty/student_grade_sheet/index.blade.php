@@ -94,6 +94,8 @@
                 })
             })
 
+            
+
             $('body').on('change', '.txt-grade_input', function () {
                 const self =  $(this);
                 const student_enrolled_subject_id = $(this).parents('tr').data('student_enrolled_subject_id');

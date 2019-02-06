@@ -4,7 +4,9 @@
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-    <title>First Quarter</title>
+    <title>
+        PRINT - <b><i>{{ $quarter }} Quarter</i></b>
+    </title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" type="text/css" media="screen" href="main.css" />
     <script src="main.js"></script>
@@ -112,10 +114,145 @@
     {{--  <p class="p0 m0 student-info">Grade sheet</p>  --}}
     {{--  <p class="p0 m0 student-info">School Year : <b>{{ $ClassSubjectDetail ? $ClassSubjectDetail->school_year : '' }}</b</p>  --}}
     <p class="p0 m0 student-info">Grade & Section : <b>{{ $ClassSubjectDetail ? $ClassSubjectDetail->grade_level : '' }} - {{ $ClassSubjectDetail ? $ClassSubjectDetail->section : '' }}</b</p>
-    <p class="p0 m0 student-info">Quarter : <b><i>{{ $quarter }}</i></b</p>
+    <p class="p0 m0 student-info">Quarter : <b><i>{{ $quarter }}</i></b></p>
     <br/>
    
   
+    @if($ClassSubjectDetail->grade_level == 7 || $ClassSubjectDetail->grade_level == 8)
+
+                    <table class="table no-margin table-striped table-bordered">
+                                        <thead>
+                                            <tr>
+                                                <th style="width: 10px">#</th>
+                                                <th>Student Name</th>                                       
+                                                {{--  @foreach ($AdvisorySubject as $sub)
+                                                <th><center>{{$sub->subject}} {{$sub->id}}</center></th>                                                                        
+                                                @endforeach  --}}
+                                                <th style="width: 40px; text-align: center">Filipino</th>
+                                                <th style="width: 40px; text-align: center">English</th>
+                                                <th style="width: 40px; text-align: center">Mathematics</th>
+                                                <th style="width: 40px; text-align: center">Science</th>
+                                                <th style="width: 40px; text-align: center">Araling<br/> Panlipunan</th>
+                                                <th style="width: 40px; text-align: center">ESP</th>
+                                                <th style="width: 40px; text-align: center">ICT</th>
+                                                <th style="width: 40px; text-align: center">MAPEH</th>                                        
+                                                <th style="width: 40px; text-align: center">Religion</th>
+                                                <th style="width: 40px; text-align: center">GENERAL AVERAGE</th>
+                                                <th style="width: 40px; text-align: center">REMARKS</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>                                  
+                                            <tr>
+                                                <td colspan="13">
+                                                    <b>Male</b>
+                                                </td>
+                                            </tr>
+                                            @foreach($GradeSheetMale as $key => $sub)
+                                            <tr>
+                                                <td>{{ $key + 1 }}.</td>
+                                                <td>{{$sub->student_name}}</td>
+                                                <td><center>{{ $sub->filipino }}</center></td>
+                                                <td><center>{{$sub->english}}</center></td>
+                                                <td><center>{{$sub->math}}</center></td>
+                                                <td><center>{{$sub->science}}</center></td>
+                                                <td><center>{{$sub->ap}}</center></td>
+                                                <td><center>{{$sub->esp}}</center></td>
+                                                <td><center>{{$sub->ict}}</center></td>
+                                                <td><center>{{$sub->mapeh}}</center></td>                                        
+                                                <td><center>{{$sub->religion}}</center></td>
+                                                <td>
+                                                    <center>                                                
+                                                        <?php
+                                                            $formattedNum = number_format(round($average = ($sub->filipino + $sub->english + $sub->math + $sub->science + $sub->ap + $sub->ict + $sub->mapeh + $sub->esp +$sub->religion)/9), 0);
+                                                            echo $formattedNum;
+                                                        ?>
+                                                    </center>
+                                                </td>
+        
+                                                @if(round($average) >= 75 && round($average) <= 89)
+                                                    <td>
+                                                        <center>Passed</center>
+                                                    </td>
+                                                @elseif(round($average) >= 90 && round($average) <= 94)
+                                                    <td>
+                                                        <center>with honors</center>
+                                                    </td>
+                                                @elseif(round($average)>= 95 && round($average) <= 97)
+                                                    <td>
+                                                        <center>with high honors</center>
+                                                    </td>
+                                                @elseif(round($average) >= 98 && round($average) <= 100)
+                                                    <td>
+                                                        <center>with highest honors</center>
+                                                    </td>
+                                                @elseif(round($average) < 75)
+                                                    <td>
+                                                        <center>Failed</center>
+                                                    </td>
+                                                @endif
+                                                        
+                                                </tr>                                    
+                                                @endforeach
+        
+                                            <tr>
+                                                <td colspan="13">
+                                                    <b>Female</b>
+                                                </td>
+                                            </tr>
+                                            @foreach($GradeSheetFeMale as $key => $sub)
+                                            <tr>
+                                                <td>{{ $key + 1 }}.</td>
+                                                <td>{{$sub->student_name}}</td>
+                                                <td><center>{{ $sub->filipino }}</center></td>
+                                                <td><center>{{$sub->english}}</center></td>
+                                                <td><center>{{$sub->math}}</center></td>
+                                                <td><center>{{$sub->science}}</center></td>
+                                                <td><center>{{$sub->ap}}</center></td>
+                                                <td><center>{{$sub->esp}}</center></td>
+                                                <td><center>{{$sub->ict}}</center></td>
+                                                <td><center>{{$sub->mapeh}}</center></td>                                        
+                                                <td><center>{{$sub->religion}}</center></td>
+                                                <td>
+                                                    <center>
+                                                        <?php
+                                                        $formattedNum = number_format(round($average = ($sub->filipino + $sub->english + $sub->math + $sub->science + $sub->ap + $sub->ict + $sub->mapeh + $sub->esp +$sub->religion)/9), 0);
+                                                        echo $formattedNum;
+                                                        ?>                                                
+                                                    </center>
+                                                </td>
+                                                
+                                               
+                                                @if(round($average) >= 75 && round($average) <= 89)
+                                                    <td>
+                                                        <center>Passed</center>
+                                                    </td>
+                                                @elseif(round($average) >= 90 && round($average) <= 94)
+                                                    <td>
+                                                        <center>with honors</center>
+                                                    </td>
+                                                @elseif(round($average)>= 95 && round($average) <= 97)
+                                                    <td>
+                                                        <center>with high honors</center>
+                                                    </td>
+                                                @elseif(round($average) >= 98 && round($average) <= 100)
+                                                    <td>
+                                                        <center>with highest honors</center>
+                                                    </td>
+                                                @elseif(round($average) < 75)
+                                                    <td>
+                                                        <center>Failed</center>
+                                                    </td>
+                                                @endif
+                                            </tr>
+                                            @endforeach
+                                            
+                                            
+                                        </tbody>
+                        </table>
+
+
+
+    @else
         <table style="margin-top: -.8em;" class="table no-margin">
             <thead>
                 
@@ -247,6 +384,7 @@
                 
             </tbody>
         </table>
+    @endif
  
     <p style="text-align: right; font-size: 12px"><b>{{$ClassSubjectDetail->first_name }} {{$ClassSubjectDetail->middle_name}} {{$ClassSubjectDetail->last_name}}</b> - <i>Class Adviser</i></p>
 

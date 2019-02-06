@@ -36,7 +36,7 @@ class StudentController extends Controller
         {
             $StudentInformation = \App\StudentInformation::with(['user'])->where('id', $request->id)->first();   
             $Profile = \App\StudentInformation::where('id', $request->id)->first();   
-                       
+            // return view('control_panel.student_information.partials.modal_data', compact('StudentInformation'))->render()        
         }
 
              
@@ -213,6 +213,7 @@ class StudentController extends Controller
             $ClassDetail = \App\ClassDetail::join('section_details', 'section_details.id', '=' ,'class_details.section_id')
             ->join('rooms', 'rooms.id', '=' ,'class_details.room_id')
             ->join('school_years', 'school_years.id', '=' ,'class_details.school_year_id')
+            ->join('faculty_informations', 'faculty_informations.id','=','class_details.adviser_id')
             ->selectRaw('
                 class_details.id,
                 class_details.section_id,
@@ -224,11 +225,14 @@ class StudentController extends Controller
                 section_details.grade_level as section_grade_level,
                 school_years.school_year,
                 rooms.room_code,
-                rooms.room_description
+                rooms.room_description,
+                faculty_informations.first_name, faculty_informations.middle_name ,  faculty_informations.last_name,
+                faculty_informations.e_signature
             ')
             ->where('section_details.status', 1)
             // ->where('school_years.current', 1)
             ->where('class_details.id', $request->cid)
+            ->orderBY('school_years.id', 'ASC')
             ->first();
 
             $Signatory = \App\Enrollment::join('class_details', 'class_details.id', '=', 'enrollments.class_details_id')

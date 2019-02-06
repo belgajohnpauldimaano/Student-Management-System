@@ -33,6 +33,10 @@
 
                                                         <li><a href="{{ route('faculty.my_advisory_class.index') }}?c={{ encrypt($data->id) }}" class="js-btn_gradesheet" data-id="{{ encrypt($data->id) }}">Grade Sheet</a></li>
 
+                                                        {{-- <li><a href="{{ route('faculty.my_advisory_class.index') }}?c={{ encrypt($data->id) }}" class="js-btn_gradesheet" data-id="{{ encrypt($data->id) }}">Attendance</a></li> --}}
+
+                                                        {{-- <li><a href="{{ route('faculty.my_advisory_class.index') }}?c={{ encrypt($data->id) }}" class="js-btn_gradesheet" data-id="{{ encrypt($data->id) }}">Demographic Profile</a></li> --}}
+
                                                         {{-- <li><a href="{{ route('faculty.my_advisory_class.index') }}?c={{ encrypt($data->id) }}" class="js-btn_view" data-id="{{ encrypt($data->id) }}">Demographic Profile</a></li> --}}
                                                     </ul>
                                                 </div>

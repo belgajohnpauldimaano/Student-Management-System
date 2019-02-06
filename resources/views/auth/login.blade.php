@@ -31,8 +31,8 @@
             <div class="col-xs-8">
                     <div class="checkbox icheck">
                       <label>
-                          <button onclick="showPass(event);" type="button">view</button>
-                        {{-- <input type="checkbox" id="show_password" onclick="showPass(event);"/> View/Hide --}}
+                          {{-- <button onclick="showPass(event);" type="button">view</button> --}}
+                        <input type="checkbox" id="show_password" onclick="showPass(event);"/> View/Hide
                       </label>
                     </div>  
               </div>
@@ -115,31 +115,5 @@
     </div>
 </div>  --}}
 @endsection
-@section('scripts')
-<script>
-    let viewLoginPwd = false;
 
-    // function showPass(e)
-    //     {
-    //         if(!confirm('Are you sure you want to Delete this room?'))e.preventDefault();
-    //     }
-
-    // function showPass()
-    // {
-    //         alert("Please Enter Password");
-    //             let getPwdView = $("#viewPwdLogin");
-
-    //             if(viewLoginPwd === false)
-    //             {
-    //                 getPwdView.attr("type", "text");
-    //                 viewLoginPwd = true;
-    //             }
-    //             else if (viewLoginPwd === true)
-    //             {
-    //                 getPwdView.attr("type", "password");
-    //                 viewLoginPwd = false;
-    //             }
-    // }
-</script>
-@endsection
 
