@@ -9,7 +9,7 @@
     <meta content="" name="description">
     <!-- Favicons -->
     {{-- <link href="{{ asset('theme/img/favicon.png') }}" rel="icon"> --}}
-    <link href="{{ asset('theme/img/apple-touch-icon.png') }}" rel="apple-touch-icon">
+    {{-- <link href="{{ asset('theme/img/apple-touch-icon.png') }}" rel="apple-touch-icon"> --}}
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,700,700i|Montserrat:300,400,500,700" rel="stylesheet">
     <!-- Bootstrap CSS File -->
@@ -22,6 +22,7 @@
     <link href="{{ asset('theme/lib/lightbox/css/lightbox.min.css') }}" rel="stylesheet">
     <!-- Main Stylesheet File -->
     <link href="{{ asset('theme/css/style.css?v=1') }}" rel="stylesheet">
+    <link href="{{ asset('img/sja-logo.png') }}" rel=icon>
 </head>
 
 <body>

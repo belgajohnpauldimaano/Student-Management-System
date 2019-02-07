@@ -23,28 +23,9 @@
                                         <thead>
                                             <tr>
                                                 <th style="width: 30px">#</th>
-                                                <th>Student Name</th>        
-                                                <th colspan="13" style="text-align:center">Encode Class Attendance</th>                               
-                                                {{-- <th>Age June</th>
-                                                <th>Age May</th>
-                                                <th>June</th>
-                                                <th>July</th>
-                                                <th>August</th>
-                                                <th>September</th>
-                                                <th>October</th>
-                                                <th>November</th>
-                                                <th>December</th>
-                                                <th>January</th>
-                                                <th>February</th>
-                                                <th>March</th>
-                                                <th>April</th>
-                                                <th>May</th>
-                                                <th>TOTAL</th> --}}
-                                                {{-- @foreach ($student_attendance['attendance_data']->days_of_school as $key => $data)
-                                                <th style="width:7%">
-                                                    <input type="text" class="form-control days_of_school"  min="0" max="30" id="days_of_school{{ $key }}" name="days_of_school[]"  value="{{ $data }}" />
-                                                </th>
-                                            @endforeach --}}
+                                                <th colspan="13" style="text-align:left">Student Name</th>        
+                                                                            
+                                                
                                             </tr>
                                         </thead>
                                         <tbody>      
@@ -58,16 +39,68 @@
                                             @foreach ($EnrollmentMale as $key => $data) 
                                             <tr>
                                                 <td>{{ $key + 1 }}.</td>
-                                                <td>{{ $data->student_name }}</td>
-                                                <td>
+                                                <td><b style="font-size: 15px">{{ $data->student_name }}</b>
+                                                    <br/>
+                                                    <br/>
                                                         <table class="table">
                                                                 <tr>
+                                                                   
+                                                                    {{-- {{ $data->attendance }} --}}
+                                                                      
+                                                    
+                                                                   <?php
+                                                                   $table_header = [
+                                                                        ['key' => 'Jun',],
+                                                                        ['key' => 'Jul',],
+                                                                        ['key' => 'Aug',],
+                                                                        ['key' => 'Sep',],
+                                                                        ['key' => 'Oct',],
+                                                                        ['key' => 'Nov',],
+                                                                        ['key' => 'Dec',],
+                                                                        ['key' => 'Jan',],
+                                                                        ['key' => 'Feb',],
+                                                                        ['key' => 'Mar',],
+                                                                        ['key' => 'Apr',],
+                                                                        ['key' => 'total',],
+                                                                    ];
+                                                                    $attendance_data = json_decode(json_encode([
+                                                                        'days_of_school' => [
+                                                                            0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+                                                                        ],
+                                                                        'days_present' => [
+                                                                            0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+                                                                        ],
+                                                                        'days_absent' => [
+                                                                            0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+                                                                        ],
+                                                                        'times_tardy' => [
+                                                                            0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+                                                                        ]
+                                                                    ]));
+                                                                    
+                                                                    $attendance_data = json_decode($data->attendance);
+                                                                      
+
+                                                                    $student_attendance = [
+                                                                        // 'student_name'      => $EnrollmentMale[0]->student_name,
+                                                                        'attendance_data'   => $attendance_data,
+                                                                        'table_header'      => $table_header,
+                                                                        'days_of_school_total' => array_sum($attendance_data->days_of_school),
+                                                                        'days_present_total' => array_sum($attendance_data->days_present),
+                                                                        'days_absent_total' => array_sum($attendance_data->days_absent),
+                                                                        'times_tardy_total' => array_sum($attendance_data->times_tardy),
+                                                                    ];
+                                                                    ?>
+                                                                    
+                                                                    
+                                                                   <?php ?>
+
                                                                     <th>
-                                                                        
+                                                                        TITLE
                                                                     </th>
                                                                         @foreach ($student_attendance['table_header'] as $data)
-                                                                                <th>{{ $data['key'] }}</th>
-                                                                        {{--  {{ json_encode($data) }}  --}}
+                                                                                <th>{{ $data['key'] }}</th> 
+                                                                        {{-- / {{ json_encode($data) }}  --}}
                                                                         @endforeach
                                                                 </tr>
                                                                 <tr>
