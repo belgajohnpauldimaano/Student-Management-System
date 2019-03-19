@@ -31,17 +31,18 @@ class StudentController extends Controller
     public function modal_data (Request $request) 
     {
         $StudentInformation = NULL;
-
+        $Profile = \App\StudentInformation::where('id', $request->id)->first(); 
         if ($request->id)
         {
             $StudentInformation = \App\StudentInformation::with(['user'])->where('id', $request->id)->first();   
-            $Profile = \App\StudentInformation::where('id', $request->id)->first();   
+            // $Profile = \App\StudentInformation::where('id', $request->id)->first();   
+            // return view('control_panel.student_information.partials.modal_data', compact('StudentInformation','Profile'))->render(); 
             // return view('control_panel.student_information.partials.modal_data', compact('StudentInformation'))->render()        
         }
 
-             
+        return view('control_panel.student_information.partials.modal_data', compact('StudentInformation','Profile'))->render();  
     	// return view('profile', array('user' => Auth::user()) );
-        return view('control_panel.student_information.partials.modal_data', compact('StudentInformation','Profile'))->render();
+        
     }
 
  
@@ -180,6 +181,7 @@ class StudentController extends Controller
         }
         return response()->json(['res_code' => 1, 'res_msg' => 'Invalid request.']);
     }
+
     public function print_student_grade_modal (Request $request) 
     {
         $Enrollment = \App\Enrollment::where('student_information_id', $request->id)
@@ -196,6 +198,7 @@ class StudentController extends Controller
         $student_id = $request->id;
         return view('control_panel.student_information.partials.print_individual_grade', compact('Enrollment', 'student_id'));
     }
+    
     public function print_student_grades (Request $request)
     {
         if (!$request->id || !$request->cid) 

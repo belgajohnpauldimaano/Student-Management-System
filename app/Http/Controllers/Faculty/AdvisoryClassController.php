@@ -188,6 +188,7 @@ class AdvisoryClassController extends Controller
             return "Invalid parameter";
         }
     }
+
     public function save_attendance (Request $request) 
     {
         $FacultyInformation = \App\FacultyInformation::where('user_id', \Auth::user()->id)->first();
@@ -244,6 +245,7 @@ class AdvisoryClassController extends Controller
             return "Invalid parameter";
         }
     }
+    
     public function modal_data (Request $request) 
     {
         $ClassDetail = NULL;

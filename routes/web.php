@@ -124,6 +124,8 @@ Route::group(['prefix' => 'faculty', 'middleware' => ['auth', 'userroles'], 'rol
         Route::post('temporary-save-grade', 'Faculty\GradeSheetController@temporary_save_grade')->name('faculty.student_grade_sheet.temporary_save_grade');
         Route::post('finalize-grade', 'Faculty\GradeSheetController@finalize_grade')->name('faculty.student_grade_sheet.finalize_grade');
         Route::get('list-students-by-class-print', 'Faculty\GradeSheetController@list_students_by_class_print')->name('faculty.student_grade_sheet.list_students_by_class_print');    
+    
+        Route::post('semester', 'Faculty\GradeSheetController@semester')->name('faculty.student_grade_sheet.semester');
     });
 
 
@@ -184,15 +186,34 @@ Route::group(['prefix' => 'faculty', 'middleware' => ['auth', 'userroles'], 'rol
         Route::get('second-sem/print-first-quarter', 'Faculty\MyAdvisoryClassController@print_secondSem_1quarter')->name('faculty.MyAdvisoryClass.print_secondSem_firstq');
         Route::get('second-sem/print-second-quarter', 'Faculty\MyAdvisoryClassController@print_secondSem_2quarter')->name('faculty.MyAdvisoryClass.print_secondSem_secondq');
 
+        //average for junior
+        Route::post('Junior/GradeSheet_Average', 'Faculty\MyAdvisoryClassController@gradeSheetAverage')->name('faculty.Average');
+        Route::get('Junior/first_second_Average/print', 'Faculty\MyAdvisoryClassController@firstSecondGradeSheetAverage_print')->name('faculty.MyAdvisoryClass.first_second_print_average');
+        Route::get('Junior/first_third_Average/print', 'Faculty\MyAdvisoryClassController@firstThirdGradeSheetAverage_print')->name('faculty.MyAdvisoryClass.first_third_print_average');
+        Route::get('Junior/first_fourth_Average/print', 'Faculty\MyAdvisoryClassController@firstFourthGradeSheetAverage_print')->name('faculty.MyAdvisoryClass.first_fourth_print_average');
+
+        //average for senior
+        Route::post('Senior/first_sem/GradeSheet_Average', 'Faculty\MyAdvisoryClassController@seniorFirstSemGradeSheetAverage')->name('faculty.Average_Senior');
+        Route::post('Senior/second_sem/GradeSheet_Average', 'Faculty\MyAdvisoryClassController@seniorSecondSemGradeSheetAverage')->name('faculty.Average_Senior_Second_Sem');
+        
+        Route::get('Senior/first_sem_Average/print', 'Faculty\MyAdvisoryClassController@first_sem_GradeSheetAverage_print')->name('faculty.MyAdvisoryClass.first_sem_print_average');
+        Route::get('Senior/second_sem_Average/print', 'Faculty\MyAdvisoryClassController@second_sem_GradeSheetAverage_print')->name('faculty.MyAdvisoryClass.second_sem_print_average');
+        Route::get('Senior/Final_Average/print', 'Faculty\MyAdvisoryClassController@finalGradeSheetAverage_print')->name('faculty.MyAdvisoryClass.final_print_average');
 
     });
 
-    Route::group(['prefix' => 'class-attenadance'], function () {
+    Route::group(['prefix' => 'class-attendance'], function () {
         Route::get('encode-class-attendance', 'Faculty\ClassAttendanceController@index')->name('faculty.class-attendance.index');
+        Route::post('encode-class-attendance', 'Faculty\ClassAttendanceController@index')->name('faculty.class-attendance.index');
+        Route::post('', 'Faculty\ClassAttendanceController@save_attendance')->name('faculty.save_class_attendance');
+        Route::post('first_sem/save', 'Faculty\ClassAttendanceController@save_attendance_senior_first')->name('faculty.save_attendance_senior_first');
+        Route::post('second_sem/save', 'Faculty\ClassAttendanceController@save_attendance_senior_second')->name('faculty.save_attendance_senior_second');
+        Route::get('print-class-attendance', 'Faculty\ClassAttendanceController@print_attendance')->name('faculty.print_attendance');
     });
     
     Route::group(['prefix' => 'class-demographic-profile'], function () {
         Route::get('encode-class-demographic-profile', 'Faculty\DemographicProfileController@index')->name('faculty.class_demographic_profile.index');
+        Route::post('', 'Faculty\DemographicProfileController@save')->name('faculty.save_demographic');
     });
 
 

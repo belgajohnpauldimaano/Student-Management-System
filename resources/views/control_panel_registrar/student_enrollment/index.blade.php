@@ -209,16 +209,7 @@
                 }
             });
         }
-        function Confirm() {
-                var txt;
-                var r = confirm("Press a button!");
-                if (r == true) {
-                    txt = "You pressed OK!";
-                } else {
-                    txt = "You pressed Cancel!";
-                }
-                //document.getElementById("demo").innerHTML = txt;
-            }
+        
         $(function () {
             $('body').on('click', '#js-button-add, .js-btn_update', function (e) {
                 e.preventDefault();

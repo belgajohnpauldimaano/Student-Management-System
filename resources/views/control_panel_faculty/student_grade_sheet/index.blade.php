@@ -17,6 +17,8 @@
                     <input type="text" class="form-control" name="search">
                 </div>  --}}
                 
+                
+                @if($ClassSubjectDetail->grade_level <= 10)
                 <div class="form-group col-sm-12 col-md-3" style="padding-right:0">
                     <select name="search_sy" id="search_sy" class="form-control">
                         <option value="">Select SY</option>
@@ -26,12 +28,35 @@
                     </select>
                 </div> 
                 &nbsp;
-                <div class="form-group col-sm-12 col-md-5" style="padding-right:0">
-                    <select name="search_class_subject" id="search_class_subject" class="form-control">
-                        <option value="">Select Class Subject</option>
-                    </select>
-                </div>
+                    <div class="form-group col-sm-12 col-md-5" style="padding-right:0">
+                        <select name="search_class_subject" id="search_class_subject" class="form-control">
+                            <option value="">Select Class Subject</option>
+                        </select>
+                    </div>
                 &nbsp;
+                @else
+                <div class="form-group col-sm-12 col-md-3" style="padding-right:0">
+                    <select name="search_sy1" id="search_sy1" class="form-control">
+                        <option value="">Select SY</option>
+                        @foreach ($SchoolYear as $data)
+                            <option value="{{ $data->id }}">{{ $data->school_year }}</option>
+                        @endforeach
+                    </select>
+                </div> 
+                &nbsp;
+                    <div class="form-group col-sm-12 col-md-3" style="padding-right:0">
+                        <select name="search_semester" id="search_semester" class="form-control">
+                            <option value="">Select Semester</option>
+                        </select>
+                    </div>
+                &nbsp;
+                    <div class="form-group col-sm-12 col-md-5" style="padding-right:0">
+                        <select name="search_class_subject_sem" id="search_class_subject_sem" class="form-control">
+                            <option value="">Select Class Subject</option>
+                        </select>
+                    </div>
+                &nbsp;
+                @endif
                 <button type="submit" class="btn btn-flat btn-success">Search</button>
                 {{--  <button type="button" class="pull-right btn btn-flat btn-danger btn-sm" id="js-button-add"><i class="fa fa-plus"></i> Add</button>  --}}
             </form>
@@ -76,6 +101,7 @@
                 }
                 fetch_data();
             });
+
             $('body').on('click', '.pagination a', function (e) {
                 e.preventDefault();
                 page = $(this).attr('href').split('=')[1];
@@ -90,6 +116,27 @@
                     success     : function (res) {
 
                         $('#search_class_subject').html(res);
+                    }
+                })
+            })
+            
+            $('body').on('submit', '#js-form_search', function (e) {
+                e.preventDefault();
+                if (!$('#search_semester').val()) {
+                    alert('Please select a subject');
+                    return;
+                }
+                fetch_data();
+            });
+            $('body').on('change', '#search_sy1', function () {
+                $.ajax({
+                    url : "{{ route('faculty.student_grade_sheet.semester') }}",
+                    type : 'POST',
+                    {{--  dataType    : 'JSON',  --}}
+                    data        : {_token: '{{ csrf_token() }}', search_sy1: $('#search_sy1').val()},
+                    success     : function (res) {
+
+                        $('#search_semester').html(res);
                     }
                 })
             })
@@ -261,6 +308,7 @@
 
                 });
             })
+            
             $('body').on('click', '#js-btn_finalize', function (e) {
                 e.preventDefault()
                 const id = $(this).data('id')

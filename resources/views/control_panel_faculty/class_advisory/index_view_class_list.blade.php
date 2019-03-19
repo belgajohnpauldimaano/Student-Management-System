@@ -34,8 +34,7 @@
                                         {{-- <td>{{ $data->id }}</td> --}}
                                     <td>{{ $key+1 }}.</td>
                                     <td>{{ $data->username }}</td>
-                                    <td>{{ $data->student_name }}</td>
-                                    
+                                    <td>{{ $data->student_name }}</td>                                    
                                     
                                     <td>
                                         <div class="input-group-btn pull-left text-left">

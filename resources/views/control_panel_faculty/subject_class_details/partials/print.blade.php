@@ -69,21 +69,36 @@
         <thead>
             <tr>
                 <th>#</th>
-                <th>Username</th>
-                <th>Student Name</th>
+                <th style="text-align: center">Username</th>
+                <th style="text-align: center">Student Name</th>
             </tr>
         </thead>
         <tbody>
-            @if ($Enrollment)
-                @foreach ($Enrollment as $key => $data)
-                    <tr>
-                        <td>{{ $key + 1 }}</td>
-                        <td>{{ $data->username }}</td>
-                        <td>{{ $data->student_name }}</td>
+                <tr>
+                    <td colspan="3">Male</td>
+                </tr>
+                @if ($EnrollmentMale)
+                    @foreach ($EnrollmentMale as $key => $data)
+                        <tr>
+                            <td>{{ $key + 1 }}</td>
+                            <td style="text-align:center">{{ $data->username }}</td>
+                            <td style="text-align:center">{{ $data->student_name }}</td>
+                        </tr>
+                    @endforeach
+                @endif
+                <tr>
+                        <td colspan="3">Female</td>
                     </tr>
-                @endforeach
-            @endif
-        </tbody>
+                    @if ($EnrollmentFemale)
+                        @foreach ($EnrollmentFemale as $key => $data)
+                            <tr>
+                                <td>{{ $key + 1 }}</td>
+                                <td style="text-align:center">{{ $data->username }}</td>
+                                <td style="text-align:center">{{ $data->student_name }}</td>
+                            </tr>
+                        @endforeach
+                    @endif
+            </tbody>
     </table>
 </body>
 </html>

@@ -94,7 +94,10 @@
     <br/>
     {{--  <h4>Subject : <span class="text-red"><i>{{ $ClassSubjectDetail->subject }}</i></span> Time : <span class="text-red"><i>{{ strftime('%r',strtotime($ClassSubjectDetail->class_time_from)) . ' - ' . strftime('%r',strtotime($ClassSubjectDetail->class_time_to)) }}</i></span> Days : <span class="text-red"><i>{{ $ClassSubjectDetail->class_days }}</i></span></h4>  --}}
     {{--  <h4>Grade & Section : <span class="text-red"><i>{{ $ClassSubjectDetail->grade_level . ' ' .$ClassSubjectDetail->section }}</i></span></h4>  --}}
-    
+    @if ($grade_level >= 11) 
+
+
+    @else
                 <table class="table no-margin">
                     <thead>
                         <tr>
@@ -132,7 +135,8 @@
                                                 <td><center>{{ round($data->final_g) }}</center></td>
                                                 <td style="color:{{ $data->final_g >= 75 ? 'green' : 'red' }};"><strong>{{ $data->final_g >= 75 ? 'Passed' : 'Failed' }}</strong></td>
                                             @else
-                                            <center><?php
+                                            <center>
+                                                <?php
                                                     $showGenAvg = 0;
                                                 ?>
                                             </center>
@@ -144,7 +148,7 @@
                                     <td>{{ 'Room' . $data->room_code }}</td>  --}}
                                     {{--  <td>{{ $data->grade_level . ' - ' . $data->section }}</td>  --}}
                                     <td>{{ $data->faculty_name }}</td>
-    </center>
+                                    </center>
                                 </tr>
                             @endforeach
                                 <tr class="text-center">
@@ -169,5 +173,6 @@
                     @endif
                 </tbody>
             </table>
+    @endif
 </body>
 </html>

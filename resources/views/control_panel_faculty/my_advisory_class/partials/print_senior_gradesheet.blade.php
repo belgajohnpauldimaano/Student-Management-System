@@ -9,40 +9,25 @@
     <link rel="stylesheet" type="text/css" media="screen" href="main.css" />
     <script src="main.js"></script>
     <style>
-        {{--  .page-break {
-            page-break-after: always;
-        }
-        th, td {
-            border: 1px solid #ccc;
-            padding: 5px;
-        }
-        table {
-            width: 100%;
-            border-spacing: 0;
-            border-collapse: collapse;
-            font-size : 11px;
-        }
-        .text-red {
-            color : #dd4b39 !important;
-        }
-        small {
-            font-size : 10px;
-        }  --}}
-        * {
-            font-family: Arial, Times, serif;
-        }
+        
         .page-break {
             page-break-after: always;
         }
-        th, td {
+        td {
             border: 1px solid #000;
-            padding: 5px;
+            padding: 2px;
+        }
+        th {
+            border: 1px solid #000;
+            padding: 2px;
         }
         table {
             width: 100%;
             border-spacing: 0;
             border-collapse: collapse;
             font-size : 11px;
+            border: 1px solid black;
+            
         }
         .text-red {
             color : #dd4b39 !important;
@@ -91,6 +76,9 @@
             font-size: 12px;
             font-weight: 700;
         }
+       
+     
+        
     </style>
 </head>
 <body>
@@ -105,7 +93,7 @@
     <p class="report-progress m0">SENIOR HIGH SCHOOL</p>
     <p class="report-progress m0">S.Y. {{ $ClassSubjectDetail ? $ClassSubjectDetail->school_year : '' }}</p>
     {{--  <p class="report-progress m0">( {{ $ClassSubjectDetail ?  $ClassSubjectDetail->grade_level >= 11 ? 'SENIOR HIGH SCHOOL' : 'JUNIOR HIGH SCHOOL' : ''}} )</p>  --}}
-    <img style="margin-top: -1em; margin-left: 8em" class="logo" width="100" src="{{ asset('img/sja-logo.png') }}" />
+    <img style="margin-top: -.4em; margin-left: 9em" class="logo" width="100" src="{{ asset('img/sja-logo.png') }}" />
     <br/>
     <br/>
     {{--  <p class="p0 m0 student-info">Grade sheet</p>  --}}
@@ -115,26 +103,41 @@
         
     <br/>
    
-    
-    <table style="margin-top: -.8em; margin-left: -20em" class="table no-margin">
+    <center>
+    <table style="margin-top: -.8em" class="table no-margin">
         <thead>        
                 <tr>
-                    <th style="width: 10px">#</th>
+                    <th style="width: 8px">#</th>
                     <th style="width: 150px">Student Name</th>                                       
                     @foreach ($AdvisorySubject as $key => $sub)                                     
-                        <th style="width: 30px; text-align: center">{{$sub->subject}} </th>                                                                  
+                        <th style="text-align: center;padding: 0%"> {{ $sub->subject_code }} </th>                                                                  
                     @endforeach 
-                    <th style="width: 80px">GENERAL AVERAGE</th>
-                    <th style="width: 80px">REMARKS</th>
+                    <th style=" text-align:center; font-size: 10px; padding: 0%">GENERAL<br/> AVERAGE</th>
+                    <th style=" text-align:center; font-size: 10px; padding: 0%">REMARKS</th>
                 </tr>
             
         </thead>
-        <tbody>                                  
-            <tr>
-                <td colspan="13">
-                    <b>Male</b>
-                </td>
-            </tr>
+        <tbody>     
+            @if($NumberOfSubject->class_subject_order == 7)
+                <tr>
+                    <td colspan="11">
+                        <b>Male</b>
+                    </td>
+                </tr>            
+            @elseif($NumberOfSubject->class_subject_order == 8)
+                <tr>
+                    <td colspan="12">
+                        <b>Male</b>
+                    </td>
+                </tr>
+            @elseif($NumberOfSubject->class_subject_order == 9)
+                <tr>
+                    <td colspan="13">
+                        <b>Male</b>
+                    </td>
+                </tr>
+            @endif
+            
             @foreach($GradeSheetMale as $key => $sub)
             <tr>
                 @if($NumberOfSubject->class_subject_order == 7)
@@ -175,14 +178,34 @@
                     <td><center>{{$sub->subject_9}}</center></td>
                 @endif
 
+                @if($NumberOfSubject->class_subject_order == 7)
                 <td>
-                    <center>                                                
-                        <?php
-                            $formattedNum = number_format(round($average = ($sub->subject_1 + $sub->subject_2 + $sub->subject_3 + $sub->subject_4 + $sub->subject_5 + $sub->subject_6 + $sub->subject_7 + $sub->subject_8 +$sub->subject_9)/9), 0);
-                            echo $formattedNum;
-                        ?>
-                    </center>
+                        <center>                                                
+                            <?php
+                                $formattedNum = number_format(round($average = ($sub->subject_1 + $sub->subject_2 + $sub->subject_3 + $sub->subject_4 + $sub->subject_5 + $sub->subject_6 + $sub->subject_7)/7), 0);
+                                echo $formattedNum;
+                            ?>
+                        </center>
+                </td>        
+                @elseif($NumberOfSubject->class_subject_order == 8)
+                <td>
+                        <center>                                                
+                            <?php
+                                $formattedNum = number_format(round($average = ($sub->subject_1 + $sub->subject_2 + $sub->subject_3 + $sub->subject_4 + $sub->subject_5 + $sub->subject_6 + $sub->subject_7 + $sub->subject_8 )/8), 0);
+                                echo $formattedNum;
+                            ?>
+                        </center>
                 </td>
+                @elseif($NumberOfSubject->class_subject_order == 9)
+                <td>
+                        <center>                                                
+                            <?php
+                                $formattedNum = number_format(round($average = ($sub->subject_1 + $sub->subject_2 + $sub->subject_3 + $sub->subject_4 + $sub->subject_5 + $sub->subject_6 + $sub->subject_7 + $sub->subject_8 +$sub->subject_9)/9), 0);
+                                echo $formattedNum;
+                            ?>
+                        </center>
+                </td>
+                @endif
 
                 @if(round($average) >= 75 && round($average) <= 89)
                     <td>
@@ -209,11 +232,26 @@
                 </tr>                                    
                 @endforeach
 
-            <tr>
-                <td colspan="13">
-                    <b>Female</b>
-                </td>
-            </tr>
+            @if($NumberOfSubject->class_subject_order == 7)
+                <tr>
+                    <td colspan="11">
+                        <b>Female</b>
+                    </td>
+                </tr>            
+            @elseif($NumberOfSubject->class_subject_order == 8)
+                <tr>
+                    <td colspan="12">
+                        <b>Female</b>
+                    </td>
+                </tr>
+            @elseif($NumberOfSubject->class_subject_order == 9)
+                <tr>
+                    <td colspan="13">
+                        <b>Female</b>
+                    </td>
+                </tr>
+            @endif
+
             @foreach($GradeSheetFeMale as $key => $sub)
             <tr>
                 @if($NumberOfSubject->class_subject_order == 7)
@@ -254,6 +292,27 @@
                     <td><center>{{$sub->subject_9}}</center></td>
                 @endif
 
+                
+                
+                @if($NumberOfSubject->class_subject_order == 7)
+                <td>
+                        <center>                                                
+                            <?php
+                                $formattedNum = number_format(round($average = ($sub->subject_1 + $sub->subject_2 + $sub->subject_3 + $sub->subject_4 + $sub->subject_5 + $sub->subject_6 + $sub->subject_7)/7), 0);
+                                echo $formattedNum;
+                            ?>
+                        </center>
+                </td>        
+                @elseif($NumberOfSubject->class_subject_order == 8)
+                <td>
+                        <center>                                                
+                            <?php
+                                $formattedNum = number_format(round($average = ($sub->subject_1 + $sub->subject_2 + $sub->subject_3 + $sub->subject_4 + $sub->subject_5 + $sub->subject_6 + $sub->subject_7 + $sub->subject_8 )/8), 0);
+                                echo $formattedNum;
+                            ?>
+                        </center>
+                </td>
+                @elseif($NumberOfSubject->class_subject_order == 9)
                 <td>
                         <center>                                                
                             <?php
@@ -262,6 +321,7 @@
                             ?>
                         </center>
                 </td>
+                @endif
                
                 @if(round($average) >= 75 && round($average) <= 89)
                     <td>
@@ -290,7 +350,7 @@
             
         </tbody>
     </table>
-
+</center>
     <p style="text-align: right"><b>{{$ClassSubjectDetail->first_name }} {{$ClassSubjectDetail->middle_name}} {{$ClassSubjectDetail->last_name}}</b> - <i>Class Adviser</i></p>
 
 </body>

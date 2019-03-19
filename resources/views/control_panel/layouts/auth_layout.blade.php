@@ -29,7 +29,7 @@
 <body class="hold-transition login-page">
 <div class="login-box">
   <div class="login-logo">
-    <a href="#"><b>St. John </b>Academy</a>
+    <a href="{{ route('home_page') }}"><b>St. John </b>Academy</a>
   </div>
   <!-- /.login-logo -->
   <div class="login-box-body">

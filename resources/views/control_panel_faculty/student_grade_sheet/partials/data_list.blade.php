@@ -315,7 +315,7 @@
                                                         </td>
                                                         <td>
                                                             <div class="input-group" data-grading="{{base64_encode('fourth')}}">
-                                                            <input style ="text-align: center" type="number" {{ $data->fou_g_status ? "readonly='readonly'" : '' }} class="input-sm txt-grade_input form-control" value="{{ $data->thi_g <= 0.00 ? "" : round($data->fou_g) }}" id="fourth_grading_{{ $data->student_enrolled_subject_id }}">
+                                                            <input style ="text-align: center" type="number" {{ $data->fou_g_status ? "readonly='readonly'" : '' }} class="input-sm txt-grade_input form-control" value="{{ $data->fou_g <= 0.00 ? "" : round($data->fou_g) }}" id="fourth_grading_{{ $data->student_enrolled_subject_id }}">
                                                             <input id="classSubjectDetailID" name="classSubjectDetailID" type="hidden" value="{{ $ClassSubjectDetail->id }}">    
                                                             {{--  <span class="input-group-btn">
                                                                     <button class="btn btn-sm bg-green btn-flat btn--save-grade" data-grading="fourth" {{ $data->fou_g_status ? "disabled='disabled'" : '' }} title="Save grade and finalize"><i class="fa fa-check"></i> Save</button>

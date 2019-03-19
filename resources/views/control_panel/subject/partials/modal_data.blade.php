@@ -28,7 +28,14 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="">Subject</label>
+                        <label for="">Subject Abbreviation</label>
+                        <input type="text" class="form-control" name="subject_abbr" value="{{ $SubjectDetail ? $SubjectDetail->subject_abbr : '' }}">
+                        <div class="help-block text-red text-center" id="js-subject_abbr">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="">Unit(s)</label>
                         <input type="number" step="any" class="form-control" name="units" value="{{ $SubjectDetail ? $SubjectDetail->units : '' }}">
                         <div class="help-block text-red text-center" id="js-units">
                         </div>

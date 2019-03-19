@@ -538,7 +538,6 @@ class StudentEnrollmentController extends Controller
                     $StudentEnrolledSubject = \App\StudentEnrolledSubject::where('enrollments_id', $enrollment_id)
                     ->where('class_subject_details_id', $class_subject->id)
                     ->first();
-
                     
                     
                     if ($StudentEnrolledSubject) {

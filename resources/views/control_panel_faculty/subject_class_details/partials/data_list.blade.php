@@ -31,7 +31,7 @@
                         </h4>
                         <h4>Grade & Section : <span class="text-red"><i>{{ $ClassSubjectDetail->grade_level . ' ' .$ClassSubjectDetail->section }}</i></span></h4>
                         <div class="pull-right">
-                            {{ $Enrollment ? $Enrollment->links() : '' }}
+                            {{ $EnrollmentMale ? $EnrollmentMale->links() : '' }}
                         </div>
                         <table class="table no-margin">
                             <thead>
@@ -42,8 +42,11 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @if ($Enrollment)
-                                    @foreach ($Enrollment as $key => $data)
+                                <tr>
+                                    <td>Male</td>
+                                </tr>
+                                @if ($EnrollmentMale)
+                                    @foreach ($EnrollmentMale as $key => $data)
                                         <tr>
                                             <td>{{ $key + 1 }}</td>
                                             <td>{{ $data->username }}</td>
@@ -51,5 +54,17 @@
                                         </tr>
                                     @endforeach
                                 @endif
+                                <tr>
+                                        <td>Female</td>
+                                    </tr>
+                                    @if ($EnrollmentFemale)
+                                        @foreach ($EnrollmentFemale as $key => $data)
+                                            <tr>
+                                                <td>{{ $key + 1 }}</td>
+                                                <td>{{ $data->username }}</td>
+                                                <td>{{ $data->student_name }}</td>
+                                            </tr>
+                                        @endforeach
+                                    @endif
                             </tbody>
                         </table>

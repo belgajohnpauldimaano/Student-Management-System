@@ -13,10 +13,35 @@ class GradeSheetController extends Controller
     
     public function index (Request $request) 
     {
-        // $FacultyInformation = \App\FacultyInformation::where('user_id', \Auth::user()->id)->first();
+         $FacultyInformation = \App\FacultyInformation::where('user_id', \Auth::user()->id)->first();
         // return json_encode(['FacultyInformation' => $FacultyInformation, 'Auth' => \Auth::user()]);
         $SchoolYear = \App\SchoolYear::where('status', 1)->where('current', 1)->orderBy('current', 'ASC')->orderBy('school_year', 'ASC')->get();
-        return view('control_panel_faculty.student_grade_sheet.index', compact('SchoolYear'));
+        
+        $ClassSubjectDetail = \App\ClassSubjectDetail::join('class_details', 'class_details.id', '=', 'class_subject_details.class_details_id')
+        ->join('subject_details', 'subject_details.id', '=', 'class_subject_details.subject_id')
+        ->join('section_details', 'section_details.id', '=', 'class_details.section_id')
+        // ->whereRaw('class_subject_details.id = '. $request->search_class_subject)
+        // ->whereRaw('class_details.id = '. $search_class_subject[1])
+        ->where('faculty_id', $FacultyInformation->id)
+        // ->where('class_details.school_year_id', $SchoolYear->id)
+        ->where('class_subject_details.status', '!=', 0)
+        ->where('class_details.status', '!=', 0)
+        ->select(\DB::raw('
+            class_subject_details.id,
+            class_subject_details.class_schedule,
+            class_subject_details.class_time_from,
+            class_subject_details.class_time_to,
+            class_subject_details.class_days,
+            subject_details.subject_code,
+            subject_details.subject,
+            section_details.section,
+            class_details.grade_level,
+            class_subject_details.status as grading_status,
+            class_subject_details.sem
+        '))
+        ->first();
+        
+        return view('control_panel_faculty.student_grade_sheet.index', compact('SchoolYear','ClassSubjectDetail'));
     }
     public function list_students_by_class (Request $request) 
     {
@@ -132,6 +157,7 @@ class GradeSheetController extends Controller
     }
     public function list_students_by_class_print (Request $request) 
     {
+        
         $FacultyInformation = \App\FacultyInformation::where('user_id', \Auth::user()->id)->first();
         // return json_encode(['FacultyInformation' => $FacultyInformation, 'req' => $request->all()]);
         $EnrollmentMale = \App\Enrollment::join('class_subject_details', 'class_subject_details.class_details_id', '=', 'enrollments.class_details_id')
@@ -270,18 +296,35 @@ class GradeSheetController extends Controller
             '))
             ->get();
         
+        // if($ClassSubjectDetail->grade_level <= 10)
+        // {
         
-        $class_details_elements = '<option value="">Select Class Subject</option>';
-        if ($ClassSubjectDetail) 
-        {
-            foreach ($ClassSubjectDetail as $data) 
+            $class_details_elements = '<option value="">Select Class Subject</option>';
+            if ($ClassSubjectDetail) 
             {
-                $class_details_elements .= '<option value="'. $data->id .'">'. 'Semester-'. $data->sem . ' '. $data->subject_code . ' ' . $data->subject . ' - Grade ' .  $data->grade_level . ' Section ' . $data->section . '</option>';
+                foreach ($ClassSubjectDetail as $data) 
+                {
+                    $class_details_elements .= '<option value="'. $data->id .'">'. 'Semester-'. $data->sem . ' '. $data->subject_code . ' ' . $data->subject . ' - Grade ' .  $data->grade_level . ' Section ' . $data->section . '</option>';
+                }
+    
+                return $class_details_elements;
             }
-
             return $class_details_elements;
-        }
-        return $class_details_elements;
+      
+        // }
+        // else if($ClassSubjectDetail->grade_level >= 11)
+        // {
+            
+        // }
+        
+    }
+
+    public function semester()
+    {
+        $class_details_elements = '<option value="">Select Semester</option>';
+        $class_details_elements .= '<option value="1st">First Semester</option>';
+        $class_details_elements .= '<option value="2nd">Second Semester</option>'; 
+        return $class_details_elements;        
     }
 
     public function temporary_save_grade(Request $request)
@@ -307,7 +350,7 @@ class GradeSheetController extends Controller
         $grade = $request->grade;
 
         $StudentEnrolledSubject = \App\StudentEnrolledSubject::where('id', $student_enrolled_subject_id)->where('enrollments_id', $enrollment_id)
-        ->where('class_subject_details_id', $request->classSubjectDetailID)->first();
+            ->where('class_subject_details_id', $request->classSubjectDetailID)->first();
 
         $selectedsubjectid = \App\ClassSubjectDetail::where('id', $StudentEnrolledSubject->class_subject_details_id)->first();
 

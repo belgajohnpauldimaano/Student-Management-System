@@ -32,7 +32,7 @@
                     <div class="checkbox icheck">
                       <label>
                           {{-- <button onclick="showPass(event);" type="button">view</button> --}}
-                        <input type="checkbox" id="show_password" onclick="showPass(event);"/> View/Hide
+                        {{-- <input type="checkbox" id="show_password" onclick="showPass(event);"/> View/Hide --}}
                       </label>
                     </div>  
               </div>

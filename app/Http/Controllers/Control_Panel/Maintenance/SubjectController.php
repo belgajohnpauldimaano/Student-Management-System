@@ -52,6 +52,7 @@ class SubjectController extends Controller
             $SubjectDetail = \App\SubjectDetail::where('id', $request->id)->first();
             $SubjectDetail->subject_code = $request->subject_code;
             $SubjectDetail->subject = $request->subject;
+            $SubjectDetail->subject_abbr = $request->subject_abbr;
             $SubjectDetail->units = $request->units;
             $SubjectDetail->save();
             return response()->json(['res_code' => 0, 'res_msg' => 'Data successfully saved.']);
@@ -60,6 +61,7 @@ class SubjectController extends Controller
         $SubjectDetail = new \App\SubjectDetail();
         $SubjectDetail->subject_code = $request->subject_code;
         $SubjectDetail->subject = $request->subject;
+        $SubjectDetail->subject_abbr = $request->subject_abbr;
         $SubjectDetail->units = $request->units;
         $SubjectDetail->save();
         return response()->json(['res_code' => 0, 'res_msg' => 'Data successfully saved.']);

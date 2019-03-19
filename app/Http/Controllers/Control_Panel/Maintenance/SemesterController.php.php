@@ -14,12 +14,17 @@ class SemesterController extends Controller
 
         if ($request->ajax())
         {
-            $Semester = \App\Semester::paginate(10);
-            return view('control_panel.semester.partials.data_list', compact('Semester'))->render();
+            $Semester = \App\Semester::get();
+            // return redirect()->back();
+        //    retirm view('control_panel.semester.partials.data_list', compact('Semester'))->render();
+            return view('control_panel.semester.index', compact('Semester'))->render();
+
+            // return response()->json(compact('html'));
+            // return redirect('control_panel\semester\partials\data_list')->compact('Semester')->render();
             // return redirect('Control_Panel\Maintenance\SemesterController@index')
         }
         // $Semester = \App\Semester::where('status', 1)->paginate(10);
-        $Semester = \App\Semester::paginate(10);
+        $Semester = \App\Semester::get();
         return view('control_panel.semester.index', compact('Semester'));
     }
 
@@ -36,7 +41,7 @@ class SemesterController extends Controller
     
                     $Semester->current = 1; 
                     $Semester->save(); 
-                    return response()->json(['res_code' => 0, 'res_msg' => 'This Semester is now currently activated.']);
+                    return response()->json(['res_code' => 0, 'res_msg' => 'First Semester is now currently activated.']);
                 }
                 else 
                 {
@@ -44,7 +49,7 @@ class SemesterController extends Controller
     
                     $Semester->current = 0; 
                     $Semester->save(); 
-                    return response()->json(['res_code' => 0, 'res_msg' => 'This Semester is now currently de-activated.']);
+                    return response()->json(['res_code' => 0, 'res_msg' => 'First Semester is now currently de-activated.']);
                 }
             }
             else 
@@ -55,7 +60,7 @@ class SemesterController extends Controller
     
                     $Semester->current = 1; 
                     $Semester->save(); 
-                    return response()->json(['res_code' => 0, 'res_msg' => 'This Semester is now currently activated.']);
+                    return response()->json(['res_code' => 0, 'res_msg' => 'Second Semester is now currently activated.']);
                 }
                 else 
                 {
@@ -63,7 +68,7 @@ class SemesterController extends Controller
     
                     $Semester->current = 0; 
                     $Semester->save(); 
-                    return response()->json(['res_code' => 0, 'res_msg' => 'This Semester is now currently de-activated.']);
+                    return response()->json(['res_code' => 0, 'res_msg' => 'Second Semester is now currently de-activated.']);
                 }
             }
             

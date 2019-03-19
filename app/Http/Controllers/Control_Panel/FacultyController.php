@@ -29,6 +29,7 @@ class FacultyController extends Controller
     public function modal_data (Request $request) 
     {
         $FacultyInformation = NULL;
+        $Esignature = \App\FacultyInformation::where('id', $request->id)->first(); 
         if ($request->id)
         {
             $FacultyInformation = \App\FacultyInformation::with(['user'])->where('id', $request->id)->first();

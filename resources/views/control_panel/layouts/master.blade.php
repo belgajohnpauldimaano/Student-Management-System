@@ -13,7 +13,7 @@
       <span class="logo-mini"><img src="{{ asset('/img/sja-logo.png') }}" style="height: 35px;"></span>
       <!-- logo for regular state and mobile devices -->
       <span class="logo-lg">
-      {{--  <img src="{{ asset('frontend/assets/img/mini-logo.jpg') }}" style="height: 35px; margin: -5px 10px 0 -10px;">  --}}
+        {{-- <img src="{{ asset('/img/sja-logo.png') }}" style="height: 35px; margin: -5px 10px 0 -10px;"> <br/> --}}
       <b>St. John</b> Academy</span>
     </a>
 
@@ -75,37 +75,37 @@
         <li class="header">MAIN NAVIGATION</li>
         {{--  Admin Menu  --}}
         @if (Auth::user()->role == 1 || Auth::user()->role == 0)
-          <li><a href="{{ route('admin.dashboard') }}"><i class="fa fa-circle-o"></i> <span>Dashboard</span></a></li>
-          <li><a href="{{ route('shared.faculty_class_schedules.index') }}"><i class="fa fa-circle-o"></i> <span>Faculty Class Schedule</span></a></li>
-          <li><a href="{{ route('admin.faculty_information') }}"><i class="fa fa-circle-o"></i> <span>Faculty Information</span></a></li>
-          <li><a href="{{ route('admin.registrar_information') }}"><i class="fa fa-circle-o"></i> <span>Registrar Information</span></a></li>
-          <li><a href="{{ route('admin.student.information') }}"><i class="fa fa-circle-o"></i> <span>Student Information</span></a></li>
-          <li><a href="{{ route('registrar.class_details') }}"><i class="fa fa-circle-o"></i> <span>Class Lists</span></a></li>
-          <li><a href="{{ route('admin.transcript_archieve') }}"><i class="fa fa-circle-o"></i> <span>Transcript Archive</span></a></li>
-          <li><a href="{{ route('admin.articles') }}"><i class="fa fa-circle-o"></i> <span>News and Events</span></a></li>
+          <li><a href="{{ route('admin.dashboard') }}"><i class="fa  fa-home fa-fw fa-lg"></i>&nbsp;&nbsp;&nbsp; <span>Dashboard</span></a></li>
+          <li><a href="{{ route('shared.faculty_class_schedules.index') }}"><i class="fa  fa-file-text-o fa-lg"></i>&nbsp;&nbsp;&nbsp; <span>Faculty Class Schedule</span></a></li>
+          <li><a href="{{ route('admin.faculty_information') }}"><i class="fa fa-info-circle fa-lg"></i>&nbsp;&nbsp;&nbsp; <span>Faculty Information</span></a></li>
+          <li><a href="{{ route('admin.registrar_information') }}"><i class="fa fa-info-circle fa-lg"></i>&nbsp;&nbsp;&nbsp; <span>Registrar Information</span></a></li>
+          <li><a href="{{ route('admin.student.information') }}"><i class="fa fa-info-circle fa-lg"></i>&nbsp;&nbsp;&nbsp; <span>Student Information</span></a></li>
+          <li><a href="{{ route('registrar.class_details') }}"><i class="fa fa-list-alt  fa-lg"></i>&nbsp;&nbsp;&nbsp; <span>Class Lists</span></a></li>
+          <li><a href="{{ route('admin.transcript_archieve') }}"><i class="fa fa-archive fa-lg"></i>&nbsp;&nbsp;&nbsp; <span>Transcript Archive</span></a></li>
+          <li><a href="{{ route('admin.articles') }}"><i class="fa fa-newspaper-o fa-lg"></i>&nbsp;&nbsp;&nbsp; <span>News and Events</span></a></li>
         @endif
         {{--  Admin Menu End  --}}
         
         {{--  Registrar Menu  --}}
         @if (Auth::user()->role == 3)
-          <li><a href="{{ route('registrar.dashboard') }}"><i class="fa fa-circle-o"></i> <span>Dashboard</span></a></li>
-          <li><a href="{{ route('shared.faculty_class_schedules.index') }}"><i class="fa fa-circle-o"></i> <span>Faculty Class Schedule</span></a></li>
-          <li><a href="{{ route('admin.faculty_information') }}"><i class="fa fa-circle-o"></i> <span>Faculty Information</span></a></li>
-          <li><a href="{{ route('admin.student.information') }}"><i class="fa fa-circle-o"></i> <span>Student Information</span></a></li>
-          <li><a href="{{ route('registrar.class_details') }}"><i class="fa fa-circle-o"></i> <span>Class Lists</span></a></li>   
+          <li><a href="{{ route('registrar.dashboard') }}"><i class="fa fa-home fa-fw fa-lg"></i> <span>Dashboard</span></a></li>
+          <li><a href="{{ route('shared.faculty_class_schedules.index') }}"><i class="fa fa-file-text-o fa-lg"></i> <span>Faculty Class Schedule</span></a></li>
+          <li><a href="{{ route('admin.faculty_information') }}"><i class="fa fa-info-circle fa-lg"></i>&nbsp;&nbsp;&nbsp; <span>Faculty Information</span></a></li>
+          <li><a href="{{ route('admin.student.information') }}"><i class="fa fa-info-circle fa-lg"></i>&nbsp;&nbsp;&nbsp; <span>Student Information</span></a></li>
+          <li><a href="{{ route('registrar.class_details') }}"><i class="fa fa-list-alt fa-lg "></i>&nbsp;&nbsp;&nbsp; <span>Class Lists</span></a></li>   
         @endif
         
         {{--  Faculty Menu  --}}
         @if (Auth::user()->role == 4)
-          <li><a href="{{ route('faculty.dashboard') }}"><i class="fa fa-circle-o"></i> <span>Dashboard</span></a></li>
-          <li><a href="{{ route('faculty.subject_class') }}"><i class="fa fa-circle-o"></i> <span>Subject Class</span></a></li>
-          <li><a href="{{ route('faculty.faculty_class_schedules') }}"><i class="fa fa-circle-o"></i> <span>Faculty Class Schedules</span></a></li>
-          <li><a href="{{ route('faculty.student_grade_sheet') }}"><i class="fa fa-circle-o"></i> <span>Encode Student Grades</span></a></li>
+          <li><a href="{{ route('faculty.dashboard') }}"><i class="fa fa-home fa-fw fa-lg"></i> &nbsp;&nbsp;&nbsp;Dashboard</a></li>
+          <li><a href="{{ route('faculty.subject_class') }}"><i class="fa fa-sticky-note-o fa-lg"></i> &nbsp;&nbsp;&nbsp;<span>Subject Class</span></a></li>
+          <li><a href="{{ route('faculty.faculty_class_schedules') }}"><i class="fa fa-file-text-o fa-lg"></i> &nbsp;&nbsp;&nbsp;<span>Faculty Class Schedules</span></a></li>
+          <li><a href="{{ route('faculty.student_grade_sheet') }}"><i class="fa fa-pencil-square-o fa-lg"></i> &nbsp;&nbsp;&nbsp;<span>Encode Student Grades</span></a></li>
           
           {{-- <li><a href="{{ route('faculty.DataStudent') }}"><i class="fa fa-circle-o"></i> <span>Make Data for GradeSheet</span></a></li> --}}
-          <li><a href="{{ route('faculty.class-attendance.index') }}"><i class="fa fa-circle-o"></i> <span>Encode Class Attendance</span></a></li>
-          <li><a href="{{ route('faculty.class_demographic_profile.index') }}"><i class="fa fa-circle-o"></i> <span>Student Demographic Profile</span></a></li>
-          <li><a href="{{ route('faculty.advisory_class.index') }}"><i class="fa fa-circle-o"></i> <span>My Advisory Class</span></a></li>
+          <li><a href="{{ route('faculty.class-attendance.index') }}"><i class="fa fa-calendar-plus-o fa-lg"></i> &nbsp;&nbsp;&nbsp;<span>Encode Class Attendance</span></a></li>
+          <li><a href="{{ route('faculty.class_demographic_profile.index') }}"><i class="fa fa-info-circle fa-lg"></i> &nbsp;&nbsp;&nbsp;<span>Student Demographic Profile</span></a></li>
+          <li><a href="{{ route('faculty.advisory_class.index') }}"><i class="fa fa-users fa-lg"></i> &nbsp;&nbsp;&nbsp;<span>My Advisory Class</span></a></li>
           
           {{--  <li><a href="{{ route('faculty.my_advisory_class.index') }}"><i class="fa fa-circle-o"></i> <span>My Advisory Class</span></a>  --}}
             
@@ -118,17 +118,17 @@
         @if (Auth::user()->role == 1 || Auth::user()->role == 0)
           <li class="treeview">
               <a href="#">
-                <i class="fa fa-circle-o"></i> 
+                <i class="fa fa-cog fa-lg"></i>&nbsp;&nbsp;&nbsp; 
                 <span>Maintenance</span>
                 <span class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span>
               </a>
               <ul class="treeview-menu">
                   {{--  Admin Menu  --}}
-                  <li><a href="{{ route('admin.maintenance.school_year') }}"><i class="fa fa-circle-o"></i> <span>School Year</span></a></li>
-                  <li><a href="{{ route('admin.maintenance.semester') }}"><i class="fa fa-circle-o"></i> <span>Semester</span></a></li>
-                  <li><a href="{{ route('admin.maintenance.subjects') }}"><i class="fa fa-circle-o"></i> <span>Subjects</span></a></li>
-                  <li><a href="{{ route('admin.maintenance.classrooms') }}"><i class="fa fa-circle-o"></i> <span>Class Rooms</span></a></li>
-                  <li><a href="{{ route('admin.maintenance.section_details') }}"><i class="fa fa-circle-o"></i> <span>Section Details</span></a></li>
+                  <li><a href="{{ route('admin.maintenance.school_year') }}"><i class="fa fa-home fa-fw fa-lg"></i>&nbsp;&nbsp;&nbsp; <span>School Year</span></a></li>
+                  <li><a href="{{ route('admin.maintenance.semester') }}"><i class="fa fa-circle-o"></i>&nbsp;&nbsp;&nbsp; <span>Semester</span></a></li>
+                  <li><a href="{{ route('admin.maintenance.subjects') }}"><i class="fa fa-circle-o"></i>&nbsp;&nbsp;&nbsp; <span>Subjects</span></a></li>
+                  <li><a href="{{ route('admin.maintenance.classrooms') }}"><i class="fa fa-circle-o"></i>&nbsp;&nbsp;&nbsp; <span>Class Rooms</span></a></li>
+                  <li><a href="{{ route('admin.maintenance.section_details') }}"><i class="fa fa-circle-o"></i>&nbsp;&nbsp;&nbsp; <span>Section Details</span></a></li>
                   {{--  Admin Menu End  --}}
                   
               </ul>
@@ -136,11 +136,11 @@
         @endif
         <li>
           @if (Auth::user()->role == 3)
-            <a href="{{ route('registrar.my_account.index') }}"><i class="fa fa-circle-o"></i> <span>My Account</span></a></li>
+            <a href="{{ route('registrar.my_account.index') }}"><i class="fa fa-user fa-lg"></i>&nbsp;&nbsp;&nbsp; <span>My Account</span></a></li>
           @elseif (Auth::user()->role == 4)
-            <a href="{{ route('faculty.my_account.index') }}"><i class="fa fa-circle-o"></i> <span>My Account</span></a></li>
+            <a href="{{ route('faculty.my_account.index') }}"><i class="fa fa-user fa-lg"></i>&nbsp;&nbsp;&nbsp; <span>My Account</span></a></li>
           @elseif (Auth::user()->role == 0 || Auth::user()->role == 1)
-            <a href="{{ route('my_account.index') }}"><i class="fa fa-circle-o"></i> <span>My Account</span></a></li>
+            <a href="{{ route('my_account.index') }}"><i class="fa fa-user fa-lg"></i>&nbsp;&nbsp;&nbsp; <span>My Account</span></a></li>
           @endif
         
       </ul>

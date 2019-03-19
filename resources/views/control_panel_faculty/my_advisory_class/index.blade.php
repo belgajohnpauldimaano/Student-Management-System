@@ -15,6 +15,7 @@
                 </div>  --}}                      
 
                 @if($GradeLevel->grade_level  == 11 ||  $GradeLevel->grade_level  == 12)
+                    
                     <div class="box-header with-border">
                         <h3 class="box-title">Filter</h3>
                             <form id="js-form_filter">
@@ -55,37 +56,38 @@
                     
                 @else
 
-                <div class="box-header with-border">
-                    <h3 class="box-title">Filter</h3>
-                    <form id="js-form_search">
-                        {{ csrf_field() }}
-                        <div class="form-group col-sm-12 col-md-3" style="padding-right:0">
-                            <select name="search_sy" id="search_sy" class="form-control">
-                                <option value="">Select SY</option>
-                                @foreach ($SchoolYear as $data)
-                                    <option value="{{ $data->id }}">{{ $data->school_year }}</option>
-                                @endforeach
-                            </select>
-                        </div> 
-                        &nbsp;   
+                    <div class="box-header with-border">
+                        <h3 class="box-title">Filter</h3>
+                        <form id="js-form_search">
+                            {{ csrf_field() }}
+                            <div class="form-group col-sm-12 col-md-3" style="padding-right:0">
+                                <select name="search_sy" id="search_sy" class="form-control">
+                                    <option value="">Select SY</option>
+                                    @foreach ($SchoolYear as $data)
+                                        <option value="{{ $data->id }}">{{ $data->school_year }}</option>
+                                    @endforeach
+                                </select>
+                            </div> 
+                            &nbsp;   
 
-                        <div class="form-group col-sm-12 col-md-4" style="padding-right:0">
-                            <select name="quarter_grades" id="quarter_grades" class="form-control">
-                                <option value="">Select Class Quarter</option>                                
-                            </select>
-                        </div>                
-                        &nbsp;
+                            <div class="form-group col-sm-12 col-md-4" style="padding-right:0">
+                                <select name="quarter_grades" id="quarter_grades" class="form-control">
+                                    <option value="">Select Class Quarter</option>                                
+                                </select>
+                            </div>                
+                            &nbsp;
 
-                    <button type="submit" class="btn btn-flat btn-success">Search</button>
-                {{--  <button type="button" class="pull-right btn btn-flat btn-danger btn-sm" id="js-button-add"><i class="fa fa-plus"></i> Add</button>  --}}
-                    </form>
-                </div>
-                <div class="overlay hidden" id="js-loader-overlay"><i class="fa fa-refresh fa-spin"></i></div>
-                <div class="box-body">
-                    <div class="js-data-container">
-                         {{-- @include('control_panel_faculty.student_grade_sheet_details.partials.data_list')  --}}
+                        <button type="submit" class="btn btn-flat btn-success">Search</button>
+                    {{--  <button type="button" class="pull-right btn btn-flat btn-danger btn-sm" id="js-button-add"><i class="fa fa-plus"></i> Add</button>  --}}
+                        </form>
                     </div>
-                </div>
+                    <div class="overlay hidden" id="js-loader-overlay"><i class="fa fa-refresh fa-spin"></i></div>
+                    <div class="box-body">
+                        <div class="js-data-container">
+                            {{-- @include('control_panel_faculty.student_grade_sheet_details.partials.data_list')  --}}
+                        </div>
+                    </div>
+
                 @endif
                 
             
@@ -161,6 +163,57 @@
                         {{-- alert('4th'); --}}
                         $.ajax({
                             url : "{{ route('faculty.MyAdvisoryClass.fourthquarter') }}",
+                            type : 'POST',
+                            data : formData,
+                            processData : false,
+                            contentType : false,
+                            success     : function (res) {
+                                loader_overlay();
+                                $('.js-data-container').html(res);
+                        }
+                        });
+                        return;
+                    }
+                    else if(quarter_grades == '1st-2nd')
+                    {
+                        {{-- alert('4th'); --}}
+                        // alert('1st-2nd');
+                        $.ajax({
+                            url : "{{ route('faculty.Average') }}",
+                            type : 'POST',
+                            data : formData,
+                            processData : false,
+                            contentType : false,
+                            success     : function (res) {
+                                loader_overlay();
+                                $('.js-data-container').html(res);
+                        }
+                        });
+                        return;
+                    }
+                    else if(quarter_grades == '1st-3rd')
+                    {
+                        // alert('1st-3rd');
+                        {{-- alert('4th'); --}}
+                        $.ajax({
+                            url : "{{ route('faculty.Average') }}",
+                            type : 'POST',
+                            data : formData,
+                            processData : false,
+                            contentType : false,
+                            success     : function (res) {
+                                loader_overlay();
+                                $('.js-data-container').html(res);
+                        }
+                        });
+                        return;
+                    }
+                    else if(quarter_grades == '1st-4th')
+                    {
+                        // alert('1st-4th');
+                        {{-- alert('4th'); --}}
+                        $.ajax({
+                            url : "{{ route('faculty.Average') }}",
                             type : 'POST',
                             data : formData,
                             processData : false,
@@ -260,6 +313,59 @@
                             });
                             return;
                         }        
+                    }
+                    else if(semester_grades == '3rd')
+                    {
+                        if (quarter_ == '1st-2nd') 
+                        {
+                            // alert('1st'); 
+                            $.ajax({
+                                url : "{{ route('faculty.Average_Senior') }}",
+                                type : 'POST',
+                                data : formData,
+                                processData : false,
+                                contentType : false,
+                                success     : function (res)
+                                {
+                                    loader_overlay();
+                                    $('.js-data-container1').html(res);
+                                }                        
+                            });
+                            return;
+                        }
+                        else if(quarter_ == '3rd-4th')
+                        {
+                            // alert('2nd');
+                            $.ajax({
+                                url : "{{ route('faculty.Average_Senior_Second_Sem') }}",
+                                type : 'POST',
+                                data : formData,
+                                processData : false,
+                                contentType : false,
+                                success     : function (res)
+                                {
+                                    loader_overlay();
+                                    $('.js-data-container1').html(res);
+                                }                        
+                            });
+                            return;
+                        }    
+                        else
+                        {
+                            $.ajax({
+                                url : "{{ route('faculty.Average_Senior') }}",
+                                type : 'POST',
+                                data : formData,
+                                processData : false,
+                                contentType : false,
+                                success     : function (res)
+                                {
+                                    loader_overlay();
+                                    $('.js-data-container1').html(res);
+                                }                        
+                            });
+                            return;
+                        }    
                     }
                    
         }
@@ -398,6 +504,28 @@
                          
                         {{--  return;  --}}
                     }
+                    else if(quarter_grades == '1st-2nd')
+                    {
+                        {{--  alert('4th');  --}}
+                        window.open("{{ route('faculty.MyAdvisoryClass.first_second_print_average') }}?search_sy="+search_sy, '', 'height=800,width=800')
+                         
+                        {{--  return;  --}}
+                    }
+                    else if(quarter_grades == '1st-3rd')
+                    {
+                        {{--  alert('4th');  --}}
+                        window.open("{{ route('faculty.MyAdvisoryClass.first_third_print_average') }}?search_sy="+search_sy, '', 'height=800,width=800')
+                         
+                        {{--  return;  --}}
+                    }
+                    else if(quarter_grades == '1st-4th')
+                    {
+                        {{--  alert('4th');  --}}
+                        window.open("{{ route('faculty.MyAdvisoryClass.first_fourth_print_average') }}?search_sy="+search_sy, '', 'height=800,width=800')
+                         
+                        {{--  return;  --}}
+                    }
+                    
 
                     if(semester_grades == '1st')
                     {
@@ -411,7 +539,7 @@
                             window.open("{{ route('faculty.MyAdvisoryClass.print_firstSem_secondq') }}?search_sy1="+search_sy1, '', 'height=800,width=800') 
                         }
                     }
-                    else
+                    else if(semester_grades == '2nd')
                     {
                         if(quarter_ == '1st')
                         {
@@ -420,6 +548,21 @@
                         else
                         {
                             window.open("{{ route('faculty.MyAdvisoryClass.print_secondSem_secondq') }}?search_sy1="+search_sy1, '', 'height=800,width=800') 
+                        }
+                    }
+                    else
+                    {
+                        if(quarter_ == '1st-2nd')
+                        {
+                            window.open("{{ route('faculty.MyAdvisoryClass.first_sem_print_average') }}?search_sy1="+search_sy1, '', 'height=800,width=800') 
+                        }
+                        else if(quarter_ == '3rd-4th')
+                        {
+                            window.open("{{ route('faculty.MyAdvisoryClass.second_sem_print_average') }}?search_sy1="+search_sy1, '', 'height=800,width=800') 
+                        }
+                        else
+                        {
+                            window.open("{{ route('faculty.MyAdvisoryClass.final_print_average') }}?search_sy1="+search_sy1, '', 'height=800,width=800') 
                         }
                     }
             

@@ -11,8 +11,12 @@
 
                         <div style="margin-top: 3em; margin-bottom: 3em" class="col-md-10 col-md-offset-1">
                                 <center>
-                                <img class="profile-user-img img-responsive img-circle" id="img--user_photo" src="{{ $Profile->photo ? \File::exists(public_path('/img/account/photo/'.$Profile->photo)) ? asset('/img/account/photo/'.$Profile->photo) : asset('/img/account/photo/blank-user.gif') : asset('/img/account/photo/blank-user.gif') }}" style="width:150px; height:150px;  border-radius:50%;">
-                                    <h2>{{ $Profile->first_name }}'s Profile</h2>
+                                @if ($Profile)
+                                    <img class="profile-user-img img-responsive img-circle" id="img--user_photo" src="{{ $Profile->photo ? \File::exists(public_path('/img/account/photo/'.$Profile->photo)) ? asset('/img/account/photo/'.$Profile->photo) : asset('/img/account/photo/blank-user.gif') : asset('/img/account/photo/blank-user.gif') }}" style="width:150px; height:150px;  border-radius:50%;">
+                                @else
+                                    <img class="profile-user-img img-responsive img-circle" id="img--user_photo" src="{{  asset('/img/account/photo/blank-user.png') }}" style="width:150px; height:150px;  border-radius:50%;">
+                                @endif    
+                                <h2>{{ $Profile ? $Profile->first_name : 'User' }}'s Profile</h2>
                                     <div class="box-body">
                     {{-- <img class="profile-user-img img-responsive" id="img--user_photo" src="{{ $Profile->photo ? \File::exists(public_path('/img/account/photo/'.$Profile->photo)) ? asset('/img/account/photo/'.$Profile->photo) : asset('/img/account/photo/blank-user.gif') : asset('/img/account/photo/blank-user.gif') }}" alt="User profile picture">
                     <h3 class="profile-username text-center" id="display__full_name">{{ $Profile->first_name . ' ' . $Profile->middle_name . ' ' .  $Profile->last_name }}</h3> --}}
@@ -24,7 +28,7 @@
                                     </center>
                                         <form class="hidden" id="form_user_photo_uploader">
                                             <input type="file" id="user--photo" name="user_photo">
-                                            <input type="hidden" name="id" value="{{ $StudentInformation->id }}">
+                                            <input type="hidden" name="id" value="{{ $StudentInformation ? $StudentInformation->id : '' }}">
                                             <button type="submit">fsdfasd</button>
                                         </form>
                             </div>
@@ -43,7 +47,6 @@
                 
                 <div class="modal-body">
                        
-                        {{-- <img class="profile-user-img img-responsive img-circle" id="img--user_photo" src="{{ $Profile->photo ? \File::exists(public_path('/img/account/photo/'.$Profile->photo)) ? asset('/img/account/photo/'.$Profile->photo) : asset('/img/account/photo/blank-user.gif') : asset('/img/account/photo/blank-user.gif') }}" alt="User profile picture"> --}}
                         
                         
                             

@@ -12,7 +12,7 @@
       <span class="logo-mini"><img src="{{ asset('/img/sja-logo.png') }}" style="height: 35px;"></span>
       <!-- logo for regular state and mobile devices -->
       <span class="logo-lg">
-      {{--  <img src="{{ asset('frontend/assets/img/mini-logo.jpg') }}" style="height: 35px; margin: -5px 10px 0 -10px;">  --}}
+      {{--  <img src="{{ asset('/img/sja-logo.png') }}" style="height: 35px; margin: -5px 10px 0 -10px;">  --}}
       <b>St. John</b> Academy</span>
     </a>
 
@@ -72,11 +72,11 @@
       <!-- sidebar menu: : style can be found in sidebar.less -->
       <ul class="sidebar-menu" data-widget="tree">
         <li class="header">STUDENT NAVIGATION</li>
-          <li><a href="{{ route('student.dashboard') }}"><i class="fa fa-circle-o"></i> <span>Home</span></a></li>
-          <li><a href="{{ route('student.class_schedule.index') }}"><i class="fa fa-circle-o"></i> <span>Class Schedule</span></a></li>
-          <li><a href="{{ route('student.grade_sheet.index') }}"><i class="fa fa-circle-o"></i> <span>Grade Sheet</span></a></li>
+          <li><a href="{{ route('student.dashboard') }}"><i class="fa fa-home fa-fw fa-lg"></i>&nbsp;&nbsp;&nbsp; <span>Home</span></a></li>
+          <li><a href="{{ route('student.class_schedule.index') }}"><i class="fa fa-calendar fa-lgx"></i>&nbsp;&nbsp;&nbsp; <span>Class Schedule</span></a></li>
+          <li><a href="{{ route('student.grade_sheet.index') }}"><i class="fa fa-file-text-o fa-lg"></i>&nbsp;&nbsp;&nbsp; <span>Grade Sheet</span></a></li>
           {{--  <li><a href="{{ route('admin.faculty_information') }}"><i class="fa fa-circle-o"></i> <span>Balances</span></a></li>  --}}
-          <li><a href="{{ route('student.my_account.index') }}"><i class="fa fa-circle-o"></i> <span>My Profile</span></a></li>
+          <li><a href="{{ route('student.my_account.index') }}"><i class="fa fa-user fa-lg"></i>&nbsp;&nbsp;&nbsp;  <span>My Profile</span></a></li>
       </ul>
     </section>
     <!-- /.sidebar -->

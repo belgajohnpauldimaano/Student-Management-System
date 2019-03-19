@@ -33,6 +33,9 @@
                                                                 Re-Enroll
                                                             </button>
                                                         @else
+                                                        <button type="button" style="margin-right:2px" class="btn btn-danger js-btn_re_enroll_student" data-id="{{ $data->enrollment_id }}" aria-expanded="true">
+                                                            Re-Enroll
+                                                        </button>
                                                             <button type="button" style="margin-right:2px" class="btn btn-danger js-btn_cancel_enroll_student" data-id="{{ $data->enrollment_id }}" aria-expanded="true">
                                                                 Cancel Enroll
                                                             </button>
