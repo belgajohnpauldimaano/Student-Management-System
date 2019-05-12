@@ -15,10 +15,12 @@ class SchoolYearController extends Controller
         {
             $SchoolYear = \App\SchoolYear::where('status', 1)->where('school_year', 'like', '%'.$request->search.'%')->paginate(10);
             return view('control_panel.school_year.partials.data_list', compact('SchoolYear'))->render();
+            
         }
         $SchoolYear = \App\SchoolYear::where('status', 1)->paginate(10);
         return view('control_panel.school_year.index', compact('SchoolYear'));
     }
+    
     public function modal_data (Request $request) 
     {
         $SchoolYear = NULL;
@@ -32,7 +34,8 @@ class SchoolYearController extends Controller
     public function save_data (Request $request) 
     {
         $rules = [
-            'school_year' => 'required'
+            'school_year_id' => 'required'
+           
         ];
 
         $Validator = \Validator($request->all(), $rules);
@@ -57,6 +60,7 @@ class SchoolYearController extends Controller
         $SchoolYear->save();
         return response()->json(['res_code' => 0, 'res_msg' => 'Data successfully saved.']);
     }
+
     public function toggle_current_sy (Request $request)
     {
         $SchoolYear = \App\SchoolYear::where('id', $request->id)->first();

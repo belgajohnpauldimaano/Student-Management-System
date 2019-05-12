@@ -24,14 +24,15 @@
                                     }
                                 }
 
-                            ?>
+                        ?>
+
                         <h4>Subject : <span class="text-red"><i>{{ $ClassSubjectDetail->id }} {{ $ClassSubjectDetail->subject }}</i></span> 
                         {{--  Time : <span class="text-red"><i>{{ strftime('%r',strtotime($ClassSubjectDetail->class_time_from)) . ' - ' . strftime('%r',strtotime($ClassSubjectDetail->class_time_to)) }}</i></span> Days : <span class="text-red"><i>{{ $ClassSubjectDetail->class_days }}</i></span>  --}}
                         Schedule : <span class="text-red"><i>{{ rtrim($daysDisplay, '/') }}</i></span>
                         </h4>
                         <h4>Grade & Section : <span class="text-red"><i>{{ $ClassSubjectDetail->grade_level . ' ' .$ClassSubjectDetail->section }}</i></span></h4>
                         <h4>Semester: <span class="text-red"><i>{{ $ClassSubjectDetail ? $ClassSubjectDetail->sem == 1 ? 'First' : 'Second' : '' }}</i></span></h4>
-                        
+                        {{-- <h4>{{ $semester }}</h4> --}}
                         <div class="pull-right">
                             {{--  {{ $Enrollment ? $Enrollment->links() : '' }}  --}}
                         </div>
@@ -39,7 +40,7 @@
                         @if($ClassSubjectDetail->grade_level==11 || $ClassSubjectDetail->grade_level==12)
                             
                             @if($ClassSubjectDetail->sem==1)
-                                    <button class="btn btn-flat btn-danger pull-right" id="js-btn_print" data-id="{{ $ClassSubjectDetail->id }}"><i class="fa fa-file-pdf"></i> Print</button>
+                                    <button class="btn btn-flat btn-danger pull-right" id="js-btn_print1" data-id="{{ $ClassSubjectDetail->id }}"><i class="fa fa-file-pdf"></i> Print</button>
                                     <table class="table no-margin">
                                         <thead>
                                             <tr>
@@ -144,10 +145,10 @@
                                                     @endif
                                                 @endif
                                                 <tr>
-                                                        <td colspan="7">
-                                                            <b>Female</b>
-                                                        </td>
-                                                    </tr>
+                                                    <td colspan="7">
+                                                        <b>Female</b>
+                                                    </td>
+                                                </tr>
                                                 @if ($EnrollmentFemale)
                                                     @if ($ClassSubjectDetail->grading_status == 2)
                                                         @foreach ($EnrollmentFemale as $key => $data)
@@ -234,7 +235,7 @@
                                         </tbody>
                                     </table>
                             @else
-                            <button class="btn btn-flat btn-danger pull-right" id="js-btn_print" data-id="{{ $ClassSubjectDetail->id }}"><i class="fa fa-file-pdf"></i> Print</button>
+                            <button class="btn btn-flat btn-danger pull-right" id="js-btn_print1" data-id="{{ $ClassSubjectDetail->id }}"><i class="fa fa-file-pdf"></i> Print</button>
                             <table class="table no-margin">
                                 <thead>
                                     <tr>
@@ -564,10 +565,10 @@
                                             @endif
                                         @endif
                                         <tr>
-                                                <td colspan="7">
-                                                    <b>Female</b>
-                                                </td>
-                                            </tr>
+                                            <td colspan="7">
+                                                <b>Female</b>
+                                            </td>
+                                        </tr>
                                         @if ($EnrollmentFemale)
                                             @if ($ClassSubjectDetail->grading_status == 2)
                                                 @foreach ($EnrollmentFemale as $key => $data)

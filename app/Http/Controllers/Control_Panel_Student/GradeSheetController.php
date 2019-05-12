@@ -479,7 +479,8 @@ class GradeSheetController extends Controller
             }
 
             
-            $pdf = \PDF::loadView('control_panel_student.grade_sheet.partials.print', compact('GradeSheetData', 'grade_level', 'StudentInformation', 'ClassDetail', 'general_avg'))->render();
+            $pdf = \PDF::loadView('control_panel_student.grade_sheet.partials.print', 
+                compact('GradeSheetData', 'grade_level', 'StudentInformation', 'ClassDetail', 'general_avg'))->render();
             $pdf->setPaper('Letter', 'portrait');
             // return $pdf->stream();
             return view('pdfview', array('pdf' => false));

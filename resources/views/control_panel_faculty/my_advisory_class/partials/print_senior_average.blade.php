@@ -136,626 +136,9 @@
                     <tbody>
                             @if($sem == 'First')
                             
-                                @if($NumberOfSubject->class_subject_order == 7)
-                                    <tr>
-                                        <td colspan="6">
-                                            <b>Male</b>
-                                        </td>
-                                    </tr>
-                                    @foreach($GradeSheetMale as $key => $sub)
-                                    <tr>
-                                        <td>{{ $key + 1 }}.</td>
-                                        <td>{{ $sub->student_name }}</td>
-                                        <td style="text-align: center">
-                                            <?php
-                                            $formattedNum = number_format(round($average = ($sub->subject_1 + $sub->subject_2 + $sub->subject_3 + $sub->subject_4 + $sub->subject_5 + $sub->subject_6 + $sub->subject_7)/7), 0);
-                                            echo $formattedNum;
-                                            ?>                                                
-                                        </td>
-                                        <td style="text-align: center">
-                                            <?php
-                                                $sec_g = \App\Grade_sheet_firstsemsecond::where('enrollment_id', $sub->enrollment_id)->first();
-                                                $result = number_format(round($average = ($sec_g->subject_1 + $sec_g->subject_2 + $sec_g->subject_3 + $sec_g->subject_4 + $sec_g->subject_5 + $sec_g->subject_6 + $sec_g->subject_7)/7), 0);
-                                                echo $result;
-                                            ?>    
-                                            </td>
-                                        <td style="text-align: center">
-                                            <?php 
-                                                echo round($result_final = ($formattedNum + $result) / 2);
-                                            ?>
-                                        </td>
-                                        @if(round($result_final) >= 75 && round($result_final) <= 89)
-                                            <td>
-                                                <center>Passed</center>
-                                            </td>
-                                        @elseif(round($result_final) >= 90 && round($result_final) <= 94)
-                                            <td>
-                                                <center>with honors</center>
-                                            </td>
-                                        @elseif(round($result_final)>= 95 && round($result_final) <= 97)
-                                            <td>
-                                                <center>with high honors</center>
-                                            </td>
-                                        @elseif(round($result_final) >= 98 && round($result_final) <= 100)
-                                            <td>
-                                                <center>with highest honors</center>
-                                            </td>
-                                        @elseif(round($result_final) < 75)
-                                            <td>
-                                                <center>Failed</center>
-                                            </td>
-                                        @endif
-                                    </tr>
-                                    @endforeach
-                                
-                                        <tr>
-                                            <td colspan="6">
-                                                <b>Female</b>
-                                            </td>
-                                        </tr>
-                                        @foreach($GradeSheetFeMale as $key => $sub)
-                                        <tr>
-                                            <td>{{ $key + 1 }}.</td>
-                                            <td>{{ $sub->student_name }}</td>
-                                            <td style="text-align: center">
-                                                <?php
-                                                $formattedNum = number_format(round($average = ($sub->subject_1 + $sub->subject_2 + $sub->subject_3 + $sub->subject_4 + $sub->subject_5 + $sub->subject_6 + $sub->subject_7)/7), 0);
-                                                echo $formattedNum;
-                                                ?>                                                
-                                            </td>
-                                            <td style="text-align: center">
-                                                <?php
-                                                    $sec_g = \App\Grade_sheet_firstsemsecond::where('enrollment_id', $sub->enrollment_id)->first();
-                                                    $result = number_format(round($average = ($sec_g->subject_1 + $sec_g->subject_2 + $sec_g->subject_3 + $sec_g->subject_4 + $sec_g->subject_5 + $sec_g->subject_6 + $sec_g->subject_7)/7), 0);echo $result;
-                                                ?>    
-                                                </td>
-                                            <td style="text-align: center">
-                                                <?php 
-                                                    echo round($result_final = ($formattedNum + $result) / 2);
-                                                ?>
-                                            </td>
-                                            @if(round($result_final) >= 75 && round($result_final) <= 89)
-                                                <td>
-                                                    <center>Passed</center>
-                                                </td>
-                                            @elseif(round($result_final) >= 90 && round($result_final) <= 94)
-                                                <td>
-                                                    <center>with honors</center>
-                                                </td>
-                                            @elseif(round($result_final)>= 95 && round($result_final) <= 97)
-                                                <td>
-                                                    <center>with high honors</center>
-                                                </td>
-                                            @elseif(round($result_final) >= 98 && round($result_final) <= 100)
-                                                <td>
-                                                    <center>with highest honors</center>
-                                                </td>
-                                            @elseif(round($result_final) < 75)
-                                                <td>
-                                                    <center>Failed</center>
-                                                </td>
-                                            @endif
-                                        </tr>
-                                        @endforeach
-                                @elseif($NumberOfSubject->class_subject_order == 8)
-                                    <tr>
-                                        <td colspan="6">
-                                            <b>Male</b>
-                                        </td>
-                                    </tr>
-                                    @foreach($GradeSheetMale as $key => $sub)
-                                    <tr>
-                                        <td>{{ $key + 1 }}.</td>
-                                        <td>{{ $sub->student_name }}</td>
-                                        <td style="text-align: center">
-                                            <?php
-                                            $formattedNum = number_format(round($average = ($sub->subject_1 + $sub->subject_2 + $sub->subject_3 + $sub->subject_4 + $sub->subject_5 + $sub->subject_6 + $sub->subject_7 + $sub->subject_8)/8), 0);
-                                            echo $formattedNum;
-                                            ?>                                                
-                                        </td>
-                                        <td style="text-align: center">
-                                            <?php
-                                                $sec_g = \App\Grade_sheet_firstsemsecond::where('enrollment_id', $sub->enrollment_id)->first();
-                                                $result = number_format(round($average = ($sec_g->subject_1 + $sec_g->subject_2 + $sec_g->subject_3 + $sec_g->subject_4 + $sec_g->subject_5 + $sec_g->subject_6 + $sec_g->subject_7+$sec_g->subject_8)/8), 0);
-                                                echo $result;
-                                            ?>    
-                                            </td>
-                                        <td style="text-align: center">
-                                            <?php 
-                                                echo round($result_final = ($formattedNum + $result) / 2);
-                                            ?>
-                                        </td>
-                                        @if(round($result_final) >= 75 && round($result_final) <= 89)
-                                            <td>
-                                                <center>Passed</center>
-                                            </td>
-                                        @elseif(round($result_final) >= 90 && round($result_final) <= 94)
-                                            <td>
-                                                <center>with honors</center>
-                                            </td>
-                                        @elseif(round($result_final)>= 95 && round($result_final) <= 97)
-                                            <td>
-                                                <center>with high honors</center>
-                                            </td>
-                                        @elseif(round($result_final) >= 98 && round($result_final) <= 100)
-                                            <td>
-                                                <center>with highest honors</center>
-                                            </td>
-                                        @elseif(round($result_final) < 75)
-                                            <td>
-                                                <center>Failed</center>
-                                            </td>
-                                        @endif
-                                    </tr>
-                                    @endforeach
-                                
-                                        <tr>
-                                            <td colspan="6">
-                                                <b>Female</b>
-                                            </td>
-                                        </tr>
-                                        @foreach($GradeSheetFeMale as $key => $sub)
-                                        <tr>
-                                            <td>{{ $key + 1 }}.</td>
-                                            <td>{{ $sub->student_name }}</td>
-                                            <td style="text-align: center">
-                                                <?php
-                                                $formattedNum = number_format(round($average = ($sub->subject_1 + $sub->subject_2 + $sub->subject_3 + $sub->subject_4 + $sub->subject_5 + $sub->subject_6 + $sub->subject_7 + $sub->subject_8)/8), 0);
-                                                echo $formattedNum;
-                                                ?>                                                
-                                            </td>
-                                            <td style="text-align: center">
-                                                <?php
-                                                    $sec_g = \App\Grade_sheet_firstsemsecond::where('enrollment_id', $sub->enrollment_id)->first();
-                                                    $result = number_format(round($average = ($sec_g->subject_1 + $sec_g->subject_2 + $sec_g->subject_3 + $sec_g->subject_4 + $sec_g->subject_5 + $sec_g->subject_6 + $sec_g->subject_7+$sec_g->subject_8)/8), 0);
-                                                echo $result;
-                                                ?>    
-                                                </td>
-                                            <td style="text-align: center">
-                                                <?php 
-                                                    echo round($result_final = ($formattedNum + $result) / 2);
-                                                ?>
-                                            </td>
-                                            @if(round($result_final) >= 75 && round($result_final) <= 89)
-                                                <td>
-                                                    <center>Passed</center>
-                                                </td>
-                                            @elseif(round($result_final) >= 90 && round($result_final) <= 94)
-                                                <td>
-                                                    <center>with honors</center>
-                                                </td>
-                                            @elseif(round($result_final)>= 95 && round($result_final) <= 97)
-                                                <td>
-                                                    <center>with high honors</center>
-                                                </td>
-                                            @elseif(round($result_final) >= 98 && round($result_final) <= 100)
-                                                <td>
-                                                    <center>with highest honors</center>
-                                                </td>
-                                            @elseif(round($result_final) < 75)
-                                                <td>
-                                                    <center>Failed</center>
-                                                </td>
-                                            @endif
-                                        </tr>
-                                        @endforeach
-                                @else
-                                    <tr>
-                                        <td colspan="6">
-                                            <b>Male</b>
-                                        </td>
-                                    </tr>
-                                    @foreach($GradeSheetMale as $key => $sub)
-                                    <tr>
-                                        <td>{{ $key + 1 }}.</td>
-                                        <td>{{ $sub->student_name }}</td>
-                                        <td style="text-align: center">
-                                            <?php
-                                            $formattedNum = number_format(round($average = ($sub->subject_1 + $sub->subject_2 + $sub->subject_3 + $sub->subject_4 + $sub->subject_5 + $sub->subject_6 + $sub->subject_7+ $sub->subject_8+ $sub->subject_9)/9), 0);
-                                            echo $formattedNum;
-                                            ?>                                                
-                                        </td>
-                                        <td style="text-align: center">
-                                            <?php
-                                                $sec_g = \App\Grade_sheet_firstsemsecond::where('enrollment_id', $sub->enrollment_id)->first();
-                                                $result = number_format(round($average = ($sec_g->subject_1 + $sec_g->subject_2 + $sec_g->subject_3 + $sec_g->subject_4 + $sec_g->subject_5 + $sec_g->subject_6 + $sec_g->subject_7 + $sec_g->subject_8 + $sec_g->subject_9)/9), 0);
-                                                echo $result;
-                                            ?>    
-                                            </td>
-                                        <td style="text-align: center">
-                                            <?php 
-                                                echo round($result_final = ($formattedNum + $result) / 2);
-                                            ?>
-                                        </td>
-                                        @if(round($result_final) >= 75 && round($result_final) <= 89)
-                                            <td>
-                                                <center>Passed</center>
-                                            </td>
-                                        @elseif(round($result_final) >= 90 && round($result_final) <= 94)
-                                            <td>
-                                                <center>with honors</center>
-                                            </td>
-                                        @elseif(round($result_final)>= 95 && round($result_final) <= 97)
-                                            <td>
-                                                <center>with high honors</center>
-                                            </td>
-                                        @elseif(round($result_final) >= 98 && round($result_final) <= 100)
-                                            <td>
-                                                <center>with highest honors</center>
-                                            </td>
-                                        @elseif(round($result_final) < 75)
-                                            <td>
-                                                <center>Failed</center>
-                                            </td>
-                                        @endif
-                                    </tr>
-                                    @endforeach
-                                
-                                        <tr>
-                                            <td colspan="6">
-                                                <b>Female</b>
-                                            </td>
-                                        </tr>
-                                        @foreach($GradeSheetFeMale as $key => $sub)
-                                        <tr>
-                                            <td>{{ $key + 1 }}.</td>
-                                            <td>{{ $sub->student_name }}</td>
-                                            <td style="text-align: center">
-                                                <?php
-                                                $formattedNum = number_format(round($average = ($sub->subject_1 + $sub->subject_2 + $sub->subject_3 + $sub->subject_4 + $sub->subject_5 + $sub->subject_6 + $sub->subject_7 + $sub->subject_8+ $sub->subject_9)/9), 0);
-                                                echo $formattedNum;
-                                                ?>                                                
-                                            </td>
-                                            <td style="text-align: center">
-                                                <?php
-                                                    $sec_g = \App\Grade_sheet_firstsemsecond::where('enrollment_id', $sub->enrollment_id)->first();
-                                                    $result = number_format(round($average = ($sec_g->subject_1 + $sec_g->subject_2 + $sec_g->subject_3 + $sec_g->subject_4 + $sec_g->subject_5 + $sec_g->subject_6 + $sec_g->subject_7 + $sec_g->subject_8 + $sec_g->subject_9)/9), 0);echo $result;
-                                                ?>    
-                                                </td>
-                                            <td style="text-align: center">
-                                                <?php 
-                                                    echo round($result_final = ($formattedNum + $result) / 2);
-                                                ?>
-                                            </td>
-                                            @if(round($result_final) >= 75 && round($result_final) <= 89)
-                                                <td>
-                                                    <center>Passed</center>
-                                                </td>
-                                            @elseif(round($result_final) >= 90 && round($result_final) <= 94)
-                                                <td>
-                                                    <center>with honors</center>
-                                                </td>
-                                            @elseif(round($result_final)>= 95 && round($result_final) <= 97)
-                                                <td>
-                                                    <center>with high honors</center>
-                                                </td>
-                                            @elseif(round($result_final) >= 98 && round($result_final) <= 100)
-                                                <td>
-                                                    <center>with highest honors</center>
-                                                </td>
-                                            @elseif(round($result_final) < 75)
-                                                <td>
-                                                    <center>Failed</center>
-                                                </td>
-                                            @endif
-                                        </tr>
-                                        @endforeach
-                                @endif
-                                
-                            @elseif($sem == 'Second')
-                                        
-                                    @if($NumberOfSubject->class_subject_order == 7)
-                                        <tr>
-                                            <td colspan="6">
-                                                <b>Male</b>
-                                            </td>
-                                        </tr>
-                                        @foreach($GradeSheetMale as $key => $sub)
-                                        <tr>
-                                            <td>{{ $key + 1 }}.</td>
-                                            <td>{{ $sub->student_name }}</td>
-                                            <td style="text-align: center">
-                                                <?php
-                                                $formattedNum = number_format(round($average = ($sub->subject_1 + $sub->subject_2 + $sub->subject_3 + $sub->subject_4 + $sub->subject_5 + $sub->subject_6 + $sub->subject_7)/7), 0);
-                                                echo $formattedNum;
-                                                ?>                                                
-                                            </td>
-                                            <td style="text-align: center">
-                                                <?php
-                                                    $sec_g = \App\Grade_sheet_secondsemsecond::where('enrollment_id', $sub->enrollment_id)->first();
-                                                    $result = number_format(round($average = ($sec_g->subject_1 + $sec_g->subject_2 + $sec_g->subject_3 + $sec_g->subject_4 + $sec_g->subject_5 + $sec_g->subject_6 + $sec_g->subject_7)/7), 0);
-                                                    echo $result;
-                                                ?>    
-                                                </td>
-                                            <td style="text-align: center">
-                                                <?php 
-                                                    echo round($result_final = ($formattedNum + $result) / 2);
-                                                ?>
-                                            </td>
-                                            @if(round($result_final) >= 75 && round($result_final) <= 89)
-                                                <td>
-                                                    <center>Passed</center>
-                                                </td>
-                                            @elseif(round($result_final) >= 90 && round($result_final) <= 94)
-                                                <td>
-                                                    <center>with honors</center>
-                                                </td>
-                                            @elseif(round($result_final)>= 95 && round($result_final) <= 97)
-                                                <td>
-                                                    <center>with high honors</center>
-                                                </td>
-                                            @elseif(round($result_final) >= 98 && round($result_final) <= 100)
-                                                <td>
-                                                    <center>with highest honors</center>
-                                                </td>
-                                            @elseif(round($result_final) < 75)
-                                                <td>
-                                                    <center>Failed</center>
-                                                </td>
-                                            @endif
-                                        </tr>
-                                        @endforeach
-                                    
-                                            <tr>
-                                                <td colspan="6">
-                                                    <b>Female</b>
-                                                </td>
-                                            </tr>
-                                            @foreach($GradeSheetFeMale as $key => $sub)
-                                            <tr>
-                                                <td>{{ $key + 1 }}.</td>
-                                                <td>{{ $sub->student_name }}</td>
-                                                <td style="text-align: center">
-                                                    <?php
-                                                    $formattedNum = number_format(round($average = ($sub->subject_1 + $sub->subject_2 + $sub->subject_3 + $sub->subject_4 + $sub->subject_5 + $sub->subject_6 + $sub->subject_7)/7), 0);
-                                                    echo $formattedNum;
-                                                    ?>                                                
-                                                </td>
-                                                <td style="text-align: center">
-                                                    <?php
-                                                        $sec_g = \App\Grade_sheet_secondsemsecond::where('enrollment_id', $sub->enrollment_id)->first();
-                                                        $result = number_format(round($average = ($sec_g->subject_1 + $sec_g->subject_2 + $sec_g->subject_3 + $sec_g->subject_4 + $sec_g->subject_5 + $sec_g->subject_6 + $sec_g->subject_7)/7), 0);
-                                                        echo $result;
-                                                    ?>    
-                                                    </td>
-                                                <td style="text-align: center">
-                                                    <?php 
-                                                        echo round($result_final = ($formattedNum + $result) / 2);
-                                                    ?>
-                                                </td>
-                                                @if(round($result_final) >= 75 && round($result_final) <= 89)
-                                                    <td>
-                                                        <center>Passed</center>
-                                                    </td>
-                                                @elseif(round($result_final) >= 90 && round($result_final) <= 94)
-                                                    <td>
-                                                        <center>with honors</center>
-                                                    </td>
-                                                @elseif(round($result_final)>= 95 && round($result_final) <= 97)
-                                                    <td>
-                                                        <center>with high honors</center>
-                                                    </td>
-                                                @elseif(round($result_final) >= 98 && round($result_final) <= 100)
-                                                    <td>
-                                                        <center>with highest honors</center>
-                                                    </td>
-                                                @elseif(round($result_final) < 75)
-                                                    <td>
-                                                        <center>Failed</center>
-                                                    </td>
-                                                @endif
-                                            </tr>
-                                            @endforeach
-                                    @elseif($NumberOfSubject->class_subject_order == 8)
-                                        <tr>
-                                            <td colspan="6">
-                                                <b>Male</b>
-                                            </td>
-                                        </tr>
-                                        @foreach($GradeSheetMale as $key => $sub)
-                                        <tr>
-                                            <td>{{ $key + 1 }}.</td>
-                                            <td>{{ $sub->student_name }}</td>
-                                            <td style="text-align: center">
-                                                <?php
-                                                $formattedNum = number_format(round($average = ($sub->subject_1 + $sub->subject_2 + $sub->subject_3 + $sub->subject_4 + $sub->subject_5 + $sub->subject_6 + $sub->subject_7 + $sub->subject_8)/8), 0);
-                                                echo $formattedNum;
-                                                ?>                                                
-                                            </td>
-                                            <td style="text-align: center">
-                                                <?php
-                                                    $sec_g = \App\Grade_sheet_secondsemsecond::where('enrollment_id', $sub->enrollment_id)->first();
-                                                    $result = number_format(round($average = ($sec_g->subject_1 + $sec_g->subject_2 + $sec_g->subject_3 + $sec_g->subject_4 + $sec_g->subject_5 + $sec_g->subject_6 + $sec_g->subject_7 + $sec_g->subject_8)/8), 0);
-                                                    echo $result;
-                                                ?>    
-                                                </td>
-                                            <td style="text-align: center">
-                                                <?php 
-                                                    echo round($result_final = ($formattedNum + $result) / 2);
-                                                ?>
-                                            </td>
-                                            @if(round($result_final) >= 75 && round($result_final) <= 89)
-                                                <td>
-                                                    <center>Passed</center>
-                                                </td>
-                                            @elseif(round($result_final) >= 90 && round($result_final) <= 94)
-                                                <td>
-                                                    <center>with honors</center>
-                                                </td>
-                                            @elseif(round($result_final)>= 95 && round($result_final) <= 97)
-                                                <td>
-                                                    <center>with high honors</center>
-                                                </td>
-                                            @elseif(round($result_final) >= 98 && round($result_final) <= 100)
-                                                <td>
-                                                    <center>with highest honors</center>
-                                                </td>
-                                            @elseif(round($result_final) < 75)
-                                                <td>
-                                                    <center>Failed</center>
-                                                </td>
-                                            @endif
-                                        </tr>
-                                        @endforeach
-                                    
-                                            <tr>
-                                                <td colspan="6">
-                                                    <b>Female</b>
-                                                </td>
-                                            </tr>
-                                            @foreach($GradeSheetFeMale as $key => $sub)
-                                            <tr>
-                                                <td>{{ $key + 1 }}.</td>
-                                                <td>{{ $sub->student_name }}</td>
-                                                <td style="text-align: center">
-                                                    <?php
-                                                    $formattedNum = number_format(round($average = ($sub->subject_1 + $sub->subject_2 + $sub->subject_3 + $sub->subject_4 + $sub->subject_5 + $sub->subject_6 + $sub->subject_7 + $sub->subject_8)/8), 0);
-                                                    echo $formattedNum;
-                                                    ?>                                                
-                                                </td>
-                                                <td style="text-align: center">
-                                                    <?php
-                                                        $sec_g = \App\Grade_sheet_secondsemsecond::where('enrollment_id', $sub->enrollment_id)->first();
-                                                        $result = number_format(round($average = ($sec_g->subject_1 + $sec_g->subject_2 + $sec_g->subject_3 + $sec_g->subject_4 + $sec_g->subject_5 + $sec_g->subject_6 + $sec_g->subject_7 + $sec_g->subject_8)/8), 0);
-                                                    echo $result;
-                                                    ?>    
-                                                    </td>
-                                                <td style="text-align: center">
-                                                    <?php 
-                                                        echo round($result_final = ($formattedNum + $result) / 2);
-                                                    ?>
-                                                </td>
-                                                @if(round($result_final) >= 75 && round($result_final) <= 89)
-                                                    <td>
-                                                        <center>Passed</center>
-                                                    </td>
-                                                @elseif(round($result_final) >= 90 && round($result_final) <= 94)
-                                                    <td>
-                                                        <center>with honors</center>
-                                                    </td>
-                                                @elseif(round($result_final)>= 95 && round($result_final) <= 97)
-                                                    <td>
-                                                        <center>with high honors</center>
-                                                    </td>
-                                                @elseif(round($result_final) >= 98 && round($result_final) <= 100)
-                                                    <td>
-                                                        <center>with highest honors</center>
-                                                    </td>
-                                                @elseif(round($result_final) < 75)
-                                                    <td>
-                                                        <center>Failed</center>
-                                                    </td>
-                                                @endif
-                                            </tr>
-                                            @endforeach
-                                    @else
-                                        <tr>
-                                            <td colspan="6">
-                                                <b>Male</b>
-                                            </td>
-                                        </tr>
-                                        @foreach($GradeSheetMale as $key => $sub)
-                                        <tr>
-                                            <td>{{ $key + 1 }}.</td>
-                                            <td>{{ $sub->student_name }}</td>
-                                            <td style="text-align: center">
-                                                <?php
-                                                $formattedNum = number_format(round($average = ($sub->subject_1 + $sub->subject_2 + $sub->subject_3 + $sub->subject_4 + $sub->subject_5 + $sub->subject_6 + $sub->subject_7+ $sub->subject_8+ $sub->subject_9)/9), 0);
-                                                echo $formattedNum;
-                                                ?>                                                
-                                            </td>
-                                            <td style="text-align: center">
-                                                <?php
-                                                    $sec_g = \App\Grade_sheet_secondsemsecond::where('enrollment_id', $sub->enrollment_id)->first();
-                                                    $result = number_format(round($average = ($sec_g->subject_1 + $sec_g->subject_2 + $sec_g->subject_3 + $sec_g->subject_4 + $sec_g->subject_5 + $sec_g->subject_6 + $sec_g->subject_7 + $sec_g->subject_8 + $sec_g->subject_9)/9), 0);
-                                                    echo $result;
-                                                ?>    
-                                                </td>
-                                            <td style="text-align: center">
-                                                <?php 
-                                                    echo round($result_final = ($formattedNum + $result) / 2);
-                                                ?>
-                                            </td>
-                                            @if(round($result_final) >= 75 && round($result_final) <= 89)
-                                                <td>
-                                                    <center>Passed</center>
-                                                </td>
-                                            @elseif(round($result_final) >= 90 && round($result_final) <= 94)
-                                                <td>
-                                                    <center>with honors</center>
-                                                </td>
-                                            @elseif(round($result_final)>= 95 && round($result_final) <= 97)
-                                                <td>
-                                                    <center>with high honors</center>
-                                                </td>
-                                            @elseif(round($result_final) >= 98 && round($result_final) <= 100)
-                                                <td>
-                                                    <center>with highest honors</center>
-                                                </td>
-                                            @elseif(round($result_final) < 75)
-                                                <td>
-                                                    <center>Failed</center>
-                                                </td>
-                                            @endif
-                                        </tr>
-                                        @endforeach
-                                    
-                                            <tr>
-                                                <td colspan="6">
-                                                    <b>Female</b>
-                                                </td>
-                                            </tr>
-                                            @foreach($GradeSheetFeMale as $key => $sub)
-                                            <tr>
-                                                <td>{{ $key + 1 }}.</td>
-                                                <td>{{ $sub->student_name }}</td>
-                                                <td style="text-align: center">
-                                                    <?php
-                                                    $formattedNum = number_format(round($average = ($sub->subject_1 + $sub->subject_2 + $sub->subject_3 + $sub->subject_4 + $sub->subject_5 + $sub->subject_6 + $sub->subject_7 + $sub->subject_8+ $sub->subject_9)/9), 0);
-                                                    echo $formattedNum;
-                                                    ?>                                                
-                                                </td>
-                                                <td style="text-align: center">
-                                                    <?php
-                                                        $sec_g = \App\Grade_sheet_secondsemsecond::where('enrollment_id', $sub->enrollment_id)->first();
-                                                        $result = number_format(round($average = ($sec_g->subject_1 + $sec_g->subject_2 + $sec_g->subject_3 + $sec_g->subject_4 + $sec_g->subject_5 + $sec_g->subject_6 + $sec_g->subject_7 + $sec_g->subject_8 + $sec_g->subject_9)/9), 0);
-                                                        echo $result;
-                                                    ?>    
-                                                    </td>
-                                                <td style="text-align: center">
-                                                    <?php 
-                                                        echo round($result_final = ($formattedNum + $result) / 2);
-                                                    ?>
-                                                </td>
-                                                @if(round($result_final) >= 75 && round($result_final) <= 89)
-                                                    <td>
-                                                        <center>Passed</center>
-                                                    </td>
-                                                @elseif(round($result_final) >= 90 && round($result_final) <= 94)
-                                                    <td>
-                                                        <center>with honors</center>
-                                                    </td>
-                                                @elseif(round($result_final)>= 95 && round($result_final) <= 97)
-                                                    <td>
-                                                        <center>with high honors</center>
-                                                    </td>
-                                                @elseif(round($result_final) >= 98 && round($result_final) <= 100)
-                                                    <td>
-                                                        <center>with highest honors</center>
-                                                    </td>
-                                                @elseif(round($result_final) < 75)
-                                                    <td>
-                                                        <center>Failed</center>
-                                                    </td>
-                                                @endif
-                                            </tr>
-                                            @endforeach
-                                    @endif
-                            @else
-
-                                @if($NumberOfSubject->class_subject_order == 7)
+                            @if($NumberOfSubject->class_subject_order == 7)
                                 <tr>
-                                    <td colspan="6">
+                                    <td colspan="7">
                                         <b>Male</b>
                                     </td>
                                 </tr>
@@ -763,418 +146,1638 @@
                                 <tr>
                                     <td>{{ $key + 1 }}.</td>
                                     <td>{{ $sub->student_name }}</td>
-                                    
+                                    <td style="text-align: center">
                                         <?php
-                                        $formattedNum = number_format(round($average = ($sub->subject_1 + $sub->subject_2 + $sub->subject_3 + $sub->subject_4 + $sub->subject_5 + $sub->subject_6 + $sub->subject_7)/7), 0);
-                                        
+                                        $formattedNum = round($average = ($sub->subject_1 + $sub->subject_2 + $sub->subject_3 + $sub->subject_4 + $sub->subject_5 + $sub->subject_6 + $sub->subject_7)/7);
+                                        echo $formattedNum;
                                         ?>                                                
-                                    
+                                    </td>
+                                    <td style="text-align: center">
                                         <?php
                                             $sec_g = \App\Grade_sheet_firstsemsecond::where('enrollment_id', $sub->enrollment_id)->first();
-                                            $result = number_format(round($average = ($sec_g->subject_1 + $sec_g->subject_2 + $sec_g->subject_3 + $sec_g->subject_4 + $sec_g->subject_5 + $sec_g->subject_6 + $sec_g->subject_7)/7), 0);
-                                            
+                                            $result = round($average = ($sec_g->subject_1 + $sec_g->subject_2 + $sec_g->subject_3 + $sec_g->subject_4 + $sec_g->subject_5 + $sec_g->subject_6 + $sec_g->subject_7)/7);
+                                            echo $result;
                                         ?>    
+                                    </td>
+                            
+                                    <?php                                                    
+                                    $subject1 = round(\App\Grade_sheet_firstsemsecond::where('enrollment_id', $sub->enrollment_id)->first()->subject_1);
+                            
+                                    $fg1 = round(($sub->subject_1 + $subject1) / 2);
+                                                                                
+                                    $subject2 = round(\App\Grade_sheet_firstsemsecond::where('enrollment_id', $sub->enrollment_id)->first()->subject_2);
+                            
+                                    $fg2 = round(($sub->subject_2 + $subject2) / 2);
+                                                                                
+                                    $subject3 = round(\App\Grade_sheet_firstsemsecond::where('enrollment_id', $sub->enrollment_id)->first()->subject_3);
                                     
+                                    $fg3 = round(($sub->subject_3 + $subject3) / 2);
+                                                                                    
+                                    $subject4 = round(\App\Grade_sheet_firstsemsecond::where('enrollment_id', $sub->enrollment_id)->first()->subject_4);
+                                    
+                                    $fg4 = round(($sub->subject_4 + $subject4) / 2);
+                                                                                    
+                                    $subject5 = round(\App\Grade_sheet_firstsemsecond::where('enrollment_id', $sub->enrollment_id)->first()->subject_5);
+                                
+                                    $fg5 = round(($sub->subject_5 + $subject5) / 2);
+                                                                                    
+                                    $subject6 = round(\App\Grade_sheet_firstsemsecond::where('enrollment_id', $sub->enrollment_id)->first()->subject_6);
+                                    
+                                    $fg6 = round(($sub->subject_6 + $subject6) / 2);
+                                                                                    
+                                    $subject7 = round(\App\Grade_sheet_firstsemsecond::where('enrollment_id', $sub->enrollment_id)->first()->subject_7);
+                                    
+                                    $fg7 = round(($sub->subject_7 + $subject7) / 2);
+                                                                                    
+                                    
+                                ?>
+                    
+                                <td>
+                                        <center>                                                
+                                                <?php
+                                                    $average_1sem = number_format($average = ($fg1 + $fg2 + $fg3 + $fg4 + $fg5 + $fg6 + $fg7 )/7, 2);
+                                                    echo round($average_1sem);
+                                                ?>
+                                        </center>
+                                </td>
+                                
+                                @if(round($average_1sem) >= 75 && round($average_1sem) <= 89)
+                                    <td>
+                                        <center>Passed</center>
+                                    </td>
+                                @elseif(round($average_1sem) >= 90 && round($average_1sem) <= 94)
+                                    <td>
+                                        <center>with honors</center>
+                                    </td>
+                                @elseif(round($average_1sem)>= 95 && round($average_1sem) <= 97)
+                                    <td>
+                                        <center>with high honors</center>
+                                    </td>
+                                @elseif(round($average_1sem) >= 98 && round($average_1sem) <= 100)
+                                    <td>
+                                        <center>with highest honors</center>
+                                    </td>
+                                @elseif(round($average_1sem) < 75)
+                                    <td>
+                                        <center>Failed</center>
+                                    </td>
+                                @endif
+                                </tr>
+                                @endforeach
+                            
+                                    <tr>
+                                        <td colspan="7">
+                                            <b>Female</b>
+                                        </td>
+                                    </tr>
+                                    @foreach($GradeSheetFeMale as $key => $sub)
+                                    <tr>
+                                        <td>{{ $key + 1 }}.</td>
+                                        <td>{{ $sub->student_name }}</td>
+                                        <td style="text-align: center">
                                             <?php
-                                                $thi_g = \App\Grade11_Second_Sem::where('enrollment_id', $sub->enrollment_id)->first();
-                                                $thi_result = number_format(round($average = ($thi_g->subject_1 + $thi_g->subject_2 + $thi_g->subject_3 + $thi_g->subject_4 + $thi_g->subject_5 + $thi_g->subject_6 + $thi_g->subject_7)/7), 0);
-                                                
+                                            $formattedNum = round($average = ($sub->subject_1 + $sub->subject_2 + $sub->subject_3 + $sub->subject_4 + $sub->subject_5 + $sub->subject_6 + $sub->subject_7)/7);
+                                            echo $formattedNum;
+                                            ?>                                                
+                                        </td>
+                                        <td style="text-align: center">
+                                            <?php
+                                                $sec_g = \App\Grade_sheet_firstsemsecond::where('enrollment_id', $sub->enrollment_id)->first();
+                                                $result = round($average = ($sec_g->subject_1 + $sec_g->subject_2 + $sec_g->subject_3 + $sec_g->subject_4 + $sec_g->subject_5 + $sec_g->subject_6 + $sec_g->subject_7)/7);
+                                                echo $result;
                                             ?>    
+                                            </td>
+                                            <?php                                                    
+                                            $subject1 = round(\App\Grade_sheet_firstsemsecond::where('enrollment_id', $sub->enrollment_id)->first()->subject_1);
                                     
-                                        <?php
-                                            $fou_g = \App\Grade_sheet_secondsemsecond::where('enrollment_id', $sub->enrollment_id)->first();
-                                            $fou_result = number_format(round($average = ($fou_g->subject_1 + $fou_g->subject_2 + $fou_g->subject_3 + $fou_g->subject_4 + $fou_g->subject_5 + $fou_g->subject_6 + $fou_g->subject_7)/7), 0);
+                                            $fg1 = round(($sub->subject_1 + $subject1) / 2);
+                                                                                        
+                                            $subject2 = round(\App\Grade_sheet_firstsemsecond::where('enrollment_id', $sub->enrollment_id)->first()->subject_2);
+                                    
+                                            $fg2 = round(($sub->subject_2 + $subject2) / 2);
+                                                                                        
+                                            $subject3 = round(\App\Grade_sheet_firstsemsecond::where('enrollment_id', $sub->enrollment_id)->first()->subject_3);
                                             
-                                        ?>    
-                                    
-                                    <td style="text-align:center">
-                                            <?php 
-                                                echo round($average_1sem = ($formattedNum + $result) / 2);
-                                            ?>
-                                    </td>
-                                    <td style="text-align:center">
-                                            <?php 
-                                                echo round($average_2sem = ($thi_result + $fou_result) / 2);
-                                            ?>
-                                    </td>
-                                    <td style="text-align: center">
-                                        <?php 
-                                            echo round($result_final = ($formattedNum + $result + $thi_result + $fou_result) / 4);
+                                            $fg3 = round(($sub->subject_3 + $subject3) / 2);
+                                                                                            
+                                            $subject4 = round(\App\Grade_sheet_firstsemsecond::where('enrollment_id', $sub->enrollment_id)->first()->subject_4);
+                                            
+                                            $fg4 = round(($sub->subject_4 + $subject4) / 2);
+                                                                                            
+                                            $subject5 = round(\App\Grade_sheet_firstsemsecond::where('enrollment_id', $sub->enrollment_id)->first()->subject_5);
+                                        
+                                            $fg5 = round(($sub->subject_5 + $subject5) / 2);
+                                                                                            
+                                            $subject6 = round(\App\Grade_sheet_firstsemsecond::where('enrollment_id', $sub->enrollment_id)->first()->subject_6);
+                                            
+                                            $fg6 = round(($sub->subject_6 + $subject6) / 2);
+                                                                                            
+                                            $subject7 = round(\App\Grade_sheet_firstsemsecond::where('enrollment_id', $sub->enrollment_id)->first()->subject_7);
+                                            
+                                            $fg7 = round(($sub->subject_7 + $subject7) / 2);
+                                                                                            
+                                            
                                         ?>
-                                    </td>
-                                    @if(round($result_final) >= 75 && round($result_final) <= 89)
+                            
                                         <td>
-                                            <center>Passed</center>
+                                                <center>                                                
+                                                        <?php
+                                                            $average_1sem = number_format($average = ($fg1 + $fg2 + $fg3 + $fg4 + $fg5 + $fg6 + $fg7 )/7, 2);
+                                                            echo round($average_1sem);
+                                                        ?>
+                                                </center>
                                         </td>
-                                    @elseif(round($result_final) >= 90 && round($result_final) <= 94)
-                                        <td>
-                                            <center>with honors</center>
-                                        </td>
-                                    @elseif(round($result_final)>= 95 && round($result_final) <= 97)
-                                        <td>
-                                            <center>with high honors</center>
-                                        </td>
-                                    @elseif(round($result_final) >= 98 && round($result_final) <= 100)
-                                        <td>
-                                            <center>with highest honors</center>
-                                        </td>
-                                    @elseif(round($result_final) < 75)
-                                        <td>
-                                            <center>Failed</center>
-                                        </td>
-                                    @endif
-                                </tr>
-                                @endforeach
-                        
+                                        
+                                        @if(round($average_1sem) >= 75 && round($average_1sem) <= 89)
+                                            <td>
+                                                <center>Passed</center>
+                                            </td>
+                                        @elseif(round($average_1sem) >= 90 && round($average_1sem) <= 94)
+                                            <td>
+                                                <center>with honors</center>
+                                            </td>
+                                        @elseif(round($average_1sem)>= 95 && round($average_1sem) <= 97)
+                                            <td>
+                                                <center>with high honors</center>
+                                            </td>
+                                        @elseif(round($average_1sem) >= 98 && round($average_1sem) <= 100)
+                                            <td>
+                                                <center>with highest honors</center>
+                                            </td>
+                                        @elseif(round($average_1sem) < 75)
+                                            <td>
+                                                <center>Failed</center>
+                                            </td>
+                                        @endif
+                                    </tr>
+                                    @endforeach
+                            @elseif($NumberOfSubject->class_subject_order == 8)
                                 <tr>
-                                    <td colspan="6">
-                                        <b>Female</b>
+                                    <td colspan="7">
+                                        <b>Male</b>
                                     </td>
                                 </tr>
-                                @foreach($GradeSheetFeMale as $key => $sub)
+                                @foreach($GradeSheetMale as $key => $sub)
                                 <tr>
                                     <td>{{ $key + 1 }}.</td>
                                     <td>{{ $sub->student_name }}</td>
-                                    
+                                    <td style="text-align: center">
                                         <?php
-                                        $formattedNum = number_format(round($average = ($sub->subject_1 + $sub->subject_2 + $sub->subject_3 + $sub->subject_4 + $sub->subject_5 + $sub->subject_6 + $sub->subject_7)/7), 0);
+                                        $formattedNum = round($average = ($sub->subject_1 + $sub->subject_2 + $sub->subject_3 + $sub->subject_4 + $sub->subject_5 + $sub->subject_6 + $sub->subject_7 + $sub->subject_8)/8);
+                                        echo $formattedNum;
                                         ?>                                                
-                                    
+                                    </td>
+                                    <td style="text-align: center">
                                         <?php
                                             $sec_g = \App\Grade_sheet_firstsemsecond::where('enrollment_id', $sub->enrollment_id)->first();
-                                            $result = number_format(round($average = ($sec_g->subject_1 + $sec_g->subject_2 + $sec_g->subject_3 + $sec_g->subject_4 + $sec_g->subject_5 + $sec_g->subject_6 + $sec_g->subject_7)/7), 0);
+                                            $result = round($average = ($sec_g->subject_1 + $sec_g->subject_2 + $sec_g->subject_3 + $sec_g->subject_4 + $sec_g->subject_5 + $sec_g->subject_6 + $sec_g->subject_7+$sec_g->subject_8)/8);
+                                            echo $result;
                                         ?>    
+                                    </td>
+                                    
+                                    <?php                                                    
+                                        $subject1 = round(\App\Grade_sheet_firstsemsecond::where('enrollment_id', $sub->enrollment_id)->first()->subject_1);
+                                
+                                        $fg1 = round(($sub->subject_1 + $subject1) / 2);
+                                                                                    
+                                        $subject2 = round(\App\Grade_sheet_firstsemsecond::where('enrollment_id', $sub->enrollment_id)->first()->subject_2);
+                                
+                                        $fg2 = round(($sub->subject_2 + $subject2) / 2);
+                                                                                    
+                                        $subject3 = round(\App\Grade_sheet_firstsemsecond::where('enrollment_id', $sub->enrollment_id)->first()->subject_3);
                                         
-                                        <?php
-                                            $thi_g = \App\Grade11_Second_Sem::where('enrollment_id', $sub->enrollment_id)->first();
-                                            $thi_result = number_format(round($average = ($thi_g->subject_1 + $thi_g->subject_2 + $thi_g->subject_3 + $thi_g->subject_4 + $thi_g->subject_5 + $thi_g->subject_6 + $thi_g->subject_7)/7), 0);
-                                        ?>    
+                                        $fg3 = round(($sub->subject_3 + $subject3) / 2);
+                                                                                        
+                                        $subject4 = round(\App\Grade_sheet_firstsemsecond::where('enrollment_id', $sub->enrollment_id)->first()->subject_4);
                                         
-                                        <?php
-                                            $fou_g = \App\Grade_sheet_secondsemsecond::where('enrollment_id', $sub->enrollment_id)->first();
-                                            $fou_result = number_format(round($average = ($fou_g->subject_1 + $fou_g->subject_2 + $fou_g->subject_3 + $fou_g->subject_4 + $fou_g->subject_5 + $fou_g->subject_6 + $fou_g->subject_7)/7), 0);
-                                        ?>    
+                                        $fg4 = round(($sub->subject_4 + $subject4) / 2);
+                                                                                        
+                                        $subject5 = round(\App\Grade_sheet_firstsemsecond::where('enrollment_id', $sub->enrollment_id)->first()->subject_5);
+                                    
+                                        $fg5 = round(($sub->subject_5 + $subject5) / 2);
+                                                                                        
+                                        $subject6 = round(\App\Grade_sheet_firstsemsecond::where('enrollment_id', $sub->enrollment_id)->first()->subject_6);
                                         
-                                        <td style="text-align:center">
-                                                <?php 
-                                                    echo round($average_1sem = ($formattedNum + $result) / 2);
-                                                ?>
-                                        </td>
-                                        <td style="text-align:center">
-                                                <?php 
-                                                    echo round($average_2sem = ($thi_result + $fou_result) / 2);
-                                                ?>
-                                        </td>
-                                        <td style="text-align: center">
-                                            <?php 
-                                                echo round($result_final = ($formattedNum + $result + $thi_result + $fou_result) / 4);
-                                            ?>
-                                        </td>
-                                    @if(round($result_final) >= 75 && round($result_final) <= 89)
+                                        $fg6 = round(($sub->subject_6 + $subject6) / 2);
+                                                                                        
+                                        $subject7 = round(\App\Grade_sheet_firstsemsecond::where('enrollment_id', $sub->enrollment_id)->first()->subject_7);
+                                        
+                                        $fg7 = round(($sub->subject_7 + $subject7) / 2);
+                                                                                        
+                                        $subject8 = round(\App\Grade_sheet_firstsemsecond::where('enrollment_id', $sub->enrollment_id)->first()->subject_8);
+                                        
+                                        $fg8 = round(($sub->subject_8 + $subject8) / 2);
+                                                                                        
+                                        
+                                    ?>
+                        
+                                    <td>
+                                            <center>                                                
+                                                    <?php
+                                                        $average_1sem = number_format($average = ($fg1 + $fg2 + $fg3 + $fg4 + $fg5 + $fg6 + $fg7 + $fg8)/8, 2);
+                                                        echo round($average_1sem);
+                                                    ?>
+                                            </center>
+                                    </td>
+                                    
+                                    @if(round($average_1sem) >= 75 && round($average_1sem) <= 89)
                                         <td>
                                             <center>Passed</center>
                                         </td>
-                                    @elseif(round($result_final) >= 90 && round($result_final) <= 94)
+                                    @elseif(round($average_1sem) >= 90 && round($average_1sem) <= 94)
                                         <td>
                                             <center>with honors</center>
                                         </td>
-                                    @elseif(round($result_final)>= 95 && round($result_final) <= 97)
+                                    @elseif(round($average_1sem)>= 95 && round($average_1sem) <= 97)
                                         <td>
                                             <center>with high honors</center>
                                         </td>
-                                    @elseif(round($result_final) >= 98 && round($result_final) <= 100)
+                                    @elseif(round($average_1sem) >= 98 && round($average_1sem) <= 100)
                                         <td>
                                             <center>with highest honors</center>
                                         </td>
-                                    @elseif(round($result_final) < 75)
+                                    @elseif(round($average_1sem) < 75)
                                         <td>
                                             <center>Failed</center>
                                         </td>
                                     @endif
                                 </tr>
                                 @endforeach
-                        @elseif($NumberOfSubject->class_subject_order == 8)
-                            <tr>
-                                <td colspan="6">
-                                    <b>Male</b>
-                                </td>
-                            </tr>
-                            @foreach($GradeSheetMale as $key => $sub)
-                            <tr>
-                                <td>{{ $key + 1 }}.</td>
-                                <td>{{ $sub->student_name }}</td>
-                                
-                                    <?php
-                                        $formattedNum = number_format(round($average = ($sub->subject_1 + $sub->subject_2 + $sub->subject_3 + $sub->subject_4 + $sub->subject_5 + $sub->subject_6 + $sub->subject_7 + $sub->subject_8)/8), 0);
-                                    ?>                                                
-                                
-                                    <?php
-                                        $sec_g = \App\Grade_sheet_firstsemsecond::where('enrollment_id', $sub->enrollment_id)->first();
-                                        $result = number_format(round($average = ($sec_g->subject_1 + $sec_g->subject_2 + $sec_g->subject_3 + $sec_g->subject_4 + $sec_g->subject_5 + $sec_g->subject_6 + $sec_g->subject_7 + $sec_g->subject_8)/8), 0);
-                                    ?>    
+                            
+                                    <tr>
+                                        <td colspan="7">
+                                            <b>Female</b>
+                                        </td>
+                                    </tr>
+                                    @foreach($GradeSheetFeMale as $key => $sub)
+                                    <tr>
+                                        <td>{{ $key + 1 }}.</td>
+                                        <td>{{ $sub->student_name }}</td>
+
+                                        <td style="text-align: center">
+                                            <?php
+                                            $formattedNum = round($average = ($sub->subject_1 + $sub->subject_2 + $sub->subject_3 + $sub->subject_4 + $sub->subject_5 + $sub->subject_6 + $sub->subject_7 + $sub->subject_8)/8);
+                                            echo $formattedNum;
+                                            ?>                                                
+                                        </td>
+                                        <td style="text-align: center">
+                                            <?php
+                                                $sec_g = \App\Grade_sheet_firstsemsecond::where('enrollment_id', $sub->enrollment_id)->first();
+                                                $result = round($average = ($sec_g->subject_1 + $sec_g->subject_2 + $sec_g->subject_3 + $sec_g->subject_4 + $sec_g->subject_5 + $sec_g->subject_6 + $sec_g->subject_7+$sec_g->subject_8)/8);
+                                            echo $result;
+                                            ?>    
+                                            </td>
+
                                     
-                                    <?php
-                                        $thi_g = \App\Grade11_Second_Sem::where('enrollment_id', $sub->enrollment_id)->first();
-                                        $thi_result = number_format(round($average = ($thi_g->subject_1 + $thi_g->subject_2 + $thi_g->subject_3 + $thi_g->subject_4 + $thi_g->subject_5 + $thi_g->subject_6 + $thi_g->subject_7 + $thi_g->subject_8)/8), 0);
-                                    ?>    
+                                            <?php                                                    
+                                            $subject1 = round(\App\Grade_sheet_firstsemsecond::where('enrollment_id', $sub->enrollment_id)->first()->subject_1);
                                     
-                                    <?php
-                                        $fou_g = \App\Grade_sheet_secondsemsecond::where('enrollment_id', $sub->enrollment_id)->first();
-                                        $fou_result = number_format(round($average = ($fou_g->subject_1 + $fou_g->subject_2 + $fou_g->subject_3 + $fou_g->subject_4 + $fou_g->subject_5 + $fou_g->subject_6 + $fou_g->subject_7 + $fou_g->subject_8)/8), 0);
-                                    ?>    
-                                    <td style="text-align:center">
-                                            <?php 
-                                                echo round($average_1sem = ($formattedNum + $result) / 2);
-                                            ?>
-                                    </td>
-                                    <td style="text-align:center">
-                                            <?php 
-                                                echo round($average_2sem = ($thi_result + $fou_result) / 2);
-                                            ?>
-                                    </td>
-                                    <td style="text-align: center">
-                                        <?php 
-                                            echo round($result_final = ($formattedNum + $result + $thi_result + $fou_result) / 4);
+                                            $fg1 = round(($sub->subject_1 + $subject1) / 2);
+                                                                                        
+                                            $subject2 = round(\App\Grade_sheet_firstsemsecond::where('enrollment_id', $sub->enrollment_id)->first()->subject_2);
+                                    
+                                            $fg2 = round(($sub->subject_2 + $subject2) / 2);
+                                                                                        
+                                            $subject3 = round(\App\Grade_sheet_firstsemsecond::where('enrollment_id', $sub->enrollment_id)->first()->subject_3);
+                                            
+                                            $fg3 = round(($sub->subject_3 + $subject3) / 2);
+                                                                                            
+                                            $subject4 = round(\App\Grade_sheet_firstsemsecond::where('enrollment_id', $sub->enrollment_id)->first()->subject_4);
+                                            
+                                            $fg4 = round(($sub->subject_4 + $subject4) / 2);
+                                                                                            
+                                            $subject5 = round(\App\Grade_sheet_firstsemsecond::where('enrollment_id', $sub->enrollment_id)->first()->subject_5);
+                                        
+                                            $fg5 = round(($sub->subject_5 + $subject5) / 2);
+                                                                                            
+                                            $subject6 = round(\App\Grade_sheet_firstsemsecond::where('enrollment_id', $sub->enrollment_id)->first()->subject_6);
+                                            
+                                            $fg6 = round(($sub->subject_6 + $subject6) / 2);
+                                                                                            
+                                            $subject7 = round(\App\Grade_sheet_firstsemsecond::where('enrollment_id', $sub->enrollment_id)->first()->subject_7);
+                                            
+                                            $fg7 = round(($sub->subject_7 + $subject7) / 2);
+                                                                                            
+                                            $subject8 = round(\App\Grade_sheet_firstsemsecond::where('enrollment_id', $sub->enrollment_id)->first()->subject_8);
+                                            
+                                            $fg8 = round(($sub->subject_8 + $subject8) / 2);
+                                                                                            
+                                            
                                         ?>
-                                    </td>
-                                @if(round($result_final) >= 75 && round($result_final) <= 89)
-                                    <td>
-                                        <center>Passed</center>
-                                    </td>
-                                @elseif(round($result_final) >= 90 && round($result_final) <= 94)
-                                    <td>
-                                        <center>with honors</center>
-                                    </td>
-                                @elseif(round($result_final)>= 95 && round($result_final) <= 97)
-                                    <td>
-                                        <center>with high honors</center>
-                                    </td>
-                                @elseif(round($result_final) >= 98 && round($result_final) <= 100)
-                                    <td>
-                                        <center>with highest honors</center>
-                                    </td>
-                                @elseif(round($result_final) < 75)
-                                    <td>
-                                        <center>Failed</center>
-                                    </td>
-                                @endif
-                            </tr>
-                            @endforeach
-                        
+                            
+                                        <td>
+                                                <center>                                                
+                                                        <?php
+                                                            $average_1sem = number_format($average = ($fg1 + $fg2 + $fg3 + $fg4 + $fg5 + $fg6 + $fg7 + $fg8 )/8, 2);
+                                                            echo round($average_1sem);
+                                                        ?>
+                                                </center>
+                                        </td>
+                                        
+                                        @if(round($average_1sem) >= 75 && round($average_1sem) <= 89)
+                                            <td>
+                                                <center>Passed</center>
+                                            </td>
+                                        @elseif(round($average_1sem) >= 90 && round($average_1sem) <= 94)
+                                            <td>
+                                                <center>with honors</center>
+                                            </td>
+                                        @elseif(round($average_1sem)>= 95 && round($average_1sem) <= 97)
+                                            <td>
+                                                <center>with high honors</center>
+                                            </td>
+                                        @elseif(round($average_1sem) >= 98 && round($average_1sem) <= 100)
+                                            <td>
+                                                <center>with highest honors</center>
+                                            </td>
+                                        @elseif(round($average_1sem) < 75)
+                                            <td>
+                                                <center>Failed</center>
+                                            </td>
+                                        @endif
+                                    </tr>
+                                    @endforeach
+                            @else
                                 <tr>
-                                    <td colspan="6">
-                                        <b>Female</b>
+                                    <td colspan="7">
+                                        <b>Male</b>
                                     </td>
                                 </tr>
-                                @foreach($GradeSheetFeMale as $key => $sub)
+                                @foreach($GradeSheetMale as $key => $sub)
                                 <tr>
                                     <td>{{ $key + 1 }}.</td>
                                     <td>{{ $sub->student_name }}</td>
-                                    
+                                    <td style="text-align: center">
                                         <?php
-                                        $formattedNum = number_format(round($average = ($sub->subject_1 + $sub->subject_2 + $sub->subject_3 + $sub->subject_4 + $sub->subject_5 + $sub->subject_6 + $sub->subject_7 + $sub->subject_8)/8), 0);
-                                        
+                                        $formattedNum = round($average = ($sub->subject_1 + $sub->subject_2 + $sub->subject_3 + $sub->subject_4 + $sub->subject_5 + $sub->subject_6 + $sub->subject_7+ $sub->subject_8+ $sub->subject_9)/9);
+                                        echo $formattedNum;
                                         ?>                                                
-                                    
-                                        <?php
-                                            $sec_g = \App\Grade_sheet_firstsemsecond::where('enrollment_id', $sub->enrollment_id)->first();
-                                            $result = number_format(round($average = ($sec_g->subject_1 + $sec_g->subject_2 + $sec_g->subject_3 + $sec_g->subject_4 + $sec_g->subject_5 + $sec_g->subject_6 + $sec_g->subject_7 + $sec_g->subject_8)/8), 0);
-                                       ?>    
-                                        
-                                        <?php
-                                            $thi_g = \App\Grade11_Second_Sem::where('enrollment_id', $sub->enrollment_id)->first();
-                                            $thi_result = number_format(round($average = ($thi_g->subject_1 + $thi_g->subject_2 + $thi_g->subject_3 + $thi_g->subject_4 + $thi_g->subject_5 + $thi_g->subject_6 + $thi_g->subject_7 + $thi_g->subject_8)/8), 0);
-                                        ?>    
-                                        
-                                        <?php
-                                            $fou_g = \App\Grade_sheet_secondsemsecond::where('enrollment_id', $sub->enrollment_id)->first();
-                                            $fou_result = number_format(round($average = ($fou_g->subject_1 + $fou_g->subject_2 + $fou_g->subject_3 + $fou_g->subject_4 + $fou_g->subject_5 + $fou_g->subject_6 + $fou_g->subject_7 + $fou_g->subject_8)/8), 0);
-                                        ?>    
-                                        
-                                        <td style="text-align:center">
-                                                <?php 
-                                                    echo round($average_1sem = ($formattedNum + $result) / 2);
-                                                ?>
-                                        </td>
-                                        <td style="text-align:center">
-                                                <?php 
-                                                    echo round($average_2sem = ($thi_result + $fou_result) / 2);
-                                                ?>
-                                        </td>
-                                        <td style="text-align: center">
-                                            <?php 
-                                                echo round($result_final = ($formattedNum + $result + $thi_result + $fou_result) / 4);
-                                            ?>
-                                        </td>
-                                    @if(round($result_final) >= 75 && round($result_final) <= 89)
-                                        <td>
-                                            <center>Passed</center>
-                                        </td>
-                                    @elseif(round($result_final) >= 90 && round($result_final) <= 94)
-                                        <td>
-                                            <center>with honors</center>
-                                        </td>
-                                    @elseif(round($result_final)>= 95 && round($result_final) <= 97)
-                                        <td>
-                                            <center>with high honors</center>
-                                        </td>
-                                    @elseif(round($result_final) >= 98 && round($result_final) <= 100)
-                                        <td>
-                                            <center>with highest honors</center>
-                                        </td>
-                                    @elseif(round($result_final) < 75)
-                                        <td>
-                                            <center>Failed</center>
-                                        </td>
-                                    @endif
-                                </tr>
-                                @endforeach
-                        @else
-                            <tr>
-                                <td colspan="6">
-                                    <b>Male</b>
-                                </td>
-                            </tr>
-                            @foreach($GradeSheetMale as $key => $sub)
-                            <tr>
-                                <td>{{ $key + 1 }}.</td>
-                                <td>{{ $sub->student_name }}</td>
-                                
-                                    <?php
-                                        $formattedNum = number_format(round($average = ($sub->subject_1 + $sub->subject_2 + $sub->subject_3 + $sub->subject_4 + $sub->subject_5 + $sub->subject_6 + $sub->subject_7+ $sub->subject_8+ $sub->subject_9)/9), 0);
-                                        //echo $formattedNum;
-                                    ?>                                                
-                                
-                                    <?php
-                                        $sec_g = \App\Grade_sheet_firstsemsecond::where('enrollment_id', $sub->enrollment_id)->first();
-                                        $result = number_format(round($average = ($sec_g->subject_1 + $sec_g->subject_2 + $sec_g->subject_3 + $sec_g->subject_4 + $sec_g->subject_5 + $sec_g->subject_6 + $sec_g->subject_7 + $sec_g->subject_8 + $sec_g->subject_9)/9), 0);
-                                        //echo $result;
-                                    ?>    
-                                    
-                                    <?php
-                                        $thi_g = \App\Grade11_Second_Sem::where('enrollment_id', $sub->enrollment_id)->first();
-                                        $thi_result = number_format(round($average = ($thi_g->subject_1 + $thi_g->subject_2 + $thi_g->subject_3 + $thi_g->subject_4 + $thi_g->subject_5 + $thi_g->subject_6 + $thi_g->subject_7 + $thi_g->subject_8 + $thi_g->subject_9)/9), 0);
-                                                //echo $thi_result;
-                                    ?>    
-                                    
-                                    <?php
-                                        $fou_g = \App\Grade_sheet_secondsemsecond::where('enrollment_id', $sub->enrollment_id)->first();
-                                        $fou_result = number_format(round($average = ($fou_g->subject_1 + $fou_g->subject_2 + $fou_g->subject_3 + $fou_g->subject_4 + $fou_g->subject_5 + $fou_g->subject_6 + $fou_g->subject_7 + $fou_g->subject_8+ $thi_g->subject_9)/9), 0);
-                                            //echo $fou_result;
-                                    ?>    
-                                    
-                                    <td style="text-align:center">
-                                            <?php 
-                                                echo round($average_1sem = ($formattedNum + $result) / 2);
-                                            ?>
-                                    </td>
-                                    <td style="text-align:center">
-                                            <?php 
-                                                echo round($average_2sem = ($thi_result + $fou_result) / 2);
-                                            ?>
                                     </td>
                                     <td style="text-align: center">
-                                        <?php 
-                                            echo round($result_final = ($formattedNum + $result + $thi_result + $fou_result) / 4);
-                                        ?>
-                                    </td>
-                                @if(round($result_final) >= 75 && round($result_final) <= 89)
-                                    <td>
-                                        <center>Passed</center>
-                                    </td>
-                                @elseif(round($result_final) >= 90 && round($result_final) <= 94)
-                                    <td>
-                                        <center>with honors</center>
-                                    </td>
-                                @elseif(round($result_final)>= 95 && round($result_final) <= 97)
-                                    <td>
-                                        <center>with high honors</center>
-                                    </td>
-                                @elseif(round($result_final) >= 98 && round($result_final) <= 100)
-                                    <td>
-                                        <center>with highest honors</center>
-                                    </td>
-                                @elseif(round($result_final) < 75)
-                                    <td>
-                                        <center>Failed</center>
-                                    </td>
-                                @endif
-                            </tr>
-                            @endforeach
-                        
-                                <tr>
-                                    <td colspan="6">
-                                        <b>Female</b>
-                                    </td>
-                                </tr>
-                                @foreach($GradeSheetFeMale as $key => $sub)
-                                <tr>
-                                    <td>{{ $key + 1 }}.</td>
-                                    <td>{{ $sub->student_name }}</td>
-                                    
-                                        <?php
-                                        $formattedNum = number_format(round($average = ($sub->subject_1 + $sub->subject_2 + $sub->subject_3 + $sub->subject_4 + $sub->subject_5 + $sub->subject_6 + $sub->subject_7 + $sub->subject_8+ $sub->subject_9)/9), 0);
-                                        
-                                        ?>                                                
-                                    
                                         <?php
                                             $sec_g = \App\Grade_sheet_firstsemsecond::where('enrollment_id', $sub->enrollment_id)->first();
-                                            $result = number_format(round($average = ($sec_g->subject_1 + $sec_g->subject_2 + $sec_g->subject_3 + $sec_g->subject_4 + $sec_g->subject_5 + $sec_g->subject_6 + $sec_g->subject_7 + $sec_g->subject_8 + $sec_g->subject_9)/9), 0);;
+                                            $result = round($average = ($sec_g->subject_1 + $sec_g->subject_2 + $sec_g->subject_3 + $sec_g->subject_4 + $sec_g->subject_5 + $sec_g->subject_6 + $sec_g->subject_7 + $sec_g->subject_8 + $sec_g->subject_9)/9);
+                                            echo $result;
                                         ?>    
+                                    </td>
+
+                                        <?php                                                    
+                                        $subject1 = round(\App\Grade_sheet_firstsemsecond::where('enrollment_id', $sub->enrollment_id)->first()->subject_1);
+                                
+                                        $fg1 = round(($sub->subject_1 + $subject1) / 2);
+                                                                                    
+                                        $subject2 = round(\App\Grade_sheet_firstsemsecond::where('enrollment_id', $sub->enrollment_id)->first()->subject_2);
+                                
+                                        $fg2 = round(($sub->subject_2 + $subject2) / 2);
+                                                                                    
+                                        $subject3 = round(\App\Grade_sheet_firstsemsecond::where('enrollment_id', $sub->enrollment_id)->first()->subject_3);
                                         
-                                        <?php
-                                            $thi_g = \App\Grade11_Second_Sem::where('enrollment_id', $sub->enrollment_id)->first();
-                                            $thi_result = number_format(round($average = ($thi_g->subject_1 + $thi_g->subject_2 + $thi_g->subject_3 + $thi_g->subject_4 + $thi_g->subject_5 + $thi_g->subject_6 + $thi_g->subject_7 + $thi_g->subject_8 + $thi_g->subject_9)/9), 0);
-                                                    
-                                        ?>    
+                                        $fg3 = round(($sub->subject_3 + $subject3) / 2);
+                                                                                        
+                                        $subject4 = round(\App\Grade_sheet_firstsemsecond::where('enrollment_id', $sub->enrollment_id)->first()->subject_4);
                                         
-                                        <?php
-                                            $fou_g = \App\Grade_sheet_secondsemsecond::where('enrollment_id', $sub->enrollment_id)->first();
-                                            $fou_result = number_format(round($average = ($fou_g->subject_1 + $fou_g->subject_2 + $fou_g->subject_3 + $fou_g->subject_4 + $fou_g->subject_5 + $fou_g->subject_6 + $fou_g->subject_7 + $fou_g->subject_8+ $thi_g->subject_9)/9), 0);
-                                                
-                                        ?>    
-                                        <td style="text-align:center">
-                                                <?php 
-                                                    echo round($average_1sem = ($formattedNum + $result) / 2);
-                                                ?>
-                                        </td>
-                                        <td style="text-align:center">
-                                                <?php 
-                                                    echo round($average_2sem = ($thi_result + $fou_result) / 2);
-                                                ?>
-                                        </td>
-                                        <td style="text-align: center">
-                                            <?php 
-                                                echo round($result_final = ($formattedNum + $result + $thi_result + $fou_result) / 4);
-                                            ?>
-                                        </td>
-                                    @if(round($result_final) >= 75 && round($result_final) <= 89)
+                                        $fg4 = round(($sub->subject_4 + $subject4) / 2);
+                                                                                        
+                                        $subject5 = round(\App\Grade_sheet_firstsemsecond::where('enrollment_id', $sub->enrollment_id)->first()->subject_5);
+                                    
+                                        $fg5 = round(($sub->subject_5 + $subject5) / 2);
+                                                                                        
+                                        $subject6 = round(\App\Grade_sheet_firstsemsecond::where('enrollment_id', $sub->enrollment_id)->first()->subject_6);
+                                        
+                                        $fg6 = round(($sub->subject_6 + $subject6) / 2);
+                                                                                        
+                                        $subject7 = round(\App\Grade_sheet_firstsemsecond::where('enrollment_id', $sub->enrollment_id)->first()->subject_7);
+                                        
+                                        $fg7 = round(($sub->subject_7 + $subject7) / 2);
+                                                                                        
+                                        $subject8 = round(\App\Grade_sheet_firstsemsecond::where('enrollment_id', $sub->enrollment_id)->first()->subject_8);
+                                        
+                                        $fg8 = round(($sub->subject_8 + $subject8) / 2);
+                                                                                        
+                                        $subject9 = round(\App\Grade_sheet_firstsemsecond::where('enrollment_id', $sub->enrollment_id)->first()->subject_9);
+                                    
+                                        $fg9 = round(($sub->subject_9 + $subject9) / 2);
+                                    ?>
+                            
+                                    <td>
+                                            <center>                                                
+                                                    <?php
+                                                        $average_1sem = number_format($average = ($fg1 + $fg2 + $fg3 + $fg4 + $fg5 + $fg6 + $fg7 + $fg8 + $fg9)/9, 2);
+                                                        echo round($average_1sem);
+                                                    ?>
+                                            </center>
+                                    </td>
+                                    
+                                    @if(round($average_1sem) >= 75 && round($average_1sem) <= 89)
                                         <td>
                                             <center>Passed</center>
                                         </td>
-                                    @elseif(round($result_final) >= 90 && round($result_final) <= 94)
+                                    @elseif(round($average_1sem) >= 90 && round($average_1sem) <= 94)
                                         <td>
                                             <center>with honors</center>
                                         </td>
-                                    @elseif(round($result_final)>= 95 && round($result_final) <= 97)
+                                    @elseif(round($average_1sem)>= 95 && round($average_1sem) <= 97)
                                         <td>
                                             <center>with high honors</center>
                                         </td>
-                                    @elseif(round($result_final) >= 98 && round($result_final) <= 100)
+                                    @elseif(round($average_1sem) >= 98 && round($average_1sem) <= 100)
                                         <td>
                                             <center>with highest honors</center>
                                         </td>
-                                    @elseif(round($result_final) < 75)
+                                    @elseif(round($average_1sem) < 75)
                                         <td>
                                             <center>Failed</center>
                                         </td>
                                     @endif
                                 </tr>
                                 @endforeach
-                        @endif
+                            
+                                    <tr>
+                                        <td colspan="7">
+                                            <b>Female</b>
+                                        </td>
+                                    </tr>
+
+                                    @foreach($GradeSheetFeMale as $key => $sub)
+                                    <tr>
+                                        <td>{{ $key + 1 }}.</td>
+                                        <td>{{ $sub->student_name }}</td>
+                                        <td style="text-align: center">
+                                            <?php
+                                            $formattedNum = round($average = ($sub->subject_1 + $sub->subject_2 + $sub->subject_3 + $sub->subject_4 + $sub->subject_5 + $sub->subject_6 + $sub->subject_7 + $sub->subject_8+ $sub->subject_9)/9);
+                                            echo $formattedNum;
+                                            ?>                                                
+                                        </td>
+                                        <td style="text-align: center">
+                                            <?php
+                                                $sec_g = \App\Grade_sheet_firstsemsecond::where('enrollment_id', $sub->enrollment_id)->first();
+                                                $result = round($average = ($sec_g->subject_1 + $sec_g->subject_2 + $sec_g->subject_3 + $sec_g->subject_4 + $sec_g->subject_5 + $sec_g->subject_6 + $sec_g->subject_7 + $sec_g->subject_8 + $sec_g->subject_9)/9);
+                                                echo $result;
+                                            ?>    
+                                            </td>
+                                        
+                                        <?php                                                    
+                                            $subject1 = round(\App\Grade_sheet_firstsemsecond::where('enrollment_id', $sub->enrollment_id)->first()->subject_1);
+                                    
+                                            $fg1 = round(($sub->subject_1 + $subject1) / 2);
+                                                                                        
+                                            $subject2 = round(\App\Grade_sheet_firstsemsecond::where('enrollment_id', $sub->enrollment_id)->first()->subject_2);
+                                    
+                                            $fg2 = round(($sub->subject_2 + $subject2) / 2);
+                                                                                        
+                                            $subject3 = round(\App\Grade_sheet_firstsemsecond::where('enrollment_id', $sub->enrollment_id)->first()->subject_3);
+                                            
+                                            $fg3 = round(($sub->subject_3 + $subject3) / 2);
+                                                                                            
+                                            $subject4 = round(\App\Grade_sheet_firstsemsecond::where('enrollment_id', $sub->enrollment_id)->first()->subject_4);
+                                            
+                                            $fg4 = round(($sub->subject_4 + $subject4) / 2);
+                                                                                            
+                                            $subject5 = round(\App\Grade_sheet_firstsemsecond::where('enrollment_id', $sub->enrollment_id)->first()->subject_5);
+                                        
+                                            $fg5 = round(($sub->subject_5 + $subject5) / 2);
+                                                                                            
+                                            $subject6 = round(\App\Grade_sheet_firstsemsecond::where('enrollment_id', $sub->enrollment_id)->first()->subject_6);
+                                            
+                                            $fg6 = round(($sub->subject_6 + $subject6) / 2);
+                                                                                            
+                                            $subject7 = round(\App\Grade_sheet_firstsemsecond::where('enrollment_id', $sub->enrollment_id)->first()->subject_7);
+                                            
+                                            $fg7 = round(($sub->subject_7 + $subject7) / 2);
+                                                                                            
+                                            $subject8 = round(\App\Grade_sheet_firstsemsecond::where('enrollment_id', $sub->enrollment_id)->first()->subject_8);
+                                            
+                                            $fg8 = round(($sub->subject_8 + $subject8) / 2);
+                                                                                            
+                                            $subject9 = round(\App\Grade_sheet_firstsemsecond::where('enrollment_id', $sub->enrollment_id)->first()->subject_9);
+                                        
+                                            $fg9 = round(($sub->subject_9 + $subject9) / 2);
+                                        ?>
+                            
+                                        <td>
+                                                <center>                                                
+                                                        <?php
+                                                            $average_1sem = number_format($average = ($fg1 + $fg2 + $fg3 + $fg4 + $fg5 + $fg6 + $fg7 + $fg8 + $fg9)/9, 2);
+                                                            echo round($average_1sem);
+                                                        ?>
+                                                </center>
+                                        </td>
+                                        
+                                        @if(round($average_1sem) >= 75 && round($average_1sem) <= 89)
+                                            <td>
+                                                <center>Passed</center>
+                                            </td>
+                                        @elseif(round($average_1sem) >= 90 && round($average_1sem) <= 94)
+                                            <td>
+                                                <center>with honors</center>
+                                            </td>
+                                        @elseif(round($average_1sem)>= 95 && round($average_1sem) <= 97)
+                                            <td>
+                                                <center>with high honors</center>
+                                            </td>
+                                        @elseif(round($average_1sem) >= 98 && round($average_1sem) <= 100)
+                                            <td>
+                                                <center>with highest honors</center>
+                                            </td>
+                                        @elseif(round($average_1sem) < 75)
+                                            <td>
+                                                <center>Failed</center>
+                                            </td>
+                                        @endif
+                                    
+                                    </tr>
+                                    @endforeach
                             @endif
+                            
+                        @elseif($sem == 'Second')
+                                    
+                                @if($NumberOfSubject->class_subject_order == 7)
+                                    <tr>
+                                        <td colspan="7">
+                                            <b>Male</b>
+                                        </td>
+                                    </tr>
+                                    @foreach($GradeSheetMale as $key => $sub)
+                                    <tr>
+                                        <td>{{ $key + 1 }}.</td>
+                                        <td>{{ $sub->student_name }}</td>
+                                        <td style="text-align: center">
+                                            <?php
+                                            $formattedNum = round($average = ($sub->subject_1 + $sub->subject_2 + $sub->subject_3 + $sub->subject_4 + $sub->subject_5 + $sub->subject_6 + $sub->subject_7)/7);
+                                            echo $formattedNum;
+                                            ?>                                                
+                                        </td>
+                                        <td style="text-align: center">
+                                            <?php
+                                                $sec_g = \App\Grade_sheet_secondsemsecond::where('enrollment_id', $sub->enrollment_id)->first();
+                                                $result = round($average = ($sec_g->subject_1 + $sec_g->subject_2 + $sec_g->subject_3 + $sec_g->subject_4 + $sec_g->subject_5 + $sec_g->subject_6 + $sec_g->subject_7)/7);
+                                                echo $result;
+                                            ?>    
+                                        </td>
+                                        <?php                                                    
+                                                $subject1 = round(\App\Grade11_Second_Sem::where('enrollment_id', $sub->enrollment_id)->first()->subject_1);
+                                                $subject_1 = round(\App\Grade_sheet_secondsemsecond::where('enrollment_id', $sub->enrollment_id)->first()->subject_1);
+                                        
+                                                $fg_1 = round(($subject_1 + $subject1) / 2);
+                                                                                            
+                                                $subject2 = round(\App\Grade11_Second_Sem::where('enrollment_id', $sub->enrollment_id)->first()->subject_2);
+                                                $subject_2 = round(\App\Grade_sheet_secondsemsecond::where('enrollment_id', $sub->enrollment_id)->first()->subject_2);
+                                        
+                                                $fg_2 = round(($subject_2 + $subject2) / 2);
+                                                                                            
+                                                $subject3 = round(\App\Grade11_Second_Sem::where('enrollment_id', $sub->enrollment_id)->first()->subject_3);
+                                                $subject_3 = round(\App\Grade_sheet_secondsemsecond::where('enrollment_id', $sub->enrollment_id)->first()->subject_3);
+    
+                                                $fg_3 = round(($subject_3 + $subject3) / 2);
+                                                                                                
+                                                $subject4 = round(\App\Grade11_Second_Sem::where('enrollment_id', $sub->enrollment_id)->first()->subject_4);
+                                                $subject_4 = round(\App\Grade_sheet_secondsemsecond::where('enrollment_id', $sub->enrollment_id)->first()->subject_4);
+                                                
+                                                $fg_4 = round(($subject_4 + $subject4) / 2);
+                                                                                                
+                                                $subject5 = round(\App\Grade11_Second_Sem::where('enrollment_id', $sub->enrollment_id)->first()->subject_5);
+                                                $subject_5 = round(\App\Grade_sheet_secondsemsecond::where('enrollment_id', $sub->enrollment_id)->first()->subject_5);
+                                            
+                                                $fg_5 = round(($subject_5 + $subject5) / 2);
+                                                                                                
+                                                $subject6 = round(\App\Grade11_Second_Sem::where('enrollment_id', $sub->enrollment_id)->first()->subject_6);
+                                                $subject_6 = round(\App\Grade_sheet_secondsemsecond::where('enrollment_id', $sub->enrollment_id)->first()->subject_6);
+                                                
+                                                $fg_6 = round(($subject_6 + $subject6) / 2);
+                                                                                                
+                                                $subject7 = round(\App\Grade11_Second_Sem::where('enrollment_id', $sub->enrollment_id)->first()->subject_7);
+                                                $subject_7 = round(\App\Grade_sheet_secondsemsecond::where('enrollment_id', $sub->enrollment_id)->first()->subject_7);
+                                                
+                                                $fg_7 = round(($subject_7 + $subject7) / 2);
+                                                                                                
+                                                
+                                        ?>
+                               
+                                        <td>
+                                                <center>                                                
+                                                        <?php
+                                                            $average_2sem = round($average = ($fg_1 + $fg_2 + $fg_3 + $fg_4 + $fg_5 + $fg_6 + $fg_7 )/7, 2);
+                                                            echo round($average_2sem);
+                                                        ?>
+                                                </center>
+                                        </td>
+                                        @if(round($average_2sem) >= 75 && round($average_2sem) <= 89)
+                                            <td>
+                                                <center>Passed</center>
+                                            </td>
+                                        @elseif(round($average_2sem) >= 90 && round($average_2sem) <= 94)
+                                            <td>
+                                                <center>with honors</center>
+                                            </td>
+                                        @elseif(round($average_2sem)>= 95 && round($average_2sem) <= 97)
+                                            <td>
+                                                <center>with high honors</center>
+                                            </td>
+                                        @elseif(round($average_2sem) >= 98 && round($average_2sem) <= 100)
+                                            <td>
+                                                <center>with highest honors</center>
+                                            </td>
+                                        @elseif(round($average_2sem) < 75)
+                                            <td>
+                                                <center>Failed</center>
+                                            </td>
+                                        @endif
+                                    </tr>
+                                    @endforeach
+                                
+                                        <tr>
+                                            <td colspan="7">
+                                                <b>Female</b>
+                                            </td>
+                                        </tr>
+                                        @foreach($GradeSheetFeMale as $key => $sub)
+                                        <tr>
+                                            <td>{{ $key + 1 }}.</td>
+                                            <td>{{ $sub->student_name }}</td>
+                                            <td style="text-align: center">
+                                                <?php
+                                                $formattedNum = round($average = ($sub->subject_1 + $sub->subject_2 + $sub->subject_3 + $sub->subject_4 + $sub->subject_5 + $sub->subject_6 + $sub->subject_7)/7);
+                                                echo $formattedNum;
+                                                ?>                                                
+                                            </td>
+                                            <td style="text-align: center">
+                                                <?php
+                                                    $sec_g = \App\Grade_sheet_secondsemsecond::where('enrollment_id', $sub->enrollment_id)->first();
+                                                    $result = round($average = ($sec_g->subject_1 + $sec_g->subject_2 + $sec_g->subject_3 + $sec_g->subject_4 + $sec_g->subject_5 + $sec_g->subject_6 + $sec_g->subject_7)/7);
+                                                    echo $result;
+                                                ?>    
+                                            </td>
+                                                <?php                                                    
+                                                $subject1 = round(\App\Grade11_Second_Sem::where('enrollment_id', $sub->enrollment_id)->first()->subject_1);
+                                                $subject_1 = round(\App\Grade_sheet_secondsemsecond::where('enrollment_id', $sub->enrollment_id)->first()->subject_1);
+                                        
+                                                $fg_1 = round(($subject_1 + $subject1) / 2);
+                                                                                            
+                                                $subject2 = round(\App\Grade11_Second_Sem::where('enrollment_id', $sub->enrollment_id)->first()->subject_2);
+                                                $subject_2 = round(\App\Grade_sheet_secondsemsecond::where('enrollment_id', $sub->enrollment_id)->first()->subject_2);
+                                        
+                                                $fg_2 = round(($subject_2 + $subject2) / 2);
+                                                                                            
+                                                $subject3 = round(\App\Grade11_Second_Sem::where('enrollment_id', $sub->enrollment_id)->first()->subject_3);
+                                                $subject_3 = round(\App\Grade_sheet_secondsemsecond::where('enrollment_id', $sub->enrollment_id)->first()->subject_3);
+    
+                                                $fg_3 = round(($subject_3 + $subject3) / 2);
+                                                                                                
+                                                $subject4 = round(\App\Grade11_Second_Sem::where('enrollment_id', $sub->enrollment_id)->first()->subject_4);
+                                                $subject_4 = round(\App\Grade_sheet_secondsemsecond::where('enrollment_id', $sub->enrollment_id)->first()->subject_4);
+                                                
+                                                $fg_4 = round(($subject_4 + $subject4) / 2);
+                                                                                                
+                                                $subject5 = round(\App\Grade11_Second_Sem::where('enrollment_id', $sub->enrollment_id)->first()->subject_5);
+                                                $subject_5 = round(\App\Grade_sheet_secondsemsecond::where('enrollment_id', $sub->enrollment_id)->first()->subject_5);
+                                            
+                                                $fg_5 = round(($subject_5 + $subject5) / 2);
+                                                                                                
+                                                $subject6 = round(\App\Grade11_Second_Sem::where('enrollment_id', $sub->enrollment_id)->first()->subject_6);
+                                                $subject_6 = round(\App\Grade_sheet_secondsemsecond::where('enrollment_id', $sub->enrollment_id)->first()->subject_6);
+                                                
+                                                $fg_6 = round(($subject_6 + $subject6) / 2);
+                                                                                                
+                                                $subject7 = round(\App\Grade11_Second_Sem::where('enrollment_id', $sub->enrollment_id)->first()->subject_7);
+                                                $subject_7 = round(\App\Grade_sheet_secondsemsecond::where('enrollment_id', $sub->enrollment_id)->first()->subject_7);
+                                                
+                                                $fg_7 = round(($subject_7 + $subject7) / 2);
+                                                                                                
+                                                
+                                        ?>
+                               
+                                        <td>
+                                                <center>                                                
+                                                        <?php
+                                                            $average_2sem = round($average = ($fg_1 + $fg_2 + $fg_3 + $fg_4 + $fg_5 + $fg_6 + $fg_7 )/7, 2);
+                                                            echo round($average_2sem);
+                                                        ?>
+                                                </center>
+                                        </td>
+                                        @if(round($average_2sem) >= 75 && round($average_2sem) <= 89)
+                                            <td>
+                                                <center>Passed</center>
+                                            </td>
+                                        @elseif(round($average_2sem) >= 90 && round($average_2sem) <= 94)
+                                            <td>
+                                                <center>with honors</center>
+                                            </td>
+                                        @elseif(round($average_2sem)>= 95 && round($average_2sem) <= 97)
+                                            <td>
+                                                <center>with high honors</center>
+                                            </td>
+                                        @elseif(round($average_2sem) >= 98 && round($average_2sem) <= 100)
+                                            <td>
+                                                <center>with highest honors</center>
+                                            </td>
+                                        @elseif(round($average_2sem) < 75)
+                                            <td>
+                                                <center>Failed</center>
+                                            </td>
+                                        @endif
+                                        </tr>
+                                        @endforeach
+                                @elseif($NumberOfSubject->class_subject_order == 8)
+                                    <tr>
+                                        <td colspan="7">
+                                            <b>Male</b>
+                                        </td>
+                                    </tr>
+                                    @foreach($GradeSheetMale as $key => $sub)
+                                    <tr>
+                                        <td>{{ $key + 1 }}.</td>
+                                        <td>{{ $sub->student_name }}</td>
+                                        <td style="text-align: center">
+                                            <?php
+                                            $formattedNum = round($average = ($sub->subject_1 + $sub->subject_2 + $sub->subject_3 + $sub->subject_4 + $sub->subject_5 + $sub->subject_6 + $sub->subject_7 + $sub->subject_8)/8);
+                                            echo $formattedNum;
+                                            ?>                                                
+                                        </td>
+                                        <td style="text-align: center">
+                                            <?php
+                                                $sec_g = \App\Grade_sheet_secondsemsecond::where('enrollment_id', $sub->enrollment_id)->first();
+                                                $result = round($average = ($sec_g->subject_1 + $sec_g->subject_2 + $sec_g->subject_3 + $sec_g->subject_4 + $sec_g->subject_5 + $sec_g->subject_6 + $sec_g->subject_7 + $sec_g->subject_8)/8);
+                                                echo $result;
+                                            ?>    
+                                        </td>
+                                        <?php                                                    
+                                                $subject1 = round(\App\Grade11_Second_Sem::where('enrollment_id', $sub->enrollment_id)->first()->subject_1);
+                                                $subject_1 = round(\App\Grade_sheet_secondsemsecond::where('enrollment_id', $sub->enrollment_id)->first()->subject_1);
+                                        
+                                                $fg_1 = round(($subject_1 + $subject1) / 2);
+                                                                                            
+                                                $subject2 = round(\App\Grade11_Second_Sem::where('enrollment_id', $sub->enrollment_id)->first()->subject_2);
+                                                $subject_2 = round(\App\Grade_sheet_secondsemsecond::where('enrollment_id', $sub->enrollment_id)->first()->subject_2);
+                                        
+                                                $fg_2 = round(($subject_2 + $subject2) / 2);
+                                                                                            
+                                                $subject3 = round(\App\Grade11_Second_Sem::where('enrollment_id', $sub->enrollment_id)->first()->subject_3);
+                                                $subject_3 = round(\App\Grade_sheet_secondsemsecond::where('enrollment_id', $sub->enrollment_id)->first()->subject_3);
+    
+                                                $fg_3 = round(($subject_3 + $subject3) / 2);
+                                                                                                
+                                                $subject4 = round(\App\Grade11_Second_Sem::where('enrollment_id', $sub->enrollment_id)->first()->subject_4);
+                                                $subject_4 = round(\App\Grade_sheet_secondsemsecond::where('enrollment_id', $sub->enrollment_id)->first()->subject_4);
+                                                
+                                                $fg_4 = round(($subject_4 + $subject4) / 2);
+                                                                                                
+                                                $subject5 = round(\App\Grade11_Second_Sem::where('enrollment_id', $sub->enrollment_id)->first()->subject_5);
+                                                $subject_5 = round(\App\Grade_sheet_secondsemsecond::where('enrollment_id', $sub->enrollment_id)->first()->subject_5);
+                                            
+                                                $fg_5 = round(($subject_5 + $subject5) / 2);
+                                                                                                
+                                                $subject6 = round(\App\Grade11_Second_Sem::where('enrollment_id', $sub->enrollment_id)->first()->subject_6);
+                                                $subject_6 = round(\App\Grade_sheet_secondsemsecond::where('enrollment_id', $sub->enrollment_id)->first()->subject_6);
+                                                
+                                                $fg_6 = round(($subject_6 + $subject6) / 2);
+                                                                                                
+                                                $subject7 = round(\App\Grade11_Second_Sem::where('enrollment_id', $sub->enrollment_id)->first()->subject_7);
+                                                $subject_7 = round(\App\Grade_sheet_secondsemsecond::where('enrollment_id', $sub->enrollment_id)->first()->subject_7);
+                                                
+                                                $fg_7 = round(($subject_7 + $subject7) / 2);
+                                                                                                
+                                                $subject8 = round(\App\Grade11_Second_Sem::where('enrollment_id', $sub->enrollment_id)->first()->subject_8);
+                                                $subject_8 = round(\App\Grade_sheet_secondsemsecond::where('enrollment_id', $sub->enrollment_id)->first()->subject_8);
+                                                
+                                                $fg_8 = round(($subject_8 + $subject8) / 2);
+                                                                                                
+                                                
+                                        ?>
+                               
+                                        <td>
+                                                <center>                                                
+                                                        <?php
+                                                            $average_2sem = round($average = ($fg_1 + $fg_2 + $fg_3 + $fg_4 + $fg_5 + $fg_6 + $fg_7 + $fg_8 )/8, 2);
+                                                            echo round($average_2sem);
+                                                        ?>
+                                                </center>
+                                        </td>
+                                        @if(round($average_2sem) >= 75 && round($average_2sem) <= 89)
+                                            <td>
+                                                <center>Passed</center>
+                                            </td>
+                                        @elseif(round($average_2sem) >= 90 && round($average_2sem) <= 94)
+                                            <td>
+                                                <center>with honors</center>
+                                            </td>
+                                        @elseif(round($average_2sem)>= 95 && round($average_2sem) <= 97)
+                                            <td>
+                                                <center>with high honors</center>
+                                            </td>
+                                        @elseif(round($average_2sem) >= 98 && round($average_2sem) <= 100)
+                                            <td>
+                                                <center>with highest honors</center>
+                                            </td>
+                                        @elseif(round($average_2sem) < 75)
+                                            <td>
+                                                <center>Failed</center>
+                                            </td>
+                                        @endif
+                                    </tr>
+                                    @endforeach
+                                
+                                        <tr>
+                                            <td colspan="7">
+                                                <b>Female</b>
+                                            </td>
+                                        </tr>
+                                        @foreach($GradeSheetFeMale as $key => $sub)
+                                        <tr>
+                                            <td>{{ $key + 1 }}.</td>
+                                            <td>{{ $sub->student_name }}</td>
+                                            <td style="text-align: center">
+                                                <?php
+                                                $formattedNum = round($average = ($sub->subject_1 + $sub->subject_2 + $sub->subject_3 + $sub->subject_4 + $sub->subject_5 + $sub->subject_6 + $sub->subject_7 + $sub->subject_8)/8);
+                                                echo $formattedNum;
+                                                ?>                                                
+                                            </td>
+                                            <td style="text-align: center">
+                                                <?php
+                                                    $sec_g = \App\Grade_sheet_secondsemsecond::where('enrollment_id', $sub->enrollment_id)->first();
+                                                    $result = round($average = ($sec_g->subject_1 + $sec_g->subject_2 + $sec_g->subject_3 + $sec_g->subject_4 + $sec_g->subject_5 + $sec_g->subject_6 + $sec_g->subject_7 + $sec_g->subject_8)/8);
+                                                echo $result;
+                                                ?>    
+                                            </td>
+                                            <?php                                                    
+                                                $subject1 = round(\App\Grade11_Second_Sem::where('enrollment_id', $sub->enrollment_id)->first()->subject_1);
+                                                $subject_1 = round(\App\Grade_sheet_secondsemsecond::where('enrollment_id', $sub->enrollment_id)->first()->subject_1);
+                                        
+                                                $fg_1 = round(($subject_1 + $subject1) / 2);
+                                                                                            
+                                                $subject2 = round(\App\Grade11_Second_Sem::where('enrollment_id', $sub->enrollment_id)->first()->subject_2);
+                                                $subject_2 = round(\App\Grade_sheet_secondsemsecond::where('enrollment_id', $sub->enrollment_id)->first()->subject_2);
+                                        
+                                                $fg_2 = round(($subject_2 + $subject2) / 2);
+                                                                                            
+                                                $subject3 = round(\App\Grade11_Second_Sem::where('enrollment_id', $sub->enrollment_id)->first()->subject_3);
+                                                $subject_3 = round(\App\Grade_sheet_secondsemsecond::where('enrollment_id', $sub->enrollment_id)->first()->subject_3);
+    
+                                                $fg_3 = round(($subject_3 + $subject3) / 2);
+                                                                                                
+                                                $subject4 = round(\App\Grade11_Second_Sem::where('enrollment_id', $sub->enrollment_id)->first()->subject_4);
+                                                $subject_4 = round(\App\Grade_sheet_secondsemsecond::where('enrollment_id', $sub->enrollment_id)->first()->subject_4);
+                                                
+                                                $fg_4 = round(($subject_4 + $subject4) / 2);
+                                                                                                
+                                                $subject5 = round(\App\Grade11_Second_Sem::where('enrollment_id', $sub->enrollment_id)->first()->subject_5);
+                                                $subject_5 = round(\App\Grade_sheet_secondsemsecond::where('enrollment_id', $sub->enrollment_id)->first()->subject_5);
+                                            
+                                                $fg_5 = round(($subject_5 + $subject5) / 2);
+                                                                                                
+                                                $subject6 = round(\App\Grade11_Second_Sem::where('enrollment_id', $sub->enrollment_id)->first()->subject_6);
+                                                $subject_6 = round(\App\Grade_sheet_secondsemsecond::where('enrollment_id', $sub->enrollment_id)->first()->subject_6);
+                                                
+                                                $fg_6 = round(($subject_6 + $subject6) / 2);
+                                                                                                
+                                                $subject7 = round(\App\Grade11_Second_Sem::where('enrollment_id', $sub->enrollment_id)->first()->subject_7);
+                                                $subject_7 = round(\App\Grade_sheet_secondsemsecond::where('enrollment_id', $sub->enrollment_id)->first()->subject_7);
+                                                
+                                                $fg_7 = round(($subject_7 + $subject7) / 2);
+                                                                                                
+                                                $subject8 = round(\App\Grade11_Second_Sem::where('enrollment_id', $sub->enrollment_id)->first()->subject_8);
+                                                $subject_8 = round(\App\Grade_sheet_secondsemsecond::where('enrollment_id', $sub->enrollment_id)->first()->subject_8);
+                                                
+                                                $fg_8 = round(($subject_8 + $subject8) / 2);
+                                                                                                
+                                                
+                                        ?>
+                               
+                                        <td>
+                                                <center>                                                
+                                                        <?php
+                                                            $average_2sem = round($average = ($fg_1 + $fg_2 + $fg_3 + $fg_4 + $fg_5 + $fg_6 + $fg_7 + $fg_8)/8, 2);
+                                                            echo round($average_2sem);
+                                                        ?>
+                                                </center>
+                                        </td>
+                                        @if(round($average_2sem) >= 75 && round($average_2sem) <= 89)
+                                            <td>
+                                                <center>Passed</center>
+                                            </td>
+                                        @elseif(round($average_2sem) >= 90 && round($average_2sem) <= 94)
+                                            <td>
+                                                <center>with honors</center>
+                                            </td>
+                                        @elseif(round($average_2sem)>= 95 && round($average_2sem) <= 97)
+                                            <td>
+                                                <center>with high honors</center>
+                                            </td>
+                                        @elseif(round($average_2sem) >= 98 && round($average_2sem) <= 100)
+                                            <td>
+                                                <center>with highest honors</center>
+                                            </td>
+                                        @elseif(round($average_2sem) < 75)
+                                            <td>
+                                                <center>Failed</center>
+                                            </td>
+                                        @endif
+                                        </tr>
+                                        @endforeach
+                                @else
+                                    <tr>
+                                        <td colspan="7">
+                                            <b>Male</b>
+                                        </td>
+                                    </tr>
+                                    @foreach($GradeSheetMale as $key => $sub)
+                                    <tr>
+                                        <td>{{ $key + 1 }}.</td>
+                                        <td>{{ $sub->student_name }}</td>
+                                        <td style="text-align: center">
+                                            <?php
+                                            $formattedNum = round($average = ($sub->subject_1 + $sub->subject_2 + $sub->subject_3 + $sub->subject_4 + $sub->subject_5 + $sub->subject_6 + $sub->subject_7+ $sub->subject_8+ $sub->subject_9)/9);
+                                            echo $formattedNum;
+                                            ?>                                                
+                                        </td>
+                                        <td style="text-align: center">
+                                            <?php
+                                                $sec_g = \App\Grade_sheet_secondsemsecond::where('enrollment_id', $sub->enrollment_id)->first();
+                                                $result = round($average = ($sec_g->subject_1 + $sec_g->subject_2 + $sec_g->subject_3 + $sec_g->subject_4 + $sec_g->subject_5 + $sec_g->subject_6 + $sec_g->subject_7 + $sec_g->subject_8 + $sec_g->subject_9)/9);
+                                                echo $result;
+                                            ?>    
+                                        </td>
+                                        <?php                                                    
+                                                $subject1 = round(\App\Grade11_Second_Sem::where('enrollment_id', $sub->enrollment_id)->first()->subject_1);
+                                                $subject_1 = round(\App\Grade_sheet_secondsemsecond::where('enrollment_id', $sub->enrollment_id)->first()->subject_1);
+                                        
+                                                $fg_1 = round(($subject_1 + $subject1) / 2);
+                                                                                            
+                                                $subject2 = round(\App\Grade11_Second_Sem::where('enrollment_id', $sub->enrollment_id)->first()->subject_2);
+                                                $subject_2 = round(\App\Grade_sheet_secondsemsecond::where('enrollment_id', $sub->enrollment_id)->first()->subject_2);
+                                        
+                                                $fg_2 = round(($subject_2 + $subject2) / 2);
+                                                                                            
+                                                $subject3 = round(\App\Grade11_Second_Sem::where('enrollment_id', $sub->enrollment_id)->first()->subject_3);
+                                                $subject_3 = round(\App\Grade_sheet_secondsemsecond::where('enrollment_id', $sub->enrollment_id)->first()->subject_3);
+    
+                                                $fg_3 = round(($subject_3 + $subject3) / 2);
+                                                                                                
+                                                $subject4 = round(\App\Grade11_Second_Sem::where('enrollment_id', $sub->enrollment_id)->first()->subject_4);
+                                                $subject_4 = round(\App\Grade_sheet_secondsemsecond::where('enrollment_id', $sub->enrollment_id)->first()->subject_4);
+                                                
+                                                $fg_4 = round(($subject_4 + $subject4) / 2);
+                                                                                                
+                                                $subject5 = round(\App\Grade11_Second_Sem::where('enrollment_id', $sub->enrollment_id)->first()->subject_5);
+                                                $subject_5 = round(\App\Grade_sheet_secondsemsecond::where('enrollment_id', $sub->enrollment_id)->first()->subject_5);
+                                            
+                                                $fg_5 = round(($subject_5 + $subject5) / 2);
+                                                                                                
+                                                $subject6 = round(\App\Grade11_Second_Sem::where('enrollment_id', $sub->enrollment_id)->first()->subject_6);
+                                                $subject_6 = round(\App\Grade_sheet_secondsemsecond::where('enrollment_id', $sub->enrollment_id)->first()->subject_6);
+                                                
+                                                $fg_6 = round(($subject_6 + $subject6) / 2);
+                                                                                                
+                                                $subject7 = round(\App\Grade11_Second_Sem::where('enrollment_id', $sub->enrollment_id)->first()->subject_7);
+                                                $subject_7 = round(\App\Grade_sheet_secondsemsecond::where('enrollment_id', $sub->enrollment_id)->first()->subject_7);
+                                                
+                                                $fg_7 = round(($subject_7 + $subject7) / 2);
+                                                                                                
+                                                $subject8 = round(\App\Grade11_Second_Sem::where('enrollment_id', $sub->enrollment_id)->first()->subject_8);
+                                                $subject_8 = round(\App\Grade_sheet_secondsemsecond::where('enrollment_id', $sub->enrollment_id)->first()->subject_8);
+                                                
+                                                $fg_8 = round(($subject_8 + $subject8) / 2);
+                                                                                                
+                                                $subject9 = round(\App\Grade11_Second_Sem::where('enrollment_id', $sub->enrollment_id)->first()->subject_9);
+                                                $subject_9 = round(\App\Grade_sheet_secondsemsecond::where('enrollment_id', $sub->enrollment_id)->first()->subject_9);
+                                                
+                                                $fg_9 = round(($subject_9 + $subject9) / 2);
+                                        ?>
+                               
+                                        <td>
+                                                <center>                                                
+                                                        <?php
+                                                            $average_2sem = round($average = ($fg_1 + $fg_2 + $fg_3 + $fg_4 + $fg_5 + $fg_6 + $fg_7 + $fg_8 + $fg_9)/9, 2);
+                                                            echo round($average_2sem);
+                                                        ?>
+                                                </center>
+                                        </td>
+                                        @if(round($average_2sem) >= 75 && round($average_2sem) <= 89)
+                                            <td>
+                                                <center>Passed</center>
+                                            </td>
+                                        @elseif(round($average_2sem) >= 90 && round($average_2sem) <= 94)
+                                            <td>
+                                                <center>with honors</center>
+                                            </td>
+                                        @elseif(round($average_2sem)>= 95 && round($average_2sem) <= 97)
+                                            <td>
+                                                <center>with high honors</center>
+                                            </td>
+                                        @elseif(round($average_2sem) >= 98 && round($average_2sem) <= 100)
+                                            <td>
+                                                <center>with highest honors</center>
+                                            </td>
+                                        @elseif(round($average_2sem) < 75)
+                                            <td>
+                                                <center>Failed</center>
+                                            </td>
+                                        @endif
+                                    </tr>
+                                    @endforeach
+                                
+                                        <tr>
+                                            <td colspan="7">
+                                                <b>Female</b>
+                                            </td>
+                                        </tr>
+                                        @foreach($GradeSheetFeMale as $key => $sub)
+                                        <tr>
+                                            <td>{{ $key + 1 }}.</td>
+                                            <td>{{ $sub->student_name }}</td>
+                                            <td style="text-align: center">
+                                                <?php
+                                                $formattedNum = round($average = ($sub->subject_1 + $sub->subject_2 + $sub->subject_3 + $sub->subject_4 + $sub->subject_5 + $sub->subject_6 + $sub->subject_7 + $sub->subject_8 + $sub->subject_9)/9);
+                                                echo $formattedNum;
+                                                ?>                                                
+                                            </td>
+                                            <td style="text-align: center">
+                                                <?php
+                                                    $sec_g = \App\Grade_sheet_secondsemsecond::where('enrollment_id', $sub->enrollment_id)->first();
+                                                    $result = round($average = ($sec_g->subject_1 + $sec_g->subject_2 + $sec_g->subject_3 + $sec_g->subject_4 + $sec_g->subject_5 + $sec_g->subject_6 + $sec_g->subject_7 + $sec_g->subject_8 + $sec_g->subject_9)/9);
+                                                    echo $result;
+                                                ?>    
+                                                </td>
+                                                <?php                                                    
+                                                    $subject1 = round(\App\Grade11_Second_Sem::where('enrollment_id', $sub->enrollment_id)->first()->subject_1);
+                                                    $subject_1 = round(\App\Grade_sheet_secondsemsecond::where('enrollment_id', $sub->enrollment_id)->first()->subject_1);
+                                            
+                                                    $fg_1 = round(($subject_1 + $subject1) / 2);
+                                                                                                
+                                                    $subject2 = round(\App\Grade11_Second_Sem::where('enrollment_id', $sub->enrollment_id)->first()->subject_2);
+                                                    $subject_2 = round(\App\Grade_sheet_secondsemsecond::where('enrollment_id', $sub->enrollment_id)->first()->subject_2);
+                                            
+                                                    $fg_2 = round(($subject_2 + $subject2) / 2);
+                                                                                                
+                                                    $subject3 = round(\App\Grade11_Second_Sem::where('enrollment_id', $sub->enrollment_id)->first()->subject_3);
+                                                    $subject_3 = round(\App\Grade_sheet_secondsemsecond::where('enrollment_id', $sub->enrollment_id)->first()->subject_3);
+        
+                                                    $fg_3 = round(($subject_3 + $subject3) / 2);
+                                                                                                    
+                                                    $subject4 = round(\App\Grade11_Second_Sem::where('enrollment_id', $sub->enrollment_id)->first()->subject_4);
+                                                    $subject_4 = round(\App\Grade_sheet_secondsemsecond::where('enrollment_id', $sub->enrollment_id)->first()->subject_4);
+                                                    
+                                                    $fg_4 = round(($subject_4 + $subject4) / 2);
+                                                                                                    
+                                                    $subject5 = round(\App\Grade11_Second_Sem::where('enrollment_id', $sub->enrollment_id)->first()->subject_5);
+                                                    $subject_5 = round(\App\Grade_sheet_secondsemsecond::where('enrollment_id', $sub->enrollment_id)->first()->subject_5);
+                                                
+                                                    $fg_5 = round(($subject_5 + $subject5) / 2);
+                                                                                                    
+                                                    $subject6 = round(\App\Grade11_Second_Sem::where('enrollment_id', $sub->enrollment_id)->first()->subject_6);
+                                                    $subject_6 = round(\App\Grade_sheet_secondsemsecond::where('enrollment_id', $sub->enrollment_id)->first()->subject_6);
+                                                    
+                                                    $fg_6 = round(($subject_6 + $subject6) / 2);
+                                                                                                    
+                                                    $subject7 = round(\App\Grade11_Second_Sem::where('enrollment_id', $sub->enrollment_id)->first()->subject_7);
+                                                    $subject_7 = round(\App\Grade_sheet_secondsemsecond::where('enrollment_id', $sub->enrollment_id)->first()->subject_7);
+                                                    
+                                                    $fg_7 = round(($subject_7 + $subject7) / 2);
+                                                                                                    
+                                                    $subject8 = round(\App\Grade11_Second_Sem::where('enrollment_id', $sub->enrollment_id)->first()->subject_8);
+                                                    $subject_8 = round(\App\Grade_sheet_secondsemsecond::where('enrollment_id', $sub->enrollment_id)->first()->subject_8);
+                                                    
+                                                    $fg_8 = round(($subject_8 + $subject8) / 2);
+                                                                                                    
+                                                    $subject9 = round(\App\Grade11_Second_Sem::where('enrollment_id', $sub->enrollment_id)->first()->subject_9);
+                                                    $subject_9 = round(\App\Grade_sheet_secondsemsecond::where('enrollment_id', $sub->enrollment_id)->first()->subject_9);
+                                                    
+                                                    $fg_9 = round(($subject_9 + $subject9) / 2);
+                                               ?>
+                                       
+                                           <td>
+                                                   <center>                                                
+                                                           <?php
+                                                               $average_2sem = round($average = ($fg_1 + $fg_2 + $fg_3 + $fg_4 + $fg_5 + $fg_6 + $fg_7 + $fg_8 + $fg_9)/9, 2);
+                                                               echo round($average_2sem);
+                                                           ?>
+                                                   </center>
+                                           </td>
+                                            @if(round($average_2sem) >= 75 && round($average_2sem) <= 89)
+                                                <td>
+                                                    <center>Passed</center>
+                                                </td>
+                                            @elseif(round($average_2sem) >= 90 && round($average_2sem) <= 94)
+                                                <td>
+                                                    <center>with honors</center>
+                                                </td>
+                                            @elseif(round($average_2sem)>= 95 && round($average_2sem) <= 97)
+                                                <td>
+                                                    <center>with high honors</center>
+                                                </td>
+                                            @elseif(round($average_2sem) >= 98 && round($average_2sem) <= 100)
+                                                <td>
+                                                    <center>with highest honors</center>
+                                                </td>
+                                            @elseif(round($average_2sem) < 75)
+                                                <td>
+                                                    <center>Failed</center>
+                                                </td>
+                                            @endif
+                                        </tr>
+                                        @endforeach
+                                @endif
+                        @else
+                        <tr>
+                                <td colspan="7">
+                                    <b>Male</b>
+                                </td>
+                            </tr>
+                            @foreach($GradeSheetMale as $key => $sub)
+                            <tr>
+                                <td>{{ $key + 1 }}.</td>
+                                <td>{{ $sub->student_name }}</td>
+                                
+                                
+                                
+                                
+                                    <?php                                                    
+                                        $subject1 = round(\App\Grade_sheet_firstsemsecond::where('enrollment_id', $sub->enrollment_id)->first()->subject_1);
+                                    
+                                        $fg1 = round(($sub->subject_1 + $subject1) / 2);
+                                                                                        
+                                        $subject2 = round(\App\Grade_sheet_firstsemsecond::where('enrollment_id', $sub->enrollment_id)->first()->subject_2);
+                                    
+                                        $fg2 = round(($sub->subject_2 + $subject2) / 2);
+                                                                                        
+                                        $subject3 = round(\App\Grade_sheet_firstsemsecond::where('enrollment_id', $sub->enrollment_id)->first()->subject_3);
+                                        
+                                        $fg3 = round(($sub->subject_3 + $subject3) / 2);
+                                                                                            
+                                        $subject4 = round(\App\Grade_sheet_firstsemsecond::where('enrollment_id', $sub->enrollment_id)->first()->subject_4);
+                                        
+                                        $fg4 = round(($sub->subject_4 + $subject4) / 2);
+                                                                                            
+                                        $subject5 = round(\App\Grade_sheet_firstsemsecond::where('enrollment_id', $sub->enrollment_id)->first()->subject_5);
+                                        
+                                        $fg5 = round(($sub->subject_5 + $subject5) / 2);
+                                                                                            
+                                        $subject6 = round(\App\Grade_sheet_firstsemsecond::where('enrollment_id', $sub->enrollment_id)->first()->subject_6);
+                                        
+                                        $fg6 = round(($sub->subject_6 + $subject6) / 2);
+                                                                                        
+                                        $subject7 = round(\App\Grade_sheet_firstsemsecond::where('enrollment_id', $sub->enrollment_id)->first()->subject_7);
+                                        
+                                        $fg7 = round(($sub->subject_7 + $subject7) / 2);
+                                                                                            
+                                        $subject8 = round(\App\Grade_sheet_firstsemsecond::where('enrollment_id', $sub->enrollment_id)->first()->subject_8);
+                                        
+                                        $fg8 = round(($sub->subject_8 + $subject8) / 2);
+                                                                                        
+                                        $subject9 = round(\App\Grade_sheet_firstsemsecond::where('enrollment_id', $sub->enrollment_id)->first()->subject_9);
+                                    
+                                        $fg9 = round(($sub->subject_9 + $subject9) / 2);
+                                        ?>
+                                
+                                    <td>
+                                            <center>                                                
+                                                    <?php
+                                                        $average_1sem = number_format($average = ($fg1 + $fg2 + $fg3 + $fg4 + $fg5 + $fg6 + $fg7 + $fg8 + $fg9)/9, 2);
+                                                        echo round($average_1sem);
+                                                    ?>
+                                            </center>
+                                    </td>
+                                
+                                    @if($NumberOfSubject->class_subject_order == 7)
+                                
+                                        <?php                                                    
+                                            $subject1 = round(\App\Grade11_Second_Sem::where('enrollment_id', $sub->enrollment_id)->first()->subject_1);
+                                            $subject_1 = round(\App\Grade_sheet_secondsemsecond::where('enrollment_id', $sub->enrollment_id)->first()->subject_1);
+                                    
+                                            $fg_1 = round(($subject1 + $subject_1) / 2);
+                                                                                        
+                                            $subject2 = round(\App\Grade11_Second_Sem::where('enrollment_id', $sub->enrollment_id)->first()->subject_2);
+                                            $subject_2 = round(\App\Grade_sheet_secondsemsecond::where('enrollment_id', $sub->enrollment_id)->first()->subject_2);
+                                    
+                                            $fg_2 = round(($subject_2 + $subject2) / 2);
+                                                                                        
+                                            $subject3 = round(\App\Grade11_Second_Sem::where('enrollment_id', $sub->enrollment_id)->first()->subject_3);
+                                            $subject_3 = round(\App\Grade_sheet_secondsemsecond::where('enrollment_id', $sub->enrollment_id)->first()->subject_3);
+
+                                            $fg_3 = round(($subject_3 + $subject3) / 2);
+                                                                                            
+                                            $subject4 = round(\App\Grade11_Second_Sem::where('enrollment_id', $sub->enrollment_id)->first()->subject_4);
+                                            $subject_4 = round(\App\Grade_sheet_secondsemsecond::where('enrollment_id', $sub->enrollment_id)->first()->subject_4);
+                                            
+                                            $fg_4 = round(($subject_4 + $subject4) / 2);
+                                                                                            
+                                            $subject5 = round(\App\Grade11_Second_Sem::where('enrollment_id', $sub->enrollment_id)->first()->subject_5);
+                                            $subject_5 = round(\App\Grade_sheet_secondsemsecond::where('enrollment_id', $sub->enrollment_id)->first()->subject_5);
+                                        
+                                            $fg_5 = round(($subject_5 + $subject5) / 2);
+                                                                                            
+                                            $subject6 = round(\App\Grade11_Second_Sem::where('enrollment_id', $sub->enrollment_id)->first()->subject_6);
+                                            $subject_6 = round(\App\Grade_sheet_secondsemsecond::where('enrollment_id', $sub->enrollment_id)->first()->subject_6);
+                                            
+                                            $fg_6 = round(($subject_6 + $subject6) / 2);
+                                                                                            
+                                            $subject7 = round(\App\Grade11_Second_Sem::where('enrollment_id', $sub->enrollment_id)->first()->subject_7);
+                                            $subject_7 = round(\App\Grade_sheet_secondsemsecond::where('enrollment_id', $sub->enrollment_id)->first()->subject_7);
+                                            
+                                            $fg_7 = round(($subject_7 + $subject7) / 2);                                                                                               
+                                            
+                                        ?>
+                                    
+                                        <td>
+                                                <center>                                                
+                                                        <?php
+                                                            $average_2sem = number_format($average = ($fg_1 + $fg_2 + $fg_3 + $fg_4 + $fg_5 + $fg_6 + $fg_7 )/7, 2);
+                                                            echo round($average_2sem);
+                                                        ?>
+                                                </center>
+                                        </td>
+
+                                    @elseif($NumberOfSubject->class_subject_order == 8)
+
+                                        <?php                                                    
+                                            $subject1 = round(\App\Grade11_Second_Sem::where('enrollment_id', $sub->enrollment_id)->first()->subject_1);
+                                            $subject_1 = round(\App\Grade_sheet_secondsemsecond::where('enrollment_id', $sub->enrollment_id)->first()->subject_1);
+                                    
+                                            $fg_1 = round(($subject1 + $subject_1) / 2);
+                                                                                        
+                                            $subject2 = round(\App\Grade11_Second_Sem::where('enrollment_id', $sub->enrollment_id)->first()->subject_2);
+                                            $subject_2 = round(\App\Grade_sheet_secondsemsecond::where('enrollment_id', $sub->enrollment_id)->first()->subject_2);
+                                    
+                                            $fg_2 = round(($subject_2 + $subject2) / 2);
+                                                                                        
+                                            $subject3 = round(\App\Grade11_Second_Sem::where('enrollment_id', $sub->enrollment_id)->first()->subject_3);
+                                            $subject_3 = round(\App\Grade_sheet_secondsemsecond::where('enrollment_id', $sub->enrollment_id)->first()->subject_3);
+
+                                            $fg_3 = round(($subject_3 + $subject3) / 2);
+                                                                                            
+                                            $subject4 = round(\App\Grade11_Second_Sem::where('enrollment_id', $sub->enrollment_id)->first()->subject_4);
+                                            $subject_4 = round(\App\Grade_sheet_secondsemsecond::where('enrollment_id', $sub->enrollment_id)->first()->subject_4);
+                                            
+                                            $fg_4 = round(($subject_4 + $subject4) / 2);
+                                                                                            
+                                            $subject5 = round(\App\Grade11_Second_Sem::where('enrollment_id', $sub->enrollment_id)->first()->subject_5);
+                                            $subject_5 = round(\App\Grade_sheet_secondsemsecond::where('enrollment_id', $sub->enrollment_id)->first()->subject_5);
+                                        
+                                            $fg_5 = round(($subject_5 + $subject5) / 2);
+                                                                                            
+                                            $subject6 = round(\App\Grade11_Second_Sem::where('enrollment_id', $sub->enrollment_id)->first()->subject_6);
+                                            $subject_6 = round(\App\Grade_sheet_secondsemsecond::where('enrollment_id', $sub->enrollment_id)->first()->subject_6);
+                                            
+                                            $fg_6 = round(($subject_6 + $subject6) / 2);
+                                                                                            
+                                            $subject7 = round(\App\Grade11_Second_Sem::where('enrollment_id', $sub->enrollment_id)->first()->subject_7);
+                                            $subject_7 = round(\App\Grade_sheet_secondsemsecond::where('enrollment_id', $sub->enrollment_id)->first()->subject_7);
+                                            
+                                            $fg_7 = round(($subject_7 + $subject7) / 2);
+                                                                                            
+                                            $subject8 = round(\App\Grade11_Second_Sem::where('enrollment_id', $sub->enrollment_id)->first()->subject_8);
+                                            $subject_8 = round(\App\Grade_sheet_secondsemsecond::where('enrollment_id', $sub->enrollment_id)->first()->subject_8);
+                                            
+                                            $fg_8 = round(($subject_8 + $subject8) / 2);
+                                        ?>
+                        
+                                        <td>
+                                                <center>                                                
+                                                        <?php
+                                                            $average_2sem = number_format($average = ($fg_1 + $fg_2 + $fg_3 + $fg_4 + $fg_5 + $fg_6 + $fg_7 + $fg_8 )/8, 2);
+                                                            echo round($average_2sem);
+                                                        ?>
+                                                </center>
+                                        </td>
+
+
+                                    @elseif($NumberOfSubject->class_subject_order == 9)
+                                        <?php                                                    
+                                            $subject1 = round(\App\Grade11_Second_Sem::where('enrollment_id', $sub->enrollment_id)->first()->subject_1);
+                                            $subject_1 = round(\App\Grade_sheet_secondsemsecond::where('enrollment_id', $sub->enrollment_id)->first()->subject_1);
+                                        
+                                            $fg_1 = round(($subject_1 + $subject1) / 2);
+                                                                                            
+                                            $subject2 = round(\App\Grade11_Second_Sem::where('enrollment_id', $sub->enrollment_id)->first()->subject_2);
+                                            $subject_2 = round(\App\Grade_sheet_secondsemsecond::where('enrollment_id', $sub->enrollment_id)->first()->subject_2);
+                                        
+                                            $fg_2 = round(($subject_2 + $subject2) / 2);
+                                                                                            
+                                            $subject3 = round(\App\Grade11_Second_Sem::where('enrollment_id', $sub->enrollment_id)->first()->subject_3);
+                                            $subject_3 = round(\App\Grade_sheet_secondsemsecond::where('enrollment_id', $sub->enrollment_id)->first()->subject_3);
+
+                                            $fg_3 = round(($subject_3 + $subject3) / 2);
+                                                                                                
+                                            $subject4 = round(\App\Grade11_Second_Sem::where('enrollment_id', $sub->enrollment_id)->first()->subject_4);
+                                            $subject_4 = round(\App\Grade_sheet_secondsemsecond::where('enrollment_id', $sub->enrollment_id)->first()->subject_4);
+                                            
+                                            $fg_4 = round(($subject_4 + $subject4) / 2);
+                                                                                                
+                                            $subject5 = round(\App\Grade11_Second_Sem::where('enrollment_id', $sub->enrollment_id)->first()->subject_5);
+                                            $subject_5 = round(\App\Grade_sheet_secondsemsecond::where('enrollment_id', $sub->enrollment_id)->first()->subject_5);
+                                            
+                                            $fg_5 = round(($subject_5 + $subject5) / 2);
+                                                                                                
+                                            $subject6 = round(\App\Grade11_Second_Sem::where('enrollment_id', $sub->enrollment_id)->first()->subject_6);
+                                            $subject_6 = round(\App\Grade_sheet_secondsemsecond::where('enrollment_id', $sub->enrollment_id)->first()->subject_6);
+                                            
+                                            $fg_6 = round(($subject_6 + $subject6) / 2);
+                                                                                            
+                                            $subject7 = round(\App\Grade11_Second_Sem::where('enrollment_id', $sub->enrollment_id)->first()->subject_7);
+                                            $subject_7 = round(\App\Grade_sheet_secondsemsecond::where('enrollment_id', $sub->enrollment_id)->first()->subject_7);
+                                            
+                                            $fg_7 = round(($subject_7 + $subject7) / 2);
+                                                                                                
+                                            $subject8 = round(\App\Grade11_Second_Sem::where('enrollment_id', $sub->enrollment_id)->first()->subject_8);
+                                            $subject_8 = round(\App\Grade_sheet_secondsemsecond::where('enrollment_id', $sub->enrollment_id)->first()->subject_8);
+                                            
+                                            $fg_8 = round(($subject_8 + $subject8) / 2);
+                                                                                            
+                                            $subject9 = round(\App\Grade11_Second_Sem::where('enrollment_id', $sub->enrollment_id)->first()->subject_9);
+                                            $subject_9 = round(\App\Grade_sheet_secondsemsecond::where('enrollment_id', $sub->enrollment_id)->first()->subject_9);
+                                            
+                                            $fg_9 = round(($subject_9 + $subject9) / 2);
+                                        ?>
+                            
+                                        <td style="text-align: center">
+                                            <?php
+                                            $average_2sem = $average = ($fg_1 + $fg_2 + $fg_3 + $fg_4 + $fg_5 + $fg_6 + $fg_7 + $fg_8 + $fg_9)/9;
+                                            echo round($average_2sem);
+                                            ?>
+                                        </td>
+
+                                    @endif
+                                
+                                    <td style="text-align: center">
+                                        <?php 
+                                            // echo round($result_final = ($formattedNum + $result + $thi_result + $fou_result) / 4);
+                                            echo round($result_final = (round($average_1sem) + round($average_2sem) ) /2) ;
+                                        ?>
+                                    </td>
+                                @if(round($result_final) >= 75 && round($result_final) <= 89)
+                                    <td>
+                                        <center>Passed</center>
+                                    </td>
+                                @elseif(round($result_final) >= 90 && round($result_final) <= 94)
+                                    <td>
+                                        <center>with honors</center>
+                                    </td>
+                                @elseif(round($result_final)>= 95 && round($result_final) <= 97)
+                                    <td>
+                                        <center>with high honors</center>
+                                    </td>
+                                @elseif(round($result_final) >= 98 && round($result_final) <= 100)
+                                    <td>
+                                        <center>with highest honors</center>
+                                    </td>
+                                @elseif(round($result_final) < 75)
+                                    <td>
+                                        <center>Failed</center>
+                                    </td>
+                                @endif
+                            </tr>
+                            @endforeach
+                        
+                            <tr>
+                                <td colspan="7">
+                                    <b>Female</b>
+                                </td>
+                            </tr>
+                            @foreach($GradeSheetFeMale as $key => $sub)
+                                <tr>
+                                    <td>{{ $key + 1 }}.</td>
+                                    <td>{{ $sub->student_name }}</td>
+                                    
+                                <?php                                                    
+                                        $subject1 = round(\App\Grade_sheet_firstsemsecond::where('enrollment_id', $sub->enrollment_id)->first()->subject_1);
+                                    
+                                        $fg1 = round(($sub->subject_1 + $subject1) / 2);
+                                                                                        
+                                        $subject2 = round(\App\Grade_sheet_firstsemsecond::where('enrollment_id', $sub->enrollment_id)->first()->subject_2);
+                                    
+                                        $fg2 = round(($sub->subject_2 + $subject2) / 2);
+                                                                                        
+                                        $subject3 = round(\App\Grade_sheet_firstsemsecond::where('enrollment_id', $sub->enrollment_id)->first()->subject_3);
+                                        
+                                        $fg3 = round(($sub->subject_3 + $subject3) / 2);
+                                                                                            
+                                        $subject4 = round(\App\Grade_sheet_firstsemsecond::where('enrollment_id', $sub->enrollment_id)->first()->subject_4);
+                                        
+                                        $fg4 = round(($sub->subject_4 + $subject4) / 2);
+                                                                                            
+                                        $subject5 = round(\App\Grade_sheet_firstsemsecond::where('enrollment_id', $sub->enrollment_id)->first()->subject_5);
+                                        
+                                        $fg5 = round(($sub->subject_5 + $subject5) / 2);
+                                                                                            
+                                        $subject6 = round(\App\Grade_sheet_firstsemsecond::where('enrollment_id', $sub->enrollment_id)->first()->subject_6);
+                                        
+                                        $fg6 = round(($sub->subject_6 + $subject6) / 2);
+                                                                                        
+                                        $subject7 = round(\App\Grade_sheet_firstsemsecond::where('enrollment_id', $sub->enrollment_id)->first()->subject_7);
+                                        
+                                        $fg7 = round(($sub->subject_7 + $subject7) / 2);
+                                                                                            
+                                        $subject8 = round(\App\Grade_sheet_firstsemsecond::where('enrollment_id', $sub->enrollment_id)->first()->subject_8);
+                                        
+                                        $fg8 = round(($sub->subject_8 + $subject8) / 2);
+                                                                                        
+                                        $subject9 = round(\App\Grade_sheet_firstsemsecond::where('enrollment_id', $sub->enrollment_id)->first()->subject_9);
+                                    
+                                        $fg9 = round(($sub->subject_9 + $subject9) / 2);
+                                        ?>
+                                
+                                        <td>
+                                                <center>                                                
+                                                        <?php
+                                                            $average_1sem = number_format($average = ($fg1 + $fg2 + $fg3 + $fg4 + $fg5 + $fg6 + $fg7 + $fg8 + $fg9)/9, 2);
+                                                            echo round($average_1sem);
+                                                        ?>
+                                                </center>
+                                        </td>
+                                
+                                        @if($NumberOfSubject->class_subject_order == 7)
+                                
+                                        <?php                                                    
+                                            $subject1 = round(\App\Grade11_Second_Sem::where('enrollment_id', $sub->enrollment_id)->first()->subject_1);
+                                            $subject_1 = round(\App\Grade_sheet_secondsemsecond::where('enrollment_id', $sub->enrollment_id)->first()->subject_1);
+                                    
+                                            $fg_1 = round(($subject1 + $subject_1) / 2);
+                                                                                        
+                                            $subject2 = round(\App\Grade11_Second_Sem::where('enrollment_id', $sub->enrollment_id)->first()->subject_2);
+                                            $subject_2 = round(\App\Grade_sheet_secondsemsecond::where('enrollment_id', $sub->enrollment_id)->first()->subject_2);
+                                    
+                                            $fg_2 = round(($subject_2 + $subject2) / 2);
+                                                                                        
+                                            $subject3 = round(\App\Grade11_Second_Sem::where('enrollment_id', $sub->enrollment_id)->first()->subject_3);
+                                            $subject_3 = round(\App\Grade_sheet_secondsemsecond::where('enrollment_id', $sub->enrollment_id)->first()->subject_3);
+
+                                            $fg_3 = round(($subject_3 + $subject3) / 2);
+                                                                                            
+                                            $subject4 = round(\App\Grade11_Second_Sem::where('enrollment_id', $sub->enrollment_id)->first()->subject_4);
+                                            $subject_4 = round(\App\Grade_sheet_secondsemsecond::where('enrollment_id', $sub->enrollment_id)->first()->subject_4);
+                                            
+                                            $fg_4 = round(($subject_4 + $subject4) / 2);
+                                                                                            
+                                            $subject5 = round(\App\Grade11_Second_Sem::where('enrollment_id', $sub->enrollment_id)->first()->subject_5);
+                                            $subject_5 = round(\App\Grade_sheet_secondsemsecond::where('enrollment_id', $sub->enrollment_id)->first()->subject_5);
+                                        
+                                            $fg_5 = round(($subject_5 + $subject5) / 2);
+                                                                                            
+                                            $subject6 = round(\App\Grade11_Second_Sem::where('enrollment_id', $sub->enrollment_id)->first()->subject_6);
+                                            $subject_6 = round(\App\Grade_sheet_secondsemsecond::where('enrollment_id', $sub->enrollment_id)->first()->subject_6);
+                                            
+                                            $fg_6 = round(($subject_6 + $subject6) / 2);
+                                                                                            
+                                            $subject7 = round(\App\Grade11_Second_Sem::where('enrollment_id', $sub->enrollment_id)->first()->subject_7);
+                                            $subject_7 = round(\App\Grade_sheet_secondsemsecond::where('enrollment_id', $sub->enrollment_id)->first()->subject_7);
+                                            
+                                            $fg_7 = round(($subject_7 + $subject7) / 2);                                                                                               
+                                            
+                                        ?>
+                                    
+                                        <td>
+                                                <center>                                                
+                                                        <?php
+                                                            $average_2sem = number_format($average = ($fg_1 + $fg_2 + $fg_3 + $fg_4 + $fg_5 + $fg_6 + $fg_7 )/7, 2);
+                                                            echo round($average_2sem);
+                                                        ?>
+                                                </center>
+                                        </td>
+
+                                    @elseif($NumberOfSubject->class_subject_order == 8)
+
+                                        <?php                                                    
+                                            $subject1 = round(\App\Grade11_Second_Sem::where('enrollment_id', $sub->enrollment_id)->first()->subject_1);
+                                            $subject_1 = round(\App\Grade_sheet_secondsemsecond::where('enrollment_id', $sub->enrollment_id)->first()->subject_1);
+                                    
+                                            $fg_1 = round(($subject1 + $subject_1) / 2);
+                                                                                        
+                                            $subject2 = round(\App\Grade11_Second_Sem::where('enrollment_id', $sub->enrollment_id)->first()->subject_2);
+                                            $subject_2 = round(\App\Grade_sheet_secondsemsecond::where('enrollment_id', $sub->enrollment_id)->first()->subject_2);
+                                    
+                                            $fg_2 = round(($subject_2 + $subject2) / 2);
+                                                                                        
+                                            $subject3 = round(\App\Grade11_Second_Sem::where('enrollment_id', $sub->enrollment_id)->first()->subject_3);
+                                            $subject_3 = round(\App\Grade_sheet_secondsemsecond::where('enrollment_id', $sub->enrollment_id)->first()->subject_3);
+
+                                            $fg_3 = round(($subject_3 + $subject3) / 2);
+                                                                                            
+                                            $subject4 = round(\App\Grade11_Second_Sem::where('enrollment_id', $sub->enrollment_id)->first()->subject_4);
+                                            $subject_4 = round(\App\Grade_sheet_secondsemsecond::where('enrollment_id', $sub->enrollment_id)->first()->subject_4);
+                                            
+                                            $fg_4 = round(($subject_4 + $subject4) / 2);
+                                                                                            
+                                            $subject5 = round(\App\Grade11_Second_Sem::where('enrollment_id', $sub->enrollment_id)->first()->subject_5);
+                                            $subject_5 = round(\App\Grade_sheet_secondsemsecond::where('enrollment_id', $sub->enrollment_id)->first()->subject_5);
+                                        
+                                            $fg_5 = round(($subject_5 + $subject5) / 2);
+                                                                                            
+                                            $subject6 = round(\App\Grade11_Second_Sem::where('enrollment_id', $sub->enrollment_id)->first()->subject_6);
+                                            $subject_6 = round(\App\Grade_sheet_secondsemsecond::where('enrollment_id', $sub->enrollment_id)->first()->subject_6);
+                                            
+                                            $fg_6 = round(($subject_6 + $subject6) / 2);
+                                                                                            
+                                            $subject7 = round(\App\Grade11_Second_Sem::where('enrollment_id', $sub->enrollment_id)->first()->subject_7);
+                                            $subject_7 = round(\App\Grade_sheet_secondsemsecond::where('enrollment_id', $sub->enrollment_id)->first()->subject_7);
+                                            
+                                            $fg_7 = round(($subject_7 + $subject7) / 2);
+                                                                                            
+                                            $subject8 = round(\App\Grade11_Second_Sem::where('enrollment_id', $sub->enrollment_id)->first()->subject_8);
+                                            $subject_8 = round(\App\Grade_sheet_secondsemsecond::where('enrollment_id', $sub->enrollment_id)->first()->subject_8);
+                                            
+                                            $fg_8 = round(($subject_8 + $subject8) / 2);
+                                        ?>
+                        
+                                        <td>
+                                                <center>                                                
+                                                        <?php
+                                                            $average_2sem = number_format($average = ($fg_1 + $fg_2 + $fg_3 + $fg_4 + $fg_5 + $fg_6 + $fg_7 + $fg_8 )/8, 2);
+                                                            echo round($average_2sem);
+                                                        ?>
+                                                </center>
+                                        </td>
+
+
+                                    @elseif($NumberOfSubject->class_subject_order == 9)
+                                        <?php                                                    
+                                            $subject1 = round(\App\Grade11_Second_Sem::where('enrollment_id', $sub->enrollment_id)->first()->subject_1);
+                                            $subject_1 = round(\App\Grade_sheet_secondsemsecond::where('enrollment_id', $sub->enrollment_id)->first()->subject_1);
+                                        
+                                            $fg_1 = round(($subject_1 + $subject1) / 2);
+                                                                                            
+                                            $subject2 = round(\App\Grade11_Second_Sem::where('enrollment_id', $sub->enrollment_id)->first()->subject_2);
+                                            $subject_2 = round(\App\Grade_sheet_secondsemsecond::where('enrollment_id', $sub->enrollment_id)->first()->subject_2);
+                                        
+                                            $fg_2 = round(($subject_2 + $subject2) / 2);
+                                                                                            
+                                            $subject3 = round(\App\Grade11_Second_Sem::where('enrollment_id', $sub->enrollment_id)->first()->subject_3);
+                                            $subject_3 = round(\App\Grade_sheet_secondsemsecond::where('enrollment_id', $sub->enrollment_id)->first()->subject_3);
+
+                                            $fg_3 = round(($subject_3 + $subject3) / 2);
+                                                                                                
+                                            $subject4 = round(\App\Grade11_Second_Sem::where('enrollment_id', $sub->enrollment_id)->first()->subject_4);
+                                            $subject_4 = round(\App\Grade_sheet_secondsemsecond::where('enrollment_id', $sub->enrollment_id)->first()->subject_4);
+                                            
+                                            $fg_4 = round(($subject_4 + $subject4) / 2);
+                                                                                                
+                                            $subject5 = round(\App\Grade11_Second_Sem::where('enrollment_id', $sub->enrollment_id)->first()->subject_5);
+                                            $subject_5 = round(\App\Grade_sheet_secondsemsecond::where('enrollment_id', $sub->enrollment_id)->first()->subject_5);
+                                            
+                                            $fg_5 = round(($subject_5 + $subject5) / 2);
+                                                                                                
+                                            $subject6 = round(\App\Grade11_Second_Sem::where('enrollment_id', $sub->enrollment_id)->first()->subject_6);
+                                            $subject_6 = round(\App\Grade_sheet_secondsemsecond::where('enrollment_id', $sub->enrollment_id)->first()->subject_6);
+                                            
+                                            $fg_6 = round(($subject_6 + $subject6) / 2);
+                                                                                            
+                                            $subject7 = round(\App\Grade11_Second_Sem::where('enrollment_id', $sub->enrollment_id)->first()->subject_7);
+                                            $subject_7 = round(\App\Grade_sheet_secondsemsecond::where('enrollment_id', $sub->enrollment_id)->first()->subject_7);
+                                            
+                                            $fg_7 = round(($subject_7 + $subject7) / 2);
+                                                                                                
+                                            $subject8 = round(\App\Grade11_Second_Sem::where('enrollment_id', $sub->enrollment_id)->first()->subject_8);
+                                            $subject_8 = round(\App\Grade_sheet_secondsemsecond::where('enrollment_id', $sub->enrollment_id)->first()->subject_8);
+                                            
+                                            $fg_8 = round(($subject_8 + $subject8) / 2);
+                                                                                            
+                                            $subject9 = round(\App\Grade11_Second_Sem::where('enrollment_id', $sub->enrollment_id)->first()->subject_9);
+                                            $subject_9 = round(\App\Grade_sheet_secondsemsecond::where('enrollment_id', $sub->enrollment_id)->first()->subject_9);
+                                            
+                                            $fg_9 = round(($subject_9 + $subject9) / 2);
+                                        ?>
+                            
+                                        <td style="text-align: center">
+                                            <?php
+                                            $average_2sem = $average = ($fg_1 + $fg_2 + $fg_3 + $fg_4 + $fg_5 + $fg_6 + $fg_7 + $fg_8 + $fg_9)/9;
+                                            echo round($average_2sem);
+                                            ?>
+                                        </td>
+
+                                    @endif
+
+                                    
+                                        <td style="text-align: center">
+                                            <?php 
+                                                // echo round($result_final = ($formattedNum + $result + $thi_result + $fou_result) / 4);
+                                                echo round($result_final = (round($average_1sem) + round($average_2sem) ) /2) ;
+                                            ?>
+                                        </td>
+                                    @if(round($result_final) >= 75 && round($result_final) <= 89)
+                                        <td>
+                                            <center>Passed</center>
+                                        </td>
+                                    @elseif(round($result_final) >= 90 && round($result_final) <= 94)
+                                        <td>
+                                            <center>with honors</center>
+                                        </td>
+                                    @elseif(round($result_final)>= 95 && round($result_final) <= 97)
+                                        <td>
+                                            <center>with high honors</center>
+                                        </td>
+                                    @elseif(round($result_final) >= 98 && round($result_final) <= 100)
+                                        <td>
+                                            <center>with highest honors</center>
+                                        </td>
+                                    @elseif(round($result_final) < 75)
+                                        <td>
+                                            <center>Failed</center>
+                                        </td>
+                                    @endif
+                                </tr>
+                            @endforeach
+                            
+                        @endif 
                     </tbody>
-            </table>
+    </table>
 
     <p style="text-align: right"><b>{{$ClassSubjectDetail->first_name }} {{$ClassSubjectDetail->middle_name}} {{$ClassSubjectDetail->last_name}}</b> - <i>Class Adviser</i></p>
 

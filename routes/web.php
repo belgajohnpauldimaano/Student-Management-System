@@ -126,6 +126,10 @@ Route::group(['prefix' => 'faculty', 'middleware' => ['auth', 'userroles'], 'rol
         Route::get('list-students-by-class-print', 'Faculty\GradeSheetController@list_students_by_class_print')->name('faculty.student_grade_sheet.list_students_by_class_print');    
     
         Route::post('semester', 'Faculty\GradeSheetController@semester')->name('faculty.student_grade_sheet.semester');
+        Route::post('list-class-subject-details1', 'Faculty\GradeSheetController@list_class_subject_details1')->name('faculty.student_grade_sheet.list_class_subject_details1');
+        Route::post('list-students-by-class1', 'Faculty\GradeSheetController@list_students_by_class1')->name('faculty.student_grade_sheet.list_students_by_class1');
+        Route::get('list-students-by-class-senior-print', 'Faculty\GradeSheetController@list_students_by_class_print_senior')->name('faculty.student_grade_sheet.list_students_by_class_print1');    
+    
     });
 
 
@@ -210,6 +214,14 @@ Route::group(['prefix' => 'faculty', 'middleware' => ['auth', 'userroles'], 'rol
         Route::post('second_sem/save', 'Faculty\ClassAttendanceController@save_attendance_senior_second')->name('faculty.save_attendance_senior_second');
         Route::get('print-class-attendance', 'Faculty\ClassAttendanceController@print_attendance')->name('faculty.print_attendance');
     });
+
+    Route::group(['prefix' => 'encode_remarks'], function () {
+        Route::get('encode-class-remarks', 'Faculty\EncodeRemarkController@index')->name('faculty.encode-remarks.index');
+        Route::post('encode-class-remarks', 'Faculty\EncodeRemarkController@index')->name('faculty.encode-remarks.index');
+
+        Route::post('', 'Faculty\EncodeRemarkController@save')->name('faculty.encode-remarks.save');
+        // Route::get('print-class-grades', 'Faculty\EncodeRemarkController@print_student_class_grades')->name('faculty.encode-remarks.print_grades');
+    });
     
     Route::group(['prefix' => 'class-demographic-profile'], function () {
         Route::get('encode-class-demographic-profile', 'Faculty\DemographicProfileController@index')->name('faculty.class_demographic_profile.index');
@@ -221,7 +233,7 @@ Route::group(['prefix' => 'faculty', 'middleware' => ['auth', 'userroles'], 'rol
     Route::group(['prefix' => 'data-student'], function (){
         Route::get('create-data-grades', 'Faculty\GradeSheetController@view_student_data')->name('faculty.DataStudent');
         Route::post('section-list', 'Faculty\GradeSheetController@list_class_section')->name('faculty.SectionList');
-        // Route::get('section-list', 'Faculty\GradeSheetController@list_class_section')->name('faculty.SectionList');
+        // Route::get('section-list', 'Faculty\GradeSheetController@list_class_section')->name('faculty.SectionList');\
     });
 
 });
@@ -316,6 +328,20 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'userroles'], 'roles
             Route::post('modal-data', 'Control_Panel\Maintenance\SectionController@modal_data')->name('admin.maintenance.section_details.modal_data');
             Route::post('save-data', 'Control_Panel\Maintenance\SectionController@save_data')->name('admin.maintenance.section_details.save_data');
             Route::post('deactivate-data', 'Control_Panel\Maintenance\SectionController@deactivate_data')->name('admin.maintenance.section_details.deactivate_data');
+        });
+
+        Route::group(['prefix' => 'date-remarks'], function () {
+            Route::get('', 'Control_Panel\Maintenance\DateRemarkController@index')->name('admin.maintenance.date_remarks_for_class_card');
+            Route::post('', 'Control_Panel\Maintenance\DateRemarkController@index')->name('admin.maintenance.date_remarks_for_class_card');
+            Route::post('save-data', 'Control_Panel\Maintenance\DateRemarkController@save_data')->name('admin.maintenance.date_remarks_for_class.save_data');
+            Route::post('modal-data', 'Control_Panel\Maintenance\DateRemarkController@modal_data')->name('admin.maintenance.date_remarks_for_class.modal_data');
+        });
+
+        Route::group(['prefix' => 'strand'], function () {
+            Route::get('', 'Control_Panel\Maintenance\StrandController@index')->name('admin.maintenance.strand');
+            Route::post('', 'Control_Panel\Maintenance\StrandController@index')->name('admin.maintenance.strand');
+            Route::post('modal-data', 'Control_Panel\Maintenance\StrandController@modal_data')->name('admin.maintenance.strand.modal_data');
+            Route::post('save-data', 'Control_Panel\Maintenance\StrandController@save_data')->name('admin.maintenance.strand.save_data');
         });
     });
     

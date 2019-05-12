@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <title>
-        PRINT - <b><i>{{ $quarter }} Quarter</i></b>
+        PRINT - {{ $quarter }} Quarter
     </title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" type="text/css" media="screen" href="main.css" />
@@ -140,7 +140,7 @@
                         <th style="width: ; text-align: center" colspan="2">ICT</th>
                         <th style="width: ; text-align: center" colspan="2">MAPEH</th>                                                        
                         <th style="width: ; text-align: center" colspan="2">Religion</th>
-                        <th style="width: ; text-align: center">G.A.</th>
+                        <th style="width: ; text-align: center" colspan="2">G.A.</th>
                         <th style="width: ; text-align: center">REMARKS</th>
                     </tr>
                     <tr>
@@ -164,13 +164,15 @@
                         <th  style="color: blue">FG</th>
                         <th  style="color: red">4TH</th>
                         <th  style="color: blue">FG</th>
+                        <th  style="color: red">4TH</th>
+                        <th  style="color: blue">FG</th>
                         <th></th>
-                        <th></th>
+                        
                     </tr>
                 </thead>
                 <tbody>                                  
                     <tr>
-                        <td colspan="22">
+                        <td colspan="23">
                             <b>Male</b>
                         </td>
                         
@@ -179,92 +181,100 @@
                     <tr>
                         <td>{{ $key + 1 }}.</td>
                         <td>{{$sub->student_name}}</td>
-                        <td style="text-align:center"><center>{{ $sub->filipino }}</center></td>
-                        <td style="text-align:center">
+                        <td><center>{{ round($sub->filipino) }}</center></td>
+                        <td>
                             <?php                                                    
                                 $fir_g = round(\App\Grade_sheet_first::where('enrollment_id', $sub->enrollment_id)->first()->filipino);                                                                                                        
                                 $sec_g = round(\App\Grade_sheet_second::where('enrollment_id', $sub->enrollment_id)->first()->filipino);
                                 $thi_g = round(\App\Grade_sheet_third::where('enrollment_id', $sub->enrollment_id)->first()->filipino);
-                                echo $WA = round(($fir_g + $sec_g + $thi_g + $sub->filipino) / 4);
+                                echo $subj_1 = round(($fir_g + $sec_g + $thi_g + $sub->filipino) / 4);
                             ?>
                         </td>
-                        <td style="text-align:center"><center>{{$sub->english}}</center></td>
-                        <td style="text-align:center">
+                        <td><center>{{ round($sub->english) }}</center></td>
+                        <td>
                             <?php                                                    
                             $fir_g = round(\App\Grade_sheet_first::where('enrollment_id', $sub->enrollment_id)->first()->english);                                                                                                        
                             $sec_g = round(\App\Grade_sheet_second::where('enrollment_id', $sub->enrollment_id)->first()->english);
                             $thi_g = round(\App\Grade_sheet_third::where('enrollment_id', $sub->enrollment_id)->first()->english);
-                            echo $WA = round(($fir_g + $sec_g + $thi_g + $sub->english) / 4);
+                            echo $subj_2 = round(($fir_g + $sec_g + $thi_g + $sub->english) / 4);
                             ?>
                         </td>
-                        <td style="text-align:center"><center>{{$sub->math}}</center></td>
-                        <td style="text-align:center">
+                        <td><center>{{ round($sub->math) }}</center></td>
+                        <td>
                             <?php                                                    
                             $fir_g = round(\App\Grade_sheet_first::where('enrollment_id', $sub->enrollment_id)->first()->math);                                                                                                        
                             $sec_g = round(\App\Grade_sheet_second::where('enrollment_id', $sub->enrollment_id)->first()->math);
                             $thi_g = round(\App\Grade_sheet_third::where('enrollment_id', $sub->enrollment_id)->first()->math);
-                            echo $WA = round(($fir_g + $sec_g + $thi_g + $sub->math) / 4);
+                            echo $subj_3 = round(($fir_g + $sec_g + $thi_g + $sub->math) / 4);
                             ?>
                         </td>
-                        <td style="text-align:center"><center>{{$sub->science}}</center></td>
-                        <td style="text-align:center">
+                        <td><center>{{ round($sub->science) }}</center></td>
+                        <td>
                             <?php                                                    
                             $fir_g = round(\App\Grade_sheet_first::where('enrollment_id', $sub->enrollment_id)->first()->science);                                                                                                        
                             $sec_g = round(\App\Grade_sheet_second::where('enrollment_id', $sub->enrollment_id)->first()->science);
                             $thi_g = round(\App\Grade_sheet_third::where('enrollment_id', $sub->enrollment_id)->first()->science);
-                            echo $WA = round(($fir_g + $sec_g + $thi_g + $sub->science) / 4);
+                            echo $subj_4 = round(($fir_g + $sec_g + $thi_g + $sub->science) / 4);
                             ?>
                         </td>
-                        <td style="text-align:center"><center>{{$sub->ap}}</center></td>
-                        <td style="text-align:center">
+                        <td><center>{{ round($sub->ap) }}</center></td>
+                        <td>
                             <?php                                                    
                             $fir_g = round(\App\Grade_sheet_first::where('enrollment_id', $sub->enrollment_id)->first()->ap);                                                                                                        
                             $sec_g = round(\App\Grade_sheet_second::where('enrollment_id', $sub->enrollment_id)->first()->ap);
                             $thi_g = round(\App\Grade_sheet_third::where('enrollment_id', $sub->enrollment_id)->first()->ap);
-                            echo $WA = round(($fir_g + $sec_g + $thi_g + $sub->ap) / 4);
+                            echo $subj_5 = round(($fir_g + $sec_g + $thi_g + $sub->ap) / 4);
                             ?>
                         </td>
-                        <td style="text-align:center"><center>{{$sub->esp}}</center></td>
-                        <td style="text-align:center">
+                        <td><center>{{ round($sub->esp) }}</center></td>
+                        <td>
                             <?php                                                    
                             $fir_g = round(\App\Grade_sheet_first::where('enrollment_id', $sub->enrollment_id)->first()->esp);                                                                                                        
                             $sec_g = round(\App\Grade_sheet_second::where('enrollment_id', $sub->enrollment_id)->first()->esp);
                             $thi_g = round(\App\Grade_sheet_third::where('enrollment_id', $sub->enrollment_id)->first()->esp);
-                            echo $WA = round(($fir_g + $sec_g + $thi_g + $sub->esp) / 4);
+                            echo $subj_6 = round(($fir_g + $sec_g + $thi_g + $sub->esp) / 4);
                             ?>
                         </td>
-                        <td style="text-align:center"><center>{{$sub->ict}}</center></td>
-                        <td style="text-align:center">
+                        <td><center>{{ round($sub->ict) }}</center></td>
+                        <td>
                             <?php                                                    
                             $fir_g = round(\App\Grade_sheet_first::where('enrollment_id', $sub->enrollment_id)->first()->ict);                                                                                                        
                             $sec_g = round(\App\Grade_sheet_second::where('enrollment_id', $sub->enrollment_id)->first()->ict);
                             $thi_g = round(\App\Grade_sheet_third::where('enrollment_id', $sub->enrollment_id)->first()->ict);
-                            echo $WA = round(($fir_g + $sec_g + $thi_g + $sub->ict) / 4);
+                            echo $subj_7 = round(($fir_g + $sec_g + $thi_g + $sub->ict) / 4);
                             ?>
                         </td>
-                        <td style="text-align:center"><center>{{$sub->mapeh}}</center></td>
-                        <td style="text-align:center">
+                        <td><center>{{ round($sub->mapeh) }}</center></td>
+                        <td>
                             <?php                                                    
                             $fir_g = round(\App\Grade_sheet_first::where('enrollment_id', $sub->enrollment_id)->first()->mapeh);                                                                                                        
                             $sec_g = round(\App\Grade_sheet_second::where('enrollment_id', $sub->enrollment_id)->first()->mapeh);
                             $thi_g = round(\App\Grade_sheet_third::where('enrollment_id', $sub->enrollment_id)->first()->mapeh);
-                            echo $WA = round(($fir_g + $sec_g + $thi_g + $sub->mapeh) / 4);
+                            echo $subj_8 = round(($fir_g + $sec_g + $thi_g + $sub->mapeh) / 4);
                             ?>
                         </td>
                         
-                        <td style="text-align:center"><center>{{$sub->religion}}</center></td>
-                        <td style="text-align:center">
+                        <td><center>{{ round($sub->religion) }}</center></td>
+                        <td>
                             <?php                                                    
                             $fir_g = round(\App\Grade_sheet_first::where('enrollment_id', $sub->enrollment_id)->first()->religion);                                                                                                        
                             $sec_g = round(\App\Grade_sheet_second::where('enrollment_id', $sub->enrollment_id)->first()->religion);
                             $thi_g = round(\App\Grade_sheet_third::where('enrollment_id', $sub->enrollment_id)->first()->religion);
-                            echo $WA = round(($fir_g + $sec_g + $thi_g + $sub->religion) / 4);
+                            echo $subj_9 = round(($fir_g + $sec_g + $thi_g + $sub->religion) / 4);
                             ?>
                         </td>
                         <td>
                             <center>                                                
                                 <?php
                                     $formattedNum = number_format(round($average = ($sub->filipino + $sub->english + $sub->math + $sub->science + $sub->ap + $sub->ict + $sub->mapeh + $sub->esp +$sub->religion)/9), 0);
+                                    echo $formattedNum;
+                                ?>
+                            </center>
+                        </td>
+                        <td>
+                            <center>                                                
+                                <?php
+                                    $formattedNum = number_format(round($average = (round($subj_1) + round($subj_2) + round($subj_3) + round($subj_4) + round($subj_5) + round($subj_6) + round($subj_7) + round($subj_8) + round($subj_9) )/9), 0);
                                     echo $formattedNum;
                                 ?>
                             </center>
@@ -296,7 +306,7 @@
                         @endforeach
 
                     <tr>
-                        <td colspan="22">
+                        <td colspan="23">
                             <b>Female</b>
                         </td>
                     </tr>
@@ -304,94 +314,102 @@
                     <tr>
                         <td>{{ $key + 1 }}.</td>
                         <td>{{$sub->student_name}}</td>
-                            <td style="text-align:center"><center>{{$sub->filipino}}</center></td>
-                            <td style="text-align:center">
-                                <?php                                                    
-                                    $fir_g = round(\App\Grade_sheet_first::where('enrollment_id', $sub->enrollment_id)->first()->filipino);                                                                                                        
-                                    $sec_g = round(\App\Grade_sheet_second::where('enrollment_id', $sub->enrollment_id)->first()->filipino);
-                                    $thi_g = round(\App\Grade_sheet_third::where('enrollment_id', $sub->enrollment_id)->first()->filipino);
-                                    echo $WA = round(($fir_g + $sec_g + $thi_g + $sub->filipino) / 4);
-                                ?>
-                            </td>
-                            <td style="text-align:center"><center>{{$sub->english}}</center></td>
-                            <td style="text-align:center">
-                                <?php                                                    
-                                $fir_g = round(\App\Grade_sheet_first::where('enrollment_id', $sub->enrollment_id)->first()->english);                                                                                                        
-                                $sec_g = round(\App\Grade_sheet_second::where('enrollment_id', $sub->enrollment_id)->first()->english);
-                                $thi_g = round(\App\Grade_sheet_third::where('enrollment_id', $sub->enrollment_id)->first()->english);
-                                echo $WA = round(($fir_g + $sec_g + $thi_g + $sub->english) / 4);
-                                ?>
-                            </td>
-                            <td style="text-align:center"><center>{{$sub->math}}</center></td>
-                            <td style="text-align:center">
-                                <?php                                                    
-                                $fir_g = round(\App\Grade_sheet_first::where('enrollment_id', $sub->enrollment_id)->first()->math);                                                                                                        
-                                $sec_g = round(\App\Grade_sheet_second::where('enrollment_id', $sub->enrollment_id)->first()->math);
-                                $thi_g = round(\App\Grade_sheet_third::where('enrollment_id', $sub->enrollment_id)->first()->math);
-                                echo $WA = round(($fir_g + $sec_g + $thi_g + $sub->math) / 4);
-                                ?>
-                            </td>
-                            <td style="text-align:center"><center>{{$sub->science}}</center></td>
-                            <td style="text-align:center">
-                                <?php                                                    
-                                $fir_g = round(\App\Grade_sheet_first::where('enrollment_id', $sub->enrollment_id)->first()->science);                                                                                                        
-                                $sec_g = round(\App\Grade_sheet_second::where('enrollment_id', $sub->enrollment_id)->first()->science);
-                                $thi_g = round(\App\Grade_sheet_third::where('enrollment_id', $sub->enrollment_id)->first()->science);
-                                echo $WA = round(($fir_g + $sec_g + $thi_g + $sub->science) / 4);
-                                ?>
-                            </td>
-                            <td style="text-align:center"><center>{{$sub->ap}}</center></td>
-                            <td style="text-align:center">
-                                <?php                                                    
-                                $fir_g = round(\App\Grade_sheet_first::where('enrollment_id', $sub->enrollment_id)->first()->ap);                                                                                                        
-                                $sec_g = round(\App\Grade_sheet_second::where('enrollment_id', $sub->enrollment_id)->first()->ap);
-                                $thi_g = round(\App\Grade_sheet_third::where('enrollment_id', $sub->enrollment_id)->first()->ap);
-                                echo $WA = round(($fir_g + $sec_g + $thi_g + $sub->ap) / 4);
-                                ?>
-                            </td>
-                            <td style="text-align:center"><center>{{$sub->esp}}</center></td>
-                            <td style="text-align:center">
-                                <?php                                                    
-                                $fir_g = round(\App\Grade_sheet_first::where('enrollment_id', $sub->enrollment_id)->first()->esp);                                                                                                        
-                                $sec_g = round(\App\Grade_sheet_second::where('enrollment_id', $sub->enrollment_id)->first()->esp);
-                                $thi_g = round(\App\Grade_sheet_third::where('enrollment_id', $sub->enrollment_id)->first()->esp);
-                                echo $WA = round(($fir_g + $sec_g + $thi_g + $sub->esp) / 4);
-                                ?>
-                            </td>
-                            <td style="text-align:center"><center>{{$sub->ict}}</center></td>
-                            <td style="text-align:center">
-                                <?php                                                    
-                                $fir_g = round(\App\Grade_sheet_first::where('enrollment_id', $sub->enrollment_id)->first()->ict);                                                                                                        
-                                $sec_g = round(\App\Grade_sheet_second::where('enrollment_id', $sub->enrollment_id)->first()->ict);
-                                $thi_g = round(\App\Grade_sheet_third::where('enrollment_id', $sub->enrollment_id)->first()->ict);
-                                echo $WA = round(($fir_g + $sec_g + $thi_g + $sub->ict) / 4);
-                                ?>
-                            </td>
-                            <td style="text-align:center"><center>{{$sub->mapeh}}</center></td>
-                            <td style="text-align:center">
-                                <?php                                                    
-                                $fir_g = round(\App\Grade_sheet_first::where('enrollment_id', $sub->enrollment_id)->first()->mapeh);                                                                                                        
-                                $sec_g = round(\App\Grade_sheet_second::where('enrollment_id', $sub->enrollment_id)->first()->mapeh);
-                                $thi_g = round(\App\Grade_sheet_third::where('enrollment_id', $sub->enrollment_id)->first()->mapeh);
-                                echo $WA = round(($fir_g + $sec_g + $thi_g + $sub->mapeh) / 4);
-                                ?>
-                            </td>
-                            
-                            <td style="text-align:center"><center>{{$sub->religion}}</center></td>
-                            <td style="text-align:center">
-                                <?php                                                    
-                                $fir_g = round(\App\Grade_sheet_first::where('enrollment_id', $sub->enrollment_id)->first()->religion);                                                                                                        
-                                $sec_g = round(\App\Grade_sheet_second::where('enrollment_id', $sub->enrollment_id)->first()->religion);
-                                $thi_g = round(\App\Grade_sheet_third::where('enrollment_id', $sub->enrollment_id)->first()->religion);
-                                echo $WA = round(($fir_g + $sec_g + $thi_g + $sub->religion) / 4);
-                                ?>
-                            </td>
+                        <td><center>{{ round($sub->filipino) }}</center></td>
                         <td>
-                            <center>
+                            <?php                                                    
+                                $fir_g = round(\App\Grade_sheet_first::where('enrollment_id', $sub->enrollment_id)->first()->filipino);                                                                                                        
+                                $sec_g = round(\App\Grade_sheet_second::where('enrollment_id', $sub->enrollment_id)->first()->filipino);
+                                $thi_g = round(\App\Grade_sheet_third::where('enrollment_id', $sub->enrollment_id)->first()->filipino);
+                                echo $subj_1 = round(($fir_g + $sec_g + $thi_g + $sub->filipino) / 4);
+                            ?>
+                        </td>
+                        <td><center>{{ round($sub->english) }}</center></td>
+                        <td>
+                            <?php                                                    
+                            $fir_g = round(\App\Grade_sheet_first::where('enrollment_id', $sub->enrollment_id)->first()->english);                                                                                                        
+                            $sec_g = round(\App\Grade_sheet_second::where('enrollment_id', $sub->enrollment_id)->first()->english);
+                            $thi_g = round(\App\Grade_sheet_third::where('enrollment_id', $sub->enrollment_id)->first()->english);
+                            echo $subj_2 = round(($fir_g + $sec_g + $thi_g + $sub->english) / 4);
+                            ?>
+                        </td>
+                        <td><center>{{ round($sub->math) }}</center></td>
+                        <td>
+                            <?php                                                    
+                            $fir_g = round(\App\Grade_sheet_first::where('enrollment_id', $sub->enrollment_id)->first()->math);                                                                                                        
+                            $sec_g = round(\App\Grade_sheet_second::where('enrollment_id', $sub->enrollment_id)->first()->math);
+                            $thi_g = round(\App\Grade_sheet_third::where('enrollment_id', $sub->enrollment_id)->first()->math);
+                            echo $subj_3 = round(($fir_g + $sec_g + $thi_g + $sub->math) / 4);
+                            ?>
+                        </td>
+                        <td><center>{{ round($sub->science) }}</center></td>
+                        <td>
+                            <?php                                                    
+                            $fir_g = round(\App\Grade_sheet_first::where('enrollment_id', $sub->enrollment_id)->first()->science);                                                                                                        
+                            $sec_g = round(\App\Grade_sheet_second::where('enrollment_id', $sub->enrollment_id)->first()->science);
+                            $thi_g = round(\App\Grade_sheet_third::where('enrollment_id', $sub->enrollment_id)->first()->science);
+                            echo $subj_4 = round(($fir_g + $sec_g + $thi_g + $sub->science) / 4);
+                            ?>
+                        </td>
+                        <td><center>{{ round($sub->ap) }}</center></td>
+                        <td>
+                            <?php                                                    
+                            $fir_g = round(\App\Grade_sheet_first::where('enrollment_id', $sub->enrollment_id)->first()->ap);                                                                                                        
+                            $sec_g = round(\App\Grade_sheet_second::where('enrollment_id', $sub->enrollment_id)->first()->ap);
+                            $thi_g = round(\App\Grade_sheet_third::where('enrollment_id', $sub->enrollment_id)->first()->ap);
+                            echo $subj_5 = round(($fir_g + $sec_g + $thi_g + $sub->ap) / 4);
+                            ?>
+                        </td>
+                        <td><center>{{ round($sub->esp) }}</center></td>
+                        <td>
+                            <?php                                                    
+                            $fir_g = round(\App\Grade_sheet_first::where('enrollment_id', $sub->enrollment_id)->first()->esp);                                                                                                        
+                            $sec_g = round(\App\Grade_sheet_second::where('enrollment_id', $sub->enrollment_id)->first()->esp);
+                            $thi_g = round(\App\Grade_sheet_third::where('enrollment_id', $sub->enrollment_id)->first()->esp);
+                            echo $subj_6 = round(($fir_g + $sec_g + $thi_g + $sub->esp) / 4);
+                            ?>
+                        </td>
+                        <td><center>{{ round($sub->ict) }}</center></td>
+                        <td>
+                            <?php                                                    
+                            $fir_g = round(\App\Grade_sheet_first::where('enrollment_id', $sub->enrollment_id)->first()->ict);                                                                                                        
+                            $sec_g = round(\App\Grade_sheet_second::where('enrollment_id', $sub->enrollment_id)->first()->ict);
+                            $thi_g = round(\App\Grade_sheet_third::where('enrollment_id', $sub->enrollment_id)->first()->ict);
+                            echo $subj_7 = round(($fir_g + $sec_g + $thi_g + $sub->ict) / 4);
+                            ?>
+                        </td>
+                        <td><center>{{ round($sub->mapeh) }}</center></td>
+                        <td>
+                            <?php                                                    
+                            $fir_g = round(\App\Grade_sheet_first::where('enrollment_id', $sub->enrollment_id)->first()->mapeh);                                                                                                        
+                            $sec_g = round(\App\Grade_sheet_second::where('enrollment_id', $sub->enrollment_id)->first()->mapeh);
+                            $thi_g = round(\App\Grade_sheet_third::where('enrollment_id', $sub->enrollment_id)->first()->mapeh);
+                            echo $subj_8 = round(($fir_g + $sec_g + $thi_g + $sub->mapeh) / 4);
+                            ?>
+                        </td>
+                        
+                        <td><center>{{ round($sub->religion) }}</center></td>
+                        <td>
+                            <?php                                                    
+                            $fir_g = round(\App\Grade_sheet_first::where('enrollment_id', $sub->enrollment_id)->first()->religion);                                                                                                        
+                            $sec_g = round(\App\Grade_sheet_second::where('enrollment_id', $sub->enrollment_id)->first()->religion);
+                            $thi_g = round(\App\Grade_sheet_third::where('enrollment_id', $sub->enrollment_id)->first()->religion);
+                            echo $subj_9 = round(($fir_g + $sec_g + $thi_g + $sub->religion) / 4);
+                            ?>
+                        </td>
+                        <td>
+                            <center>                                                
                                 <?php
-                                $formattedNum = number_format(round($average = ($sub->filipino + $sub->english + $sub->math + $sub->science + $sub->ap + $sub->ict + $sub->mapeh + $sub->esp +$sub->religion)/9), 0);
-                                echo $formattedNum;
-                                ?>                                                
+                                    $formattedNum = number_format(round($average = ($sub->filipino + $sub->english + $sub->math + $sub->science + $sub->ap + $sub->ict + $sub->mapeh + $sub->esp +$sub->religion)/9), 0);
+                                    echo $formattedNum;
+                                ?>
+                            </center>
+                        </td>
+                        <td>
+                            <center>                                                
+                                <?php
+                                    $formattedNum = number_format(round($average = (round($subj_1) + round($subj_2) + round($subj_3) + round($subj_4) + round($subj_5) + round($subj_6) + round($subj_7) + round($subj_8) + round($subj_9) )/9), 0);
+                                    echo $formattedNum;
+                                ?>
                             </center>
                         </td>
                         
@@ -444,7 +462,7 @@
                         <th style="width: ; text-align: center" colspan="2">MAPEH</th>
                         <th style="width: ; text-align: center" colspan="2">ESP</th>
                         <th style="width: ; text-align: center" colspan="2">Religion</th>
-                        <th style="width: ; text-align: center">G.A.</th>
+                        <th style="width: ; text-align: center" colspan="2">G.A.</th>
                         <th style="font-size: 10px; width: ; text-align: center">REMARKS</th>
                     </tr>
                     <tr>
@@ -468,13 +486,15 @@
                         <th  style="color: blue">FG</th>
                         <th  style="color: red">4TH</th>
                         <th  style="color: blue">FG</th>
+                        <th  style="color: red">4TH</th>
+                        <th  style="color: blue">FG</th>
                         <th></th>
-                        <th></th>
+                        
                     </tr>
                 </thead>
                 <tbody>                                  
                     <tr>
-                        <td colspan="22">
+                        <td colspan="23">
                             <b>Male</b>
                         </td>
                         
@@ -483,91 +503,99 @@
                     <tr>
                         <td>{{ $key + 1 }}.</td>
                         <td>{{$sub->student_name}}</td>
-                        <td><center>{{ $sub->filipino }}</center></td>
-                        <td style="text-align:center">
+                        <td><center>{{ round($sub->filipino) }}</center></td>
+                        <td>
                             <?php                                                    
                                 $fir_g = round(\App\Grade_sheet_first::where('enrollment_id', $sub->enrollment_id)->first()->filipino);                                                                                                        
                                 $sec_g = round(\App\Grade_sheet_second::where('enrollment_id', $sub->enrollment_id)->first()->filipino);
                                 $thi_g = round(\App\Grade_sheet_third::where('enrollment_id', $sub->enrollment_id)->first()->filipino);
-                                echo $WA = round(($fir_g + $sec_g + $thi_g + $sub->filipino) / 4);
+                                echo $subj_1 = round(($fir_g + $sec_g + $thi_g + $sub->filipino) / 4);
                             ?>
                         </td>
-                        <td><center>{{$sub->english}}</center></td>
-                        <td style="text-align:center">
+                        <td><center>{{ round($sub->english) }}</center></td>
+                        <td>
                             <?php                                                    
                             $fir_g = round(\App\Grade_sheet_first::where('enrollment_id', $sub->enrollment_id)->first()->english);                                                                                                        
                             $sec_g = round(\App\Grade_sheet_second::where('enrollment_id', $sub->enrollment_id)->first()->english);
                             $thi_g = round(\App\Grade_sheet_third::where('enrollment_id', $sub->enrollment_id)->first()->english);
-                            echo $WA = round(($fir_g + $sec_g + $thi_g + $sub->english) / 4);
+                            echo $subj_2 = round(($fir_g + $sec_g + $thi_g + $sub->english) / 4);
                             ?>
                         </td>
-                        <td><center>{{$sub->math}}</center></td>
-                        <td style="text-align:center">
+                        <td><center>{{  round($sub->math) }}</center></td>
+                        <td>
                             <?php                                                    
                             $fir_g = round(\App\Grade_sheet_first::where('enrollment_id', $sub->enrollment_id)->first()->math);                                                                                                        
                             $sec_g = round(\App\Grade_sheet_second::where('enrollment_id', $sub->enrollment_id)->first()->math);
                             $thi_g = round(\App\Grade_sheet_third::where('enrollment_id', $sub->enrollment_id)->first()->math);
-                            echo $WA = round(($fir_g + $sec_g + $thi_g + $sub->math) / 4);
+                            echo $subj_3 = round(($fir_g + $sec_g + $thi_g + $sub->math) / 4);
                             ?>
                         </td>
-                        <td><center>{{$sub->science}}</center></td>
-                        <td style="text-align:center">
+                        <td><center>{{ round($sub->science) }}</center></td>
+                        <td>
                             <?php                                                    
                             $fir_g = round(\App\Grade_sheet_first::where('enrollment_id', $sub->enrollment_id)->first()->science);                                                                                                        
                             $sec_g = round(\App\Grade_sheet_second::where('enrollment_id', $sub->enrollment_id)->first()->science);
                             $thi_g = round(\App\Grade_sheet_third::where('enrollment_id', $sub->enrollment_id)->first()->science);
-                            echo $WA = round(($fir_g + $sec_g + $thi_g + $sub->science) / 4);
+                            echo $subj_4 = round(($fir_g + $sec_g + $thi_g + $sub->science) / 4);
                             ?>
                         </td>
-                        <td><center>{{$sub->ap}}</center></td>
-                        <td style="text-align:center">
+                        <td><center>{{ round($sub->ap) }}</center></td>
+                        <td>
                             <?php                                                    
                             $fir_g = round(\App\Grade_sheet_first::where('enrollment_id', $sub->enrollment_id)->first()->ap);                                                                                                        
                             $sec_g = round(\App\Grade_sheet_second::where('enrollment_id', $sub->enrollment_id)->first()->ap);
                             $thi_g = round(\App\Grade_sheet_third::where('enrollment_id', $sub->enrollment_id)->first()->ap);
-                            echo $WA = round(($fir_g + $sec_g + $thi_g + $sub->ap) / 4);
+                            echo $subj_5 = round(($fir_g + $sec_g + $thi_g + $sub->ap) / 4);
                             ?>
                         </td>
-                        <td><center>{{$sub->ict}}</center></td>
-                        <td style="text-align:center">
+                        <td><center>{{ round($sub->ict) }}</center></td>
+                        <td>
                             <?php                                                    
                             $fir_g = round(\App\Grade_sheet_first::where('enrollment_id', $sub->enrollment_id)->first()->ict);                                                                                                        
                             $sec_g = round(\App\Grade_sheet_second::where('enrollment_id', $sub->enrollment_id)->first()->ict);
                             $thi_g = round(\App\Grade_sheet_third::where('enrollment_id', $sub->enrollment_id)->first()->ict);
-                            echo $WA = round(($fir_g + $sec_g + $thi_g + $sub->ict) / 4);
+                            echo $subj_6 = round(($fir_g + $sec_g + $thi_g + $sub->ict) / 4);
                             ?>
                         </td>
-                        <td style="text-align:center"><center>{{$sub->mapeh}}</center></td>
-                        <td style="text-align:center">
+                        <td><center>{{ round($sub->mapeh) }}</center></td>
+                        <td>
                             <?php                                                    
                             $fir_g = round(\App\Grade_sheet_first::where('enrollment_id', $sub->enrollment_id)->first()->mapeh);                                                                                                        
                             $sec_g = round(\App\Grade_sheet_second::where('enrollment_id', $sub->enrollment_id)->first()->mapeh);
                             $thi_g = round(\App\Grade_sheet_third::where('enrollment_id', $sub->enrollment_id)->first()->mapeh);
-                            echo $WA = round(($fir_g + $sec_g + $thi_g + $sub->mapeh) / 4);
+                            echo $subj_7 = round(($fir_g + $sec_g + $thi_g + $sub->mapeh) / 4);
                             ?>
                         </td>
-                        <td style="text-align:center"><center>{{$sub->esp}}</center></td>
-                        <td style="text-align:center">
+                        <td><center>{{ round($sub->esp) }}</center></td>
+                        <td>
                             <?php                                                    
                             $fir_g = round(\App\Grade_sheet_first::where('enrollment_id', $sub->enrollment_id)->first()->esp);                                                                                                        
                             $sec_g = round(\App\Grade_sheet_second::where('enrollment_id', $sub->enrollment_id)->first()->esp);
                             $thi_g = round(\App\Grade_sheet_third::where('enrollment_id', $sub->enrollment_id)->first()->esp);
-                            echo $WA = round(($fir_g + $sec_g + $thi_g + $sub->esp) / 4);
+                            echo $subj_8 = round(($fir_g + $sec_g + $thi_g + $sub->esp) / 4);
                             ?>
                         </td>
-                        <td style="text-align:center"><center>{{$sub->religion}}</center></td>
-                        <td style="text-align:center">
+                        <td><center>{{ round($sub->religion) }}</center></td>
+                        <td>
                             <?php                                                    
                             $fir_g = round(\App\Grade_sheet_first::where('enrollment_id', $sub->enrollment_id)->first()->religion);                                                                                                        
                             $sec_g = round(\App\Grade_sheet_second::where('enrollment_id', $sub->enrollment_id)->first()->religion);
                             $thi_g = round(\App\Grade_sheet_third::where('enrollment_id', $sub->enrollment_id)->first()->religion);
-                            echo $WA = round(($fir_g + $sec_g + $thi_g + $sub->religion) / 4);
+                            echo $subj_9 = round(($fir_g + $sec_g + $thi_g + $sub->religion) / 4);
                             ?>
                         </td>
                         <td>
                             <center>                                                
                                 <?php
                                     $formattedNum = number_format(round($average = ($sub->filipino + $sub->english + $sub->math + $sub->science + $sub->ap + $sub->ict + $sub->mapeh + $sub->esp +$sub->religion)/9), 0);
+                                    echo $formattedNum;
+                                ?>
+                            </center>
+                        </td>
+                        <td>
+                            <center>                                                
+                                <?php
+                                    $formattedNum = number_format(round($average = (round($subj_1) + round($subj_2) + round($subj_3) + round($subj_4) + round($subj_5) + round($subj_6) + round($subj_7) + round($subj_8) + round($subj_9) )/9), 0);
                                     echo $formattedNum;
                                 ?>
                             </center>
@@ -599,7 +627,7 @@
                         @endforeach
 
                     <tr>
-                        <td colspan="22">
+                        <td colspan="23">
                             <b>Female</b>
                         </td>
                     </tr>
@@ -607,93 +635,101 @@
                     <tr>
                         <td>{{ $key + 1 }}.</td>
                         <td>{{$sub->student_name}}</td>
-                            <td><center>{{$sub->filipino}}</center></td>
-                            <td style="text-align:center">
-                                <?php                                                    
-                                    $fir_g = round(\App\Grade_sheet_first::where('enrollment_id', $sub->enrollment_id)->first()->filipino);                                                                                                        
-                                    $sec_g = round(\App\Grade_sheet_second::where('enrollment_id', $sub->enrollment_id)->first()->filipino);
-                                    $thi_g = round(\App\Grade_sheet_third::where('enrollment_id', $sub->enrollment_id)->first()->filipino);
-                                    echo $WA = round(($fir_g + $sec_g + $thi_g + $sub->filipino) / 4);
-                                ?>
-                            </td>
-                            <td style="text-align:center"><center>{{$sub->english}}</center></td>
-                            <td style="text-align:center">
-                                <?php                                                    
-                                $fir_g = round(\App\Grade_sheet_first::where('enrollment_id', $sub->enrollment_id)->first()->english);                                                                                                        
-                                $sec_g = round(\App\Grade_sheet_second::where('enrollment_id', $sub->enrollment_id)->first()->english);
-                                $thi_g = round(\App\Grade_sheet_third::where('enrollment_id', $sub->enrollment_id)->first()->english);
-                                echo $WA = round(($fir_g + $sec_g + $thi_g + $sub->english) / 4);
-                                ?>
-                            </td>
-                            <td style="text-align:center"><center>{{$sub->math}}</center></td>
-                            <td style="text-align:center">
-                                <?php                                                    
-                                $fir_g = round(\App\Grade_sheet_first::where('enrollment_id', $sub->enrollment_id)->first()->math);                                                                                                        
-                                $sec_g = round(\App\Grade_sheet_second::where('enrollment_id', $sub->enrollment_id)->first()->math);
-                                $thi_g = round(\App\Grade_sheet_third::where('enrollment_id', $sub->enrollment_id)->first()->math);
-                                echo $WA = round(($fir_g + $sec_g + $thi_g + $sub->math) / 4);
-                                ?>
-                            </td>
-                            <td style="text-align:center"><center>{{$sub->science}}</center></td>
-                            <td style="text-align:center">
-                                <?php                                                    
-                                $fir_g = round(\App\Grade_sheet_first::where('enrollment_id', $sub->enrollment_id)->first()->science);                                                                                                        
-                                $sec_g = round(\App\Grade_sheet_second::where('enrollment_id', $sub->enrollment_id)->first()->science);
-                                $thi_g = round(\App\Grade_sheet_third::where('enrollment_id', $sub->enrollment_id)->first()->science);
-                                echo $WA = round(($fir_g + $sec_g + $thi_g + $sub->science) / 4);
-                                ?>
-                            </td>
-                            <td style="text-align:center"><center>{{$sub->ap}}</center></td>
-                            <td style="text-align:center">
-                                <?php                                                    
-                                $fir_g = round(\App\Grade_sheet_first::where('enrollment_id', $sub->enrollment_id)->first()->ap);                                                                                                        
-                                $sec_g = round(\App\Grade_sheet_second::where('enrollment_id', $sub->enrollment_id)->first()->ap);
-                                $thi_g = round(\App\Grade_sheet_third::where('enrollment_id', $sub->enrollment_id)->first()->ap);
-                                echo $WA = round(($fir_g + $sec_g + $thi_g + $sub->ap) / 4);
-                                ?>
-                            </td>
-                            <td style="text-align:center"><center>{{$sub->ict}}</center></td>
-                            <td style="text-align:center">
-                                <?php                                                    
-                                $fir_g = round(\App\Grade_sheet_first::where('enrollment_id', $sub->enrollment_id)->first()->ict);                                                                                                        
-                                $sec_g = round(\App\Grade_sheet_second::where('enrollment_id', $sub->enrollment_id)->first()->ict);
-                                $thi_g = round(\App\Grade_sheet_third::where('enrollment_id', $sub->enrollment_id)->first()->ict);
-                                echo $WA = round(($fir_g + $sec_g + $thi_g + $sub->ict) / 4);
-                                ?>
-                            </td>
-                            <td style="text-align:center"><center>{{$sub->mapeh}}</center></td>
-                            <td style="text-align:center">
-                                <?php                                                    
-                                $fir_g = round(\App\Grade_sheet_first::where('enrollment_id', $sub->enrollment_id)->first()->mapeh);                                                                                                        
-                                $sec_g = round(\App\Grade_sheet_second::where('enrollment_id', $sub->enrollment_id)->first()->mapeh);
-                                $thi_g = round(\App\Grade_sheet_third::where('enrollment_id', $sub->enrollment_id)->first()->mapeh);
-                                echo $WA = round(($fir_g + $sec_g + $thi_g + $sub->mapeh) / 4);
-                                ?>
-                            </td>
-                            <td style="text-align:center"><center>{{$sub->esp}}</center></td>
-                            <td style="text-align:center">
-                                <?php                                                    
-                                $fir_g = round(\App\Grade_sheet_first::where('enrollment_id', $sub->enrollment_id)->first()->esp);                                                                                                        
-                                $sec_g = round(\App\Grade_sheet_second::where('enrollment_id', $sub->enrollment_id)->first()->esp);
-                                $thi_g = round(\App\Grade_sheet_third::where('enrollment_id', $sub->enrollment_id)->first()->esp);
-                                echo $WA = round(($fir_g + $sec_g + $thi_g + $sub->esp) / 4);
-                                ?>
-                            </td>
-                            <td style="text-align:center"><center>{{$sub->religion}}</center></td>
-                            <td style="text-align:center">
-                                <?php                                                    
-                                $fir_g = round(\App\Grade_sheet_first::where('enrollment_id', $sub->enrollment_id)->first()->religion);                                                                                                        
-                                $sec_g = round(\App\Grade_sheet_second::where('enrollment_id', $sub->enrollment_id)->first()->religion);
-                                $thi_g = round(\App\Grade_sheet_third::where('enrollment_id', $sub->enrollment_id)->first()->religion);
-                                echo $WA = round(($fir_g + $sec_g + $thi_g + $sub->religion) / 4);
-                                ?>
-                            </td>
+                        <td><center>{{ round($sub->filipino) }}</center></td>
                         <td>
-                            <center>
+                            <?php                                                    
+                                $fir_g = round(\App\Grade_sheet_first::where('enrollment_id', $sub->enrollment_id)->first()->filipino);                                                                                                        
+                                $sec_g = round(\App\Grade_sheet_second::where('enrollment_id', $sub->enrollment_id)->first()->filipino);
+                                $thi_g = round(\App\Grade_sheet_third::where('enrollment_id', $sub->enrollment_id)->first()->filipino);
+                                echo $subj_1 = round(($fir_g + $sec_g + $thi_g + $sub->filipino) / 4);
+                            ?>
+                        </td>
+                        <td><center>{{ round($sub->english) }}</center></td>
+                        <td>
+                            <?php                                                    
+                            $fir_g = round(\App\Grade_sheet_first::where('enrollment_id', $sub->enrollment_id)->first()->english);                                                                                                        
+                            $sec_g = round(\App\Grade_sheet_second::where('enrollment_id', $sub->enrollment_id)->first()->english);
+                            $thi_g = round(\App\Grade_sheet_third::where('enrollment_id', $sub->enrollment_id)->first()->english);
+                            echo $subj_2 = round(($fir_g + $sec_g + $thi_g + $sub->english) / 4);
+                            ?>
+                        </td>
+                        <td><center>{{  round($sub->math) }}</center></td>
+                        <td>
+                            <?php                                                    
+                            $fir_g = round(\App\Grade_sheet_first::where('enrollment_id', $sub->enrollment_id)->first()->math);                                                                                                        
+                            $sec_g = round(\App\Grade_sheet_second::where('enrollment_id', $sub->enrollment_id)->first()->math);
+                            $thi_g = round(\App\Grade_sheet_third::where('enrollment_id', $sub->enrollment_id)->first()->math);
+                            echo $subj_3 = round(($fir_g + $sec_g + $thi_g + $sub->math) / 4);
+                            ?>
+                        </td>
+                        <td><center>{{ round($sub->science) }}</center></td>
+                        <td>
+                            <?php                                                    
+                            $fir_g = round(\App\Grade_sheet_first::where('enrollment_id', $sub->enrollment_id)->first()->science);                                                                                                        
+                            $sec_g = round(\App\Grade_sheet_second::where('enrollment_id', $sub->enrollment_id)->first()->science);
+                            $thi_g = round(\App\Grade_sheet_third::where('enrollment_id', $sub->enrollment_id)->first()->science);
+                            echo $subj_4 = round(($fir_g + $sec_g + $thi_g + $sub->science) / 4);
+                            ?>
+                        </td>
+                        <td><center>{{ round($sub->ap) }}</center></td>
+                        <td>
+                            <?php                                                    
+                            $fir_g = round(\App\Grade_sheet_first::where('enrollment_id', $sub->enrollment_id)->first()->ap);                                                                                                        
+                            $sec_g = round(\App\Grade_sheet_second::where('enrollment_id', $sub->enrollment_id)->first()->ap);
+                            $thi_g = round(\App\Grade_sheet_third::where('enrollment_id', $sub->enrollment_id)->first()->ap);
+                            echo $subj_5 = round(($fir_g + $sec_g + $thi_g + $sub->ap) / 4);
+                            ?>
+                        </td>
+                        <td><center>{{ round($sub->ict) }}</center></td>
+                        <td>
+                            <?php                                                    
+                            $fir_g = round(\App\Grade_sheet_first::where('enrollment_id', $sub->enrollment_id)->first()->ict);                                                                                                        
+                            $sec_g = round(\App\Grade_sheet_second::where('enrollment_id', $sub->enrollment_id)->first()->ict);
+                            $thi_g = round(\App\Grade_sheet_third::where('enrollment_id', $sub->enrollment_id)->first()->ict);
+                            echo $subj_6 = round(($fir_g + $sec_g + $thi_g + $sub->ict) / 4);
+                            ?>
+                        </td>
+                        <td><center>{{ round($sub->mapeh) }}</center></td>
+                        <td>
+                            <?php                                                    
+                            $fir_g = round(\App\Grade_sheet_first::where('enrollment_id', $sub->enrollment_id)->first()->mapeh);                                                                                                        
+                            $sec_g = round(\App\Grade_sheet_second::where('enrollment_id', $sub->enrollment_id)->first()->mapeh);
+                            $thi_g = round(\App\Grade_sheet_third::where('enrollment_id', $sub->enrollment_id)->first()->mapeh);
+                            echo $subj_7 = round(($fir_g + $sec_g + $thi_g + $sub->mapeh) / 4);
+                            ?>
+                        </td>
+                        <td><center>{{ round($sub->esp) }}</center></td>
+                        <td>
+                            <?php                                                    
+                            $fir_g = round(\App\Grade_sheet_first::where('enrollment_id', $sub->enrollment_id)->first()->esp);                                                                                                        
+                            $sec_g = round(\App\Grade_sheet_second::where('enrollment_id', $sub->enrollment_id)->first()->esp);
+                            $thi_g = round(\App\Grade_sheet_third::where('enrollment_id', $sub->enrollment_id)->first()->esp);
+                            echo $subj_8 = round(($fir_g + $sec_g + $thi_g + $sub->esp) / 4);
+                            ?>
+                        </td>
+                        <td><center>{{ round($sub->religion) }}</center></td>
+                        <td>
+                            <?php                                                    
+                            $fir_g = round(\App\Grade_sheet_first::where('enrollment_id', $sub->enrollment_id)->first()->religion);                                                                                                        
+                            $sec_g = round(\App\Grade_sheet_second::where('enrollment_id', $sub->enrollment_id)->first()->religion);
+                            $thi_g = round(\App\Grade_sheet_third::where('enrollment_id', $sub->enrollment_id)->first()->religion);
+                            echo $subj_9 = round(($fir_g + $sec_g + $thi_g + $sub->religion) / 4);
+                            ?>
+                        </td>
+                        <td>
+                            <center>                                                
                                 <?php
-                                $formattedNum = number_format(round($average = ($sub->filipino + $sub->english + $sub->math + $sub->science + $sub->ap + $sub->ict + $sub->mapeh + $sub->esp +$sub->religion)/9), 0);
-                                echo $formattedNum;
-                                ?>                                                
+                                    $formattedNum = number_format(round($average = ($sub->filipino + $sub->english + $sub->math + $sub->science + $sub->ap + $sub->ict + $sub->mapeh + $sub->esp +$sub->religion)/9), 0);
+                                    echo $formattedNum;
+                                ?>
+                            </center>
+                        </td>
+                        <td>
+                            <center>                                                
+                                <?php
+                                    $formattedNum = number_format(round($average = (round($subj_1) + round($subj_2) + round($subj_3) + round($subj_4) + round($subj_5) + round($subj_6) + round($subj_7) + round($subj_8) + round($subj_9) )/9), 0);
+                                    echo $formattedNum;
+                                ?>
                             </center>
                         </td>
                         
@@ -763,15 +799,15 @@
                                             <tr>
                                                 <td>{{ $key + 1 }}.</td>
                                                 <td>{{$sub->student_name}}</td>
-                                                <td><center>{{ $sub->filipino }}</center></td>
-                                                <td><center>{{$sub->english}}</center></td>
-                                                <td><center>{{$sub->math}}</center></td>
-                                                <td><center>{{$sub->science}}</center></td>
-                                                <td><center>{{$sub->ap}}</center></td>
-                                                <td><center>{{$sub->esp}}</center></td>
-                                                <td><center>{{$sub->ict}}</center></td>
-                                                <td><center>{{$sub->mapeh}}</center></td>                                        
-                                                <td><center>{{$sub->religion}}</center></td>
+                                                <td><center>{{ round($sub->filipino) }}</center></td>
+                                                <td><center>{{  round($sub->english)}}</center></td>
+                                                <td><center>{{  round($sub->math)}}</center></td>
+                                                <td><center>{{  round($sub->science)}}</center></td>
+                                                <td><center>{{  round($sub->ap)}}</center></td>
+                                                <td><center>{{  round($sub->esp)}}</center></td>
+                                                <td><center>{{  round($sub->ict)}}</center></td>
+                                                <td><center>{{  round($sub->mapeh)}}</center></td>                                        
+                                                <td><center>{{  round($sub->religion)}}</center></td>
                                                 <td>
                                                     <center>                                                
                                                         <?php
@@ -815,15 +851,15 @@
                                             <tr>
                                                 <td>{{ $key + 1 }}.</td>
                                                 <td>{{$sub->student_name}}</td>
-                                                <td><center>{{ $sub->filipino }}</center></td>
-                                                <td><center>{{$sub->english}}</center></td>
-                                                <td><center>{{$sub->math}}</center></td>
-                                                <td><center>{{$sub->science}}</center></td>
-                                                <td><center>{{$sub->ap}}</center></td>
-                                                <td><center>{{$sub->esp}}</center></td>
-                                                <td><center>{{$sub->ict}}</center></td>
-                                                <td><center>{{$sub->mapeh}}</center></td>                                        
-                                                <td><center>{{$sub->religion}}</center></td>
+                                                <td><center>{{ round($sub->filipino) }}</center></td>
+                                                <td><center>{{  round($sub->english)}}</center></td>
+                                                <td><center>{{  round($sub->math)}}</center></td>
+                                                <td><center>{{  round($sub->science)}}</center></td>
+                                                <td><center>{{  round($sub->ap)}}</center></td>
+                                                <td><center>{{  round($sub->esp)}}</center></td>
+                                                <td><center>{{  round($sub->ict)}}</center></td>
+                                                <td><center>{{  round($sub->mapeh)}}</center></td>                                        
+                                                <td><center>{{  round($sub->religion)}}</center></td>
                                                 <td>
                                                     <center>
                                                         <?php
@@ -897,16 +933,16 @@
                 @foreach($GradeSheetMale as $key => $sub)
                 <tr>
                     <td><center>{{ $key + 1 }}.</center></td>
-                    <td>{{$sub->student_name}}</td>
-                    <td><center>{{ $sub->filipino }}</center></td>
-                    <td><center>{{$sub->english}}</center></td>
-                    <td><center>{{$sub->math}}</center></td>
-                    <td><center>{{$sub->science}}</center></td>
-                    <td><center>{{$sub->ap}}</center></td>
-                    <td><center>{{$sub->ict}}</center></td>
-                    <td><center>{{$sub->mapeh}}</center></td>
-                    <td><center>{{$sub->esp}}</center></td>
-                    <td><center>{{$sub->religion}}</center></td>
+                    <td>{{$sub->student_name}}</td>                    
+                    <td><center>{{ round($sub->filipino) }}</center></td>
+                    <td><center>{{  round($sub->english)}}</center></td>
+                    <td><center>{{  round($sub->math)}}</center></td>
+                    <td><center>{{  round($sub->science)}}</center></td>
+                    <td><center>{{  round($sub->ap)}}</center></td>
+                    <td><center>{{  round($sub->ict)}}</center></td>
+                    <td><center>{{  round($sub->mapeh)}}</center></td>
+                    <td><center>{{  round($sub->esp)}}</center></td>                                        
+                    <td><center>{{  round($sub->religion)}}</center></td>
                     <td>
                         <center>                                                
                             <?php
@@ -950,15 +986,15 @@
                 <tr>
                     <td><center>{{ $key + 1 }}.</center></td>
                     <td>{{$sub->student_name}}</td>
-                    <td><center>{{ $sub->filipino }}</center></td>
-                    <td><center>{{$sub->english}}</center></td>
-                    <td><center>{{$sub->math}}</center></td>
-                    <td><center>{{$sub->science}}</center></td>
-                    <td><center>{{$sub->ap}}</center></td>
-                    <td><center>{{$sub->ict}}</center></td>
-                    <td><center>{{$sub->mapeh}}</center></td>
-                    <td><center>{{$sub->esp}}</center></td>
-                    <td><center>{{$sub->religion}}</center></td>
+                    <td><center>{{ round($sub->filipino) }}</center></td>
+                    <td><center>{{  round($sub->english)}}</center></td>
+                    <td><center>{{  round($sub->math)}}</center></td>
+                    <td><center>{{  round($sub->science)}}</center></td>
+                    <td><center>{{  round($sub->ap)}}</center></td>
+                    <td><center>{{  round($sub->ict)}}</center></td>
+                    <td><center>{{  round($sub->mapeh)}}</center></td>
+                    <td><center>{{  round($sub->esp)}}</center></td>                                        
+                    <td><center>{{  round($sub->religion)}}</center></td>
                     <td>
                         <center>
                             <?php

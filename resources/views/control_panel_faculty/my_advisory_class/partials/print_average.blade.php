@@ -168,7 +168,7 @@
                             </td>
                         <td style="text-align: center">
                             <?php 
-                                echo round($result_final = ($formattedNum + $result) / 2);
+                                echo round($result_final = (round($formattedNum) + round($result)) / 2);
                             ?>
                         </td>
                         @if(round($result_final) >= 75 && round($result_final) <= 89)
@@ -218,7 +218,7 @@
                             </td>
                         <td style="text-align: center">
                             <?php 
-                                echo round($result_final = ($formattedNum + $result) / 2);
+                                echo round($result_final = (round($formattedNum) + round($result)) / 2);
                             ?>
                         </td>
                         @if(round($result_final) >= 75 && round($result_final) <= 89)
@@ -276,7 +276,8 @@
                         </td>
                         <td style="text-align: center">
                             <?php 
-                                echo round($result_final = ($formattedNum + $sec_result + $thi_result) / 3);
+                                // echo round($result_final = ($formattedNum + $sec_result + $thi_result) / 3);
+                                echo round($result_final = (round($formattedNum) + round($sec_result) + round($thi_result)) / 3);
                             ?>
                         </td>
                         @if(round($result_final) >= 75 && round($result_final) <= 89)
@@ -333,7 +334,8 @@
                         </td>
                         <td style="text-align: center">
                                 <?php 
-                                    echo round($result_final = ($formattedNum + $sec_result + $thi_result) / 3);
+                                    // echo round($result_final = ($formattedNum + $sec_result + $thi_result) / 3);
+                                    echo round($result_final = (round($formattedNum) + round($sec_result) + round($thi_result)) / 3);
                                 ?>
                             </td>
                         @if(round($result_final) >= 75 && round($result_final) <= 89)
@@ -396,10 +398,58 @@
                                 echo $fou_result;
                             ?>    
                         </td>
-                        <td style="text-align: center">
-                            <?php 
-                                echo round($result_final = ($formattedNum + $sec_result + $thi_result + $fou_result) / 4);
-                            ?>
+                        <?php                                                    
+                        $fou_g = round(\App\Grade_sheet_fourth::where('enrollment_id', $sub->enrollment_id)->first()->filipino);                                                                                                        
+                        $sec_g = round(\App\Grade_sheet_second::where('enrollment_id', $sub->enrollment_id)->first()->filipino);
+                        $thi_g = round(\App\Grade_sheet_third::where('enrollment_id', $sub->enrollment_id)->first()->filipino);
+                         $subj_1 = round(($fou_g + $sec_g + $thi_g + $sub->filipino) / 4);
+                                                                        
+                        $fou_g = round(\App\Grade_sheet_fourth::where('enrollment_id', $sub->enrollment_id)->first()->english);                                                                                                        
+                        $sec_g = round(\App\Grade_sheet_second::where('enrollment_id', $sub->enrollment_id)->first()->english);
+                        $thi_g = round(\App\Grade_sheet_third::where('enrollment_id', $sub->enrollment_id)->first()->english);
+                        $subj_2 = round(($fou_g + $sec_g + $thi_g + $sub->english) / 4);
+                                                                        
+                        $fou_g = round(\App\Grade_sheet_fourth::where('enrollment_id', $sub->enrollment_id)->first()->math);                                                                                                        
+                        $sec_g = round(\App\Grade_sheet_second::where('enrollment_id', $sub->enrollment_id)->first()->math);
+                        $thi_g = round(\App\Grade_sheet_third::where('enrollment_id', $sub->enrollment_id)->first()->math);
+                        $subj_3 = round(($fou_g + $sec_g + $thi_g + $sub->math) / 4);
+                                                                            
+                        $fou_g = round(\App\Grade_sheet_fourth::where('enrollment_id', $sub->enrollment_id)->first()->science);                                                                                                        
+                        $sec_g = round(\App\Grade_sheet_second::where('enrollment_id', $sub->enrollment_id)->first()->science);
+                        $thi_g = round(\App\Grade_sheet_third::where('enrollment_id', $sub->enrollment_id)->first()->science);
+                        $subj_4 = round(($fou_g + $sec_g + $thi_g + $sub->science) / 4);
+                                                                        
+                        $fou_g = round(\App\Grade_sheet_fourth::where('enrollment_id', $sub->enrollment_id)->first()->ap);                                                                                                        
+                        $sec_g = round(\App\Grade_sheet_second::where('enrollment_id', $sub->enrollment_id)->first()->ap);
+                        $thi_g = round(\App\Grade_sheet_third::where('enrollment_id', $sub->enrollment_id)->first()->ap);
+                        $subj_5 = round(($fou_g + $sec_g + $thi_g + $sub->ap) / 4);
+                                                                        
+                        $fou_g = round(\App\Grade_sheet_fourth::where('enrollment_id', $sub->enrollment_id)->first()->esp);                                                                                                        
+                        $sec_g = round(\App\Grade_sheet_second::where('enrollment_id', $sub->enrollment_id)->first()->esp);
+                        $thi_g = round(\App\Grade_sheet_third::where('enrollment_id', $sub->enrollment_id)->first()->esp);
+                        $subj_6 = round(($fou_g + $sec_g + $thi_g + $sub->esp) / 4);
+                                                                            
+                        $fou_g = round(\App\Grade_sheet_fourth::where('enrollment_id', $sub->enrollment_id)->first()->ict);                                                                                                        
+                        $sec_g = round(\App\Grade_sheet_second::where('enrollment_id', $sub->enrollment_id)->first()->ict);
+                        $thi_g = round(\App\Grade_sheet_third::where('enrollment_id', $sub->enrollment_id)->first()->ict);
+                        $subj_7 = round(($fou_g + $sec_g + $thi_g + $sub->ict) / 4);
+                                                                            
+                        $fou_g = round(\App\Grade_sheet_fourth::where('enrollment_id', $sub->enrollment_id)->first()->mapeh);                                                                                                        
+                        $sec_g = round(\App\Grade_sheet_second::where('enrollment_id', $sub->enrollment_id)->first()->mapeh);
+                        $thi_g = round(\App\Grade_sheet_third::where('enrollment_id', $sub->enrollment_id)->first()->mapeh);
+                        $subj_8 = round(($fou_g + $sec_g + $thi_g + $sub->mapeh) / 4);
+                                                                        
+                        $fou_g = round(\App\Grade_sheet_fourth::where('enrollment_id', $sub->enrollment_id)->first()->religion);                                                                                                        
+                        $sec_g = round(\App\Grade_sheet_second::where('enrollment_id', $sub->enrollment_id)->first()->religion);
+                        $thi_g = round(\App\Grade_sheet_third::where('enrollment_id', $sub->enrollment_id)->first()->religion);
+                        $subj_9 = round(($fou_g + $sec_g + $thi_g + $sub->religion) / 4);
+                        ?>
+                    
+                        <td style="text-align:center">                                                                                 
+                            <?php
+                                $result_final =  (round($subj_1) + round($subj_2) + round($subj_3) + round($subj_4) + round($subj_5) + round($subj_6) + round($subj_7) + round($subj_8) + round($subj_9) )/9;
+                                echo round($result_final);
+                            ?>                                
                         </td>
                         @if(round($result_final) >= 75 && round($result_final) <= 89)
                             <td>
@@ -460,10 +510,58 @@
                                     echo $fou_result;
                                 ?>    
                         </td>
-                        <td style="text-align: center">
-                                <?php 
-                                    echo round($result_final = ($formattedNum + $sec_result + $thi_result + $fou_result) / 4);
-                                ?>
+                        <?php                                                    
+                        $fou_g = round(\App\Grade_sheet_fourth::where('enrollment_id', $sub->enrollment_id)->first()->filipino);                                                                                                        
+                        $sec_g = round(\App\Grade_sheet_second::where('enrollment_id', $sub->enrollment_id)->first()->filipino);
+                        $thi_g = round(\App\Grade_sheet_third::where('enrollment_id', $sub->enrollment_id)->first()->filipino);
+                         $subj_1 = round(($fou_g + $sec_g + $thi_g + $sub->filipino) / 4);
+                                                                        
+                        $fou_g = round(\App\Grade_sheet_fourth::where('enrollment_id', $sub->enrollment_id)->first()->english);                                                                                                        
+                        $sec_g = round(\App\Grade_sheet_second::where('enrollment_id', $sub->enrollment_id)->first()->english);
+                        $thi_g = round(\App\Grade_sheet_third::where('enrollment_id', $sub->enrollment_id)->first()->english);
+                        $subj_2 = round(($fou_g + $sec_g + $thi_g + $sub->english) / 4);
+                                                                        
+                        $fou_g = round(\App\Grade_sheet_fourth::where('enrollment_id', $sub->enrollment_id)->first()->math);                                                                                                        
+                        $sec_g = round(\App\Grade_sheet_second::where('enrollment_id', $sub->enrollment_id)->first()->math);
+                        $thi_g = round(\App\Grade_sheet_third::where('enrollment_id', $sub->enrollment_id)->first()->math);
+                        $subj_3 = round(($fou_g + $sec_g + $thi_g + $sub->math) / 4);
+                                                                            
+                        $fou_g = round(\App\Grade_sheet_fourth::where('enrollment_id', $sub->enrollment_id)->first()->science);                                                                                                        
+                        $sec_g = round(\App\Grade_sheet_second::where('enrollment_id', $sub->enrollment_id)->first()->science);
+                        $thi_g = round(\App\Grade_sheet_third::where('enrollment_id', $sub->enrollment_id)->first()->science);
+                        $subj_4 = round(($fou_g + $sec_g + $thi_g + $sub->science) / 4);
+                                                                        
+                        $fou_g = round(\App\Grade_sheet_fourth::where('enrollment_id', $sub->enrollment_id)->first()->ap);                                                                                                        
+                        $sec_g = round(\App\Grade_sheet_second::where('enrollment_id', $sub->enrollment_id)->first()->ap);
+                        $thi_g = round(\App\Grade_sheet_third::where('enrollment_id', $sub->enrollment_id)->first()->ap);
+                        $subj_5 = round(($fou_g + $sec_g + $thi_g + $sub->ap) / 4);
+                                                                        
+                        $fou_g = round(\App\Grade_sheet_fourth::where('enrollment_id', $sub->enrollment_id)->first()->esp);                                                                                                        
+                        $sec_g = round(\App\Grade_sheet_second::where('enrollment_id', $sub->enrollment_id)->first()->esp);
+                        $thi_g = round(\App\Grade_sheet_third::where('enrollment_id', $sub->enrollment_id)->first()->esp);
+                        $subj_6 = round(($fou_g + $sec_g + $thi_g + $sub->esp) / 4);
+                                                                            
+                        $fou_g = round(\App\Grade_sheet_fourth::where('enrollment_id', $sub->enrollment_id)->first()->ict);                                                                                                        
+                        $sec_g = round(\App\Grade_sheet_second::where('enrollment_id', $sub->enrollment_id)->first()->ict);
+                        $thi_g = round(\App\Grade_sheet_third::where('enrollment_id', $sub->enrollment_id)->first()->ict);
+                        $subj_7 = round(($fou_g + $sec_g + $thi_g + $sub->ict) / 4);
+                                                                            
+                        $fou_g = round(\App\Grade_sheet_fourth::where('enrollment_id', $sub->enrollment_id)->first()->mapeh);                                                                                                        
+                        $sec_g = round(\App\Grade_sheet_second::where('enrollment_id', $sub->enrollment_id)->first()->mapeh);
+                        $thi_g = round(\App\Grade_sheet_third::where('enrollment_id', $sub->enrollment_id)->first()->mapeh);
+                        $subj_8 = round(($fou_g + $sec_g + $thi_g + $sub->mapeh) / 4);
+                                                                        
+                        $fou_g = round(\App\Grade_sheet_fourth::where('enrollment_id', $sub->enrollment_id)->first()->religion);                                                                                                        
+                        $sec_g = round(\App\Grade_sheet_second::where('enrollment_id', $sub->enrollment_id)->first()->religion);
+                        $thi_g = round(\App\Grade_sheet_third::where('enrollment_id', $sub->enrollment_id)->first()->religion);
+                        $subj_9 = round(($fou_g + $sec_g + $thi_g + $sub->religion) / 4);
+                        ?>
+                    
+                        <td style="text-align:center">                                                                                 
+                            <?php
+                                $result_final =  (round($subj_1) + round($subj_2) + round($subj_3) + round($subj_4) + round($subj_5) + round($subj_6) + round($subj_7) + round($subj_8) + round($subj_9) )/9;
+                                echo round($result_final);
+                            ?>                                
                         </td>
                         @if(round($result_final) >= 75 && round($result_final) <= 89)
                             <td>

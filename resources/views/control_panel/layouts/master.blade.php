@@ -104,7 +104,8 @@
           
           {{-- <li><a href="{{ route('faculty.DataStudent') }}"><i class="fa fa-circle-o"></i> <span>Make Data for GradeSheet</span></a></li> --}}
           <li><a href="{{ route('faculty.class-attendance.index') }}"><i class="fa fa-calendar-plus-o fa-lg"></i> &nbsp;&nbsp;&nbsp;<span>Encode Class Attendance</span></a></li>
-          <li><a href="{{ route('faculty.class_demographic_profile.index') }}"><i class="fa fa-info-circle fa-lg"></i> &nbsp;&nbsp;&nbsp;<span>Student Demographic Profile</span></a></li>
+          <li><a href="{{ route('faculty.encode-remarks.index') }}"><i class="fa fa-pencil-square-o fa-lg"></i> &nbsp;&nbsp;&nbsp;<span>Print Class Card</span></a></li>
+          <li><a href="{{ route('faculty.class_demographic_profile.index') }}"><i class="fa fa-info-circle fa-lg"></i> &nbsp;&nbsp;&nbsp;<span>Demographic Profile</span></a></li>
           <li><a href="{{ route('faculty.advisory_class.index') }}"><i class="fa fa-users fa-lg"></i> &nbsp;&nbsp;&nbsp;<span>My Advisory Class</span></a></li>
           
           {{--  <li><a href="{{ route('faculty.my_advisory_class.index') }}"><i class="fa fa-circle-o"></i> <span>My Advisory Class</span></a>  --}}
@@ -124,11 +125,13 @@
               </a>
               <ul class="treeview-menu">
                   {{--  Admin Menu  --}}
-                  <li><a href="{{ route('admin.maintenance.school_year') }}"><i class="fa fa-home fa-fw fa-lg"></i>&nbsp;&nbsp;&nbsp; <span>School Year</span></a></li>
+                  <li><a href="{{ route('admin.maintenance.school_year') }}"><i class="fa fa-circle-o"></i>&nbsp;&nbsp;&nbsp; <span>School Year</span></a></li>
                   <li><a href="{{ route('admin.maintenance.semester') }}"><i class="fa fa-circle-o"></i>&nbsp;&nbsp;&nbsp; <span>Semester</span></a></li>
+                  <li><a href="{{ route('admin.maintenance.strand') }}"><i class="fa fa-circle-o"></i>&nbsp;&nbsp;&nbsp; <span>Strands</span></a></li>
                   <li><a href="{{ route('admin.maintenance.subjects') }}"><i class="fa fa-circle-o"></i>&nbsp;&nbsp;&nbsp; <span>Subjects</span></a></li>
                   <li><a href="{{ route('admin.maintenance.classrooms') }}"><i class="fa fa-circle-o"></i>&nbsp;&nbsp;&nbsp; <span>Class Rooms</span></a></li>
                   <li><a href="{{ route('admin.maintenance.section_details') }}"><i class="fa fa-circle-o"></i>&nbsp;&nbsp;&nbsp; <span>Section Details</span></a></li>
+                  <li><a href="{{ route('admin.maintenance.date_remarks_for_class_card') }}"><i class="fa fa-circle-o"></i>&nbsp;&nbsp;&nbsp; <span>Date of Remarks</span></a></li>
                   {{--  Admin Menu End  --}}
                   
               </ul>

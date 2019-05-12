@@ -150,17 +150,23 @@
                         </td>
                     </tr>
                     <tr>
+                        
+                        
                             @if ($grade_level >= 11)
                                 @if($Semester == 1)
+                                <td><p class="p0 m0 student-info"><b>Strand:</b> {{ $ClassDetail ? $ClassDetail->strand : '' }}</p></td>
                                     <td>
                                             <p class="p0 m0 student-info"><b>Semester</b> : <i style="color: red">First</i></p>
                                     </td>
                                 @else
+                                <td><p class="p0 m0 student-info"><b>Strand:</b> {{ $ClassDetail ? $ClassDetail->strand : '' }}</p></td>
                                     <td>
                                             <p class="p0 m0 student-info"><b>Semester</b> : <i style="color: red">Second</i></p>
                                     </td>
                                 @endif
                             @endif
+                        
+                        
                     </tr>
                 </table> 
     <br/>
@@ -194,14 +200,7 @@
                                 ->join('rooms', 'rooms.id', '=', 'class_details.room_id')
                                 ->join('faculty_informations', 'faculty_informations.id', '=', 'class_subject_details.faculty_id')
                                 ->join('section_details', 'section_details.id', '=', 'class_details.section_id')
-                                ->join('subject_details', 'subject_details.id', '=', 'class_subject_details.subject_id')
-                                ->where('student_information_id', $StudentInformation->id)
-                                // ->where('class_subject_details.status', 1)
-                                ->where('class_subject_details.status', '!=', 0)
-                                ->where('enrollments.status', 1)
-                                ->where('class_details.status', 1)
-                                ->where('class_subject_details.sem', 1)
-                                ->where('class_details.school_year_id', $SchoolYear->id)
+                                ->join('subject_details', 'subject_details.id', '=', 'class_subject_details.subject_id')                                
                                 ->select(\DB::raw("
                                     enrollments.id as enrollment_id,
                                     enrollments.class_details_id as cid,
@@ -213,6 +212,8 @@
                                     class_subject_details.class_time_from,
                                     class_subject_details.class_time_to,
                                     class_subject_details.status as grade_status,
+                                    class_subject_details.class_subject_order,
+                                    class_subject_details.class_details_id,
                                     CONCAT(faculty_informations.last_name, ', ', faculty_informations.first_name, ' ', faculty_informations.middle_name) as faculty_name,
                                     subject_details.id AS subject_id,
                                     subject_details.subject_code,
@@ -221,6 +222,12 @@
                                     section_details.section
                                     
                                 "))
+                                ->where('student_information_id', $StudentInformation->id)
+                                ->where('class_subject_details.status', '!=', 0)
+                                ->where('enrollments.status', 1)
+                                ->where('class_details.status', 1)
+                                ->where('class_subject_details.sem', 1)
+                                ->where('class_details.school_year_id', $SchoolYear->id)
                                 ->orderBy('class_subject_details.class_subject_order', 'ASC')
                                 ->get();
                                 
@@ -228,40 +235,69 @@
                                 ->where('sem', 1)
                                 ->get();
                             ?>
-                            @foreach($StudentEnrolledSubject as $key => $data)
+                            @foreach($Enrollment as $key => $data)
                             <tr>
                                 <td>
-                                    <?php 
-                                        $subject = \App\ClassSubjectDetail::where('id', $data->class_subject_details_id)->first();
-                                        echo \App\SubjectDetail::where('id', $subject->subject_id)->first()->subject;    
+                                    <?php                                     
+
+                                        $subject = \App\ClassSubjectDetail::where('id', $data->class_subject_details_id)                                        
+                                            ->orderBY('class_subject_order', 'ASC')->get();
+
+                                        echo \App\SubjectDetail::where('id', $subject[0]->subject_id)->first()->subject; 
+                                        //echo $ClassSubjectDetail->subject;   
                                     ?>
                                 </td>
                                 
-                                <td style="text-align: center">{{ $data->fir_g ? $data->fir_g > 0  ? round($data->fir_g) : '' : '' }} </td>
-                                <td style="text-align: center">{{ $data->sec_g ? $data->sec_g > 0  ? round($data->sec_g) : '' : '' }}</td>
                                 <td style="text-align: center">
                                     <?php 
-                                        if(round($data->fir_g) != 0 && round($data->sec_g) != 0)
+                                         $StudentEnrolledSubject1 = \App\StudentEnrolledSubject::where('enrollments_id', $data->enrollment_id)
+                                        ->where('subject_id', $data->subject_id)
+                                        ->where('sem', 1)
+                                        ->first(); 
+
+                                        echo $StudentEnrolledSubject1->fir_g ? $StudentEnrolledSubject1->fir_g > 0 ? round($StudentEnrolledSubject1->fir_g) : '' : '';
+                                        
+                                    ?>
+                                    {{-- {{ $data->fir_g ? $data->fir_g > 0  ? round($data->fir_g) : '' : '' }} --}}
+                                 </td>
+                                <td style="text-align: center">
+                                    <?php 
+                                         $StudentEnrolledSubject1 = \App\StudentEnrolledSubject::where('enrollments_id', $data->enrollment_id)
+                                        ->where('subject_id', $data->subject_id)
+                                        ->where('sem', 1)
+                                        ->first(); 
+                                        
+                                        echo $StudentEnrolledSubject1->sec_g ? $StudentEnrolledSubject1->sec_g > 0 ? round($StudentEnrolledSubject1->sec_g) : '' : '';
+                                    ?>
+                                    {{-- {{ $data->sec_g ? $data->sec_g > 0  ? round($data->sec_g) : '' : '' }} --}}
+                                </td>
+                                <td style="text-align: center">
+                                    <?php 
+                                        $StudentEnrolledSubject1 = \App\StudentEnrolledSubject::where('enrollments_id', $data->enrollment_id)
+                                        ->where('subject_id', $data->subject_id)
+                                        ->where('sem', 1)
+                                        ->first(); 
+
+                                        if(round($StudentEnrolledSubject1->fir_g) != 0 && round($StudentEnrolledSubject1->sec_g) != 0)
                                         {
-                                            echo round($final_ave = (round($data->fir_g) + round($data->sec_g)) / 2);
+                                            echo round($final_ave = (round($StudentEnrolledSubject1->fir_g) + round($StudentEnrolledSubject1->sec_g)) / 2);
+                                            // echo $final_ave = (round($data->fir_g) + round($data->sec_g)) / 2;
                                         }
                                         else 
                                         {
                                             echo "";
-                                        }
-                                        
+                                        }                                        
                                     ?>
                                 </td>
-                                @if(round($data->fir_g) != 0 && round($data->sec_g) != 0) 
-                                    @if($final_ave && $final_ave > 75) 
+                                @if(round($StudentEnrolledSubject1->fir_g) != 0 && round($StudentEnrolledSubject1->sec_g) != 0) 
+                                    @if($final_ave && $final_ave > 74) 
                                         <td style="color:'green'; text-align: center"><strong>Passed</strong></td>
                                     @elseif($final_ave && $final_ave < 75) 
                                         <td style="color:'red'; text-align: center"><strong>Failed</strong></td>
                                     @endif
                                 @else
                                     <td></td>
-                                @endif
-                                
+                                @endif                                
                                 
                             </tr>
                             @endforeach
@@ -271,31 +307,47 @@
                                     {{--  <td colspan="{{$ClassDetail ? $ClassDetail->section_grade_level <= 10 ? '8' : '2' : '4'}}"><b>General Average</b></td>  --}}
                                     <td>
                                         <b>
-                                            @if(round($data->fir_g) != 0 && round($data->sec_g) != 0)
-                                                {{-- {{$$final_ave && $general_avg >= 0 ? round($general_avg) : '' }} --}}
-                                                <?php  
-                                                
-                                                 $sum_fir_g = \App\StudentEnrolledSubject::where('enrollments_id', $Enrollment[0]->enrollment_id)->sum('fir_g');
-                                                 $sum_sec_g = \App\StudentEnrolledSubject::where('enrollments_id', $Enrollment[0]->enrollment_id)->sum('sec_g');
-                                                 $count_subjects = \App\StudentEnrolledSubject::where('enrollments_id', $Enrollment[0]->enrollment_id)
-                                                 ->where('sem', 1)->count(); 
-                                                 
-                                                 $final_fir_g = $sum_fir_g / $count_subjects;
-                                                 $final_sec_g = $sum_sec_g / $count_subjects;
+                                            <?php 
+                                                $StudentEnrolledSubject1 = \App\StudentEnrolledSubject::where('enrollments_id', $data->enrollment_id)
+                                                ->where('subject_id', $data->subject_id)
+                                                ->where('sem', 1)
+                                                ->first();     
+                                            ?>
 
-                                                 echo $final_ave = round($gen_ave = ($final_fir_g +  $final_sec_g) / 2);
-                                                ?>
+                                            @if(round($StudentEnrolledSubject1->fir_g) != 0 && round($StudentEnrolledSubject1->sec_g) != 0)
                                                 
+                                                <?php
+                                                 $totalsum = 0;
+                                                 $count_subjects1 = \App\StudentEnrolledSubject::where('enrollments_id', $Enrollment[0]->enrollment_id)
+                                                    ->where('sem', 1)->where('status', '!=', 0)->count();
+                                                // echo $count_subjects1;
+
+                                                $StudentEnrolledSubject = \App\StudentEnrolledSubject::where('enrollments_id', $Enrollment[0]->enrollment_id)
+                                                    ->where('sem', 1)
+                                                    ->get();
+                                                ?>
+                                                @foreach($StudentEnrolledSubject as $key => $data)
+                                                <?php
+                                                    
+                                                    round($final_ave = (round($data->fir_g) + round($data->sec_g)) / 2);
+                                                                                                
+                                                    $totalsum += round($final_ave) / 9 ;   
+                                                                                                         
+                                                ?>
+                                                @endforeach
+                                                <?php
+                                                 echo round($totalsum);
+                                                ?>   
                                             @else
                                                 
                                             @endif
                                         </b>
                                     </td>
-                                    @if(round($data->fir_g) != 0 && round($data->sec_g) != 0)
-                                        @if($final_ave > 75) 
+                                    @if(round($StudentEnrolledSubject1->fir_g) != 0 && round($StudentEnrolledSubject1->sec_g) != 0)
+                                        @if(round($totalsum) > 74) 
                                             <td style="color:'green';"><strong>Passed</strong></td>
                                             
-                                        @elseif($final_ave < 75) 
+                                        @elseif(round($totalsum) < 75) 
                                             
                                             <td style="color:'red';"><strong>Failed</strong></td>
                                         @else 
@@ -305,7 +357,7 @@
                                         <td></td>
                                     @endif
                                     
-                                </tr>
+                            </tr>
                         </tbody>
                 </table>
                 <?php
@@ -462,7 +514,24 @@
                     </tr>
 
                     <tr style="margin-top: .5em">
-                        <td colspan="3" style="border: 0">Eligible to transfer admission to:__________________________</td>                
+                        <td colspan="3" style="border: 0">Eligible to transfer and admission to:
+                        
+                            @if(round($StudentEnrolledSubject1->fir_g) != 0 && round($StudentEnrolledSubject1->sec_g) != 0)
+                                @if(round($totalsum) > 74) 
+                                    
+                                        <strong><u>&nbsp;&nbsp;Grade {{ $ClassDetail->section_grade_level}} Second Semester&nbsp;&nbsp;&nbsp;&nbsp;</u></strong>
+                                                                       
+                                @elseif(round($totalsum) < 75) 
+                                    
+                                   <strong>Failed</strong>
+                                @else 
+                                    <td></td>
+                                @endif
+                            @else
+                                <td></td>
+                            @endif        
+                        
+                        </td>                
                     </tr>
 
                     <tr style="margin-top: .5em">
@@ -470,7 +539,7 @@
                     </tr>
                     
                     <tr style="margin-top: .5em">
-                        <td colspan="3" style="border: 0">Date:__________________________</td>                
+                        <td colspan="3" style="border: 0">Date:___<u>{{ $DateRemarks->s_date1 }}</u>____</td>                
                     </tr>
                     <tr style="margin-top: .5em">
                         <td colspan="3" style="border: 0">&nbsp;</td>   </tr>
@@ -491,8 +560,7 @@
                                         </td>
                                     </tr>
                             </table>
-                            <table border="0" style="width: 100%; margin-top: -50px; margin-bottom: 0em">
-                                
+                            <table border="0" style="width: 100%; margin-top: -70px; margin-bottom: 0em">                                
                                 <tr>
                                     <td style="border: 0; width: 50%; height: 100px">
                                         <span style="margin-left: 2em; text-transform: uppercase">
@@ -577,85 +645,122 @@
                             ->where('sem', 2)->where('status', 1)
                             ->get();
                         ?>
-                        @foreach($StudentEnrolledSubject as $key => $data)
-                        <tr>
-                            
-                                <?php 
-                                    $subject = \App\ClassSubjectDetail::where('id', $data->class_subject_details_id)
-                                    ->where('status', '!=', 0)->first();
 
-                                    if($subject)
-                                    {
-                                        // echo $subject;
-                                        $subject_ = \App\SubjectDetail::where('id', $subject->subject_id)->first()->subject;   
-                                    }
-                                    
-                                ?>
-                                @if($subject)
-                                    <td>
-                                        {{ $subject_ }}
-                                    </td>
-                                @endif
-                            
-                            <td style="text-align: center">{{ $data->thi_g ? $data->thi_g > 0  ? round($data->thi_g) : '' : '' }}</td>
-                            <td style="text-align: center">
-                                {{ $data->fou_g ? $data->fou_g > 0  ? round($data->fou_g) : '' : '' }}
-                            </td>
-                            <td style="text-align: center">
-                                 <?php 
-                                    if(round($data->thi_g) != 0 && round($data->fou_g) != 0)
-                                    {
-                                        echo round($final_ave = (round($data->thi_g) + round($data->fou_g)) / 2);
-                                    }
-                                    else 
-                                    {
-                                        echo "";
-                                    }                                    
-                                ?> 
-                            </td>
-                            @if(round($data->thi_g) != 0 && round($data->fou_g) != 0) 
-                                @if($final_ave && $final_ave > 75) 
-                                    <td style="color:'green'; text-align: center"><strong>Passed</strong></td>
-                                @elseif($final_ave && $final_ave < 75) 
-                                    <td style="color:'red'; text-align: center"><strong>Failed</strong></td>
-                                @endif
-                                <td></td>
-                            @else
-                                <td></td>
-                            @endif
-                            
-                        </tr>
+                        @foreach($Enrollment as $key => $data)
+                            <tr>
+                                <td>
+                                    <?php                                     
+
+                                        $subject = \App\ClassSubjectDetail::where('id', $data->class_subject_details_id)                                        
+                                            ->orderBY('class_subject_order', 'ASC')->get();
+
+                                        echo \App\SubjectDetail::where('id', $subject[0]->subject_id)->first()->subject; 
+                                        //echo $ClassSubjectDetail->subject;   
+                                    ?>
+                                </td>
+                                
+                                <td style="text-align: center">
+                                    <?php 
+                                         $StudentEnrolledSubject1 = \App\StudentEnrolledSubject::where('enrollments_id', $data->enrollment_id)
+                                        ->where('subject_id', $data->subject_id)
+                                        ->where('sem', 2)
+                                        ->first(); 
+
+                                        echo $StudentEnrolledSubject1->thi_g ? $StudentEnrolledSubject1->thi_g > 0 ? round($StudentEnrolledSubject1->thi_g) : '' : '';
+                                        
+                                    ?>
+                                    {{-- {{ $data->fir_g ? $data->fir_g > 0  ? round($data->fir_g) : '' : '' }} --}}
+                                 </td>
+                                <td style="text-align: center">
+                                    <?php 
+                                         $StudentEnrolledSubject1 = \App\StudentEnrolledSubject::where('enrollments_id', $data->enrollment_id)
+                                        ->where('subject_id', $data->subject_id)
+                                        ->where('sem', 2)
+                                        ->first(); 
+                                        
+                                        echo $StudentEnrolledSubject1->fou_g ? $StudentEnrolledSubject1->fou_g > 0 ? round($StudentEnrolledSubject1->fou_g) : '' : '';
+                                    ?>
+                                    {{-- {{ $data->sec_g ? $data->sec_g > 0  ? round($data->sec_g) : '' : '' }} --}}
+                                </td>
+                                <td style="text-align: center">
+                                    <?php 
+                                        $StudentEnrolledSubject1 = \App\StudentEnrolledSubject::where('enrollments_id', $data->enrollment_id)
+                                        ->where('subject_id', $data->subject_id)
+                                        ->where('sem', 2)
+                                        ->first(); 
+
+                                        if(round($StudentEnrolledSubject1->thi_g) != 0 && round($StudentEnrolledSubject1->fou_g) != 0)
+                                        {
+                                            echo round($final_ave = (round($StudentEnrolledSubject1->thi_g) + round($StudentEnrolledSubject1->fou_g)) / 2);
+                                            // echo $final_ave = (round($data->fir_g) + round($data->sec_g)) / 2;
+                                        }
+                                        else 
+                                        {
+                                            echo "";
+                                        }                                        
+                                    ?>
+                                </td>
+                                
+                                @if(round($StudentEnrolledSubject1->thi_g) != 0 && round($StudentEnrolledSubject1->fou_g) != 0) 
+                                    @if($final_ave && $final_ave > 74) 
+                                        <td style="color:'green'; text-align: center"><strong>Passed</strong></td>
+                                    @elseif($final_ave && $final_ave < 75) 
+                                        <td style="color:'red'; text-align: center"><strong>Failed</strong></td>
+                                    @endif
+                                @else
+                                    <td></td>
+                                @endif                                
+                                
+                            </tr>
                         @endforeach
+                        
                         <tr class="text-center">
                                 <td colspan="{{$grade_level <= 10 ? '5' : '3'}}"><b>General Average</b></td>
                                 {{--  <td colspan="{{$ClassDetail ? $ClassDetail->section_grade_level <= 10 ? '8' : '2' : '4'}}"><b>General Average</b></td>  --}}
                                 <td>
                                         <b>
-                                            @if(round($data->thi_g) != 0 && round($data->fou_g) != 0)
+                                            <?php 
+                                                $StudentEnrolledSubject1 = \App\StudentEnrolledSubject::where('enrollments_id', $Enrollment[0]->enrollment_id)
+                                                ->where('subject_id', $data->subject_id)
+                                                ->where('sem', 2)
+                                                ->first();     
+                                            ?>
+                                            @if(round($StudentEnrolledSubject1->thi_g) != 0 && round($StudentEnrolledSubject1->fou_g) != 0)
                                                 {{-- {{$$final_ave && $general_avg >= 0 ? round($general_avg) : '' }} --}}
-                                                <?php  
-                                                
-                                                 $sum_thi_g = \App\StudentEnrolledSubject::where('enrollments_id', $Enrollment[0]->enrollment_id)->sum('thi_g');
-                                                 $sum_fou_g = \App\StudentEnrolledSubject::where('enrollments_id', $Enrollment[0]->enrollment_id)->sum('fou_g');
+                                                <?php
+                                                 $totalsum = 0;
                                                  $count_subjects1 = \App\StudentEnrolledSubject::where('enrollments_id', $Enrollment[0]->enrollment_id)
-                                                 ->where('sem', 2)->count(); 
-                                                 
-                                                 $final_fir_g1 = $sum_thi_g / $count_subjects1;
-                                                 $final_sec_g1 = $sum_fou_g / $count_subjects1;
-
-                                                 echo $final_ave1 = round($gen_ave1 = ($final_fir_g1 +  $final_sec_g1) / 2);
+                                                    ->where('sem', 2)->where('status', '!=', 0)->count();
                                                 ?>
+                                                @foreach($StudentEnrolledSubject as $key => $data)
+                                                <?php
+                                                    
+                                                    round($final_ave = (round($data->thi_g) + round($data->fou_g)) / 2);                                                                                                
+                                                    $totalsum+= round($final_ave) / $count_subjects1 ;   
+                                                    // echo $sum;
+                                                                                                         
+                                                ?>
+                                                @endforeach
+                                                <?php
+                                                 echo round($totalsum);
+                                                ?>                                                
                                                 
                                             @else
                                                 
                                             @endif
                                         </b>
-                                    </td>
-                                    @if(round($data->thi_g) != 0 && round($data->fou_g) != 0)
-                                        @if($final_ave1 > 75) 
+                                </td>
+                                <?php 
+                                    $StudentEnrolledSubject1 = \App\StudentEnrolledSubject::where('enrollments_id', $Enrollment[0]->enrollment_id)
+                                        ->where('subject_id', $data->subject_id)
+                                        ->where('sem', 2)
+                                        ->first(); 
+                                ?>
+                                    @if(round($StudentEnrolledSubject1->thi_g) != 0 && round($StudentEnrolledSubject1->fou_g) != 0)
+                                        @if(round($totalsum) > 74) 
                                             <td style="color:'green';"><strong>Passed</strong></td>
                                             
-                                        @elseif($final_ave1 < 75) 
+                                        @elseif(round($totalsum) < 75) 
                                             
                                             <td style="color:'red';"><strong>Failed</strong></td>
                                         @else 
@@ -824,7 +929,22 @@
                 </tr>
 
                 <tr style="margin-top: .5em">
-                    <td colspan="3" style="border: 0">Eligible to transfer admission to:__________________________</td>                
+                    <td colspan="3" style="border: 0">Eligible to transfer and admission to:
+                            @if(round($StudentEnrolledSubject1->thi_g) != 0 && round($StudentEnrolledSubject1->fou_g) != 0)
+                            @if(round($totalsum) > 74) 
+                                
+                                    <strong><u>&nbsp;&nbsp;College&nbsp;&nbsp;&nbsp;&nbsp;</u></strong>
+                                                                 
+                            @elseif(round($totalsum) < 75) 
+                                
+                               <strong>Failed</strong>
+                            @else 
+                                <td></td>
+                            @endif
+                        @else
+                            <td></td>
+                        @endif       
+                    </td>                
                 </tr>
 
                 <tr style="margin-top: .5em">
@@ -832,7 +952,7 @@
                 </tr>
                 
                 <tr style="margin-top: .5em">
-                    <td colspan="3" style="border: 0">Date:__________________________</td>                
+                    <td colspan="3" style="border: 0">Date:___<u>{{ $DateRemarks->s_date2 }}</u>____</td>                
                 </tr>
                 <tr style="margin-top: .5em">
                      <td colspan="3" style="border: 0">&nbsp;</td>   </tr>
@@ -853,7 +973,7 @@
                                     </td>
                                 </tr>
                         </table>
-                        <table border="0" style="width: 100%; margin-top: -50px; margin-bottom: 0em">
+                        <table border="0" style="width: 100%; margin-top: -70px; margin-bottom: 0em">
                             
                             <tr>
                                 <td style="border: 0; width: 50%; height: 100px">
@@ -913,7 +1033,7 @@
                                             <td><center>{{ $data->sec_g ? $data->sec_g > 0  ? round($data->sec_g) : '' : '' }}</center></td>
                                             <td><center>{{ $data->thi_g ? $data->thi_g > 0  ? round($data->thi_g) : '' : '' }}</center></td>
                                             <td><center>{{ $data->fou_g ? $data->fou_g > 0  ? round($data->fou_g) : '' : '' }}</center></td>
-                                            <td><center>{{ $data->fou_g ? $data->fou_g > 0  ? round($data->final_g) : '' : '' }}</center></td>
+                                            {{-- <td><center>{{ $data->fou_g ? $data->fou_g > 0  ? round($data->final_g) : '' : '' }}</center></td> --}}
                                             {{--  <td class="text-center">{{ $data->fir_g ? $data->fir_g > 0  ? round($data->fir_g) : '' : '' }}</td>
                                             <td class="text-center">{{ $data->sec_g ? $data->sec_g > 0  ? round($data->sec_g) : '' : '' }}</td>
                                             <td class="text-center">{{ $data->thi_g ? $data->thi_g > 0  ? round($data->thi_g) : '' : '' }}</td>
@@ -921,13 +1041,14 @@
                                             <td class="text-center">{{ $data->fou_g ? $data->fou_g > 0  ? round($data->final_g) : '' : '' }}</td>  --}}
                                             @if ($data->fou_g > 0)
                                                 <td><center>{{ round($data->final_g) }}</center></td>
-                                                <td style="color:{{ $data->final_g >= 75 ? 'green' : 'red' }};"><center><strong>{{ $data->final_g >= 75 ? 'Passed' : 'Failed' }}</strong></center></td>
+                                                <td><center><strong>{{ $data->final_g >= 75 ? 'Passed' : 'Failed' }}</strong></center></td>
                                             @else
                                                 <td></td>
                                             @endif  
                                     @endif
                                     {{--  <td>{{ $data->class_time_from . ' -  ' . $data->class_time_to }}</td>
-                                    <td>{{ $data->class_days }}</td>
+                                    <td>{{ $data->class_days }}</td>54
+                                    /
                                     <td>{{ 'Room' . $data->room_code }}</td>  --}}
                                     {{--  <td>{{ $data->grade_level . ' - ' . $data->section }}</td>  --}}
                                     {{-- <td>{{ $data->faculty_name }}</td> --}}
@@ -935,19 +1056,19 @@
                                 </tr>
                             @endforeach
                                 <tr class="text-center">
-                                    <td colspan="{{$grade_level <= 10 ? '5' : '3'}}"><b>General Average</b></td>
+                                    <td colspan="{{ $grade_level <= 10 ? '5' : '3'}}"><b>General Average</b></td>
                                     {{--  <td colspan="{{$ClassDetail ? $ClassDetail->section_grade_level <= 10 ? '8' : '2' : '4'}}"><b>General Average</b></td>  --}}
                                     <td>
                                         <b>
                                             @if($data->fir_g == 0 && $data->sec_g == 0 && $data->thi_g == 0 && $data->fou_g == 0)
                                                 
                                             @else
-                                                {{$general_avg && $general_avg >= 0 ? round($general_avg) : '' }}
+                                                {{ $general_avg && $general_avg >= 0 ? round($general_avg) : '' }}
                                             @endif
                                         </b>
                                     </td>
                                     @if($data->fir_g == 0 && $data->sec_g == 0 && $data->thi_g == 0 && $data->fou_g == 0)
-                                        @if($general_avg && $general_avg > 75) 
+                                        @if($general_avg && $general_avg > 74) 
                                             <td style="color:'green';"><strong>Passed</strong></td>
                                         @elseif($general_avg && $general_avg < 75) 
                                             <td style="color:'red';"><strong>Failed</strong></td>
@@ -955,7 +1076,13 @@
                                             <td></td>
                                         @endif
                                     @else
-                                        <td></td>
+                                        @if($general_avg && $general_avg > 74) 
+                                            <td style="color:'green';"><strong>Passed</strong></td>
+                                        @elseif($general_avg && $general_avg < 75) 
+                                            <td style="color:'red';"><strong>Failed</strong></td>
+                                        @else 
+                                            <td></td>
+                                        @endif
                                     @endif
                                     
                                 </tr>
@@ -1070,7 +1197,18 @@
                     </tr>
 
                     <tr style="margin-top: .5em">
-                        <td colspan="3" style="border: 0">Eligible to transfer admission to:__________________________</td>                
+                        <td colspan="3" style="border: 0">Eligible to transfer and admission to:
+                               
+                                        @if($general_avg && $general_avg > 74) 
+                                            <strong><u>&nbsp;&nbsp;Grade {{ $ClassDetail->section_grade_level + 1 }}&nbsp;&nbsp;&nbsp;&nbsp;</u></strong>
+                                        @elseif($general_avg && $general_avg < 75) 
+                                            <strong><u>&nbsp;&nbsp;Grade {{ $ClassDetail->section_grade_level }}&nbsp;&nbsp;&nbsp;&nbsp;</u></strong>
+                                        @else 
+                                            <td></td>
+                                        @endif
+                                    
+                                
+                        </td>                
                     </tr>
 
                     <tr style="margin-top: .5em">
@@ -1078,7 +1216,7 @@
                     </tr>
                     
                     <tr style="margin-top: .5em">
-                        <td colspan="3" style="border: 0">Date:__________________________</td>                
+                        <td colspan="3" style="border: 0">Date:___<u>{{ $DateRemarks->j_date }}</u>____</td>                
                     </tr>
                     <tr style="margin-top: .5em">
                          <td colspan="3" style="border: 0">&nbsp;</td>   </tr>
@@ -1099,13 +1237,13 @@
                                         </td>
                                     </tr>
                             </table>
-                            <table border="0" style="width: 100%; margin-top: -50px; margin-bottom: 0em">
+                            <table border="0" style="width: 100%; margin-top: -70px; margin-bottom: 0em">
                                 
                                 <tr>
                                     <td style="border: 0; width: 50%; height: 100px">
                                         <span style="margin-left: 2em; text-transform: uppercase">
                                             <center>
-                                            {{ $ClassDetail->first_name }} {{ $ClassDetail->middle_name }} {{ $ClassDetail->last_name }}</center>
+                                                {{ $ClassDetail->first_name }} {{ $ClassDetail->middle_name }} {{ $ClassDetail->last_name }}</center>
                                             </br>
                                             <center style="margin-top: -1em">Adviser</center>
                                         </span>

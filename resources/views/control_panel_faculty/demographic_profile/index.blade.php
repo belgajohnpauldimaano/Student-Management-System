@@ -57,7 +57,7 @@
                                                                         <div class="input-group-addon">
                                                                             <i class="fa fa-calendar"></i>
                                                                         </div>
-                                                                        <input type="text" name="birthdate" class="form-control pull-right" id="datepicker" placeholder="DOB" value="{{ $data ? date_format(date_create( $data->birthdate), 'm/d/Y') : '' }}">
+                                                                        <input type="text" name="birthdate" class="datepicker form-control pull-right" id="datepicker" placeholder="DOB" value="{{ $data ? date_format(date_create( $data->birthdate), 'm/d/Y') : '' }}">
                                                                     </div>
                                                                     <div class="help-block text-red text-center" id="js-birthdate">
                                                                     </div>
@@ -182,7 +182,13 @@
 @section ('scripts')
     <script src="{{ asset('cms/plugins/datepicker1/bootstrap-datepicker1.js') }}"></script>
     <script>
+    
+    $('.datepicker').each(function () {
+           $(this).removeClass('hasDatepicker').datepicker();
+    });
 
+
+    // $( "#datepicker" ).datepicker();
     $('body').on('submit', '#js_demographic', function (e) {
                 e.preventDefault();
                 var formData = new FormData($(this)[0]);

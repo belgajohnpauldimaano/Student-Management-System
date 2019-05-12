@@ -245,7 +245,7 @@ class MyAdvisoryClassController extends Controller
                     CONCAT(student_informations.last_name, ' ', student_informations.first_name, ' ', student_informations.middle_name) as student_name,
                     grade_sheet_firstsemseconds.subject_1, grade_sheet_firstsemseconds.subject_2, grade_sheet_firstsemseconds.subject_3, grade_sheet_firstsemseconds.subject_4
                     , grade_sheet_firstsemseconds.subject_5, grade_sheet_firstsemseconds.subject_6, grade_sheet_firstsemseconds.subject_7
-                    , grade_sheet_firstsemseconds.subject_8, grade_sheet_firstsemseconds.subject_9
+                    , grade_sheet_firstsemseconds.subject_8, grade_sheet_firstsemseconds.subject_9,grade_sheet_firstsemseconds.enrollment_id
                     ")
             ->distinct()
             ->orderBY('student_name','ASC')
@@ -260,7 +260,7 @@ class MyAdvisoryClassController extends Controller
                     CONCAT(student_informations.last_name, ' ', student_informations.first_name, ' ', student_informations.middle_name) as student_name,
                     grade_sheet_firstsemseconds.subject_1, grade_sheet_firstsemseconds.subject_2, grade_sheet_firstsemseconds.subject_3, grade_sheet_firstsemseconds.subject_4
                     , grade_sheet_firstsemseconds.subject_5, grade_sheet_firstsemseconds.subject_6, grade_sheet_firstsemseconds.subject_7
-                    , grade_sheet_firstsemseconds.subject_8, grade_sheet_firstsemseconds.subject_9
+                    , grade_sheet_firstsemseconds.subject_8, grade_sheet_firstsemseconds.subject_9,grade_sheet_firstsemseconds.enrollment_id
                     ")
             ->distinct()
             ->orderBY('student_name','ASC')
@@ -445,7 +445,7 @@ class MyAdvisoryClassController extends Controller
                     CONCAT(student_informations.last_name, ' ', student_informations.first_name, ' ', student_informations.middle_name) as student_name,
                     grade_sheet_secondsemseconds.subject_1, grade_sheet_secondsemseconds.subject_2, grade_sheet_secondsemseconds.subject_3, grade_sheet_secondsemseconds.subject_4
                     , grade_sheet_secondsemseconds.subject_5, grade_sheet_secondsemseconds.subject_6, grade_sheet_secondsemseconds.subject_7
-                    , grade_sheet_secondsemseconds.subject_8, grade_sheet_secondsemseconds.subject_9
+                    , grade_sheet_secondsemseconds.subject_8, grade_sheet_secondsemseconds.subject_9,grade_sheet_secondsemseconds.enrollment_id
                     ")
             ->distinct()
             ->orderBY('student_name','ASC')
@@ -460,7 +460,7 @@ class MyAdvisoryClassController extends Controller
                     CONCAT(student_informations.last_name, ' ', student_informations.first_name, ' ', student_informations.middle_name) as student_name,
                     grade_sheet_secondsemseconds.subject_1, grade_sheet_secondsemseconds.subject_2, grade_sheet_secondsemseconds.subject_3, grade_sheet_secondsemseconds.subject_4
                     , grade_sheet_secondsemseconds.subject_5, grade_sheet_secondsemseconds.subject_6, grade_sheet_secondsemseconds.subject_7
-                    , grade_sheet_secondsemseconds.subject_8, grade_sheet_secondsemseconds.subject_9
+                    , grade_sheet_secondsemseconds.subject_8, grade_sheet_secondsemseconds.subject_9,grade_sheet_secondsemseconds.enrollment_id
                     ")
             ->distinct()
             ->orderBY('student_name','ASC')
@@ -1316,7 +1316,7 @@ class MyAdvisoryClassController extends Controller
                     CONCAT(student_informations.last_name, ' ', student_informations.first_name, ' ', student_informations.middle_name) as student_name,
                     grade_sheet_firstsemseconds.subject_1, grade_sheet_firstsemseconds.subject_2, grade_sheet_firstsemseconds.subject_3, grade_sheet_firstsemseconds.subject_4
                     , grade_sheet_firstsemseconds.subject_5, grade_sheet_firstsemseconds.subject_6, grade_sheet_firstsemseconds.subject_7
-                    , grade_sheet_firstsemseconds.subject_8, grade_sheet_firstsemseconds.subject_9
+                    , grade_sheet_firstsemseconds.subject_8, grade_sheet_firstsemseconds.subject_9,grade_sheet_firstsemseconds.enrollment_id
                     ")
             ->distinct()
             ->orderBY('student_name','ASC')
@@ -1331,7 +1331,7 @@ class MyAdvisoryClassController extends Controller
                     CONCAT(student_informations.last_name, ' ', student_informations.first_name, ' ', student_informations.middle_name) as student_name,
                     grade_sheet_firstsemseconds.subject_1, grade_sheet_firstsemseconds.subject_2, grade_sheet_firstsemseconds.subject_3, grade_sheet_firstsemseconds.subject_4
                     , grade_sheet_firstsemseconds.subject_5, grade_sheet_firstsemseconds.subject_6, grade_sheet_firstsemseconds.subject_7
-                    , grade_sheet_firstsemseconds.subject_8, grade_sheet_firstsemseconds.subject_9
+                    , grade_sheet_firstsemseconds.subject_8, grade_sheet_firstsemseconds.subject_9,grade_sheet_firstsemseconds.enrollment_id
                     ")
             ->distinct()
             ->orderBY('student_name','ASC')
@@ -1531,7 +1531,7 @@ class MyAdvisoryClassController extends Controller
                     CONCAT(student_informations.last_name, ' ', student_informations.first_name, ' ', student_informations.middle_name) as student_name,
                     grade_sheet_secondsemseconds.subject_1, grade_sheet_secondsemseconds.subject_2, grade_sheet_secondsemseconds.subject_3, grade_sheet_secondsemseconds.subject_4
                     , grade_sheet_secondsemseconds.subject_5, grade_sheet_secondsemseconds.subject_6, grade_sheet_secondsemseconds.subject_7
-                    , grade_sheet_secondsemseconds.subject_8, grade_sheet_secondsemseconds.subject_9
+                    , grade_sheet_secondsemseconds.subject_8, grade_sheet_secondsemseconds.subject_9,grade_sheet_secondsemseconds.enrollment_id
                     ")
             ->distinct()
             ->orderBY('student_name','ASC')
@@ -1546,7 +1546,7 @@ class MyAdvisoryClassController extends Controller
                     CONCAT(student_informations.last_name, ' ', student_informations.first_name, ' ', student_informations.middle_name) as student_name,
                     grade_sheet_secondsemseconds.subject_1, grade_sheet_secondsemseconds.subject_2, grade_sheet_secondsemseconds.subject_3, grade_sheet_secondsemseconds.subject_4
                     , grade_sheet_secondsemseconds.subject_5, grade_sheet_secondsemseconds.subject_6, grade_sheet_secondsemseconds.subject_7
-                    , grade_sheet_secondsemseconds.subject_8, grade_sheet_secondsemseconds.subject_9
+                    , grade_sheet_secondsemseconds.subject_8, grade_sheet_secondsemseconds.subject_9,grade_sheet_secondsemseconds.enrollment_id
                     ")
             ->distinct()
             ->orderBY('student_name','ASC')
@@ -1946,6 +1946,8 @@ class MyAdvisoryClassController extends Controller
             ->orderBY('student_name','ASC')
             ->get();
 
+
+            
             // return view('control_panel_faculty.my_advisory_class.partials.data_list', 
             //     compact('type','ClassSubjectDetail','AdvisorySubject','quarter'))->render();
             
@@ -2073,7 +2075,7 @@ class MyAdvisoryClassController extends Controller
             ->where('class_subject_details.status', 1)
             // ->where('faculty_id', $FacultyInformation->id)
             ->where('class_details.school_year_id', $request->search_sy1)
-            ->where('class_subject_details.sem', 1)
+            ->where('class_subject_details.sem', 2)
             //  ->where('class_details.school_year_id', $request->search_sy)
             // ->orderBy('class_subject_details.class_time_from', 'ASC');
             ->orderBY('class_subject_details.class_subject_order','DESC')
@@ -2309,7 +2311,7 @@ class MyAdvisoryClassController extends Controller
                 ->where('class_subject_details.status', 1)
                 // ->where('faculty_id', $FacultyInformation->id)
                 ->where('class_details.school_year_id', $request->search_sy1)
-                ->where('class_subject_details.sem', 1)
+                ->where('class_subject_details.sem', 2)
                 //  ->where('class_details.school_year_id', $request->search_sy)
                 // ->orderBy('class_subject_details.class_time_from', 'ASC');
                 ->orderBY('class_subject_details.class_subject_order','DESC')
@@ -2466,27 +2468,16 @@ class MyAdvisoryClassController extends Controller
             '))
             ->first();
 
+            $no_sub  = \App\ClassSubjectDetail::where('id', $ClassSubjectDetail->id)
+            ->where('sem', 2)->where('status', '!=', 0)->count();
+
            
             $quarter = 'First - Fourth';
             $sem = 'First and Second';
            
             $FacultyInformation = \App\FacultyInformation::where('user_id', \Auth::user()->id)->first();       
             
-            $AdvisorySubject = \App\ClassSubjectDetail::join('subject_details', 'subject_details.id', '=' ,'class_subject_details.subject_id')
-                ->join('class_details', 'class_details.id', '=' ,'class_subject_details.class_details_id')
-                ->join('faculty_informations', 'faculty_informations.id', '=' ,'class_subject_details.faculty_id')           
-                ->selectRaw("                
-                    subject_details.subject, subject_details.id, class_subject_details.class_subject_order, subject_details.subject_code
-                ")
-                ->where('class_subject_details.class_details_id', $ClassSubjectDetail->id)
-                ->where('class_subject_details.status', 1)
-                // ->where('faculty_id', $FacultyInformation->id)
-                ->where('class_details.school_year_id', $request->search_sy1)
-                ->where('class_subject_details.sem', 1)
-                //  ->where('class_details.school_year_id', $request->search_sy)
-                // ->orderBy('class_subject_details.class_time_from', 'ASC');
-                ->orderBY('class_subject_details.class_subject_order','ASC')
-                ->get();            
+                      
             
 
             $GradeSheetMale = \App\Grade_sheet_firstsem::join('class_details','class_details.section_id','=','grade_sheet_firstsems.section_details_id')            
@@ -2518,7 +2509,6 @@ class MyAdvisoryClassController extends Controller
                 ->distinct()
                 ->orderBY('student_name','ASC')
                 ->get();
-
             
 
             $NumberOfSubject = \App\ClassSubjectDetail::join('subject_details', 'subject_details.id', '=' ,'class_subject_details.subject_id')
@@ -2528,19 +2518,23 @@ class MyAdvisoryClassController extends Controller
                                 class_subject_details.class_subject_order
                             ")
                 ->where('class_subject_details.class_details_id', $ClassSubjectDetail->id)
-                ->where('class_subject_details.status', 1)
+                ->where('class_subject_details.status','!=', 0)
                 // ->where('faculty_id', $FacultyInformation->id)
                 ->where('class_details.school_year_id', $request->search_sy1)
-                ->where('class_subject_details.sem', 1)
+                ->where('class_subject_details.sem', 2)
                 //  ->where('class_details.school_year_id', $request->search_sy)
                 // ->orderBy('class_subject_details.class_time_from', 'ASC');
                 ->orderBY('class_subject_details.class_subject_order','DESC')
-                ->first();       
+                ->first();  
+
+                
+            // $count_subjects1 = \App\StudentEnrolledSubject::where('enrollments_id', $ClassSubjectDetail->enrollment_id)
+            //     ->where('sem', 2)->where('status', '!=', 0)->count();
 
             return view('control_panel_faculty.my_advisory_class.partials.print_senior_average', 
-            compact( 'type','NumberOfSubject', 'ClassSubjectDetail','AdvisorySubject','GradeSheetMale','GradeSheetFeMale','quarter','AdvisorySubject','sem'));
+            compact( 'type','NumberOfSubject', 'ClassSubjectDetail','AdvisorySubject','GradeSheetMale','GradeSheetFeMale','quarter','sem'));
             $pdf = \PDF::loadView('control_panel_faculty.my_advisory_class.partials.print_senior_average', 
-            compact( 'type','NumberOfSubject', 'ClassSubjectDetail','AdvisorySubject','GradeSheetMale','GradeSheetFeMale','quarter','AdvisorySubject','sem'));
+            compact( 'type','NumberOfSubject', 'ClassSubjectDetail','AdvisorySubject','GradeSheetMale','GradeSheetFeMale','quarter','sem'));
             $pdf->setPaper('Legal', 'portrait');
             return $pdf->stream();
     

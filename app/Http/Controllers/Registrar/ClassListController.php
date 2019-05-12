@@ -77,7 +77,13 @@ class ClassListController extends Controller
         $GradeLevel = \App\GradeLevel::where('status', 1)->get();
         $Room = \App\Room::where('status', 1)->get();
         $SchoolYear = \App\SchoolYear::where('status', 1)->where('current', 1)->get();
-        return view('control_panel_registrar.class_details.partials.modal_data', compact('ClassDetail', 'SectionDetail', 'Room', 'SchoolYear', 'SectionDetail_grade_levels', 'GradeLevel', 'FacultyInformation'))->render();
+
+        $Strand = \App\Strand::where('status', 1)->orderBy('strand')->get();
+        // if ($ClassDetail) 
+        // {
+        //     $Strand = \App\Strand::where('status', 1)->where('strand', $ClassDetail->strand)->orderBy('strand')->get();
+        // }
+        return view('control_panel_registrar.class_details.partials.modal_data', compact('ClassDetail', 'SectionDetail', 'Room', 'SchoolYear', 'SectionDetail_grade_levels', 'GradeLevel', 'FacultyInformation','Strand'))->render();
     }
 
     public function modal_manage_subjects (Request $request) 
@@ -123,6 +129,7 @@ class ClassListController extends Controller
             $ClassDetail->school_year_id = $request->school_year;
             $ClassDetail->grade_level = $request->grade_level;
             $ClassDetail->adviser_id = $request->adviser;
+            $ClassDetail->strand_id = $request->strand;
             $ClassDetail->save();
             return response()->json(['res_code' => 0, 'res_msg' => 'Data successfully saved.']);
         }
@@ -133,6 +140,7 @@ class ClassListController extends Controller
         $ClassDetail->school_year_id = $request->school_year;
         $ClassDetail->grade_level = $request->grade_level;
         $ClassDetail->adviser_id = $request->adviser;
+        $ClassDetail->strand_id = $request->strand;
         $ClassDetail->save();
         return response()->json(['res_code' => 0, 'res_msg' => 'Data successfully saved.']);
     }

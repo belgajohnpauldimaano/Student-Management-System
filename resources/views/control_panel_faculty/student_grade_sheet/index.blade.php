@@ -11,55 +11,62 @@
     <div class="box">
         <div class="box-header with-border">
             <h3 class="box-title">Search</h3>
-            <form id="js-form_search">
-                {{ csrf_field() }}
+           
                 {{--  <div id="js-form_search" class="form-group col-sm-12 col-md-3" style="padding-right:0">
                     <input type="text" class="form-control" name="search">
                 </div>  --}}
                 
                 
                 @if($ClassSubjectDetail->grade_level <= 10)
-                <div class="form-group col-sm-12 col-md-3" style="padding-right:0">
-                    <select name="search_sy" id="search_sy" class="form-control">
-                        <option value="">Select SY</option>
-                        @foreach ($SchoolYear as $data)
-                            <option value="{{ $data->id }}">{{ $data->school_year }}</option>
-                        @endforeach
-                    </select>
-                </div> 
-                &nbsp;
-                    <div class="form-group col-sm-12 col-md-5" style="padding-right:0">
-                        <select name="search_class_subject" id="search_class_subject" class="form-control">
-                            <option value="">Select Class Subject</option>
-                        </select>
-                    </div>
-                &nbsp;
-                @else
-                <div class="form-group col-sm-12 col-md-3" style="padding-right:0">
-                    <select name="search_sy1" id="search_sy1" class="form-control">
-                        <option value="">Select SY</option>
-                        @foreach ($SchoolYear as $data)
-                            <option value="{{ $data->id }}">{{ $data->school_year }}</option>
-                        @endforeach
-                    </select>
-                </div> 
-                &nbsp;
+                <form id="js-form_search">
+                    {{ csrf_field() }}
                     <div class="form-group col-sm-12 col-md-3" style="padding-right:0">
-                        <select name="search_semester" id="search_semester" class="form-control">
-                            <option value="">Select Semester</option>
+                        <select name="search_sy" id="search_sy" class="form-control">
+                            <option value="">Select SY</option>
+                            @foreach ($SchoolYear as $data)
+                                <option value="{{ $data->id }}">{{ $data->school_year }}</option>
+                            @endforeach
                         </select>
-                    </div>
-                &nbsp;
-                    <div class="form-group col-sm-12 col-md-5" style="padding-right:0">
-                        <select name="search_class_subject_sem" id="search_class_subject_sem" class="form-control">
-                            <option value="">Select Class Subject</option>
+                    </div> 
+                    &nbsp;
+                        <div class="form-group col-sm-12 col-md-5" style="padding-right:0">
+                            <select name="search_class_subject" id="search_class_subject" class="form-control">
+                                <option value="">Select Class Subject</option>
+                            </select>
+                        </div>
+                    &nbsp;
+                    <button type="submit" class="btn btn-flat btn-success">Search</button>
+                </form>
+                @else
+                <form id="js-form_search1">
+                    {{ csrf_field() }}
+                    <div class="form-group col-sm-12 col-md-3" style="padding-right:0">
+                        <select name="search_sy1" id="search_sy1" class="form-control">
+                            <option value="">Select SY</option>
+                            @foreach ($SchoolYear as $data)
+                                <option value="{{ $data->id }}">{{ $data->school_year }}</option>
+                            @endforeach
                         </select>
-                    </div>
-                &nbsp;
+                    </div> 
+                    &nbsp;
+                        <div class="form-group col-sm-12 col-md-3" style="padding-right:0">
+                            <select name="search_semester" id="search_semester" class="form-control">
+                                <option value="">Select Semester</option>
+                            </select>
+                        </div>
+                    &nbsp;
+                        <div class="form-group col-sm-12 col-md-5" style="padding-right:0">
+                            <select name="search_class_subject_sem" id="search_class_subject_sem" class="form-control">
+                                <option value="">Select Class Subject</option>
+                            </select>
+                        </div>
+                    &nbsp;
+                    <button type="submit" class="btn btn-flat btn-success">Search</button>
+                </form>
                 @endif
-                <button type="submit" class="btn btn-flat btn-success">Search</button>
+                
                 {{--  <button type="button" class="pull-right btn btn-flat btn-danger btn-sm" id="js-button-add"><i class="fa fa-plus"></i> Add</button>  --}}
-            </form>
+            
         </div>
         <div class="overlay hidden" id="js-loader-overlay"><i class="fa fa-refresh fa-spin"></i></div>
         <div class="box-body">
@@ -120,13 +127,37 @@
                 })
             })
             
-            $('body').on('submit', '#js-form_search', function (e) {
+            function fetch_data1() {
+            var formData = new FormData($('#js-form_search1')[0]);
+            formData.append('page', page);
+            loader_overlay();
+            
+            var semester_grades = $('#search_semester').val();
+            
+                    
+            $.ajax({
+                url : "{{ route('faculty.student_grade_sheet.list_students_by_class1') }}",
+                type : 'POST',
+                data : formData,
+                processData : false,
+                contentType : false,
+                success     : function (res) {
+                    loader_overlay();
+                    $('.js-data-container').html(res);
+                }
+            });
+                    
+                   
+            }
+
+            
+            $('body').on('submit', '#js-form_search1', function (e) {
                 e.preventDefault();
                 if (!$('#search_semester').val()) {
-                    alert('Please select a subject');
+                    alert('Please select a semester');
                     return;
                 }
-                fetch_data();
+                // fetch_data1();
             });
             $('body').on('change', '#search_sy1', function () {
                 $.ajax({
@@ -137,6 +168,28 @@
                     success     : function (res) {
 
                         $('#search_semester').html(res);
+                    }
+                })
+            })
+            $('body').on('submit', '#js-form_search1', function (e) {
+                e.preventDefault();
+                if (!$('#search_class_subject_sem').val()) {
+                    alert('Please select Subject!');
+                    return;
+                }
+                fetch_data1();
+            });
+
+            
+            $('body').on('change', '#search_semester', function () {
+                $.ajax({
+                    url : "{{ route('faculty.student_grade_sheet.list_class_subject_details1') }}",
+                    type : 'POST',
+                    {{--  dataType    : 'JSON',  --}}
+                    data        : {_token: '{{ csrf_token() }}', search_semester: $('#search_semester').val(), search_sy1: $('#search_sy1').val()},
+                    success     : function (res) {
+
+                        $('#search_class_subject_sem').html(res);
                     }
                 })
             })
@@ -339,6 +392,12 @@
                 const search_class_subject = $('#search_class_subject').val()
                 const search_sy = $('#search_sy').val()
                 window.open("{{ route('faculty.student_grade_sheet.list_students_by_class_print') }}?search_class_subject="+search_class_subject+'&search_sy='+search_sy, '', 'height=800,width=800')
+            })
+            $('body').on('click', '#js-btn_print1', function (e) {
+                e.preventDefault()
+                const search_class_subject_sem = $('#search_class_subject_sem').val()
+                const search_sy1 = $('#search_sy1').val()
+                window.open("{{ route('faculty.student_grade_sheet.list_students_by_class_print1') }}?search_class_subject_sem="+search_class_subject_sem+'&search_sy1='+search_sy1, '', 'height=800,width=800')
             })
         });
     </script>
