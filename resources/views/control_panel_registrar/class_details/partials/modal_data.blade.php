@@ -14,7 +14,7 @@
                 </div>
                 <div class="modal-body">                    
                     
-                    {{--  <div class="form-group">
+                    <!-- {{--  <div class="form-group">
                         <label for="">Faculty</label>
                         <select name="faculty" id="faculty" class="form-control">
                             <option value="">Select faculty</option>
@@ -36,7 +36,7 @@
                         </select>
                         <div class="help-block text-red text-center" id="js-subject">
                         </div>
-                    </div>  --}}
+                    </div>  --}} -->
                        
                     <div class="form-group">
                         <label for="">Grade Level</label>
@@ -46,7 +46,7 @@
                                 <option value="{{ $data->grade_level }}" {{ $ClassDetail ? $ClassDetail->grade_level == $data->grade_level ? 'selected' : '' : '' }}>Grade {{ $data->grade_level }}</option>
                             @endforeach
                         </select>
-                        <div class="help-block text-red text-center" id="js-section">
+                        <div class="help-block text-red text-center" id="js-gradelevel">
                         </div>
                     </div>
                                         
@@ -70,9 +70,9 @@
                                     <option value="{{ $data->id }}" {{ $ClassDetail ? $ClassDetail->strand_id == $data->id ? 'selected' : '' : '' }}>{{ $data->strand }}</option>
                                 @endforeach
                             </select>
-                            <div class="help-block text-red text-center" id="js-section">
+                            <div class="help-block text-red text-center" id="js-strand">
                             </div>
-                        </div>
+                    </div>
                                  
                     <div class="form-group">
                         <label for="">Room</label>
@@ -85,6 +85,7 @@
                         <div class="help-block text-red text-center" id="js-room">
                         </div>
                     </div>     
+
                     <div class="form-group">
                         <label for="">Class Adviser</label>
                         <select name="adviser" id="adviser" class="form-control">
@@ -93,7 +94,7 @@
                                 <option value="{{ $data->id }}" {{ $ClassDetail ? $ClassDetail->adviser_id == $data->id ? 'selected' : '' : '' }}>{{ $data->last_name . ' '  . $data->first_name . ', '  . $data->middle_nam }}</option>
                             @endforeach
                         </select>
-                        <div class="help-block text-red text-center" id="js-room">
+                        <div class="help-block text-red text-center" id="js-adviser">
                         </div>
                     </div>
                             
@@ -109,7 +110,7 @@
                         </div>
                     </div>
                     
-                    {{--  <div class="bootstrap-timepicker">
+                    <!-- {{--  <div class="bootstrap-timepicker">
                         <div class="form-group">
                         <label>Time</label>
 
@@ -121,7 +122,7 @@
                             </div>
                         </div>
                         </div>
-                    </div>  --}}
+                    </div>  --}} -->
 
 
 

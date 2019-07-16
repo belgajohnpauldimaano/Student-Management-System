@@ -10,6 +10,9 @@ class AdvisoryClassController extends Controller
     public function index (Request $request) 
     {        
         $FacultyInformation = \App\FacultyInformation::where('user_id', \Auth::user()->id)->first();
+        
+        // $SchoolYear = \App\SchoolYear::where('current,' 1)->where('status',1)->first();
+        $SchoolYear = \App\SchoolYear::where('status', 1)->where('current', 1)->first();
 
         $ClassDetail = \App\ClassDetail::join('section_details', 'section_details.id', '=' ,'class_details.section_id')
             ->join('rooms', 'rooms.id', '=' ,'class_details.room_id')
@@ -33,7 +36,7 @@ class AdvisoryClassController extends Controller
             ->where('section_details.status', 1)
             ->where('class_details.current', 1)
             ->where('class_details.status', 1)
-            // ->where('school_years.current', '!=', 0)
+            ->where('school_years.current', '!=', 0)
             ->where('class_details.adviser_id', $FacultyInformation->id)
             ->where(function ($query) use($request) {
                 if ($request->sy_search) 
@@ -53,7 +56,7 @@ class AdvisoryClassController extends Controller
             return view('control_panel_faculty.class_advisory.partials.data_list', compact('ClassDetail'))->render();
         }
 
-        $SchoolYear = \App\SchoolYear::where('status', 1)->where('current', 1)->orderBy('current', 'DESC')->get();
+        // $SchoolYear = \App\SchoolYear::where('status', 1)->where('current', 1)->orderBy('current', 'DESC')->get();
 
         $ClassDetail = $ClassDetail->paginate(10);
         
@@ -64,6 +67,7 @@ class AdvisoryClassController extends Controller
     public function view_class_list (Request $request) 
     {
         $FacultyInformation = \App\FacultyInformation::where('user_id', \Auth::user()->id)->first();
+
         try {
             $class_id = \Crypt::decrypt($request->c);
             

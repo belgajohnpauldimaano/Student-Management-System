@@ -25,6 +25,7 @@ class ClassListController extends Controller
                 section_details.section,
                 section_details.grade_level as section_grade_level,
                 school_years.school_year,
+                school_years.id as schoolyearid,
                 rooms.room_code,
                 rooms.room_description,
                 CONCAT(faculty_informations.last_name, " ", faculty_informations.first_name, ", " ,  faculty_informations.middle_name) AS adviser_name
@@ -121,9 +122,22 @@ class ClassListController extends Controller
 
         $sectionDetail = \App\SectionDetail::where('id', $request->section)->first();
 
-        if ($request->id)
+        if($request->grade_level > 10)
         {
-            $ClassDetail = \App\ClassDetail::where('id', $request->id)->first();
+            if ($request->id)
+            {
+                $ClassDetail = \App\ClassDetail::where('id', $request->id)->first();
+                $ClassDetail->section_id = $request->section;
+                $ClassDetail->room_id	 = $request->room;
+                $ClassDetail->school_year_id = $request->school_year;
+                $ClassDetail->grade_level = $request->grade_level;
+                $ClassDetail->adviser_id = $request->adviser;
+                $ClassDetail->strand_id = $request->strand;
+                $ClassDetail->save();
+                return response()->json(['res_code' => 0, 'res_msg' => 'Data successfully saved.']);
+            }
+
+            $ClassDetail = new \App\ClassDetail();
             $ClassDetail->section_id	 = $request->section;
             $ClassDetail->room_id	 = $request->room;
             $ClassDetail->school_year_id = $request->school_year;
@@ -133,16 +147,31 @@ class ClassListController extends Controller
             $ClassDetail->save();
             return response()->json(['res_code' => 0, 'res_msg' => 'Data successfully saved.']);
         }
+        else if(($request->grade_level < 11))
+        {
+            if ($request->id)
+            {
+                $ClassDetail = \App\ClassDetail::where('id', $request->id)->first();
+                $ClassDetail->section_id = $request->section;
+                $ClassDetail->room_id	 = $request->room;
+                $ClassDetail->school_year_id = $request->school_year;
+                $ClassDetail->grade_level = $request->grade_level;
+                $ClassDetail->adviser_id = $request->adviser;
+                $ClassDetail->strand_id = 0;
+                $ClassDetail->save();
+                return response()->json(['res_code' => 0, 'res_msg' => 'Data successfully saved.']);
+            }
 
-        $ClassDetail = new \App\ClassDetail();
-        $ClassDetail->section_id	 = $request->section;
-        $ClassDetail->room_id	 = $request->room;
-        $ClassDetail->school_year_id = $request->school_year;
-        $ClassDetail->grade_level = $request->grade_level;
-        $ClassDetail->adviser_id = $request->adviser;
-        $ClassDetail->strand_id = $request->strand;
-        $ClassDetail->save();
-        return response()->json(['res_code' => 0, 'res_msg' => 'Data successfully saved.']);
+            $ClassDetail = new \App\ClassDetail();
+            $ClassDetail->section_id = $request->section;
+            $ClassDetail->room_id = $request->room;
+            $ClassDetail->school_year_id = $request->school_year;
+            $ClassDetail->grade_level = $request->grade_level;
+            $ClassDetail->adviser_id = $request->adviser;
+            $ClassDetail->strand_id = 0;
+            $ClassDetail->save();
+            return response()->json(['res_code' => 0, 'res_msg' => 'Data successfully saved.']);
+        }
     }
 
     public function deactivate_data (Request $request) 

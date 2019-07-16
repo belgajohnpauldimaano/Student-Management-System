@@ -8,7 +8,7 @@
 @endsection
 
 @section ('content')
-    {{--  <h3>School Year: {{ $ClassDetail->school_year }}, Grade: {{ $ClassDetail->grade_level }}, Section: {{ $ClassDetail->section }}, Room: {{ $ClassDetail->room_code }} </h3>  --}}
+    <!-- {{--  <h3>School Year: {{ $ClassDetail->school_year }}, Grade: {{ $ClassDetail->grade_level }}, Section: {{ $ClassDetail->section }}, Room: {{ $ClassDetail->room_code }} </h3>  --}} -->
     
     
         

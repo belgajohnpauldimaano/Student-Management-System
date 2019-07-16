@@ -13,6 +13,7 @@ class MyAdvisoryClassController extends Controller
         $FacultyInformation = \App\FacultyInformation::where('user_id', \Auth::user()->id)->first();
         // return json_encode(['FacultyInformation' => $FacultyInformation, 'Auth' => \Auth::user()]);
         $SchoolYear  = \App\SchoolYear::where('status', 1)->where('current', 1)->orderBy('current', 'ASC')->orderBy('school_year', 'ASC')->get();
+        $class_id = \Crypt::decrypt($request->c);
 
         $GradeLevel = \App\ClassSubjectDetail::join('class_details', 'class_details.id', '=', 'class_subject_details.class_details_id')
             // ->join('subject_details', 'subject_details.id', '=', 'class_subject_details.subject_id')
@@ -21,6 +22,7 @@ class MyAdvisoryClassController extends Controller
             // ->whereRaw('class_subject_details.id = '. $request->search_class_subject)
             // ->whereRaw('class_details.id = '. $search_class_subject[1])
             ->where('class_details.adviser_id', $FacultyInformation->id)
+            ->where('class_details.id', $class_id)
             // ->where('class_details.school_year_id', $request->search_sy)
             // ->where('class_subject_details.status', '!=', 0)
             ->where('class_details.status', '!=', 0)
@@ -84,8 +86,7 @@ class MyAdvisoryClassController extends Controller
         $class_details_elements = '<option value="">Select Semester</option>';        
         $class_details_elements .= '<option value="1st">First Semester</option>';
         $class_details_elements .= '<option value="2nd">Second Semester</option>';
-        $class_details_elements .= '<option value="3rd">Average</option>';
-        
+        $class_details_elements .= '<option value="3rd">Average</option>';        
         
         return $class_details_elements;
     }
@@ -103,6 +104,7 @@ class MyAdvisoryClassController extends Controller
             // ->whereRaw('class_details.id = '. $search_class_subject[1])
             ->where('class_details.adviser_id', $FacultyInformation->id)
             ->where('class_details.school_year_id', $request->search_sy1)
+            // ->where('class_details.id', $class_id)
             // ->where('class_subject_details.status', '!=', 0)
             ->where('class_details.status', '!=', 0)
             ->select(\DB::raw('                
@@ -127,7 +129,8 @@ class MyAdvisoryClassController extends Controller
             ")
             ->where('class_subject_details.class_details_id', $ClassSubjectDetail->id)
             ->where('class_subject_details.status', 1)
-            // ->where('faculty_id', $FacultyInformation->id)
+            ->where('class_details.id', $class_id)
+            ->where('faculty_id', $FacultyInformation->id)
             ->where('class_details.school_year_id', $request->search_sy1)
             ->where('class_subject_details.sem', 1)
             //  ->where('class_details.school_year_id', $request->search_sy)
@@ -140,6 +143,7 @@ class MyAdvisoryClassController extends Controller
             ->join('enrollments','enrollments.id','=','grade_sheet_firstsems.enrollment_id')
             ->join('student_informations','student_informations.id','=','enrollments.student_information_id')
             ->where('class_details.section_id', $ClassSubjectDetail->section_id)
+            ->where('grade_sheet_firstsems.school_year_id', $request->search_sy1)
             ->whereRaw('student_informations.gender = 1')
             ->selectRaw("                    
                     CONCAT(student_informations.last_name, ' ', student_informations.first_name, ' ', student_informations.middle_name) as student_name,
@@ -155,6 +159,7 @@ class MyAdvisoryClassController extends Controller
             ->join('enrollments','enrollments.id','=','grade_sheet_firstsems.enrollment_id')
             ->join('student_informations','student_informations.id','=','enrollments.student_information_id')
             ->where('class_details.section_id', $ClassSubjectDetail->section_id)
+            ->where('grade_sheet_firstsems.school_year_id', $request->search_sy1)
             ->whereRaw('student_informations.gender = 2')
             ->selectRaw("                    
                     CONCAT(student_informations.last_name, ' ', student_informations.first_name, ' ', student_informations.middle_name) as student_name,
@@ -240,6 +245,7 @@ class MyAdvisoryClassController extends Controller
             ->join('enrollments','enrollments.id','=','grade_sheet_firstsemseconds.enrollment_id')
             ->join('student_informations','student_informations.id','=','enrollments.student_information_id')
             ->where('class_details.section_id', $ClassSubjectDetail->section_id)
+            ->where('grade_sheet_firstsemseconds.school_year_id', $request->search_sy1)
             ->whereRaw('student_informations.gender = 1')
             ->selectRaw("                    
                     CONCAT(student_informations.last_name, ' ', student_informations.first_name, ' ', student_informations.middle_name) as student_name,
@@ -255,6 +261,7 @@ class MyAdvisoryClassController extends Controller
             ->join('enrollments','enrollments.id','=','grade_sheet_firstsemseconds.enrollment_id')
             ->join('student_informations','student_informations.id','=','enrollments.student_information_id')
             ->where('class_details.section_id', $ClassSubjectDetail->section_id)
+            ->where('grade_sheet_firstsemseconds.school_year_id', $request->search_sy1)
             ->whereRaw('student_informations.gender = 2')
             ->selectRaw("                    
                     CONCAT(student_informations.last_name, ' ', student_informations.first_name, ' ', student_informations.middle_name) as student_name,
@@ -342,6 +349,7 @@ class MyAdvisoryClassController extends Controller
                             class_subject_details.class_subject_order
                         ")
             ->where('class_subject_details.class_details_id', $ClassSubjectDetail->id)
+            
             ->where('class_subject_details.status', 1)
             // ->where('faculty_id', $FacultyInformation->id)
             ->where('class_details.school_year_id', $request->search_sy1)
@@ -356,6 +364,7 @@ class MyAdvisoryClassController extends Controller
             ->join('enrollments','enrollments.id','=','grade11__second__sems.enrollment_id')
             ->join('student_informations','student_informations.id','=','enrollments.student_information_id')
             ->where('class_details.section_id', $ClassSubjectDetail->section_id)
+            ->where('grade11__second__sems.school_year_id', $request->search_sy1)
             ->whereRaw('student_informations.gender = 1')
             ->selectRaw("                    
                     CONCAT(student_informations.last_name, ' ', student_informations.first_name, ' ', student_informations.middle_name) as student_name,
@@ -371,6 +380,7 @@ class MyAdvisoryClassController extends Controller
             ->join('enrollments','enrollments.id','=','grade11__second__sems.enrollment_id')
             ->join('student_informations','student_informations.id','=','enrollments.student_information_id')
             ->where('class_details.section_id', $ClassSubjectDetail->section_id)
+            ->where('grade11__second__sems.school_year_id', $request->search_sy1)
             ->whereRaw('student_informations.gender = 2')
             ->selectRaw("                    
                     CONCAT(student_informations.last_name, ' ', student_informations.first_name, ' ', student_informations.middle_name) as student_name,
@@ -391,6 +401,7 @@ class MyAdvisoryClassController extends Controller
         return view('control_panel_faculty.my_advisory_class.partials.data_list', compact( 'type','NumberOfSubject','ClassSubjectDetail','AdvisorySubject','GradeSheetMale','GradeSheetFeMale','quarter','AdvisorySubject','sem'))->render();
     }
 
+    
     public function first_sem_4quarter (Request $request) 
     {
         $FacultyInformation = \App\FacultyInformation::where('user_id', \Auth::user()->id)->first();
@@ -440,6 +451,7 @@ class MyAdvisoryClassController extends Controller
             ->join('enrollments','enrollments.id','=','grade_sheet_secondsemseconds.enrollment_id')
             ->join('student_informations','student_informations.id','=','enrollments.student_information_id')
             ->where('class_details.section_id', $ClassSubjectDetail->section_id)
+            ->where('grade_sheet_secondsemseconds.school_year_id', $request->search_sy1)
             ->whereRaw('student_informations.gender = 1')
             ->selectRaw("                    
                     CONCAT(student_informations.last_name, ' ', student_informations.first_name, ' ', student_informations.middle_name) as student_name,
@@ -455,6 +467,7 @@ class MyAdvisoryClassController extends Controller
             ->join('enrollments','enrollments.id','=','grade_sheet_secondsemseconds.enrollment_id')
             ->join('student_informations','student_informations.id','=','enrollments.student_information_id')
             ->where('class_details.section_id', $ClassSubjectDetail->section_id)
+            ->where('grade_sheet_secondsemseconds.school_year_id', $request->search_sy1)
             ->whereRaw('student_informations.gender = 2')
             ->selectRaw("                    
                     CONCAT(student_informations.last_name, ' ', student_informations.first_name, ' ', student_informations.middle_name) as student_name,
@@ -536,6 +549,7 @@ class MyAdvisoryClassController extends Controller
             ->join('enrollments','enrollments.id','=','grade_sheet_firsts.enrollment_id')
             ->join('student_informations','student_informations.id','=','enrollments.student_information_id')
             ->where('class_details.section_id', $ClassSubjectDetail->section_id)
+            ->where('grade_sheet_firsts.school_year_id', $request->search_sy)
             ->whereRaw('student_informations.gender = 1')
             ->selectRaw("                    
                     CONCAT(student_informations.last_name, ' ', student_informations.first_name, ' ', student_informations.middle_name) as student_name,
@@ -550,6 +564,7 @@ class MyAdvisoryClassController extends Controller
             ->join('enrollments','enrollments.id','=','grade_sheet_firsts.enrollment_id')
             ->join('student_informations','student_informations.id','=','enrollments.student_information_id')
             ->where('class_details.section_id', $ClassSubjectDetail->section_id)
+            ->where('grade_sheet_firsts.school_year_id', $request->search_sy)
             ->whereRaw('student_informations.gender = 2')
             ->selectRaw("                    
                     CONCAT(student_informations.last_name, ' ', student_informations.first_name, ' ', student_informations.middle_name) as student_name,
@@ -615,6 +630,7 @@ class MyAdvisoryClassController extends Controller
             ->join('enrollments','enrollments.id','=','grade_sheet_seconds.enrollment_id')
             ->join('student_informations','student_informations.id','=','enrollments.student_information_id')
             ->where('class_details.section_id', $ClassSubjectDetail->section_id)
+            ->where('grade_sheet_seconds.school_year_id', $request->search_sy)
             ->whereRaw('student_informations.gender = 1')
             ->selectRaw("                    
                     CONCAT(student_informations.last_name, ' ', student_informations.first_name, ' ', student_informations.middle_name) as student_name,
@@ -629,6 +645,7 @@ class MyAdvisoryClassController extends Controller
             ->join('enrollments','enrollments.id','=','grade_sheet_seconds.enrollment_id')
             ->join('student_informations','student_informations.id','=','enrollments.student_information_id')
             ->where('class_details.section_id', $ClassSubjectDetail->section_id)
+            ->where('grade_sheet_seconds.school_year_id', $request->search_sy)
             ->whereRaw('student_informations.gender = 2')
             ->selectRaw("                    
                     CONCAT(student_informations.last_name, ' ', student_informations.first_name, ' ', student_informations.middle_name) as student_name,
@@ -693,6 +710,7 @@ class MyAdvisoryClassController extends Controller
             ->join('enrollments','enrollments.id','=','grade_sheet_thirds.enrollment_id')
             ->join('student_informations','student_informations.id','=','enrollments.student_information_id')
             ->where('class_details.section_id', $ClassSubjectDetail->section_id)
+            ->where('grade_sheet_thirds.school_year_id', $request->search_sy)
             ->whereRaw('student_informations.gender = 1')
             ->selectRaw("                    
                     CONCAT(student_informations.last_name, ' ', student_informations.first_name, ' ', student_informations.middle_name) as student_name,
@@ -707,6 +725,7 @@ class MyAdvisoryClassController extends Controller
             ->join('enrollments','enrollments.id','=','grade_sheet_thirds.enrollment_id')
             ->join('student_informations','student_informations.id','=','enrollments.student_information_id')
             ->where('class_details.section_id', $ClassSubjectDetail->section_id)
+            ->where('grade_sheet_thirds.school_year_id', $request->search_sy)
             ->whereRaw('student_informations.gender = 2')
             ->selectRaw("                    
                     CONCAT(student_informations.last_name, ' ', student_informations.first_name, ' ', student_informations.middle_name) as student_name,
@@ -770,6 +789,7 @@ class MyAdvisoryClassController extends Controller
             ->join('enrollments','enrollments.id','=','grade_sheet_fourths.enrollment_id')
             ->join('student_informations','student_informations.id','=','enrollments.student_information_id')
             ->where('class_details.section_id', $ClassSubjectDetail->section_id)
+            ->where('grade_sheet_fourths.school_year_id', $request->search_sy)
             ->whereRaw('student_informations.gender = 1')
             ->selectRaw("  grade_sheet_fourths.enrollment_id,                
                     CONCAT(student_informations.last_name, ' ', student_informations.first_name, ' ', student_informations.middle_name) as student_name,
@@ -784,6 +804,7 @@ class MyAdvisoryClassController extends Controller
             ->join('enrollments','enrollments.id','=','grade_sheet_fourths.enrollment_id')
             ->join('student_informations','student_informations.id','=','enrollments.student_information_id')
             ->where('class_details.section_id', $ClassSubjectDetail->section_id)
+            ->where('grade_sheet_fourths.school_year_id', $request->search_sy)
             ->whereRaw('student_informations.gender = 2')
             ->selectRaw(" grade_sheet_fourths.enrollment_id,                   
                     CONCAT(student_informations.last_name, ' ', student_informations.first_name, ' ', student_informations.middle_name) as student_name,
@@ -851,6 +872,7 @@ class MyAdvisoryClassController extends Controller
             ->join('enrollments','enrollments.id','=','grade_sheet_firsts.enrollment_id')
             ->join('student_informations','student_informations.id','=','enrollments.student_information_id')
             ->where('class_details.section_id', $ClassSubjectDetail->section_id)
+            ->where('grade_sheet_firsts.school_year_id', $request->search_sy)
             ->whereRaw('student_informations.gender = 1')
             ->selectRaw("                    
                     CONCAT(student_informations.last_name, ' ', student_informations.first_name, ' ', student_informations.middle_name) as student_name,
@@ -865,6 +887,7 @@ class MyAdvisoryClassController extends Controller
             ->join('enrollments','enrollments.id','=','grade_sheet_firsts.enrollment_id')
             ->join('student_informations','student_informations.id','=','enrollments.student_information_id')
             ->where('class_details.section_id', $ClassSubjectDetail->section_id)
+            ->where('grade_sheet_firsts.school_year_id', $request->search_sy)
             ->whereRaw('student_informations.gender = 2')
             ->selectRaw("                    
                     CONCAT(student_informations.last_name, ' ', student_informations.first_name, ' ', student_informations.middle_name) as student_name,
@@ -938,6 +961,7 @@ class MyAdvisoryClassController extends Controller
             ->join('enrollments','enrollments.id','=','grade_sheet_seconds.enrollment_id')
             ->join('student_informations','student_informations.id','=','enrollments.student_information_id')
             ->where('class_details.section_id', $ClassSubjectDetail->section_id)
+            ->where('grade_sheet_seconds.school_year_id', $request->search_sy)
             ->whereRaw('student_informations.gender = 1')
             ->selectRaw("                    
                     CONCAT(student_informations.last_name, ' ', student_informations.first_name, ' ', student_informations.middle_name) as student_name,
@@ -952,6 +976,7 @@ class MyAdvisoryClassController extends Controller
             ->join('enrollments','enrollments.id','=','grade_sheet_seconds.enrollment_id')
             ->join('student_informations','student_informations.id','=','enrollments.student_information_id')
             ->where('class_details.section_id', $ClassSubjectDetail->section_id)
+            ->where('grade_sheet_seconds.school_year_id', $request->search_sy)
             ->whereRaw('student_informations.gender = 2')
             ->selectRaw("                    
                     CONCAT(student_informations.last_name, ' ', student_informations.first_name, ' ', student_informations.middle_name) as student_name,
@@ -1025,6 +1050,7 @@ class MyAdvisoryClassController extends Controller
             ->join('enrollments','enrollments.id','=','grade_sheet_thirds.enrollment_id')
             ->join('student_informations','student_informations.id','=','enrollments.student_information_id')
             ->where('class_details.section_id', $ClassSubjectDetail->section_id)
+            ->where('grade_sheet_thirds.school_year_id', $request->search_sy)
             ->whereRaw('student_informations.gender = 1')
             ->selectRaw("                    
                     CONCAT(student_informations.last_name, ' ', student_informations.first_name, ' ', student_informations.middle_name) as student_name,
@@ -1039,6 +1065,7 @@ class MyAdvisoryClassController extends Controller
             ->join('enrollments','enrollments.id','=','grade_sheet_thirds.enrollment_id')
             ->join('student_informations','student_informations.id','=','enrollments.student_information_id')
             ->where('class_details.section_id', $ClassSubjectDetail->section_id)
+            ->where('grade_sheet_thirds.school_year_id', $request->search_sy)
             ->whereRaw('student_informations.gender = 2')
             ->selectRaw("                    
                     CONCAT(student_informations.last_name, ' ', student_informations.first_name, ' ', student_informations.middle_name) as student_name,
@@ -1064,8 +1091,6 @@ class MyAdvisoryClassController extends Controller
 //error
     public function print_fourthquarter (Request $request) 
     {
-        
-        
         $FacultyInformation = \App\FacultyInformation::where('user_id', \Auth::user()->id)->first();
      
         $ClassSubjectDetail = \App\ClassSubjectDetail::join('class_details', 'class_details.id', '=', 'class_subject_details.class_details_id')
@@ -1116,6 +1141,7 @@ class MyAdvisoryClassController extends Controller
             ->join('enrollments','enrollments.id','=','grade_sheet_fourths.enrollment_id')
             ->join('student_informations','student_informations.id','=','enrollments.student_information_id')
             ->where('class_details.section_id', $ClassSubjectDetail->section_id)
+            ->where('grade_sheet_fourths.school_year_id', $request->search_sy)
             ->whereRaw('student_informations.gender = 1')
             ->selectRaw("  grade_sheet_fourths.enrollment_id,                
                     CONCAT(student_informations.last_name, ' ', student_informations.first_name, ' ', student_informations.middle_name) as student_name,
@@ -1130,6 +1156,7 @@ class MyAdvisoryClassController extends Controller
             ->join('enrollments','enrollments.id','=','grade_sheet_fourths.enrollment_id')
             ->join('student_informations','student_informations.id','=','enrollments.student_information_id')
             ->where('class_details.section_id', $ClassSubjectDetail->section_id)
+            ->where('grade_sheet_fourths.school_year_id', $request->search_sy)
             ->whereRaw('student_informations.gender = 2')
             ->selectRaw(" grade_sheet_fourths.enrollment_id,                   
                     CONCAT(student_informations.last_name, ' ', student_informations.first_name, ' ', student_informations.middle_name) as student_name,
@@ -1203,6 +1230,7 @@ class MyAdvisoryClassController extends Controller
             ->join('enrollments','enrollments.id','=','grade_sheet_firstsems.enrollment_id')
             ->join('student_informations','student_informations.id','=','enrollments.student_information_id')
             ->where('class_details.section_id', $ClassSubjectDetail->section_id)
+            ->where('grade_sheet_firstsems.school_year_id', $request->search_sy1)
             ->whereRaw('student_informations.gender = 1')
             ->selectRaw("                    
                     CONCAT(student_informations.last_name, ' ', student_informations.first_name, ' ', student_informations.middle_name) as student_name,
@@ -1218,6 +1246,7 @@ class MyAdvisoryClassController extends Controller
             ->join('enrollments','enrollments.id','=','grade_sheet_firstsems.enrollment_id')
             ->join('student_informations','student_informations.id','=','enrollments.student_information_id')
             ->where('class_details.section_id', $ClassSubjectDetail->section_id)
+            ->where('grade_sheet_firstsems.school_year_id', $request->search_sy1)
             ->whereRaw('student_informations.gender = 2')
             ->selectRaw("                    
                     CONCAT(student_informations.last_name, ' ', student_informations.first_name, ' ', student_informations.middle_name) as student_name,
@@ -1311,6 +1340,7 @@ class MyAdvisoryClassController extends Controller
             ->join('enrollments','enrollments.id','=','grade_sheet_firstsemseconds.enrollment_id')
             ->join('student_informations','student_informations.id','=','enrollments.student_information_id')
             ->where('class_details.section_id', $ClassSubjectDetail->section_id)
+            ->where('grade_sheet_firstsemseconds.school_year_id', $request->search_sy1)
             ->whereRaw('student_informations.gender = 1')
             ->selectRaw("                    
                     CONCAT(student_informations.last_name, ' ', student_informations.first_name, ' ', student_informations.middle_name) as student_name,
@@ -1326,6 +1356,7 @@ class MyAdvisoryClassController extends Controller
             ->join('enrollments','enrollments.id','=','grade_sheet_firstsemseconds.enrollment_id')
             ->join('student_informations','student_informations.id','=','enrollments.student_information_id')
             ->where('class_details.section_id', $ClassSubjectDetail->section_id)
+            ->where('grade_sheet_firstsemseconds.school_year_id', $request->search_sy1)
             ->whereRaw('student_informations.gender = 2')
             ->selectRaw("                    
                     CONCAT(student_informations.last_name, ' ', student_informations.first_name, ' ', student_informations.middle_name) as student_name,
@@ -1347,6 +1378,7 @@ class MyAdvisoryClassController extends Controller
                             class_subject_details.class_subject_order
                         ")
             ->where('class_subject_details.class_details_id', $ClassSubjectDetail->id)
+            // ->where('grade_sheet_firstsemseconds.school_year_id', $request->search_sy)
             ->where('class_subject_details.status', 1)
             // ->where('faculty_id', $FacultyInformation->id)
             ->where('class_details.school_year_id', $request->search_sy1)
@@ -1434,6 +1466,7 @@ class MyAdvisoryClassController extends Controller
             ->join('enrollments','enrollments.id','=','grade11__second__sems.enrollment_id')
             ->join('student_informations','student_informations.id','=','enrollments.student_information_id')
             ->where('class_details.section_id', $ClassSubjectDetail->section_id)
+            ->where('grade11__second__sems.school_year_id', $request->search_sy1)
             ->whereRaw('student_informations.gender = 1')
             ->selectRaw("                    
                     CONCAT(student_informations.last_name, ' ', student_informations.first_name, ' ', student_informations.middle_name) as student_name,
@@ -1449,6 +1482,7 @@ class MyAdvisoryClassController extends Controller
             ->join('enrollments','enrollments.id','=','grade11__second__sems.enrollment_id')
             ->join('student_informations','student_informations.id','=','enrollments.student_information_id')
             ->where('class_details.section_id', $ClassSubjectDetail->section_id)
+            ->where('grade11__second__sems.school_year_id', $request->search_sy1)
             ->whereRaw('student_informations.gender = 2')
             ->selectRaw("                    
                     CONCAT(student_informations.last_name, ' ', student_informations.first_name, ' ', student_informations.middle_name) as student_name,
@@ -1500,9 +1534,7 @@ class MyAdvisoryClassController extends Controller
                 faculty_informations.first_name, faculty_informations.middle_name ,  faculty_informations.last_name,
                 school_years.school_year
             '))
-            ->first();
-
-           
+            ->first();          
             
         
             $AdvisorySubject = \App\ClassSubjectDetail::join('subject_details', 'subject_details.id', '=' ,'class_subject_details.subject_id')
@@ -1526,6 +1558,7 @@ class MyAdvisoryClassController extends Controller
             ->join('enrollments','enrollments.id','=','grade_sheet_secondsemseconds.enrollment_id')
             ->join('student_informations','student_informations.id','=','enrollments.student_information_id')
             ->where('class_details.section_id', $ClassSubjectDetail->section_id)
+            ->where('grade_sheet_secondsemseconds.school_year_id', $request->search_sy1)
             ->whereRaw('student_informations.gender = 1')
             ->selectRaw("                    
                     CONCAT(student_informations.last_name, ' ', student_informations.first_name, ' ', student_informations.middle_name) as student_name,
@@ -1541,6 +1574,7 @@ class MyAdvisoryClassController extends Controller
             ->join('enrollments','enrollments.id','=','grade_sheet_secondsemseconds.enrollment_id')
             ->join('student_informations','student_informations.id','=','enrollments.student_information_id')
             ->where('class_details.section_id', $ClassSubjectDetail->section_id)
+            ->where('grade_sheet_secondsemseconds.school_year_id', $request->search_sy1)
             ->whereRaw('student_informations.gender = 2')
             ->selectRaw("                    
                     CONCAT(student_informations.last_name, ' ', student_informations.first_name, ' ', student_informations.middle_name) as student_name,
@@ -1648,6 +1682,7 @@ class MyAdvisoryClassController extends Controller
             ->join('enrollments','enrollments.id','=','grade_sheet_firsts.enrollment_id')
             ->join('student_informations','student_informations.id','=','enrollments.student_information_id')
             ->where('class_details.section_id', $ClassSubjectDetail->section_id)
+            ->where('grade_sheet_firsts.school_year_id', $request->search_sy)
             ->whereRaw('student_informations.gender = 1')
             ->selectRaw("grade_sheet_firsts.enrollment_id,                 
                     CONCAT( student_informations.last_name, ' ', student_informations.first_name, ' ', student_informations.middle_name) as student_name,
@@ -1662,6 +1697,7 @@ class MyAdvisoryClassController extends Controller
             ->join('enrollments','enrollments.id','=','grade_sheet_firsts.enrollment_id')
             ->join('student_informations','student_informations.id','=','enrollments.student_information_id')
             ->where('class_details.section_id', $ClassSubjectDetail->section_id)
+            ->where('grade_sheet_firsts.school_year_id', $request->search_sy)
             ->whereRaw('student_informations.gender = 2')
             ->selectRaw("grade_sheet_firsts.enrollment_id,                   
                     CONCAT( student_informations.last_name, ' ', student_informations.first_name, ' ', student_informations.middle_name) as student_name,
@@ -1735,6 +1771,7 @@ class MyAdvisoryClassController extends Controller
             ->join('enrollments','enrollments.id','=','grade_sheet_firsts.enrollment_id')
             ->join('student_informations','student_informations.id','=','enrollments.student_information_id')
             ->where('class_details.section_id', $ClassSubjectDetail->section_id)
+            ->where('grade_sheet_firsts.school_year_id', $request->search_sy)
             ->whereRaw('student_informations.gender = 1')
             ->selectRaw("grade_sheet_firsts.enrollment_id,                 
                     CONCAT( student_informations.last_name, ' ', student_informations.first_name, ' ', student_informations.middle_name) as student_name,
@@ -1749,6 +1786,7 @@ class MyAdvisoryClassController extends Controller
             ->join('enrollments','enrollments.id','=','grade_sheet_firsts.enrollment_id')
             ->join('student_informations','student_informations.id','=','enrollments.student_information_id')
             ->where('class_details.section_id', $ClassSubjectDetail->section_id)
+            ->where('grade_sheet_firsts.school_year_id', $request->search_sy)
             ->whereRaw('student_informations.gender = 2')
             ->selectRaw("grade_sheet_firsts.enrollment_id,                   
                     CONCAT( student_informations.last_name, ' ', student_informations.first_name, ' ', student_informations.middle_name) as student_name,
@@ -1828,6 +1866,7 @@ class MyAdvisoryClassController extends Controller
             ->join('enrollments','enrollments.id','=','grade_sheet_firsts.enrollment_id')
             ->join('student_informations','student_informations.id','=','enrollments.student_information_id')
             ->where('class_details.section_id', $ClassSubjectDetail->section_id)
+            ->where('grade_sheet_firsts.school_year_id', $request->search_sy)
             ->whereRaw('student_informations.gender = 1')
             ->selectRaw("grade_sheet_firsts.enrollment_id,                 
                     CONCAT( student_informations.last_name, ' ', student_informations.first_name, ' ', student_informations.middle_name) as student_name,
@@ -1842,6 +1881,7 @@ class MyAdvisoryClassController extends Controller
             ->join('enrollments','enrollments.id','=','grade_sheet_firsts.enrollment_id')
             ->join('student_informations','student_informations.id','=','enrollments.student_information_id')
             ->where('class_details.section_id', $ClassSubjectDetail->section_id)
+            ->where('grade_sheet_firsts.school_year_id', $request->search_sy)
             ->whereRaw('student_informations.gender = 2')
             ->selectRaw("grade_sheet_firsts.enrollment_id,                   
                     CONCAT( student_informations.last_name, ' ', student_informations.first_name, ' ', student_informations.middle_name) as student_name,
@@ -1922,6 +1962,7 @@ class MyAdvisoryClassController extends Controller
             ->join('enrollments','enrollments.id','=','grade_sheet_firsts.enrollment_id')
             ->join('student_informations','student_informations.id','=','enrollments.student_information_id')
             ->where('class_details.section_id', $ClassSubjectDetail->section_id)
+            ->where('grade_sheet_firsts.school_year_id', $request->search_sy)
             ->whereRaw('student_informations.gender = 1')
             ->selectRaw("grade_sheet_firsts.enrollment_id,                 
                     CONCAT( student_informations.last_name, ' ', student_informations.first_name, ' ', student_informations.middle_name) as student_name,
@@ -1936,6 +1977,7 @@ class MyAdvisoryClassController extends Controller
             ->join('enrollments','enrollments.id','=','grade_sheet_firsts.enrollment_id')
             ->join('student_informations','student_informations.id','=','enrollments.student_information_id')
             ->where('class_details.section_id', $ClassSubjectDetail->section_id)
+            ->where('grade_sheet_firsts.school_year_id', $request->search_sy)
             ->whereRaw('student_informations.gender = 2')
             ->selectRaw("grade_sheet_firsts.enrollment_id,                   
                     CONCAT( student_informations.last_name, ' ', student_informations.first_name, ' ', student_informations.middle_name) as student_name,
@@ -2037,6 +2079,7 @@ class MyAdvisoryClassController extends Controller
             ->join('enrollments','enrollments.id','=','grade_sheet_firstsems.enrollment_id')
             ->join('student_informations','student_informations.id','=','enrollments.student_information_id')
             ->where('class_details.section_id', $ClassSubjectDetail->section_id)
+            ->where('grade_sheet_firstsems.school_year_id', $request->search_sy1)
             ->whereRaw('student_informations.gender = 1')
             ->selectRaw("  grade_sheet_firstsems.enrollment_id,                
                     CONCAT(student_informations.last_name, ' ', student_informations.first_name, ' ', student_informations.middle_name) as student_name,
@@ -2052,6 +2095,7 @@ class MyAdvisoryClassController extends Controller
             ->join('enrollments','enrollments.id','=','grade_sheet_firstsems.enrollment_id')
             ->join('student_informations','student_informations.id','=','enrollments.student_information_id')
             ->where('class_details.section_id', $ClassSubjectDetail->section_id)
+            ->where('grade_sheet_firstsems.school_year_id', $request->search_sy1)
             ->whereRaw('student_informations.gender = 2')
             ->selectRaw("   grade_sheet_firstsems.enrollment_id,                    
                     CONCAT(student_informations.last_name, ' ', student_informations.first_name, ' ', student_informations.middle_name) as student_name,
@@ -2184,6 +2228,7 @@ class MyAdvisoryClassController extends Controller
             ->join('enrollments','enrollments.id','=','grade11__second__sems.enrollment_id')
             ->join('student_informations','student_informations.id','=','enrollments.student_information_id')
             ->where('class_details.section_id', $ClassSubjectDetail->section_id)
+            ->where('grade11__second__sems.school_year_id', $request->search_sy1)
             ->whereRaw('student_informations.gender = 1')
             ->selectRaw("  grade11__second__sems.enrollment_id,                
                     CONCAT(student_informations.last_name, ' ', student_informations.first_name, ' ', student_informations.middle_name) as student_name,
@@ -2199,6 +2244,7 @@ class MyAdvisoryClassController extends Controller
             ->join('enrollments','enrollments.id','=','grade11__second__sems.enrollment_id')
             ->join('student_informations','student_informations.id','=','enrollments.student_information_id')
             ->where('class_details.section_id', $ClassSubjectDetail->section_id)
+            ->where('grade11__second__sems.school_year_id', $request->search_sy1)
             ->whereRaw('student_informations.gender = 2')
             ->selectRaw("    grade11__second__sems.enrollment_id,                
                     CONCAT(student_informations.last_name, ' ', student_informations.first_name, ' ', student_informations.middle_name) as student_name,
@@ -2273,6 +2319,7 @@ class MyAdvisoryClassController extends Controller
                 ->join('enrollments','enrollments.id','=','grade_sheet_firstsems.enrollment_id')
                 ->join('student_informations','student_informations.id','=','enrollments.student_information_id')
                 ->where('class_details.section_id', $ClassSubjectDetail->section_id)
+                ->where('grade_sheet_firstsems.school_year_id', $request->search_sy1)
                 ->whereRaw('student_informations.gender = 1')
                 ->selectRaw("  grade_sheet_firstsems.enrollment_id,                
                         CONCAT(student_informations.last_name, ' ', student_informations.first_name, ' ', student_informations.middle_name) as student_name,
@@ -2288,6 +2335,7 @@ class MyAdvisoryClassController extends Controller
                 ->join('enrollments','enrollments.id','=','grade_sheet_firstsems.enrollment_id')
                 ->join('student_informations','student_informations.id','=','enrollments.student_information_id')
                 ->where('class_details.section_id', $ClassSubjectDetail->section_id)
+                ->where('grade_sheet_firstsems.school_year_id', $request->search_sy1)
                 ->whereRaw('student_informations.gender = 2')
                 ->selectRaw("   grade_sheet_firstsems.enrollment_id,                    
                         CONCAT(student_informations.last_name, ' ', student_informations.first_name, ' ', student_informations.middle_name) as student_name,
@@ -2402,6 +2450,7 @@ class MyAdvisoryClassController extends Controller
                 ->join('enrollments','enrollments.id','=','grade11__second__sems.enrollment_id')
                 ->join('student_informations','student_informations.id','=','enrollments.student_information_id')
                 ->where('class_details.section_id', $ClassSubjectDetail->section_id)
+                ->where('grade11__second__sems.school_year_id', $request->search_sy1)
                 ->whereRaw('student_informations.gender = 1')
                 ->selectRaw("  grade11__second__sems.enrollment_id,                
                         CONCAT(student_informations.last_name, ' ', student_informations.first_name, ' ', student_informations.middle_name) as student_name,
@@ -2417,6 +2466,7 @@ class MyAdvisoryClassController extends Controller
                 ->join('enrollments','enrollments.id','=','grade11__second__sems.enrollment_id')
                 ->join('student_informations','student_informations.id','=','enrollments.student_information_id')
                 ->where('class_details.section_id', $ClassSubjectDetail->section_id)
+                ->where('grade11__second__sems.school_year_id', $request->search_sy1)
                 ->whereRaw('student_informations.gender = 2')
                 ->selectRaw("    grade11__second__sems.enrollment_id,                
                         CONCAT(student_informations.last_name, ' ', student_informations.first_name, ' ', student_informations.middle_name) as student_name,
@@ -2484,6 +2534,7 @@ class MyAdvisoryClassController extends Controller
                 ->join('enrollments','enrollments.id','=','grade_sheet_firstsems.enrollment_id')
                 ->join('student_informations','student_informations.id','=','enrollments.student_information_id')
                 ->where('class_details.section_id', $ClassSubjectDetail->section_id)
+                ->where('grade_sheet_firstsems.school_year_id', $request->search_sy1)
                 ->whereRaw('student_informations.gender = 1')
                 ->selectRaw("  grade_sheet_firstsems.enrollment_id,                
                         CONCAT(student_informations.last_name, ' ', student_informations.first_name, ' ', student_informations.middle_name) as student_name,
@@ -2499,6 +2550,7 @@ class MyAdvisoryClassController extends Controller
                 ->join('enrollments','enrollments.id','=','grade_sheet_firstsems.enrollment_id')
                 ->join('student_informations','student_informations.id','=','enrollments.student_information_id')
                 ->where('class_details.section_id', $ClassSubjectDetail->section_id)
+                ->where('grade_sheet_firstsems.school_year_id', $request->search_sy1)
                 ->whereRaw('student_informations.gender = 2')
                 ->selectRaw("   grade_sheet_firstsems.enrollment_id,                    
                         CONCAT(student_informations.last_name, ' ', student_informations.first_name, ' ', student_informations.middle_name) as student_name,

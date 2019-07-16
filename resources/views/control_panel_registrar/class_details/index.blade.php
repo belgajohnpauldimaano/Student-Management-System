@@ -68,6 +68,7 @@
                     type : 'POST',
                     data : { _token : '{{ csrf_token() }}', id : id },
                     success : function (res) {
+                        
                         $('.js-modal_holder').html(res);
                         $('.js-modal_holder .modal').modal({ backdrop : 'static' });
                         $('.js-modal_holder .modal').on('shown.bs.modal', function () {
@@ -75,6 +76,7 @@
                             $('.timepicker').timepicker({
                             showInputs: false
                             })
+
                         })
                     }
                 });
@@ -111,11 +113,13 @@
                 e.preventDefault();
                 fetch_data();
             });
+            
             $('body').on('click', '.pagination a', function (e) {
                 e.preventDefault();
                 page = $(this).attr('href').split('=')[1];
                 fetch_data();
             });
+
             $('body').on('click', '.js-btn_deactivate', function (e) {
                 e.preventDefault();
                 var id = $(this).data('id');
@@ -166,6 +170,8 @@
                     }
                 });
             });
+
+            
         });
     </script>
 @endsection

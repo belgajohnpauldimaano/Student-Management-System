@@ -13,10 +13,7 @@
                             </thead>
                             <tbody>
                                 @if($ClassDetail->grade_level == 11 || $ClassDetail->grade_level == 12)
-                                   
-                                    
-                                    
-                                        @if ($ClassSubjectDetail)
+                                    @if ($ClassSubjectDetail)
                                             @foreach ($ClassSubjectDetail as $data)
                                                 <?php
                                                     $days = $data ? $data->class_schedule ? explode(';', rtrim($data->class_schedule,";")) : [] : [];
@@ -74,9 +71,7 @@
                                                     </td>
                                                 </tr>
                                             @endforeach
-                                        @endif
-
-                                    
+                                    @endif
 
                                 @else
 

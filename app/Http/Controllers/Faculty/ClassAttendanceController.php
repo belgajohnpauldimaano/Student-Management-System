@@ -12,6 +12,7 @@ class ClassAttendanceController extends Controller
         $FacultyInformation = \App\FacultyInformation::where('user_id', \Auth::user()->id)->first();
 
         $school_year_id = \App\SchoolYear::where('current', 1)->where('status', 1)->first()->id;
+        
         $Semester = \App\ClassSubjectDetail::join('class_details', 'class_details.id', '=', 'class_subject_details.class_details_id')
         ->join('rooms','rooms.id', '=', 'class_details.room_id')
         ->join('section_details', 'section_details.id', '=', 'class_details.section_id')
@@ -32,12 +33,15 @@ class ClassAttendanceController extends Controller
             
 
         $count = $class_id = \App\ClassDetail::where('adviser_id', $FacultyInformation->id)->count();
-
+        // $class_id = \App\ClassDetail::where('adviser_id', $FacultyInformation->id)->count();
         if ($request->ajax())
             {
                
                 $attendance_male = \App\Enrollment::join('student_informations', 'student_informations.id', '=', 'enrollments.student_information_id')
+                ->join('class_details', 'class_details.id', '=', 'enrollments.class_details_id')
                 ->where('class_details_id', $class_id)
+                ->where('class_details.school_year_id', $school_year_id)
+                ->where('class_details.adviser_id', $FacultyInformation->id)
                 ->whereRaw('student_informations.gender = 1')
                 ->select(\DB::raw("
                         enrollments.id as e_id,
@@ -49,7 +53,10 @@ class ClassAttendanceController extends Controller
                 ->get();
     
                 $attendance_female = \App\Enrollment::join('student_informations', 'student_informations.id', '=', 'enrollments.student_information_id')
+                ->join('class_details', 'class_details.id', '=', 'enrollments.class_details_id')
                 ->where('class_details_id', $class_id)
+                ->where('class_details.school_year_id', $school_year_id)
+                ->where('class_details.adviser_id', $FacultyInformation->id)
                 ->whereRaw('student_informations.gender = 2')
                 ->select(\DB::raw("
                         enrollments.id as e_id,
@@ -61,7 +68,10 @@ class ClassAttendanceController extends Controller
                 ->get();
     
                 $Senior_firstsem_m = \App\Enrollment::join('student_informations', 'student_informations.id', '=', 'enrollments.student_information_id')
+                ->join('class_details', 'class_details.id', '=', 'enrollments.class_details_id')
                 ->where('class_details_id', $class_id)
+                ->where('class_details.school_year_id', $school_year_id)
+                ->where('class_details.adviser_id', $FacultyInformation->id)
                 ->whereRaw('student_informations.gender = 1')
                 ->select(\DB::raw("
                         enrollments.id as e_id,
@@ -74,7 +84,10 @@ class ClassAttendanceController extends Controller
                 ->get();
     
                 $Senior_firstsem_f = \App\Enrollment::join('student_informations', 'student_informations.id', '=', 'enrollments.student_information_id')
+                ->join('class_details', 'class_details.id', '=', 'enrollments.class_details_id')
                 ->where('class_details_id', $class_id)
+                ->where('class_details.school_year_id', $school_year_id)
+                ->where('class_details.adviser_id', $FacultyInformation->id)
                 ->whereRaw('student_informations.gender = 2')
                 ->select(\DB::raw("
                         enrollments.id as e_id,
@@ -125,7 +138,10 @@ class ClassAttendanceController extends Controller
     
             
                 $attendance_male = \App\Enrollment::join('student_informations', 'student_informations.id', '=', 'enrollments.student_information_id')
+                ->join('class_details', 'class_details.id', '=', 'enrollments.class_details_id')
                 ->where('class_details_id', $class_id)
+                ->where('class_details.school_year_id', $school_year_id)
+                ->where('class_details.adviser_id', $FacultyInformation->id)
                 ->whereRaw('student_informations.gender = 1')
                 ->select(\DB::raw("
                         enrollments.id as e_id,
@@ -137,6 +153,9 @@ class ClassAttendanceController extends Controller
                 ->get();
     
                 $attendance_female = \App\Enrollment::join('student_informations', 'student_informations.id', '=', 'enrollments.student_information_id')
+                ->join('class_details', 'class_details.id', '=', 'enrollments.class_details_id')
+                ->where('class_details.school_year_id', $school_year_id)
+                ->where('class_details.adviser_id', $FacultyInformation->id)
                 ->where('class_details_id', $class_id)
                 ->whereRaw('student_informations.gender = 2')
                 ->select(\DB::raw("
@@ -149,7 +168,10 @@ class ClassAttendanceController extends Controller
                 ->get();
     
                 $Senior_firstsem_m = \App\Enrollment::join('student_informations', 'student_informations.id', '=', 'enrollments.student_information_id')
-                ->where('class_details_id', $class_id)
+                ->join('class_details', 'class_details.id', '=', 'enrollments.class_details_id')
+                ->where('class_details.school_year_id', $school_year_id)
+                ->where('class_details.adviser_id', $FacultyInformation->id)
+                ->where('class_details_id', $class_id)                
                 ->whereRaw('student_informations.gender = 1')
                 ->select(\DB::raw("
                         enrollments.id as e_id,
@@ -162,6 +184,9 @@ class ClassAttendanceController extends Controller
                 ->get();
     
                 $Senior_firstsem_f = \App\Enrollment::join('student_informations', 'student_informations.id', '=', 'enrollments.student_information_id')
+                ->join('class_details', 'class_details.id', '=', 'enrollments.class_details_id')
+                ->where('class_details.school_year_id', $school_year_id)
+                ->where('class_details.adviser_id', $FacultyInformation->id)
                 ->where('class_details_id', $class_id)
                 ->whereRaw('student_informations.gender = 2')
                 ->select(\DB::raw("
@@ -210,7 +235,10 @@ class ClassAttendanceController extends Controller
             {
                
                 $attendance_male = \App\Enrollment::join('student_informations', 'student_informations.id', '=', 'enrollments.student_information_id')
+                ->join('class_details', 'class_details.id', '=', 'enrollments.class_details_id')
                 ->where('class_details_id', $class_id)
+                ->where('class_details.school_year_id', $school_year_id)
+                ->where('class_details.adviser_id', $FacultyInformation->id)
                 ->whereRaw('student_informations.gender = 1')
                 ->select(\DB::raw("
                         enrollments.id as e_id,
@@ -222,7 +250,10 @@ class ClassAttendanceController extends Controller
                 ->get();
     
                 $attendance_female = \App\Enrollment::join('student_informations', 'student_informations.id', '=', 'enrollments.student_information_id')
+                ->join('class_details', 'class_details.id', '=', 'enrollments.class_details_id')
                 ->where('class_details_id', $class_id)
+                ->where('class_details.school_year_id', $school_year_id)
+                ->where('class_details.adviser_id', $FacultyInformation->id)
                 ->whereRaw('student_informations.gender = 2')
                 ->select(\DB::raw("
                         enrollments.id as e_id,
@@ -234,7 +265,10 @@ class ClassAttendanceController extends Controller
                 ->get();
     
                 $Senior_firstsem_m = \App\Enrollment::join('student_informations', 'student_informations.id', '=', 'enrollments.student_information_id')
+                ->join('class_details', 'class_details.id', '=', 'enrollments.class_details_id')
                 ->where('class_details_id', $class_id)
+                ->where('class_details.school_year_id', $school_year_id)
+                ->where('class_details.adviser_id', $FacultyInformation->id)
                 ->whereRaw('student_informations.gender = 1')
                 ->select(\DB::raw("
                         enrollments.id as e_id,
@@ -247,7 +281,10 @@ class ClassAttendanceController extends Controller
                 ->get();
     
                 $Senior_firstsem_f = \App\Enrollment::join('student_informations', 'student_informations.id', '=', 'enrollments.student_information_id')
+                ->join('class_details', 'class_details.id', '=', 'enrollments.class_details_id')
                 ->where('class_details_id', $class_id)
+                ->where('class_details.school_year_id', $school_year_id)
+                ->where('class_details.adviser_id', $FacultyInformation->id)
                 ->whereRaw('student_informations.gender = 2')
                 ->select(\DB::raw("
                         enrollments.id as e_id,
@@ -298,7 +335,10 @@ class ClassAttendanceController extends Controller
     
             
                 $attendance_male = \App\Enrollment::join('student_informations', 'student_informations.id', '=', 'enrollments.student_information_id')
+                ->join('class_details', 'class_details.id', '=', 'enrollments.class_details_id')
                 ->where('class_details_id', $class_id)
+                ->where('class_details.school_year_id', $school_year_id)
+                ->where('class_details.adviser_id', $FacultyInformation->id)
                 ->whereRaw('student_informations.gender = 1')
                 ->select(\DB::raw("
                         enrollments.id as e_id,
@@ -310,7 +350,10 @@ class ClassAttendanceController extends Controller
                 ->get();
     
                 $attendance_female = \App\Enrollment::join('student_informations', 'student_informations.id', '=', 'enrollments.student_information_id')
+                ->join('class_details', 'class_details.id', '=', 'enrollments.class_details_id')
                 ->where('class_details_id', $class_id)
+                ->where('class_details.school_year_id', $school_year_id)
+                ->where('class_details.adviser_id', $FacultyInformation->id)
                 ->whereRaw('student_informations.gender = 2')
                 ->select(\DB::raw("
                         enrollments.id as e_id,
@@ -322,7 +365,10 @@ class ClassAttendanceController extends Controller
                 ->get();
     
                 $Senior_firstsem_m = \App\Enrollment::join('student_informations', 'student_informations.id', '=', 'enrollments.student_information_id')
+                ->join('class_details', 'class_details.id', '=', 'enrollments.class_details_id')
                 ->where('class_details_id', $class_id)
+                ->where('class_details.school_year_id', $school_year_id)
+                ->where('class_details.adviser_id', $FacultyInformation->id)
                 ->whereRaw('student_informations.gender = 1')
                 ->select(\DB::raw("
                         enrollments.id as e_id,
@@ -335,7 +381,10 @@ class ClassAttendanceController extends Controller
                 ->get();
     
                 $Senior_firstsem_f = \App\Enrollment::join('student_informations', 'student_informations.id', '=', 'enrollments.student_information_id')
+                ->join('class_details', 'class_details.id', '=', 'enrollments.class_details_id')
                 ->where('class_details_id', $class_id)
+                ->where('class_details.school_year_id', $school_year_id)
+                ->where('class_details.adviser_id', $FacultyInformation->id)
                 ->whereRaw('student_informations.gender = 2')
                 ->select(\DB::raw("
                         enrollments.id as e_id,

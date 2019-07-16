@@ -98,9 +98,6 @@ class ClassSubjectsController extends Controller
             ->where('class_subject_details.sem', 1)
             // ->orderBy('class_subject_details.class_time_from', 'ASC');
             ->orderBy('class_subject_details.class_subject_order', 'ASC');
-
-        
-        
         
         
         if ($request->ajax())

@@ -17,7 +17,7 @@
                                 @if ($ClassDetail)
                                     @foreach ($ClassDetail as $data)
                                         <tr>
-                                            <td>{{ $data->school_year }}</td>
+                                            <td>{{ $data->school_year }} </td>
                                             <td>{{ $data->room_code }}</td>
                                             <td>{{ $data->grade_level }}</td>
                                             <td>{{ $data->section }}</td>
@@ -29,6 +29,7 @@
                                                     <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="true">Action
                                                         <span class="fa fa-caret-down"></span></button>
                                                     <ul class="dropdown-menu">
+                                                        <input type="hidden" name="school_year_id" value="{{ $data->schoolyearid }}">
                                                         <li><a href="#" class="js-btn_update" data-id="{{ $data->id }}">Edit</a></li>
                                                         <li><a href="{{ route('registrar.class_subjects', $data->id) }}" data-id="{{ $data->id }}">Manage Subjects</a></li>
                                                         <li><a href="{{ route('registrar.student_enrollment', $data->id) }}" data-id="{{ $data->id }}">Enroll Student</a></li>
