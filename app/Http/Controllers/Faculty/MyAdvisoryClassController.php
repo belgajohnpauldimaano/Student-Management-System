@@ -129,14 +129,18 @@ class MyAdvisoryClassController extends Controller
             ")
             ->where('class_subject_details.class_details_id', $ClassSubjectDetail->id)
             ->where('class_subject_details.status', 1)
-            ->where('class_details.id', $class_id)
-            ->where('faculty_id', $FacultyInformation->id)
+            // ->where('class_details.id', $class_id)
+            ->where('class_subject_details.faculty_id', $FacultyInformation->id)
             ->where('class_details.school_year_id', $request->search_sy1)
             ->where('class_subject_details.sem', 1)
             //  ->where('class_details.school_year_id', $request->search_sy)
             // ->orderBy('class_subject_details.class_time_from', 'ASC');
             ->orderBY('class_subject_details.class_subject_order','ASC')
-            ->get();            
+            ->get(); 
+
+            
+            
+            
             
 
             $GradeSheetMale = \App\Grade_sheet_firstsem::join('class_details','class_details.section_id','=','grade_sheet_firstsems.section_details_id')            
@@ -193,7 +197,7 @@ class MyAdvisoryClassController extends Controller
             $type = "";
            
         // return json_encode($ClassSubjectDetail);
-        return view('control_panel_faculty.my_advisory_class.partials.data_list', compact('type','NumberOfSubject', 'ClassSubjectDetail','AdvisorySubject','GradeSheetMale','GradeSheetFeMale','quarter','AdvisorySubject','sem'))->render();
+        return view('control_panel_faculty.my_advisory_class.partials.data_list', compact('AdvisorySubject2','type','NumberOfSubject', 'ClassSubjectDetail','AdvisorySubject','GradeSheetMale','GradeSheetFeMale','quarter','AdvisorySubject','sem'))->render();
     }
 
     public function first_sem_2quarter (Request $request) 

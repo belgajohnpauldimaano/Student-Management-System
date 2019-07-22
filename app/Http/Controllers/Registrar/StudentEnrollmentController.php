@@ -156,7 +156,29 @@ class StudentEnrollmentController extends Controller
 
     public function fetch_enrolled_student (Request $request, $id)
     {
-        
+        $Semester = \App\Semester::where('current', 1)->first();
+
+            $ClassDetail = \App\ClassDetail::join('section_details', 'section_details.id', '=' ,'class_details.section_id')
+            ->join('rooms', 'rooms.id', '=' ,'class_details.room_id')
+            ->join('school_years', 'school_years.id', '=' ,'class_details.school_year_id')
+            ->selectRaw('
+                class_details.id,
+                class_details.section_id,
+                class_details.room_id,
+                class_details.school_year_id,
+                class_details.grade_level,
+                class_details.current,
+                section_details.section,
+                section_details.grade_level as section_grade_level,
+                school_years.id AS sy_id,
+                school_years.school_year,
+                rooms.room_code,
+                rooms.room_description
+            ')
+            ->where('section_details.status', 1)
+            // ->where('school_years.current', 1)
+            ->where('class_details.id', $id)
+            ->first();
 
         $Enrollment = \App\Enrollment::join('student_informations', 'student_informations.id', '=', 'enrollments.student_information_id')
             ->join('users', 'users.id', '=', 'student_informations.user_id')
@@ -194,29 +216,7 @@ class StudentEnrollmentController extends Controller
             ->paginate(70); //
 
             // return json_encode($StudentInformation);
-            $Semester = \App\Semester::where('current', 1)->first();
-
-            $ClassDetail = \App\ClassDetail::join('section_details', 'section_details.id', '=' ,'class_details.section_id')
-            ->join('rooms', 'rooms.id', '=' ,'class_details.room_id')
-            ->join('school_years', 'school_years.id', '=' ,'class_details.school_year_id')
-            ->selectRaw('
-                class_details.id,
-                class_details.section_id,
-                class_details.room_id,
-                class_details.school_year_id,
-                class_details.grade_level,
-                class_details.current,
-                section_details.section,
-                section_details.grade_level as section_grade_level,
-                school_years.id AS sy_id,
-                school_years.school_year,
-                rooms.room_code,
-                rooms.room_description
-            ')
-            ->where('section_details.status', 1)
-            // ->where('school_years.current', 1)
-            ->where('class_details.id', $id)
-            ->first();
+            
             
         return view('control_panel_registrar.student_enrollment.partials.data_list_enrolled', compact('Enrollment','Semester','ClassDetail','school_year_id'))->render();
     }
@@ -408,6 +408,7 @@ class StudentEnrollmentController extends Controller
 
         return response()->json(['res_code' => 1, 'res_msg' => 'There is a problem in enrolling student.', 'Enrollment' => $Enrollment]);
     }
+
     public function re_enroll_student (Request $request, $id)
     {
         $ClassDetail = \App\ClassDetail::with('class_subjects')->where('id', $id)->first();
@@ -439,7 +440,7 @@ class StudentEnrollmentController extends Controller
             $SaveSecondSem = new \App\Grade11_Second_Sem();
             $SaveSecondSem->enrollment_id = $request->enrollment_id;
             $SaveSecondSem->section_details_id = $ClassDetail1->section_id;
-            $SaveSecondSem2->school_year_id = $SchoolYear->id;
+            $SaveSecondSem->school_year_id = $SchoolYear->id;
             $SaveSecondSem->save();
 
             $SaveSecondSem2 = new \App\Grade_sheet_secondsemsecond();
@@ -502,6 +503,7 @@ class StudentEnrollmentController extends Controller
         return response()->json(['res_code' => 1, 'res_msg' => 'Unable to perform action.']);
 
     }
+    
     public function re_enroll_student_all (Request $request, $id)
     {
         $ClassDetail = \App\ClassDetail::with('class_subjects')->where('id', $id)->first();

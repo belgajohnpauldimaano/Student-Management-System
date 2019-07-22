@@ -23,7 +23,7 @@
 
                                         <div class="form-group col-sm-12 col-md-3" style="padding-right:0">
                                             <select name="search_sy1" id="search_sy1" class="form-control">
-                                                <!-- <option value="">Select SY</option> -->
+                                                <option value="">Select SY</option>
                                                 @foreach ($SchoolYear as $data)
                                                     <option value="{{ $data->id }}">{{ $data->school_year }}</option>
                                                 @endforeach

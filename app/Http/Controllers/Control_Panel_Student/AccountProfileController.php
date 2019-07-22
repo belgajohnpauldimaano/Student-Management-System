@@ -21,6 +21,7 @@ class AccountProfileController extends Controller
         // return json_encode($Profile); date('Y-m-d', strtotime($request->birthdate));
         return response()->json(['res_code' => 0, 'res_msg' => '', 'Profile' => $Profile]);
     }
+    
     public function update_profile (Request $request) 
     {
         $rules = [
@@ -35,6 +36,7 @@ class AccountProfileController extends Controller
         {   
             return response()->json(['res_code' => 1, 'res_msg' => 'Please fill all required fields.', 'res_error_msg' => $validator->getMessageBag()]);
         }
+
         $User = \Auth::user();
         $Profile = \App\StudentInformation::where('user_id', $User->id)->first();
 
@@ -48,6 +50,7 @@ class AccountProfileController extends Controller
         $Profile->father_name = $request->father_name;
         $Profile->mother_name = $request->mother_name;
         $Profile->gender = $request->gender;
+
         if ($request->birthday) {
             $Profile->birthdate = date('Y-m-d', strtotime($request->birthday));
         }

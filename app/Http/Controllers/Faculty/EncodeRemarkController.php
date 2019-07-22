@@ -12,8 +12,7 @@ class EncodeRemarkController extends Controller
     public function index (Request $request)
     {
         $FacultyInformation = \App\FacultyInformation::where('user_id', \Auth::user()->id)->first();
-
-        $SchoolYear = \App\SchoolYear::where('current', 1)->first();
+        $SchoolYear = \App\SchoolYear::where('current', 1)->where('status', 1)->first();
         $DateRemarks = \App\DateRemark::where('school_year_id', $SchoolYear->id)->first();
 
         $ClassSubjectDetail = \App\ClassSubjectDetail::join('class_details', 'class_details.id', '=', 'class_subject_details.class_details_id')

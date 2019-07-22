@@ -159,7 +159,6 @@ class GradeSheetController extends Controller
 
     public function list_students_by_class_print (Request $request) 
     {
-        
         $FacultyInformation = \App\FacultyInformation::where('user_id', \Auth::user()->id)->first();
         // return json_encode(['FacultyInformation' => $FacultyInformation, 'req' => $request->all()]);
         $EnrollmentMale = \App\Enrollment::join('class_subject_details', 'class_subject_details.class_details_id', '=', 'enrollments.class_details_id')
@@ -1705,28 +1704,171 @@ class GradeSheetController extends Controller
         // $FacultyInformation = \App\FacultyInformation::where('user_id', \Auth::user()->id)->first(); 
         $sectionID = $request->search_sy; 
         // $data = $request->all();
+        $SchoolYearID = \App\SchoolYear::where('current', 1)->where('status', 1)->first();
 
-        $getIdClassDetails = \App\ClassDetail::where(['section_id'=> $sectionID])->first();
+        $getIdClassDetails = \App\ClassDetail::where(['section_id'=> $sectionID])->where(['school_year_id'=>$SchoolYearID->id])->first();
 
         $EnrollmentID = \App\Enrollment::where(['class_details_id'=>$getIdClassDetails->id])->get();
 
+        
+
         foreach($EnrollmentID as $dataID)
         {
-            $Grade_sheet_first = new Grade_sheet_firstsem();
+            // $Grade_sheet_first = new Grade_sheet_firstsem();
+            // $Grade_sheet_first->school_year_id =  $SchoolYearID->id;
+            // $Grade_sheet_first->enrollment_id =  $dataID->id;
+            // $Grade_sheet_first->section_details_id = $sectionID;
+            // $Grade_sheet_first->subject_1 = 0.00;
+            // $Grade_sheet_first->subject_2 = 0.00;
+            // $Grade_sheet_first->subject_3 = 0.00;
+            // $Grade_sheet_first->subject_4 = 0.00;
+            // $Grade_sheet_first->subject_5 = 0.00;
+            // $Grade_sheet_first->subject_6 = 0.00;
+            // $Grade_sheet_first->subject_7 = 0.00;
+            // $Grade_sheet_first->subject_8 = 0.00;
+            // $Grade_sheet_first->subject_9 = 0.00;   
+            // $Grade_sheet_first->current = 1;
+            // $Grade_sheet_first->status = 1;
+            // $Grade_sheet_first->save();
+            
+            // $Grade_sheet_second = new \App\Grade_sheet_firstsemsecond();
+            // $Grade_sheet_second->school_year_id =  $SchoolYearID->id;
+            // $Grade_sheet_second->enrollment_id =  $dataID->id;
+            // $Grade_sheet_second->section_details_id = $sectionID;
+            // $Grade_sheet_second->subject_1 = 0.00;
+            // $Grade_sheet_second->subject_2 = 0.00;
+            // $Grade_sheet_second->subject_3 = 0.00;
+            // $Grade_sheet_second->subject_4 = 0.00;
+            // $Grade_sheet_second->subject_5 = 0.00;
+            // $Grade_sheet_second->subject_6 = 0.00;
+            // $Grade_sheet_second->subject_7 = 0.00;
+            // $Grade_sheet_second->subject_8 = 0.00;
+            // $Grade_sheet_second->subject_9 = 0.00;   
+            // $Grade_sheet_second->current = 1;
+            // $Grade_sheet_second->status = 1;
+            // $Grade_sheet_second->save();
+
+            // $Grade_sheet_third = new \App\Grade_sheet_secondsemsecond();
+            // $Grade_sheet_third->school_year_id =  $SchoolYearID->id;
+            // $Grade_sheet_third->enrollment_id =  $dataID->id;
+            // $Grade_sheet_third->section_details_id = $sectionID;
+            // $Grade_sheet_third->subject_1 = 0.00;
+            // $Grade_sheet_third->subject_2 = 0.00;
+            // $Grade_sheet_third->subject_3 = 0.00;
+            // $Grade_sheet_third->subject_4 = 0.00;
+            // $Grade_sheet_third->subject_5 = 0.00;
+            // $Grade_sheet_third->subject_6 = 0.00;
+            // $Grade_sheet_third->subject_7 = 0.00;
+            // $Grade_sheet_third->subject_8 = 0.00;
+            // $Grade_sheet_third->subject_9 = 0.00; 
+            // $Grade_sheet_third->current = 1;
+            // $Grade_sheet_third->status = 1;
+            // $Grade_sheet_third->save();
+
+            // $Grade_sheet_fourth = new \App\Grade11_Second_Sem();
+            // $Grade_sheet_fourth->school_year_id =  $SchoolYearID->id;
+            // $Grade_sheet_fourth->enrollment_id =  $dataID->id;
+            // $Grade_sheet_fourth->section_details_id = $sectionID;
+            // $Grade_sheet_fourth->subject_1 = 0.00;
+            // $Grade_sheet_fourth->subject_2 = 0.00;
+            // $Grade_sheet_fourth->subject_3 = 0.00;
+            // $Grade_sheet_fourth->subject_4 = 0.00;
+            // $Grade_sheet_fourth->subject_5 = 0.00;
+            // $Grade_sheet_fourth->subject_6 = 0.00;
+            // $Grade_sheet_fourth->subject_7 = 0.00;
+            // $Grade_sheet_fourth->subject_8 = 0.00;
+            // $Grade_sheet_fourth->subject_9 = 0.00;    
+            // $Grade_sheet_fourth->current = 1;
+            // $Grade_sheet_fourth->status = 1;
+            // $Grade_sheet_fourth->save();
+
+            $Grade_sheet_first = new Grade_sheet_first();
+            $Grade_sheet_first->school_year_id =  $SchoolYearID->id;
             $Grade_sheet_first->enrollment_id =  $dataID->id;
             $Grade_sheet_first->section_details_id = $sectionID;
-            $Grade_sheet_first->subject_1 = 0.00;
-            $Grade_sheet_first->subject_2 = 0.00;
-            $Grade_sheet_first->subject_3 = 0.00;
-            $Grade_sheet_first->subject_4 = 0.00;
-            $Grade_sheet_first->subject_5 = 0.00;
-            $Grade_sheet_first->subject_6 = 0.00;
-            $Grade_sheet_first->subject_7 = 0.00;
-            $Grade_sheet_first->subject_8 = 0.00;
-            $Grade_sheet_first->subject_9 = 0.00;   
+            $Grade_sheet_first->filipino = 0.00;
+            $Grade_sheet_first->english = 0.00;
+            $Grade_sheet_first->math = 0.00;
+            $Grade_sheet_first->science = 0.00;
+            $Grade_sheet_first->ap = 0.00;
+            $Grade_sheet_first->ict = 0.00;
+            $Grade_sheet_first->mapeh = 0.00;
+            $Grade_sheet_first->esp = 0.00;
+            $Grade_sheet_first->religion = 0.00; 
             $Grade_sheet_first->current = 1;
             $Grade_sheet_first->status = 1;
             $Grade_sheet_first->save();
+            
+            $Grade_sheet_second = new \App\Grade_sheet_second();
+            $Grade_sheet_second->school_year_id =  $SchoolYearID->id;
+            $Grade_sheet_second->enrollment_id =  $dataID->id;
+            $Grade_sheet_second->section_details_id = $sectionID;
+            $Grade_sheet_second->filipino = 0.00;
+            $Grade_sheet_second->english = 0.00;
+            $Grade_sheet_second->math = 0.00;
+            $Grade_sheet_second->science = 0.00;
+            $Grade_sheet_second->ap = 0.00;
+            $Grade_sheet_second->ict = 0.00;
+            $Grade_sheet_second->mapeh = 0.00;
+            $Grade_sheet_second->esp = 0.00;
+            $Grade_sheet_second->religion = 0.00;   
+            $Grade_sheet_second->current = 1;
+            $Grade_sheet_second->status = 1;
+            $Grade_sheet_second->save();
+
+            $Grade_sheet_third = new \App\Grade_sheet_third();
+            $Grade_sheet_third->school_year_id =  $SchoolYearID->id;
+            $Grade_sheet_third->enrollment_id =  $dataID->id;
+            $Grade_sheet_third->section_details_id = $sectionID;
+            $Grade_sheet_third->filipino = 0.00;
+            $Grade_sheet_third->english = 0.00;
+            $Grade_sheet_third->math = 0.00;
+            $Grade_sheet_third->science = 0.00;
+            $Grade_sheet_third->ap = 0.00;
+            $Grade_sheet_third->ict = 0.00;
+            $Grade_sheet_third->mapeh = 0.00;
+            $Grade_sheet_third->esp = 0.00;
+            $Grade_sheet_third->religion = 0.00;
+            $Grade_sheet_third->current = 1;
+            $Grade_sheet_third->status = 1;
+            $Grade_sheet_third->save();
+
+            $Grade_sheet_fourth = new \App\Grade_sheet_fourth();
+            $Grade_sheet_fourth->school_year_id =  $SchoolYearID->id;
+            $Grade_sheet_fourth->enrollment_id =  $dataID->id;
+            $Grade_sheet_fourth->section_details_id = $sectionID;
+            $Grade_sheet_fourth->filipino = 0.00;
+            $Grade_sheet_fourth->english = 0.00;
+            $Grade_sheet_fourth->math = 0.00;
+            $Grade_sheet_fourth->science = 0.00;
+            $Grade_sheet_fourth->ap = 0.00;
+            $Grade_sheet_fourth->ict = 0.00;
+            $Grade_sheet_fourth->mapeh = 0.00;
+            $Grade_sheet_fourth->esp = 0.00;
+            $Grade_sheet_fourth->religion = 0.00;
+            $Grade_sheet_fourth->current = 1;
+            $Grade_sheet_fourth->status = 1;
+            $Grade_sheet_fourth->save();
+
+            // $Grade_sheet_first->subject_1 = 0.00;
+            // $Grade_sheet_first->subject_2 = 0.00;
+            // $Grade_sheet_first->subject_3 = 0.00;
+            // $Grade_sheet_first->subject_4 = 0.00;
+            // $Grade_sheet_first->subject_5 = 0.00;
+            // $Grade_sheet_first->subject_6 = 0.00;
+            // $Grade_sheet_first->subject_7 = 0.00;
+            // $Grade_sheet_first->subject_8 = 0.00;
+            // $Grade_sheet_first->subject_9 = 0.00; 
+
+            $Grade_sheet_fourth->filipino = 0.00;
+            $Grade_sheet_fourth->english = 0.00;
+            $Grade_sheet_fourth->math = 0.00;
+            $Grade_sheet_fourth->science = 0.00;
+            $Grade_sheet_fourth->ap = 0.00;
+            $Grade_sheet_fourth->ict = 0.00;
+            $Grade_sheet_fourth->mapeh = 0.00;
+            $Grade_sheet_fourth->esp = 0.00;
+            $Grade_sheet_fourth->religion = 0.00;
 
         }
 

@@ -2175,16 +2175,41 @@
                             <thead>
                                 <tr>
                                     <th style="width: 30px">#</th>
-                                    <th style="width: 200px">Student Name</th>   
+                                    <th style="width: 200px">Student Name</th>
+                                    <?php 
+                                    
+                                    $AdvisorySubject2 = \App\ClassSubjectDetail::
+                                        where('class_details_id', $ClassSubjectDetail->id)                                                
+                                        ->orderBY('class_subject_order','ASC')
+                                        ->get(); 
+                                    ?>   
                                     @if($quarter=="First")
-                                        @foreach ($AdvisorySubject as $key => $sub)                                     
-                                            <th style="width: 30px; text-align: center">{{ $sub->subject_code }} </th>                                                                  
+                                        @foreach ($AdvisorySubject2 as $key => $sub)                                     
+                                            <th style="width: 30px; text-align: center">
+                                                {{-- {{ $sub->subject_id }}  --}}
+                                                <?php 
+                                                    $subject_details = \App\SubjectDetail::
+                                                    where('id', $sub->subject_id)                                                
+                                                    ->get();
+                                                    
+                                                    echo $subject_details[0]->subject_code;
+                                                ?>
+                                            </th>                                                                  
                                         @endforeach 
                                         
                                         <th style="width: 80px">GENERAL AVERAGE</th>
                                     @else
-                                        @foreach ($AdvisorySubject as $key => $sub)                                     
-                                            <th style="width: 30px; text-align: center" colspan="3">{{ $sub->subject_code }} </th>                                                                  
+                                        @foreach ($AdvisorySubject2 as $key => $sub)                                     
+                                            <th style="width: 30px; text-align: center" colspan="3">
+                                                {{-- {{ $sub->subject_id }}  --}}
+                                                <?php 
+                                                    $subject_details = \App\SubjectDetail::
+                                                    where('id', $sub->subject_id)                                                
+                                                    ->get();  
+                                                    
+                                                    echo $subject_details[0]->subject_code;
+                                                ?>
+                                            </th>                                                                  
                                         @endforeach 
                                         
                                         <th style="width: 80px" colspan="2">GENERAL AVERAGE</th>

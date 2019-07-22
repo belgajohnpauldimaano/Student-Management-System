@@ -1,6 +1,7 @@
 
         
         @if($Semester)
+        
         <button class="btn btn-flat btn-danger pull-right" id="js-btn_print" data-id=""><i class="fa fa-file-pdf"></i> Print</button>
         
             @if($Semester->grade_level == '11' || $Semester->grade_level == '12')
@@ -616,6 +617,7 @@
                                     <b>Male</b> 
                                 </td>
                             </tr>
+
 
                             @foreach ($attendance_male as $key => $data1) 
                             <tr>

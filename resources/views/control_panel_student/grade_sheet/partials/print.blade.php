@@ -92,13 +92,43 @@
                 font-size: 12px;
                 font-weight: 700;
             }
+            .grade7{
+                border-bottom: 6px solid green;
+                margin-top: -.4em;
+            }
+
+            .grade8{
+                border-bottom: 6px solid yellow;
+                margin-top: -.4em;
+            }
+
+            .grade9{
+                border-bottom: 6px solid red;
+                margin-top: -.4em;
+            }
+
+            .grade10{
+                border-bottom: 6px solid blue;
+                margin-top: -.4em;
+            }
         </style>
 </head>
 <body>
+
+    @if($ClassDetail->grade_level == 7)
+            <p class="grade7"></p>
+        @elseif($ClassDetail->grade_level == 8)
+            <p class="grade8"></p>
+        @elseif($ClassDetail->grade_level == 9)
+            <p class="grade9"></p>
+        @elseif($ClassDetail->grade_level == 10)
+            <p class="grade10"></p>
+        @endif
+        
     <?php 
         $Semester = \App\Semester::where('current', 1)->first()->id; 
     ?>
-        <p class="heading1">Republic of the Philippines
+                <p class="heading1">Republic of the Philippines
                 <p class="heading1">Department of Education</p>
                 <p class="heading1">Region III</p>
                 <p class="heading1">Division of Bataan</p>
@@ -109,8 +139,8 @@
                 <br/>
                 <p class="report-progress m0">REPORT ON LEARNING PROGRESS AND ACHIEVEMENT</p>
                 <p class="report-progress m0">( {{ $ClassDetail ?  $ClassDetail->section_grade_level >= 11 ? 'SENIOR HIGH SCHOOL' : 'JUNIOR HIGH SCHOOL' : ''}} )</p>
-                <img style="margin-right: 8em"  class="logo sja-logo" width="100" src="{{ asset('img/sja-logo.png') }}" />
-                <img style="margin-left: 8em" class="logo deped-bataan-logo" width="100" src="{{ asset('img/deped-bataan-logo.png') }}" />
+                <img style="margin-right: 8em; margin-top: .5em;"  class="logo sja-logo" width="100" src="{{ asset('img/sja-logo.png') }}" />
+                <img style="margin-left: 8em; margin-top: .5em;" class="logo deped-bataan-logo" width="100" src="{{ asset('img/deped-bataan-logo.png') }}" />
                 <br/>
                 <table class="table-student-info">
                     <tr>
@@ -124,7 +154,7 @@
                     
                     <tr>
                         <td>
-                            <p class="p0 m0 student-info"><b>Birthdate</b> : {{ $StudentInformation->birthdate ? date_format(date_create($StudentInformation->birthdate), 'M d, Y') : '' }}</p>
+                            <p class="p0 m0 student-info"><b>Birthdate</b> : {{ $StudentInformation->birthdate ? date_format(date_create($StudentInformation->birthdate), 'F d, Y') : '' }}</p>
                         </td>
                         <td>
                             <p class="p0 m0 student-info"><b>Age</b> : 
@@ -1046,7 +1076,13 @@
                                                 <td><center><strong>{{ $data->final_g >= 75 ? 'Passed' : 'Failed' }}</strong></center></td>
                                             @else
                                                 <td></td>
-                                            @endif  
+                                            @endif
+
+
+                                            @if ($data->fir_g == 0)
+                                                <td></td>
+                                            @endif
+                                            
                                     @endif
                                     {{--  <td>{{ $data->class_time_from . ' -  ' . $data->class_time_to }}</td>
                                     <td>{{ $data->class_days }}</td>54
@@ -1069,6 +1105,7 @@
                                             @endif
                                         </b>
                                     </td>
+                                    
                                     @if($data->fir_g == 0 && $data->sec_g == 0 && $data->thi_g == 0 && $data->fou_g == 0)
                                         @if($general_avg && $general_avg > 74) 
                                             <td style="color:'green';"><strong>Passed</strong></td>
@@ -1206,15 +1243,13 @@
                                         @elseif($general_avg && $general_avg < 75) 
                                             <strong><u>&nbsp;&nbsp;Grade {{ $ClassDetail->section_grade_level }}&nbsp;&nbsp;&nbsp;&nbsp;</u></strong>
                                         @else 
-                                            <td></td>
+                                            _______________________                                            
                                         @endif
-                                    
-                                
                         </td>                
                     </tr>
 
                     <tr style="margin-top: .5em">
-                        <td colspan="3" style="border: 0">Lacking units in:___<u>{{ $Enrollment[0]->j_lacking_unit }}</u>____</td>                
+                        <td colspan="3" style="border: 0">Lacking units in:___<u></u>____</td>                
                     </tr>
                     
                     <tr style="margin-top: .5em">
@@ -1227,7 +1262,7 @@
                     <tr style="margin-top: 0em">
                             <table border="0" style="width: 100%; margin-top: -1em">
                                     <tr>
-                                            <td style="border: 0; width: 50%;">
+                                        <td style="border: 0; width: 50%;">
                                             <center>
                                                 <img class="profile-user-img img-responsive img-circle" id="img--user_photo" src="{{ $ClassDetail->e_signature ? \File::exists(public_path('/img/signature/'.$ClassDetail->e_signature)) ? asset('/img/signature/'.$ClassDetail->e_signature) : asset('/img/account/photo/blank-user.png') : asset('/img/account/photo/blank-user.png') }}" style="width:100px">
                                             </center>
@@ -1239,13 +1274,14 @@
                                         </td>
                                     </tr>
                             </table>
-                            <table border="0" style="width: 100%; margin-top: -70px; margin-bottom: 0em">
+                            <table border="0" style="width: 100%; margin-top: -60px; margin-bottom: 0em">
                                 
                                 <tr>
                                     <td style="border: 0; width: 50%; height: 100px">
                                         <span style="margin-left: 2em; text-transform: uppercase">
                                             <center>
-                                                {{ $ClassDetail->first_name }} {{ $ClassDetail->middle_name }} {{ $ClassDetail->last_name }}</center>
+                                                {{ $ClassDetail->first_name }} {{ $ClassDetail->middle_name }} {{ $ClassDetail->last_name }}
+                                            </center>
                                             </br>
                                             <center style="margin-top: -1em">Adviser</center>
                                         </span>

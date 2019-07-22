@@ -151,16 +151,16 @@ class StudentController extends Controller
         $StudentInformation->first_name     = $request->first_name;
         $StudentInformation->middle_name    = $request->middle_name;
         $StudentInformation->last_name      = $request->last_name;
-        $StudentInformation->address        = $request->address;
+        $StudentInformation->c_address      = $request->address;
         $StudentInformation->age_june = $request->age_june;
         $StudentInformation->age_may = $request->age_may;
-            // $StudentInformation->birthdate      = date('Y-m-d', strtotime($request->birthdate));
+        $StudentInformation->birthdate      = date('Y-m-d', strtotime($request->birthdate));
         $StudentInformation->gender         = $request->gender;
         $StudentInformation->guardian         = $request->guardian;
         $StudentInformation->user_id        = $User->id;
         $StudentInformation->save();
         
-        return response()->json(['res_code' => 0, 'res_msg' => 'Data successfully saved.']);
+        
     }
     public function deactivate_data (Request $request) 
     {

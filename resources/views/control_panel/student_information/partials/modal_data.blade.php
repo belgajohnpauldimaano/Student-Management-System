@@ -6,7 +6,7 @@
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                         
                         <h4 style="margin-right: 5em;" class="modal-title">
-                            {{ $StudentInformation ? 'Edit Registrar Information' : 'Add Registrar Information' }}
+                            {{ $StudentInformation ? 'Edit Student Information' : 'Add Student Information' }}
                         </h4>
 
                         <div style="margin-top: 3em; margin-bottom: 3em" class="col-md-10 col-md-offset-1">
@@ -105,7 +105,7 @@
                             <div class="input-group-addon">
                                 <i class="fa fa-calendar"></i>
                             </div>
-                            <input type="text" name="birthdate" class="form-control pull-right" id="datepicker" value="{{ $StudentInformation ? date_format(date_create($StudentInformation->birthdate), 'm/d/Y') : '' }}">
+                            <input type="text" name="birthdate" class="form-control pull-right" id="datepicker" value="{{ $StudentInformation ? date_format(date_create($StudentInformation->birthdate), 'F d, Y') : '' }}">
                         </div>
                         <div class="help-block text-red text-center" id="js-birthdate">
                         </div>

@@ -21,7 +21,7 @@
                                             <td>{{ $data->last_name . ' ' .$data->first_name . ' ' . $data->middle_name }}</td>
                                             <td>{{ $data->user->username }}</td>
                                             <td>{{ ($data->gender == 1 ? 'Male' : 'Female') }}</td>
-                                            <td>{{ date('d-m-Y', strtotime($data->birthdate)) }}</td>
+                                            <td>{{ $data->birthdate ? date_format(date_create($data->birthdate), 'F d, Y') : '' }}</td>
                                             <td>{{ $data->guardian }}</td>
                                             <td>{{ $data->c_address }}</td>
                                             <td>{{ $data->status == 1 ? 'Active' : 'Inactive' }}</td>

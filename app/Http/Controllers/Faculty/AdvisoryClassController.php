@@ -383,7 +383,7 @@ class AdvisoryClassController extends Controller
 
         $StudentInformation = \App\StudentInformation::with(['user'])->where('id', $request->id)->first();
 
-        $SchoolYear = \App\SchoolYear::where('current', 1)->first();
+        $SchoolYear = \App\SchoolYear::where('current', 1)->where('status', 1)->first();
         $DateRemarks = \App\DateRemark::where('school_year_id', $SchoolYear->id)->first();
         $level = $request->level;
         // $StudentInformation = \App\StudentInformation::with('user')->where('id', $request->id)->first();
@@ -453,6 +453,7 @@ class AdvisoryClassController extends Controller
             
             
             
+            
             $Enrollment = \App\Enrollment::join('class_details', 'class_details.id', '=', 'enrollments.class_details_id')
             // ->join('student_enrolled_subjects', 'student_enrolled_subjects.enrollments_id', '=', 'enrollments.id')
             ->join('class_subject_details', 'class_subject_details.class_details_id', '=', 'class_details.id')
@@ -465,7 +466,7 @@ class AdvisoryClassController extends Controller
             ->where('class_subject_details.status', '!=', 0)
             ->where('enrollments.status', 1)
             ->where('class_details.status', 1)
-            ->where('class_details.school_year_id', $ClassDetail->school_year_id)
+            ->where('class_details.school_year_id', $SchoolYear->id)
             ->select(\DB::raw("
                 enrollments.id as enrollment_id,
                 enrollments.attendance,
@@ -488,6 +489,7 @@ class AdvisoryClassController extends Controller
             "))
             ->orderBy('class_subject_details.class_subject_order', 'ASC')
             ->get();
+            
             $GradeSheetData = [];
             $grade_level = 1;
             $sub_total = 0;
@@ -623,6 +625,7 @@ class AdvisoryClassController extends Controller
             // return json_encode(['a' => $GradeSheetData, 'subj_count' => $subj_count, 'general_avg' => $general_avg]);
             return view('control_panel_student.grade_sheet.partials.print', compact('GradeSheetData', 'grade_level', 'StudentInformation',
                 'ClassDetail', 'general_avg', 'student_attendance', 'table_header','Signatory','DateRemarks','Enrollment[0]'));
+                
             $pdf = \PDF::loadView('control_panel_student.grade_sheet.partials.print', compact('GradeSheetData', 'grade_level', 'StudentInformation', 'ClassDetail'
                  , 'general_avg', 'student_attendance', 'table_header','Signatory','DateRemarks','Enrollment[0]'));
             return $pdf->stream();
