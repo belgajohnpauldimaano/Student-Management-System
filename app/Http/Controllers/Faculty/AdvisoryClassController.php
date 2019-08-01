@@ -405,6 +405,7 @@ class AdvisoryClassController extends Controller
                     class_details.room_id,
                     class_details.school_year_id,
                     class_details.grade_level,
+                    class_details.strand_id,
                     class_details.current,
                     section_details.section,
                     section_details.grade_level as section_grade_level,
@@ -416,7 +417,7 @@ class AdvisoryClassController extends Controller
                     
                 ')
                 ->where('section_details.status', 1)
-                // ->where('school_years.current', 1)
+                ->where('class_details.school_year_id', $SchoolYear->id)
                 ->where('class_details.id', $request->cid)
                 ->orderBY('school_years.id', 'ASC')
                 ->first();
@@ -434,6 +435,7 @@ class AdvisoryClassController extends Controller
                     class_details.room_id,
                     class_details.school_year_id,
                     class_details.grade_level,
+                    class_details.strand_id,
                     class_details.current,
                     section_details.section,
                     section_details.grade_level as section_grade_level,
@@ -443,11 +445,12 @@ class AdvisoryClassController extends Controller
                     faculty_informations.first_name, faculty_informations.middle_name ,  faculty_informations.last_name,
                     faculty_informations.e_signature,
                     strands.strand
+                    
                 ')
                 ->where('section_details.status', 1)
-                // ->where('school_years.current', 1)
+                ->where('class_details.school_year_id', $SchoolYear->id)
                 ->where('class_details.id', $request->cid)
-                ->orderBY('school_years.id', 'ASC')
+                // ->orderBY('school_years.id', 'ASC')
                 ->first();
             }
             

@@ -10,6 +10,7 @@ class DemographicProfileController extends Controller
     public function index(Request $request)
     {
         $FacultyInformation = \App\FacultyInformation::where('user_id', \Auth::user()->id)->first();
+        $school_year_id = \App\SchoolYear::where('current', 1)->where('status', 1)->first()->id;
 
         $ClassSubjectDetail = \App\ClassSubjectDetail::join('class_details', 'class_details.id', '=', 'class_subject_details.class_details_id')
             // ->join('subject_details', 'subject_details.id', '=', 'class_subject_details.subject_id')
@@ -20,7 +21,8 @@ class DemographicProfileController extends Controller
             // ->whereRaw('class_subject_details.id = '. $request->search_class_subject)
             // ->whereRaw('class_details.id = '. $search_class_subject[1])
             ->where('class_details.adviser_id', $FacultyInformation->id)
-            ->where('school_years.current', '!=', 0)
+            ->where('class_details.current', '!=', 0)
+            ->where('class_details.id', $school_year_id)
             
             // ->where('class_subject_details.status', '!=', 0)
             ->where('class_details.status', '!=', 0)
@@ -48,7 +50,8 @@ class DemographicProfileController extends Controller
                 ->whereRaw('class_details.adviser_id = '. $FacultyInformation->id)
                 // ->whereRaw('enrollments.class_details_id = '. $class_id)
                 ->whereRaw('student_informations.gender = 1') 
-                ->where('school_years.current', '!=', 0)      
+                ->where('class_details.school_year_id', $school_year_id)
+                ->where('class_details.current', '!=', 0)      
                 ->select(\DB::raw("
                     enrollments.id as e_id,
                     enrollments.attendance,
@@ -69,7 +72,8 @@ class DemographicProfileController extends Controller
             ->whereRaw('class_details.adviser_id = '. $FacultyInformation->id)
             // ->whereRaw('enrollments.class_details_id = '. $class_id)
             ->whereRaw('student_informations.gender = 2')  
-            ->where('school_years.current', '!=', 0)       
+            ->where('class_details.school_year_id', $school_year_id)
+            ->where('class_details.current', '!=', 0)       
             ->select(\DB::raw("
                 enrollments.id as e_id,
                 enrollments.attendance,

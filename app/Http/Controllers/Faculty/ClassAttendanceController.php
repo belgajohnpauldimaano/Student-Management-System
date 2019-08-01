@@ -135,9 +135,6 @@ class ClassAttendanceController extends Controller
                 ->first();
     
             
-            
-    
-            
                 $attendance_male = \App\Enrollment::join('student_informations', 'student_informations.id', '=', 'enrollments.student_information_id')
                 // ->join('class_details', 'class_details.id', '=', 'enrollments.class_details_id')
                 ->where('class_details_id', $class_id)

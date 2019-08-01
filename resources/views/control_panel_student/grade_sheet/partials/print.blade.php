@@ -27,7 +27,7 @@
             }
     
             .table-student-info {
-                width: 600px;
+                width: 100%;
             }
             
             .table-student-info th, .table-student-info td {
@@ -94,60 +94,110 @@
             }
             .grade7{
                 border-bottom: 6px solid green;
-                margin-top: -.4em;
+                margin-top: .5in;
+            }
+
+            .stem{
+                border-bottom: 6px solid green;
+                margin-top: -10px;
             }
 
             .grade8{
                 border-bottom: 6px solid yellow;
-                margin-top: -.4em;
+                margin-top: .5in;
+            }
+
+            .abm{
+                border-bottom: 6px solid yellow;
+                margin-top: -10px;
             }
 
             .grade9{
                 border-bottom: 6px solid red;
-                margin-top: -.4em;
+                margin-top: .5in;
             }
 
             .grade10{
                 border-bottom: 6px solid blue;
-                margin-top: -.4em;
+                margin-top: .5in;
+            }
+
+            .humss{
+                border-bottom: 6px solid yellow;
+                margin-top: -10px;
             }
         </style>
 </head>
 <body>
 
-    @if($ClassDetail->grade_level == 7)
+        @if($ClassDetail->section_grade_level == 7)
             <p class="grade7"></p>
-        @elseif($ClassDetail->grade_level == 8)
+        @elseif($ClassDetail->section_grade_level == 8)
             <p class="grade8"></p>
-        @elseif($ClassDetail->grade_level == 9)
+        @elseif($ClassDetail->section_grade_level == 9)
             <p class="grade9"></p>
-        @elseif($ClassDetail->grade_level == 10)
+        @elseif($ClassDetail->section_grade_level == 10)
             <p class="grade10"></p>
+        
+
+            
+
+        @elseif($ClassDetail->grade_level == 11)
+
+            @if($ClassDetail->strand_id == 1)
+                <p class="grade9"></p>
+            @elseif($ClassDetail->strand_id == 2)
+                <p class="grade7"></p>
+                <p class="stem"></p>
+            @elseif($ClassDetail->strand_id == 3)
+                <p class="grade10"></p>
+                <p class="humss"></p>
+            @elseif($ClassDetail->strand_id == 4)
+                <p class="grade8"></p>
+                <p class="abm"></p>
+            @endif
+
+        @elseif($ClassDetail->grade_level == 12)
+            
+            @if($ClassDetail->strand_id == 1)
+                <p class="grade9"></p>
+            @elseif($ClassDetail->strand_id == 2)
+                <p class="grade7"></p>
+                <p class="stem"></p>
+            @elseif($ClassDetail->strand_id == 3)
+                <p class="grade10"></p>
+                <p class="humss"></p>
+            @elseif($ClassDetail->strand_id == 4)
+                <p class="grade8"></p>
+                <p class="abm"></p>
+            @endif
+            
         @endif
         
     <?php 
         $Semester = \App\Semester::where('current', 1)->first()->id; 
     ?>
-                <p class="heading1">Republic of the Philippines
+                <p class="heading1">Republic of the Philippines</p>
                 <p class="heading1">Department of Education</p>
                 <p class="heading1">Region III</p>
                 <p class="heading1">Division of Bataan</p>
                 <br/>
                 <h2 class="heading2 heading2-title">Saint John's Academy, Inc</h2>
+                <p class="heading2 heading2-subtitle"><b>K to 12 BASIC EDUCATION CURRICULUM</b></p>
                 <p class="heading2 heading2-subtitle"><b>Formerly Saint John Academy</b></p>
                 <p class="heading2 heading2-subtitle">Dinalupihan, Bataan</p>
                 <br/>
                 <p class="report-progress m0">REPORT ON LEARNING PROGRESS AND ACHIEVEMENT</p>
                 <p class="report-progress m0">( {{ $ClassDetail ?  $ClassDetail->section_grade_level >= 11 ? 'SENIOR HIGH SCHOOL' : 'JUNIOR HIGH SCHOOL' : ''}} )</p>
-                <img style="margin-right: 8em; margin-top: .5em;"  class="logo sja-logo" width="100" src="{{ asset('img/sja-logo.png') }}" />
-                <img style="margin-left: 8em; margin-top: .5em;" class="logo deped-bataan-logo" width="100" src="{{ asset('img/deped-bataan-logo.png') }}" />
+                <img style="margin-right: 8em; margin-top: 4.5em;"  class="logo sja-logo" width="100" src="{{ asset('img/sja-logo.png') }}" />
+                <img style="margin-left: 8em; margin-top: 4.5em;" class="logo deped-bataan-logo" width="100" src="{{ asset('img/deped-bataan-logo.png') }}" />
                 <br/>
                 <table class="table-student-info">
                     <tr>
                         <td>
                             <p class="p0 m0 student-info"><b>Name</b> : {{ ucfirst($StudentInformation->last_name). ', ' .ucfirst($StudentInformation->first_name). ' ' . ucfirst($StudentInformation->middle_name) }}</p>
                         </td>
-                        <td>
+                        <td style="text-align:right">
                             <p class="p0 m0 student-info"><b>LRN</b> : {{ $StudentInformation->user->username }}</p>
                         </td>
                     </tr>
@@ -156,49 +206,71 @@
                         <td>
                             <p class="p0 m0 student-info"><b>Birthdate</b> : {{ $StudentInformation->birthdate ? date_format(date_create($StudentInformation->birthdate), 'F d, Y') : '' }}</p>
                         </td>
-                        <td>
+                        <td style="text-align:right">
                             <p class="p0 m0 student-info"><b>Age</b> : 
                              {{ $StudentInformation->age_may }} years old</p>
                              {{-- {{ $StudentInformation->birthdate ? date_diff(date_create($StudentInformation->birthdate), date_create(date("Y-m-d H:i:s")))->format('%y years old') : '' }} --}}
                         </td>
                     </tr>
-                    
+                    <tr>
+                            <td>
+                                <p class="p0 m0 student-info"><b>School</b> Year : {{ $ClassDetail ? $ClassDetail->school_year : '' }}</p>
+                            </td>
+                            <td style="text-align:right">
+                                <p class="p0 m0 student-info"><b>Sex</b> : {{ $StudentInformation->gender == 1 ? "Male" : "Female" }}</p>
+                            </td>
+                        </tr>
                     <tr>
                         <td>
                             <p class="p0 m0 student-info"><b>Grade & Section </b>: {{ $ClassDetail ? $ClassDetail->section_grade_level : '' }} - {{ $ClassDetail ? $ClassDetail->section : '' }}</p>
                         </td>
-                        <td>
-                            <p class="p0 m0 student-info"><b>Sex</b> : {{ $StudentInformation->gender == 1 ? "Male" : "Female" }}</p>
+                        <td style="text-align:right">
+                            
                         </td>
+                    </tr>
+                    <tr>
+                        
+                        
+                        @if ($grade_level >= 11)
+                            @if($Semester == 1)
+                            <td>
+                                <p class="p0 m0 student-info"><b>Strand:</b> 
+                                    <?php  $strand_name = \App\Strand::where('id', $ClassDetail->strand_id)
+                                            ->first(); 
+                                            echo $strand_name->strand;
+
+                                    ?> 
+                                    (<?php echo $strand_name = \App\Strand::where('id', $ClassDetail->strand_id)
+                                         ->first()->abbreviation; 
+                                    ?>)
+                                </p>
+                                <p class="p0 m0 student-info"><b>Semester</b> : <i style="color: red">First</i></p>
+                            </td>
+                                <td style="text-align:right">
+                                        
+                                </td>
+                            @else
+                            <td>
+                                <p class="p0 m0 student-info"><b>Strand:</b> 
+                                    <?php  $strand_name = \App\Strand::where('id', $ClassDetail->strand_id)
+                                            ->first(); 
+                                            echo $strand_name->strand;
+
+                                    ?> 
+                                    (<?php echo $strand_name = \App\Strand::where('id', $ClassDetail->strand_id)
+                                         ->first()->abbreviation; 
+                                    ?>)
+                                </p>
+                                <p class="p0 m0 student-info"><b>Semester</b> : <i style="color: red">Second</i></p>
+                            </td>
+                                <td style="text-align:right">
+                                        
+                                </td>
+                            @endif
+                        @endif
                     </tr>
                     
-                    <tr>
-                        <td>
-                            <p class="p0 m0 student-info"><b>School</b> Year : {{ $ClassDetail ? $ClassDetail->school_year : '' }}</p>
-                        </td>
-                        <td>
-                            <p class="p0 m0 student-info"><b>Curriculum</b> : K to 12 BASIC EDUCATION CURRICULUM</p>
-                        </td>
-                    </tr>
-                    <tr>
-                        
-                        
-                            @if ($grade_level >= 11)
-                                @if($Semester == 1)
-                                <td><p class="p0 m0 student-info"><b>Strand:</b> {{ $ClassDetail ? $ClassDetail->strand : '' }}</p></td>
-                                    <td>
-                                            <p class="p0 m0 student-info"><b>Semester</b> : <i style="color: red">First</i></p>
-                                    </td>
-                                @else
-                                <td><p class="p0 m0 student-info"><b>Strand:</b> {{ $ClassDetail ? $ClassDetail->strand : '' }}</p></td>
-                                    <td>
-                                            <p class="p0 m0 student-info"><b>Semester</b> : <i style="color: red">Second</i></p>
-                                    </td>
-                                @endif
-                            @endif
-                        
-                        
-                    </tr>
+                    
                 </table> 
     <br/>
     {{--  <h4>Subject : <span class="text-red"><i>{{ $ClassSubjectDetail->subject }}</i></span> Time : <span class="text-red"><i>{{ strftime('%r',strtotime($ClassSubjectDetail->class_time_from)) . ' - ' . strftime('%r',strtotime($ClassSubjectDetail->class_time_to)) }}</i></span> Days : <span class="text-red"><i>{{ $ClassSubjectDetail->class_days }}</i></span></h4>  --}}
@@ -223,7 +295,7 @@
                         <tbody>
                             <?php
                                 
-                                $SchoolYear = \App\SchoolYear::where('current', 1)->first();
+                                $SchoolYear = \App\SchoolYear::where('current', 1)->where('status', 1)->first();
                                 
                                 $Enrollment = \App\Enrollment::join('class_details', 'class_details.id', '=', 'enrollments.class_details_id')
                                 // ->join('student_enrolled_subjects', 'student_enrolled_subjects.enrollments_id', '=', 'enrollments.id')
@@ -558,10 +630,10 @@
                                     
                                    <strong>Failed</strong>
                                 @else 
-                                    <td></td>
+                                ________________
                                 @endif
                             @else
-                                <td></td>
+                                ________________
                             @endif        
                         
                         </td>                
@@ -579,9 +651,9 @@
                     {{-- <tr> <td colspan="3" style="border: 0">&nbsp;</td>   </tr> --}}
                 
                     <tr style="margin-top: 0em">
-                            <table border="0" style="width: 100%; margin-top: -1em">
+                            <table border="0" style="width: 100%; margin-top: -1em" class="pb-1">
                                     <tr>
-                                            <td style="border: 0; width: 50%;">
+                                        <td style="border: 0; width: 50%;">
                                             <center>
                                                 <img class="profile-user-img img-responsive img-circle" id="img--user_photo" src="{{ $ClassDetail->e_signature ? \File::exists(public_path('/img/signature/'.$ClassDetail->e_signature)) ? asset('/img/signature/'.$ClassDetail->e_signature) : asset('/img/account/photo/blank-user.png') : asset('/img/account/photo/blank-user.png') }}" style="width:100px">
                                             </center>
