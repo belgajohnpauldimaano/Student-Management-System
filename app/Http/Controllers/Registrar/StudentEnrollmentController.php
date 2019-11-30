@@ -141,6 +141,7 @@ class StudentEnrollmentController extends Controller
                 enrollments.id AS enrollment_id
             ")
             ->where('class_details_id', $id)
+            // ->where('student_informations.gender', 1)
             ->orderByRaw('fullname')
             ->paginate(70);
 
@@ -182,6 +183,7 @@ class StudentEnrollmentController extends Controller
 
         $Enrollment = \App\Enrollment::join('student_informations', 'student_informations.id', '=', 'enrollments.student_information_id')
             ->join('users', 'users.id', '=', 'student_informations.user_id')
+            
             ->where(function ($query) use ($request) {
                 if ($request->search_fn)
                 {
@@ -211,6 +213,7 @@ class StudentEnrollmentController extends Controller
                 enrollments.id AS enrollment_id
             ")
             ->where('class_details_id', $id)
+            ->whereRaw('gender', 1)
             ->orderByRaw('fullname')
             // ->orWhere('first_name', 'like', '%'.$request->search.'%')
             ->paginate(70); //
@@ -507,6 +510,7 @@ class StudentEnrollmentController extends Controller
     public function re_enroll_student_all (Request $request, $id)
     {
         $ClassDetail = \App\ClassDetail::with('class_subjects')->where('id', $id)->first();
+        $SchoolYear = \App\SchoolYear::where('status', 1)->where('current', 1)->first();
 
         $ClassDetail1 = \App\ClassDetail::join('section_details', 'section_details.id', '=' ,'class_details.section_id')
             ->join('rooms', 'rooms.id', '=' ,'class_details.room_id')
@@ -526,13 +530,9 @@ class StudentEnrollmentController extends Controller
                 rooms.room_description
             ')
             ->where('section_details.status', 1)
-            // ->where('school_years.current', 1)
+            ->where('school_years.current', 1)
             ->where('class_details.id', $request->class_detail_id)
             ->first();
-
-
-            
-
 
         $enrollment_ids = explode('@', $request->enrollment_ids);
         array_pop($enrollment_ids);
@@ -544,11 +544,13 @@ class StudentEnrollmentController extends Controller
             {
                 $SaveSecondSem = new \App\Grade11_Second_Sem();
                 $SaveSecondSem->enrollment_id = $enrollment_id;
+                $SaveSecondSem->school_year_id = $SchoolYear->id;
                 $SaveSecondSem->section_details_id = $ClassDetail1->section_id;
                 $SaveSecondSem->save();
 
                 $SaveSecondSem2 = new \App\Grade_sheet_secondsemsecond();
                 $SaveSecondSem2->enrollment_id = $enrollment_id;
+                $SaveSecondSem2->school_year_id = $SchoolYear->id;
                 $SaveSecondSem2->section_details_id = $ClassDetail1->section_id;
                 $SaveSecondSem2->save();
                 // $StudentEnrolledSubject = \App\StudentEnrolledSubject::where('enrollments_id', $enrollment_id)->get();
@@ -564,10 +566,10 @@ class StudentEnrollmentController extends Controller
                     } 
                     else 
                     {
-
                         
                         $newStudentEnrolledSubject = new \App\StudentEnrolledSubject();
                         $newStudentEnrolledSubject->class_subject_details_id = $class_subject->id;
+                        $newStudentEnrolledSubject->school_year_id = $SchoolYear->id;
                         $newStudentEnrolledSubject->subject_id = $class_subject->subject_id;
                         $newStudentEnrolledSubject->enrollments_id = $enrollment_id;
                         $newStudentEnrolledSubject->sem = 2;

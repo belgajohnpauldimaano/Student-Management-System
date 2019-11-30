@@ -127,8 +127,8 @@ class StudentController extends Controller
             $StudentInformation->middle_name    = $request->middle_name;
             $StudentInformation->last_name      = $request->last_name;
             $StudentInformation->c_address      = $request->address;
-            $StudentInformation->age_june = $request->age_june;
-            $StudentInformation->age_may = $request->age_may;
+            $StudentInformation->age_june       = $request->age_june;
+            $StudentInformation->age_may        = $request->age_may;
             $StudentInformation->birthdate      = $request->birthdate ? date('Y-m-d', strtotime($request->birthdate)) : NULL;
             $StudentInformation->gender         = $request->gender;
             $StudentInformation->guardian       = $request->guardian;
@@ -141,6 +141,7 @@ class StudentController extends Controller
         {
             return response()->json(['res_code' => 1,'res_msg' => 'Username already used.']);
         }
+        
         $User = new \App\User();
         $User->username = $request->username;
         $User->password = bcrypt($request->first_name . '.' . $request->last_name);
@@ -152,11 +153,11 @@ class StudentController extends Controller
         $StudentInformation->middle_name    = $request->middle_name;
         $StudentInformation->last_name      = $request->last_name;
         $StudentInformation->c_address      = $request->address;
-        $StudentInformation->age_june = $request->age_june;
-        $StudentInformation->age_may = $request->age_may;
+        $StudentInformation->age_june       = $request->age_june;
+        $StudentInformation->age_may        = $request->age_may;
         $StudentInformation->birthdate      = date('Y-m-d', strtotime($request->birthdate));
         $StudentInformation->gender         = $request->gender;
-        $StudentInformation->guardian         = $request->guardian;
+        $StudentInformation->guardian       = $request->guardian;
         $StudentInformation->user_id        = $User->id;
         $StudentInformation->save();
         

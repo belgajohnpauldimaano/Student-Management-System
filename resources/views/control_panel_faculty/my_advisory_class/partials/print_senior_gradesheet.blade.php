@@ -93,7 +93,7 @@
     <p class="report-progress m0">SENIOR HIGH SCHOOL</p>
     <p class="report-progress m0">S.Y. {{ $ClassSubjectDetail ? $ClassSubjectDetail->school_year : '' }}</p>
     {{--  <p class="report-progress m0">( {{ $ClassSubjectDetail ?  $ClassSubjectDetail->grade_level >= 11 ? 'SENIOR HIGH SCHOOL' : 'JUNIOR HIGH SCHOOL' : ''}} )</p>  --}}
-    <img style="margin-top: -.4em; margin-left: 9em" class="logo" width="100" src="{{ asset('img/sja-logo.png') }}" />
+    <img style="margin-top: -.4em; margin-left: 9em" class="logo" width="100" src="{{ asset('img/SHS_logo.png') }}" />
     <br/>
     <br/>
     {{--  <p class="p0 m0 student-info">Grade sheet</p>  --}}
@@ -1077,13 +1077,13 @@
                                 @if($NumberOfSubject->class_subject_order == 7)
                                     <td>{{ $key + 1 }}.</td>
                                     <td>{{$sub->student_name}}</td>
-                                    <td><center>{{ round($sub->subject_1) }}</center></td>
-                                    <td><center>{{ round($sub->subject_2) }}</center></td>
-                                    <td><center>{{ round($sub->subject_3) }}</center></td>
-                                    <td><center>{{ round($sub->subject_4) }}</center></td>
-                                    <td><center>{{ round($sub->subject_5) }}</center></td>
-                                    <td><center>{{  round($sub->subject_6) }}</center></td>
-                                    <td><center>{{  round($sub->subject_7) }}</center></td>
+                                    <td><center>{{ $sub ? round($sub->subject_1) > 0 ? round($sub->subject_1) : '' : ''  }}</center></td>
+                                    <td><center>{{ $sub ? round($sub->subject_2) > 0 ? round($sub->subject_2) : '' : ''  }}</center></td>
+                                    <td><center>{{ $sub ? round($sub->subject_3) > 0 ? round($sub->subject_3) : '' : ''  }}</center></td>
+                                    <td><center>{{ $sub ? round($sub->subject_4) > 0 ? round($sub->subject_4) : '' : ''  }}</center></td>
+                                    <td><center>{{ $sub ? round($sub->subject_5) > 0 ? round($sub->subject_5) : '' : ''  }}</center></td>
+                                    <td><center>{{ $sub ? round($sub->subject_6) > 0 ? round($sub->subject_6) : '' : ''  }}</center></td>
+                                    <td><center>{{ $sub ? round($sub->subject_7) > 0 ? round($sub->subject_7) : '' : ''  }}</center></td>
                                     {{-- <td><center>{{  round($sub->subject_8) }}</center></td> --}}
                                     <td>
                                         <center>                                                
@@ -1122,14 +1122,14 @@
                                 @elseif($NumberOfSubject->class_subject_order == 8)
                                     <td>{{ $key + 1 }}.</td>
                                     <td>{{$sub->student_name}}</td>
-                                    <td><center>{{ round($sub->subject_1) }}</center></td>
-                                    <td><center>{{ round($sub->subject_2) }}</center></td>
-                                    <td><center>{{ round($sub->subject_3) }}</center></td>
-                                    <td><center>{{ round($sub->subject_4) }}</center></td>
-                                    <td><center>{{ round($sub->subject_5) }}</center></td>
-                                    <td><center>{{  round($sub->subject_6) }}</center></td>
-                                    <td><center>{{  round($sub->subject_7) }}</center></td>
-                                    <td><center>{{  round($sub->subject_8) }}</center></td>
+                                    <td><center>{{ $sub ? round($sub->subject_1) > 0 ? round($sub->subject_1) : '' : ''  }}</center></td>
+                                    <td><center>{{ $sub ? round($sub->subject_2) > 0 ? round($sub->subject_2) : '' : ''  }}</center></td>
+                                    <td><center>{{ $sub ? round($sub->subject_3) > 0 ? round($sub->subject_3) : '' : ''  }}</center></td>
+                                    <td><center>{{ $sub ? round($sub->subject_4) > 0 ? round($sub->subject_4) : '' : ''  }}</center></td>
+                                    <td><center>{{ $sub ? round($sub->subject_5) > 0 ? round($sub->subject_5) : '' : ''  }}</center></td>
+                                    <td><center>{{ $sub ? round($sub->subject_6) > 0 ? round($sub->subject_6) : '' : ''  }}</center></td>
+                                    <td><center>{{ $sub ? round($sub->subject_7) > 0 ? round($sub->subject_7) : '' : ''  }}</center></td>
+                                    <td><center>{{ $sub ? round($sub->subject_8) > 0 ? round($sub->subject_8) : '' : ''  }}</center></td>
                                     {{-- <td><center>{{$sub->subject_9}}</center></td> --}}
                                     <td>
                                         <center>                                                
@@ -1168,15 +1168,15 @@
                                 @else
                                     <td>{{ $key + 1 }}.</td>
                                     <td>{{$sub->student_name}}</td>
-                                    <td><center>{{ round($sub->subject_1) }}</center></td>
-                                    <td><center>{{ round($sub->subject_2) }}</center></td>
-                                    <td><center>{{ round($sub->subject_3) }}</center></td>
-                                    <td><center>{{ round($sub->subject_4) }}</center></td>
-                                    <td><center>{{ round($sub->subject_5) }}</center></td>
-                                    <td><center>{{  round($sub->subject_6) }}</center></td>
-                                    <td><center>{{  round($sub->subject_7) }}</center></td>
-                                    <td><center>{{  round($sub->subject_8) }}</center></td>
-                                    <td><center>{{  round($sub->subject_9) }}</center></td>
+                                    <td><center>{{ $sub ? round($sub->subject_1) > 0 ? round($sub->subject_1) : '' : ''  }}</center></td>
+                                    <td><center>{{ $sub ? round($sub->subject_2) > 0 ? round($sub->subject_2) : '' : ''  }}</center></td>
+                                    <td><center>{{ $sub ? round($sub->subject_3) > 0 ? round($sub->subject_3) : '' : ''  }}</center></td>
+                                    <td><center>{{ $sub ? round($sub->subject_4) > 0 ? round($sub->subject_4) : '' : ''  }}</center></td>
+                                    <td><center>{{ $sub ? round($sub->subject_5) > 0 ? round($sub->subject_5) : '' : ''  }}</center></td>
+                                    <td><center>{{ $sub ? round($sub->subject_6) > 0 ? round($sub->subject_6) : '' : ''  }}</center></td>
+                                    <td><center>{{ $sub ? round($sub->subject_7) > 0 ? round($sub->subject_7) : '' : ''  }}</center></td>
+                                    <td><center>{{ $sub ? round($sub->subject_8) > 0 ? round($sub->subject_8) : '' : ''  }}</center></td>
+                                    <td><center>{{ $sub ? round($sub->subject_9) > 0 ? round($sub->subject_9) : '' : ''  }}</center></td>
 
                                     <td>
                                         <center>                                                
@@ -1228,13 +1228,15 @@
                                 @if($NumberOfSubject->class_subject_order == 7)
                                     <td>{{ $key + 1 }}.</td>
                                     <td>{{$sub->student_name}}</td>
-                                    <td><center>{{ round($sub->subject_1) }}</center></td>
-                                    <td><center>{{ round($sub->subject_2) }}</center></td>
-                                    <td><center>{{ round($sub->subject_3) }}</center></td>
-                                    <td><center>{{ round($sub->subject_4) }}</center></td>
-                                    <td><center>{{ round($sub->subject_5) }}</center></td>
-                                    <td><center>{{  round($sub->subject_6) }}</center></td>
-                                    <td><center>{{  round($sub->subject_7) }}</center></td>
+                                    <td><center>{{ $sub ? round($sub->subject_1) > 0 ? round($sub->subject_1) : '' : ''  }}</center></td>
+                                    <td><center>{{ $sub ? round($sub->subject_2) > 0 ? round($sub->subject_2) : '' : ''  }}</center></td>
+                                    <td><center>{{ $sub ? round($sub->subject_3) > 0 ? round($sub->subject_3) : '' : ''  }}</center></td>
+                                    <td><center>{{ $sub ? round($sub->subject_4) > 0 ? round($sub->subject_4) : '' : ''  }}</center></td>
+                                    <td><center>{{ $sub ? round($sub->subject_5) > 0 ? round($sub->subject_5) : '' : ''  }}</center></td>
+                                    <td><center>{{ $sub ? round($sub->subject_6) > 0 ? round($sub->subject_6) : '' : ''  }}</center></td>
+                                    <td><center>{{ $sub ? round($sub->subject_7) > 0 ? round($sub->subject_7) : '' : ''  }}</center></td>
+                                    {{-- <td><center>{{ $sub ? round($sub->subject_8) > 0 ? round($sub->subject_8) : '' : ''  }}</center></td>
+                                    <td><center>{{ $sub ? round($sub->subject_9) > 0 ? round($sub->subject_9) : '' : ''  }}</center></td> --}}
                                     
                                     <td>
                                         <center>                                                
@@ -1273,14 +1275,15 @@
                                 @elseif($NumberOfSubject->class_subject_order == 8)
                                     <td>{{ $key + 1 }}.</td>
                                     <td>{{$sub->student_name}}</td>
-                                    <td><center>{{ round($sub->subject_1) }}</center></td>
-                                    <td><center>{{ round($sub->subject_2) }}</center></td>
-                                    <td><center>{{ round($sub->subject_3) }}</center></td>
-                                    <td><center>{{ round($sub->subject_4) }}</center></td>
-                                    <td><center>{{ round($sub->subject_5) }}</center></td>
-                                    <td><center>{{  round($sub->subject_6) }}</center></td>
-                                    <td><center>{{  round($sub->subject_7) }}</center></td>
-                                    <td><center>{{  round($sub->subject_8) }}</center></td>
+                                    <td><center>{{ $sub ? round($sub->subject_1) > 0 ? round($sub->subject_1) : '' : ''  }}</center></td>
+                                    <td><center>{{ $sub ? round($sub->subject_2) > 0 ? round($sub->subject_2) : '' : ''  }}</center></td>
+                                    <td><center>{{ $sub ? round($sub->subject_3) > 0 ? round($sub->subject_3) : '' : ''  }}</center></td>
+                                    <td><center>{{ $sub ? round($sub->subject_4) > 0 ? round($sub->subject_4) : '' : ''  }}</center></td>
+                                    <td><center>{{ $sub ? round($sub->subject_5) > 0 ? round($sub->subject_5) : '' : ''  }}</center></td>
+                                    <td><center>{{ $sub ? round($sub->subject_6) > 0 ? round($sub->subject_6) : '' : ''  }}</center></td>
+                                    <td><center>{{ $sub ? round($sub->subject_7) > 0 ? round($sub->subject_7) : '' : ''  }}</center></td>
+                                    <td><center>{{ $sub ? round($sub->subject_8) > 0 ? round($sub->subject_8) : '' : ''  }}</center></td>
+                                    {{-- <td><center>{{ $sub ? round($sub->subject_9) > 0 ? round($sub->subject_9) : '' : ''  }}</center></td> --}}
                                     {{-- <td><center>{{$sub->subject_9}}</center></td> --}}
                                     <td>
                                         <center>                                                
@@ -1319,15 +1322,15 @@
                                 @else
                                     <td>{{ $key + 1 }}.</td>
                                     <td>{{$sub->student_name}}</td>
-                                    <td><center>{{ round($sub->subject_1) }}</center></td>
-                                    <td><center>{{ round($sub->subject_2) }}</center></td>
-                                    <td><center>{{ round($sub->subject_3) }}</center></td>
-                                    <td><center>{{ round($sub->subject_4) }}</center></td>
-                                    <td><center>{{ round($sub->subject_5) }}</center></td>
-                                    <td><center>{{  round($sub->subject_6) }}</center></td>
-                                    <td><center>{{  round($sub->subject_7) }}</center></td>
-                                    <td><center>{{  round($sub->subject_8) }}</center></td>
-                                    <td><center>{{  round($sub->subject_9) }}</center></td>
+                                    <td><center>{{ $sub ? round($sub->subject_1) > 0 ? round($sub->subject_1) : '' : ''  }}</center></td>
+                                    <td><center>{{ $sub ? round($sub->subject_2) > 0 ? round($sub->subject_2) : '' : ''  }}</center></td>
+                                    <td><center>{{ $sub ? round($sub->subject_3) > 0 ? round($sub->subject_3) : '' : ''  }}</center></td>
+                                    <td><center>{{ $sub ? round($sub->subject_4) > 0 ? round($sub->subject_4) : '' : ''  }}</center></td>
+                                    <td><center>{{ $sub ? round($sub->subject_5) > 0 ? round($sub->subject_5) : '' : ''  }}</center></td>
+                                    <td><center>{{ $sub ? round($sub->subject_6) > 0 ? round($sub->subject_6) : '' : ''  }}</center></td>
+                                    <td><center>{{ $sub ? round($sub->subject_7) > 0 ? round($sub->subject_7) : '' : ''  }}</center></td>
+                                    <td><center>{{ $sub ? round($sub->subject_8) > 0 ? round($sub->subject_8) : '' : ''  }}</center></td>
+                                    <td><center>{{ $sub ? round($sub->subject_9) > 0 ? round($sub->subject_9) : '' : ''  }}</center></td>
 
                                     <td>
                                         <center>                                                

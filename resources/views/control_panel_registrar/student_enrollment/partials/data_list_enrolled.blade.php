@@ -20,8 +20,9 @@
                                     </thead>
                                     <tbody>
                                         @if ($Enrollment)
-                                            @foreach ($Enrollment as $data)
+                                            @foreach ($Enrollment as $key => $data)
                                                 <tr>
+                                                    <td> {{ $key + 1 }}.</td>
                                                     <td>{{ $data->username }}</td>
                                                     <td>{{ $data->fullname }}</td>
                                                     <td>
@@ -60,7 +61,7 @@
                             @else
                                 <div class="pull-right">
                                     <button type="button" style="margin-right:2px" class="btn btn-danger js-btn_re_enroll_all_student" aria-expanded="true">
-                                        Re-Enroll All (2nd Semester)
+                                        Re-Enroll All
                                     </button>
                                     {{ $Enrollment ? $Enrollment->links() : '' }}
                                 </div> 
@@ -75,8 +76,9 @@
                                     </thead>
                                     <tbody>
                                         @if ($Enrollment)
-                                            @foreach ($Enrollment as $data)
+                                            @foreach ($Enrollment as  $key => $data)
                                                 <tr>
+                                                    <td>{{ $key + 1 }}.</td>
                                                     <td>{{ $data->username }}</td>
                                                     <td>{{ $data->fullname }}</td>
                                                     <td>

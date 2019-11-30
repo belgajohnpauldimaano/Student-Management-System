@@ -68,7 +68,7 @@ class GradeSheetController extends Controller
                     ->select(\DB::raw("
                         student_informations.id,
                         class_details.id as class_details_id,
-                        CONCAT(student_informations.last_name, ' ', student_informations.first_name, ' ', student_informations.middle_name) as student_name,
+                        CONCAT(student_informations.last_name, ', ', student_informations.first_name, ' ', student_informations.middle_name) as student_name,
                         student_informations.gender,
                         student_enrolled_subjects.id as student_enrolled_subject_id,
                         enrollments.id as enrollment_id,
@@ -109,7 +109,7 @@ class GradeSheetController extends Controller
             ->select(\DB::raw("
                 student_informations.id,
                 class_details.id as class_details_id,
-                CONCAT(student_informations.last_name, ' ', student_informations.first_name, ' ', student_informations.middle_name) as student_name,
+                CONCAT(student_informations.last_name, ', ', student_informations.first_name, ' ', student_informations.middle_name) as student_name,
                 student_informations.gender,
                 student_enrolled_subjects.id as student_enrolled_subject_id,
                 enrollments.id as enrollment_id,
@@ -181,7 +181,7 @@ class GradeSheetController extends Controller
                     ->select(\DB::raw("
                         student_informations.id,
                         class_details.id as class_details_id,
-                        CONCAT(student_informations.last_name, ' ', student_informations.first_name, ' ', student_informations.middle_name) as student_name,
+                        CONCAT(student_informations.last_name, ', ', student_informations.first_name, ' ', student_informations.middle_name) as student_name,
                         student_enrolled_subjects.id as student_enrolled_subject_id,
                         enrollments.id as enrollment_id,
                         student_enrolled_subjects.fir_g,
@@ -220,7 +220,7 @@ class GradeSheetController extends Controller
                     ->select(\DB::raw("
                         student_informations.id,
                         class_details.id as class_details_id,
-                        CONCAT(student_informations.last_name, ' ', student_informations.first_name, ' ', student_informations.middle_name) as student_name,
+                        CONCAT(student_informations.last_name, ', ', student_informations.first_name, ' ', student_informations.middle_name) as student_name,
                         student_enrolled_subjects.id as student_enrolled_subject_id,
                         enrollments.id as enrollment_id,
                         student_enrolled_subjects.fir_g,
@@ -435,7 +435,7 @@ class GradeSheetController extends Controller
                     ->select(\DB::raw("
                         student_informations.id,
                         class_details.id as class_details_id,
-                        CONCAT(student_informations.last_name, ' ', student_informations.first_name, ' ', student_informations.middle_name) as student_name,
+                        CONCAT(student_informations.last_name, ', ', student_informations.first_name, ' ', student_informations.middle_name) as student_name,
                         student_informations.gender,
                         student_enrolled_subjects.id as student_enrolled_subject_id,
                         enrollments.id as enrollment_id,
@@ -476,7 +476,7 @@ class GradeSheetController extends Controller
             ->select(\DB::raw("
                 student_informations.id,
                 class_details.id as class_details_id,
-                CONCAT(student_informations.last_name, ' ', student_informations.first_name, ' ', student_informations.middle_name) as student_name,
+                CONCAT(student_informations.last_name, ', ', student_informations.first_name, ' ', student_informations.middle_name) as student_name,
                 student_informations.gender,
                 student_enrolled_subjects.id as student_enrolled_subject_id,
                 enrollments.id as enrollment_id,
@@ -558,7 +558,7 @@ class GradeSheetController extends Controller
                     ->select(\DB::raw("
                         student_informations.id,
                         class_details.id as class_details_id,
-                        CONCAT(student_informations.last_name, ' ', student_informations.first_name, ' ', student_informations.middle_name) as student_name,
+                        CONCAT(student_informations.last_name, ', ', student_informations.first_name, ' ', student_informations.middle_name) as student_name,
                         student_enrolled_subjects.id as student_enrolled_subject_id,
                         enrollments.id as enrollment_id,
                         student_enrolled_subjects.fir_g,
@@ -597,7 +597,7 @@ class GradeSheetController extends Controller
                     ->select(\DB::raw("
                         student_informations.id,
                         class_details.id as class_details_id,
-                        CONCAT(student_informations.last_name, ' ', student_informations.first_name, ' ', student_informations.middle_name) as student_name,
+                        CONCAT(student_informations.last_name, ', ', student_informations.first_name, ' ', student_informations.middle_name) as student_name,
                         student_enrolled_subjects.id as student_enrolled_subject_id,
                         enrollments.id as enrollment_id,
                         student_enrolled_subjects.fir_g,
@@ -657,6 +657,8 @@ class GradeSheetController extends Controller
 
     public function temporary_save_grade(Request $request)
     {
+        $SchoolYear = \App\SchoolYear::where('status', 1)->where('current', 1)->first();
+
         if (!$request->student_enrolled_subject_id || !$request->enrollment_id || !$request->grading || !$request->classSubjectDetailID ) 
         {
             return response()->json(['res_code' => 1, 'res_msg' => 'Invalid request.',]);
@@ -759,6 +761,7 @@ class GradeSheetController extends Controller
                 
                 
                 $GradesEncode = \App\Grade_sheet_firstsem::where(['enrollment_id'=>$enrollment_id])
+                ->where('school_year_id', $SchoolYear->id)
                 ->update([$subject=>$grade]); 
 
                 $StudentEnrolledSubject->save();        
@@ -810,6 +813,7 @@ class GradeSheetController extends Controller
                 
                 
                 $GradesEncode = \App\Grade_sheet_firstsemsecond::where(['enrollment_id'=>$enrollment_id])
+                ->where('school_year_id', $SchoolYear->id)
                 ->update([$subject=>$grade]); 
 
                 $StudentEnrolledSubject->save();        
@@ -861,6 +865,7 @@ class GradeSheetController extends Controller
                 
                 
                 $GradesEncode = \App\Grade11_Second_Sem::where(['enrollment_id'=>$enrollment_id])
+                ->where('school_year_id', $SchoolYear->id)
                 ->update([$subject=>$grade]); 
 
                 $StudentEnrolledSubject->save();        
@@ -912,6 +917,7 @@ class GradeSheetController extends Controller
                 
                 
                 $GradesEncode = \App\Grade_sheet_secondsemsecond::where(['enrollment_id'=>$enrollment_id])
+                ->where('school_year_id', $SchoolYear->id)
                 ->update([$subject=>$grade]); 
 
                 $StudentEnrolledSubject->save();        
@@ -978,10 +984,15 @@ class GradeSheetController extends Controller
                 else if($SelectedSubject->subject == 'ICT/Accounting')//ict
                 {
                     $subject = 'ict';
-                }            
+                }
+                else if($SelectedSubject->subject == 'Technology and Livelihood Education (TLE)')//ict
+                {
+                    $subject = 'ict';
+                }           
 
                 $GradesEncode = \App\Grade_sheet_first::where(['enrollment_id'=>$enrollment_id])
-                    ->update([$subject => $grade]);
+                ->where('school_year_id', $SchoolYear->id)
+                ->update([$subject => $grade]);
             
             
             } 
@@ -1038,9 +1049,14 @@ class GradeSheetController extends Controller
                 else if($SelectedSubject->subject == 'ICT/Accounting')//ict
                 {
                     $subject = 'ict';
-                }            
+                }
+                else if($SelectedSubject->subject == 'Technology and Livelihood Education (TLE)')//ict
+                {
+                    $subject = 'ict';
+                }           
 
                 $GradesEncode = \App\Grade_sheet_second::where(['enrollment_id'=>$enrollment_id])
+                ->where('school_year_id', $SchoolYear->id)
                 ->update([$subject => $grade]);
             }
             else if ($grading == 'third') 
@@ -1096,9 +1112,14 @@ class GradeSheetController extends Controller
                 else if($SelectedSubject->subject == 'ICT/Accounting')//ict
                 {
                     $subject = 'ict';
-                }            
+                }
+                else if($SelectedSubject->subject == 'Technology and Livelihood Education (TLE)')//ict
+                {
+                    $subject = 'ict';
+                }        
 
                 $GradesEncode = \App\Grade_sheet_third::where(['enrollment_id'=>$enrollment_id])
+                ->where('school_year_id', $SchoolYear->id)
                 ->update([$subject => $grade]);
             }
             else if ($grading == 'fourth') 
@@ -1155,9 +1176,14 @@ class GradeSheetController extends Controller
                 else if($SelectedSubject->subject == 'ICT/Accounting')//ict
                 {
                     $subject = 'ict';
-                }            
+                }  
+                else if($SelectedSubject->subject == 'Technology and Livelihood Education (TLE)')//ict
+                {
+                    $subject = 'ict';
+                }          
 
                 $GradesEncode = \App\Grade_sheet_fourth::where(['enrollment_id'=>$enrollment_id])
+                ->where('school_year_id', $SchoolYear->id)
                 ->update([$subject => $grade]);
             }
             $StudentEnrolledSubject->save();
@@ -1214,7 +1240,7 @@ class GradeSheetController extends Controller
         ->first();
 
 
-               
+        $SchoolYear = \App\SchoolYear::where('current', 1)->where('status', 1)->first();   
 
         if (!$StudentEnrolledSubject)
         {
@@ -1269,6 +1295,7 @@ class GradeSheetController extends Controller
                 
                 
                 $GradesEncode = \App\Grade_sheet_firstsem::where(['enrollment_id'=>$enrollment_id])
+                ->where('school_year_id', $SchoolYear->id)
                 ->update([$subject=>$grade]); 
 
                 $StudentEnrolledSubject->save();        
@@ -1320,6 +1347,7 @@ class GradeSheetController extends Controller
                 
                 
                 $GradesEncode = \App\Grade_sheet_firstsemsecond::where(['enrollment_id'=>$enrollment_id])
+                ->where('school_year_id', $SchoolYear->id)
                 ->update([$subject=>$grade]); 
 
                 $StudentEnrolledSubject->save();        
@@ -1371,6 +1399,7 @@ class GradeSheetController extends Controller
                 
                 
                 $GradesEncode = \App\Grade11_Second_Sem::where(['enrollment_id'=>$enrollment_id])
+                ->where('school_year_id', $SchoolYear->id)
                 ->update([$subject=>$grade]); 
 
                 $StudentEnrolledSubject->save();        
@@ -1422,6 +1451,7 @@ class GradeSheetController extends Controller
                 
                 
                 $GradesEncode = \App\Grade_sheet_secondsemsecond::where(['enrollment_id'=>$enrollment_id])
+                ->where('school_year_id', $SchoolYear->id)
                 ->update([$subject=>$grade]); 
 
                 $StudentEnrolledSubject->save();        
@@ -1488,9 +1518,15 @@ class GradeSheetController extends Controller
                 else if($SelectedSubject->subject == 'ICT/Accounting')//ict
                 {
                     $subject = 'ict';
-                }   
+                }
+                else if($SelectedSubject->subject == 'Technology and Livelihood Education (TLE)')//ict
+                {
+                    $subject = 'ict';
+                }
+                
                 
                 $GradesEncode = \App\Grade_sheet_first::where(['enrollment_id'=>$enrollment_id])
+                ->where('school_year_id', $SchoolYear->id)
                 ->update([$subject=>$grade]); 
             
             } 
@@ -1549,8 +1585,13 @@ class GradeSheetController extends Controller
                 {
                     $subject = 'ict';
                 }   
+                else if($SelectedSubject->subject == 'Technology and Livelihood Education (TLE)')//ict
+                {
+                    $subject = 'ict';
+                }
                     
                 $GradesEncode = \App\Grade_sheet_second::where(['enrollment_id'=>$enrollment_id])
+                ->where('school_year_id', $SchoolYear->id)
                 ->update([$subject=>$grade]);
             }
             else if ($request->grading == 'third') 
@@ -1607,9 +1648,14 @@ class GradeSheetController extends Controller
                 else if($SelectedSubject->subject == 'ICT/Accounting')//ict
                 {
                     $subject = 'ict';
-                }   
+                }
+                else if($SelectedSubject->subject == 'Technology and Livelihood Education (TLE)')//ict
+                {
+                    $subject = 'ict';
+                }
                     
                 $GradesEncode = \App\Grade_sheet_third::where(['enrollment_id'=>$enrollment_id])
+                ->where('school_year_id', $SchoolYear->id)
                 ->update([$subject=>$grade]);
             }
             else if ($request->grading == 'fourth') 
@@ -1666,9 +1712,14 @@ class GradeSheetController extends Controller
                 else if($SelectedSubject->subject == 'ICT/Accounting')//ict
                 {
                     $subject = 'ict';
-                }   
+                }
+                else if($SelectedSubject->subject == 'Technology and Livelihood Education (TLE)')//ict
+                {
+                    $subject = 'ict';
+                }  
                     
                 $GradesEncode = \App\Grade_sheet_fourth::where(['enrollment_id'=>$enrollment_id])
+                ->where('school_year_id', $SchoolYear->id)
                 ->update([$subject=>$grade]);
             }
             $StudentEnrolledSubject->save();        

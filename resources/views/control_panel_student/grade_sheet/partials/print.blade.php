@@ -25,11 +25,9 @@
                 border-collapse: collapse;
                 font-size : 11px;
             }
-    
             .table-student-info {
                 width: 100%;
-            }
-            
+            }            
             .table-student-info th, .table-student-info td {
                 border: none;
                 padding: 0 2px 2px 2px;
@@ -94,7 +92,7 @@
             }
             .grade7{
                 border-bottom: 6px solid green;
-                margin-top: .5in;
+                margin-top: 0in;
             }
 
             .stem{
@@ -104,7 +102,7 @@
 
             .grade8{
                 border-bottom: 6px solid yellow;
-                margin-top: .5in;
+                margin-top: 0in;
             }
 
             .abm{
@@ -113,17 +111,17 @@
             }
 
             .grade9{
-                border-bottom: 6px solid red;
-                margin-top: .5in;
+                border-bottom: 6px solid #bb0a1e;
+                margin-top: 0in;
             }
 
             .grade10{
                 border-bottom: 6px solid blue;
-                margin-top: .5in;
+                margin-top: 0in;
             }
 
             .humss{
-                border-bottom: 6px solid yellow;
+                border-bottom: 6px solid blue;
                 margin-top: -10px;
             }
         </style>
@@ -138,10 +136,6 @@
             <p class="grade9"></p>
         @elseif($ClassDetail->section_grade_level == 10)
             <p class="grade10"></p>
-        
-
-            
-
         @elseif($ClassDetail->grade_level == 11)
 
             @if($ClassDetail->strand_id == 1)
@@ -182,22 +176,22 @@
                 <p class="heading1">Region III</p>
                 <p class="heading1">Division of Bataan</p>
                 <br/>
-                <h2 class="heading2 heading2-title">Saint John's Academy, Inc</h2>
+                <h2 class="heading2 heading2-title">St. John's Academy Inc</h2>
                 <p class="heading2 heading2-subtitle"><b>K to 12 BASIC EDUCATION CURRICULUM</b></p>
                 <p class="heading2 heading2-subtitle"><b>Formerly Saint John Academy</b></p>
                 <p class="heading2 heading2-subtitle">Dinalupihan, Bataan</p>
                 <br/>
                 <p class="report-progress m0">REPORT ON LEARNING PROGRESS AND ACHIEVEMENT</p>
                 <p class="report-progress m0">( {{ $ClassDetail ?  $ClassDetail->section_grade_level >= 11 ? 'SENIOR HIGH SCHOOL' : 'JUNIOR HIGH SCHOOL' : ''}} )</p>
-                <img style="margin-right: 8em; margin-top: 4.5em;"  class="logo sja-logo" width="100" src="{{ asset('img/sja-logo.png') }}" />
-                <img style="margin-left: 8em; margin-top: 4.5em;" class="logo deped-bataan-logo" width="100" src="{{ asset('img/deped-bataan-logo.png') }}" />
+                <img style="margin-right: 3em; margin-top: {{ $ClassDetail ?  $ClassDetail->section_grade_level >= 11 ? '4em' : '4.5em' : ''}}"  class="logo sja-logo" width="{{ $ClassDetail ?  $ClassDetail->section_grade_level >= 11 ? 115 : 100 : ''}}" src="{{ $ClassDetail ?  $ClassDetail->section_grade_level >= 11 ? asset('img/SHS_logo.png') : asset('img/sja-logo.png') : ''}}" />
+                <img style="margin-left: 3em; margin-top: 4.5em;" class="logo deped-bataan-logo" width="100" src="{{ asset('img/deped-bataan-logo.png') }}" />
                 <br/>
                 <table class="table-student-info">
                     <tr>
                         <td>
                             <p class="p0 m0 student-info"><b>Name</b> : {{ ucfirst($StudentInformation->last_name). ', ' .ucfirst($StudentInformation->first_name). ' ' . ucfirst($StudentInformation->middle_name) }}</p>
                         </td>
-                        <td style="text-align:right">
+                        <td>
                             <p class="p0 m0 student-info"><b>LRN</b> : {{ $StudentInformation->user->username }}</p>
                         </td>
                     </tr>
@@ -206,7 +200,7 @@
                         <td>
                             <p class="p0 m0 student-info"><b>Birthdate</b> : {{ $StudentInformation->birthdate ? date_format(date_create($StudentInformation->birthdate), 'F d, Y') : '' }}</p>
                         </td>
-                        <td style="text-align:right">
+                        <td>
                             <p class="p0 m0 student-info"><b>Age</b> : 
                              {{ $StudentInformation->age_may }} years old</p>
                              {{-- {{ $StudentInformation->birthdate ? date_diff(date_create($StudentInformation->birthdate), date_create(date("Y-m-d H:i:s")))->format('%y years old') : '' }} --}}
@@ -216,7 +210,7 @@
                             <td>
                                 <p class="p0 m0 student-info"><b>School</b> Year : {{ $ClassDetail ? $ClassDetail->school_year : '' }}</p>
                             </td>
-                            <td style="text-align:right">
+                            <td>
                                 <p class="p0 m0 student-info"><b>Sex</b> : {{ $StudentInformation->gender == 1 ? "Male" : "Female" }}</p>
                             </td>
                         </tr>
@@ -224,7 +218,7 @@
                         <td>
                             <p class="p0 m0 student-info"><b>Grade & Section </b>: {{ $ClassDetail ? $ClassDetail->section_grade_level : '' }} - {{ $ClassDetail ? $ClassDetail->section : '' }}</p>
                         </td>
-                        <td style="text-align:right">
+                        <td>
                             
                         </td>
                     </tr>
@@ -233,39 +227,35 @@
                         
                         @if ($grade_level >= 11)
                             @if($Semester == 1)
-                            <td>
-                                <p class="p0 m0 student-info"><b>Strand:</b> 
-                                    <?php  $strand_name = \App\Strand::where('id', $ClassDetail->strand_id)
-                                            ->first(); 
-                                            echo $strand_name->strand;
+                                <td>
+                                    <p class="p0 m0 student-info"><b>Track/Strand - Academic:</b> 
+                                        <?php  $strand_name = \App\Strand::where('id', $ClassDetail->strand_id)
+                                                ->first(); 
+                                                echo $strand_name->strand;
 
-                                    ?> 
-                                    (<?php echo $strand_name = \App\Strand::where('id', $ClassDetail->strand_id)
-                                         ->first()->abbreviation; 
-                                    ?>)
-                                </p>
-                                <p class="p0 m0 student-info"><b>Semester</b> : <i style="color: red">First</i></p>
-                            </td>
-                                <td style="text-align:right">
+                                        ?> 
                                         
+                                    </p>
+                                    <p class="p0 m0 student-info"><b>Semester</b> : <i style="color: red">First</i></p>
                                 </td>
+                                    <td>
+                                            
+                                    </td>
                             @else
-                            <td>
-                                <p class="p0 m0 student-info"><b>Strand:</b> 
-                                    <?php  $strand_name = \App\Strand::where('id', $ClassDetail->strand_id)
-                                            ->first(); 
-                                            echo $strand_name->strand;
+                                <td>
+                                    <p class="p0 m0 student-info"><b>Track/Strand - Academic:</b> 
+                                        <?php  $strand_name = \App\Strand::where('id', $ClassDetail->strand_id)
+                                                ->first(); 
+                                                echo $strand_name->strand;
 
-                                    ?> 
-                                    (<?php echo $strand_name = \App\Strand::where('id', $ClassDetail->strand_id)
-                                         ->first()->abbreviation; 
-                                    ?>)
-                                </p>
-                                <p class="p0 m0 student-info"><b>Semester</b> : <i style="color: red">Second</i></p>
-                            </td>
-                                <td style="text-align:right">
+                                        ?> 
                                         
+                                    </p>
+                                    <p class="p0 m0 student-info"><b>Semester</b> : <i style="color: red">Second</i></p>
                                 </td>
+                                    <td>
+                                            
+                                    </td>
                             @endif
                         @endif
                     </tr>
@@ -327,7 +317,7 @@
                                     section_details.section
                                     
                                 "))
-                                ->where('student_information_id', $StudentInformation->id)
+                                ->where('enrollments.student_information_id', $StudentInformation->id)
                                 ->where('class_subject_details.status', '!=', 0)
                                 ->where('enrollments.status', 1)
                                 ->where('class_details.status', 1)
@@ -357,10 +347,15 @@
                                     <?php 
                                          $StudentEnrolledSubject1 = \App\StudentEnrolledSubject::where('enrollments_id', $data->enrollment_id)
                                         ->where('subject_id', $data->subject_id)
+                                        ->where('class_subject_details_id', $data->class_subject_details_id)
                                         ->where('sem', 1)
                                         ->first(); 
-
-                                        echo $StudentEnrolledSubject1->fir_g ? $StudentEnrolledSubject1->fir_g > 0 ? round($StudentEnrolledSubject1->fir_g) : '' : '';
+                                        
+                                        if($StudentEnrolledSubject1)
+                                        {
+                                            echo $StudentEnrolledSubject1->fir_g ? $StudentEnrolledSubject1->fir_g > 0 ? round($StudentEnrolledSubject1->fir_g) : '' : '';
+                                        }
+                                        
                                         
                                     ?>
                                     {{-- {{ $data->fir_g ? $data->fir_g > 0  ? round($data->fir_g) : '' : '' }} --}}
@@ -371,8 +366,11 @@
                                         ->where('subject_id', $data->subject_id)
                                         ->where('sem', 1)
                                         ->first(); 
-                                        
-                                        echo $StudentEnrolledSubject1->sec_g ? $StudentEnrolledSubject1->sec_g > 0 ? round($StudentEnrolledSubject1->sec_g) : '' : '';
+
+                                        if($StudentEnrolledSubject1)
+                                        {
+                                            echo $StudentEnrolledSubject1->sec_g ? $StudentEnrolledSubject1->sec_g > 0 ? round($StudentEnrolledSubject1->sec_g) : '' : '';
+                                        }
                                     ?>
                                     {{-- {{ $data->sec_g ? $data->sec_g > 0  ? round($data->sec_g) : '' : '' }} --}}
                                 </td>
@@ -383,26 +381,33 @@
                                         ->where('sem', 1)
                                         ->first(); 
 
-                                        if(round($StudentEnrolledSubject1->fir_g) != 0 && round($StudentEnrolledSubject1->sec_g) != 0)
+                                        if($StudentEnrolledSubject1)
                                         {
-                                            echo round($final_ave = (round($StudentEnrolledSubject1->fir_g) + round($StudentEnrolledSubject1->sec_g)) / 2);
-                                            // echo $final_ave = (round($data->fir_g) + round($data->sec_g)) / 2;
-                                        }
-                                        else 
-                                        {
-                                            echo "";
-                                        }                                        
+                                            if(round($StudentEnrolledSubject1->fir_g) != 0 && round($StudentEnrolledSubject1->sec_g) != 0)
+                                            {
+                                                echo round($final_ave = (round($StudentEnrolledSubject1->fir_g) + round($StudentEnrolledSubject1->sec_g)) / 2);
+                                                // echo $final_ave = (round($data->fir_g) + round($data->sec_g)) / 2;
+                                            }
+                                            else 
+                                            {
+                                                echo "";
+                                            }    
+                                        }                                    
                                     ?>
                                 </td>
-                                @if(round($StudentEnrolledSubject1->fir_g) != 0 && round($StudentEnrolledSubject1->sec_g) != 0) 
-                                    @if($final_ave && $final_ave > 74) 
-                                        <td style="color:'green'; text-align: center"><strong>Passed</strong></td>
-                                    @elseif($final_ave && $final_ave < 75) 
-                                        <td style="color:'red'; text-align: center"><strong>Failed</strong></td>
+                                @if($StudentEnrolledSubject1)                                
+                                    @if(round($StudentEnrolledSubject1->fir_g) != 0 && round($StudentEnrolledSubject1->sec_g) != 0) 
+                                        @if($final_ave && $final_ave > 74) 
+                                            <td style="color:'green'; text-align: center"><strong>Passed</strong></td>
+                                        @elseif($final_ave && $final_ave < 75) 
+                                            <td style="color:'red'; text-align: center"><strong>Failed</strong></td>
+                                        @endif
+                                    @else
+                                        <td></td>
                                     @endif
-                                @else
-                                    <td></td>
-                                @endif                                
+                                @else    
+                                    <td></td>   
+                                @endif                        
                                 
                             </tr>
                             @endforeach
@@ -707,7 +712,7 @@
                     </thead>
                     <tbody>
                         <?php
-                            $SchoolYear = \App\SchoolYear::where('current', 1)->first();
+                            $SchoolYear = \App\SchoolYear::where('current', 1)->where('status', 1)->first();
                             
                             $Enrollment = \App\Enrollment::join('class_details', 'class_details.id', '=', 'enrollments.class_details_id')
                             // ->join('student_enrolled_subjects', 'student_enrolled_subjects.enrollments_id', '=', 'enrollments.id')
@@ -770,10 +775,12 @@
                                          $StudentEnrolledSubject1 = \App\StudentEnrolledSubject::where('enrollments_id', $data->enrollment_id)
                                         ->where('subject_id', $data->subject_id)
                                         ->where('sem', 2)
-                                        ->first(); 
+                                        ->first();
 
-                                        echo $StudentEnrolledSubject1->thi_g ? $StudentEnrolledSubject1->thi_g > 0 ? round($StudentEnrolledSubject1->thi_g) : '' : '';
-                                        
+                                        if($StudentEnrolledSubject1)
+                                        {
+                                            echo $StudentEnrolledSubject1->thi_g ? $StudentEnrolledSubject1->thi_g > 0 ? round($StudentEnrolledSubject1->thi_g) : '' : '';
+                                        }
                                     ?>
                                     {{-- {{ $data->fir_g ? $data->fir_g > 0  ? round($data->fir_g) : '' : '' }} --}}
                                  </td>
@@ -783,8 +790,11 @@
                                         ->where('subject_id', $data->subject_id)
                                         ->where('sem', 2)
                                         ->first(); 
-                                        
-                                        echo $StudentEnrolledSubject1->fou_g ? $StudentEnrolledSubject1->fou_g > 0 ? round($StudentEnrolledSubject1->fou_g) : '' : '';
+
+                                        if($StudentEnrolledSubject1)
+                                        {
+                                            echo $StudentEnrolledSubject1->fou_g ? $StudentEnrolledSubject1->fou_g > 0 ? round($StudentEnrolledSubject1->fou_g) : '' : '';
+                                        }
                                     ?>
                                     {{-- {{ $data->sec_g ? $data->sec_g > 0  ? round($data->sec_g) : '' : '' }} --}}
                                 </td>
@@ -795,28 +805,33 @@
                                         ->where('sem', 2)
                                         ->first(); 
 
-                                        if(round($StudentEnrolledSubject1->thi_g) != 0 && round($StudentEnrolledSubject1->fou_g) != 0)
+                                        if($StudentEnrolledSubject1)
                                         {
-                                            echo round($final_ave = (round($StudentEnrolledSubject1->thi_g) + round($StudentEnrolledSubject1->fou_g)) / 2);
-                                            // echo $final_ave = (round($data->fir_g) + round($data->sec_g)) / 2;
-                                        }
-                                        else 
-                                        {
-                                            echo "";
-                                        }                                        
+                                            if(round($StudentEnrolledSubject1->thi_g) != 0 && round($StudentEnrolledSubject1->fou_g) != 0)
+                                            {
+                                                echo round($final_ave = (round($StudentEnrolledSubject1->thi_g) + round($StudentEnrolledSubject1->fou_g)) / 2);
+                                                // echo $final_ave = (round($data->fir_g) + round($data->sec_g)) / 2;
+                                            }
+                                            else 
+                                            {
+                                                echo "";
+                                            }
+                                        }                                      
                                     ?>
                                 </td>
-                                
-                                @if(round($StudentEnrolledSubject1->thi_g) != 0 && round($StudentEnrolledSubject1->fou_g) != 0) 
-                                    @if($final_ave && $final_ave > 74) 
-                                        <td style="color:'green'; text-align: center"><strong>Passed</strong></td>
-                                    @elseif($final_ave && $final_ave < 75) 
-                                        <td style="color:'red'; text-align: center"><strong>Failed</strong></td>
-                                    @endif
+                                @if($StudentEnrolledSubject1)
+                                    @if(round($StudentEnrolledSubject1->thi_g) != 0 && round($StudentEnrolledSubject1->fou_g) != 0) 
+                                        @if($final_ave && $final_ave > 74) 
+                                            <td style="color:'green'; text-align: center"><strong>Passed</strong></td>
+                                        @elseif($final_ave && $final_ave < 75) 
+                                            <td style="color:'red'; text-align: center"><strong>Failed</strong></td>
+                                        @endif
+                                    @else
+                                        <td></td>
+                                    @endif                                
                                 @else
                                     <td></td>
-                                @endif                                
-                                
+                                @endif
                             </tr>
                         @endforeach
                         
@@ -1151,7 +1166,9 @@
                                             @endif
 
 
-                                            @if ($data->fir_g == 0)
+                                            @if ($data->fir_g == 0 && $data->sec_g == 0 && $data->thi_g == 0 && $data->fou_g == 0)
+                                                <td></td>
+                                            @else
                                                 <td></td>
                                             @endif
                                             
@@ -1166,21 +1183,24 @@
                                 </tr>
                             @endforeach
                                 <tr class="text-center">
-                                    <td colspan="{{ $grade_level <= 10 ? '5' : '3'}}"><b>General Average</b></td>
+                                    <td style="text-align: right; padding-right: 1em" colspan="{{ $grade_level <= 10 ? '5' : '3'}}"><b>General Average</b></td>
                                     {{--  <td colspan="{{$ClassDetail ? $ClassDetail->section_grade_level <= 10 ? '8' : '2' : '4'}}"><b>General Average</b></td>  --}}
                                     <td>
                                         <b>
                                             @if($data->fir_g == 0 && $data->sec_g == 0 && $data->thi_g == 0 && $data->fou_g == 0)
                                                 
                                             @else
-                                                {{ $general_avg && $general_avg >= 0 ? round($general_avg) : '' }}
+                                                <!--//{{ $general_avg && $general_avg >= 0 ? round($general_avg) : '' }}-->
                                             @endif
                                         </b>
                                     </td>
                                     
+                                    
+
                                     @if($data->fir_g == 0 && $data->sec_g == 0 && $data->thi_g == 0 && $data->fou_g == 0)
                                         @if($general_avg && $general_avg > 74) 
-                                            <td style="color:'green';"><strong>Passed</strong></td>
+                                            <!--<td style="color:'green';"><strong>Passed</strong></td>-->
+                                            <td></td>
                                         @elseif($general_avg && $general_avg < 75) 
                                             <td style="color:'red';"><strong>Failed</strong></td>
                                         @else 
@@ -1188,14 +1208,14 @@
                                         @endif
                                     @else
                                         @if($general_avg && $general_avg > 74) 
-                                            <td style="color:'green';"><strong>Passed</strong></td>
+                                            <!--<td style="color:'green';"><strong>Passed</strong></td>-->
+                                            <td></td>
                                         @elseif($general_avg && $general_avg < 75) 
                                             <td style="color:'red';"><strong>Failed</strong></td>
                                         @else 
                                             <td></td>
                                         @endif
-                                    @endif
-                                    
+                                    @endif                                    
                                 </tr>
                         @else
                             
@@ -1310,13 +1330,13 @@
                     <tr style="margin-top: .5em">
                         <td colspan="3" style="border: 0">Eligible to transfer and admission to:
                                
-                                        @if($general_avg && $general_avg > 74) 
-                                            <strong><u>&nbsp;&nbsp;Grade {{ $ClassDetail->section_grade_level + 1 }}&nbsp;&nbsp;&nbsp;&nbsp;</u></strong>
-                                        @elseif($general_avg && $general_avg < 75) 
-                                            <strong><u>&nbsp;&nbsp;Grade {{ $ClassDetail->section_grade_level }}&nbsp;&nbsp;&nbsp;&nbsp;</u></strong>
-                                        @else 
+                                        <!--//@if($general_avg && $general_avg > 74) -->
+                                        <!--  //  <strong><u>&nbsp;&nbsp;Grade {{ $ClassDetail->section_grade_level + 1 }}&nbsp;&nbsp;&nbsp;&nbsp;</u></strong>-->
+                                        <!--//@elseif($general_avg && $general_avg < 75) -->
+                                        <!--  //  <strong><u>&nbsp;&nbsp;Grade {{ $ClassDetail->section_grade_level }}&nbsp;&nbsp;&nbsp;&nbsp;</u></strong>-->
+                                        <!--//@else -->
                                             _______________________                                            
-                                        @endif
+                                        <!--//@endif-->
                         </td>                
                     </tr>
 
@@ -1325,13 +1345,15 @@
                     </tr>
                     
                     <tr style="margin-top: .5em">
-                        <td colspan="3" style="border: 0">Date:___<u>{{ $DateRemarks->j_date }}</u>____</td>                
+                        <!--<td colspan="3" style="border: 0">Date:___<u>{{ $DateRemarks->j_date }}</u>____</td>  -->
+                        <td colspan="3" style="border: 0">Date:________________</td>  
                     </tr>
                     <tr style="margin-top: .5em">
                          <td colspan="3" style="border: 0">&nbsp;</td>   </tr>
                     {{-- <tr> <td colspan="3" style="border: 0">&nbsp;</td>   </tr> --}}
                 
                     <tr style="margin-top: 0em">
+                        
                             <table border="0" style="width: 100%; margin-top: -1em">
                                     <tr>
                                         <td style="border: 0; width: 50%;">
@@ -1341,13 +1363,32 @@
                                         </td>
                                         <td style="border: 0; width: 50%;">
                                             <center>
-                                                <img class="profile-user-img img-responsive img-circle" id="img--user_photo" src="{{ asset('/img/signature/principal_signature.png') }}" style="width:170px">
+
+                                                @if($ClassDetail->faculty_id == 26 || $ClassDetail->faculty_id == 28 )
+                                                    <img class="profile-user-img img-responsive img-circle" id="img--user_photo" src="{{ asset('/img/signature/principal_signature.png') }}" 
+                                                    style="width:170px; margin-top: 2em">
+                                                @elseif($ClassDetail->faculty_id == 23) 
+                                                    <img class="profile-user-img img-responsive img-circle" id="img--user_photo" src="{{ asset('/img/signature/principal_signature.png') }}" 
+                                                    style="width:170px; margin-top: 2.5em">            
+                                                @else
+                                                    <img class="profile-user-img img-responsive img-circle" id="img--user_photo" src="{{ asset('/img/signature/principal_signature.png') }}" 
+                                                    style="width:170px; ">
+                                                @endif
+                                                
                                             </center>
                                         </td>
                                     </tr>
                             </table>
-                            <table border="0" style="width: 100%; margin-top: -60px; margin-bottom: 0em">
-                                
+
+                            @if($ClassDetail->faculty_id == 7)
+                                <table border="0" style="width: 100%; margin-top: -100px; margin-bottom: 0em">     
+                            @elseif($ClassDetail->faculty_id == 20 || $ClassDetail->faculty_id == 59)
+                                <table border="0" style="width: 100%; margin-top: -85px; margin-bottom: 0em">
+                            @elseif($ClassDetail->faculty_id == 26 || $ClassDetail->faculty_id == 28 || $ClassDetail->faculty_id == 65 || $ClassDetail->faculty_id == 23 || $ClassDetail->faculty_id == 62 || $ClassDetail->faculty_id == 19  || $ClassDetail->faculty_id == 45  || $ClassDetail->faculty_id == 37)
+                                <table border="0" style="width: 100%; margin-top: -80px; margin-bottom: 0em">                         
+                            @else
+                                <table border="0" style="width: 100%; margin-top: -60px; margin-bottom: 0em">
+                            @endif   
                                 <tr>
                                     <td style="border: 0; width: 50%; height: 100px">
                                         <span style="margin-left: 2em; text-transform: uppercase">
@@ -1367,6 +1408,7 @@
                                         </td>
                                 </tr>
                             </table>
+                        
                         
                     </tr>
                     

@@ -10,7 +10,9 @@ class GradeSheetController extends Controller
     public function index (Request $request)
     {
         $StudentInformation = \App\StudentInformation::where('user_id', \Auth::user()->id)->first();
-        $SchoolYear = \App\SchoolYear::where('current', 1)->first();
+        $SchoolYear = \App\SchoolYear::where('current', 1)
+                    ->where('status', 1)
+                    ->first();
         
         if ($StudentInformation) 
         {
@@ -90,10 +92,11 @@ class GradeSheetController extends Controller
                 {
                     $StudentEnrolledSubject = \App\StudentEnrolledSubject::where('enrollments_id', $Enrollment[0]->enrollment_id)
                     ->get();
+
                     $grade_level = $Enrollment[0]->grade_level;
                     $grade_status = $Enrollment[0]->grade_status;
                     // return json_encode(['StudentEnrolledSubject'=> $StudentEnrolledSubject]);
-                    $GradeSheetData = $Enrollment->map(function ($item, $key) use ($StudentEnrolledSubject, $grade_level, $grade_status) {
+                    $GradeSheetData = $Enrollment->map(function ($item, $key) use ($StudentEnrolledSubject, $grade_status,  $grade_level) {
                         $grade = $StudentEnrolledSubject->firstWhere('subject_id', $item->subject_id);
                         $sum = 0;
                         $first = $grade->fir_g > 0 ? $grade->fir_g : 0;
@@ -269,7 +272,9 @@ class GradeSheetController extends Controller
     public function print_grades (Request $request)
     {
         $StudentInformation = \App\StudentInformation::where('user_id', \Auth::user()->id)->first();
-        $SchoolYear = \App\SchoolYear::where('current', 1)->first();
+        $SchoolYear = \App\SchoolYear::where('current', 1)
+            ->where('status', 1)
+            ->first();
         
         if ($StudentInformation) 
         {

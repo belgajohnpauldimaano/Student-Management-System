@@ -575,17 +575,18 @@
                                         <th>Third Grading</th>
                                         <th>Fourth Grading</th>
                                         {{--  @endif  --}}
-                                        @foreach ($StudentEnrolledSubject as $key => $data)
-                                        
-                                            @if (!$data->fir_g == 0 && !$data->sec_g  == 0 && !$data->thi_g  == 0 && !$data->fou_g == 0)
-                                                <th>Weighted Average</th>
-                                                @break
-                                            @else
-                                                <th>Final Average</th>
-                                                @break
-                                            @endif
+                                        {{-- @if($StudentEnrolledSubject) --}}
+                                            {{-- @foreach ($StudentEnrolledSubject as $key => $data)
                                             
-                                        @endforeach
+                                                @if (!$data->fir_g == 0 && !$data->sec_g  == 0 && !$data->thi_g  == 0 && !$data->fou_g == 0)
+                                                    <th>Weighted Average</th>
+                                                    @break
+                                                @else
+                                                    <th>Final Average</th>
+                                                    @break
+                                                @endif                                                
+                                            @endforeach --}}
+                                        {{-- @endif --}}
                                         <th>Remarks</th>
                                         
                                         <th>Faculty</th>

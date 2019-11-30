@@ -10,7 +10,7 @@ class GradeSheetController extends Controller
     public function index (Request $request)
     {
         $StudentInformation = \App\StudentInformation::where('user_id', \Auth::user()->id)->first();
-        $SchoolYear = \App\SchoolYear::where('current', 1)->first();
+        $SchoolYear = \App\SchoolYear::where('current', 1)->where('status', 1)->first();
         
         if ($StudentInformation) 
         {
@@ -316,7 +316,7 @@ class GradeSheetController extends Controller
     public function print_grades (Request $request)
     {
         $StudentInformation = \App\StudentInformation::where('user_id', \Auth::user()->id)->first();
-        $SchoolYear = \App\SchoolYear::where('current', 1)->first();
+        $SchoolYear = \App\SchoolYear::where('current', 1)->where('status', 1)->first();
 
         
         

@@ -205,7 +205,6 @@ class ClassSubjectsController extends Controller
         $SectionDetail = \App\SectionDetail::where('status', 1)->get();
         $Room = \App\Room::where('status', 1)->get();
         $SchoolYear = \App\SchoolYear::where('status', 1)->get();
-
         
 
         return view('control_panel_registrar.class_subjects.partials.modal_manage_subjects', compact('ClassSubjectDetail', 'FacultyInformation', 'ClassSubjectDetail', 'SectionDetail', 'Room', 'SchoolYear'))->render();

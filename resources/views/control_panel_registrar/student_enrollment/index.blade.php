@@ -392,7 +392,7 @@
            
 
             $('.js-btn_re_enroll_student').click(function(){
-                var checkstr =  confirm('are you sure you want to delete this?');
+                var checkstr =  confirm('are you sure you want to re-enroll?');
                 if(checkstr == true){
                 // do your code
                 }else{

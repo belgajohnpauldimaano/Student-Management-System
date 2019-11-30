@@ -21,10 +21,8 @@
         <div class="box-body">
             <div class="js-data-container">
                 @include('control_panel.student_information.partials.data_list')
-                
             </div>
         </div>
-        
     </div>
 @endsection
 
@@ -48,7 +46,6 @@
                 }
             });
         }
-        
         $(function () {
             $('body').on('click', '#js-button-add, .js-btn_update_sy', function (e) {
                 e.preventDefault();
@@ -102,11 +99,22 @@
                     return
                 }
                 window.open("{{ route('admin.student.information.print_student_grades') }}?id="+id+"&cid="+print_sy, '', 'height=800,width=800')
-                
+                {{--  $.ajax({
+                    url : "{{ route('admin.student.information.print_student_grade_modal') }}",
+                    type : 'POST',
+                    data : { _token : '{{ csrf_token() }}', id : id },
+                    success : function (res) {
+                        $('.js-modal_holder').html(res);
+                        $('.js-modal_holder .modal').modal({ backdrop : 'static' });
+                        $('.js-modal_holder .modal').on('shown.bs.modal', function () {
+                            //Date picker
+                            $('#datepicker').datepicker({
+                                autoclose: true
+                            })
+                        });
+                    }
+                });  --}}
             })
-            
-            
-            
 
             $('body').on('submit', '#js-form_subject_details', function (e) {
                 e.preventDefault();
@@ -181,12 +189,6 @@
 
                 });
             });
-
-            $('body').on('submit', '#form_user_photo_uploader', function (e) {
-                e.preventDefault();
-                readURL($(this));
-            });
-
             $('body').on('click', '.btn--update-photo', function (e) {
                 $('#user--photo').click()
             })
