@@ -264,11 +264,14 @@ class GradeSheetController extends Controller
 
             $GradeSheetData = json_decode(json_encode($GradeSheetData));
             $GradeSheetData1 = json_decode(json_encode($GradeSheetData1));
-            return view('control_panel_student.grade_sheet.index', compact('GradeSheetData', 'grade_level' ,'StudentInformation','GradeSheetData1','getSchoolYear','Enrollment2','Enrollment'));
+            return view('control_panel_student.grade_sheet.index', 
+                compact('GradeSheetData', 'grade_level' ,'StudentInformation','GradeSheetData1','getSchoolYear','Enrollment2','Enrollment','StudentEnrolledSubject'));
             return json_encode(['GradeSheetData' => $GradeSheetData,]);
             return json_encode(['GradeSheetData1' => $GradeSheetData1,]);
         }
     }
+
+    
     public function print_grades (Request $request)
     {
         $StudentInformation = \App\StudentInformation::where('user_id', \Auth::user()->id)->first();

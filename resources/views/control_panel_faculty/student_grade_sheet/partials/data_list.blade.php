@@ -40,7 +40,7 @@
                         @if($ClassSubjectDetail->grade_level==11 || $ClassSubjectDetail->grade_level==12)
                             
                             @if($ClassSubjectDetail->sem==1)
-                                    <button class="btn btn-flat btn-danger pull-right" id="js-btn_print1" data-id="{{ $ClassSubjectDetail->id }}"><i class="fa fa-file-pdf"></i> Print</button>
+                                    <button class="btn btn-flat btn-danger pull-right" id="js-btn_print_sem1" data-id="{{ $ClassSubjectDetail->id }}"><i class="fa fa-file-pdf"></i> Print</button>
                                     <table class="table no-margin">
                                         <thead>
                                             <tr>
@@ -235,7 +235,7 @@
                                         </tbody>
                                     </table>
                             @else
-                            <button class="btn btn-flat btn-danger pull-right" id="js-btn_print1" data-id="{{ $ClassSubjectDetail->id }}"><i class="fa fa-file-pdf"></i> Print</button>
+                            <button class="btn btn-flat btn-danger pull-right" id="js-btn_print_sem2" data-id="{{ $ClassSubjectDetail->id }}"><i class="fa fa-file-pdf"></i> Print</button>
                             <table class="table no-margin">
                                 <thead>
                                     <tr>

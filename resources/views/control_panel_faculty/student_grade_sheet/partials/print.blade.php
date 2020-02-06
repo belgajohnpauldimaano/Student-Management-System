@@ -99,10 +99,10 @@
     <p class="heading2 heading2-subtitle">Dinalupihan, Bataan</p>
     
     <p class="heading1">Republic of the Philippines
-            <p class="heading1">Department of Education</p>
-            <p class="heading1">Region III</p>
-            <p class="heading1">Division of Bataan</p>
-            <br/>
+    <p class="heading1">Department of Education</p>
+    <p class="heading1">Region III</p>
+    <p class="heading1">Division of Bataan</p>
+    <br/>
     <p class="report-progress m0">REPORT ON LEARNING PROGRESS AND ACHIEVEMENT</p>
     <p class="report-progress m0">( {{ $ClassSubjectDetail ?  $ClassSubjectDetail->grade_level >= 11 ? 'SENIOR HIGH SCHOOL' : 'JUNIOR HIGH SCHOOL' : ''}} )</p>
     <img style="margin-left: 8em" class="logo" width="100" src="{{ asset('img/sja-logo.png') }}" />
