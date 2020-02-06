@@ -412,7 +412,7 @@ class AdvisoryClassController extends Controller
                     school_years.school_year,
                     rooms.room_code,
                     rooms.room_description,
-                    faculty_informations.id,
+                    faculty_informations.id as faculty_id,
                     faculty_informations.first_name, faculty_informations.middle_name ,  faculty_informations.last_name,
                     faculty_informations.e_signature
                     
@@ -443,7 +443,7 @@ class AdvisoryClassController extends Controller
                     school_years.school_year,
                     rooms.room_code,
                     rooms.room_description,
-                    faculty_informations.id,
+                    faculty_informations.id as faculty_id,
                     faculty_informations.first_name, faculty_informations.middle_name ,  faculty_informations.last_name,
                     faculty_informations.e_signature,
                     strands.strand

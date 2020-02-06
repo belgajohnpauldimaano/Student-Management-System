@@ -52,7 +52,7 @@ class EncodeRemarkController extends Controller
                 ->whereRaw('class_details.adviser_id = '. $FacultyInformation->id)
                 // ->whereRaw('enrollments.class_details_id = '. $class_id)
                 ->whereRaw('student_informations.gender = 1')    
-                ->where('school_years.id', $SchoolYear->id)     
+                ->where('school_years.current', '!=', 0)     
                 ->select(\DB::raw("
                     enrollments.id as e_id,
                     enrollments.attendance,
@@ -183,8 +183,8 @@ class EncodeRemarkController extends Controller
                         }
                         else
                         {
-                            if(round($StudentEnrolledSubject1->thi_g) != 0 && round($StudentEnrolledSubject1->fou_g) != 0)
-                            {
+                            // if(round($StudentEnrolledSubject1->thi_g) != 0 && round($StudentEnrolledSubject1->fou_g) != 0)
+                            // {
                                 $totalsum = 0;
                                 $count_subjects1 = \App\StudentEnrolledSubject::where('enrollments_id', $Enrollment[0]->enrollment_id)
                                     ->where('sem', 2)->where('status', '!=', 0)->count();
@@ -200,7 +200,7 @@ class EncodeRemarkController extends Controller
                                     $totalsum += round($final_ave) / $count_subjects1 ;
                                 }
                                                                     
-                            }
+                            // }
                         }
 
 
@@ -294,8 +294,8 @@ class EncodeRemarkController extends Controller
                         }
                         else
                         {
-                            if(round($StudentEnrolledSubject_female->thi_g) != 0 && round($StudentEnrolledSubject_female->fou_g) != 0)
-                            {
+                            // if(round($StudentEnrolledSubject_female->thi_g) != 0 && round($StudentEnrolledSubject_female->fou_g) != 0)
+                            // {
                                 $totalsum = 0;
                                 $count_subjects1 = \App\StudentEnrolledSubject::where('enrollments_id', $Enrollment_female[0]->enrollment_id)
                                     ->where('sem', 2)->where('status', '!=', 0)->count();
@@ -311,7 +311,7 @@ class EncodeRemarkController extends Controller
                                     $totalsum += round($final_ave) / $count_subjects1 ;
                                 }
                                                                     
-                            }
+                            // }
                         }
 
 

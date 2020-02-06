@@ -626,30 +626,32 @@
                     <tr style="margin-top: .5em">
                         <td colspan="3" style="border: 0">Eligible to transfer and admission to:
                         
-                            @if(round($StudentEnrolledSubject1->fir_g) != 0 && round($StudentEnrolledSubject1->sec_g) != 0)
-                                @if(round($totalsum) > 74) 
+                            <!--@if(round($StudentEnrolledSubject1->fir_g) != 0 && round($StudentEnrolledSubject1->sec_g) != 0)-->
+                            <!--    @if(round($totalsum) > 74) -->
                                     
-                                        <strong><u>&nbsp;&nbsp;Grade {{ $ClassDetail->section_grade_level}} Second Semester&nbsp;&nbsp;&nbsp;&nbsp;</u></strong>
+                            <!--            <strong><u>&nbsp;&nbsp;Grade {{ $ClassDetail->section_grade_level}} Second Semester&nbsp;&nbsp;&nbsp;&nbsp;</u></strong>-->
                                                                        
-                                @elseif(round($totalsum) < 75) 
+                            <!--    @elseif(round($totalsum) < 75) -->
                                     
-                                   <strong>Failed</strong>
-                                @else 
-                                ________________
-                                @endif
-                            @else
-                                ________________
-                            @endif        
-                        
+                            <!--       <strong>Failed</strong>-->
+                            <!--    @else -->
+                            <!--    ________________-->
+                            <!--    @endif-->
+                            <!--@else-->
+                            <!--    ________________-->
+                            <!--@endif        -->
+                        ________________________________
                         </td>                
                     </tr>
 
                     <tr style="margin-top: .5em">
-                        <td colspan="3" style="border: 0">Lacking units in:___<u>{{ $Enrollment[0]->s1_lacking_unit }}</u>____</td>                
+                        {{-- <td colspan="3" style="border: 0">Lacking units in:___<u>{{ $Enrollment[0]->s1_lacking_unit }}</u>____</td> --}}
+                        <td colspan="3" style="border: 0">Lacking units in:__________________</td>                
                     </tr>
                     
                     <tr style="margin-top: .5em">
-                        <td colspan="3" style="border: 0">Date:___<u>{{ $DateRemarks->s_date1 }}</u>____</td>                
+                        {{-- <td colspan="3" style="border: 0">Date:___<u>{{ $DateRemarks->s_date1 }}</u>____</td>       --}}
+                        <td colspan="3" style="border: 0">Date:__________________</td>                
                     </tr>
                     <tr style="margin-top: .5em">
                         <td colspan="3" style="border: 0">&nbsp;</td>   </tr>
@@ -657,20 +659,45 @@
                 
                     <tr style="margin-top: 0em">
                             <table border="0" style="width: 100%; margin-top: -1em" class="pb-1">
+                                
                                     <tr>
                                         <td style="border: 0; width: 50%;">
                                             <center>
-                                                <img class="profile-user-img img-responsive img-circle" id="img--user_photo" src="{{ $ClassDetail->e_signature ? \File::exists(public_path('/img/signature/'.$ClassDetail->e_signature)) ? asset('/img/signature/'.$ClassDetail->e_signature) : asset('/img/account/photo/blank-user.png') : asset('/img/account/photo/blank-user.png') }}" style="width:100px">
+                                                @if($ClassDetail->faculty_id == 46 )
+                                                    <img class="profile-user-img img-responsive img-circle" id="img--user_photo"  src="{{ $ClassDetail->e_signature ? \File::exists(public_path('/img/signature/'.$ClassDetail->e_signature)) ? asset('/img/signature/'.$ClassDetail->e_signature) : asset('/img/account/photo/blank-user.png') : asset('/img/account/photo/blank-user.png') }}" 
+                                                    style="width:100px; margin-top: -5em">
+                                                @elseif($ClassDetail->faculty_id == 71 || $ClassDetail->faculty_id == 79)
+                                                    <img class="profile-user-img img-responsive img-circle" id="img--user_photo"  src="{{ $ClassDetail->e_signature ? \File::exists(public_path('/img/signature/'.$ClassDetail->e_signature)) ? asset('/img/signature/'.$ClassDetail->e_signature) : asset('/img/account/photo/blank-user.png') : asset('/img/account/photo/blank-user.png') }}" 
+                                                    style="width:100px; margin-top: -1em">
+                                                @elseif($ClassDetail->faculty_id == 52 || $ClassDetail->faculty_id == 76 || $ClassDetail->faculty_id == 73)
+                                                    <img class="profile-user-img img-responsive img-circle" id="img--user_photo"  src="{{ $ClassDetail->e_signature ? \File::exists(public_path('/img/signature/'.$ClassDetail->e_signature)) ? asset('/img/signature/'.$ClassDetail->e_signature) : asset('/img/account/photo/blank-user.png') : asset('/img/account/photo/blank-user.png') }}" 
+                                                    style="width:170px; margin-top: -1em">
+                                                @elseif($ClassDetail->faculty_id == 36)
+                                                    <img class="profile-user-img img-responsive img-circle" id="img--user_photo"  src="{{ $ClassDetail->e_signature ? \File::exists(public_path('/img/signature/'.$ClassDetail->e_signature)) ? asset('/img/signature/'.$ClassDetail->e_signature) : asset('/img/account/photo/blank-user.png') : asset('/img/account/photo/blank-user.png') }}" 
+                                                    style="width:170px; margin-top: -1.5em">
+                                                @else
+                                                    <img class="profile-user-img img-responsive img-circle" id="img--user_photo" src="{{ $ClassDetail->e_signature ? \File::exists(public_path('/img/signature/'.$ClassDetail->e_signature)) ? asset('/img/signature/'.$ClassDetail->e_signature) : asset('/img/account/photo/blank-user.png') : asset('/img/account/photo/blank-user.png') }}"
+                                                     style="width:100px">
+                                                @endif
                                             </center>
                                         </td>
                                         <td style="border: 0; width: 50%;">
                                             <center>
-                                                <img class="profile-user-img img-responsive img-circle" id="img--user_photo" src="{{ asset('/img/signature/principal_signature.png') }}" style="width:170px">
+                                                <img class="profile-user-img img-responsive img-circle" id="img--user_photo" src="{{ asset('/img/signature/principal_signature.png') }}"
+                                                 style="width:170px">
                                             </center>
                                         </td>
                                     </tr>
                             </table>
-                            <table border="0" style="width: 100%; margin-top: -70px; margin-bottom: 0em">                                
+                            @if($ClassDetail->faculty_id == 46 || $ClassDetail->faculty_id == 52 )
+                                <table border="0" style="width: 100%; margin-top: -85px; margin-bottom: 0em">     
+                            @elseif($ClassDetail->faculty_id == 71 || $ClassDetail->faculty_id == 70 || $ClassDetail->faculty_id == 79)
+                                <table border="0" style="width: 100%; margin-top: -90px; margin-bottom: 0em">
+                            @elseif($ClassDetail->faculty_id == 76 || $ClassDetail->faculty_id == 73 || $ClassDetail->faculty_id == 36)
+                                <table border="0" style="width: 100%; margin-top: -87px; margin-bottom: 0em">     
+                            @else
+                                <table border="0" style="width: 100%; margin-top: -70px; margin-bottom: 0em">
+                            @endif                              
                                 <tr>
                                     <td style="border: 0; width: 50%; height: 100px">
                                         <span style="margin-left: 2em; text-transform: uppercase">
@@ -1048,52 +1075,80 @@
                 </tr>
 
                 <tr style="margin-top: .5em">
-                    <td colspan="3" style="border: 0">Eligible to transfer and admission to:
-                            @if(round($StudentEnrolledSubject1->thi_g) != 0 && round($StudentEnrolledSubject1->fou_g) != 0)
-                            @if(round($totalsum) > 74) 
+                    <td colspan="3" style="border: 0">
+                        Eligible to transfer and admission to:
+                        <!--@if(round($StudentEnrolledSubject1->thi_g) != 0 && round($StudentEnrolledSubject1->fou_g) != 0)-->
+                        <!--    @if(round($totalsum) > 74) -->
                                 
-                                    <strong><u>&nbsp;&nbsp;College&nbsp;&nbsp;&nbsp;&nbsp;</u></strong>
+                        <!--            <strong><u>&nbsp;&nbsp;College&nbsp;&nbsp;&nbsp;&nbsp;</u></strong>-->
                                                                  
-                            @elseif(round($totalsum) < 75) 
+                        <!--    @elseif(round($totalsum) < 75) -->
                                 
-                               <strong>Failed</strong>
-                            @else 
-                                <td></td>
-                            @endif
-                        @else
-                            <td></td>
-                        @endif       
+                        <!--       <strong>Failed</strong>-->
+                        <!--    @else -->
+                        <!--        <td></td>-->
+                        <!--    @endif-->
+                        <!--@else-->
+                        <!--    <td></td>-->
+                        <!--@endif       -->
+                        ________________________________
                     </td>                
                 </tr>
 
                 <tr style="margin-top: .5em">
-                    <td colspan="3" style="border: 0">Lacking units in:___<u>{{ $Enrollment[0]->s2_lacking_unit }}</u>____</td>                
+                    <td colspan="3" style="border: 0">Lacking units in:___<u>____________</u>____</td>        
+                    {{-- {{ $Enrollment[0]->s2_lacking_unit }}         --}}
                 </tr>
                 
                 <tr style="margin-top: .5em">
-                    <td colspan="3" style="border: 0">Date:___<u>{{ $DateRemarks->s_date2 }}</u>____</td>                
+                    <td colspan="3" style="border: 0">Date:___<u>_______________</u>____</td>
+                    {{-- {{ $DateRemarks->s_date2 }}              --}}
                 </tr>
                 <tr style="margin-top: .5em">
                      <td colspan="3" style="border: 0">&nbsp;</td>   </tr>
                 {{-- <tr> <td colspan="3" style="border: 0">&nbsp;</td>   </tr> --}}
             
                 <tr style="margin-top: 0em">
-                        <table border="0" style="width: 100%; margin-top: -1em">
+                        <table border="0" style="width: 100%; margin-top: -1em" class="pb-1">
+                            
                                 <tr>
-                                        <td style="border: 0; width: 50%;">
+                                    <td style="border: 0; width: 50%;">
                                         <center>
-                                            <img class="profile-user-img img-responsive img-circle" id="img--user_photo" src="{{ $ClassDetail->e_signature ? \File::exists(public_path('/img/signature/'.$ClassDetail->e_signature)) ? asset('/img/signature/'.$ClassDetail->e_signature) : asset('/img/account/photo/blank-user.png') : asset('/img/account/photo/blank-user.png') }}" style="width:100px">
+                                            @if($ClassDetail->faculty_id == 46 )
+                                                <img class="profile-user-img img-responsive img-circle" id="img--user_photo"  src="{{ $ClassDetail->e_signature ? \File::exists(public_path('/img/signature/'.$ClassDetail->e_signature)) ? asset('/img/signature/'.$ClassDetail->e_signature) : asset('/img/account/photo/blank-user.png') : asset('/img/account/photo/blank-user.png') }}" 
+                                                style="width:100px; margin-top: -5em">
+                                            @elseif($ClassDetail->faculty_id == 71 || $ClassDetail->faculty_id == 79)
+                                                <img class="profile-user-img img-responsive img-circle" id="img--user_photo"  src="{{ $ClassDetail->e_signature ? \File::exists(public_path('/img/signature/'.$ClassDetail->e_signature)) ? asset('/img/signature/'.$ClassDetail->e_signature) : asset('/img/account/photo/blank-user.png') : asset('/img/account/photo/blank-user.png') }}" 
+                                                style="width:100px; margin-top: -1em">
+                                            @elseif($ClassDetail->faculty_id == 52 || $ClassDetail->faculty_id == 76 || $ClassDetail->faculty_id == 73)
+                                                <img class="profile-user-img img-responsive img-circle" id="img--user_photo"  src="{{ $ClassDetail->e_signature ? \File::exists(public_path('/img/signature/'.$ClassDetail->e_signature)) ? asset('/img/signature/'.$ClassDetail->e_signature) : asset('/img/account/photo/blank-user.png') : asset('/img/account/photo/blank-user.png') }}" 
+                                                style="width:170px; margin-top: -1em">
+                                            @elseif($ClassDetail->faculty_id == 36)
+                                                <img class="profile-user-img img-responsive img-circle" id="img--user_photo"  src="{{ $ClassDetail->e_signature ? \File::exists(public_path('/img/signature/'.$ClassDetail->e_signature)) ? asset('/img/signature/'.$ClassDetail->e_signature) : asset('/img/account/photo/blank-user.png') : asset('/img/account/photo/blank-user.png') }}" 
+                                                style="width:170px; margin-top: -1.5em">
+                                            @else
+                                                <img class="profile-user-img img-responsive img-circle" id="img--user_photo" src="{{ $ClassDetail->e_signature ? \File::exists(public_path('/img/signature/'.$ClassDetail->e_signature)) ? asset('/img/signature/'.$ClassDetail->e_signature) : asset('/img/account/photo/blank-user.png') : asset('/img/account/photo/blank-user.png') }}"
+                                                 style="width:100px">
+                                            @endif
                                         </center>
                                     </td>
                                     <td style="border: 0; width: 50%;">
                                         <center>
-                                            <img class="profile-user-img img-responsive img-circle" id="img--user_photo" src="{{ asset('/img/signature/principal_signature.png') }}" style="width:170px">
+                                            <img class="profile-user-img img-responsive img-circle" id="img--user_photo" src="{{ asset('/img/signature/principal_signature.png') }}"
+                                             style="width:170px">
                                         </center>
                                     </td>
                                 </tr>
                         </table>
-                        <table border="0" style="width: 100%; margin-top: -70px; margin-bottom: 0em">
-                            
+                        @if($ClassDetail->faculty_id == 46 || $ClassDetail->faculty_id == 52 )
+                            <table border="0" style="width: 100%; margin-top: -85px; margin-bottom: 0em">     
+                        @elseif($ClassDetail->faculty_id == 71 || $ClassDetail->faculty_id == 70 || $ClassDetail->faculty_id == 79)
+                            <table border="0" style="width: 100%; margin-top: -90px; margin-bottom: 0em">
+                        @elseif($ClassDetail->faculty_id == 76 || $ClassDetail->faculty_id == 73 || $ClassDetail->faculty_id == 36)
+                            <table border="0" style="width: 100%; margin-top: -87px; margin-bottom: 0em">     
+                        @else
+                            <table border="0" style="width: 100%; margin-top: -70px; margin-bottom: 0em">
+                        @endif                              
                             <tr>
                                 <td style="border: 0; width: 50%; height: 100px">
                                     <span style="margin-left: 2em; text-transform: uppercase">
@@ -1341,7 +1396,7 @@
                     </tr>
 
                     <tr style="margin-top: .5em">
-                        <td colspan="3" style="border: 0">Lacking units in:___<u></u>____</td>                
+                        <td colspan="3" style="border: 0">Lacking units in:________<u></u>____</td>                
                     </tr>
                     
                     <tr style="margin-top: .5em">
@@ -1358,13 +1413,18 @@
                                     <tr>
                                         <td style="border: 0; width: 50%;">
                                             <center>
-                                                <img class="profile-user-img img-responsive img-circle" id="img--user_photo" src="{{ $ClassDetail->e_signature ? \File::exists(public_path('/img/signature/'.$ClassDetail->e_signature)) ? asset('/img/signature/'.$ClassDetail->e_signature) : asset('/img/account/photo/blank-user.png') : asset('/img/account/photo/blank-user.png') }}" style="width:100px">
+                                                @if($ClassDetail->faculty_id == 30)
+                                                    <img class="profile-user-img img-responsive img-circle" id="img--user_photo" src="{{ $ClassDetail->e_signature ? \File::exists(public_path('/img/signature/'.$ClassDetail->e_signature)) ? asset('/img/signature/'.$ClassDetail->e_signature) : asset('/img/account/photo/blank-user.png') : asset('/img/account/photo/blank-user.png') }}" style="width:150px; margin-bottom: 1em">
+                                                @else
+                                                    <img class="profile-user-img img-responsive img-circle" id="img--user_photo" src="{{ $ClassDetail->e_signature ? \File::exists(public_path('/img/signature/'.$ClassDetail->e_signature)) ? asset('/img/signature/'.$ClassDetail->e_signature) : asset('/img/account/photo/blank-user.png') : asset('/img/account/photo/blank-user.png') }}" style="width:100px">
+                                                @endif
+                                                
                                             </center>
                                         </td>
                                         <td style="border: 0; width: 50%;">
                                             <center>
 
-                                                @if($ClassDetail->faculty_id == 26 || $ClassDetail->faculty_id == 28 )
+                                                @if($ClassDetail->faculty_id == 26 || $ClassDetail->faculty_id == 28 || $ClassDetail->faculty_id == 66 || $ClassDetail->faculty_id == 10|| $ClassDetail->faculty_id == 11)
                                                     <img class="profile-user-img img-responsive img-circle" id="img--user_photo" src="{{ asset('/img/signature/principal_signature.png') }}" 
                                                     style="width:170px; margin-top: 2em">
                                                 @elseif($ClassDetail->faculty_id == 23) 
@@ -1382,9 +1442,14 @@
 
                             @if($ClassDetail->faculty_id == 7)
                                 <table border="0" style="width: 100%; margin-top: -100px; margin-bottom: 0em">     
-                            @elseif($ClassDetail->faculty_id == 20 || $ClassDetail->faculty_id == 59)
+                            @elseif($ClassDetail->faculty_id == 20 || $ClassDetail->faculty_id == 59 || $ClassDetail->faculty_id == 21)
                                 <table border="0" style="width: 100%; margin-top: -85px; margin-bottom: 0em">
-                            @elseif($ClassDetail->faculty_id == 26 || $ClassDetail->faculty_id == 28 || $ClassDetail->faculty_id == 65 || $ClassDetail->faculty_id == 23 || $ClassDetail->faculty_id == 62 || $ClassDetail->faculty_id == 19  || $ClassDetail->faculty_id == 45  || $ClassDetail->faculty_id == 37)
+                            @elseif($ClassDetail->faculty_id== 68|| $ClassDetail->faculty_id == 10|| $ClassDetail->faculty_id == 11 || $ClassDetail->faculty_id == 14 || $ClassDetail->faculty_id == 30)
+                                <table border="0" style="width: 100%; margin-top: -90px; margin-bottom: 0em">
+                            @elseif($ClassDetail->faculty_id == 66)
+                                <table border="0" style="width: 100%; margin-top: -90px; margin-bottom: 0em">
+                            @elseif($ClassDetail->faculty_id == 26 || $ClassDetail->faculty_id == 28 || $ClassDetail->faculty_id == 65 || $ClassDetail->faculty_id == 23 || $ClassDetail->faculty_id == 62 || $ClassDetail->faculty_id == 19
+                              || $ClassDetail->faculty_id == 45 || $ClassDetail->faculty_id == 37 || $ClassDetail->faculty_id == 60  || $ClassDetail->faculty_id == 25 || $ClassDetail->faculty_id== 67)
                                 <table border="0" style="width: 100%; margin-top: -80px; margin-bottom: 0em">                         
                             @else
                                 <table border="0" style="width: 100%; margin-top: -60px; margin-bottom: 0em">

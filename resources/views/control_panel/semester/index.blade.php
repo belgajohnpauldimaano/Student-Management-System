@@ -18,10 +18,8 @@
 
 @section ('scripts')
     <script>
-        var page = 1;
-        function fetch_data () {
-            var formData = new FormData($('#js-form_search'));
-            formData.append('page', page);
+        
+        function fetch_data () {            
             loader_overlay();
             $.ajax({
                 url : "{{ route('admin.maintenance.semester') }}",
@@ -30,7 +28,7 @@
                 processData : false,
                 contentType : false,
                 success     : function (res) {
-                    loader_overlay();
+                   loader_overlay();
                     $('.js-data-container').html(res);
                 }
             });
@@ -65,10 +63,11 @@
                                     message : res.res_msg,
                                     type    : 'success'
                                 });
-                               fetch_data();
+                               
                                setTimeout(function() {
-                                location.reload();
+                                    location.reload();
                                 }, 15);
+                                fetch_data();
                             }
                         }
                     });

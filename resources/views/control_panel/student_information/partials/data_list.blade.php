@@ -5,7 +5,7 @@
                             <thead>
                                 <tr>
                                     <th>Name</th>
-                                    {{-- <th>Username</th> --}}
+                                    <th>Username</th>
                                     <th>Gender</th>
                                     <th>Date of Birth</th>
                                     <th>Parent/Guardian</th>
@@ -19,7 +19,7 @@
                                     @foreach ($StudentInformation as $data)
                                         <tr>
                                             <td>{{ $data->last_name . ' ' .$data->first_name . ' ' . $data->middle_name }}</td>
-                                            {{-- <td>{{ $data->user->username }}</td> --}}
+                                            <td>{{ $data->user->username }}</td>
                                             <td>{{ ($data->gender == 1 ? 'Male' : 'Female') }}</td>
                                             <td>{{ $data->birthdate ? date_format(date_create($data->birthdate), 'F d, Y') : '' }}</td>
                                             <td>{{ $data->guardian }}</td>

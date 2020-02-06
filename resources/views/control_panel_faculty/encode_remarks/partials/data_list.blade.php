@@ -241,7 +241,7 @@
                                     
                                     @if($ClassSubjectDetail->grade_level == 11)  
                                     
-                                        @if(round($StudentEnrolledSubject1->fir_g) != 0 && round($StudentEnrolledSubject1->sec_g) != 0)
+                                        {{-- @if(round($StudentEnrolledSubject1->fir_g) != 0 && round($StudentEnrolledSubject1->sec_g) != 0) --}}
                                             @if(round($totalsum) > 74) 
                                                 @if($ClassDetail->section_grade_level == 12)
                                                     {{-- <strong><u>&nbsp;&nbsp;College&nbsp;&nbsp;&nbsp;&nbsp;</u></strong> --}}
@@ -253,9 +253,9 @@
                                             @elseif(round($totalsum) < 75)                                        
                                                 <input type="text" class="form-control" name="grade" value="Grade {{ $ClassDetail->section_grade_level - 1 }}" placeholder="Grade">
                                             @endif
-                                        @else
+                                        {{-- @else
                                             <input type="text" class="form-control" name="grade" placeholder="Grade">
-                                        @endif
+                                        @endif --}}
         
                                     @elseif($ClassSubjectDetail->grade_level == 12)
         
@@ -282,7 +282,7 @@
                             </td>
                             <td>
                                 @if($ClassSubjectDetail->grade_level == 11)
-                                    <input type="text" class="form-control" name="s1_lacking_units" placeholder="Lacking units" value="{{ $data->s1_lacking_unit }}">
+                                    <input type="text" class="form-control" name="s1_lacking_units" placeholder="Lacking units" value="{{ $data->s1_lacking_unit }}"
                                     
                                 @elseif($ClassSubjectDetail->grade_level == 12)        
                                     <input type="text" class="form-control" name="s2_lacking_units" placeholder="Lacking units" value="{{ $data->s2_lacking_unit }}">
@@ -343,109 +343,109 @@
 
                         @foreach ($EnrollmentFemale as $key => $data) 
                         <form id="js_lacking_units_sr_fem">
-                            {{ csrf_field() }}
-                            <tr>
-                                <td>{{ $key + 1 }}.</td>
-                                <td>{{ $data->student_name }}</td>
-                                
-                                {{-- <td><a style="cursor: pointer;" rel="{{ $data->student_information_id }}" class="printGrade" data-id="{{ encrypt($data->id) }}">Print Grade</a></td> --}}
-                                <td>
-                                    {{-- <input type="hidden" id="stud_id" name="stud_id" value="" /> --}}
-                                        {{-- {{  $data->c_address }} --}}
-                                        
-                                        @if($ClassSubjectDetail->grade_level == 11)  
-                                        
-                                            @if(round($StudentEnrolledSubject_female->fir_g) != 0 && round($StudentEnrolledSubject_female->sec_g) != 0)
-                                                @if(round($totalsum) > 74) 
-                                                    @if($ClassDetail->section_grade_level == 12)
-                                                        {{-- <strong><u>&nbsp;&nbsp;College&nbsp;&nbsp;&nbsp;&nbsp;</u></strong> --}}
-                                                        <input type="text" class="form-control" name="grade" value="College" placeholder="Grade">
-                                                    @else
-                                                        <input type="text" class="form-control" name="grade" value="Grade {{ $ClassDetail->section_grade_level}} Second Semester" placeholder="Grade">
-                                                        {{-- <strong><u>&nbsp;&nbsp;Grade {{ $ClassDetail->section_grade_level + 1 }}&nbsp;&nbsp;&nbsp;&nbsp;</u></strong> --}}
-                                                    @endif
-                                                @elseif(round($totalsum) < 75)                                        
-                                                    <input type="text" class="form-control" name="grade" value="Grade {{ $ClassDetail->section_grade_level - 1 }}" placeholder="Grade">
+                        {{ csrf_field() }}
+                        <tr>
+                            <td>{{ $key + 1 }}.</td>
+                            <td>{{ $data->student_name }}</td>
+                            
+                            {{-- <td><a style="cursor: pointer;" rel="{{ $data->student_information_id }}" class="printGrade" data-id="{{ encrypt($data->id) }}">Print Grade</a></td> --}}
+                            <td>
+                                {{-- <input type="hidden" id="stud_id" name="stud_id" value="" /> --}}
+                                    {{-- {{  $data->c_address }} --}}
+                                    
+                                    @if($ClassSubjectDetail->grade_level == 11)  
+                                    
+                                        {{-- @if(round($StudentEnrolledSubject1->fir_g) != 0 && round($StudentEnrolledSubject1->sec_g) != 0) --}}
+                                            @if(round($totalsum) > 74) 
+                                                @if($ClassDetail->section_grade_level == 12)
+                                                    {{-- <strong><u>&nbsp;&nbsp;College&nbsp;&nbsp;&nbsp;&nbsp;</u></strong> --}}
+                                                    <input type="text" class="form-control" name="grade" value="College" placeholder="Grade">
+                                                @else
+                                                    <input type="text" class="form-control" name="grade" value="Grade {{ $ClassDetail->section_grade_level}} Second Semester" placeholder="Grade">
+                                                    {{-- <strong><u>&nbsp;&nbsp;Grade {{ $ClassDetail->section_grade_level + 1 }}&nbsp;&nbsp;&nbsp;&nbsp;</u></strong> --}}
                                                 @endif
-                                            @else
-                                                <input type="text" class="form-control" name="grade" placeholder="Grade">
+                                            @elseif(round($totalsum) < 75)                                        
+                                                <input type="text" class="form-control" name="grade" value="Grade {{ $ClassDetail->section_grade_level - 1 }}" placeholder="Grade">
                                             @endif
-            
-                                        @elseif($ClassSubjectDetail->grade_level == 12)
-            
-                                            @if(round($StudentEnrolledSubject_female->thi_g) != 0 && round($StudentEnrolledSubject_female->fou_g) != 0)
-                                                @if(round($totalsum) > 74) 
-                                                    @if($ClassDetail->section_grade_level == 12)
-                                                        {{-- <strong><u>&nbsp;&nbsp;College&nbsp;&nbsp;&nbsp;&nbsp;</u></strong> --}}
-                                                        <input type="text" class="form-control" name="grade" value="College" placeholder="Grade">
-                                                    @else
-                                                        <input type="text" class="form-control" name="grade" value="Grade {{ $ClassDetail->section_grade_level }}" placeholder="Grade">
-                                                        {{-- <strong><u>&nbsp;&nbsp;Grade {{ $ClassDetail->section_grade_level + 1 }}&nbsp;&nbsp;&nbsp;&nbsp;</u></strong> --}}
-                                                    @endif
-                                                @elseif(round($totalsum) < 75)                                        
-                                                    <input type="text" class="form-control" name="grade" value="Grade {{ $ClassDetail->section_grade_level - 1 }}" placeholder="Grade">
+                                        {{-- @else
+                                            <input type="text" class="form-control" name="grade" placeholder="Grade">
+                                        @endif --}}
+        
+                                    @elseif($ClassSubjectDetail->grade_level == 12)
+        
+                                        @if(round($StudentEnrolledSubject1->thi_g) != 0 && round($StudentEnrolledSubject1->fou_g) != 0)
+                                            @if(round($totalsum) > 74) 
+                                                @if($ClassDetail->section_grade_level == 12)
+                                                    {{-- <strong><u>&nbsp;&nbsp;College&nbsp;&nbsp;&nbsp;&nbsp;</u></strong> --}}
+                                                    <input type="text" class="form-control" name="grade" value="College" placeholder="Grade">
+                                                @else
+                                                    <input type="text" class="form-control" name="grade" value="Grade {{ $ClassDetail->section_grade_level }}" placeholder="Grade">
+                                                    {{-- <strong><u>&nbsp;&nbsp;Grade {{ $ClassDetail->section_grade_level + 1 }}&nbsp;&nbsp;&nbsp;&nbsp;</u></strong> --}}
                                                 @endif
-                                            @else
-                                                <input type="text" class="form-control" name="grade" value="" placeholder="Grade">
+                                            @elseif(round($totalsum) < 75)                                        
+                                                <input type="text" class="form-control" name="grade" value="Grade {{ $ClassDetail->section_grade_level - 1 }}" placeholder="Grade">
                                             @endif
-            
+                                        @else
+                                            <input type="text" class="form-control" name="grade" value="" placeholder="Grade">
                                         @endif
-                                        
-                                        <div class="help-block text-red text-center" id="js-grade">
-                                        </div>   
-                                </td>
-                                <td>
-                                    @if($ClassSubjectDetail->grade_level == 11)
-                                        <input type="text" class="form-control" name="s1_lacking_units" placeholder="Lacking units" value="{{ $data->s1_lacking_unit }}">
-                                        
-                                    @elseif($ClassSubjectDetail->grade_level == 12)        
-                                        <input type="text" class="form-control" name="s2_lacking_units" placeholder="Lacking units" value="{{ $data->s2_lacking_unit }}">
-                                        
+        
                                     @endif
-                                </td>
-                                <td>
-                                        <div class="input-group date">
-                                                <div class="input-group-addon">
-                                                    <i class="fa fa-calendar"></i>
-                                                </div>
-                                            @if($ClassSubjectDetail->grade_level == 11)
-                                                    <input type="text" name="date" class="tbdatepicker form-control pull-right" id="tbdatepicker" placeholder="11/11/2000" value="{{ $DateRemarks->s_date1 }}">
-                                            @elseif($ClassSubjectDetail->grade_level == 12)
-                                                    <input type="text" name="date" class="tbdatepicker form-control pull-right" id="tbdatepicker" placeholder="11/11/2000" value="{{ $DateRemarks->s_date2 }}">
-                                                @endif
+                                    
+                                    <div class="help-block text-red text-center" id="js-grade">
+                                    </div>   
+                            </td>
+                            <td>
+                                @if($ClassSubjectDetail->grade_level == 11)
+                                    <input type="text" class="form-control" name="s1_lacking_units" placeholder="Lacking units" value="{{ $data->s1_lacking_unit }}"
+                                    
+                                @elseif($ClassSubjectDetail->grade_level == 12)        
+                                    <input type="text" class="form-control" name="s2_lacking_units" placeholder="Lacking units" value="{{ $data->s2_lacking_unit }}">
+                                    
+                                @endif
+                            </td>
+                            <td>
+                                    <div class="input-group date">
+                                            <div class="input-group-addon">
+                                                <i class="fa fa-calendar"></i>
                                             </div>
-                                        <div class="help-block text-red text-center" id="js-date">
+                                        @if($ClassSubjectDetail->grade_level == 11)
+                                                <input type="text" name="date" class="tbdatepicker form-control pull-right" id="tbdatepicker" placeholder="11/11/2000" value="{{ $DateRemarks->s_date1 }}">
+                                        @elseif($ClassSubjectDetail->grade_level == 12)
+                                                <input type="text" name="date" class="tbdatepicker form-control pull-right" id="tbdatepicker" placeholder="11/11/2000" value="{{ $DateRemarks->s_date2 }}">
+                                            @endif
                                         </div>
-                                        
-                                </td>
-                                
-                                <td>
-                                    <center>
-            
-                                            {{-- <div class="input-group-btn pull-left text-left">
-                                                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="true">Action
-                                                        <span class="fa fa-caret-down"></span></button>
-                                                    <ul class="dropdown-menu">
-                                                        
-                                                                                            
-                                                        <li><a style="cursor: pointer;">Save</a></li>
-                                                        <li><a style="cursor: pointer;" rel="{{ $data->student_information_id }} " id="js-btn_print" class="printGrade" data-id="{{ encrypt($data->student_information_id) }} ">Print Grade</a></li>                                        
-                                                    </ul>
-                                                </div> --}}
-                                        
-                                        <input name="print_sy" id="print_sy" value="{{ $ClassSubjectDetail->id }}" type="hidden" />  
-                                        <input name="stud_id" id="stud_id" value="{{ $data->student_information_id }}" type="hidden" />
-                                        <input name="s_year" id="s_year" value="{{ $SchoolYear->id }}" type="hidden" /> 
-                                        <input name="sem" id="sem" value="{{ $ClassSubjectDetail->sem }}" type="hidden" /> 
-                                        <input name="level" id="level" value="{{ $ClassSubjectDetail->grade_level }}" type="hidden" />
-                                        
-                                        <button type="submit" class="btn btn-sm btn-primary save">save</button>
-                                        {{-- <button class="btn btn-sm btn-danger" id="js-btn_print" data-id=""><i class="fa fa-file-pdf"></i> Print</button> --}}
-                                        <button class="btn btn-sm btn-danger printGradebtn" rel="{{ $data->student_information_id }}" id="js-btn_print" data-id="{{ encrypt($data->student_information_id) }}">Print</button>
-                                    </center>
-                                </td>
-                                
-                            </tr>
+                                    <div class="help-block text-red text-center" id="js-date">
+                                    </div>
+                                    
+                            </td>
+                            
+                            <td>
+                                <center>
+        
+                                        {{-- <div class="input-group-btn pull-left text-left">
+                                                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="true">Action
+                                                    <span class="fa fa-caret-down"></span></button>
+                                                <ul class="dropdown-menu">
+                                                    
+                                                                                        
+                                                    <li><a style="cursor: pointer;">Save</a></li>
+                                                    <li><a style="cursor: pointer;" rel="{{ $data->student_information_id }} " id="js-btn_print" class="printGrade" data-id="{{ encrypt($data->student_information_id) }} ">Print Grade</a></li>                                        
+                                                </ul>
+                                            </div> --}}
+                                    
+                                    <input name="print_sy" id="print_sy" value="{{ $ClassSubjectDetail->id }}" type="hidden" />  
+                                    <input name="stud_id" id="stud_id" value="{{ $data->student_information_id }}" type="hidden" />
+                                    <input name="s_year" id="s_year" value="{{ $SchoolYear->id }}" type="hidden" /> 
+                                    <input name="sem" id="sem" value="{{ $ClassSubjectDetail->sem }}" type="hidden" /> 
+                                    <input name="level" id="level" value="{{ $ClassSubjectDetail->grade_level }}" type="hidden" />
+                                    
+                                    <button type="submit" class="btn btn-sm btn-primary save">save</button>
+                                    {{-- <button class="btn btn-sm btn-danger" id="js-btn_print" data-id=""><i class="fa fa-file-pdf"></i> Print</button> --}}
+                                    <button class="btn btn-sm btn-danger printGradebtn" rel="{{ $data->student_information_id }}" id="js-btn_print" data-id="{{ encrypt($data->student_information_id) }}">Print</button>
+                                </center>
+                            </td>
+                            
+                        </tr>
                         </form>
                         @endforeach
                     

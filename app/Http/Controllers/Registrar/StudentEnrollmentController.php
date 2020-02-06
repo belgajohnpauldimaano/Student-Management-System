@@ -35,6 +35,7 @@ class StudentEnrollmentController extends Controller
             // ->where('school_years.current', 1)
             ->where('class_details.id', $id)
             ->first();
+            
         if ($request->ajax())
         {
             if (!$request->search_fn &&
@@ -460,7 +461,7 @@ class StudentEnrollmentController extends Controller
                 // ->where('subject_id', $class_subject->subject_id)
                 ->get();
                 
-            // return json_encode(['ClassDetail' => $ClassDetail, 'StudentEnrolledSubject' => $StudentEnrolledSubject, 'class_subjects' => $ClassDetail->class_subjects]);
+            return json_encode(['ClassDetail' => $ClassDetail, 'StudentEnrolledSubject' => $StudentEnrolledSubject, 'class_subjects' => $ClassDetail->class_subjects]);
             foreach ($ClassDetail->class_subjects as $key => $class_subject)
             {
                 
@@ -561,6 +562,7 @@ class StudentEnrollmentController extends Controller
                     ->first();
                     
                     
+                    
                     if ($StudentEnrolledSubject) {
                         $StudentEnrolledSubject_list[] = $StudentEnrolledSubject;
                     } 
@@ -569,7 +571,7 @@ class StudentEnrollmentController extends Controller
                         
                         $newStudentEnrolledSubject = new \App\StudentEnrolledSubject();
                         $newStudentEnrolledSubject->class_subject_details_id = $class_subject->id;
-                        $newStudentEnrolledSubject->school_year_id = $SchoolYear->id;
+                        // $newStudentEnrolledSubject->school_year_id = $SchoolYear->id;
                         $newStudentEnrolledSubject->subject_id = $class_subject->subject_id;
                         $newStudentEnrolledSubject->enrollments_id = $enrollment_id;
                         $newStudentEnrolledSubject->sem = 2;
