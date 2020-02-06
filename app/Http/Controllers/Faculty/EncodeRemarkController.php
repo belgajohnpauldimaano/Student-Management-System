@@ -9,7 +9,7 @@ use App\Http\Controllers\Controller;
 
 class EncodeRemarkController extends Controller
 {
-    public function index ()
+    public function index (Request $request)
     {
         $FacultyInformation = \App\FacultyInformation::where('user_id', \Auth::user()->id)->first();
 
@@ -78,6 +78,9 @@ class EncodeRemarkController extends Controller
             ->select(\DB::raw("
                 enrollments.id as e_id,
                 enrollments.attendance,
+                enrollments.j_lacking_unit,
+                    enrollments.s1_lacking_unit,
+                    enrollments.s2_lacking_unit,
                 student_informations.id  as student_information_id,
                 users.username,
                 CONCAT(student_informations.last_name, ' ', student_informations.first_name, ' ', student_informations.middle_name) as student_name
@@ -85,237 +88,15 @@ class EncodeRemarkController extends Controller
             ->orderBY('student_name', 'ASC')
             ->get();
 
+                if($ClassSubjectDetail)
+                {
+
                 
-                //======================male 1st sem 
-                if($ClassSubjectDetail->grade_level > 10)
-                {
-                    $Enrollment = \App\Enrollment::join('class_details', 'class_details.id', '=', 'enrollments.class_details_id')
-                    // ->join('student_enrolled_subjects', 'student_enrolled_subjects.enrollments_id', '=', 'enrollments.id')
-                    ->join('class_subject_details', 'class_subject_details.class_details_id', '=', 'class_details.id')
-                    ->join('rooms', 'rooms.id', '=', 'class_details.room_id')
-                    ->join('faculty_informations', 'faculty_informations.id', '=', 'class_subject_details.faculty_id')
-                    ->join('section_details', 'section_details.id', '=', 'class_details.section_id')
-                    ->join('subject_details', 'subject_details.id', '=', 'class_subject_details.subject_id')
-                    ->where('student_information_id', $EnrollmentMale[0]->student_information_id)
-                    // ->where('class_subject_details.status', 1)
-                    ->where('class_subject_details.status', '!=', 0)
-                    ->where('enrollments.status', 1)
-                    ->where('class_details.status', 1)
-                    ->where('class_subject_details.sem', $ClassSubjectDetail->sem)
-                    ->where('class_details.school_year_id', $SchoolYear->id)
-                    ->select(\DB::raw("
-                        enrollments.id as enrollment_id,
-                        enrollments.class_details_id as cid,
-                        class_details.grade_level,
-                        class_subject_details.id as class_subject_details_id,
-                        class_subject_details.class_days,
-                        class_subject_details.class_time_from,
-                        class_subject_details.class_time_to,
-                        class_subject_details.status as grade_status,
-                        subject_details.id AS subject_id,
-                        subject_details.subject_code,
-                        subject_details.subject,
-                        rooms.room_code,
-                        section_details.section
-                        
-                    "))
-                    ->orderBy('class_subject_details.class_subject_order', 'ASC')
-                    ->get();
-
-                    $ClassDetail = \App\ClassDetail::join('section_details', 'section_details.id', '=' ,'class_details.section_id')
-                        ->join('rooms', 'rooms.id', '=' ,'class_details.room_id')
-                        ->join('school_years', 'school_years.id', '=' ,'class_details.school_year_id')
-                        ->selectRaw('
-                            class_details.id,
-                            class_details.section_id,
-                            class_details.room_id,
-                            class_details.school_year_id,
-                            class_details.grade_level,
-                            class_details.current,
-                            class_details.adviser_id,
-                            section_details.section,
-                            section_details.grade_level as section_grade_level,
-                            school_years.school_year,
-                            rooms.room_code,
-                            rooms.room_description
-                        ')
-                        ->where('section_details.status', 1)
-                        // ->where('school_years.current', 1)
-                    ->where('class_details.id', $Enrollment[0]->cid)
-                    ->first();
-
-                    $StudentEnrolledSubject1 = \App\StudentEnrolledSubject::where('enrollments_id', $EnrollmentMale[0]->e_id)
-                    ->where('subject_id', $Enrollment[0]->subject_id)
-                    ->where('sem', $ClassSubjectDetail->sem)
-                    ->first();
-
-                    $StudentEnrolledSubject = \App\StudentEnrolledSubject::where('enrollments_id', $Enrollment[0]->enrollment_id)
-                     ->get();
-
-                     
-
-                     
-                    if($ClassSubjectDetail->sem == 1)
+                    //======================male 1st sem 
+                    if($ClassSubjectDetail->grade_level > 10)
                     {
-                        if(round($StudentEnrolledSubject1->fir_g) != 0 && round($StudentEnrolledSubject1->sec_g) != 0)
-                        {
-                            $totalsum = 0;
-                            $count_subjects1 = \App\StudentEnrolledSubject::where('enrollments_id', $Enrollment[0]->enrollment_id)
-                                ->where('sem', 1)->where('status', '!=', 0)->count();
-                            // echo $count_subjects1;
-
-                            $StudentEnrolledSubject = \App\StudentEnrolledSubject::where('enrollments_id', $Enrollment[0]->enrollment_id)
-                                ->where('sem', $ClassSubjectDetail->sem)
-                                ->get();
-                            
-                            foreach($StudentEnrolledSubject as $key => $data)
-                            {
-                                round($final_ave = (round($data->fir_g) + round($data->sec_g)) / 2);                                                                                
-                                $totalsum += round($final_ave) / 9 ;
-                            }
-                                                                
-                        }
-                    }
-                    else
-                    {
-                        if(round($StudentEnrolledSubject1->thi_g) != 0 && round($StudentEnrolledSubject1->fou_g) != 0)
-                        {
-                            $totalsum = 0;
-                            $count_subjects1 = \App\StudentEnrolledSubject::where('enrollments_id', $Enrollment[0]->enrollment_id)
-                                ->where('sem', 2)->where('status', '!=', 0)->count();
-                            // echo $count_subjects1;
-
-                            $StudentEnrolledSubject = \App\StudentEnrolledSubject::where('enrollments_id', $Enrollment[0]->enrollment_id)
-                                ->where('sem', 2)
-                                ->get();
-                            
-                            foreach($StudentEnrolledSubject as $key => $data)
-                            {
-                                round($final_ave = (round($data->thi_g) + round($data->fou_g)) / 2);                                                                                
-                                $totalsum += round($final_ave) / $count_subjects1 ;
-                            }
-                                                                
-                        }
-                    }
-
-
-
-                    $Enrollment_female = \App\Enrollment::join('class_details', 'class_details.id', '=', 'enrollments.class_details_id')
-                    // ->join('student_enrolled_subjects', 'student_enrolled_subjects.enrollments_id', '=', 'enrollments.id')
-                    ->join('class_subject_details', 'class_subject_details.class_details_id', '=', 'class_details.id')
-                    ->join('rooms', 'rooms.id', '=', 'class_details.room_id')
-                    ->join('faculty_informations', 'faculty_informations.id', '=', 'class_subject_details.faculty_id')
-                    ->join('section_details', 'section_details.id', '=', 'class_details.section_id')
-                    ->join('subject_details', 'subject_details.id', '=', 'class_subject_details.subject_id')
-                    ->where('student_information_id', $EnrollmentFemale[0]->student_information_id)
-                    // ->where('class_subject_details.status', 1)
-                    ->where('class_subject_details.status', '!=', 0)
-                    ->where('enrollments.status', 1)
-                    ->where('class_details.status', 1)
-                    ->where('class_subject_details.sem', $ClassSubjectDetail->sem)
-                    ->where('class_details.school_year_id', $SchoolYear->id)
-                    ->select(\DB::raw("
-                        enrollments.id as enrollment_id,
-                        enrollments.class_details_id as cid,
-                        class_details.grade_level,
-                        class_subject_details.id as class_subject_details_id,
-                        class_subject_details.class_days,
-                        class_subject_details.class_time_from,
-                        class_subject_details.class_time_to,
-                        class_subject_details.status as grade_status,
-                        subject_details.id AS subject_id,
-                        subject_details.subject_code,
-                        subject_details.subject,
-                        rooms.room_code,
-                        section_details.section
-                        
-                    "))
-                    ->orderBy('class_subject_details.class_subject_order', 'ASC')
-                    ->get();
-
-                    $ClassDetail = \App\ClassDetail::join('section_details', 'section_details.id', '=' ,'class_details.section_id')
-                        ->join('rooms', 'rooms.id', '=' ,'class_details.room_id')
-                        ->join('school_years', 'school_years.id', '=' ,'class_details.school_year_id')
-                        ->selectRaw('
-                            class_details.id,
-                            class_details.section_id,
-                            class_details.room_id,
-                            class_details.school_year_id,
-                            class_details.grade_level,
-                            class_details.current,
-                            class_details.adviser_id,
-                            section_details.section,
-                            section_details.grade_level as section_grade_level,
-                            school_years.school_year,
-                            rooms.room_code,
-                            rooms.room_description
-                        ')
-                        ->where('section_details.status', 1)
-                        // ->where('school_years.current', 1)
-                    ->where('class_details.id', $Enrollment_female[0]->cid)
-                    ->first();
-
-                    $StudentEnrolledSubject_female = \App\StudentEnrolledSubject::where('enrollments_id', $EnrollmentFemale[0]->e_id)
-                    ->where('subject_id', $Enrollment_female[0]->subject_id)
-                    ->where('sem', $ClassSubjectDetail->sem)
-                    ->first();
-
-                    $StudentEnrolledSubject_fem = \App\StudentEnrolledSubject::where('enrollments_id', $Enrollment_female[0]->enrollment_id)
-                     ->get();
-
-                     
-
-                     
-                    if($ClassSubjectDetail->sem == 1)
-                    {
-                        if(round($StudentEnrolledSubject_female->fir_g) != 0 && round($StudentEnrolledSubject_female->sec_g) != 0)
-                        {
-                            $totalsum = 0;
-                            $count_subjects1 = \App\StudentEnrolledSubject::where('enrollments_id', $Enrollment_female[0]->enrollment_id)
-                                ->where('sem', 1)->where('status', '!=', 0)->count();
-                            // echo $count_subjects1;
-
-                            $StudentEnrolledSubject_fem = \App\StudentEnrolledSubject::where('enrollments_id', $Enrollment_female[0]->enrollment_id)
-                                ->where('sem', $ClassSubjectDetail->sem)
-                                ->get();
-                            
-                            foreach($StudentEnrolledSubject_fem as $key => $data)
-                            {
-                                round($final_ave = (round($data->fir_g) + round($data->sec_g)) / 2);                                                                                
-                                $totalsum += round($final_ave) / 9 ;
-                            }
-                                                                
-                        }
-                    }
-                    else
-                    {
-                        if(round($StudentEnrolledSubject_female->thi_g) != 0 && round($StudentEnrolledSubject_female->fou_g) != 0)
-                        {
-                            $totalsum = 0;
-                            $count_subjects1 = \App\StudentEnrolledSubject::where('enrollments_id', $Enrollment_female[0]->enrollment_id)
-                                ->where('sem', 2)->where('status', '!=', 0)->count();
-                            // echo $count_subjects1;
-
-                            $StudentEnrolledSubject_fem = \App\StudentEnrolledSubject::where('enrollments_id', $Enrollment_female[0]->enrollment_id)
-                                ->where('sem', 2)
-                                ->get();
-                            
-                            foreach($StudentEnrolledSubject_fem as $key => $data)
-                            {
-                                round($final_ave = (round($data->thi_g) + round($data->fou_g)) / 2);                                                                                
-                                $totalsum += round($final_ave) / $count_subjects1 ;
-                            }
-                                                                
-                        }
-                    }
-
-
-                        
-                }
-                else if($ClassSubjectDetail->grade_level < 11)
-                {
-                    $EnrollmentJuniorMale = \App\Enrollment::join('class_details', 'class_details.id', '=', 'enrollments.class_details_id')
-                    // ->join('student_enrolled_subjects', 'student_enrolled_subjects.enrollments_id', '=', 'enrollments.id')
+                        $Enrollment = \App\Enrollment::join('class_details', 'class_details.id', '=', 'enrollments.class_details_id')
+                        // ->join('student_enrolled_subjects', 'student_enrolled_subjects.enrollments_id', '=', 'enrollments.id')
                         ->join('class_subject_details', 'class_subject_details.class_details_id', '=', 'class_details.id')
                         ->join('rooms', 'rooms.id', '=', 'class_details.room_id')
                         ->join('faculty_informations', 'faculty_informations.id', '=', 'class_subject_details.faculty_id')
@@ -326,7 +107,7 @@ class EncodeRemarkController extends Controller
                         ->where('class_subject_details.status', '!=', 0)
                         ->where('enrollments.status', 1)
                         ->where('class_details.status', 1)
-                        // ->where('class_subject_details.sem', 2)
+                        ->where('class_subject_details.sem', $ClassSubjectDetail->sem)
                         ->where('class_details.school_year_id', $SchoolYear->id)
                         ->select(\DB::raw("
                             enrollments.id as enrollment_id,
@@ -366,40 +147,352 @@ class EncodeRemarkController extends Controller
                             ')
                             ->where('section_details.status', 1)
                             // ->where('school_years.current', 1)
-                        ->where('class_details.id', $EnrollmentMale[0]->cid)
+                        ->where('class_details.id', $Enrollment[0]->cid)
                         ->first();
 
                         $StudentEnrolledSubject1 = \App\StudentEnrolledSubject::where('enrollments_id', $EnrollmentMale[0]->e_id)
-                        ->where('subject_id', $EnrollmentJuniorMale[0]->subject_id)
-                        // ->where('sem', 1)
+                        ->where('subject_id', $Enrollment[0]->subject_id)
+                        ->where('sem', $ClassSubjectDetail->sem)
                         ->first();
 
-                        $StudentEnrolledSubject = \App\StudentEnrolledSubject::where('enrollments_id', $EnrollmentJuniorMale[0]->enrollment_id)
+                        $StudentEnrolledSubject = \App\StudentEnrolledSubject::where('enrollments_id', $Enrollment[0]->enrollment_id)
                         ->get();
 
                         
-                    
 
-                    if(round($StudentEnrolledSubject1->fir_g) != 0 && round($StudentEnrolledSubject1->sec_g) != 0 && round($StudentEnrolledSubject1->thi_g) != 0 && round($StudentEnrolledSubject1->fou_g) != 0)
-                    {
                         
-                        $totalsum = 0;
-                        $count_subjects1 = \App\StudentEnrolledSubject::where('enrollments_id', $EnrollmentJuniorMale[0]->enrollment_id)
-                            ->where('status', '!=', 0)->count();
-                        // echo $count_subjects1;
-
-                        $StudentEnrolledSubject = \App\StudentEnrolledSubject::where('enrollments_id', $EnrollmentJuniorMale[0]->enrollment_id)
-                            ->get();
-                        
-                        foreach($StudentEnrolledSubject as $key => $data)
+                        if($ClassSubjectDetail->sem == 1)
                         {
-                            round($final_ave = (round($data->fir_g) + round($data->sec_g) + round($data->thi_g) + round($data->fou_g)) / 4);                                                                                
-                            $totalsum += round($final_ave) / 9 ;
+                            if(round($StudentEnrolledSubject1->fir_g) != 0 && round($StudentEnrolledSubject1->sec_g) != 0)
+                            {
+                                $totalsum = 0;
+                                $count_subjects1 = \App\StudentEnrolledSubject::where('enrollments_id', $Enrollment[0]->enrollment_id)
+                                    ->where('sem', 1)->where('status', '!=', 0)->count();
+                                // echo $count_subjects1;
+
+                                $StudentEnrolledSubject = \App\StudentEnrolledSubject::where('enrollments_id', $Enrollment[0]->enrollment_id)
+                                    ->where('sem', $ClassSubjectDetail->sem)
+                                    ->get();
+                                
+                                foreach($StudentEnrolledSubject as $key => $data)
+                                {
+                                    round($final_ave = (round($data->fir_g) + round($data->sec_g)) / 2);                                                                                
+                                    $totalsum += round($final_ave) / 9 ;
+                                }
+                                                                    
+                            }
                         }
-                                                            
-                    }     
-                    
-                }            
+                        else
+                        {
+                            if(round($StudentEnrolledSubject1->thi_g) != 0 && round($StudentEnrolledSubject1->fou_g) != 0)
+                            {
+                                $totalsum = 0;
+                                $count_subjects1 = \App\StudentEnrolledSubject::where('enrollments_id', $Enrollment[0]->enrollment_id)
+                                    ->where('sem', 2)->where('status', '!=', 0)->count();
+                                // echo $count_subjects1;
+
+                                $StudentEnrolledSubject = \App\StudentEnrolledSubject::where('enrollments_id', $Enrollment[0]->enrollment_id)
+                                    ->where('sem', 2)
+                                    ->get();
+                                
+                                foreach($StudentEnrolledSubject as $key => $data)
+                                {
+                                    round($final_ave = (round($data->thi_g) + round($data->fou_g)) / 2);                                                                                
+                                    $totalsum += round($final_ave) / $count_subjects1 ;
+                                }
+                                                                    
+                            }
+                        }
+
+
+
+                        $Enrollment_female = \App\Enrollment::join('class_details', 'class_details.id', '=', 'enrollments.class_details_id')
+                        // ->join('student_enrolled_subjects', 'student_enrolled_subjects.enrollments_id', '=', 'enrollments.id')
+                        ->join('class_subject_details', 'class_subject_details.class_details_id', '=', 'class_details.id')
+                        ->join('rooms', 'rooms.id', '=', 'class_details.room_id')
+                        ->join('faculty_informations', 'faculty_informations.id', '=', 'class_subject_details.faculty_id')
+                        ->join('section_details', 'section_details.id', '=', 'class_details.section_id')
+                        ->join('subject_details', 'subject_details.id', '=', 'class_subject_details.subject_id')
+                        ->where('student_information_id', $EnrollmentFemale[0]->student_information_id)
+                        // ->where('class_subject_details.status', 1)
+                        ->where('class_subject_details.status', '!=', 0)
+                        ->where('enrollments.status', 1)
+                        ->where('class_details.status', 1)
+                        ->where('class_subject_details.sem', $ClassSubjectDetail->sem)
+                        ->where('class_details.school_year_id', $SchoolYear->id)
+                        ->select(\DB::raw("
+                            enrollments.id as enrollment_id,
+                            enrollments.class_details_id as cid,
+                            class_details.grade_level,
+                            class_subject_details.id as class_subject_details_id,
+                            class_subject_details.class_days,
+                            class_subject_details.class_time_from,
+                            class_subject_details.class_time_to,
+                            class_subject_details.status as grade_status,
+                            subject_details.id AS subject_id,
+                            subject_details.subject_code,
+                            subject_details.subject,
+                            rooms.room_code,
+                            section_details.section
+                            
+                        "))
+                        ->orderBy('class_subject_details.class_subject_order', 'ASC')
+                        ->get();
+
+                        $ClassDetail = \App\ClassDetail::join('section_details', 'section_details.id', '=' ,'class_details.section_id')
+                            ->join('rooms', 'rooms.id', '=' ,'class_details.room_id')
+                            ->join('school_years', 'school_years.id', '=' ,'class_details.school_year_id')
+                            ->selectRaw('
+                                class_details.id,
+                                class_details.section_id,
+                                class_details.room_id,
+                                class_details.school_year_id,
+                                class_details.grade_level,
+                                class_details.current,
+                                class_details.adviser_id,
+                                section_details.section,
+                                section_details.grade_level as section_grade_level,
+                                school_years.school_year,
+                                rooms.room_code,
+                                rooms.room_description
+                            ')
+                            ->where('section_details.status', 1)
+                            // ->where('school_years.current', 1)
+                        ->where('class_details.id', $Enrollment_female[0]->cid)
+                        ->first();
+
+                        $StudentEnrolledSubject_female = \App\StudentEnrolledSubject::where('enrollments_id', $EnrollmentFemale[0]->e_id)
+                        ->where('subject_id', $Enrollment_female[0]->subject_id)
+                        ->where('sem', $ClassSubjectDetail->sem)
+                        ->first();
+
+                        $StudentEnrolledSubject_fem = \App\StudentEnrolledSubject::where('enrollments_id', $Enrollment_female[0]->enrollment_id)
+                        ->get();
+
+                        
+
+                        
+                        if($ClassSubjectDetail->sem == 1)
+                        {
+                            if(round($StudentEnrolledSubject_female->fir_g) != 0 && round($StudentEnrolledSubject_female->sec_g) != 0)
+                            {
+                                $totalsum = 0;
+                                $count_subjects1 = \App\StudentEnrolledSubject::where('enrollments_id', $Enrollment_female[0]->enrollment_id)
+                                    ->where('sem', 1)->where('status', '!=', 0)->count();
+                                // echo $count_subjects1;
+
+                                $StudentEnrolledSubject_fem = \App\StudentEnrolledSubject::where('enrollments_id', $Enrollment_female[0]->enrollment_id)
+                                    ->where('sem', $ClassSubjectDetail->sem)
+                                    ->get();
+                                
+                                foreach($StudentEnrolledSubject_fem as $key => $data)
+                                {
+                                    round($final_ave = (round($data->fir_g) + round($data->sec_g)) / 2);                                                                                
+                                    $totalsum += round($final_ave) / 9 ;
+                                }
+                                                                    
+                            }
+                        }
+                        else
+                        {
+                            if(round($StudentEnrolledSubject_female->thi_g) != 0 && round($StudentEnrolledSubject_female->fou_g) != 0)
+                            {
+                                $totalsum = 0;
+                                $count_subjects1 = \App\StudentEnrolledSubject::where('enrollments_id', $Enrollment_female[0]->enrollment_id)
+                                    ->where('sem', 2)->where('status', '!=', 0)->count();
+                                // echo $count_subjects1;
+
+                                $StudentEnrolledSubject_fem = \App\StudentEnrolledSubject::where('enrollments_id', $Enrollment_female[0]->enrollment_id)
+                                    ->where('sem', 2)
+                                    ->get();
+                                
+                                foreach($StudentEnrolledSubject_fem as $key => $data)
+                                {
+                                    round($final_ave = (round($data->thi_g) + round($data->fou_g)) / 2);                                                                                
+                                    $totalsum += round($final_ave) / $count_subjects1 ;
+                                }
+                                                                    
+                            }
+                        }
+
+
+                            
+                    }
+                    else if($ClassSubjectDetail->grade_level < 11)
+                    {
+                        $EnrollmentJuniorMale = \App\Enrollment::join('class_details', 'class_details.id', '=', 'enrollments.class_details_id')
+                        // ->join('student_enrolled_subjects', 'student_enrolled_subjects.enrollments_id', '=', 'enrollments.id')
+                            ->join('class_subject_details', 'class_subject_details.class_details_id', '=', 'class_details.id')
+                            ->join('rooms', 'rooms.id', '=', 'class_details.room_id')
+                            ->join('faculty_informations', 'faculty_informations.id', '=', 'class_subject_details.faculty_id')
+                            ->join('section_details', 'section_details.id', '=', 'class_details.section_id')
+                            ->join('subject_details', 'subject_details.id', '=', 'class_subject_details.subject_id')
+                            ->where('student_information_id', $EnrollmentMale[0]->student_information_id)
+                            // ->where('class_subject_details.status', 1)
+                            ->where('class_subject_details.status', '!=', 0)
+                            ->where('enrollments.status', 1)
+                            ->where('class_details.status', 1)
+                            // ->where('class_subject_details.sem', 2)
+                            ->where('class_details.school_year_id', $SchoolYear->id)
+                            ->select(\DB::raw("
+                                enrollments.id as enrollment_id,
+                                enrollments.class_details_id as cid,
+                                class_details.grade_level,
+                                class_subject_details.id as class_subject_details_id,
+                                class_subject_details.class_days,
+                                class_subject_details.class_time_from,
+                                class_subject_details.class_time_to,
+                                class_subject_details.status as grade_status,
+                                subject_details.id AS subject_id,
+                                subject_details.subject_code,
+                                subject_details.subject,
+                                rooms.room_code,
+                                section_details.section
+                                
+                            "))
+                            ->orderBy('class_subject_details.class_subject_order', 'ASC')
+                            ->get();
+
+                            $ClassDetail = \App\ClassDetail::join('section_details', 'section_details.id', '=' ,'class_details.section_id')
+                                ->join('rooms', 'rooms.id', '=' ,'class_details.room_id')
+                                ->join('school_years', 'school_years.id', '=' ,'class_details.school_year_id')
+                                ->selectRaw('
+                                    class_details.id,
+                                    class_details.section_id,
+                                    class_details.room_id,
+                                    class_details.school_year_id,
+                                    class_details.grade_level,
+                                    class_details.current,
+                                    class_details.adviser_id,
+                                    section_details.section,
+                                    section_details.grade_level as section_grade_level,
+                                    school_years.school_year,
+                                    rooms.room_code,
+                                    rooms.room_description
+                                ')
+                                ->where('section_details.status', 1)
+                                // ->where('school_years.current', 1)
+                            ->where('class_details.id', $EnrollmentMale[0]->cid)
+                            ->first();
+
+                            $StudentEnrolledSubject1 = \App\StudentEnrolledSubject::where('enrollments_id', $EnrollmentMale[0]->e_id)
+                            ->where('subject_id', $EnrollmentJuniorMale[0]->subject_id)
+                            // ->where('sem', 1)
+                            ->first();
+
+                            $StudentEnrolledSubject = \App\StudentEnrolledSubject::where('enrollments_id', $EnrollmentJuniorMale[0]->enrollment_id)
+                            ->get();
+
+                            
+                        
+
+                        if(round($StudentEnrolledSubject1->fir_g) != 0 && round($StudentEnrolledSubject1->sec_g) != 0 && round($StudentEnrolledSubject1->thi_g) != 0 && round($StudentEnrolledSubject1->fou_g) != 0)
+                        {
+                            
+                            $totalsum = 0;
+                            $count_subjects1 = \App\StudentEnrolledSubject::where('enrollments_id', $EnrollmentJuniorMale[0]->enrollment_id)
+                                ->where('status', '!=', 0)->count();
+                            // echo $count_subjects1;
+
+                            $StudentEnrolledSubject = \App\StudentEnrolledSubject::where('enrollments_id', $EnrollmentJuniorMale[0]->enrollment_id)
+                                ->get();
+                            
+                            foreach($StudentEnrolledSubject as $key => $data)
+                            {
+                                round($final_ave = (round($data->fir_g) + round($data->sec_g) + round($data->thi_g) + round($data->fou_g)) / 4);                                                                                
+                                $totalsum += round($final_ave) / 9 ;
+                            }
+                                                                
+                        }  
+                        
+                        $EnrollmentJuniorFemale = \App\Enrollment::join('class_details', 'class_details.id', '=', 'enrollments.class_details_id')
+                        // ->join('student_enrolled_subjects', 'student_enrolled_subjects.enrollments_id', '=', 'enrollments.id')
+                            ->join('class_subject_details', 'class_subject_details.class_details_id', '=', 'class_details.id')
+                            ->join('rooms', 'rooms.id', '=', 'class_details.room_id')
+                            ->join('faculty_informations', 'faculty_informations.id', '=', 'class_subject_details.faculty_id')
+                            ->join('section_details', 'section_details.id', '=', 'class_details.section_id')
+                            ->join('subject_details', 'subject_details.id', '=', 'class_subject_details.subject_id')
+                            ->where('student_information_id', $EnrollmentFemale[0]->student_information_id)
+                            // ->where('class_subject_details.status', 1)
+                            ->where('class_subject_details.status', '!=', 0)
+                            ->where('enrollments.status', 1)
+                            ->where('class_details.status', 1)
+                            // ->where('class_subject_details.sem', 2)
+                            ->where('class_details.school_year_id', $SchoolYear->id)
+                            ->select(\DB::raw("
+                                enrollments.id as enrollment_id,
+                                enrollments.class_details_id as cid,
+                                class_details.grade_level,
+                                class_subject_details.id as class_subject_details_id,
+                                class_subject_details.class_days,
+                                class_subject_details.class_time_from,
+                                class_subject_details.class_time_to,
+                                class_subject_details.status as grade_status,
+                                subject_details.id AS subject_id,
+                                subject_details.subject_code,
+                                subject_details.subject,
+                                rooms.room_code,
+                                section_details.section
+                                
+                            "))
+                            ->orderBy('class_subject_details.class_subject_order', 'ASC')
+                            ->get();
+
+                            $ClassDetail = \App\ClassDetail::join('section_details', 'section_details.id', '=' ,'class_details.section_id')
+                                ->join('rooms', 'rooms.id', '=' ,'class_details.room_id')
+                                ->join('school_years', 'school_years.id', '=' ,'class_details.school_year_id')
+                                ->selectRaw('
+                                    class_details.id,
+                                    class_details.section_id,
+                                    class_details.room_id,
+                                    class_details.school_year_id,
+                                    class_details.grade_level,
+                                    class_details.current,
+                                    class_details.adviser_id,
+                                    section_details.section,
+                                    section_details.grade_level as section_grade_level,
+                                    school_years.school_year,
+                                    rooms.room_code,
+                                    rooms.room_description
+                                ')
+                                ->where('section_details.status', 1)
+                                // ->where('school_years.current', 1)
+                            ->where('class_details.id', $EnrollmentFemale[0]->cid)
+                            ->first();
+
+                            $StudentEnrolledSubject_female = \App\StudentEnrolledSubject::where('enrollments_id', $EnrollmentFemale[0]->e_id)
+                            ->where('subject_id', $EnrollmentJuniorMale[0]->subject_id)
+                            // ->where('sem', 1)
+                            ->first();
+
+                            $StudentEnrolledSubjectfem = \App\StudentEnrolledSubject::where('enrollments_id', $EnrollmentJuniorFemale[0]->enrollment_id)
+                            ->get();
+
+                            
+                        
+
+                        if(round($StudentEnrolledSubject_female->fir_g) != 0 && round($StudentEnrolledSubject_female->sec_g) != 0 && round($StudentEnrolledSubject_female->thi_g) != 0 && round($StudentEnrolledSubject_female->fou_g) != 0)
+                        {
+                            
+                            $totalsum = 0;
+                            $count_subjects1 = \App\StudentEnrolledSubject::where('enrollments_id', $EnrollmentJuniorFemale[0]->enrollment_id)
+                                ->where('status', '!=', 0)->count();
+                            // echo $count_subjects1;
+
+                            $StudentEnrolledSubjectfem = \App\StudentEnrolledSubject::where('enrollments_id', $EnrollmentJuniorFemale[0]->enrollment_id)
+                                ->get();
+                            
+                            foreach($StudentEnrolledSubjectfem as $key => $data)
+                            {
+                                round($final_ave = (round($data->fir_g) + round($data->sec_g) + round($data->thi_g) + round($data->fou_g)) / 4);                                                                                
+                                $totalsum += round($final_ave) / 9 ;
+                            }
+                                                                
+                        }  
+                        
+                    }   
+                }
+                        
 
             return view('control_panel_faculty.encode_remarks.index',
                 compact('EnrollmentMale','EnrollmentFemale','ClassSubjectDetail','SchoolYear','DateRemarks',
@@ -441,6 +534,7 @@ class EncodeRemarkController extends Controller
                     $Student_info->s2_lacking_unit = "none";
                     $Student_info->save(); 
                 }
+                
                 else if($request->level > 10)
                 {
                     if($request->sem == 1)

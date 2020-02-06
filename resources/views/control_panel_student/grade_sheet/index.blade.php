@@ -11,13 +11,13 @@
 
     @if($grade_level == 11 || $grade_level == 12)
 
-   
+    
         <div class="box">
             <div class="overlay hidden" id="js-loader-overlay"><i class="fa fa-refresh fa-spin"></i></div>
             <div class="box-body">
                 
                     <div class="container-fluid">
-                            <h4><span class="logo-mini"><img src="{{ asset('/img/sja-logo.png') }}" style="height: 60px;"></span> <b>First Semester {{ $getSchoolYear->school_year}}  Grade-level/Section : <i style="color:red">{{ $Enrollment2->grade_level .' - '. $Enrollment2->section}}</i></b></h4>
+                            <h4><span class="logo-mini"><img src="{{ asset('/img/sja-logo.png') }}" style="height: 60px;"></span> <b>First Semester {{ $Enrollment->school_year_id }}  Grade-level/Section : <i style="color:red">{{ $Enrollment2->grade_level .' - '. $Enrollment2->section}}</i></b></h4>
                     </div>
                 <hr/>
                 <!--<button class="btn btn-flat pull-right btn-primary" id="js-btn_print"><i class="fa fa-file-pdf"></i> Print</button>-->
@@ -56,7 +56,7 @@
                         </thead>
                         <tbody>
                                 <?php 
-                                    $SchoolYear = \App\SchoolYear::where('current', 1)->first();
+                                    $SchoolYear = \App\SchoolYear::where('current', 1)->where('status', 1)->first();
                                     
                                     $EnrollmentFirstSem = \App\Enrollment::join('class_details', 'class_details.id', '=', 'enrollments.class_details_id')
                                     // ->join('student_enrolled_subjects', 'student_enrolled_subjects.enrollments_id', '=', 'enrollments.id')
@@ -99,6 +99,7 @@
                                     ->where('sem', 1)->where('status', 1)
                                     ->get();
                                 ?>
+                                
                                 @if ($StudentEnrolledSubject1stSem)
                                 @foreach ($StudentEnrolledSubject1stSem as $key => $data)
                                     <tr>
@@ -124,7 +125,7 @@
                                                 
                                                 @if ($data->fir_g == 0 && $data->sec_g  == 0)
                                                 <td>
-                                                        <center>{{ $final_a ? round($final_a) : '' }}</center>
+                                                    <center>{{ $final_a ? round($final_a) : '' }}</center>
                                                 </td>    
                                                 <td style="color:{{ round($final_a) >= 75 ? 'green' : 'red' }};"><center><strong>{{ round($final_a) >= 75 ? 'Passed' : 'Failed' }}</strong></center></td>
                                                     
@@ -292,7 +293,7 @@
 
         <div class="box">
             <div class="box-body">
-                    <h4><span class="logo-mini"><img src="{{ asset('/img/sja-logo.png') }}" style="height: 60px;"></span> <b>Second Semester {{ $getSchoolYear->school_year }}  Grade-level/Section : <i style="color:red">{{ $Enrollment2->grade_level .' - '. $Enrollment2->section}}</i></b></h4>
+                    <h4><span class="logo-mini"><img src="{{ asset('/img/sja-logo.png') }}" style="height: 60px;"></span> <b>Second Semester {{ $getSchoolYear->school_year_id }}  Grade-level/Section : <i style="color:red">{{ $Enrollment2->grade_level .' - '. $Enrollment2->section}}</i></b></h4>
                     <hr/>
                     <!--<button class="btn btn-flat pull-right btn-primary" id="js-btn_print"><i class="fa fa-file-pdf"></i> Print</button>-->
                     
@@ -324,7 +325,9 @@
                             </thead>
                             <tbody>
                                     <?php 
-                                    $SchoolYear = \App\SchoolYear::where('current', 1)->first();
+                                    $SchoolYear = \App\SchoolYear::where('current', 1)
+                                    ->where('status', 1)
+                                    ->first();
                                     
                                     $EnrollmentSecondSem = \App\Enrollment::join('class_details', 'class_details.id', '=', 'enrollments.class_details_id')
                                     // ->join('student_enrolled_subjects', 'student_enrolled_subjects.enrollments_id', '=', 'enrollments.id')
@@ -561,7 +564,7 @@
         <div class="box">
             <div class="overlay hidden" id="js-loader-overlay"><i class="fa fa-refresh fa-spin"></i></div>
             <div class="box-body">
-                   <h4><span class="logo-mini"><img src="{{ asset('/img/sja-logo.png') }}" style="height: 60px;"></span> <b> Grade-level/Section : <i style="color:red">{{  $Enrollment2->grade_level .' - '. $Enrollment2->section }}</i></b></h4>
+                   <h4><span class="logo-mini"><img src="{{ asset('/img/sja-logo.png') }}" style="height: 60px;"></span> <b> Grade-level/Section : <i style="color:red">{{  $getSchoolYear->grade_level .' - '. $Enrollment2->section }}</i></b></h4>
                    <hr/>
                    
                         <div class="js-data-container">
@@ -593,7 +596,7 @@
                                 </thead>
                                 <tbody>
                                         <?php 
-                                        $SchoolYear = \App\SchoolYear::where('current', 1)->first();
+                                        $SchoolYear = \App\SchoolYear::where('current', 1)->where('status', 1)->first();
                                         
                                         $EnrollmentHS = \App\Enrollment::join('class_details', 'class_details.id', '=', 'enrollments.class_details_id')
                                         // ->join('student_enrolled_subjects', 'student_enrolled_subjects.enrollments_id', '=', 'enrollments.id')

@@ -21,7 +21,7 @@
                 <form id="js-form_search">
                     {{ csrf_field() }}
                     <div class="form-group col-sm-12 col-md-3" style="padding-right:0">
-                        <select name="search_sy" id="search_sy" class="form-control">
+                        <select name="search_sy" id="search_sy" class="form-control search_sy">
                             <option value="">Select SY</option>
                             @foreach ($SchoolYear as $data)
                                 <option value="{{ $data->id }}">{{ $data->school_year }}</option>
@@ -30,7 +30,7 @@
                     </div> 
                     &nbsp;
                         <div class="form-group col-sm-12 col-md-5" style="padding-right:0">
-                            <select name="search_class_subject" id="search_class_subject" class="form-control">
+                            <select name="search_class_subject" id="search_class_subject" class="form-control search_class_subject">
                                 <option value="">Select Class Subject</option>
                             </select>
                         </div>
@@ -41,7 +41,7 @@
                 <form id="js-form_search1">
                     {{ csrf_field() }}
                     <div class="form-group col-sm-12 col-md-3" style="padding-right:0">
-                        <select name="search_sy1" id="search_sy1" class="form-control">
+                        <select name="search_sy1" id="search_sy1" class="form-control search_sy">
                             <option value="">Select SY</option>
                             @foreach ($SchoolYear as $data)
                                 <option value="{{ $data->id }}">{{ $data->school_year }}</option>
@@ -50,13 +50,13 @@
                     </div> 
                     &nbsp;
                         <div class="form-group col-sm-12 col-md-3" style="padding-right:0">
-                            <select name="search_semester" id="search_semester" class="form-control">
+                            <select name="search_semester" id="search_semester" class="form-control search_semester">
                                 <option value="">Select Semester</option>
                             </select>
                         </div>
                     &nbsp;
                         <div class="form-group col-sm-12 col-md-5" style="padding-right:0">
-                            <select name="search_class_subject_sem" id="search_class_subject_sem" class="form-control">
+                            <select name="search_class_subject_sem" id="search_class_subject_sem" class="form-control search_class_subject">
                                 <option value="">Select Class Subject</option>
                             </select>
                         </div>
@@ -389,14 +389,26 @@
             })
             $('body').on('click', '#js-btn_print', function (e) {
                 e.preventDefault()
-                const search_class_subject = $('#search_class_subject').val()
-                const search_sy = $('#search_sy').val()
+                const search_class_subject = $('.search_class_subject').val()
+                const search_sy = $('.search_sy').val()
                 window.open("{{ route('faculty.student_grade_sheet.list_students_by_class_print') }}?search_class_subject="+search_class_subject+'&search_sy='+search_sy, '', 'height=800,width=800')
             })
-            $('body').on('click', '#js-btn_print1', function (e) {
+            // $('body').on('click', '#js-btn_print1', function (e) {
+            //     e.preventDefault()
+            //     const search_class_subject_sem = $('#search_class_subject_sem').val()
+            //     const search_sy1 = $('#search_sy1').val()
+            //     window.open("{{ route('faculty.student_grade_sheet.list_students_by_class_print1') }}?search_class_subject_sem="+search_class_subject_sem+'&search_sy1='+search_sy1, '', 'height=800,width=800')
+            // })
+            $('body').on('click', '#js-btn_print_sem1', function (e) {
                 e.preventDefault()
-                const search_class_subject_sem = $('#search_class_subject_sem').val()
+                const search_class_subject_sem = $('.search_class_subject').val()
                 const search_sy1 = $('#search_sy1').val()
+                window.open("{{ route('faculty.student_grade_sheet.list_students_by_class_print1') }}?search_class_subject_sem="+search_class_subject_sem+'&search_sy1='+search_sy1, '', 'height=800,width=800')
+            })
+            $('body').on('click', '#js-btn_print_sem2', function (e) {
+                e.preventDefault()
+                const search_class_subject_sem = $('.search_class_subject').val()
+                const search_sy1 = $('#search_sy').val()
                 window.open("{{ route('faculty.student_grade_sheet.list_students_by_class_print1') }}?search_class_subject_sem="+search_class_subject_sem+'&search_sy1='+search_sy1, '', 'height=800,width=800')
             })
         });

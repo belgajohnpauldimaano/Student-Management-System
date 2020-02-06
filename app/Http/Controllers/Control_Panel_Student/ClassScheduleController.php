@@ -10,7 +10,7 @@ class ClassScheduleController extends Controller
     public function index (Request $request) 
     {
         $StudentInformation = \App\StudentInformation::where('user_id', \Auth::user()->id)->first();
-        $SchoolYear = \App\SchoolYear::where('current', 1)->first();
+        $SchoolYear = \App\SchoolYear::where('current', 1)->where('status', 1)->first();
         if ($StudentInformation) 
         {
             $Enrollment = \App\Enrollment::join('class_details', 'class_details.id', '=', 'enrollments.class_details_id')

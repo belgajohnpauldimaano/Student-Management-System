@@ -465,6 +465,9 @@ class AdvisoryClassController extends Controller
             ->select(\DB::raw("
                 enrollments.id as enrollment_id,
                 enrollments.attendance,
+                enrollments.j_lacking_unit,
+                enrollments.s1_lacking_unit,
+                enrollments.s2_lacking_unit,
                 class_details.grade_level,
                 class_subject_details.id as class_subject_details_id,
                 class_subject_details.class_days,
@@ -506,8 +509,10 @@ class AdvisoryClassController extends Controller
             if ($StudentInformation && count($Enrollment)>0)
             {
                 $StudentEnrolledSubject = \App\StudentEnrolledSubject::where('enrollments_id', $Enrollment[0]->enrollment_id)
-                ->get();
+                    ->get();
+
                 $grade_level = $Enrollment[0]->grade_level;
+
                 if ($Enrollment[0]->attendance) {
                     $attendance_data = json_decode($Enrollment[0]->attendance);
                 }

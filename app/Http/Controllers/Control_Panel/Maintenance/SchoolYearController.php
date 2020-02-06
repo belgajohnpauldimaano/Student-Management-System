@@ -34,7 +34,7 @@ class SchoolYearController extends Controller
     public function save_data (Request $request) 
     {
         $rules = [
-            'school_year_id' => 'required'
+            'school_year' => 'required'
            
         ];
 

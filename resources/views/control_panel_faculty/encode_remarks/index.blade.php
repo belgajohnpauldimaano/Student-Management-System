@@ -84,8 +84,46 @@
                 
                 window.open("{{ route('faculty.AdvisoryClass.print_grades') }}?id="+id+"&cid="+print_sy, '', 'height=800,width=800')
         })
-   
-    $('body').on('submit', '#js_lacking_units_jr', function (e) {
+        
+            $('body').on('submit', '#js_lacking_units_jr', function (e) {
+                e.preventDefault();
+                var formData = new FormData($(this)[0]);
+                $.ajax({
+                    url         : "{{ route('faculty.encode-remarks.save') }}",
+                    type        : 'POST',
+                    data        : formData,
+                    processData : false,
+                    contentType : false,
+                    success     : function (res) {
+                        // $('.help-block').html('');
+                        if (res.res_code == 1)
+                        {
+                            show_toast_alert({
+                                heading : 'Error',
+                                message : res.res_msg,
+                                type    : 'error'
+                            });
+                        }
+                        else
+                        {
+                            show_toast_alert({
+                                heading : 'Success',
+                                message : res.res_msg,
+                                type    : 'success'
+                            });                        
+                
+                            // fetch_data ();
+                            loader_overlay();
+                            setTimeout(function() {
+                                location.reload();
+                                }, 15);
+                        }
+                    }
+                });
+            });
+            
+            
+            $('body').on('submit', '#js_lacking_units_jr_fem', function (e) {
                 e.preventDefault();
                 var formData = new FormData($(this)[0]);
                 $.ajax({
@@ -123,6 +161,43 @@
             });
 
             $('body').on('submit', '#js_lacking_units_sr', function (e) {
+                e.preventDefault();
+                var formData = new FormData($(this)[0]);
+                $.ajax({
+                    url         : "{{ route('faculty.encode-remarks.save') }}",
+                    type        : 'POST',
+                    data        : formData,
+                    processData : false,
+                    contentType : false,
+                    success     : function (res) {
+                        // $('.help-block').html('');
+                        if (res.res_code == 1)
+                        {
+                            show_toast_alert({
+                                heading : 'Error',
+                                message : res.res_msg,
+                                type    : 'error'
+                            });
+                        }
+                        else
+                        {
+                            show_toast_alert({
+                                heading : 'Success',
+                                message : res.res_msg,
+                                type    : 'success'
+                            });                        
+                
+                            // fetch_data ();
+                            loader_overlay();
+                            setTimeout(function() {
+                                location.reload();
+                                }, 15);
+                        }
+                    }
+                });
+            });
+
+            $('body').on('submit', '#js_lacking_units_sr_fem', function (e) {
                 e.preventDefault();
                 var formData = new FormData($(this)[0]);
                 $.ajax({
