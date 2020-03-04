@@ -1227,7 +1227,7 @@
                                             @if ($data->fir_g == 0 && $data->sec_g == 0 && $data->thi_g == 0 && $data->fou_g == 0)
                                                 <td></td>
                                             @else
-                                                <td></td>
+                                                {{-- <td></td> --}}
                                             @endif
                                             
                                     @endif
@@ -1403,8 +1403,11 @@
                     </tr>
                     
                     <tr style="margin-top: .5em">
-                        <!--<td colspan="3" style="border: 0">Date:___<u>{{ $DateRemarks->j_date }}</u>____</td>  -->
-                        <td colspan="3" style="border: 0">Date:________________</td>  
+                        @if($DateRemarks)
+                            <td colspan="3" style="border: 0">Date:___<u>{{ $DateRemarks->j_date }}</u>____</td>
+                        @else
+                            <td colspan="3" style="border: 0">Date:________________</td>  
+                        @endif
                     </tr>
                     <tr style="margin-top: .5em">
                          <td colspan="3" style="border: 0">&nbsp;</td>   </tr>

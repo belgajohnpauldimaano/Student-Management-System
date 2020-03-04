@@ -185,6 +185,7 @@ class StudentController extends Controller
 
     public function print_student_grade_modal (Request $request) 
     {
+        
         $Enrollment = \App\Enrollment::where('student_information_id', $request->id)
             ->join('class_details','class_details.id', '=','enrollments.class_details_id')
             ->join('school_years','school_years.id', '=','class_details.school_year_id')
@@ -197,6 +198,9 @@ class StudentController extends Controller
                 ')
             ->get();
         $student_id = $request->id;
+
+        
+
         return view('control_panel.student_information.partials.print_individual_grade', compact('Enrollment', 'student_id'));
     }
     
@@ -208,6 +212,7 @@ class StudentController extends Controller
         }
 
         $StudentInformation = \App\StudentInformation::with(['user'])->where('id', $request->id)->first();
+        $DateRemarks = \App\DateRemark::where('school_year_id', $request->cid)->first();
         // $StudentInformation = \App\StudentInformation::with('user')->where('id', $request->id)->first();
         // $SchoolYear = \App\SchoolYear::where('current', $request->cid)->first();
         // // return json_encode(['xx'=> $request->all(), 's' => $StudentInformation]);
@@ -437,8 +442,9 @@ class StudentController extends Controller
                 'times_tardy_total' => array_sum($attendance_data->times_tardy),
             ];
             // return json_encode(['a' => $GradeSheetData, 'subj_count' => $subj_count, 'general_avg' => $general_avg]);
-            return view('control_panel_student.grade_sheet.partials.print', compact('GradeSheetData', 'grade_level', 'StudentInformation', 'ClassDetail', 'general_avg', 'student_attendance', 'table_header','Signatory'));
-            $pdf = \PDF::loadView('control_panel_student.grade_sheet.partials.print', compact('GradeSheetData', 'grade_level', 'StudentInformation', 'ClassDetail','Signatory'));
+            return view('control_panel_student.grade_sheet.partials.print',
+             compact('GradeSheetData', 'grade_level', 'StudentInformation', 'ClassDetail', 'general_avg', 'student_attendance', 'table_header','Signatory','DateRemarks'));
+            $pdf = \PDF::loadView('control_panel_student.grade_sheet.partials.print', compact('GradeSheetData', 'grade_level', 'StudentInformation', 'ClassDetail','Signatory','DateRemarks'));
             // $pdf->setPaper('Letter', 'landscape');
             return $pdf->stream();
             return view('control_panel_student.grade_sheet.index', compact('GradeSheetData'));
