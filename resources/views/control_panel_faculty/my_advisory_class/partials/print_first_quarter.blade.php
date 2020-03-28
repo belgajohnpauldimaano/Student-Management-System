@@ -974,7 +974,6 @@
         @endif
 
   @else
-
   
     @if($ClassSubjectDetail->grade_level == 7 || $ClassSubjectDetail->grade_level == 8 || $ClassSubjectDetail->grade_level == 9)
 
