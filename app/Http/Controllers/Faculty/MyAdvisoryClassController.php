@@ -64,10 +64,10 @@ class MyAdvisoryClassController extends Controller
         
         if($request->semester_grades == "3rd")
         {
-            $class_details_elements = '<option value="">-------------------------------AVERAGE--------------------------------</option>';
-            $class_details_elements .= '<option value="1st-2nd">Sem-1 First - Second Quarter Average</option>';
-            $class_details_elements .= '<option value="3rd-4th">Sem-2 First - Second Quarter Average</option>'; 
-            $class_details_elements .= '<option value="1-2">Sem-1 and 2 Average</option>'; 
+            
+            $class_details_elements = '<option value="1st-2nd">Sem-1 and 2 Average</option>';
+            // $class_details_elements .= '<option value="3rd-4th">Sem-2 First - Second Quarter Average</option>'; 
+            // $class_details_elements .= '<option value="1-2">Sem-1 and 2 Average</option>'; 
         }
         else
         {
@@ -2000,7 +2000,7 @@ class MyAdvisoryClassController extends Controller
             return $pdf->stream();
     }
 
-    // SENIOR
+    // SENIOR both semester
     public function seniorFirstSemGradeSheetAverage(Request $request)
     {
             $type = "average";
@@ -2036,16 +2036,7 @@ class MyAdvisoryClassController extends Controller
                 $sem = 'First';
                 $quarter = 'First - Second';
             }
-            else if($request->quarter_ == "3rd-4th")
-            {
-                $sem = 'Second';
-                $quarter = 'First - Second';
-            }
-            else if($request->quarter_ == "1-2")
-            {
-                $quarter = 'First - Fourth';
-                $sem = 'First and Second';
-            }
+            
             
 
             $FacultyInformation = \App\FacultyInformation::where('user_id', \Auth::user()->id)->first();       
@@ -2132,62 +2123,62 @@ class MyAdvisoryClassController extends Controller
                                                             
 
             $GradeSheetFeMale = \App\Grade_sheet_firstsem::join('class_details','class_details.section_id','=','grade_sheet_firstsems.section_details_id')            
-            ->join('enrollments','enrollments.id','=','grade_sheet_firstsems.enrollment_id')
-            ->join('student_informations','student_informations.id','=','enrollments.student_information_id')
-            ->where('class_details.section_id', $ClassSubjectDetail->section_id)
-            ->where('grade_sheet_firstsems.school_year_id', $request->search_sy1)
-            ->whereRaw('student_informations.gender = 2')
-            ->selectRaw("   grade_sheet_firstsems.enrollment_id,                    
-                    CONCAT(student_informations.last_name, ', ', student_informations.first_name, ' ', student_informations.middle_name) as student_name,
-                    grade_sheet_firstsems.subject_1, grade_sheet_firstsems.subject_2, grade_sheet_firstsems.subject_3, grade_sheet_firstsems.subject_4
-                    , grade_sheet_firstsems.subject_5, grade_sheet_firstsems.subject_6, grade_sheet_firstsems.subject_7
-                    , grade_sheet_firstsems.subject_8, grade_sheet_firstsems.subject_9,
-                    enrollments.id as enrollment_id
-                    ")
-            ->distinct()
-            ->orderBY('student_name','ASC')
-            ->get();
+                ->join('enrollments','enrollments.id','=','grade_sheet_firstsems.enrollment_id')
+                ->join('student_informations','student_informations.id','=','enrollments.student_information_id')
+                ->where('class_details.section_id', $ClassSubjectDetail->section_id)
+                ->where('grade_sheet_firstsems.school_year_id', $request->search_sy1)
+                ->whereRaw('student_informations.gender = 2')
+                ->selectRaw("   grade_sheet_firstsems.enrollment_id,                    
+                        CONCAT(student_informations.last_name, ', ', student_informations.first_name, ' ', student_informations.middle_name) as student_name,
+                        grade_sheet_firstsems.subject_1, grade_sheet_firstsems.subject_2, grade_sheet_firstsems.subject_3, grade_sheet_firstsems.subject_4
+                        , grade_sheet_firstsems.subject_5, grade_sheet_firstsems.subject_6, grade_sheet_firstsems.subject_7
+                        , grade_sheet_firstsems.subject_8, grade_sheet_firstsems.subject_9,
+                        enrollments.id as enrollments_id, student_informations.id as student_informations_id
+                        ")
+                ->distinct()
+                ->orderBY('student_name','ASC')
+                ->get();
 
             
 
             $NumberOfSubject = \App\ClassSubjectDetail::join('subject_details', 'subject_details.id', '=' ,'class_subject_details.subject_id')
-            ->join('class_details', 'class_details.id', '=' ,'class_subject_details.class_details_id')
-            ->join('faculty_informations', 'faculty_informations.id', '=' ,'class_subject_details.faculty_id')           
-            ->selectRaw("                
-                            class_subject_details.class_subject_order
-                        ")
-            ->where('class_subject_details.class_details_id', $ClassSubjectDetail->id)
-            ->where('class_subject_details.status', 1)            
-            ->where('class_details.school_year_id', $request->search_sy1)
-            ->where('class_subject_details.sem', 2)           
-            ->orderBY('class_subject_details.class_subject_order','DESC')
-            ->first();       
+                ->join('class_details', 'class_details.id', '=' ,'class_subject_details.class_details_id')
+                ->join('faculty_informations', 'faculty_informations.id', '=' ,'class_subject_details.faculty_id')           
+                ->selectRaw("                
+                                class_subject_details.class_subject_order
+                            ")
+                ->where('class_subject_details.class_details_id', $ClassSubjectDetail->id)
+                ->where('class_subject_details.status', 1)            
+                ->where('class_details.school_year_id', $request->search_sy1)
+                ->where('class_subject_details.sem', 2)           
+                ->orderBY('class_subject_details.class_subject_order','DESC')
+                ->first();       
 
             $Totalsubject_1st_sem = \App\ClassSubjectDetail::join('subject_details', 'subject_details.id', '=' ,'class_subject_details.subject_id')
-            ->join('class_details', 'class_details.id', '=' ,'class_subject_details.class_details_id')
-            ->join('faculty_informations', 'faculty_informations.id', '=' ,'class_subject_details.faculty_id')           
-            ->selectRaw("                
-                            class_subject_details.class_subject_order
-                        ")
-            ->where('class_subject_details.class_details_id', $ClassSubjectDetail->id)
-            ->where('class_subject_details.status', 1)
-            ->where('class_subject_details.sem', 1) 
-            ->where('class_details.school_year_id', $request->search_sy1)         
-            ->orderBY('class_subject_details.class_subject_order','DESC')
-            ->count();  
+                ->join('class_details', 'class_details.id', '=' ,'class_subject_details.class_details_id')
+                ->join('faculty_informations', 'faculty_informations.id', '=' ,'class_subject_details.faculty_id')           
+                ->selectRaw("                
+                                class_subject_details.class_subject_order
+                            ")
+                ->where('class_subject_details.class_details_id', $ClassSubjectDetail->id)
+                ->where('class_subject_details.status', 1)
+                ->where('class_subject_details.sem', 1) 
+                ->where('class_details.school_year_id', $request->search_sy1)         
+                ->orderBY('class_subject_details.class_subject_order','DESC')
+                ->count();  
             
             $Totalsubject_2nd_sem = \App\ClassSubjectDetail::join('subject_details', 'subject_details.id', '=' ,'class_subject_details.subject_id')
-            ->join('class_details', 'class_details.id', '=' ,'class_subject_details.class_details_id')
-            ->join('faculty_informations', 'faculty_informations.id', '=' ,'class_subject_details.faculty_id')           
-            ->selectRaw("                
-                            class_subject_details.class_subject_order
-                        ")
-            ->where('class_subject_details.class_details_id', $ClassSubjectDetail->id)
-            ->where('class_subject_details.status', 1)
-            ->where('class_subject_details.sem', 2) 
-            ->where('class_details.school_year_id', $request->search_sy1)         
-            ->orderBY('class_subject_details.class_subject_order','DESC')
-            ->count();  
+                ->join('class_details', 'class_details.id', '=' ,'class_subject_details.class_details_id')
+                ->join('faculty_informations', 'faculty_informations.id', '=' ,'class_subject_details.faculty_id')           
+                ->selectRaw("                
+                                class_subject_details.class_subject_order
+                            ")
+                ->where('class_subject_details.class_details_id', $ClassSubjectDetail->id)
+                ->where('class_subject_details.status', 1)
+                ->where('class_subject_details.sem', 2) 
+                ->where('class_details.school_year_id', $request->search_sy1)         
+                ->orderBY('class_subject_details.class_subject_order','DESC')
+                ->count();  
 
             $type = "average";
             
@@ -2322,343 +2313,201 @@ class MyAdvisoryClassController extends Controller
     
     }
 
-    public function first_sem_GradeSheetAverage_print(Request $request)
-    {
-            $type = "average";
 
-            $FacultyInformation = \App\FacultyInformation::where('user_id', \Auth::user()->id)->first();
-         
-            $ClassSubjectDetail = \App\ClassSubjectDetail::join('class_details', 'class_details.id', '=', 'class_subject_details.class_details_id')
-            // ->join('subject_details', 'subject_details.id', '=', 'class_subject_details.subject_id')
-            ->join('rooms','rooms.id', '=', 'class_details.room_id')
-            ->join('section_details', 'section_details.id', '=', 'class_details.section_id')
-            ->join('school_years', 'school_years.id' ,'=', 'class_details.school_year_id')
-            ->join('faculty_informations', 'faculty_informations.id','=','class_details.adviser_id')
-            // ->whereRaw('class_subject_details.id = '. $request->search_class_subject)
-            // ->whereRaw('class_details.id = '. $search_class_subject[1])
-            ->where('class_details.adviser_id', $FacultyInformation->id)
-            ->where('class_details.school_year_id', $request->search_sy1)
-            // ->where('class_subject_details.status', '!=', 0)
-            ->where('class_details.status', '!=', 0)
-            ->select(\DB::raw('                
-                rooms.room_code,
-                rooms.room_description,
-                section_details.section,
-                class_details.id,
-                class_details.section_id,
-                class_details.grade_level,
-                class_subject_details.status as grading_status,
-                faculty_informations.first_name, faculty_informations.middle_name ,  faculty_informations.last_name,
-                school_years.school_year                
-            '))
-            ->first();
-
-           
-            $sem = 'First';
-            $quarter = 'First - Second';
-           
-            $FacultyInformation = \App\FacultyInformation::where('user_id', \Auth::user()->id)->first();       
-            
-            $AdvisorySubject = \App\ClassSubjectDetail::join('subject_details', 'subject_details.id', '=' ,'class_subject_details.subject_id')
-                ->join('class_details', 'class_details.id', '=' ,'class_subject_details.class_details_id')
-                ->join('faculty_informations', 'faculty_informations.id', '=' ,'class_subject_details.faculty_id')           
-                ->selectRaw("                
-                    subject_details.subject, subject_details.id, class_subject_details.class_subject_order, subject_details.subject_code
-                ")
-                ->where('class_subject_details.class_details_id', $ClassSubjectDetail->id)
-                ->where('class_subject_details.status', 1)
-                // ->where('faculty_id', $FacultyInformation->id)
-                ->where('class_details.school_year_id', $request->search_sy1)
-                ->where('class_subject_details.sem', 1)
-                //  ->where('class_details.school_year_id', $request->search_sy)
-                // ->orderBy('class_subject_details.class_time_from', 'ASC');
-                ->orderBY('class_subject_details.class_subject_order','ASC')
-                ->get();            
-            
-
-            $GradeSheetMale = \App\Grade_sheet_firstsem::join('class_details','class_details.section_id','=','grade_sheet_firstsems.section_details_id')            
-                ->join('enrollments','enrollments.id','=','grade_sheet_firstsems.enrollment_id')
-                ->join('student_informations','student_informations.id','=','enrollments.student_information_id')
-                ->where('class_details.section_id', $ClassSubjectDetail->section_id)
-                ->where('grade_sheet_firstsems.school_year_id', $request->search_sy1)
-                ->whereRaw('student_informations.gender = 1')
-                ->selectRaw("  grade_sheet_firstsems.enrollment_id,                
-                        CONCAT(student_informations.last_name, ', ', student_informations.first_name, ' ', student_informations.middle_name) as student_name,
-                        grade_sheet_firstsems.subject_1, grade_sheet_firstsems.subject_2, grade_sheet_firstsems.subject_3, grade_sheet_firstsems.subject_4
-                        , grade_sheet_firstsems.subject_5, grade_sheet_firstsems.subject_6, grade_sheet_firstsems.subject_7
-                        , grade_sheet_firstsems.subject_8, grade_sheet_firstsems.subject_9
-                        ")
-                ->distinct()
-                ->orderBY('student_name','ASC')
-                ->get();
-
-            $GradeSheetFeMale = \App\Grade_sheet_firstsem::join('class_details','class_details.section_id','=','grade_sheet_firstsems.section_details_id')            
-                ->join('enrollments','enrollments.id','=','grade_sheet_firstsems.enrollment_id')
-                ->join('student_informations','student_informations.id','=','enrollments.student_information_id')
-                ->where('class_details.section_id', $ClassSubjectDetail->section_id)
-                ->where('grade_sheet_firstsems.school_year_id', $request->search_sy1)
-                ->whereRaw('student_informations.gender = 2')
-                ->selectRaw("   grade_sheet_firstsems.enrollment_id,                    
-                        CONCAT(student_informations.last_name, ', ', student_informations.first_name, ' ', student_informations.middle_name) as student_name,
-                        grade_sheet_firstsems.subject_1, grade_sheet_firstsems.subject_2, grade_sheet_firstsems.subject_3, grade_sheet_firstsems.subject_4
-                        , grade_sheet_firstsems.subject_5, grade_sheet_firstsems.subject_6, grade_sheet_firstsems.subject_7
-                        , grade_sheet_firstsems.subject_8, grade_sheet_firstsems.subject_9
-                        ")
-                ->distinct()
-                ->orderBY('student_name','ASC')
-                ->get();
-
-            
-
-            $NumberOfSubject = \App\ClassSubjectDetail::join('subject_details', 'subject_details.id', '=' ,'class_subject_details.subject_id')
-                ->join('class_details', 'class_details.id', '=' ,'class_subject_details.class_details_id')
-                ->join('faculty_informations', 'faculty_informations.id', '=' ,'class_subject_details.faculty_id')           
-                ->selectRaw("                
-                                class_subject_details.class_subject_order
-                            ")
-                ->where('class_subject_details.class_details_id', $ClassSubjectDetail->id)
-                ->where('class_subject_details.status', 1)
-                // ->where('faculty_id', $FacultyInformation->id)
-                ->where('class_details.school_year_id', $request->search_sy1)
-                ->where('class_subject_details.sem', 2)
-                //  ->where('class_details.school_year_id', $request->search_sy)
-                // ->orderBy('class_subject_details.class_time_from', 'ASC');
-                ->orderBY('class_subject_details.class_subject_order','DESC')
-                ->first();       
-
-            return view('control_panel_faculty.my_advisory_class.partials.print_senior_average', 
-            compact( 'type','NumberOfSubject', 'ClassSubjectDetail','AdvisorySubject','GradeSheetMale','GradeSheetFeMale','quarter','AdvisorySubject','sem'));
-            $pdf = \PDF::loadView('control_panel_faculty.my_advisory_class.partials.print_senior_average', 
-            compact( 'type','NumberOfSubject', 'ClassSubjectDetail','AdvisorySubject','GradeSheetMale','GradeSheetFeMale','quarter','AdvisorySubject','sem'));
-            $pdf->setPaper('Legal', 'portrait');
-            return $pdf->stream();
-    
-    }
-
-    public function second_sem_GradeSheetAverage_print(Request $request)
-    {
-            $type = "average";
-
-            $FacultyInformation = \App\FacultyInformation::where('user_id', \Auth::user()->id)->first();
-         
-            $ClassSubjectDetail = \App\ClassSubjectDetail::join('class_details', 'class_details.id', '=', 'class_subject_details.class_details_id')
-            // ->join('subject_details', 'subject_details.id', '=', 'class_subject_details.subject_id')
-            ->join('rooms','rooms.id', '=', 'class_details.room_id')
-            ->join('section_details', 'section_details.id', '=', 'class_details.section_id')
-            ->join('school_years', 'school_years.id' ,'=', 'class_details.school_year_id')
-            ->join('faculty_informations', 'faculty_informations.id','=','class_details.adviser_id')
-            // ->whereRaw('class_subject_details.id = '. $request->search_class_subject)
-            // ->whereRaw('class_details.id = '. $search_class_subject[1])
-            ->where('class_details.adviser_id', $FacultyInformation->id)
-            ->where('class_details.school_year_id', $request->search_sy1)
-            // ->where('class_subject_details.status', '!=', 0)
-            ->where('class_details.status', '!=', 0)
-            ->select(\DB::raw('                
-                rooms.room_code,
-                rooms.room_description,
-                section_details.section,
-                class_details.id,
-                class_details.section_id,
-                class_details.grade_level,
-                class_subject_details.status as grading_status,
-                faculty_informations.first_name, faculty_informations.middle_name ,  faculty_informations.last_name,
-                school_years.school_year                
-            '))
-            ->first();
-
-           
-            $sem = 'Second';
-            $quarter = 'First - Second';
-           
-            
-                
-                $FacultyInformation = \App\FacultyInformation::where('user_id', \Auth::user()->id)->first();       
-                    
-                $AdvisorySubject = \App\ClassSubjectDetail::join('subject_details', 'subject_details.id', '=' ,'class_subject_details.subject_id')
-                ->join('class_details', 'class_details.id', '=' ,'class_subject_details.class_details_id')
-                ->join('faculty_informations', 'faculty_informations.id', '=' ,'class_subject_details.faculty_id')           
-                ->selectRaw("                
-                    subject_details.subject, subject_details.id, class_subject_details.class_subject_order, subject_details.subject_code
-                ")
-                ->where('class_subject_details.class_details_id', $ClassSubjectDetail->id)
-                ->where('class_subject_details.status', 1)
-                // ->where('faculty_id', $FacultyInformation->id)
-                ->where('class_details.school_year_id', $request->search_sy1)
-                ->where('class_subject_details.sem', 2)
-                //  ->where('class_details.school_year_id', $request->search_sy)
-                // ->orderBy('class_subject_details.class_time_from', 'ASC');
-                ->orderBY('class_subject_details.class_subject_order','ASC')
-                ->get();        
-                
-                $NumberOfSubject = \App\ClassSubjectDetail::join('subject_details', 'subject_details.id', '=' ,'class_subject_details.subject_id')
-                ->join('class_details', 'class_details.id', '=' ,'class_subject_details.class_details_id')
-                ->join('faculty_informations', 'faculty_informations.id', '=' ,'class_subject_details.faculty_id')           
-                ->selectRaw("                
-                                class_subject_details.class_subject_order
-                            ")
-                ->where('class_subject_details.class_details_id', $ClassSubjectDetail->id)
-                ->where('class_subject_details.status', 1)
-                // ->where('faculty_id', $FacultyInformation->id)
-                ->where('class_details.school_year_id', $request->search_sy1)
-                ->where('class_subject_details.sem', 2)
-                //  ->where('class_details.school_year_id', $request->search_sy)
-                // ->orderBy('class_subject_details.class_time_from', 'ASC');
-                ->orderBY('class_subject_order','DESC')
-                ->first();           
-                
-    
-                $GradeSheetMale = \App\Grade11_Second_Sem::join('class_details','class_details.section_id','=','grade11__second__sems.section_details_id')            
-                ->join('enrollments','enrollments.id','=','grade11__second__sems.enrollment_id')
-                ->join('student_informations','student_informations.id','=','enrollments.student_information_id')
-                ->where('class_details.section_id', $ClassSubjectDetail->section_id)
-                ->where('grade11__second__sems.school_year_id', $request->search_sy1)
-                ->whereRaw('student_informations.gender = 1')
-                ->selectRaw("  grade11__second__sems.enrollment_id,                
-                        CONCAT(student_informations.last_name, ', ', student_informations.first_name, ' ', student_informations.middle_name) as student_name,
-                        grade11__second__sems.subject_1, grade11__second__sems.subject_2, grade11__second__sems.subject_3, grade11__second__sems.subject_4
-                        , grade11__second__sems.subject_5, grade11__second__sems.subject_6, grade11__second__sems.subject_7
-                        , grade11__second__sems.subject_8, grade11__second__sems.subject_9
-                        ")
-                ->distinct()
-                ->orderBY('student_name','ASC')
-                ->get();
-    
-                $GradeSheetFeMale = \App\Grade11_Second_Sem::join('class_details','class_details.section_id','=','grade11__second__sems.section_details_id')            
-                ->join('enrollments','enrollments.id','=','grade11__second__sems.enrollment_id')
-                ->join('student_informations','student_informations.id','=','enrollments.student_information_id')
-                ->where('class_details.section_id', $ClassSubjectDetail->section_id)
-                ->where('grade11__second__sems.school_year_id', $request->search_sy1)
-                ->whereRaw('student_informations.gender = 2')
-                ->selectRaw("    grade11__second__sems.enrollment_id,                
-                        CONCAT(student_informations.last_name, ', ', student_informations.first_name, ' ', student_informations.middle_name) as student_name,
-                        grade11__second__sems.subject_1, grade11__second__sems.subject_2, grade11__second__sems.subject_3, grade11__second__sems.subject_4
-                        , grade11__second__sems.subject_5, grade11__second__sems.subject_6, grade11__second__sems.subject_7
-                        , grade11__second__sems.subject_8, grade11__second__sems.subject_9
-                        ")
-                ->distinct()
-                ->orderBY('student_name','ASC')
-                ->get();
-
-            return view('control_panel_faculty.my_advisory_class.partials.print_senior_average', 
-                compact( 'type','NumberOfSubject', 'ClassSubjectDetail','AdvisorySubject','GradeSheetMale','GradeSheetFeMale','quarter','AdvisorySubject','sem'));
-            $pdf = \PDF::loadView('control_panel_faculty.my_advisory_class.partials.print_senior_average', 
-                compact( 'type','NumberOfSubject', 'ClassSubjectDetail','AdvisorySubject','GradeSheetMale','GradeSheetFeMale','quarter','AdvisorySubject','sem'));
-            $pdf->setPaper('Legal', 'portrait');
-            return $pdf->stream();
-    
-    }
 
     public function finalGradeSheetAverage_print(Request $request)
     {
-            $type = "average";
+        
 
-            $FacultyInformation = \App\FacultyInformation::where('user_id', \Auth::user()->id)->first();
-         
-            $ClassSubjectDetail = \App\ClassSubjectDetail::join('class_details', 'class_details.id', '=', 'class_subject_details.class_details_id')
+        $FacultyInformation = \App\FacultyInformation::where('user_id', \Auth::user()->id)->first();
+     
+        $ClassSubjectDetail = \App\ClassSubjectDetail::join('class_details', 'class_details.id', '=', 'class_subject_details.class_details_id')
+        // ->join('subject_details', 'subject_details.id', '=', 'class_subject_details.subject_id')
+        ->join('rooms','rooms.id', '=', 'class_details.room_id')
+        ->join('section_details', 'section_details.id', '=', 'class_details.section_id')
+        // ->whereRaw('class_subject_details.id = '. $request->search_class_subject)
+        // ->whereRaw('class_details.id = '. $search_class_subject[1])
+        ->where('class_details.adviser_id', $FacultyInformation->id)
+        ->where('class_details.school_year_id', $request->search_sy1)
+        // ->where('class_subject_details.status', '!=', 0)
+        ->where('class_details.status', '!=', 0)
+        ->select(\DB::raw('                
+            rooms.room_code,
+            rooms.room_description,
+            section_details.section,
+            class_details.id,
+            class_details.section_id,
+            class_details.grade_level,
+            class_subject_details.status as grading_status,
+            class_subject_details.sem
+        '))
+        ->first();
+
+        $sem = 'First';
+        $quarter = 'First - Second';
+        
+        $type = "average";
+
+        
+        
+        
+
+        $FacultyInformation = \App\FacultyInformation::where('user_id', \Auth::user()->id)->first();       
+        
+        
             
-            ->join('rooms','rooms.id', '=', 'class_details.room_id')
-            ->join('section_details', 'section_details.id', '=', 'class_details.section_id')
-            ->join('school_years', 'school_years.id' ,'=', 'class_details.school_year_id')
-            ->join('faculty_informations', 'faculty_informations.id','=','class_details.adviser_id')
-
-            ->where('class_details.adviser_id', $FacultyInformation->id)
+        $AdvisorySubject = \App\ClassSubjectDetail::join('subject_details', 'subject_details.id', '=' ,'class_subject_details.subject_id')
+            ->join('class_details', 'class_details.id', '=' ,'class_subject_details.class_details_id')
+            ->join('faculty_informations', 'faculty_informations.id', '=' ,'class_subject_details.faculty_id')           
+            ->selectRaw("                
+                subject_details.subject, subject_details.id, class_subject_details.class_subject_order, subject_details.subject_code
+            ")
+            ->where('class_subject_details.class_details_id', $ClassSubjectDetail->id)
+            ->where('class_subject_details.status', 1)
+            
+            ->where('class_subject_details.faculty_id', $FacultyInformation->id)
             ->where('class_details.school_year_id', $request->search_sy1)
-            // ->where('class_subject_details.status', '!=', 0)
-            ->where('class_details.status', '!=', 0)
-            ->select(\DB::raw('                
-                rooms.room_code,
-                rooms.room_description,
-                section_details.section,
-                class_details.id,
-                class_details.section_id,
-                class_details.grade_level,
-                class_subject_details.status as grading_status,
-                class_subject_details.sem,
-                faculty_informations.first_name, faculty_informations.middle_name ,  faculty_informations.last_name,
-                school_years.school_year
-            '))
-            ->first();
-
-            $no_sub  = \App\ClassSubjectDetail::where('id', $ClassSubjectDetail->id)
-            ->where('sem', 2)->where('status', '!=', 0)->count();
-
-           
-            $quarter = 'First - Fourth';
-            $sem = 'First and Second';
-           
+            ->where('class_subject_details.sem', 2)
+            ->orderBY('class_subject_details.class_subject_order','ASC')
+            ->get();             
             
 
-            $GradeSheetMale = \App\Grade_sheet_firstsem::join('class_details','class_details.section_id','=','grade_sheet_firstsems.section_details_id')            
-                ->join('enrollments','enrollments.id','=','grade_sheet_firstsems.enrollment_id')
-                ->join('student_informations','student_informations.id','=','enrollments.student_information_id')
-                ->where('class_details.section_id', $ClassSubjectDetail->section_id)
-                ->where('grade_sheet_firstsems.school_year_id', $request->search_sy1)
-                ->whereRaw('student_informations.gender = 1')
-                ->selectRaw("  grade_sheet_firstsems.enrollment_id,                
-                        CONCAT(student_informations.last_name, ', ', student_informations.first_name, ' ', student_informations.middle_name) as student_name,
-                        grade_sheet_firstsems.subject_1, grade_sheet_firstsems.subject_2, grade_sheet_firstsems.subject_3, grade_sheet_firstsems.subject_4
-                        , grade_sheet_firstsems.subject_5, grade_sheet_firstsems.subject_6, grade_sheet_firstsems.subject_7
-                        , grade_sheet_firstsems.subject_8, grade_sheet_firstsems.subject_9
-                        ")
-                ->distinct()
-                ->orderBY('student_name','ASC')
-                ->get();
-
-            $GradeSheetFeMale = \App\Grade_sheet_firstsem::join('class_details','class_details.section_id','=','grade_sheet_firstsems.section_details_id')            
-                ->join('enrollments','enrollments.id','=','grade_sheet_firstsems.enrollment_id')
-                ->join('student_informations','student_informations.id','=','enrollments.student_information_id')
-                ->where('class_details.section_id', $ClassSubjectDetail->section_id)
-                ->where('grade_sheet_firstsems.school_year_id', $request->search_sy1)
-                ->whereRaw('student_informations.gender = 2')
-                ->selectRaw("   grade_sheet_firstsems.enrollment_id,                    
-                        CONCAT(student_informations.last_name, ', ', student_informations.first_name, ' ', student_informations.middle_name) as student_name,
-                        grade_sheet_firstsems.subject_1, grade_sheet_firstsems.subject_2, grade_sheet_firstsems.subject_3, grade_sheet_firstsems.subject_4
-                        , grade_sheet_firstsems.subject_5, grade_sheet_firstsems.subject_6, grade_sheet_firstsems.subject_7
-                        , grade_sheet_firstsems.subject_8, grade_sheet_firstsems.subject_9
-                        ")
-                ->distinct()
-                ->orderBY('student_name','ASC')
-                ->get();
+        $Subject_1stsem = \App\ClassSubjectDetail::join('subject_details', 'subject_details.id', '=' ,'class_subject_details.subject_id')
+            ->join('class_details', 'class_details.id', '=' ,'class_subject_details.class_details_id')
+            ->join('faculty_informations', 'faculty_informations.id', '=' ,'class_subject_details.faculty_id')           
+            ->selectRaw("                
+                subject_details.subject, subject_details.id, class_subject_details.class_subject_order, subject_details.subject_code
+            ")
+            ->where('class_subject_details.class_details_id', $ClassSubjectDetail->id)
+            ->where('class_subject_details.status', 1)
+            // ->where('faculty_id', $FacultyInformation->id)
+            ->where('class_details.school_year_id', $request->search_sy1)
+            ->where('class_subject_details.sem', 1)
+            ->orderBY('class_subject_details.class_subject_order','ASC')
+            ->get();     
             
+        $Subject_2ndsem = \App\ClassSubjectDetail::join('subject_details', 'subject_details.id', '=' ,'class_subject_details.subject_id')
+            ->join('class_details', 'class_details.id', '=' ,'class_subject_details.class_details_id')
+            ->join('faculty_informations', 'faculty_informations.id', '=' ,'class_subject_details.faculty_id')           
+            ->selectRaw("                
+                subject_details.subject, subject_details.id, class_subject_details.class_subject_order, subject_details.subject_code
+            ")
+            ->where('class_subject_details.class_details_id', $ClassSubjectDetail->id)
+            ->where('class_subject_details.status', 1)
+            // ->where('class_subject_details.faculty_id', $FacultyInformation->id)
+            ->where('class_details.school_year_id', $request->search_sy1)
+            ->where('class_subject_details.sem', 2)
+            ->orderBY('class_subject_details.class_subject_order','ASC')
+            ->get();     
 
-            $NumberOfSubject = \App\ClassSubjectDetail::join('subject_details', 'subject_details.id', '=' ,'class_subject_details.subject_id')
-                ->join('class_details', 'class_details.id', '=' ,'class_subject_details.class_details_id')
-                ->join('faculty_informations', 'faculty_informations.id', '=' ,'class_subject_details.faculty_id')           
-                ->selectRaw("                
-                                class_subject_details.class_subject_order
-                            ")
-                ->where('class_subject_details.class_details_id', $ClassSubjectDetail->id)
-                ->where('class_subject_details.status','!=', 0)
-                // ->where('faculty_id', $FacultyInformation->id)
-                ->where('class_details.school_year_id', $request->search_sy1)
-                ->where('class_subject_details.sem', 2)
-                //  ->where('class_details.school_year_id', $request->search_sy)
-                // ->orderBy('class_subject_details.class_time_from', 'ASC');
-                ->orderBY('class_subject_details.class_subject_order','DESC')
-                ->first();  
+        $Totalsubject_2nd_sem = \App\ClassSubjectDetail::join('subject_details', 'subject_details.id', '=' ,'class_subject_details.subject_id')
+            ->join('class_details', 'class_details.id', '=' ,'class_subject_details.class_details_id')
+            ->join('faculty_informations', 'faculty_informations.id', '=' ,'class_subject_details.faculty_id')           
+            ->selectRaw("                
+                            class_subject_details.class_subject_order
+                        ")
+            ->where('class_subject_details.class_details_id', $ClassSubjectDetail->id)
+            ->where('class_subject_details.status', 1)
+            ->where('class_subject_details.sem', 2) 
+            ->where('class_details.school_year_id', $request->search_sy1)         
+            ->orderBY('class_subject_details.class_subject_order','DESC')
+            ->count();  
+        
 
-            $TotalNumberSubject = \App\ClassSubjectDetail::join('subject_details', 'subject_details.id', '=' ,'class_subject_details.subject_id')
-                ->join('class_details', 'class_details.id', '=' ,'class_subject_details.class_details_id')
-                ->join('faculty_informations', 'faculty_informations.id', '=' ,'class_subject_details.faculty_id')           
-                ->selectRaw("                
-                                class_subject_details.class_subject_order
-                            ")
-                ->where('class_subject_details.class_details_id', $ClassSubjectDetail->id)
-                ->where('class_subject_details.status', 1)
-                ->where('class_details.school_year_id', $request->search_sy1)         
-                ->orderBY('class_subject_details.class_subject_order','DESC')
-                ->count();       
+        $GradeSheetMale = \App\Grade_sheet_firstsem::join('class_details','class_details.section_id','=','grade_sheet_firstsems.section_details_id')            
+            ->join('enrollments','enrollments.id','=','grade_sheet_firstsems.enrollment_id')
+            ->join('student_informations','student_informations.id','=','enrollments.student_information_id')
+            ->where('class_details.section_id', $ClassSubjectDetail->section_id)
+            ->where('grade_sheet_firstsems.school_year_id', $request->search_sy1)
+            ->whereRaw('student_informations.gender = 1')
+            ->selectRaw("  grade_sheet_firstsems.enrollment_id,                
+                    CONCAT(student_informations.last_name, ', ', student_informations.first_name, ' ', student_informations.middle_name) as student_name,
+                    grade_sheet_firstsems.subject_1, grade_sheet_firstsems.subject_2, grade_sheet_firstsems.subject_3, grade_sheet_firstsems.subject_4
+                    , grade_sheet_firstsems.subject_5, grade_sheet_firstsems.subject_6, grade_sheet_firstsems.subject_7
+                    , grade_sheet_firstsems.subject_8, grade_sheet_firstsems.subject_9,
+                    enrollments.id as enrollments_id, student_informations.id as student_informations_id
+                    ")
+            ->distinct()
+            ->orderBY('student_name','ASC')
+            ->get();
 
+            
                 
-            // $count_subjects1 = \App\StudentEnrolledSubject::where('enrollments_id', $ClassSubjectDetail->enrollment_id)
-            //     ->where('sem', 2)->where('status', '!=', 0)->count();
+                                                        
 
-            return view('control_panel_faculty.my_advisory_class.partials.print_senior_average', 
-                compact( 'type','NumberOfSubject', 'ClassSubjectDetail','AdvisorySubject','GradeSheetMale','GradeSheetFeMale','quarter','sem','TotalNumberSubject'));
+        $GradeSheetFeMale = \App\Grade_sheet_firstsem::join('class_details','class_details.section_id','=','grade_sheet_firstsems.section_details_id')            
+            ->join('enrollments','enrollments.id','=','grade_sheet_firstsems.enrollment_id')
+            ->join('student_informations','student_informations.id','=','enrollments.student_information_id')
+            ->where('class_details.section_id', $ClassSubjectDetail->section_id)
+            ->where('grade_sheet_firstsems.school_year_id', $request->search_sy1)
+            ->whereRaw('student_informations.gender = 2')
+            ->selectRaw("   grade_sheet_firstsems.enrollment_id,                    
+                    CONCAT(student_informations.last_name, ', ', student_informations.first_name, ' ', student_informations.middle_name) as student_name,
+                    grade_sheet_firstsems.subject_1, grade_sheet_firstsems.subject_2, grade_sheet_firstsems.subject_3, grade_sheet_firstsems.subject_4
+                    , grade_sheet_firstsems.subject_5, grade_sheet_firstsems.subject_6, grade_sheet_firstsems.subject_7
+                    , grade_sheet_firstsems.subject_8, grade_sheet_firstsems.subject_9,
+                    enrollments.id as enrollments_id, student_informations.id as student_informations_id
+                    ")
+            ->distinct()
+            ->orderBY('student_name','ASC')
+            ->get();
+
+        
+
+        $NumberOfSubject = \App\ClassSubjectDetail::join('subject_details', 'subject_details.id', '=' ,'class_subject_details.subject_id')
+            ->join('class_details', 'class_details.id', '=' ,'class_subject_details.class_details_id')
+            ->join('faculty_informations', 'faculty_informations.id', '=' ,'class_subject_details.faculty_id')           
+            ->selectRaw("                
+                            class_subject_details.class_subject_order
+                        ")
+            ->where('class_subject_details.class_details_id', $ClassSubjectDetail->id)
+            ->where('class_subject_details.status', 1)            
+            ->where('class_details.school_year_id', $request->search_sy1)
+            ->where('class_subject_details.sem', 2)           
+            ->orderBY('class_subject_details.class_subject_order','DESC')
+            ->first();       
+
+        $Totalsubject_1st_sem = \App\ClassSubjectDetail::join('subject_details', 'subject_details.id', '=' ,'class_subject_details.subject_id')
+            ->join('class_details', 'class_details.id', '=' ,'class_subject_details.class_details_id')
+            ->join('faculty_informations', 'faculty_informations.id', '=' ,'class_subject_details.faculty_id')           
+            ->selectRaw("                
+                            class_subject_details.class_subject_order
+                        ")
+            ->where('class_subject_details.class_details_id', $ClassSubjectDetail->id)
+            ->where('class_subject_details.status', 1)
+            ->where('class_subject_details.sem', 1) 
+            ->where('class_details.school_year_id', $request->search_sy1)         
+            ->orderBY('class_subject_details.class_subject_order','DESC')
+            ->count();  
+        
+        $Totalsubject_2nd_sem = \App\ClassSubjectDetail::join('subject_details', 'subject_details.id', '=' ,'class_subject_details.subject_id')
+            ->join('class_details', 'class_details.id', '=' ,'class_subject_details.class_details_id')
+            ->join('faculty_informations', 'faculty_informations.id', '=' ,'class_subject_details.faculty_id')           
+            ->selectRaw("                
+                            class_subject_details.class_subject_order
+                        ")
+            ->where('class_subject_details.class_details_id', $ClassSubjectDetail->id)
+            ->where('class_subject_details.status', 1)
+            ->where('class_subject_details.sem', 2) 
+            ->where('class_details.school_year_id', $request->search_sy1)         
+            ->orderBY('class_subject_details.class_subject_order','DESC')
+            ->count();  
+
+        $type = "average";
+        
+        return view('control_panel_faculty.my_advisory_class.partials.print_senior_average', 
+            compact('type','NumberOfSubject', 'ClassSubjectDetail','AdvisorySubject','GradeSheetMale',
+            'GradeSheetFeMale','quarter','AdvisorySubject','sem','TotalNumberSubject','Subject_1stsem',
+            'Subject_2ndsem','Totalsubject_2nd_sem','Totalsubject_1st_sem','EnrollmentSem1'))->render();
+
             $pdf = \PDF::loadView('control_panel_faculty.my_advisory_class.partials.print_senior_average', 
-                compact( 'type','NumberOfSubject', 'ClassSubjectDetail','AdvisorySubject','GradeSheetMale','GradeSheetFeMale','quarter','sem','TotalNumberSubject'));
-            $pdf->setPaper('Legal', 'portrait');
+                compact( 'type','NumberOfSubject', 'ClassSubjectDetail','AdvisorySubject','GradeSheetMale',
+                        'GradeSheetFeMale','quarter','AdvisorySubject','sem','TotalNumberSubject','Subject_1stsem',
+                        'Subject_2ndsem','Totalsubject_2nd_sem','Totalsubject_1st_sem','EnrollmentSem1'));
+            $pdf->setPaper('Legal', 'landscape');
             return $pdf->stream();
-    
+
+            
+
     }
 }

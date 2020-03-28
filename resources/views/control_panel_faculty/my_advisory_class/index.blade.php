@@ -17,7 +17,10 @@
                 @if($GradeLevel->grade_level  == 11 ||  $GradeLevel->grade_level  == 12)
                     
                     <div class="box-header with-border">
-                        <h3 class="box-title">Filter</h3>
+                        <div class="form-group col-sm-12">
+                            <h3 class="box-title">Filter</h3>
+                        </div>
+                        
                             <form id="js-form_filter">
                                     {{ csrf_field() }}
 
@@ -414,7 +417,12 @@
             $('body').on('submit', '#js-form_search', function (e) {
                 e.preventDefault();
                 if (!$('#search_sy').val()) {
-                    alert('Please select a School year!');
+                    
+                    show_toast_alert({
+                        heading : 'Invalid',
+                        message : 'Please select a School year!',
+                        type    : 'error'
+                    });
                     return;
                 }
                 {{--  fetch_data();  --}}
@@ -422,7 +430,12 @@
             $('body').on('submit', '#js-form_search', function (e) {
                 e.preventDefault();
                 if (!$('#quarter_grades').val()) {
-                    alert('Please select Class Quarter!');
+                    
+                    show_toast_alert({
+                        heading : 'Invalid',
+                        message : 'Please select Class Quarter!',
+                        type    : 'error'
+                    });
                     return;
                 }
                 fetch_data();
@@ -431,7 +444,12 @@
             $('body').on('submit', '#js-form_filter', function (e) {
                 e.preventDefault();
                 if (!$('#search_sy1').val()) {
-                    alert('Please select School year!');
+                    
+                    show_toast_alert({
+                        heading : 'Invalid',
+                        message : 'Please select School year!',
+                        type    : 'error'
+                    });
                     return;
                 }
                 {{--  fetch_data1();  --}}
@@ -440,7 +458,12 @@
             $('body').on('submit', '#js-form_filter', function (e) {
                 e.preventDefault();
                 if (!$('#semester_grades').val()) {
-                    alert('Please select Semester!');
+                    
+                    show_toast_alert({
+                        heading : 'Invalid',
+                        message : 'Please select Semester!',
+                        type    : 'error'
+                    });
                     return;
                 }
                 // fetch_data1();
@@ -449,7 +472,13 @@
             $('body').on('submit', '#js-form_filter', function (e) {
                 e.preventDefault();
                 if (!$('#quarter_').val()) {
-                    alert('Please select Class Quarter!');
+
+                    show_toast_alert({
+                        heading : 'Invalid',
+                        message : 'Please select Class Quarter!',
+                        type    : 'error'
+                    });
+                    
                     return;
                 }
                 fetch_data1();
@@ -554,16 +583,9 @@
                     {
                         if(quarter_ == '1st-2nd')
                         {
-                            window.open("{{ route('faculty.MyAdvisoryClass.first_sem_print_average') }}?search_sy1="+search_sy1, '', 'height=800,width=800') 
+                            window.open("{{ route('faculty.MyAdvisoryClass.final_print_average') }}?search_sy1="+search_sy1, '', 'height=800,width=1200') 
                         }
-                        else if(quarter_ == '3rd-4th')
-                        {
-                            window.open("{{ route('faculty.MyAdvisoryClass.second_sem_print_average') }}?search_sy1="+search_sy1, '', 'height=800,width=800') 
-                        }
-                        else
-                        {
-                            window.open("{{ route('faculty.MyAdvisoryClass.final_print_average') }}?search_sy1="+search_sy1, '', 'height=800,width=800') 
-                        }
+                        
                     }
             
               });

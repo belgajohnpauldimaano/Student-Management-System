@@ -104,7 +104,7 @@
     <br/>
    
     <center>
-    @include('control_panel_faculty.my_advisory_class.partials.data_senior_gradesheet')
+        @include('control_panel_faculty.my_advisory_class.partials.data_senior_gradesheet')
     </center>
     <p style="text-align: right"><b>{{$ClassSubjectDetail->first_name }} {{$ClassSubjectDetail->middle_name}} {{$ClassSubjectDetail->last_name}}</b> - <i>Class Adviser</i></p>
 

@@ -6,9 +6,12 @@
             <h4>Semester: <span class="text-red"><i>{{ $sem }}</i></span> Quarter: <span class="text-red"><i>{{ $quarter }}</i></span></h4>                        
             <h4>Grade &amp; Section: <span class="text-red"><i>{{ $ClassSubjectDetail->grade_level . ' ' .$ClassSubjectDetail->section }}</i></span></h4>
             <h4>Room: <span class="text-red"><i>{{ $ClassSubjectDetail->room_code . ' ' .$ClassSubjectDetail->room_description }}</i></span></h4>
-            <button class="mb-5 pb-5 btn btn-flat btn-danger " id="js-btn_print" data-id="{{ $ClassSubjectDetail->id }}"><i class="fa fa-file-pdf"></i> Print</button>
             
-            @include('control_panel_faculty.my_advisory_class.partials.data_senior')
+            @include('control_panel_faculty.my_advisory_class.partials.data_button_print')
+
+            <div class="table-responsive">
+                @include('control_panel_faculty.my_advisory_class.partials.data_senior')
+            </div>
         
         @else
         {{-- Junior Highschool --}}
@@ -16,7 +19,8 @@
                         
             <h4>Grade &amp; Section: <span class="text-red"><i>{{ $ClassSubjectDetail->grade_level . ' ' .$ClassSubjectDetail->section }}</i></span></h4>
             <h4>Room: <span class="text-red"><i>{{ $ClassSubjectDetail->room_code . ' ' .$ClassSubjectDetail->room_description }}</i></span></h4>
-            <button class="mb-5 pb-5 btn btn-flat btn-danger " id="js-btn_print" data-id="{{ $ClassSubjectDetail->id }}"><i class="fa fa-file-pdf"></i> Print</button>
+            
+            @include('control_panel_faculty.my_advisory_class.partials.data_button_print')
                     
             @include('control_panel_faculty.my_advisory_class.partials.data_junior')
             
@@ -31,7 +35,7 @@
                     <h4>Grade &amp; Section: <span class="text-red"><i>{{ $ClassSubjectDetail->grade_level . ' ' .$ClassSubjectDetail->section }}</i></span></h4>
                     <h4>Room: <span class="text-red"><i>{{ $ClassSubjectDetail->room_code . ' ' .$ClassSubjectDetail->room_description }}</i></span></h4>
 
-                    <button class="mb-5 pb-5 btn btn-flat btn-danger" id="js-btn_print" data-id="{{ $ClassSubjectDetail->id }}"><i class="fa fa-file-pdf"></i> Print</button>
+                    @include('control_panel_faculty.my_advisory_class.partials.data_button_print')
                     
                     @include('control_panel_faculty.my_advisory_class.partials.data_senior_gradesheet')
             
@@ -42,8 +46,8 @@
                         <h4>Grade &amp; Section: <span class="text-red"><i>{{ $ClassSubjectDetail->grade_level . ' ' .$ClassSubjectDetail->section }}</i></span></h4>
                         <h4>Room: <span class="text-red"><i>{{ $ClassSubjectDetail->room_code . ' ' .$ClassSubjectDetail->room_description }}</i></span></h4>
             
-                                    <button class="mb-5 pb-5 btn btn-flat btn-danger " id="js-btn_print" data-id="{{ $ClassSubjectDetail->id }}"><i class="fa fa-file-pdf"></i> Print</button>
-                                    
+                                    @include('control_panel_faculty.my_advisory_class.partials.data_button_print')
+
                                     @if($quarter == 'Fourth')
                                         <div class="table-responsive">
                                             <table class="table no-margin table-striped table-bordered table-responsive">
