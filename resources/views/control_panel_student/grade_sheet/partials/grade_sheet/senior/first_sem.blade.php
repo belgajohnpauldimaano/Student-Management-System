@@ -343,7 +343,7 @@ $student_attendance = [
         
             @if(round($StudentEnrolledSubject1->fir_g) != 0 && round($StudentEnrolledSubject1->sec_g) != 0)
                 @if(round($totalsum) > 74)                     
-                        <strong><u>&nbsp;&nbsp;Grade {{ $ClassDetail->section_grade_level}} Second Semester&nbsp;&nbsp;&nbsp;&nbsp;</u></strong>                                                    
+                        <strong><u>&nbsp;&nbsp;Grade {{ $ClassDetail->section_grade_level + 1}}</u></strong>                                                    
                 @elseif(round($totalsum) < 75)                     
                    <strong>Failed</strong>
                 @else 
