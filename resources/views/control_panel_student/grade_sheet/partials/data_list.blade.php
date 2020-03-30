@@ -1,23 +1,17 @@
-                        <h4>Subject : <span class="text-red"><i>{{ $ClassSubjectDetail->subject }}</i></span> Time : <span class="text-red"><i>{{ strftime('%r',strtotime($ClassSubjectDetail->class_time_from)) . ' - ' . strftime('%r',strtotime($ClassSubjectDetail->class_time_to)) }}</i></span> Days : <span class="text-red"><i>{{ $ClassSubjectDetail->class_days }}</i></span></h4>
-                        <h4>Grade & Section : <span class="text-red"><i>{{ $ClassSubjectDetail->grade_level . ' ' .$ClassSubjectDetail->section }}</i></span></h4>
-                        <div class="pull-right">
-                            {{ $Enrollment ? $Enrollment->links() : '' }}
-                        </div>
-                        <table class="table no-margin">
-                            <thead>
-                                <tr>
-                                    <th>#</th>
-                                    <th>Student Name</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @if ($Enrollment)
-                                    @foreach ($Enrollment as $key => $data)
-                                        <tr>
-                                            <td>{{ $key + 1 }}</td>
-                                            <td>{{ $data->student_name }}</td>
-                                        </tr>
-                                    @endforeach
-                                @endif
-                            </tbody>
-                        </table>
+<div class="box-body">
+    @if ($grade_level >= 11)         
+        <?php 
+            $Semester = \App\Semester::where('current', 1)->first()->id; 
+        ?>
+        <h3>
+            <span class="logo-mini"><img src="{{ asset('/img/sja-logo.png') }}" style="height: 60px;"></span> Grade-level/Section : <i style="color:red">{{ $ClassDetail->grade_level .' - '. $ClassDetail->section}}</i>
+        </h3>
+        
+        @include('control_panel_student.grade_sheet.partials.grade_panel.senior.first_sem.data_list')
+       <hr>
+        @include('control_panel_student.grade_sheet.partials.grade_panel.senior.second_sem.data_list')            
+        
+    @else           
+        @include('control_panel_student.grade_sheet.partials.grade_panel.junior.data_list')       
+    @endif
+</div>

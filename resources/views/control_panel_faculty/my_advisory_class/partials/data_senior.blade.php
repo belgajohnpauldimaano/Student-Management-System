@@ -207,11 +207,11 @@
                                         <center>Failed</center>
                                     </td>
                                 @endif
-                            </tr
+                            </tr>
             @endforeach
                             
             <tr>
-                <td colspan="7">
+                <td colspan="{{$Totalsubject_1st_sem + $Totalsubject_2nd_sem + 4}}">
                     <b>Female</b>
                 </td>
             </tr>

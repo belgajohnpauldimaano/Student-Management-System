@@ -209,11 +209,11 @@
                                                 </tr>
                                             @endforeach
                                         @else
-                                                <tr>
-                                                    <td colspan="7">
-                                                        <b>Male</b>
-                                                    </td>
-                                                </tr>
+                                            <tr>
+                                                <td colspan="7">
+                                                    <b>Male</b>
+                                                </td>
+                                            </tr>
                                             @foreach ($EnrollmentMale as $key => $data)
                                                 <tr data-student_enrolled_subject_id="{{ base64_encode($data->student_enrolled_subject_id) }}" data-student_id="{{ base64_encode($data->id) }}" data-enrollment_id="{{ base64_encode($data->enrollment_id) }}">
                                                     <td>{{ $key + 1 }}</td>
@@ -270,10 +270,10 @@
                                         @endif
                                     @endif
                                     <tr>
-                                            <td colspan="7">
-                                                <b>Female</b>
-                                            </td>
-                                        </tr>
+                                        <td colspan="7">
+                                            <b>Female</b>
+                                        </td>
+                                    </tr>
                                     @if ($EnrollmentFemale)
                                         @if ($ClassSubjectDetail->grading_status == 2)
                                             @foreach ($EnrollmentFemale as $key => $data)
