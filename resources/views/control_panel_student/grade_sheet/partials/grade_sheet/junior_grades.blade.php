@@ -188,20 +188,57 @@
     </tr>
 
     <tr style="margin-top: .5em">
-        <td colspan="3" style="border: 0">Eligible to transfer and admission to:
-               
-                        <!--//@if($general_avg && $general_avg > 74) -->
-                        <!--  //  <strong><u>&nbsp;&nbsp;Grade {{ $ClassDetail->section_grade_level + 1 }}&nbsp;&nbsp;&nbsp;&nbsp;</u></strong>-->
-                        <!--//@elseif($general_avg && $general_avg < 75) -->
-                        <!--  //  <strong><u>&nbsp;&nbsp;Grade {{ $ClassDetail->section_grade_level }}&nbsp;&nbsp;&nbsp;&nbsp;</u></strong>-->
-                        <!--//@else -->
-                            _______________________                                            
-                        <!--//@endif-->
+        <td colspan="3" style="border: 0">Eligible to transfer and admission to:               
+            @if($general_avg && $general_avg > 74) 
+                <strong><u>&nbsp;&nbsp;Grade {{ $ClassDetail->section_grade_level + 1 }}&nbsp;&nbsp;&nbsp;&nbsp;</u></strong>
+            @elseif($general_avg && $general_avg < 75) 
+                <strong><u>&nbsp;&nbsp;Grade {{ $ClassDetail->section_grade_level }}&nbsp;&nbsp;&nbsp;&nbsp;</u></strong>
+            @else 
+                _______________________                                            
+            @endif
         </td>                
     </tr>
 
+    <?php 
+        $SchoolYear = \App\SchoolYear::where('current', 1)
+            ->where('status', 1)
+            ->first();
+        $Enrollment = \App\Enrollment::join('class_details', 'class_details.id', '=', 'enrollments.class_details_id')
+            // ->join('student_enrolled_subjects', 'student_enrolled_subjects.enrollments_id', '=', 'enrollments.id')
+            ->join('class_subject_details', 'class_subject_details.class_details_id', '=', 'class_details.id')
+            ->join('rooms', 'rooms.id', '=', 'class_details.room_id')
+            ->join('faculty_informations', 'faculty_informations.id', '=', 'class_subject_details.faculty_id')
+            ->join('section_details', 'section_details.id', '=', 'class_details.section_id')
+            ->join('subject_details', 'subject_details.id', '=', 'class_subject_details.subject_id')
+            ->where('student_information_id', $StudentInformation->id)
+            // ->where('class_subject_details.status', 1)
+            ->where('class_subject_details.status', '!=', 0)
+            ->where('enrollments.status', 1)
+            ->where('class_details.status', 1)
+            ->where('class_details.school_year_id', $SchoolYear->id)
+            ->select(\DB::raw("
+                enrollments.id as enrollment_id,
+                enrollments.class_details_id as cid,
+                enrollments.j_lacking_unit,
+                class_details.grade_level,
+                class_subject_details.id as class_subject_details_id,
+                class_subject_details.class_days,
+                class_subject_details.class_time_from,
+                class_subject_details.class_time_to,
+                class_subject_details.status as grade_status,
+                CONCAT(faculty_informations.last_name, ', ', faculty_informations.first_name, ' ', faculty_informations.middle_name) as faculty_name,
+                subject_details.id AS subject_id,
+                subject_details.subject_code,
+                subject_details.subject,
+                rooms.room_code,
+                section_details.section
+            "))
+            ->orderBy('class_subject_details.class_subject_order', 'ASC')
+            ->get();
+    ?>
+
     <tr style="margin-top: .5em">
-        <td colspan="3" style="border: 0">Lacking units in:________<u></u>____</td>                
+        <td colspan="3" style="border: 0">Lacking units in:________<u> {{$Enrollment[0]->j_lacking_unit}}</u>____</td>                
     </tr>
     
     <tr style="margin-top: .5em">

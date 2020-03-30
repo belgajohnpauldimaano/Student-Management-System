@@ -347,31 +347,31 @@
     <tr style="margin-top: .5em">
         <td colspan="3" style="border: 0">
             Eligible to transfer and admission to:
-            <!--@if(round($StudentEnrolledSubject1->thi_g) != 0 && round($StudentEnrolledSubject1->fou_g) != 0)-->
-            <!--    @if(round($totalsum) > 74) -->
+            @if(round($StudentEnrolledSubject1->thi_g) != 0 && round($StudentEnrolledSubject1->fou_g) != 0)
+                @if(round($totalsum) > 74) 
                     
-            <!--            <strong><u>&nbsp;&nbsp;College&nbsp;&nbsp;&nbsp;&nbsp;</u></strong>-->
+                        <strong><u>&nbsp;&nbsp;College&nbsp;&nbsp;&nbsp;&nbsp;</u></strong>
                                                     
-            <!--    @elseif(round($totalsum) < 75) -->
+                @elseif(round($totalsum) < 75) 
                     
-            <!--       <strong>Failed</strong>-->
-            <!--    @else -->
-            <!--        <td></td>-->
-            <!--    @endif-->
-            <!--@else-->
-            <!--    <td></td>-->
-            <!--@endif       -->
-            ________________________________
+                   <strong>Failed</strong>
+                @else 
+                    <td>________________________________</td>
+                @endif
+            @else
+                <td>________________________________</td>
+            @endif       
+            
         </td>                
     </tr>
 
     <tr style="margin-top: .5em">
-        <td colspan="3" style="border: 0">Lacking units in:___<u>____________</u>____</td>        
+        <td colspan="3" style="border: 0">Lacking units in:___<u>{{ $Enrollment[0]->s2_lacking_unit }}</u>____</td>        
         {{-- {{ $Enrollment[0]->s2_lacking_unit }}         --}}
     </tr>
     
     <tr style="margin-top: .5em">
-        <td colspan="3" style="border: 0">Date:___<u>_______________</u>____</td>
+        <td colspan="3" style="border: 0">Date:___<u>{{ $DateRemarks->s_date2 }}</u>____</td>
         {{-- {{ $DateRemarks->s_date2 }}              --}}
     </tr>
     <tr style="margin-top: .5em">

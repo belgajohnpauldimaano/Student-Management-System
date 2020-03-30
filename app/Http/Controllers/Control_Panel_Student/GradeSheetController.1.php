@@ -276,6 +276,7 @@ class GradeSheetController extends Controller
             ->select(\DB::raw("
                 enrollments.id as enrollment_id,
                 enrollments.class_details_id as cid,
+                enrollments.j_lacking_unit,
                 class_details.grade_level,
                 class_subject_details.id as class_subject_details_id,
                 class_subject_details.class_days,
@@ -397,7 +398,7 @@ class GradeSheetController extends Controller
 
             $GradeSheetData = json_decode(json_encode($GradeSheetData));
             $pdf = \PDF::loadView('control_panel_student.grade_sheet.partials.print', 
-                compact('GradeSheetData', 'grade_level', 'StudentInformation', 'ClassDetail', 'general_avg'));
+                compact('GradeSheetData', 'grade_level', 'StudentInformation', 'ClassDetail', 'general_avg','Enrollment'));
             // $pdf->setPaper('Letter', 'landscape');
             return $pdf->stream();
             return view('control_panel_student.grade_sheet.index', compact('GradeSheetData'));

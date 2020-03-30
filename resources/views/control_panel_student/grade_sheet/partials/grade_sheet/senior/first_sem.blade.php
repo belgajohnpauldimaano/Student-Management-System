@@ -341,32 +341,29 @@ $student_attendance = [
     <tr style="margin-top: .5em">
         <td colspan="3" style="border: 0">Eligible to transfer and admission to:
         
-            <!--@if(round($StudentEnrolledSubject1->fir_g) != 0 && round($StudentEnrolledSubject1->sec_g) != 0)-->
-            <!--    @if(round($totalsum) > 74) -->
-                    
-            <!--            <strong><u>&nbsp;&nbsp;Grade {{ $ClassDetail->section_grade_level}} Second Semester&nbsp;&nbsp;&nbsp;&nbsp;</u></strong>-->
-                                                    
-            <!--    @elseif(round($totalsum) < 75) -->
-                    
-            <!--       <strong>Failed</strong>-->
-            <!--    @else -->
-            <!--    ________________-->
-            <!--    @endif-->
-            <!--@else-->
-            <!--    ________________-->
-            <!--@endif        -->
-        ________________________________
+            @if(round($StudentEnrolledSubject1->fir_g) != 0 && round($StudentEnrolledSubject1->sec_g) != 0)
+                @if(round($totalsum) > 74)                     
+                        <strong><u>&nbsp;&nbsp;Grade {{ $ClassDetail->section_grade_level}} Second Semester&nbsp;&nbsp;&nbsp;&nbsp;</u></strong>                                                    
+                @elseif(round($totalsum) < 75)                     
+                   <strong>Failed</strong>
+                @else 
+                ________________________________
+                @endif
+            @else
+            ________________________________
+            @endif        
+       
         </td>                
     </tr>
 
     <tr style="margin-top: .5em">
-        {{-- <td colspan="3" style="border: 0">Lacking units in:___<u>{{ $Enrollment[0]->s1_lacking_unit }}</u>____</td> --}}
-        <td colspan="3" style="border: 0">Lacking units in:__________________</td>                
+        <td colspan="3" style="border: 0">Lacking units in:___<u>{{ $Enrollment[0]->s1_lacking_unit }}</u>____</td>
+        {{-- <td colspan="3" style="border: 0">Lacking units in:__________________</td>                 --}}
     </tr>
     
     <tr style="margin-top: .5em">
-        {{-- <td colspan="3" style="border: 0">Date:___<u>{{ $DateRemarks->s_date1 }}</u>____</td>       --}}
-        <td colspan="3" style="border: 0">Date:__________________</td>                
+        <td colspan="3" style="border: 0">Date:___<u>{{ $DateRemarks->s_date1 }}</u>____</td>      
+        {{-- <td colspan="3" style="border: 0">Date:__________________</td>                 --}}
     </tr>
     <tr style="margin-top: .5em">
         <td colspan="3" style="border: 0">&nbsp;</td>   </tr>
