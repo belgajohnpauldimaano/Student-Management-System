@@ -32,14 +32,16 @@
                                 <td><center>{{ round($data->final_g) }}</center></td>
                                 <td><center><strong>{{ $data->final_g >= 75 ? 'Passed' : 'Failed' }}</strong></center></td>
                             @else
+                                @if ($data->fir_g == 0 || $data->sec_g == 0 || $data->thi_g == 0 || $data->fou_g == 0)
+                                    <td></td>
+                                @else
+                                    <td></td>
+                                @endif
+                                
                                 <td></td>
                             @endif
 
-                            @if ($data->fir_g == 0 && $data->sec_g == 0 && $data->thi_g == 0 && $data->fou_g == 0)
-                                <td></td>
-                            @else
-                                {{-- <td></td> --}}
-                            @endif
+                            
                             
                     @endif
                     
@@ -141,6 +143,24 @@
             {{ $student_attendance['times_tardy_total'] }}
         </th>
     </tr>
+    <?php 
+        $SchoolYear = \App\SchoolYear::where('current', 1)
+        ->where('status', 1)
+        ->first();
+    ?>
+    @if($SchoolYear->id == 9)
+    <tr>
+        <th><i>*12 and **3 days of class suspensions with ADM option.</i></th>
+        <?php
+            for ($x = 0; $x <= 8; $x++) {
+                echo "<th>0</th>";
+            }
+        ?>
+        <th>12</th>
+        <th>3</th>
+        <th>5</th>
+    </tr>
+    @endif
 </table>
 
 <center>

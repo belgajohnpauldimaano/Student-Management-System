@@ -604,20 +604,39 @@ class AdvisoryClassController extends Controller
                 }
             }
             $GradeSheetData = json_decode(json_encode($GradeSheetData));
-            $table_header = [
-                ['key' => 'Jun',],
-                ['key' => 'Jul',],
-                ['key' => 'Aug',],
-                ['key' => 'Sep',],
-                ['key' => 'Oct',],
-                ['key' => 'Nov',],
-                ['key' => 'Dec',],
-                ['key' => 'Jan',],
-                ['key' => 'Feb',],
-                ['key' => 'Mar',],
-                ['key' => 'Apr',],
-                ['key' => 'total',],
-            ];
+           
+        
+            if($SchoolYear->id == 9){
+                $table_header = [
+                    ['key' => 'Jun',],
+                    ['key' => 'Jul',],
+                    ['key' => 'Aug',],
+                    ['key' => 'Sep',],
+                    ['key' => 'Oct',],
+                    ['key' => 'Nov',],
+                    ['key' => 'Dec',],
+                    ['key' => 'Jan',],
+                    ['key' => 'Feb',],
+                    ['key' => 'Mar*',],
+                    ['key' => 'Apr**',],
+                    ['key' => 'total',],
+                ];
+            }else{
+                $table_header = [
+                    ['key' => 'Jun',],
+                    ['key' => 'Jul',],
+                    ['key' => 'Aug',],
+                    ['key' => 'Sep',],
+                    ['key' => 'Oct',],
+                    ['key' => 'Nov',],
+                    ['key' => 'Dec',],
+                    ['key' => 'Jan',],
+                    ['key' => 'Feb',],
+                    ['key' => 'Mar',],
+                    ['key' => 'Apr',],
+                    ['key' => 'total',],
+                ];
+            }
             
             $student_attendance = [
                 'attendance_data'   => $attendance_data,

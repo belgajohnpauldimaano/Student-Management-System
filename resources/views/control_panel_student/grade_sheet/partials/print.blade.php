@@ -259,7 +259,7 @@
         @if($Semester == 1)
             @include('control_panel_student.grade_sheet.partials.grade_sheet.senior.first_sem')
         @else
-            @include('control_panel_student.grade_sheet.partials.grade_sheet.senior.first_sem')            
+            @include('control_panel_student.grade_sheet.partials.grade_sheet.senior.second_sem')            
         @endif
     @else
         @include('control_panel_student.grade_sheet.partials.grade_sheet.junior_grades')

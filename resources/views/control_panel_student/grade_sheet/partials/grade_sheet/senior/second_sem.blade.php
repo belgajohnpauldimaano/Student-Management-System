@@ -116,16 +116,25 @@
                         }                                      
                     ?>
                 </td>
+                
                 @if($StudentEnrolledSubject1)
-                    @if(round($StudentEnrolledSubject1->thi_g) != 0 && round($StudentEnrolledSubject1->fou_g) != 0) 
-                        @if($final_ave && $final_ave > 74) 
-                            <td style="color:'green'; text-align: center"><strong>Passed</strong></td>
-                        @elseif($final_ave && $final_ave < 75) 
-                            <td style="color:'red'; text-align: center"><strong>Failed</strong></td>
+                    @if($StudentEnrolledSubject1->thi_g == 0 || $StudentEnrolledSubject1->fou_g == 0)
+                        @if($general_avg > 74) 
+                            <td></td>                            
+                        @elseif($general_avg < 75) 
+                            <td style="text-align:center"><strong>Failed</strong></td>
+                        @else 
+                            <td style="text-align:center;"><strong>Passed</strong></td>
                         @endif
                     @else
-                        <td></td>
-                    @endif                                
+                        @if($general_avg > 74) 
+                            <td style="text-align:center;"><strong>Passed</strong></td>                            
+                        @elseif($general_avg < 75) 
+                            <td style="text-align:center"><strong>Failed</strong></td>
+                        @else 
+                        <td style="text-align:center;"><strong>Passed</strong></td>
+                        @endif
+                    @endif                        
                 @else
                     <td></td>
                 @endif
@@ -143,6 +152,7 @@
                                 ->where('sem', 2)
                                 ->first();     
                             ?>
+                                     
                             @if(round($StudentEnrolledSubject1->thi_g) != 0 && round($StudentEnrolledSubject1->fou_g) != 0)
                                 {{-- {{$$final_ave && $general_avg >= 0 ? round($general_avg) : '' }} --}}
                                 <?php
@@ -172,7 +182,7 @@
                         ->where('sem', 2)
                         ->first(); 
                 ?>
-                    @if(round($StudentEnrolledSubject1->thi_g) != 0 && round($StudentEnrolledSubject1->fou_g) != 0)
+                    @if(round($StudentEnrolledSubject1->thi_g) != 0 || round($StudentEnrolledSubject1->fou_g) != 0)
                         @if(round($totalsum) > 74) 
                             <td style="color:'green';"><strong>Passed</strong></td>
                             
@@ -197,8 +207,8 @@
             ['key' => 'Dec',],
             ['key' => 'Jan',],
             ['key' => 'Feb',],
-            ['key' => 'Mar',],
-            ['key' => 'Apr',],
+            ['key' => 'Mar*',],
+            ['key' => 'Apr**',],
             
             ['key' => 'total',],
         ];
@@ -298,6 +308,23 @@
         {{ $student_attendance['times_tardy_total'] }}
     </th>
 </tr>
+<?php 
+    $SchoolYear = \App\SchoolYear::where('current', 1)
+    ->where('status', 1)
+    ->first();
+?>
+@if($SchoolYear->id == 9)
+    <tr>
+        <th><i>*12 and **3 days of class suspensions with ADM option.</i></th>
+        <th>0</th>
+        <th>0</th>
+        <th>0</th>
+        <th>0</th>
+        <th>12</th>
+        <th>3</th>
+        <th>15</th>
+    </tr>
+@endif
 </table>
 
 <center>

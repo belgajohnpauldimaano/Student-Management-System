@@ -78,14 +78,14 @@
                     ?>
                 </td>
                 @if($StudentEnrolledSubject1)                                
-                    @if(round($StudentEnrolledSubject1->thi_g) != 0 && round($StudentEnrolledSubject1->thi_g) != 0) 
-                        <td style="color:{{ round($final_ave) >= 75 ? 'green' : 'red' }};">
-                            <center>
-                                <strong>
-                                    {{ round($final_ave) >= 75 ? 'Passed' : 'Failed' }}
-                                </strong>
-                            </center>
-                        </td> 
+                    @if(round($StudentEnrolledSubject1->thi_g) != 0 || round($StudentEnrolledSubject1->fou_g) != 0) 
+                    <td style="color:{{ round($final_ave) >= 75 ? 'green' : 'red' }};">
+                        <center>
+                            <strong>
+                                {{ round($final_ave) >= 75 ? 'Passed' : 'Failed' }}
+                            </strong>
+                        </center>
+                    </td> 
                     @else
                         <td></td>
                     @endif
@@ -103,5 +103,5 @@
             @endforeach
         </tbody>
     </table>
-    @include('control_panel_student.grade_sheet.partials.grade_panel.senior.second_sem.attendance')
+    {{-- @include('control_panel_student.grade_sheet.partials.grade_panel.senior.second_sem.attendance') --}}
 </div>
