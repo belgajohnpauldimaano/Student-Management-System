@@ -11,20 +11,14 @@ class MyAdvisoryClassController extends Controller
     public function index (Request $request)
     {
         $FacultyInformation = \App\FacultyInformation::where('user_id', \Auth::user()->id)->first();
-        // return json_encode(['FacultyInformation' => $FacultyInformation, 'Auth' => \Auth::user()]);
         $SchoolYear  = \App\SchoolYear::where('status', 1)->where('current', 1)->orderBy('current', 'ASC')->orderBy('school_year', 'ASC')->get();
         $class_id = \Crypt::decrypt($request->c);
 
         $GradeLevel = \App\ClassSubjectDetail::join('class_details', 'class_details.id', '=', 'class_subject_details.class_details_id')
-            // ->join('subject_details', 'subject_details.id', '=', 'class_subject_details.subject_id')
             ->join('rooms','rooms.id', '=', 'class_details.room_id')
             ->join('section_details', 'section_details.id', '=', 'class_details.section_id')
-            // ->whereRaw('class_subject_details.id = '. $request->search_class_subject)
-            // ->whereRaw('class_details.id = '. $search_class_subject[1])
             ->where('class_details.adviser_id', $FacultyInformation->id)
             ->where('class_details.id', $class_id)
-            // ->where('class_details.school_year_id', $request->search_sy)
-            // ->where('class_subject_details.status', '!=', 0)
             ->where('class_details.status', '!=', 0)
             ->select(\DB::raw('                
                 rooms.room_code,
@@ -38,8 +32,6 @@ class MyAdvisoryClassController extends Controller
             ->first();
 
         return view('control_panel_faculty.my_advisory_class.index', compact('SchoolYear','GradeLevel'));
-        // return view('control_panel_faculty.my_advisory_class.index');
-    
     }
 
     public function list_quarter (Request $request)
@@ -66,8 +58,6 @@ class MyAdvisoryClassController extends Controller
         {
             
             $class_details_elements = '<option value="1st-2nd">Sem-1 and 2 Average</option>';
-            // $class_details_elements .= '<option value="3rd-4th">Sem-2 First - Second Quarter Average</option>'; 
-            // $class_details_elements .= '<option value="1-2">Sem-1 and 2 Average</option>'; 
         }
         else
         {
@@ -97,15 +87,10 @@ class MyAdvisoryClassController extends Controller
         $FacultyInformation = \App\FacultyInformation::where('user_id', \Auth::user()->id)->first();
      
         $ClassSubjectDetail = \App\ClassSubjectDetail::join('class_details', 'class_details.id', '=', 'class_subject_details.class_details_id')
-            // ->join('subject_details', 'subject_details.id', '=', 'class_subject_details.subject_id')
             ->join('rooms','rooms.id', '=', 'class_details.room_id')
             ->join('section_details', 'section_details.id', '=', 'class_details.section_id')
-            // ->whereRaw('class_subject_details.id = '. $request->search_class_subject)
-            // ->whereRaw('class_details.id = '. $search_class_subject[1])
             ->where('class_details.adviser_id', $FacultyInformation->id)
             ->where('class_details.school_year_id', $request->search_sy1)
-            // ->where('class_details.id', $class_id)
-            // ->where('class_subject_details.status', '!=', 0)
             ->where('class_details.status', '!=', 0)
             ->select(\DB::raw('                
                 rooms.room_code,
@@ -128,12 +113,9 @@ class MyAdvisoryClassController extends Controller
             ")
             ->where('class_subject_details.class_details_id', $ClassSubjectDetail->id)
             ->where('class_subject_details.status', 1)
-            // ->where('class_details.id', $class_id)
             ->where('class_subject_details.faculty_id', $FacultyInformation->id)
             ->where('class_details.school_year_id', $request->search_sy1)
             ->where('class_subject_details.sem', 1)
-            //  ->where('class_details.school_year_id', $request->search_sy)
-            // ->orderBy('class_subject_details.class_time_from', 'ASC');
             ->orderBY('class_subject_details.class_subject_order','ASC')
             ->get();             
             
@@ -197,14 +179,10 @@ class MyAdvisoryClassController extends Controller
         $FacultyInformation = \App\FacultyInformation::where('user_id', \Auth::user()->id)->first();
      
         $ClassSubjectDetail = \App\ClassSubjectDetail::join('class_details', 'class_details.id', '=', 'class_subject_details.class_details_id')
-            // ->join('subject_details', 'subject_details.id', '=', 'class_subject_details.subject_id')
             ->join('rooms','rooms.id', '=', 'class_details.room_id')
             ->join('section_details', 'section_details.id', '=', 'class_details.section_id')
-            // ->whereRaw('class_subject_details.id = '. $request->search_class_subject)
-            // ->whereRaw('class_details.id = '. $search_class_subject[1])
             ->where('class_details.adviser_id', $FacultyInformation->id)
             ->where('class_details.school_year_id', $request->search_sy1)
-            // ->where('class_subject_details.status', '!=', 0)
             ->where('class_details.status', '!=', 0)
             ->select(\DB::raw('                
                 rooms.room_code,
@@ -228,11 +206,8 @@ class MyAdvisoryClassController extends Controller
             ")
             ->where('class_subject_details.class_details_id', $ClassSubjectDetail->id)
             ->where('class_subject_details.status', 1)
-            // ->where('faculty_id', $FacultyInformation->id)
             ->where('class_details.school_year_id', $request->search_sy1)
             ->where('class_subject_details.sem', 1)
-            //  ->where('class_details.school_year_id', $request->search_sy)
-            // ->orderBy('class_subject_details.class_time_from', 'ASC');
             ->orderBY('class_subject_details.class_subject_order','ASC')
             ->get();            
             
@@ -276,19 +251,13 @@ class MyAdvisoryClassController extends Controller
             $NumberOfSubject = \App\ClassSubjectDetail::join('subject_details', 'subject_details.id', '=' ,'class_subject_details.subject_id')
             ->join('class_details', 'class_details.id', '=' ,'class_subject_details.class_details_id')
             ->join('faculty_informations', 'faculty_informations.id', '=' ,'class_subject_details.faculty_id')           
-            ->selectRaw("                
-                            class_subject_details.class_subject_order
-                        ")
+            ->selectRaw("class_subject_details.class_subject_order")
             ->where('class_subject_details.class_details_id', $ClassSubjectDetail->id)
-            ->where('class_subject_details.status', 1)
-            // ->where('faculty_id', $FacultyInformation->id)
+            ->where('class_subject_details.status', 1)           
             ->where('class_details.school_year_id', $request->search_sy1)
             ->where('class_subject_details.sem', 1)
-            //  ->where('class_details.school_year_id', $request->search_sy)
-            // ->orderBy('class_subject_details.class_time_from', 'ASC');
             ->orderBY('class_subject_order','DESC')
             ->first();       
-
            
         // return json_encode($ClassSubjectDetail);
         return view('control_panel_faculty.my_advisory_class.partials.data_list', compact('type', 'NumberOfSubject','ClassSubjectDetail','AdvisorySubject','GradeSheetMale','GradeSheetFeMale','quarter','AdvisorySubject','sem'))->render();
@@ -299,14 +268,10 @@ class MyAdvisoryClassController extends Controller
         $FacultyInformation = \App\FacultyInformation::where('user_id', \Auth::user()->id)->first();
      
         $ClassSubjectDetail = \App\ClassSubjectDetail::join('class_details', 'class_details.id', '=', 'class_subject_details.class_details_id')
-            // ->join('subject_details', 'subject_details.id', '=', 'class_subject_details.subject_id')
             ->join('rooms','rooms.id', '=', 'class_details.room_id')
             ->join('section_details', 'section_details.id', '=', 'class_details.section_id')
-            // ->whereRaw('class_subject_details.id = '. $request->search_class_subject)
-            // ->whereRaw('class_details.id = '. $search_class_subject[1])
             ->where('class_details.adviser_id', $FacultyInformation->id)
             ->where('class_details.school_year_id', $request->search_sy1)
-            // ->where('class_subject_details.status', '!=', 0)
             ->where('class_details.status', '!=', 0)
             ->select(\DB::raw('                
                 rooms.room_code,
@@ -319,8 +284,6 @@ class MyAdvisoryClassController extends Controller
                 class_subject_details.sem
             '))
             ->first();
-
-            
         
             $AdvisorySubject = \App\ClassSubjectDetail::join('subject_details', 'subject_details.id', '=' ,'class_subject_details.subject_id')
             ->join('class_details', 'class_details.id', '=' ,'class_subject_details.class_details_id')
@@ -330,11 +293,8 @@ class MyAdvisoryClassController extends Controller
             ")
             ->where('class_subject_details.class_details_id', $ClassSubjectDetail->id)
             ->where('class_subject_details.status', 1)
-            // ->where('faculty_id', $FacultyInformation->id)
             ->where('class_details.school_year_id', $request->search_sy1)
             ->where('class_subject_details.sem', 2)
-            //  ->where('class_details.school_year_id', $request->search_sy)
-            // ->orderBy('class_subject_details.class_time_from', 'ASC');
             ->orderBY('class_subject_details.class_subject_order','ASC')
             ->get();        
             
@@ -344,14 +304,10 @@ class MyAdvisoryClassController extends Controller
             ->selectRaw("                
                             class_subject_details.class_subject_order
                         ")
-            ->where('class_subject_details.class_details_id', $ClassSubjectDetail->id)
-            
+            ->where('class_subject_details.class_details_id', $ClassSubjectDetail->id)            
             ->where('class_subject_details.status', 1)
-            // ->where('faculty_id', $FacultyInformation->id)
             ->where('class_details.school_year_id', $request->search_sy1)
             ->where('class_subject_details.sem', 2)
-            //  ->where('class_details.school_year_id', $request->search_sy)
-            // ->orderBy('class_subject_details.class_time_from', 'ASC');
             ->orderBY('class_subject_order','DESC')
             ->first();           
             
@@ -392,8 +348,6 @@ class MyAdvisoryClassController extends Controller
             $sem = 'Second';
             $type = "";
 
-           
-        // return json_encode($ClassSubjectDetail);
         return view('control_panel_faculty.my_advisory_class.partials.data_list', compact( 'type','NumberOfSubject','ClassSubjectDetail','AdvisorySubject','GradeSheetMale','GradeSheetFeMale','quarter','AdvisorySubject','sem'))->render();
     }
 
@@ -403,14 +357,10 @@ class MyAdvisoryClassController extends Controller
         $FacultyInformation = \App\FacultyInformation::where('user_id', \Auth::user()->id)->first();
         $type = "";
         $ClassSubjectDetail = \App\ClassSubjectDetail::join('class_details', 'class_details.id', '=', 'class_subject_details.class_details_id')
-            // ->join('subject_details', 'subject_details.id', '=', 'class_subject_details.subject_id')
             ->join('rooms','rooms.id', '=', 'class_details.room_id')
             ->join('section_details', 'section_details.id', '=', 'class_details.section_id')
-            // ->whereRaw('class_subject_details.id = '. $request->search_class_subject)
-            // ->whereRaw('class_details.id = '. $search_class_subject[1])
             ->where('class_details.adviser_id', $FacultyInformation->id)
             ->where('class_details.school_year_id', $request->search_sy1)
-            // ->where('class_subject_details.status', '!=', 0)
             ->where('class_details.status', '!=', 0)
             ->select(\DB::raw('                
                 rooms.room_code,
@@ -422,9 +372,7 @@ class MyAdvisoryClassController extends Controller
                 class_subject_details.status as grading_status,
                 class_subject_details.sem
             '))
-            ->first();
-
-            
+            ->first();            
         
             $AdvisorySubject = \App\ClassSubjectDetail::join('subject_details', 'subject_details.id', '=' ,'class_subject_details.subject_id')
             ->join('class_details', 'class_details.id', '=' ,'class_subject_details.class_details_id')
@@ -434,14 +382,10 @@ class MyAdvisoryClassController extends Controller
             ")
             ->where('class_subject_details.class_details_id', $ClassSubjectDetail->id)
             ->where('class_subject_details.status', 1)
-            // ->where('faculty_id', $FacultyInformation->id)
             ->where('class_details.school_year_id', $request->search_sy1)
             ->where('class_subject_details.sem', 2)
-            //  ->where('class_details.school_year_id', $request->search_sy)
-            // ->orderBy('class_subject_details.class_time_from', 'ASC');
             ->orderBY('class_subject_details.class_subject_order','ASC')
-            ->get();            
-            
+            ->get();         
 
             $GradeSheetMale = \App\Grade_sheet_secondsemsecond::join('class_details','class_details.section_id','=','grade_sheet_secondsemseconds.section_details_id')            
             ->join('enrollments','enrollments.id','=','grade_sheet_secondsemseconds.enrollment_id')
@@ -486,16 +430,11 @@ class MyAdvisoryClassController extends Controller
                         ")
             ->where('class_subject_details.class_details_id', $ClassSubjectDetail->id)
             ->where('class_subject_details.status', 1)
-            // ->where('faculty_id', $FacultyInformation->id)
             ->where('class_details.school_year_id', $request->search_sy1)
             ->where('class_subject_details.sem', 2)
-            //  ->where('class_details.school_year_id', $request->search_sy)
-            // ->orderBy('class_subject_details.class_time_from', 'ASC');
             ->orderBY('class_subject_order','DESC')
             ->first();      
 
-           
-        // return json_encode($ClassSubjectDetail);
         return view('control_panel_faculty.my_advisory_class.partials.data_list', 
             compact( 'type','NumberOfSubject','ClassSubjectDetail','AdvisorySubject','GradeSheetMale','GradeSheetFeMale','quarter','AdvisorySubject','sem'))->render();
     }
@@ -506,14 +445,10 @@ class MyAdvisoryClassController extends Controller
         $FacultyInformation = \App\FacultyInformation::where('user_id', \Auth::user()->id)->first();
         $type = "";
         $ClassSubjectDetail = \App\ClassSubjectDetail::join('class_details', 'class_details.id', '=', 'class_subject_details.class_details_id')
-            // ->join('subject_details', 'subject_details.id', '=', 'class_subject_details.subject_id')
             ->join('rooms','rooms.id', '=', 'class_details.room_id')
             ->join('section_details', 'section_details.id', '=', 'class_details.section_id')
-            // ->whereRaw('class_subject_details.id = '. $request->search_class_subject)
-            // ->whereRaw('class_details.id = '. $search_class_subject[1])
             ->where('class_details.adviser_id', $FacultyInformation->id)
             ->where('class_details.school_year_id', $request->search_sy)
-            // ->where('class_subject_details.status', '!=', 0)
             ->where('class_details.status', '!=', 0)
             ->select(\DB::raw('                
                 rooms.room_code,
@@ -535,10 +470,7 @@ class MyAdvisoryClassController extends Controller
             ")
             ->where('class_subject_details.class_details_id', $ClassSubjectDetail->id)
             ->where('class_subject_details.status', 1)
-            // ->where('faculty_id', $FacultyInformation->id)
             ->where('class_details.school_year_id', $request->search_sy)
-            //  ->where('class_details.school_year_id', $request->search_sy)
-            // ->orderBy('class_subject_details.class_time_from', 'ASC');
             ->get();            
             $quarter = 'First';
 
@@ -571,10 +503,6 @@ class MyAdvisoryClassController extends Controller
             ->distinct()
             ->orderBY('student_name','ASC')
             ->get();
-
-            
-
-           
         // return json_encode($ClassSubjectDetail);
         return view('control_panel_faculty.my_advisory_class.partials.data_list', compact( 'type','ClassSubjectDetail','AdvisorySubject','GradeSheetMale','GradeSheetFeMale','quarter'))->render();
     }
@@ -584,14 +512,10 @@ class MyAdvisoryClassController extends Controller
         $FacultyInformation = \App\FacultyInformation::where('user_id', \Auth::user()->id)->first();
         $type = "";
         $ClassSubjectDetail = \App\ClassSubjectDetail::join('class_details', 'class_details.id', '=', 'class_subject_details.class_details_id')
-            // ->join('subject_details', 'subject_details.id', '=', 'class_subject_details.subject_id')
             ->join('rooms','rooms.id', '=', 'class_details.room_id')
             ->join('section_details', 'section_details.id', '=', 'class_details.section_id')
-            // ->whereRaw('class_subject_details.id = '. $request->search_class_subject)
-            // ->whereRaw('class_details.id = '. $search_class_subject[1])
             ->where('class_details.adviser_id', $FacultyInformation->id)
             ->where('class_details.school_year_id', $request->search_sy)
-            // ->where('class_subject_details.status', '!=', 0)
             ->where('class_details.status', '!=', 0)
             ->select(\DB::raw('                
                 rooms.room_code,
@@ -602,8 +526,7 @@ class MyAdvisoryClassController extends Controller
                 class_details.grade_level,
                 class_subject_details.status as grading_status
             '))
-            ->first();
-            
+            ->first();            
         
             $AdvisorySubject = \App\ClassSubjectDetail::join('subject_details', 'subject_details.id', '=' ,'class_subject_details.subject_id')
             ->join('class_details', 'class_details.id', '=' ,'class_subject_details.class_details_id')
@@ -613,15 +536,8 @@ class MyAdvisoryClassController extends Controller
             ")
             ->where('class_subject_details.class_details_id', $ClassSubjectDetail->id)
             ->where('class_subject_details.status', 1)
-            // ->where('faculty_id', $FacultyInformation->id)
             ->where('class_details.school_year_id', $request->search_sy)
-            //  ->where('class_details.school_year_id', $request->search_sy)
-            // ->orderBy('class_subject_details.class_time_from', 'ASC');
             ->get();
-
-
-            
-            
 
             $GradeSheetMale = \App\Grade_sheet_second::join('class_details','class_details.section_id','=','grade_sheet_seconds.section_details_id')            
             ->join('enrollments','enrollments.id','=','grade_sheet_seconds.enrollment_id')
@@ -664,14 +580,10 @@ class MyAdvisoryClassController extends Controller
         $FacultyInformation = \App\FacultyInformation::where('user_id', \Auth::user()->id)->first();
         $type = "";
         $ClassSubjectDetail = \App\ClassSubjectDetail::join('class_details', 'class_details.id', '=', 'class_subject_details.class_details_id')
-            // ->join('subject_details', 'subject_details.id', '=', 'class_subject_details.subject_id')
             ->join('rooms','rooms.id', '=', 'class_details.room_id')
             ->join('section_details', 'section_details.id', '=', 'class_details.section_id')
-            // ->whereRaw('class_subject_details.id = '. $request->search_class_subject)
-            // ->whereRaw('class_details.id = '. $search_class_subject[1])
             ->where('class_details.adviser_id', $FacultyInformation->id)
             ->where('class_details.school_year_id', $request->search_sy)
-            // ->where('class_subject_details.status', '!=', 0)
             ->where('class_details.status', '!=', 0)
             ->select(\DB::raw('                
                 rooms.room_code,
@@ -683,7 +595,6 @@ class MyAdvisoryClassController extends Controller
                 class_subject_details.status as grading_status
             '))
             ->first();
-            
         
             $AdvisorySubject = \App\ClassSubjectDetail::join('subject_details', 'subject_details.id', '=' ,'class_subject_details.subject_id')
             ->join('class_details', 'class_details.id', '=' ,'class_subject_details.class_details_id')
@@ -693,15 +604,8 @@ class MyAdvisoryClassController extends Controller
             ")
             ->where('class_subject_details.class_details_id', $ClassSubjectDetail->id)
             ->where('class_subject_details.status', 1)
-            // ->where('faculty_id', $FacultyInformation->id)
             ->where('class_details.school_year_id', $request->search_sy)
-            //  ->where('class_details.school_year_id', $request->search_sy)
-            // ->orderBy('class_subject_details.class_time_from', 'ASC');
-            ->get();
-
-
-            
-            
+            ->get();            
 
             $GradeSheetMale = \App\Grade_sheet_third::join('class_details','class_details.section_id','=','grade_sheet_thirds.section_details_id')            
             ->join('enrollments','enrollments.id','=','grade_sheet_thirds.enrollment_id')
@@ -743,14 +647,10 @@ class MyAdvisoryClassController extends Controller
         $FacultyInformation = \App\FacultyInformation::where('user_id', \Auth::user()->id)->first();
         $type = "";
         $ClassSubjectDetail = \App\ClassSubjectDetail::join('class_details', 'class_details.id', '=', 'class_subject_details.class_details_id')
-            // ->join('subject_details', 'subject_details.id', '=', 'class_subject_details.subject_id')
             ->join('rooms','rooms.id', '=', 'class_details.room_id')
             ->join('section_details', 'section_details.id', '=', 'class_details.section_id')
-            // ->whereRaw('class_subject_details.id = '. $request->search_class_subject)
-            // ->whereRaw('class_details.id = '. $search_class_subject[1])
             ->where('class_details.adviser_id', $FacultyInformation->id)
             ->where('class_details.school_year_id', $request->search_sy)
-            // ->where('class_subject_details.status', '!=', 0)
             ->where('class_details.status', '!=', 0)
             ->select(\DB::raw('                
                 rooms.room_code,
@@ -772,15 +672,8 @@ class MyAdvisoryClassController extends Controller
             ")
             ->where('class_subject_details.class_details_id', $ClassSubjectDetail->id)
             ->where('class_subject_details.status', 1)
-            // ->where('faculty_id', $FacultyInformation->id)
             ->where('class_details.school_year_id', $request->search_sy)
-            //  ->where('class_details.school_year_id', $request->search_sy)
-            // ->orderBy('class_subject_details.class_time_from', 'ASC');
             ->get();
-
-
-            
-            
 
             $GradeSheetMale = \App\Grade_sheet_fourth::join('class_details','class_details.section_id','=','grade_sheet_fourths.section_details_id')            
             ->join('enrollments','enrollments.id','=','grade_sheet_fourths.enrollment_id')
@@ -825,16 +718,12 @@ class MyAdvisoryClassController extends Controller
         $FacultyInformation = \App\FacultyInformation::where('user_id', \Auth::user()->id)->first();
      
         $ClassSubjectDetail = \App\ClassSubjectDetail::join('class_details', 'class_details.id', '=', 'class_subject_details.class_details_id')
-            // ->join('subject_details', 'subject_details.id', '=', 'class_subject_details.subject_id')
             ->join('rooms','rooms.id', '=', 'class_details.room_id')
             ->join('section_details', 'section_details.id', '=', 'class_details.section_id')
             ->join('school_years', 'school_years.id' ,'=', 'class_details.school_year_id')
             ->join('faculty_informations', 'faculty_informations.id','=','class_details.adviser_id')
-            // ->whereRaw('class_subject_details.id = '. $request->search_class_subject)
-            // ->whereRaw('class_details.id = '. $search_class_subject[1])
             ->where('class_details.adviser_id', $FacultyInformation->id)
             ->where('class_details.school_year_id', $request->search_sy)
-            // ->where('class_subject_details.status', '!=', 0)
             ->where('class_details.status', '!=', 0)
             ->select(\DB::raw('                
                 rooms.room_code,
@@ -858,10 +747,7 @@ class MyAdvisoryClassController extends Controller
             ")
             ->where('class_subject_details.class_details_id', $ClassSubjectDetail->id)
             ->where('class_subject_details.status', 1)
-            // ->where('faculty_id', $FacultyInformation->id)
             ->where('class_details.school_year_id', $request->search_sy)
-            //  ->where('class_details.school_year_id', $request->search_sy)
-            // ->orderBy('class_subject_details.class_time_from', 'ASC');
             ->get();            
             
 
@@ -898,9 +784,6 @@ class MyAdvisoryClassController extends Controller
             $quarter = 'First';
 
            
-        // return json_encode($ClassSubjectDetail);
-        // $GradeSheetData = json_decode(json_encode($ClassSubjectDetail));
-        
         return view('control_panel_faculty.my_advisory_class.partials.print_first_quarter', compact( 'ClassSubjectDetail','AdvisorySubject','GradeSheetMale','GradeSheetFeMale','quarter'));
         $pdf = \PDF::loadView('control_panel_faculty.my_advisory_class.partials.print_first_quarter', compact( 'ClassSubjectDetail','AdvisorySubject','GradeSheetMale','GradeSheetFeMale','quarter'));
         $pdf->setPaper('Legal', 'portrait');
@@ -914,16 +797,12 @@ class MyAdvisoryClassController extends Controller
         $FacultyInformation = \App\FacultyInformation::where('user_id', \Auth::user()->id)->first();
      
         $ClassSubjectDetail = \App\ClassSubjectDetail::join('class_details', 'class_details.id', '=', 'class_subject_details.class_details_id')
-            // ->join('subject_details', 'subject_details.id', '=', 'class_subject_details.subject_id')
             ->join('rooms','rooms.id', '=', 'class_details.room_id')
             ->join('section_details', 'section_details.id', '=', 'class_details.section_id')
             ->join('school_years', 'school_years.id' ,'=', 'class_details.school_year_id')
             ->join('faculty_informations', 'faculty_informations.id','=','class_details.adviser_id')
-            // ->whereRaw('class_subject_details.id = '. $request->search_class_subject)
-            // ->whereRaw('class_details.id = '. $search_class_subject[1])
             ->where('class_details.adviser_id', $FacultyInformation->id)
             ->where('class_details.school_year_id', $request->search_sy)
-            // ->where('class_subject_details.status', '!=', 0)
             ->where('class_details.status', '!=', 0)
             ->select(\DB::raw('                
                 rooms.room_code,
@@ -936,8 +815,7 @@ class MyAdvisoryClassController extends Controller
                 faculty_informations.first_name, faculty_informations.middle_name ,  faculty_informations.last_name,
                 school_years.school_year                
             '))
-            ->first();
-            
+            ->first();            
         
             $AdvisorySubject = \App\ClassSubjectDetail::join('subject_details', 'subject_details.id', '=' ,'class_subject_details.subject_id')
             ->join('class_details', 'class_details.id', '=' ,'class_subject_details.class_details_id')
@@ -947,13 +825,9 @@ class MyAdvisoryClassController extends Controller
             ")
             ->where('class_subject_details.class_details_id', $ClassSubjectDetail->id)
             ->where('class_subject_details.status', 1)
-            // ->where('faculty_id', $FacultyInformation->id)
             ->where('class_details.school_year_id', $request->search_sy)
-            //  ->where('class_details.school_year_id', $request->search_sy)
-            // ->orderBy('class_subject_details.class_time_from', 'ASC');
             ->get();            
             
-
             $GradeSheetMale = \App\Grade_sheet_second::join('class_details','class_details.section_id','=','grade_sheet_seconds.section_details_id')            
             ->join('enrollments','enrollments.id','=','grade_sheet_seconds.enrollment_id')
             ->join('student_informations','student_informations.id','=','enrollments.student_information_id')
@@ -985,7 +859,6 @@ class MyAdvisoryClassController extends Controller
             ->get();
 
             $quarter = 'Second';
-
            
         // return json_encode($ClassSubjectDetail);
         return view('control_panel_faculty.my_advisory_class.partials.print_first_quarter', 
@@ -1003,16 +876,12 @@ class MyAdvisoryClassController extends Controller
         $FacultyInformation = \App\FacultyInformation::where('user_id', \Auth::user()->id)->first();
      
         $ClassSubjectDetail = \App\ClassSubjectDetail::join('class_details', 'class_details.id', '=', 'class_subject_details.class_details_id')
-            // ->join('subject_details', 'subject_details.id', '=', 'class_subject_details.subject_id')
             ->join('rooms','rooms.id', '=', 'class_details.room_id')
             ->join('section_details', 'section_details.id', '=', 'class_details.section_id')
             ->join('school_years', 'school_years.id' ,'=', 'class_details.school_year_id')
             ->join('faculty_informations', 'faculty_informations.id','=','class_details.adviser_id')
-            // ->whereRaw('class_subject_details.id = '. $request->search_class_subject)
-            // ->whereRaw('class_details.id = '. $search_class_subject[1])
             ->where('class_details.adviser_id', $FacultyInformation->id)
             ->where('class_details.school_year_id', $request->search_sy)
-            // ->where('class_subject_details.status', '!=', 0)
             ->where('class_details.status', '!=', 0)
             ->select(\DB::raw('                
                 rooms.room_code,
@@ -1036,10 +905,7 @@ class MyAdvisoryClassController extends Controller
             ")
             ->where('class_subject_details.class_details_id', $ClassSubjectDetail->id)
             ->where('class_subject_details.status', 1)
-            // ->where('faculty_id', $FacultyInformation->id)
             ->where('class_details.school_year_id', $request->search_sy)
-            //  ->where('class_details.school_year_id', $request->search_sy)
-            // ->orderBy('class_subject_details.class_time_from', 'ASC');
             ->get();            
             
 
@@ -1074,10 +940,8 @@ class MyAdvisoryClassController extends Controller
             ->get();
 
             $quarter = 'Third';
-
-           
-        // return json_encode($ClassSubjectDetail);
-        // return view('control_panel_faculty.my_advisory_class.partials.data_list', compact( 'ClassSubjectDetail','AdvisorySubject','GradeSheetMale','GradeSheetFeMale','quarter'))->render();
+         
+        
         return view('control_panel_faculty.my_advisory_class.partials.print_first_quarter', 
             compact( 'ClassSubjectDetail','AdvisorySubject','GradeSheetMale','GradeSheetFeMale','quarter'));
         $pdf = \PDF::loadView('control_panel_faculty.my_advisory_class.partials.print_first_quarter', 
@@ -1091,16 +955,12 @@ class MyAdvisoryClassController extends Controller
         $FacultyInformation = \App\FacultyInformation::where('user_id', \Auth::user()->id)->first();
      
         $ClassSubjectDetail = \App\ClassSubjectDetail::join('class_details', 'class_details.id', '=', 'class_subject_details.class_details_id')
-            // ->join('subject_details', 'subject_details.id', '=', 'class_subject_details.subject_id')
             ->join('rooms','rooms.id', '=', 'class_details.room_id')
             ->join('section_details', 'section_details.id', '=', 'class_details.section_id')
             ->join('school_years', 'school_years.id' ,'=', 'class_details.school_year_id')
             ->join('faculty_informations', 'faculty_informations.id','=','class_details.adviser_id')
-            // ->whereRaw('class_subject_details.id = '. $request->search_class_subject)
-            // ->whereRaw('class_details.id = '. $search_class_subject[1])
             ->where('class_details.adviser_id', $FacultyInformation->id)
             ->where('class_details.school_year_id', $request->search_sy)
-            // ->where('class_subject_details.status', '!=', 0)
             ->where('class_details.status', '!=', 0)
             ->select(\DB::raw('                
                 rooms.room_code,
@@ -1124,10 +984,7 @@ class MyAdvisoryClassController extends Controller
             ")
             ->where('class_subject_details.class_details_id', $ClassSubjectDetail->id)
             ->where('class_subject_details.status', 1)
-            // ->where('faculty_id', $FacultyInformation->id)
             ->where('class_details.school_year_id', $request->search_sy)
-            //  ->where('class_details.school_year_id', $request->search_sy)
-            // ->orderBy('class_subject_details.class_time_from', 'ASC');
             ->get();
 
 
@@ -1180,16 +1037,12 @@ class MyAdvisoryClassController extends Controller
         $FacultyInformation = \App\FacultyInformation::where('user_id', \Auth::user()->id)->first();
      
         $ClassSubjectDetail = \App\ClassSubjectDetail::join('class_details', 'class_details.id', '=', 'class_subject_details.class_details_id')
-            // ->join('subject_details', 'subject_details.id', '=', 'class_subject_details.subject_id')
             ->join('rooms','rooms.id', '=', 'class_details.room_id')
             ->join('section_details', 'section_details.id', '=', 'class_details.section_id')
             ->join('school_years', 'school_years.id' ,'=', 'class_details.school_year_id')
             ->join('faculty_informations', 'faculty_informations.id','=','class_details.adviser_id')
-            // ->whereRaw('class_subject_details.id = '. $request->search_class_subject)
-            // ->whereRaw('class_details.id = '. $search_class_subject[1])
             ->where('class_details.adviser_id', $FacultyInformation->id)
             ->where('class_details.school_year_id', $request->search_sy1)
-            // ->where('class_subject_details.status', '!=', 0)
             ->where('class_details.status', '!=', 0)
             ->select(\DB::raw('                
                 rooms.room_code,
@@ -1289,16 +1142,12 @@ class MyAdvisoryClassController extends Controller
         $FacultyInformation = \App\FacultyInformation::where('user_id', \Auth::user()->id)->first();
      
         $ClassSubjectDetail = \App\ClassSubjectDetail::join('class_details', 'class_details.id', '=', 'class_subject_details.class_details_id')
-            // ->join('subject_details', 'subject_details.id', '=', 'class_subject_details.subject_id')
             ->join('rooms','rooms.id', '=', 'class_details.room_id')
             ->join('section_details', 'section_details.id', '=', 'class_details.section_id')
             ->join('school_years', 'school_years.id' ,'=', 'class_details.school_year_id')
             ->join('faculty_informations', 'faculty_informations.id','=','class_details.adviser_id')
-            // ->whereRaw('class_subject_details.id = '. $request->search_class_subject)
-            // ->whereRaw('class_details.id = '. $search_class_subject[1])
             ->where('class_details.adviser_id', $FacultyInformation->id)
             ->where('class_details.school_year_id', $request->search_sy1)
-            // ->where('class_subject_details.status', '!=', 0)
             ->where('class_details.status', '!=', 0)
             ->select(\DB::raw('                
                 rooms.room_code,
@@ -1399,16 +1248,12 @@ class MyAdvisoryClassController extends Controller
         $FacultyInformation = \App\FacultyInformation::where('user_id', \Auth::user()->id)->first();
      
         $ClassSubjectDetail = \App\ClassSubjectDetail::join('class_details', 'class_details.id', '=', 'class_subject_details.class_details_id')
-            // ->join('subject_details', 'subject_details.id', '=', 'class_subject_details.subject_id')
             ->join('rooms','rooms.id', '=', 'class_details.room_id')
             ->join('section_details', 'section_details.id', '=', 'class_details.section_id')
             ->join('school_years', 'school_years.id' ,'=', 'class_details.school_year_id')
             ->join('faculty_informations', 'faculty_informations.id','=','class_details.adviser_id')
-            // ->whereRaw('class_subject_details.id = '. $request->search_class_subject)
-            // ->whereRaw('class_details.id = '. $search_class_subject[1])
             ->where('class_details.adviser_id', $FacultyInformation->id)
             ->where('class_details.school_year_id', $request->search_sy1)
-            // ->where('class_subject_details.status', '!=', 0)
             ->where('class_details.status', '!=', 0)
             ->select(\DB::raw('                
                 rooms.room_code,
@@ -1508,16 +1353,12 @@ class MyAdvisoryClassController extends Controller
         $FacultyInformation = \App\FacultyInformation::where('user_id', \Auth::user()->id)->first();
      
         $ClassSubjectDetail = \App\ClassSubjectDetail::join('class_details', 'class_details.id', '=', 'class_subject_details.class_details_id')
-            // ->join('subject_details', 'subject_details.id', '=', 'class_subject_details.subject_id')
             ->join('rooms','rooms.id', '=', 'class_details.room_id')
             ->join('section_details', 'section_details.id', '=', 'class_details.section_id')
             ->join('school_years', 'school_years.id' ,'=', 'class_details.school_year_id')
             ->join('faculty_informations', 'faculty_informations.id','=','class_details.adviser_id')
-            // ->whereRaw('class_subject_details.id = '. $request->search_class_subject)
-            // ->whereRaw('class_details.id = '. $search_class_subject[1])
             ->where('class_details.adviser_id', $FacultyInformation->id)
             ->where('class_details.school_year_id', $request->search_sy1)
-            // ->where('class_subject_details.status', '!=', 0)
             ->where('class_details.status', '!=', 0)
             ->select(\DB::raw('                
                 rooms.room_code,
@@ -1621,14 +1462,12 @@ class MyAdvisoryClassController extends Controller
             $FacultyInformation = \App\FacultyInformation::where('user_id', \Auth::user()->id)->first();
          
             $ClassSubjectDetail = \App\ClassSubjectDetail::join('class_details', 'class_details.id', '=', 'class_subject_details.class_details_id')
-                // ->join('subject_details', 'subject_details.id', '=', 'class_subject_details.subject_id')
                 ->join('rooms','rooms.id', '=', 'class_details.room_id')
                 ->join('section_details', 'section_details.id', '=', 'class_details.section_id')
                 // ->whereRaw('class_subject_details.id = '. $request->search_class_subject)
                 // ->whereRaw('class_details.id = '. $search_class_subject[1])
                 ->where('class_details.adviser_id', $FacultyInformation->id)
                 ->where('class_details.school_year_id', $request->search_sy)
-                // ->where('class_subject_details.status', '!=', 0)
                 ->where('class_details.status', '!=', 0)
                 ->select(\DB::raw('                
                     rooms.room_code,
@@ -1719,16 +1558,12 @@ class MyAdvisoryClassController extends Controller
 
             $FacultyInformation = \App\FacultyInformation::where('user_id', \Auth::user()->id)->first();         
             $ClassSubjectDetail = \App\ClassSubjectDetail::join('class_details', 'class_details.id', '=', 'class_subject_details.class_details_id')
-            // ->join('subject_details', 'subject_details.id', '=', 'class_subject_details.subject_id')
             ->join('rooms','rooms.id', '=', 'class_details.room_id')
             ->join('section_details', 'section_details.id', '=', 'class_details.section_id')
             ->join('school_years', 'school_years.id' ,'=', 'class_details.school_year_id')
             ->join('faculty_informations', 'faculty_informations.id','=','class_details.adviser_id')
-            // ->whereRaw('class_subject_details.id = '. $request->search_class_subject)
-            // ->whereRaw('class_details.id = '. $search_class_subject[1])
             ->where('class_details.adviser_id', $FacultyInformation->id)
             ->where('class_details.school_year_id', $request->search_sy)
-            // ->where('class_subject_details.status', '!=', 0)
             ->where('class_details.status', '!=', 0)
             ->select(\DB::raw('                
                 rooms.room_code,
@@ -1813,16 +1648,12 @@ class MyAdvisoryClassController extends Controller
 
             $FacultyInformation = \App\FacultyInformation::where('user_id', \Auth::user()->id)->first();         
             $ClassSubjectDetail = \App\ClassSubjectDetail::join('class_details', 'class_details.id', '=', 'class_subject_details.class_details_id')
-            // ->join('subject_details', 'subject_details.id', '=', 'class_subject_details.subject_id')
             ->join('rooms','rooms.id', '=', 'class_details.room_id')
             ->join('section_details', 'section_details.id', '=', 'class_details.section_id')
             ->join('school_years', 'school_years.id' ,'=', 'class_details.school_year_id')
             ->join('faculty_informations', 'faculty_informations.id','=','class_details.adviser_id')
-            // ->whereRaw('class_subject_details.id = '. $request->search_class_subject)
-            // ->whereRaw('class_details.id = '. $search_class_subject[1])
             ->where('class_details.adviser_id', $FacultyInformation->id)
             ->where('class_details.school_year_id', $request->search_sy)
-            // ->where('class_subject_details.status', '!=', 0)
             ->where('class_details.status', '!=', 0)
             ->select(\DB::raw('                
                 rooms.room_code,
@@ -1908,16 +1739,12 @@ class MyAdvisoryClassController extends Controller
 
             $FacultyInformation = \App\FacultyInformation::where('user_id', \Auth::user()->id)->first();         
             $ClassSubjectDetail = \App\ClassSubjectDetail::join('class_details', 'class_details.id', '=', 'class_subject_details.class_details_id')
-            // ->join('subject_details', 'subject_details.id', '=', 'class_subject_details.subject_id')
             ->join('rooms','rooms.id', '=', 'class_details.room_id')
             ->join('section_details', 'section_details.id', '=', 'class_details.section_id')
             ->join('school_years', 'school_years.id' ,'=', 'class_details.school_year_id')
             ->join('faculty_informations', 'faculty_informations.id','=','class_details.adviser_id')
-            // ->whereRaw('class_subject_details.id = '. $request->search_class_subject)
-            // ->whereRaw('class_details.id = '. $search_class_subject[1])
             ->where('class_details.adviser_id', $FacultyInformation->id)
             ->where('class_details.school_year_id', $request->search_sy)
-            // ->where('class_subject_details.status', '!=', 0)
             ->where('class_details.status', '!=', 0)
             ->select(\DB::raw('                
                 rooms.room_code,
@@ -2008,14 +1835,10 @@ class MyAdvisoryClassController extends Controller
             $FacultyInformation = \App\FacultyInformation::where('user_id', \Auth::user()->id)->first();
          
             $ClassSubjectDetail = \App\ClassSubjectDetail::join('class_details', 'class_details.id', '=', 'class_subject_details.class_details_id')
-            // ->join('subject_details', 'subject_details.id', '=', 'class_subject_details.subject_id')
             ->join('rooms','rooms.id', '=', 'class_details.room_id')
             ->join('section_details', 'section_details.id', '=', 'class_details.section_id')
-            // ->whereRaw('class_subject_details.id = '. $request->search_class_subject)
-            // ->whereRaw('class_details.id = '. $search_class_subject[1])
             ->where('class_details.adviser_id', $FacultyInformation->id)
             ->where('class_details.school_year_id', $request->search_sy1)
-            // ->where('class_subject_details.status', '!=', 0)
             ->where('class_details.status', '!=', 0)
             ->select(\DB::raw('                
                 rooms.room_code,
@@ -2196,14 +2019,10 @@ class MyAdvisoryClassController extends Controller
             $FacultyInformation = \App\FacultyInformation::where('user_id', \Auth::user()->id)->first();
          
             $ClassSubjectDetail = \App\ClassSubjectDetail::join('class_details', 'class_details.id', '=', 'class_subject_details.class_details_id')
-            // ->join('subject_details', 'subject_details.id', '=', 'class_subject_details.subject_id')
             ->join('rooms','rooms.id', '=', 'class_details.room_id')
             ->join('section_details', 'section_details.id', '=', 'class_details.section_id')
-            // ->whereRaw('class_subject_details.id = '. $request->search_class_subject)
-            // ->whereRaw('class_details.id = '. $search_class_subject[1])
             ->where('class_details.adviser_id', $FacultyInformation->id)
             ->where('class_details.school_year_id', $request->search_sy1)
-            // ->where('class_subject_details.status', '!=', 0)
             ->where('class_details.status', '!=', 0)
             ->select(\DB::raw('                
                 rooms.room_code,
@@ -2322,14 +2141,10 @@ class MyAdvisoryClassController extends Controller
         $FacultyInformation = \App\FacultyInformation::where('user_id', \Auth::user()->id)->first();
      
         $ClassSubjectDetail = \App\ClassSubjectDetail::join('class_details', 'class_details.id', '=', 'class_subject_details.class_details_id')
-        // ->join('subject_details', 'subject_details.id', '=', 'class_subject_details.subject_id')
         ->join('rooms','rooms.id', '=', 'class_details.room_id')
         ->join('section_details', 'section_details.id', '=', 'class_details.section_id')
-        // ->whereRaw('class_subject_details.id = '. $request->search_class_subject)
-        // ->whereRaw('class_details.id = '. $search_class_subject[1])
         ->where('class_details.adviser_id', $FacultyInformation->id)
         ->where('class_details.school_year_id', $request->search_sy1)
-        // ->where('class_subject_details.status', '!=', 0)
         ->where('class_details.status', '!=', 0)
         ->select(\DB::raw('                
             rooms.room_code,
@@ -2346,15 +2161,9 @@ class MyAdvisoryClassController extends Controller
         $sem = 'First';
         $quarter = 'First - Second';
         
-        $type = "average";
+        $type = "average";        
 
-        
-        
-        
-
-        $FacultyInformation = \App\FacultyInformation::where('user_id', \Auth::user()->id)->first();       
-        
-        
+        $FacultyInformation = \App\FacultyInformation::where('user_id', \Auth::user()->id)->first();   
             
         $AdvisorySubject = \App\ClassSubjectDetail::join('subject_details', 'subject_details.id', '=' ,'class_subject_details.subject_id')
             ->join('class_details', 'class_details.id', '=' ,'class_subject_details.class_details_id')
@@ -2430,9 +2239,6 @@ class MyAdvisoryClassController extends Controller
             ->distinct()
             ->orderBY('student_name','ASC')
             ->get();
-
-            
-                
                                                         
 
         $GradeSheetFeMale = \App\Grade_sheet_firstsem::join('class_details','class_details.section_id','=','grade_sheet_firstsems.section_details_id')            
@@ -2506,8 +2312,6 @@ class MyAdvisoryClassController extends Controller
                         'Subject_2ndsem','Totalsubject_2nd_sem','Totalsubject_1st_sem','EnrollmentSem1'));
             $pdf->setPaper('Legal', 'landscape');
             return $pdf->stream();
-
-            
 
     }
 }

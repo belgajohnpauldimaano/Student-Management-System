@@ -256,8 +256,8 @@
         
                 <td style="text-align: center">
                     <?php
-                    $formattedNum = round($average = ($sub->filipino + $sub->english + $sub->math + $sub->science + $sub->ap + $sub->ict + $sub->mapeh + $sub->esp + $sub->religion)/9);
-                    echo round($formattedNum);
+                        $formattedNum = round($average = ($sub->filipino + $sub->english + $sub->math + $sub->science + $sub->ap + $sub->ict + $sub->mapeh + $sub->esp + $sub->religion)/9);
+                        echo round($formattedNum);
                     ?>                                                
                 </td>
                 <td style="text-align: center">
@@ -333,7 +333,8 @@
                 
                 <td style="text-align:center">                                                                                 
                     <?php
-                        $result_final =  (round($subj_1) + round($subj_2) + round($subj_3) + round($subj_4) + round($subj_5) + round($subj_6) + round($subj_7) + round($subj_8) + round($subj_9) )/9;
+                        // $result_final =  (round($subj_1) + round($subj_2) + round($subj_3) + round($subj_4) + round($subj_5) + round($subj_6) + round($subj_7) + round($subj_8) + round($subj_9) )/9;
+                        $result_final = (round($formattedNum) + round($sec_result) + round($thi_result) + round($fou_result)) / 4;
                         echo round($result_final);
                     ?>                                
                 </td>
@@ -446,7 +447,8 @@
                 
                 <td style="text-align:center">                                                                                 
                     <?php
-                        $result_final =  (round($subj_1) + round($subj_2) + round($subj_3) + round($subj_4) + round($subj_5) + round($subj_6) + round($subj_7) + round($subj_8) + round($subj_9) )/9;
+                        // $result_final =  (round($subj_1) + round($subj_2) + round($subj_3) + round($subj_4) + round($subj_5) + round($subj_6) + round($subj_7) + round($subj_8) + round($subj_9) )/9;
+                        $result_final = (round($formattedNum) + round($sec_result) + round($thi_result) + round($fou_result)) / 4;
                         echo round($result_final);
                     ?>                                
                 </td>
