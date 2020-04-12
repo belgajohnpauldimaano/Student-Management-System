@@ -7,22 +7,18 @@
 @section ('content')
 
     <div class="box">
-                    <div class="overlay hidden" id="js-loader-overlay"><i class="fa fa-refresh fa-spin"></i></div>
-                    <div class="box-body">
-                        
-                        
-
-                        <div class="js-data-container1">
-                                                        
-                        </div>
-                    </div>
-                    
-                    <div class="overlay hidden" id="js-loader-overlay"><i class="fa fa-refresh fa-spin"></i></div>
-                    <div class="box-body">
-                        <div class="js-data-container">
-                            @include('control_panel_faculty.encode_remarks.partials.data_list')                            
-                        </div>
-                    </div>            
+        <div class="overlay hidden" id="js-loader-overlay"><i class="fa fa-refresh fa-spin"></i></div>
+        <div class="box-body">
+            <div class="js-data-container1">                                                        
+            </div>
+        </div>
+        
+        <div class="overlay hidden" id="js-loader-overlay"><i class="fa fa-refresh fa-spin"></i></div>
+        <div class="box-body">
+            <div class="js-data-container">
+                @include('control_panel_faculty.encode_remarks.partials.data_list')                            
+            </div>
+        </div>            
     </div>                       
                 
 @endsection
@@ -32,32 +28,6 @@
     <script>
     $( ".tbdatepicker" ).datepicker();
     
-    // $("#datepicker").datepicker({
-    //     endDate: new Date(),
-    //     autoclose: true,
-    // }).on('changeDate', function(ev){
-    //     //my work here
-    //     // $('.datepicker').datepicker('setDate', $('#datepicker').datepicker());
-    //     alert(hello);
-    // });
-
-    // $("#datepicker").datepicker({
-    //     endDate: new Date(),
-    //     autoclose: true,
-    // }).change(function() {
-    //             var selectedDate= $('#datepicker').datepicker({ dateFormat: 'mm/dd/yyyy' }).val();
-    //             //  selectedDate = $('.datepicker').datepicker( 'getDate' );
-    //             // alert(selectedDate); 
-    //             // $('.datepicker').datepicker(selectedDate.('getDate'));       
-    //             $('.tbdatepicker').datepicker($('#datepicker').datepicker().val());
-    //             // document.getElementById('.tbdatepicker').value = (selectedDate);
-    //         });
-//     $(document).ready(function () {
-//        $('.datepicker').each(function () {
-//            $(this).removeClass('hasDatepicker').datepicker();
-//        });
-//    });
-
     var page = 1;
         function fetch_data () {
             var formData = new FormData($('#js-form_search')[0]);

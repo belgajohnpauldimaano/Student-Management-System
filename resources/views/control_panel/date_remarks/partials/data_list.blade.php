@@ -21,9 +21,9 @@
                                             <td>
                                                 {{ $data->school_year }}
                                             </td>
-                                            <td>{{ $data->j_date }}</td>
-                                            <td>{{ $data->s_date1 }}</td>
-                                            <td>{{ $data->s_date2 }}</td>
+                                            <td>{{ $data->j_date ? date_format(date_create($data->j_date), 'F d, Y') : '' }}</td>
+                                            <td>{{ $data->s_date1 ? date_format(date_create($data->s_date1), 'F d, Y') : '' }}</td>
+                                            <td>{{ $data->s_date2 ? date_format(date_create($data->s_date2), 'F d, Y') : '' }}</td>
                                             <td>{{ $data->status == 1 ? 'Active' : 'Inactive' }}</td>
                                             {{-- <td></td> --}}
                                             {{-- <td>{{ $data->current == 1 ? 'Yes' : 'No' }}</td>

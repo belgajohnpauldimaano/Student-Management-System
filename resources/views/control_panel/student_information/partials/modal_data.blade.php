@@ -105,7 +105,8 @@
                             <div class="input-group-addon">
                                 <i class="fa fa-calendar"></i>
                             </div>
-                            <input type="text" name="birthdate" class="form-control pull-right" id="datepicker" value="{{ $StudentInformation ? date_format(date_create($StudentInformation->birthdate), 'F d, Y') : '' }}">
+                            <input type="text" name="birthdate" class="form-control pull-right" id="datepicker"
+                             value="{{ $StudentInformation ? date_format(date_create($StudentInformation->birthdate), 'F d, Y') : '' }}">
                         </div>
                         <div class="help-block text-red text-center" id="js-birthdate">
                         </div>

@@ -4,9 +4,8 @@
             <th>Subject</th>
             <th style="width: 100px">First Quarter</th>
             <th style="width: 100px">Second Quarter</th>
-            <th>Final Grade</th>
-            <th>Remarks</th>
-            
+            <th style="width: 100px">Final Grade</th>
+            <th style="width: 100px">Remarks</th>            
         </tr>
     </thead>
     <tbody>
@@ -14,42 +13,39 @@
             $SchoolYear = \App\SchoolYear::where('current', 1)->where('status', 1)->first();
             
             $Enrollment = \App\Enrollment::join('class_details', 'class_details.id', '=', 'enrollments.class_details_id')
-            // ->join('student_enrolled_subjects', 'student_enrolled_subjects.enrollments_id', '=', 'enrollments.id')
-            ->join('class_subject_details', 'class_subject_details.class_details_id', '=', 'class_details.id')
-            ->join('rooms', 'rooms.id', '=', 'class_details.room_id')
-            ->join('faculty_informations', 'faculty_informations.id', '=', 'class_subject_details.faculty_id')
-            ->join('section_details', 'section_details.id', '=', 'class_details.section_id')
-            ->join('subject_details', 'subject_details.id', '=', 'class_subject_details.subject_id')
-            ->where('student_information_id', $StudentInformation->id)
-            // ->where('faculty_informations.id', $ClassDetail->adviser_id)
-            // ->where('class_subject_details.status', 1)
-            ->where('class_subject_details.status', '!=', 0)
-            ->where('class_subject_details.sem', 2)
-            ->where('enrollments.status', 1)
-            ->where('class_details.status', 1)                            
-            ->where('class_details.school_year_id', $SchoolYear->id)
-            ->select(\DB::raw("
-                enrollments.id as enrollment_id,
-                enrollments.class_details_id as cid,
-                enrollments.attendance_first,
-                enrollments.attendance_second,
-                enrollments.s2_lacking_unit,
-                class_details.grade_level,
-                class_subject_details.id as class_subject_details_id,
-                class_subject_details.class_days,
-                class_subject_details.class_time_from,
-                class_subject_details.class_time_to,
-                class_subject_details.status as grade_status,
-                CONCAT(faculty_informations.last_name, ', ', faculty_informations.first_name, ' ', faculty_informations.middle_name) as faculty_name,
-                subject_details.id AS subject_id,
-                subject_details.subject_code,
-                subject_details.subject,
-                rooms.room_code,
-                section_details.section
-                
-            "))
-            ->orderBy('class_subject_details.class_subject_order', 'ASC')
-            ->get();
+                ->join('class_subject_details', 'class_subject_details.class_details_id', '=', 'class_details.id')
+                ->join('rooms', 'rooms.id', '=', 'class_details.room_id')
+                ->join('faculty_informations', 'faculty_informations.id', '=', 'class_subject_details.faculty_id')
+                ->join('section_details', 'section_details.id', '=', 'class_details.section_id')
+                ->join('subject_details', 'subject_details.id', '=', 'class_subject_details.subject_id')
+                ->where('student_information_id', $StudentInformation->id)
+                ->where('class_subject_details.status', '!=', 0)
+                ->where('class_subject_details.sem', 2)
+                ->where('enrollments.status', 1)
+                ->where('class_details.status', 1)                            
+                ->where('class_details.school_year_id', $SchoolYear->id)
+                ->select(\DB::raw("
+                    enrollments.id as enrollment_id,
+                    enrollments.class_details_id as cid,
+                    enrollments.attendance_first,
+                    enrollments.attendance_second,
+                    enrollments.s2_lacking_unit,
+                    class_details.grade_level,
+                    class_subject_details.id as class_subject_details_id,
+                    class_subject_details.class_days,
+                    class_subject_details.class_time_from,
+                    class_subject_details.class_time_to,
+                    class_subject_details.status as grade_status,
+                    CONCAT(faculty_informations.last_name, ', ', faculty_informations.first_name, ' ', faculty_informations.middle_name) as faculty_name,
+                    subject_details.id AS subject_id,
+                    subject_details.subject_code,
+                    subject_details.subject,
+                    rooms.room_code,
+                    section_details.section
+                    
+                "))
+                ->orderBy('class_subject_details.class_subject_order', 'ASC')
+                ->get();
             
             $StudentEnrolledSubject = \App\StudentEnrolledSubject::where('enrollments_id', $Enrollment[0]->enrollment_id)
             ->where('sem', 2)->where('status', 1)
@@ -62,25 +58,22 @@
                     <?php                             
                         $subject = \App\ClassSubjectDetail::where('id', $data->class_subject_details_id)                                        
                             ->orderBY('class_subject_order', 'ASC')->get();
-
                             echo \App\SubjectDetail::where('id', $subject[0]->subject_id)->first()->subject; 
                         //echo $ClassSubjectDetail->subject;   
                     ?>
-                </td>
-                
+                </td>                
                 <td style="text-align: center">
                     <?php 
-                         $StudentEnrolledSubject1 = \App\StudentEnrolledSubject::where('enrollments_id', $data->enrollment_id)
-                        ->where('subject_id', $data->subject_id)
-                        ->where('sem', 2)
-                        ->first();
+                        $StudentEnrolledSubject1 = \App\StudentEnrolledSubject::where('enrollments_id', $data->enrollment_id)
+                            ->where('subject_id', $data->subject_id)
+                            ->where('sem', 2)
+                            ->first();
 
                         if($StudentEnrolledSubject1)
                         {
                             echo $StudentEnrolledSubject1->thi_g ? $StudentEnrolledSubject1->thi_g > 0 ? round($StudentEnrolledSubject1->thi_g) : '' : '';
                         }
                     ?>
-                    
                  </td>
                 <td style="text-align: center">
                     <?php 
@@ -93,8 +86,7 @@
                         {
                             echo $StudentEnrolledSubject1->fou_g ? $StudentEnrolledSubject1->fou_g > 0 ? round($StudentEnrolledSubject1->fou_g) : '' : '';
                         }
-                    ?>
-                    
+                    ?>                    
                 </td>
                 <td style="text-align: center">
                     <?php 
@@ -142,62 +134,74 @@
         @endforeach
         
         <tr class="text-center">
-                <td colspan="{{$grade_level <= 10 ? '5' : '3'}}"><b>General Average</b></td>
-                {{--  <td colspan="{{$ClassDetail ? $ClassDetail->section_grade_level <= 10 ? '8' : '2' : '4'}}"><b>General Average</b></td>  --}}
-                <td>
-                        <b>
-                            <?php 
-                                $StudentEnrolledSubject1 = \App\StudentEnrolledSubject::where('enrollments_id', $Enrollment[0]->enrollment_id)
-                                ->where('subject_id', $data->subject_id)
-                                ->where('sem', 2)
-                                ->first();     
-                            ?>
-                                     
-                            @if(round($StudentEnrolledSubject1->thi_g) != 0 && round($StudentEnrolledSubject1->fou_g) != 0)
-                                {{-- {{$$final_ave && $general_avg >= 0 ? round($general_avg) : '' }} --}}
-                                <?php
-                                    $totalsum = 0;
-                                    $count_subjects1 = \App\StudentEnrolledSubject::where('enrollments_id', $Enrollment[0]->enrollment_id)
-                                    ->where('sem', 2)->where('status', '!=', 0)->count();
-                                ?>
-                                @foreach($StudentEnrolledSubject as $key => $data)
-                                <?php                                                    
-                                    round($final_ave = (round($data->thi_g) + round($data->fou_g)) / 2);                                                                                                
-                                    $totalsum+= round($final_ave) / $count_subjects1 ;   
-                                    // echo $sum;                                                                                                         
-                                ?>
-                                @endforeach
-                                <?php
-                                 echo round($totalsum);
-                                ?>                                                
-                                
-                            @else
-                                
-                            @endif
-                        </b>
-                </td>
-                <?php 
-                    $StudentEnrolledSubject1 = \App\StudentEnrolledSubject::where('enrollments_id', $Enrollment[0]->enrollment_id)
+            <td colspan="{{$grade_level <= 10 ? '5' : '3'}}"><b>General Average</b></td>
+            {{--  <td colspan="{{$ClassDetail ? $ClassDetail->section_grade_level <= 10 ? '8' : '2' : '4'}}"><b>General Average</b></td>  --}}
+            <td>
+                <b>
+                    <?php 
+                        $StudentEnrolledSubject1 = \App\StudentEnrolledSubject::where('enrollments_id', $Enrollment[0]->enrollment_id)
                         ->where('subject_id', $data->subject_id)
                         ->where('sem', 2)
-                        ->first(); 
-                ?>
-                    @if(round($StudentEnrolledSubject1->thi_g) != 0 || round($StudentEnrolledSubject1->fou_g) != 0)
-                        @if(round($totalsum) > 74) 
-                            <td style="color:'green';"><strong>Passed</strong></td>
-                            
-                        @elseif(round($totalsum) < 75) 
-                            
-                            <td style="color:'red';"><strong>Failed</strong></td>
-                        @else 
-                            <td></td>
-                        @endif
+                        ->first();     
+                    ?>
+                             
+                    @if(round($StudentEnrolledSubject1->thi_g) != 0 && round($StudentEnrolledSubject1->fou_g) != 0)
+                        {{-- {{$$final_ave && $general_avg >= 0 ? round($general_avg) : '' }} --}}
+                        <?php
+                            $totalsum = 0;
+                            $count_subjects1 = \App\StudentEnrolledSubject::where('enrollments_id', $Enrollment[0]->enrollment_id)
+                            ->where('sem', 2)->where('status', '!=', 0)->count();
+                        ?>
+                        @foreach($StudentEnrolledSubject as $key => $data)
+                        <?php                                                    
+                            round($final_ave = (round($data->thi_g) + round($data->fou_g)) / 2);                                                                                                
+                            $totalsum+= round($final_ave) / $count_subjects1 ;   
+                            // echo $sum;                                                                                                         
+                        ?>
+                        @endforeach
+                        <?php
+                            echo round($totalsum);
+                        ?>
                     @else
-                        <td></td>
+                        
                     @endif
-                
-            </tr>
+                </b>
+            </td>
+            <?php 
+                $StudentEnrolledSubject1 = \App\StudentEnrolledSubject::where('enrollments_id', $Enrollment[0]->enrollment_id)
+                    ->where('subject_id', $data->subject_id)
+                    ->where('sem', 2)
+                    ->first(); 
+            ?>
+            @if(round($StudentEnrolledSubject1->thi_g) != 0 || round($StudentEnrolledSubject1->fou_g) != 0)
+                @if(round($totalsum) > 74) 
+                    <td style="color:'green';"><strong>Passed</strong></td>
+                    
+                @elseif(round($totalsum) < 75) 
+                    
+                    <td style="color:'red';"><strong>Failed</strong></td>
+                @else 
+                    <td></td>
+                @endif
+            @else
+                <td></td>
+            @endif                
+        </tr>
     </tbody>
+</table>
+
+<table style="margin-top: 15px">
+    <tfoot>
+        <td style="text-align: right">
+            <b>FINAL AVERAGE:</b> 
+        </td>
+        <td style="width: 100px; text-align: center">
+            <b>{{$GradeSheetData[0]->final_g}}</b>
+        </td>
+        {{-- <td style="width: 100px; text-align: center">
+            <b>{{ $GradeSheetData[0] ? $GradeSheetData[0]->final_g < 75 ? 'Failed' : 'Passed' : ''}}</b>
+        </td> --}}
+    </tfoot>
 </table>
 
 <?php
@@ -208,7 +212,7 @@
             ['key' => 'Jan',],
             ['key' => 'Feb',],
             ['key' => 'Mar*',],
-            ['key' => 'Apr**',],
+            ['key' => 'Apr*',],
             
             ['key' => 'total',],
         ];
@@ -226,17 +230,9 @@
         'times_tardy' => [
             0, 0, 0, 0, 0,
         ]
-    ]));
+    ]));    
     
-    
-    $attendance_data = json_decode($Enrollment[0]->attendance_second);
-
-    
-//    $attendance_data;
-
-//     if ($EnrollmentMale[0]->attendance) {
-//         $attendance_data = json_decode($EnrollmentMale[0]->attendance);
-//     }    
+    $attendance_data = json_decode($Enrollment[0]->attendance_second); 
 
     $student_attendance = [
         // 'student_name'      => $EnrollmentMale[0]->student_name,
@@ -247,9 +243,8 @@
         'days_absent_total' => array_sum($attendance_data->days_absent),
         'times_tardy_total' => array_sum($attendance_data->times_tardy),
     ];
-
-
 ?>
+
 <p class="report-progress-left m0"  style="margin-top: .5em"><b>ATTENDANCE RECORD</b></p>
 <table style="width:100%; margin-bottom: 1em">
 <tr>
@@ -315,7 +310,7 @@
 ?>
 @if($SchoolYear->id == 9)
     <tr>
-        <th><i>*12 and **3 days of class suspensions with ADM option.</i></th>
+        <th><i>Days of class suspensions with ADM option.</i></th>
         <th>0</th>
         <th>0</th>
         <th>0</th>
@@ -376,11 +371,14 @@
             Eligible to transfer and admission to:
             @if(round($StudentEnrolledSubject1->thi_g) != 0 && round($StudentEnrolledSubject1->fou_g) != 0)
                 @if(round($totalsum) > 74) 
-                    
-                        <strong><u>&nbsp;&nbsp;College&nbsp;&nbsp;&nbsp;&nbsp;</u></strong>
-                                                    
-                @elseif(round($totalsum) < 75) 
-                    
+                    <?php 
+                        if($Enrollment[0]->grade_level == 12){
+                            echo '<strong><u>&nbsp;&nbsp;College&nbsp;&nbsp;</u></strong>';
+                        }elseif($Enrollment[0]->grade_level == 11){
+                            echo '<strong><u>&nbsp;&nbsp;Grade 12&nbsp;&nbsp;</u></strong>';
+                        }
+                    ?>
+                @elseif(round($totalsum) < 75)                     
                    <strong>Failed</strong>
                 @else 
                     <td>________________________________</td>
@@ -398,7 +396,7 @@
     </tr>
     
     <tr style="margin-top: .5em">
-        <td colspan="3" style="border: 0">Date:___<u>{{ $DateRemarks->s_date2 }}</u>____</td>
+        <td colspan="3" style="border: 0">Date:___<u>{{ $DateRemarks->s_date2 ? date_format(date_create($DateRemarks->s_date2), 'F d, Y') : '' }}</u>____</td>
         {{-- {{ $DateRemarks->s_date2 }}              --}}
     </tr>
     <tr style="margin-top: .5em">

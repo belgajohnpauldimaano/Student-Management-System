@@ -9,9 +9,11 @@ class DateRemarkController extends Controller
 {
     public function index (Request $request)
     {
-        // $SchoolYear = \App\DateRemark::where('status', 1)->paginate(10);
-        $SchoolYear = \App\DateRemark::join('school_years', 'school_years.id', '=', 'date_remarks.school_year_id')
+        if ($request->ajax())
+        {
+            $SchoolYear = \App\DateRemark::join('school_years', 'school_years.id', '=', 'date_remarks.school_year_id')
             ->select(\DB::raw("
+                date_remarks.id,
                 school_years.school_year,
                 date_remarks.j_date,
                 date_remarks.s_date1,
@@ -21,26 +23,25 @@ class DateRemarkController extends Controller
             ->where('date_remarks.status', 1)
             // ->where('school_years.school_year', 'like', '%'.$request->search.'%')            
             ->paginate(10);
-        if ($request->ajax())
-        {
-            $SchoolYear = \App\DateRemark::join('school_years', 'school_years.id', '=', 'date_remarks.school_year_id')
-            ->select(\DB::raw("
-                school_years.school_year,
-                date_remarks.j_date,
-                date_remarks.s_date1,
-                date_remarks.s_date2,
-                date_remarks.status
-            "))
-            ->where('date_remarks.status', 1)
-            ->where('school_years.school_year', 'like', '%'.$request->search.'%')            
-            ->paginate(10);
             
             // $SchoolYear_id = \App\SchoolYear::where('status', 1)->where('school_year', 'like', '%'.$request->search.'%')->paginate(10);
 
             // $SchoolYear = \App\DateRemark::where('status', 1)->where('school_year_id', $SchoolYear_id[0]->id)->paginate(10);
             
             return view('control_panel.date_remarks.partials.data_list', compact('SchoolYear'))->render();
-        }        
+        }     
+        $SchoolYear = \App\DateRemark::join('school_years', 'school_years.id', '=', 'date_remarks.school_year_id')
+        ->select(\DB::raw("
+            date_remarks.id,
+            school_years.school_year,
+            date_remarks.j_date,
+            date_remarks.s_date1,
+            date_remarks.s_date2,
+            date_remarks.status
+        "))
+        ->where('date_remarks.status', 1)
+        // ->where('school_years.school_year', 'like', '%'.$request->search.'%')            
+        ->paginate(10);   
 
         return view('control_panel.date_remarks.index', compact('SchoolYear'));
         // return view('control_panel.date_remarks.index');
@@ -48,16 +49,12 @@ class DateRemarkController extends Controller
 
     public function modal_data (Request $request) 
     {
-        $SchoolYear = NULL;
-        
+        $SchoolYear = NULL;        
         if ($request->id)
         {
             $SchoolYear = \App\DateRemark::where('id', $request->id)->first();         
         }
-
-        $getSchoolYear = \App\SchoolYear::get();
-        
-
+        $getSchoolYear = \App\SchoolYear::get();       
         return view('control_panel.date_remarks.partials.modal_data', compact('SchoolYear','getSchoolYear'))->render();
     }
 

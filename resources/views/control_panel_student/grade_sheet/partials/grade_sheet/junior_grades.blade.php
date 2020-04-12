@@ -1,14 +1,14 @@
 <table class="table no-margin">
     <thead>
         <tr>
-                <th>Subject</th>
-                <th>First Grading</th>
-                <th>Second Grading</th>
-                <th>Third Grading</th>
-                <th>Fourth Grading</th>
-                <th>Final Grading</th>
-                <th>Remarks</th>
-                {{--  <th>Faculty</th>  --}}
+            <th>Subject</th>
+            <th>First Grading</th>
+            <th>Second Grading</th>
+            <th>Third Grading</th>
+            <th>Fourth Grading</th>
+            <th>Final Grading</th>
+            <th>Remarks</th>
+            {{--  <th>Faculty</th>  --}}
         </tr>
     </thead>
     <tbody>
@@ -23,28 +23,23 @@
                     @if ($data->grade_status === -1)
                         <td colspan="{{$ClassDetail ? $ClassDetail->section_grade_level <= 10 ? '6' : '4' : '6'}}" class="text-center text-red">Grade not yet finalized</td>
                     @else 
-                            <td><center>{{ $data->fir_g ? $data->fir_g > 0  ? round($data->fir_g) : '' : '' }}</center></td>
-                            <td><center>{{ $data->sec_g ? $data->sec_g > 0  ? round($data->sec_g) : '' : '' }}</center></td>
-                            <td><center>{{ $data->thi_g ? $data->thi_g > 0  ? round($data->thi_g) : '' : '' }}</center></td>
-                            <td><center>{{ $data->fou_g ? $data->fou_g > 0  ? round($data->fou_g) : '' : '' }}</center></td>
-                            
-                            @if ($data->fou_g > 0)
-                                <td><center>{{ round($data->final_g) }}</center></td>
-                                <td><center><strong>{{ $data->final_g >= 75 ? 'Passed' : 'Failed' }}</strong></center></td>
-                            @else
-                                @if ($data->fir_g == 0 || $data->sec_g == 0 || $data->thi_g == 0 || $data->fou_g == 0)
-                                    <td></td>
-                                @else
-                                    <td></td>
-                                @endif
-                                
+                        <td><center>{{ $data->fir_g ? $data->fir_g > 0  ? round($data->fir_g) : '' : '' }}</center></td>
+                        <td><center>{{ $data->sec_g ? $data->sec_g > 0  ? round($data->sec_g) : '' : '' }}</center></td>
+                        <td><center>{{ $data->thi_g ? $data->thi_g > 0  ? round($data->thi_g) : '' : '' }}</center></td>
+                        <td><center>{{ $data->fou_g ? $data->fou_g > 0  ? round($data->fou_g) : '' : '' }}</center></td>
+                        
+                        @if ($data->fou_g > 0)
+                            <td><center>{{ round($data->final_g) }}</center></td>
+                            <td><center><strong>{{ $data->final_g >= 75 ? 'Passed' : 'Failed' }}</strong></center></td>
+                        @else
+                            @if ($data->fir_g == 0 || $data->sec_g == 0 || $data->thi_g == 0 || $data->fou_g == 0)
                                 <td></td>
-                            @endif
-
-                            
-                            
-                    @endif
-                    
+                            @else
+                                <td></td>
+                            @endif                            
+                            <td></td>
+                        @endif
+                    @endif                    
                     </center>
                 </tr>
             @endforeach
@@ -61,7 +56,7 @@
                     </td>
                     @if($data->fir_g == 0 || $data->sec_g == 0 || $data->thi_g == 0 || $data->fou_g == 0)
                         @if($general_avg && $general_avg > 74) 
-                            <!--<td style="color:'green';"><strong>Passed</strong></td>-->
+                            <td style="color:'green';"><strong>Passed</strong></td>
                             <td></td>
                         @elseif($general_avg < 75) 
                             <td style="color:'red';"><strong>Failed</strong></td>
@@ -70,12 +65,12 @@
                         @endif
                     @else
                         @if($general_avg < 75 && $general_avg > 74) 
-                            <!--<td style="color:'green';"><strong>Passed</strong></td>-->
+                            <td style="color:'green';"><strong>Passed</strong></td>
                             <td></td>
                         @elseif($general_avg < 75) 
                             <td style="color:'red';"><strong>Failed</strong></td>
                         @else 
-                            <td></td>
+                            <td><center><strong>{{ $data->final_g >= 75 ? 'Passed' : 'Failed' }}</strong></center></td>
                         @endif
                     @endif                                    
                 </tr>
@@ -150,7 +145,7 @@
     ?>
     @if($SchoolYear->id == 9)
     <tr>
-        <th><i>*12 and **3 days of class suspensions with ADM option.</i></th>
+        <th><i>Days of class suspensions with ADM option.</i></th>
         <?php
             for ($x = 0; $x <= 8; $x++) {
                 echo "<th>0</th>";
@@ -258,12 +253,12 @@
     ?>
 
     <tr style="margin-top: .5em">
-        <td colspan="3" style="border: 0">Lacking units in:________<u> {{$Enrollment[0]->j_lacking_unit}}</u>____</td>                
+        <td colspan="3" style="border: 0">Lacking units in:____<u> {{$Enrollment[0]->j_lacking_unit}}</u>____</td>                
     </tr>
     
     <tr style="margin-top: .5em">
         @if($DateRemarks)
-            <td colspan="3" style="border: 0">Date:___<u>{{ $DateRemarks->j_date }}</u>____</td>
+            <td colspan="3" style="border: 0">Date:___<u>{{ $DateRemarks->j_date ? date_format(date_create( $DateRemarks->j_date ), 'F d, Y') : '' }}</u>____</td>
         @else
             <td colspan="3" style="border: 0">Date:________________</td>  
         @endif

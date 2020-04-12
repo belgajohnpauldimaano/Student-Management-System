@@ -5,8 +5,6 @@ namespace App\Http\Controllers\Faculty;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
-
-
 class EncodeRemarkController extends Controller
 {
     public function index (Request $request)
@@ -183,8 +181,8 @@ class EncodeRemarkController extends Controller
                         }
                         else
                         {
-                            // if(round($StudentEnrolledSubject1->thi_g) != 0 && round($StudentEnrolledSubject1->fou_g) != 0)
-                            // {
+                            if(round($StudentEnrolledSubject1->thi_g) != 0 && round($StudentEnrolledSubject1->fou_g) != 0)
+                            {
                                 $totalsum = 0;
                                 $count_subjects1 = \App\StudentEnrolledSubject::where('enrollments_id', $Enrollment[0]->enrollment_id)
                                     ->where('sem', 2)->where('status', '!=', 0)->count();
@@ -200,7 +198,7 @@ class EncodeRemarkController extends Controller
                                     $totalsum += round($final_ave) / $count_subjects1 ;
                                 }
                                                                     
-                            // }
+                            }
                         }
 
 
@@ -294,8 +292,8 @@ class EncodeRemarkController extends Controller
                         }
                         else
                         {
-                            // if(round($StudentEnrolledSubject_female->thi_g) != 0 && round($StudentEnrolledSubject_female->fou_g) != 0)
-                            // {
+                            if(round($StudentEnrolledSubject_female->thi_g) != 0 && round($StudentEnrolledSubject_female->fou_g) != 0)
+                            {
                                 $totalsum = 0;
                                 $count_subjects1 = \App\StudentEnrolledSubject::where('enrollments_id', $Enrollment_female[0]->enrollment_id)
                                     ->where('sem', 2)->where('status', '!=', 0)->count();
@@ -311,7 +309,7 @@ class EncodeRemarkController extends Controller
                                     $totalsum += round($final_ave) / $count_subjects1 ;
                                 }
                                                                     
-                            // }
+                            }
                         }
 
 

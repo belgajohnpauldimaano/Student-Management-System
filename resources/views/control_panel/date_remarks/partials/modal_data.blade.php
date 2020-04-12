@@ -9,8 +9,7 @@
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                     <h4 class="modal-title">
-                        {{ $SchoolYear ? 'Edit School Year' : 'Add School Year' }}
-                        
+                        {{ $SchoolYear ? 'Edit School Year' : 'Add School Year' }}                        
                     </h4>
                 </div>
                 <div class="modal-body">
@@ -18,8 +17,8 @@
                         <label for="">School Year</label>
                         {{-- <input type="text" class="form-control" name="school_year" value="{{ $SchoolYear ? $SchoolYear->school_year : '' }}"> --}}
                         <select name="school_year_id" id="school_year_id" class="form-control">
-                            @foreach($getSchoolYear as $schoolyear)
-                                <option value="{{ $schoolyear->id }}"> {{  $schoolyear->school_year }}</option>
+                            @foreach($getSchoolYear as $data)
+                                <option value="{{ $data->id }}" {{  $SchoolYear ? $SchoolYear->school_year_id == $data->id ? 'selected' : '' : ''}}>{{$data->school_year}}</option>
                             @endforeach
                                 {{-- <option value="0" {{ $SchoolYear ? ($SchoolYear->current == 0 ? 'selected' : '')  : 'selected' }}>No</option> --}}
                         </select>
@@ -30,52 +29,44 @@
                     
                     <div class="form-group">
                         <label for="">Date for Junior</label>
-                        <div class="input-group date">
-                                
-                                <div class="input-group-addon">
-                                    <i class="fa fa-calendar"></i>
-                                </div>
-                            <input type="text" name="jdate" class="datepicker1 form-control pull-right" id="tbdatepicker1" placeholder="11/11/2000" value="{{ $SchoolYear ? date_format(date_create($SchoolYear->j_date), 'm/d/Y') : '' }}">
+                        <div class="input-group date">                                
+                            <div class="input-group-addon">
+                                <i class="fa fa-calendar"></i>
+                            </div>
+                             <input type="text" name="jdate" class="datepicker1 form-control pull-right" id="tbdatepicker1" placeholder="11/11/2000"
+                             value="{{ $SchoolYear ? date_format(date_create($SchoolYear->j_date), 'F d, Y') : '' }}">                             
                         </div>
                         <div class="help-block text-red text-center" id="js-jdate">
                         </div>
                     </div>
 
                     <div class="form-group">
-                            <label for="">Date for Senior 1st Semester</label>
-                            <div class="input-group date">
-                                    
-                                    <div class="input-group-addon">
-                                        <i class="fa fa-calendar"></i>
-                                    </div>
-                                <input type="text" name="sdate1" class="datepicker1 form-control pull-right" id="tbdatepicker2" placeholder="11/11/2000" value="{{ $SchoolYear ? date_format(date_create($SchoolYear->s_date1), 'm/d/Y') : '' }}">
+                        <label for="">Date for Senior 1st Semester</label>
+                        <div class="input-group date">                                    
+                            <div class="input-group-addon">
+                                <i class="fa fa-calendar"></i>
                             </div>
-                            <div class="help-block text-red text-center" id="js-sdate1">
-                            </div>
+                            <input type="text" name="sdate1" class="datepicker1 form-control pull-right" id="tbdatepicker2" placeholder="11/11/2000" 
+                            value="{{ $SchoolYear ? date_format(date_create($SchoolYear->s_date1), 'F d, Y') : '' }}">
                         </div>
+                        <div class="help-block text-red text-center" id="js-sdate1">
+                        </div>
+                    </div>
 
                     <div class="form-group">
-                            <label for="">Date for Senior 2nd Semester</label>
-                            <div class="input-group date">
-                                    
-                                    <div class="input-group-addon">
-                                        <i class="fa fa-calendar"></i>
-                                    </div>
-                                <input type="text" name="sdate2" class="datepicker1 form-control pull-right" id="tbdatepicker3" placeholder="11/11/2000" value="{{ $SchoolYear ? date_format(date_create($SchoolYear->s_date2), 'm/d/Y') : '' }}">
+                        <label for="">Date for Senior 2nd Semester</label>
+                        <div class="input-group date">                                    
+                            <div class="input-group-addon">
+                                <i class="fa fa-calendar"></i>
                             </div>
-                            <div class="help-block text-red text-center" id="js-sdate2">
-                            </div>
+                            <input type="text" name="sdate2" class="datepicker1 form-control pull-right" id="tbdatepicker3" placeholder="11/11/2000" 
+                            value="{{ $SchoolYear ? date_format(date_create($SchoolYear->s_date2), 'F d, Y') : '' }}">
                         </div>
+                        <div class="help-block text-red text-center" id="js-sdate2">
+                        </div>
+                    </div>
                 
-                    {{-- <div class="form-group">
-                        <label for="">Set as Current School Year</label>
-                        <select name="current_sy" id="current_sy" class="form-control"> --}}
-                            {{-- <option value="1" {{ $SchoolYear ? ($SchoolYear->current == 0 ? 'selected' : '')  : '' }}>Yes</option>
-                            <option value="0" {{ $SchoolYear ? ($SchoolYear->current == 0 ? 'selected' : '')  : 'selected' }}>No</option> --}}
-                        {{-- </select>
-                        <div class="help-block text-red text-center" id="js-current_sy">
-                        </div>
-                    </div> --}}
+                    
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default btn-flat" data-dismiss="modal">Close</button>

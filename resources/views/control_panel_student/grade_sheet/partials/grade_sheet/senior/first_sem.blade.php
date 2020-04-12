@@ -4,8 +4,8 @@
             <th>Subject</th>
             <th style="width: 100px">First Quarter</th>
             <th style="width: 100px">Second Quarter</th>
-            <th>Final Grade</th>
-            <th>Remarks</th>
+            <th style="width: 100px">Final Grade</th>
+            <th style="width: 100px">Remarks</th>
             
         </tr>
     </thead>
@@ -357,7 +357,7 @@ $student_attendance = [
     </tr>
 
     <tr style="margin-top: .5em">
-        <td colspan="3" style="border: 0">Lacking units in:___<u>{{ $Enrollment[0]->s1_lacking_unit }}</u>____</td>
+        <td colspan="3" style="border: 0">Lacking units in:___<u>{{ $Enrollment[0]->s1_lacking_unit ? date_format(date_create($Enrollment[0]->s1_lacking_unit), 'F d, Y') : '' }}</u>____</td>
         {{-- <td colspan="3" style="border: 0">Lacking units in:__________________</td>                 --}}
     </tr>
     

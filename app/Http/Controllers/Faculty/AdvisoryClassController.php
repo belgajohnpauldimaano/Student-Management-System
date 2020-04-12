@@ -381,12 +381,12 @@ class AdvisoryClassController extends Controller
             return "Invalid request";
         }
 
-        $StudentInformation = \App\StudentInformation::with(['user'])->where('id', $request->id)->first();
+        $StudentInformation = \App\StudentInformation::with(['user'])->where('id', \Crypt::decrypt($request->id))->first();
 
         $SchoolYear = \App\SchoolYear::where('current', 1)->where('status', 1)->first();
         $DateRemarks = \App\DateRemark::where('school_year_id', $SchoolYear->id)->first();
         $level = $request->level;
-        // $StudentInformation = \App\StudentInformation::with('user')->where('id', $request->id)->first();
+        // $StudentInformation = \App\StudentInformation::with('user')->where('id', \Crypt::decrypt($request->id))->first();
         // $SchoolYear = \App\SchoolYear::where('current', $request->cid)->first();
         // // return json_encode(['xx'=> $request->all(), 's' => $StudentInformation]);
 
@@ -419,7 +419,7 @@ class AdvisoryClassController extends Controller
                 ')
                 ->where('section_details.status', 1)
                 ->where('class_details.school_year_id', $SchoolYear->id)
-                ->where('class_details.id', $request->cid)
+                ->where('class_details.id', \Crypt::decrypt($request->cid))
                 ->orderBY('school_years.id', 'ASC')
                 ->first();
             }
@@ -451,13 +451,10 @@ class AdvisoryClassController extends Controller
                 ')
                 ->where('section_details.status', 1)
                 ->where('class_details.school_year_id', $SchoolYear->id)
-                ->where('class_details.id', $request->cid)
+                ->where('class_details.id', \Crypt::decrypt($request->cid))
                 // ->orderBY('school_years.id', 'ASC')
                 ->first();
             }
-            
-            
-            
             
             $Enrollment = \App\Enrollment::join('class_details', 'class_details.id', '=', 'enrollments.class_details_id')
             // ->join('student_enrolled_subjects', 'student_enrolled_subjects.enrollments_id', '=', 'enrollments.id')
@@ -618,7 +615,7 @@ class AdvisoryClassController extends Controller
                     ['key' => 'Jan',],
                     ['key' => 'Feb',],
                     ['key' => 'Mar*',],
-                    ['key' => 'Apr**',],
+                    ['key' => 'Apr*',],
                     ['key' => 'total',],
                 ];
             }else{

@@ -34,7 +34,8 @@
                                     <td><center>{{ $data->sec_g ? $data->sec_g > 0  ? round($data->sec_g) : '' : '' }}</center></td>
                                     <td><center>{{ $data->thi_g ? $data->thi_g > 0  ? round($data->thi_g) : '' : '' }}</center></td>
                                     <td><center>{{ $data->fou_g ? $data->fou_g > 0  ? round($data->fou_g) : '' : '' }}</center></td>
-                                    @if ($data->fir_g == 0 && $data->sec_g  == 0 && $data->thi_g  == 0 && $data->fou_g == 0)
+
+                                    @if ($data->fir_g == 0 || $data->sec_g  == 0 || $data->thi_g  == 0 || $data->fou_g == 0)
                                     <td>
                                         <center>{{ $final_a ? round($final_a) : '' }}</center>
                                     </td>
@@ -57,8 +58,23 @@
                                         @endif                                                     
                                         
                                     @else                                                        
-                                        <td></td>
-                                        <td></td>
+                                        @if ($data->fir_g == 0 || $data->sec_g  == 0 || $data->thi_g  == 0 || $data->fou_g == 0)
+                                            <td></td>
+                                            <td></td> 
+                                        @else
+                                            <td>
+                                                <center>
+                                                    <?php echo round($final_ave = (round($data->fir_g) + round($data->sec_g) + round($data->thi_g) + round($data->fou_g)) / 4) ?>
+                                                </center>
+                                            </td> 
+                                            <td style="color:{{ round($final_ave) >= 75 ? 'green' : 'red' }};">
+                                                <center>
+                                                    <strong>
+                                                        {{ round($final_ave) >= 75 ? 'Passed' : 'Failed' }}
+                                                    </strong>
+                                                </center>
+                                            </td>                                                
+                                        @endif           
                                     @endif              
                                     
                                     <td>

@@ -94,22 +94,15 @@
     </style>
 </head>
 <body>
-    {{--  <p class="heading1">Republic of the Philippines
-    <p class="heading1">Department of Education</p>
-    <p class="heading1">Region III</p>
-    <p class="heading1">Division of Bataan</p>
-    <br/>  --}}
+    
     <h2 class="heading2 heading2-title">Saint John Academy</h2>
     <p class="heading2 heading2-subtitle">Dinalupihan, Bataan</p>
     
-    <p class="report-progress m0">JUNIOR HIGH SCHOOL</p>
-    <p class="report-progress m0">S.Y. {{ $ClassSubjectDetail ? $ClassSubjectDetail->school_year : '' }}</p>
-    {{--  <p class="report-progress m0">( {{ $ClassSubjectDetail ?  $ClassSubjectDetail->grade_level >= 11 ? 'SENIOR HIGH SCHOOL' : 'JUNIOR HIGH SCHOOL' : ''}} )</p>  --}}
+    <p class="report-progress m0">SENIOR HIGH SCHOOL</p>
+    <p class="report-progress m0">S.Y. {{ $SchoolYear }}</p>
     <img style="margin-top: -.4em; margin-left: 9em" class="logo" width="100" src="{{ asset('img/sja-logo.png') }}" />
     <br/>
     <br/>
-    {{--  <p class="p0 m0 student-info">Grade sheet</p>  --}}
-    {{--  <p class="p0 m0 student-info">School Year : <b>{{ $ClassSubjectDetail ? $ClassSubjectDetail->school_year : '' }}</b</p>  --}}
     <p class="p0 m0 student-info">Grade & Section : <b>{{ $ClassSubjectDetail ? $ClassSubjectDetail->grade_level : '' }} - {{ $ClassSubjectDetail ? $ClassSubjectDetail->section : '' }}</b></p>
     <p class="p0 m0 student-info">Semester : <b><i>{{ $sem }}</i></b</p>
     <br/>   
