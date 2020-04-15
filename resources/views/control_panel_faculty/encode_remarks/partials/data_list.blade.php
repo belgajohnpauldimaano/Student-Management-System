@@ -47,7 +47,7 @@
                                         <div class="input-group-addon">
                                             <i class="fa fa-calendar"></i>
                                         </div>
-                                        <input type="text" name="date" class="tbdatepicker form-control pull-right" id="tbdatepicker" placeholder="11/11/2000" value="{{ $DateRemarks->j_date }}">
+                                        <input type="text" disabled name="date" class="tbdatepicker form-control pull-right" id="tbdatepicker" placeholder="11/11/2000" value="{{ $DateRemarks->j_date }}">
                                     </div>                                
                                 </td>
                                 
@@ -101,7 +101,7 @@
                                         <div class="input-group-addon">
                                             <i class="fa fa-calendar"></i>
                                         </div>                                        
-                                        <input type="text" name="date" class="tbdatepicker form-control pull-right" id="tbdatepicker" placeholder="11/11/2000" value="{{ $DateRemarks->j_date }}">
+                                        <input type="text" disabled name="date" class="tbdatepicker form-control pull-right" id="tbdatepicker" placeholder="11/11/2000" value="{{ $DateRemarks->j_date }}">
                                     </div>
                                 </td>                                
                                 <td>
@@ -147,21 +147,79 @@
                                 <td>{{ $key + 1 }}.</td>
                                 <td>{{ $data->student_name }}</td> 
                                 <td>
-                                    @if($ClassSubjectDetail->grade_level == 11)                                    
-                                        @if(round($StudentEnrolledSubject1->fir_g) != 0 && round($StudentEnrolledSubject1->sec_g) != 0)
+                                    <?php            
+                                        $SchoolYear = \App\SchoolYear::where('current', 1)->where('status', 1)->first();
+                                        
+                                        $Enrollment = \App\Enrollment::join('class_details', 'class_details.id', '=', 'enrollments.class_details_id')
+                                        // ->join('student_enrolled_subjects', 'student_enrolled_subjects.enrollments_id', '=', 'enrollments.id')
+                                        ->join('class_subject_details', 'class_subject_details.class_details_id', '=', 'class_details.id')
+                                        ->join('rooms', 'rooms.id', '=', 'class_details.room_id')
+                                        ->join('faculty_informations', 'faculty_informations.id', '=', 'class_subject_details.faculty_id')
+                                        ->join('section_details', 'section_details.id', '=', 'class_details.section_id')
+                                        ->join('subject_details', 'subject_details.id', '=', 'class_subject_details.subject_id')                                
+                                        ->select(\DB::raw("
+                                            enrollments.id as enrollment_id,
+                                            enrollments.class_details_id as cid,
+                                            enrollments.attendance_first,
+                                            enrollments.attendance_second,
+                                            enrollments.j_lacking_unit,
+                                            enrollments.s1_lacking_unit,
+                                            class_details.grade_level,
+                                            class_subject_details.id as class_subject_details_id,
+                                            class_subject_details.class_days,
+                                            class_subject_details.class_time_from,
+                                            class_subject_details.class_time_to,
+                                            class_subject_details.status as grade_status,
+                                            class_subject_details.class_subject_order,
+                                            class_subject_details.class_details_id,
+                                            CONCAT(faculty_informations.last_name, ', ', faculty_informations.first_name, ' ', faculty_informations.middle_name) as faculty_name,
+                                            subject_details.id AS subject_id,
+                                            subject_details.subject_code,
+                                            subject_details.subject,
+                                            rooms.room_code,
+                                            section_details.section
+                                            
+                                        "))
+                                        ->where('enrollments.student_information_id', $data->e_id)
+                                        ->where('class_subject_details.status', '!=', 0)
+                                        ->where('enrollments.status', 1)
+                                        ->where('class_details.status', 1)
+                                        ->where('class_subject_details.sem', 1)
+                                        ->where('class_details.school_year_id', $SchoolYear->id)
+                                        ->orderBy('class_subject_details.class_subject_order', 'ASC')
+                                        ->get();
+                                        
+                                       
+                                        foreach ($Enrollment as $key => $enroll) {
+                                            $StudentEnrolledSubject1 = \App\StudentEnrolledSubject::where('enrollments_id', $enroll->enrollment_id)
+                                                ->where('subject_id', $enroll->subject_id)
+                                                ->where('class_subject_details_id', $enroll->class_subject_details_id)
+                                                ->where('sem', 1)
+                                                ->first(); 
+                                            
+                                            if($StudentEnrolledSubject1)
+                                            {
+                                                echo $StudentEnrolledSubject1->fir_g ? $StudentEnrolledSubject1->fir_g > 0 ? round($StudentEnrolledSubject1->fir_g) : '' : '';
+                                            }
+                                        }
+                                       
+                                            
+                                    ?>
+                                    
+                                    @if($ClassSubjectDetail->grade_level == 11)  
+                                                                          
+                                        @if(round($StudentEnrolledSubject1->fir_g) != 0 || round($StudentEnrolledSubject1->sec_g) != 0)
                                             @if(round($totalsum) > 74) 
-                                                @if($ClassDetail->section_grade_level == 12)
-                                                    
-                                                    <input type="text" class="form-control" name="grade" value="College" placeholder="Grade">
+                                                @if($ClassDetail->section_grade_level == 12)                                                    
+                                                    <input type="text" class="form-control" name="grade" value="College" placeholder="Grade">                                                                                                
                                                 @else
-                                                    <input type="text" class="form-control" name="grade" value="Grade {{ $ClassDetail->section_grade_level}} Second Semester" placeholder="Grade">
-                                                    
+                                                    <input type="text" class="form-control" name="grade" value="Grade {{ $Semester ? $Semester == 1 ? '11 - Second Semester' : $ClassDetail->section_grade_level + 1 : '' }} " placeholder="Grade">
                                                 @endif
                                             @elseif(round($totalsum) < 75)                                        
-                                                <input type="text" class="form-control" name="grade" value="Grade {{ $ClassDetail->section_grade_level - 1 }}" placeholder="Grade">
+                                                <input type="text" class="form-control" name="grade" value="Grade {{ $ClassDetail->section_grade_level }}" placeholder="Grade">
                                             @endif
                                         @else
-                                            <input type="text" class="form-control" name="grade" placeholder="Grade">
+                                        <input type="text" class="form-control" name="grade" value="Grade {{ $Semester ? $Semester == 1 ? '11 - Second Semester' : $ClassDetail->section_grade_level + 1 : '' }} " placeholder="Grade">
                                         @endif        
                                     @elseif($ClassSubjectDetail->grade_level == 12)        
                                         @if(round($StudentEnrolledSubject1->thi_g) != 0 && round($StudentEnrolledSubject1->fou_g) != 0)
@@ -169,7 +227,7 @@
                                                 @if($ClassDetail->section_grade_level == 12)
                                                     <input type="text" class="form-control" name="grade" value="College" placeholder="Grade">
                                                 @else
-                                                    <input type="text" class="form-control" name="grade" value="Grade {{ $ClassDetail->section_grade_level }}" placeholder="Grade">
+                                                    <input type="text" class="form-control" name="grade" value="Grade {{ $Semester ? $Semester == 1 ? 'first Semester' : 'second' : '' }}" placeholder="Grade">
                                                 @endif
                                             @elseif(round($totalsum) < 75)                                        
                                                 <input type="text" class="form-control" name="grade" value="Grade {{ $ClassDetail->section_grade_level - 1 }}" placeholder="Grade">
@@ -177,16 +235,23 @@
                                         @else
                                             <input type="text" class="form-control" name="grade" value="" placeholder="Grade">
                                         @endif        
-                                    @endif
-                                    
+                                    @endif                                    
                                     <div class="help-block text-red text-center" id="js-grade">
                                     </div>   
                                 </td>
                                 <td>
                                     @if($ClassSubjectDetail->grade_level == 11)
-                                        <input type="text" class="form-control" name="s1_lacking_units" placeholder="Lacking units" value="{{ $data->s1_lacking_unit }}">                                    
+                                        @if($Semester == 1)
+                                            <input type="text" class="form-control" name="s1_lacking_units" placeholder="Lacking units" value="{{ $data->s1_lacking_unit }}">  
+                                        @else
+                                            <input type="text" class="form-control" name="s2_lacking_units" placeholder="Lacking units" value="{{ $data->s2_lacking_unit }}"> 
+                                        @endif
                                     @elseif($ClassSubjectDetail->grade_level == 12)        
-                                        <input type="text" class="form-control" name="s2_lacking_units" placeholder="Lacking units" value="{{ $data->s2_lacking_unit }}">                                    
+                                        @if($Semester == 1)
+                                            <input type="text" class="form-control" name="s1_lacking_units" placeholder="Lacking units" value="{{ $data->s1_lacking_unit }}">  
+                                        @else
+                                            <input type="text" class="form-control" name="s2_lacking_units" placeholder="Lacking units" value="{{ $data->s2_lacking_unit }}"> 
+                                        @endif                                    
                                     @endif
                                 </td>
                                 <td>
@@ -195,9 +260,9 @@
                                             <i class="fa fa-calendar"></i>
                                         </div>
                                         @if($ClassSubjectDetail->grade_level == 11)
-                                            <input type="text" name="date" class="tbdatepicker form-control pull-right" id="tbdatepicker" placeholder="11/11/2000" value="{{ $DateRemarks->s_date1 }}">
+                                            <input type="text" name="date" disabled class="tbdatepicker form-control pull-right" id="tbdatepicker" placeholder="11/11/2000" value="{{ $DateRemarks->s_date1 }}">
                                         @elseif($ClassSubjectDetail->grade_level == 12)
-                                            <input type="text" name="date" class="tbdatepicker form-control pull-right" id="tbdatepicker" placeholder="11/11/2000" value="{{ $DateRemarks->s_date2 }}">
+                                            <input type="text" name="date" disabled class="tbdatepicker form-control pull-right" id="tbdatepicker" placeholder="11/11/2000" value="{{ $DateRemarks->s_date2 }}">
                                         @endif
                                     </div>
                                     <div class="help-block text-red text-center" id="js-date">
@@ -233,17 +298,16 @@
                                         @if($ClassSubjectDetail->grade_level == 11)                                    
                                             @if(round($StudentEnrolledSubject1->fir_g) != 0 && round($StudentEnrolledSubject1->sec_g) != 0)
                                                 @if(round($totalsum) > 74) 
-                                                    @if($ClassDetail->section_grade_level == 12)
-                                                        
+                                                    @if($ClassDetail->section_grade_level == 12)                                                        
                                                         <input type="text" class="form-control" name="grade" value="College" placeholder="Grade">
                                                     @else
-                                                        <input type="text" class="form-control" name="grade" value="Grade {{ $ClassDetail->section_grade_level}} Second Semester" placeholder="Grade">
+                                                    <input type="text" class="form-control" name="grade" value="Grade {{ $Semester ? $Semester == 1 ? '11 - Second Semester' : $ClassDetail->section_grade_level + 1 : '' }} " placeholder="Grade">
                                                     @endif
                                                 @elseif(round($totalsum) < 75)                                        
-                                                    <input type="text" class="form-control" name="grade" value="Grade {{ $ClassDetail->section_grade_level - 1 }}" placeholder="Grade">
+                                                    <input type="text" class="form-control" name="grade" value="Grade {{ $ClassDetail->section_grade_level }}" placeholder="Grade">
                                                 @endif
                                             @else
-                                                <input type="text" class="form-control" name="grade" placeholder="Grade">
+                                            <input type="text" class="form-control" name="grade" value="Grade {{ $Semester ? $Semester == 1 ? '11 - Second Semester' : $ClassDetail->section_grade_level + 1 : '' }} " placeholder="Grade">
                                             @endif        
                                         @elseif($ClassSubjectDetail->grade_level == 12)        
                                             @if(round($StudentEnrolledSubject1->thi_g) != 0 && round($StudentEnrolledSubject1->fou_g) != 0)
@@ -267,10 +331,17 @@
                                 </td>
                                 <td>
                                     @if($ClassSubjectDetail->grade_level == 11)
-                                        <input type="text" class="form-control" name="s1_lacking_units" placeholder="Lacking units" value="{{ $data->s1_lacking_unit }}">
-                                        
+                                        @if($Semester == 1)
+                                            <input type="text" class="form-control" name="s1_lacking_units" placeholder="Lacking units" value="{{ $data->s1_lacking_unit }}">  
+                                        @else
+                                            <input type="text" class="form-control" name="s2_lacking_units" placeholder="Lacking units" value="{{ $data->s2_lacking_unit }}"> 
+                                        @endif                                        
                                     @elseif($ClassSubjectDetail->grade_level == 12)        
-                                        <input type="text" class="form-control" name="s2_lacking_units" placeholder="Lacking units" value="{{ $data->s2_lacking_unit }}">                                    
+                                        @if($Semester == 1)
+                                            <input type="text" class="form-control" name="s1_lacking_units" placeholder="Lacking units" value="{{ $data->s1_lacking_unit }}">  
+                                        @else
+                                            <input type="text" class="form-control" name="s2_lacking_units" placeholder="Lacking units" value="{{ $data->s2_lacking_unit }}"> 
+                                        @endif                                  
                                     @endif
                                 </td>
                                 <td>
@@ -279,11 +350,11 @@
                                             <i class="fa fa-calendar"></i>
                                         </div>
                                         @if($ClassSubjectDetail->grade_level == 11)
-                                                <input type="text" name="date" class="tbdatepicker form-control pull-right" id="tbdatepicker" placeholder="11/11/2000" value="{{ $DateRemarks->s_date1 }}">
+                                            <input type="text" name="date" disabled class="tbdatepicker form-control pull-right" id="tbdatepicker" placeholder="11/11/2000" value="{{ $DateRemarks->s_date1 }}">
                                         @elseif($ClassSubjectDetail->grade_level == 12)
-                                                <input type="text" name="date" class="tbdatepicker form-control pull-right" id="tbdatepicker" placeholder="11/11/2000" value="{{ $DateRemarks->s_date2 }}">
-                                            @endif
-                                        </div>
+                                            <input type="text" name="date" disabled class="tbdatepicker form-control pull-right" id="tbdatepicker" placeholder="11/11/2000" value="{{ $DateRemarks->s_date2 }}">
+                                        @endif
+                                    </div>
                                     <div class="help-block text-red text-center" id="js-date">
                                     </div>
                                 </td>
