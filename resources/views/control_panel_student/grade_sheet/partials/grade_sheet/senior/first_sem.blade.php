@@ -28,6 +28,7 @@
                 enrollments.attendance_second,
                 enrollments.j_lacking_unit,
                 enrollments.s1_lacking_unit,
+                enrollments.eligible_transfer,
                 class_details.grade_level,
                 class_subject_details.id as class_subject_details_id,
                 class_subject_details.class_days,
@@ -343,7 +344,7 @@ $student_attendance = [
         
             @if(round($StudentEnrolledSubject1->fir_g) != 0 && round($StudentEnrolledSubject1->sec_g) != 0)
                 @if(round($totalsum) > 74)                     
-                        <strong><u>&nbsp;&nbsp;Grade {{ $ClassDetail->section_grade_level + 1}}</u></strong>                                                    
+                 <strong><u>&nbsp;&nbsp;{{ $Enrollment[0]->eligible_transfer ? $Enrollment[0]->eligible_transfer : '____________' }}&nbsp;&nbsp;</u></strong>                                      
                 @elseif(round($totalsum) < 75)                     
                    <strong>Failed</strong>
                 @else 
@@ -357,7 +358,10 @@ $student_attendance = [
     </tr>
 
     <tr style="margin-top: .5em">
-        <td colspan="3" style="border: 0">Lacking units in:___<u>{{  $Enrollment[0] ? $Enrollment[0]->grade_level == 11 ? $Enrollment[0]->s1_lacking_unit : $Enrollment[0]->s2_lacking_unit }}</u>____</td>
+        <td colspan="3" style="border: 0">
+            Lacking units in:___<u>
+                {{  $Enrollment[0] ? $Enrollment[0]->grade_level == 11 ? $Enrollment[0]->s1_lacking_unit : $Enrollment[0]->s2_lacking_unit : '' }}
+        </u>____</td>
         {{-- <td colspan="3" style="border: 0">Lacking units in:__________________</td>                 --}}
     </tr>
     

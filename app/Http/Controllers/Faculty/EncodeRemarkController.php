@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Faculty;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Semester;
 
 class EncodeRemarkController extends Controller
 {
@@ -12,6 +13,7 @@ class EncodeRemarkController extends Controller
         $FacultyInformation = \App\FacultyInformation::where('user_id', \Auth::user()->id)->first();
         $SchoolYear = \App\SchoolYear::where('current', 1)->where('status', 1)->first();
         $DateRemarks = \App\DateRemark::where('school_year_id', $SchoolYear->id)->first();
+        $Semester_id = Semester::where('current', 1)->first()->id;
 
 
         $ClassSubjectDetail = \App\ClassSubjectDetail::join('class_details', 'class_details.id', '=', 'class_subject_details.class_details_id')
@@ -20,7 +22,7 @@ class EncodeRemarkController extends Controller
             ->join('school_years', 'school_years.id' ,'=', 'class_details.school_year_id')
             ->join('faculty_informations', 'faculty_informations.id','=','class_details.adviser_id')
             ->where('class_details.adviser_id', $FacultyInformation->id)
-            ->where('school_years.current', '!=', 0)              
+            ->where('school_years.current', '!=', 0)->where('school_years.status', '!=', 0)              
             ->where('class_details.status', '!=', 0)
             ->select(\DB::raw('                
                 rooms.room_code,
@@ -33,59 +35,67 @@ class EncodeRemarkController extends Controller
                 class_subject_details.sem,
                 class_details.school_year_id,
                 faculty_informations.first_name, faculty_informations.middle_name ,  faculty_informations.last_name,
-                school_years.school_year,
-
+                school_years.school_year
             '))
             ->orderBY('class_details.school_year_id','DESC')
             ->first();
 
-        
-            $EnrollmentMale = \App\Enrollment::join('student_informations', 'student_informations.id', '=', 'enrollments.student_information_id')
-                ->join('class_details', 'class_details.id', '=', 'enrollments.class_details_id')
-                ->join('school_years', 'school_years.id' ,'=', 'class_details.school_year_id')
-                ->join('users', 'users.id', '=', 'student_informations.user_id')
-                ->whereRaw('class_details.adviser_id = '. $FacultyInformation->id)
-                ->whereRaw('student_informations.gender = 1')    
-                ->where('school_years.current', '!=', 0)     
-                ->select(\DB::raw("
-                    enrollments.id as e_id,
-                    enrollments.attendance,
-                    enrollments.j_lacking_unit,
-                    enrollments.s1_lacking_unit,
-                    enrollments.s2_lacking_unit,
-                    enrollments.eligible_transfer,
-                    student_informations.id as student_information_id,
-                    users.username,
-                    CONCAT(student_informations.last_name, ', ', student_informations.first_name, ' ', student_informations.middle_name) as student_name
-                "))
-                ->orderBY('student_name', 'ASC')
-                ->get();
-
-            $EnrollmentFemale = \App\Enrollment::join('student_informations', 'student_informations.id', '=', 'enrollments.student_information_id')
-                ->join('class_details', 'class_details.id', '=', 'enrollments.class_details_id')
-                ->join('school_years', 'school_years.id' ,'=', 'class_details.school_year_id')
-                ->join('users', 'users.id', '=', 'student_informations.user_id')
-                ->whereRaw('class_details.adviser_id = '. $FacultyInformation->id)
-                ->where('school_years.current', '!=', 0)  
-                ->whereRaw('student_informations.gender = 2')       
-                ->select(\DB::raw("
-                    enrollments.id as e_id,
-                    enrollments.attendance,
-                    enrollments.j_lacking_unit,
+            if($ClassSubjectDetail){            
+                $EnrollmentMale = \App\Enrollment::join('student_informations', 'student_informations.id', '=', 'enrollments.student_information_id')
+                    ->join('class_details', 'class_details.id', '=', 'enrollments.class_details_id')
+                    ->join('school_years', 'school_years.id' ,'=', 'class_details.school_year_id')
+                    ->join('users', 'users.id', '=', 'student_informations.user_id')
+                    ->whereRaw('class_details.adviser_id = '. $FacultyInformation->id)
+                    ->whereRaw('student_informations.gender = 1')    
+                    ->where('school_years.current', '!=', 0)
+                    ->where('enrollments.class_details_id', $ClassSubjectDetail->id)   
+                    ->select(\DB::raw("
+                        enrollments.id as e_id,
+                        enrollments.attendance,
+                        enrollments.j_lacking_unit,
                         enrollments.s1_lacking_unit,
                         enrollments.s2_lacking_unit,
-                    student_informations.id  as student_information_id,
-                    users.username,
-                    CONCAT(student_informations.last_name, ', ', student_informations.first_name, ' ', student_informations.middle_name) as student_name
-                "))
-                ->orderBY('student_name', 'ASC')
-                ->get();
+                        enrollments.eligible_transfer,
+                        student_informations.id as student_information_id,
+                        users.username,
+                        CONCAT(student_informations.last_name, ', ', student_informations.first_name, ' ', student_informations.middle_name) as student_name
+                    "))
+                    ->orderBY('student_name', 'ASC')
+                    ->get();
+
+                $EnrollmentFemale = \App\Enrollment::join('student_informations', 'student_informations.id', '=', 'enrollments.student_information_id')
+                    ->join('class_details', 'class_details.id', '=', 'enrollments.class_details_id')
+                    ->join('school_years', 'school_years.id' ,'=', 'class_details.school_year_id')
+                    ->join('users', 'users.id', '=', 'student_informations.user_id')
+                    ->whereRaw('class_details.adviser_id = '. $FacultyInformation->id)
+                    ->where('school_years.current', '!=', 0)  
+                    ->where('enrollments.class_details_id', $ClassSubjectDetail->id)   
+                    ->whereRaw('student_informations.gender = 2')       
+                    ->select(\DB::raw("
+                        enrollments.id as e_id,
+                        enrollments.attendance,
+                        enrollments.j_lacking_unit,
+                        enrollments.s1_lacking_unit,
+                        enrollments.s2_lacking_unit,
+                        enrollments.eligible_transfer,
+                        student_informations.id as student_information_id,
+                        users.username,
+                        CONCAT(student_informations.last_name, ', ', student_informations.first_name, ' ', student_informations.middle_name) as student_name
+                    "))
+                    ->orderBY('student_name', 'ASC')
+                    ->get();
+            }
+            else{
+                return 'invalid';
+            }
                         
 
-            return view('control_panel_faculty.encode_remarks.index',
-                compact('EnrollmentMale','EnrollmentFemale','ClassSubjectDetail','SchoolYear','DateRemarks',
-                'FacultyInformation','StudentEnrolledSubject1','StudentEnrolledSubject','totalsum','ClassDetail','Student_info',
-                'Enrollment_female','StudentEnrolledSubject_female','StudentEnrolledSubject_fem','Semester'))->render();
+            return view('control_panel_faculty.encode_remarks.index', 
+                    compact('EnrollmentMale','EnrollmentFemale','ClassSubjectDetail','SchoolYear','DateRemarks','Semester_id'))
+                    ->render();
+        
+        
+        // return view('control_panel_faculty.encode_remarks.index');
     }
 
     public function save(Request $request)
@@ -93,12 +103,15 @@ class EncodeRemarkController extends Controller
         $stud_id = $request->stud_id;
         $class_detail_id = \Crypt::decrypt($request->print_sy);
         $s_year = $request->s_year;
+        $e_id = $request->e_id;
         
-
         try {
             
             $Student_info = \App\Enrollment::where('student_information_id', $stud_id)
+                ->where('id', $e_id)
                 ->where('class_details_id', $class_detail_id)->first();
+                
+                $Student_info->eligible_transfer = $request->eligible_transfer;
 
                 if($request->level < 11)
                 {             
@@ -111,10 +124,11 @@ class EncodeRemarkController extends Controller
                         $Student_info->s1_lacking_unit = $request->s1_lacking_units;
                     }else{
                         $Student_info->s2_lacking_unit = $request->s2_lacking_units;
+                        
                     }
                 }
-                $Student_info->save();         
-
+                       
+                $Student_info->save();  
             return response()->json(['res_code' => 0, 'res_msg' => 'Remarks successfully saved.',]);
             
         }catch (Illuminate\Contracts\Encryption\DecryptException $e) {
