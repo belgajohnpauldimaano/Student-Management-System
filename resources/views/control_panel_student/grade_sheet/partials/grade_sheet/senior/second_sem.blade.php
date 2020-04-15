@@ -391,8 +391,9 @@
     </tr>
 
     <tr style="margin-top: .5em">
-        <td colspan="3" style="border: 0">Lacking units in:___<u>{{ $Enrollment[0]->s2_lacking_unit }}</u>____</td>        
-        {{-- {{ $Enrollment[0]->s2_lacking_unit }}         --}}
+        <td colspan="3" style="border: 0">Lacking units in:___<u>{{$Enrollment[0]->grade_level == 11 ? $Enrollment[0]->s1_lacking_unit: $Enrollment[0]->s2_lacking_unit }}</u>____</td>        
+        
+        
     </tr>
     
     <tr style="margin-top: .5em">
