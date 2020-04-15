@@ -357,12 +357,12 @@ $student_attendance = [
     </tr>
 
     <tr style="margin-top: .5em">
-        <td colspan="3" style="border: 0">Lacking units in:___<u>{{ $Enrollment[0]->s1_lacking_unit ? date_format(date_create($Enrollment[0]->s1_lacking_unit), 'F d, Y') : '' }}</u>____</td>
+        <td colspan="3" style="border: 0">Lacking units in:___<u>{{  $Enrollment[0] ? $Enrollment[0]->grade_level == 11 ? $Enrollment[0]->s1_lacking_unit : $Enrollment[0]->s2_lacking_unit }}</u>____</td>
         {{-- <td colspan="3" style="border: 0">Lacking units in:__________________</td>                 --}}
     </tr>
     
     <tr style="margin-top: .5em">
-        <td colspan="3" style="border: 0">Date:___<u>{{ $DateRemarks->s_date1 }}</u>____</td>      
+        <td colspan="3" style="border: 0">Date:___<u>{{ $DateRemarks->s_date1 ? date_format(date_create($DateRemarks->s_date1), 'F d, Y') : '' }}</u>____</td>      
         {{-- <td colspan="3" style="border: 0">Date:__________________</td>                 --}}
     </tr>
     <tr style="margin-top: .5em">
