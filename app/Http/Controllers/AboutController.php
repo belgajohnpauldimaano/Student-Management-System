@@ -14,6 +14,10 @@ class AboutController extends Controller
     {
     	return view('pages.about.vision_mission');
     }
+    public function philosophy()
+    {
+    	return view('pages.about.philosophy');
+    }
     public function history()
     {
     	return view('pages.about.history');

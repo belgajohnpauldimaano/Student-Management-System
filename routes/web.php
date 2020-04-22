@@ -25,6 +25,7 @@ Route::get('/transcript-of-record', 'TranscriptOfRecordController@tor')->name('t
 
 Route::get('/school-profile', 'AboutController@school_profile')->name('school_profile');
 Route::get('/vision-mission', 'AboutController@vision_mission')->name('vision_mission');
+Route::get('/philosophy', 'AboutController@philosophy')->name('philosophy');
 Route::get('/history', 'AboutController@history')->name('history');
 Route::get('/hymn', 'AboutController@hymn')->name('hymn');
 Route::get('/award-and-recognition', 'AboutController@award_recognition')->name('award_recognition');

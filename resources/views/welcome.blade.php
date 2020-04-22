@@ -98,19 +98,22 @@
                 </header>
                 <div class="row about-cols">
                     <div class="col-md-4 wow fadeInUp">
-                        <div class="about-col">
+                        <div class="about-col" style="height: 26.5em !important">
                             <div class="img">
                                 <img src="{{ asset('img/mission.jpg') }}" alt="" class="img-fluid">
                                 <div class="icon"><i class="ion-ios-speedometer-outline"></i></div>
                             </div>
-                            <h2 class="title"><a href="#">Our Mission</a></h2>
-                            <p>
-                                To provide the total Christian formation of the youth that will lead them to a deeper knowledge and to a closer imitation of the life and mission of Jesus Christ; To provide various faith-experiences... <a href="#">readmore</a>
-                            </p>
+                            <h2 class="title"><a href="#">Strategic Thrust</a></h2>
+                            <ol style="font-size: 14px">
+                                <li>Academic Excellence</li>
+                                <li>Character Development</li>
+                                <li>Organization and System Excellence</li>
+                            </ol>
+                            <p style="text-align: right"><a href="{{ route('vision_mission') }}">readmore</a></p>                            
                         </div>
                     </div>
                     <div class="col-md-4 wow fadeInUp" data-wow-delay="0.1s">
-                        <div class="about-col">
+                        <div class="about-col" style="height: 26.5em !important">
                             <div class="img">
                                 <img src="{{ asset('img/history.jpg') }}" alt="" class="img-fluid">
                                 <div class="icon"><i class="ion-ios-list-outline"></i></div>
@@ -122,14 +125,14 @@
                         </div>
                     </div>
                     <div class="col-md-4 wow fadeInUp" data-wow-delay="0.2s">
-                        <div class="about-col">
+                        <div class="about-col" style="height: 26.5em !important">
                             <div class="img">
                                 <img src="{{ asset('img/vision.jpg') }}" alt="" class="img-fluid">
                                 <div class="icon"><i class="ion-ios-eye-outline"></i></div>
                             </div>
                             <h2 class="title"><a href="#">Our Vision</a></h2>
                             <p>
-                                The Diocesan Schools of Bataan envision themselves as a Communion of Educational Institutions committed to form each and everyone of their members to be a HERO. (We envision every Diocesan... <a href="{{ route('vision_mission') }}">readmore</a>
+                                By 2025, St. John's Academy Inc. is the leading innovative Catholic School in Dinalupihan, Bataan... <a href="{{ route('vision_mission') }}">readmore</a>
                             </p>
                         </div>
                     </div>

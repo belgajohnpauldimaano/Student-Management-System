@@ -16,7 +16,17 @@
 	</div>
     <main id="main">
 		<div class="container">
-			<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Tempora consequatur non atque, dolorem iste numquam assumenda inventore vitae quod. Nisi porro praesentium consequuntur ad provident minus, accusamus odit aspernatur error.</p>
+			<div class="row">
+				<div class="col-md-8">
+					<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Tempora consequatur non atque, dolorem iste numquam assumenda inventore vitae quod. Nisi porro praesentium consequuntur ad provident minus, accusamus odit aspernatur error.</p>
+				</div>
+				
+				<div class="col-md-4">
+					@include('pages.about.partials.sidebar')
+				</div>
+				
+			</div>
+			
 		</div>
     </main>
 @endsection

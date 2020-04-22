@@ -1,7 +1,7 @@
 @extends('layouts.main')
 
 @section('title')
-	Administration and Offices
+	Philosophy
 @endsection
 
 @section('content')
@@ -9,7 +9,7 @@
 		<div class="global-header__block">
 			<div class="va-block">
 				<div class="va-middle text-center">
-					<h1>Administration and Offices</h1>
+					<h1>The PHILOSOPHY of ST. JOHN’S ACADEMY INC.</h1>
 				</div>
 			</div>
 		</div>
@@ -18,15 +18,16 @@
 		<div class="container">
 			<div class="row">
 				<div class="col-md-8">
-					<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Tempora consequatur non atque, dolorem iste numquam assumenda inventore vitae quod. Nisi porro praesentium consequuntur ad provident minus, accusamus odit aspernatur error.</p>
+					<h2>The PHILOSOPHY of ST. JOHN’S ACADEMY INC.</h2>
+					<p>St. John’s Academy Inc. believes that every leaner’s unique gifts and blended intelligences comes from God; 
+						engages comes in its discovery, development and nurturance towards full humanity.</p>		
+					<br>
+					<br>
 				</div>
-				
-					<div class="col-md-4">
-						@include('pages.about.partials.sidebar')
-					</div>
-				
+				<div class="col-md-4">
+                    @include('pages.about.partials.sidebar')
+				</div>
 			</div>
-			
 		</div>
     </main>
 @endsection
