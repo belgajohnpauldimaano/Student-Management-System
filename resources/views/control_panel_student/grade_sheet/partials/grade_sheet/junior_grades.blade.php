@@ -153,7 +153,7 @@
         ?>
         <th>12</th>
         <th>3</th>
-        <th>5</th>
+        <th>15</th>
     </tr>
     @endif
 </table>
