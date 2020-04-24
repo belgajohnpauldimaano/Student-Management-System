@@ -124,6 +124,14 @@
                 border-bottom: 6px solid blue;
                 margin-top: -10px;
             }
+
+            .less-m-top{
+                margin-top: -12px;
+            }
+
+            .less-m-top2{
+                margin-top: -5px;
+            }
         </style>
 </head>
 <body>
@@ -177,7 +185,7 @@
                 <p class="heading1">Division of Bataan</p>
                 <br/>
                 <h2 class="heading2 heading2-title">St. John's Academy Inc</h2>
-                <p class="heading2 heading2-subtitle"><b>K to 12 BASIC EDUCATION CURRICULUM</b></p>
+                
                 <p class="heading2 heading2-subtitle"><b>Formerly Saint John Academy</b></p>
                 <p class="heading2 heading2-subtitle">Dinalupihan, Bataan</p>
                 <br/>
@@ -198,27 +206,27 @@
                     </tr>                    
                     <tr>
                         <td>
-                            <p class="p0 m0 student-info"><b>Birthdate</b> : {{ $StudentInformation->birthdate ? date_format(date_create($StudentInformation->birthdate), 'F d, Y') : '' }}</p>
-                        </td>
-                        <td>
-                            <p class="p0 m0 student-info"><b>Age</b> : 
-                             {{ $StudentInformation->age_may }} years old</p>                             
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
                             <p class="p0 m0 student-info"><b>School</b> Year : {{ $ClassDetail ? $ClassDetail->school_year : '' }}</p>
                         </td>
                         <td>
-                            <p class="p0 m0 student-info"><b>Sex</b> : {{ $StudentInformation->gender == 1 ? "Male" : "Female" }}</p>
+                            <p class="p0 m0 student-info"><b>Age</b> : 
+                                {{ $StudentInformation->age_may }} years old</p> 
                         </td>
                     </tr>
                     <tr>
                         <td>
                             <p class="p0 m0 student-info"><b>Grade & Section </b>: {{ $ClassDetail ? $ClassDetail->section_grade_level : '' }} - {{ $ClassDetail ? $ClassDetail->section : '' }}</p>
                         </td>
-                        <td>                            
+                        <td>
+                            <p class="p0 m0 student-info"><b>Birthdate</b> : {{ $StudentInformation->birthdate ? date_format(date_create($StudentInformation->birthdate), 'F d, Y') : '' }}</p>
                         </td>
+                    </tr>
+                    
+                    <tr>
+                        <td>
+                            <p class="p0 m0 student-info"><b>K to 12 BASIC EDUCATION CURRICULUM</b></p>
+                        </td>
+                        <td><p class="p0 m0 student-info"><b>Sex</b> : {{ $StudentInformation->gender == 1 ? "Male" : "Female" }}</p></td>
                     </tr>
                     <tr>
                         @if ($grade_level >= 11)

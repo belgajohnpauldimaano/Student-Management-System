@@ -29,7 +29,7 @@
 					<p>By 2025, St. John's Academy Inc. is the leading innovative Catholic School in Dinalupihan, Bataan</p>
 					
 					<h2>Mission</h2>
-					<p>Devoted to norture innovative and globally competitive students and servant-leaders for building humane communities.</p>
+					<p>Devoted to nurture innovative and globally competitive students and servant-leaders for building humane communities.</p>
 					<ol>
 						<li>To provide innovative curriculum and instruction that will develop learners' skills to become globally competitive.</li>
 						<li>To foster an inclusive environment conducive to character development and Christian formation that will produce model graduates catered to transform society</li>
