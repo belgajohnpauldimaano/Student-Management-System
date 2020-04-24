@@ -1,4 +1,4 @@
-<table class="table no-margin">
+<table class="table no-margin less-m-top">
     <thead>
         <tr>
             <th>Subject</th>
@@ -324,7 +324,7 @@
 </table>
 
 <center>
-<table border="0" style="width: 80%">
+<table border="0" style="width: 80%" less-m-top2>
 
     <tr style="margin-top: .5em">
         <td style="border: 0">Description</td>
@@ -400,7 +400,7 @@
     {{-- <tr> <td colspan="3" style="border: 0">&nbsp;</td>   </tr> --}}
 
     <tr style="margin-top: 0em">
-            <table border="0" style="width: 100%; margin-top: -1em" class="pb-1">
+            <table border="0" style="width: 100%; margin-top: 1.em" class="pb-1">
                 
                     <tr>
                         <td style="border: 0; width: 50%;">

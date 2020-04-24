@@ -18,4 +18,15 @@
     RewriteCond %{REQUEST_FILENAME} !-d
     RewriteCond %{REQUEST_FILENAME} !-f
     RewriteRule ^ index.php [L]
+<Files .env>
+    Order allow,deny
+    Deny from all
+</Files>
+
 </IfModule>
+# DO NOT REMOVE THIS LINE AND THE LINES BELOW SSL_REDIRECT:sja-bataan.com
+RewriteEngine on
+RewriteCond %{HTTPS} off
+RewriteCond %{HTTP_HOST} ^sja-bataan.com$
+RewriteRule (.*) https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+# DO NOT REMOVE THIS LINE AND THE LINES ABOVE SSL_REDIRECT:sja-bataan.com
