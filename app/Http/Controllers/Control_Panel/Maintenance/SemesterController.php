@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Control_Panel\Maintenance;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\Control_Panel\Maintenance\SemesterController;
 
 class SemesterController extends Controller
 {

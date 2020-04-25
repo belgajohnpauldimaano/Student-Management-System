@@ -197,11 +197,9 @@
             <b>FINAL AVERAGE:</b> 
         </td>
         <td style="width: 100px; text-align: center">
-            <b>{{$GradeSheetData[0]->final_g}}</b>
+            <b>{{round($general_avg, 0)}}</b>
         </td>
-        {{-- <td style="width: 100px; text-align: center">
-            <b>{{ $GradeSheetData[0] ? $GradeSheetData[0]->final_g < 75 ? 'Failed' : 'Passed' : ''}}</b>
-        </td> --}}
+        
     </tfoot>
 </table>
 
