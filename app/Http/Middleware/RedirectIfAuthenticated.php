@@ -34,6 +34,10 @@ class RedirectIfAuthenticated
             {
                 return redirect()->route('student.dashboard');
             }
+            else if ($request->user()->role == 6) 
+            {
+                return redirect()->route('finance.dashboard');
+            }
         }
 
         return $next($request);

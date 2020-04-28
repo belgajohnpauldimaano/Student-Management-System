@@ -15,4 +15,9 @@ class StudentInformation extends Model
     {
         return $this->hasMany(Enrollment::class, 'student_information_id', 'id');
     }
+
+    public function transactions ()
+    {
+        return $this->hasOne(Transaction::class, 'student_id', 'id');
+    }
 }
