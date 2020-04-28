@@ -11,20 +11,12 @@ class SemesterController extends Controller
     //
     public function index (Request $request) 
     {
-        
-
         if ($request->ajax())
         {
             $Semester = \App\Semester::get();
-            // return redirect()->back();
-        //    retirm view('control_panel.semester.partials.data_list', compact('Semester'))->render();
             return view('control_panel.semester.index', compact('Semester'))->render();
-
-            // return response()->json(compact('html'));
-            // return redirect('control_panel\semester\partials\data_list')->compact('Semester')->render();
-            // return redirect('Control_Panel\Maintenance\SemesterController@index')
         }
-        // $Semester = \App\Semester::where('status', 1)->paginate(10);
+        
         $Semester = \App\Semester::get();
         return view('control_panel.semester.index', compact('Semester'));
     }
