@@ -10,10 +10,6 @@
                         </h4>
                 </div>
             </div>
-
-           
-            
-            
            
             <form id="js-form_payment_transaction">
                 {{ csrf_field() }}

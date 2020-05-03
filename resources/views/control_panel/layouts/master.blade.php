@@ -142,6 +142,7 @@
         {{-- Finance Menu --}}
         @if (Auth::user()->role == 6)
           <li><a href="{{ route('finance.dashboard') }}"><i class="fa fa-home fa-fw fa-lg"></i>&nbsp;&nbsp;&nbsp; <span>Dashboard</span></a></li>
+          <li><a href="{{ route('finance.dashboard') }}"><i class="fas fa-clipboard-list"></i>&nbsp;&nbsp;&nbsp; <span>Student Admission</span></a></li>
           <li><a href="{{ route('finance.student_account') }}"><i class="fa fa-info-circle fa-lg"></i>&nbsp;&nbsp;&nbsp; <span>Student Account</span></a></li>
           <li><a href="{{ route('registrar.class_details') }}"><i class="fa fa-list-alt fa-lg "></i>&nbsp;&nbsp;&nbsp; <span>Report</span></a></li>
           <li>
@@ -154,6 +155,7 @@
             </a>
             <ul class="treeview-menu">
                 <li><a href="{{ route('finance.maintenance.tuition_fee') }}"><i class="fa fa-circle-o"></i>&nbsp;&nbsp;&nbsp; <span>Tuition Fee</span></a></li>
+                <li><a href="{{ route('finance.maintenance.downpayment') }}"><i class="fa fa-circle-o"></i>&nbsp;&nbsp;&nbsp; <span>Downpayment Fee</span></a></li>
                 <li><a href="{{ route('finance.maintenance.misc_fee') }}"><i class="fa fa-circle-o"></i>&nbsp;&nbsp;&nbsp; <span>Miscelleneous Fee</span></a></li>                
                 <li><a href="{{ route('finance.maintenance.disc_fee') }}"><i class="fa fa-circle-o"></i>&nbsp;&nbsp;&nbsp; <span>Discount</span></a></li>
                 <li><a href="{{ route('finance.maintenance.payment_category') }}"><i class="fa fa-circle-o"></i>&nbsp;&nbsp;&nbsp; <span>Payment Category</span></a></li>

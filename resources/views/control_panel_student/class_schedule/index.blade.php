@@ -12,7 +12,7 @@
         <div class="overlay hidden" id="js-loader-overlay"><i class="fa fa-refresh fa-spin"></i></div>
         <div class="box-body">
             <div class="js-data-container">
-                <table class="table no-margin">
+                <table class="table no-margin table-striped table-bordered">
                     <thead>
                         <tr>
                             <th>Schedule</th>
@@ -24,8 +24,11 @@
                     </thead>
                     <tbody>
                         @if ($Enrollment)
+                            @if($findSchoolYear =='')
+                                <td colspan="5" style="text-align: center; font-weight: 600">You are not yet Enrolled this school year</td>
+                            @endif
                             @foreach ($Enrollment as $key => $data)
-                                <?php
+                               <?php
                                     $days = $data ? $data->class_schedule ? explode(';', rtrim($data->class_schedule,";")) : [] : [];
                                     $daysObj = [];
                                     $daysDisplay = '';
@@ -59,9 +62,7 @@
                                     <td>{{ $data->grade_level . ' ' . $data->section }}</td>
                                     <td>{{ $data->faculty_name }}</td>
                                 </tr>
-                            @endforeach
-                        @else
-                            
+                            @endforeach                        
                         @endif
                     </tbody>
                 </table>

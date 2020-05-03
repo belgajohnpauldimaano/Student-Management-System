@@ -59,7 +59,7 @@
                                                                 <td>{{$data->other->other_fee_name}}</td>
                                                                 <td>{{$data->others_fee_qty}}</td>
                                                                 <td>{{number_format($data->others_fee_price, 2)}}</td>
-                                                                <td><span class="badge bg-green">Paid</span></td>
+                                                                <td><span class="label bg-green">Paid</span></td>
                                                             </tr>
                                                         @endforeach
                                                     </tbody>                                                
@@ -73,7 +73,7 @@
                             @endforeach
                         @else
                         <div class="col-md-12">                            
-                            <h5><b>No transaction history yet.</b></h5>                            
+                            <h5 style="text-align: center"><b>No payment history yet.</b></h5>                            
                         </div>
                         @endif
                     </div>

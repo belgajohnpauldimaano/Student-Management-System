@@ -21,9 +21,9 @@
                             <input type="file" id="user--photo" name="user_photo">
                             <button type="submit">fsdfasd</button>
                         </form>
-                        {{-- <button type="button" class="btn btn-flat btn-box-tool btn--update-profile" title="Update info">
+                        <button type="button" class="btn btn-flat btn-box-tool btn--update-profile" title="Update info">
                             <i class="fa fa-wrench"></i>
-                        </button> --}}
+                        </button>
                     </div>
                 </div>
                 <div class="overlay hidden" id="js-loader-overlay"><i class="fa fa-refresh fa-spin"></i></div>

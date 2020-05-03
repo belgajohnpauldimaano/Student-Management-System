@@ -379,6 +379,10 @@ Route::group(['prefix' => 'shared/faculty-class-schedule', 'middleware' => ['aut
 Route::group(['prefix' => 'student', 'middleware' => ['auth', 'userroles'], 'roles' => ['student']], function() {
     Route::get('dashboard', 'Control_Panel_Student\DashboardController@index')->name('student.dashboard');
 
+    Route::group(['prefix' => 'enrollment'], function () {
+        Route::get('', 'Control_Panel_Student\EnrollmentController@index')->name('student.enrollment.index');
+    });
+
     Route::group(['prefix' => 'class-schedule'], function() {
         Route::get('', 'Control_Panel_Student\ClassScheduleController@index')->name('student.class_schedule.index');
         Route::post('', 'Control_Panel_Student\ClassScheduleController@index')->name('student.class_schedule.index');
@@ -431,6 +435,15 @@ Route::group(['prefix' => 'finance', 'middleware' => ['auth', 'userroles'], 'rol
             Route::post('save-data', 'Finance\Maintenance\TuitionFeeController@save_data')->name('finance.maintenance.tuition_fee.save_data');
             Route::post('deactivate-data', 'Finance\Maintenance\TuitionFeeController@deactivate_data')->name('finance.maintenance.tuition_fee.deactivate_data');
             Route::post('toggle-current-sy', 'Finance\Maintenance\TuitionFeeController@toggle_current_sy')->name('finance.maintenance.tuition_fee.toggle_current_sy');
+        });
+
+        Route::group(['prefix' => 'downpayment-fee'], function () {
+            Route::get('', 'Finance\Maintenance\DownpaymentController@index')->name('finance.maintenance.downpayment');
+            Route::post('', 'Finance\Maintenance\DownpaymentController@index')->name('finance.maintenance.downpayment');
+            Route::post('modal-data', 'Finance\Maintenance\DownpaymentController@modal_data')->name('finance.maintenance.downpayment.modal_data');
+            Route::post('save-data', 'Finance\Maintenance\DownpaymentController@save_data')->name('finance.maintenance.downpayment.save_data');
+            Route::post('deactivate-data', 'Finance\Maintenance\DownpaymentController@deactivate_data')->name('finance.maintenance.downpayment.deactivate_data');
+            Route::post('toggle-current-sy', 'Finance\Maintenance\DownpaymentController@toggle_current_sy')->name('finance.maintenance.downpayment.toggle_current_sy');
         });
 
         Route::group(['prefix' => 'miscelleneous-fee'], function () {

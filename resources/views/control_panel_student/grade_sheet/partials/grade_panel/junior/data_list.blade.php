@@ -35,11 +35,13 @@
                                     <td><center>{{ $data->thi_g ? $data->thi_g > 0  ? round($data->thi_g) : '' : '' }}</center></td>
                                     <td><center>{{ $data->fou_g ? $data->fou_g > 0  ? round($data->fou_g) : '' : '' }}</center></td>
 
-                                    @if ($data->fir_g == 0 || $data->sec_g  == 0 || $data->thi_g  == 0 || $data->fou_g == 0)
+                                    @if ($data->fir_g == 0 && $data->sec_g  == 0 && $data->thi_g  == 0 && $data->fou_g == 0)
                                     <td>
+                                        @if($data->fir_g == 0 && $data->sec_g  == 0 && $data->thi_g  == 0 && $data->fou_g == 0)
                                         <center>{{ $final_a ? round($final_a) : '' }}</center>
+                                        @endif
                                     </td>
-                                        @if ($data->fir_g == 0 || $data->sec_g  == 0 || $data->thi_g  == 0 || $data->fou_g == 0)
+                                        @if ($data->fir_g == 0 && $data->sec_g  == 0 && $data->thi_g  == 0 && $data->fou_g == 0)
                                             <td></td>
                                             <td></td> 
                                         @else

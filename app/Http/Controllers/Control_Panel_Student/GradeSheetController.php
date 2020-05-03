@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Control_Panel_Student;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\ClassDetail;
 
 class GradeSheetController extends Controller
 {
@@ -11,20 +12,20 @@ class GradeSheetController extends Controller
     {
         $StudentInformation = \App\StudentInformation::where('user_id', \Auth::user()->id)->first();
         $SchoolYear = \App\SchoolYear::where('current', 1)->where('status', 1)->first();
+
+        $findSchoolYear = ClassDetail::find('school_year_id' , $SchoolYear->id)->first();
+        
         
         if ($StudentInformation) 
         {
+
             $Enrollment2 = \App\Enrollment::join('class_details', 'class_details.id', '=', 'enrollments.class_details_id')
-                // ->join('student_enrolled_subjects', 'student_enrolled_subjects.enrollments_id', '=', 'enrollments.id')
                 ->join('class_subject_details', 'class_subject_details.class_details_id', '=', 'class_details.id')
                 ->join('rooms', 'rooms.id', '=', 'class_details.room_id')
                 ->join('faculty_informations', 'faculty_informations.id', '=', 'class_subject_details.faculty_id')
                 ->join('section_details', 'section_details.id', '=', 'class_details.section_id')
                 ->join('subject_details', 'subject_details.id', '=', 'class_subject_details.subject_id')
-                
                 ->where('student_information_id', $StudentInformation->id)
-                // ->where('class_subject_details.status', 1)
-                // ->where('class_subject_details.status', '!=', 0)
                 ->where('enrollments.status', 1)
                 ->where('class_details.status', 1)
                 ->where('class_details.school_year_id', $SchoolYear->id)
@@ -44,31 +45,23 @@ class GradeSheetController extends Controller
                     rooms.room_code,
                     section_details.section
                 "))
-                // ->orderBy('class_subject_details.class_time_from', 'ASC')
                 ->orderBy('class_subject_details.class_subject_order', 'ASC')
                 ->first();
-
-                // $getSchoolYear = \App\SchoolYear::where('id', $Enrollment2->school_year_id)->first();
-
-    
 
                 
                 
                 $Enrollment = \App\Enrollment::join('class_details', 'class_details.id', '=', 'enrollments.class_details_id')
-                            // ->join('student_enrolled_subjects', 'student_enrolled_subjects.enrollments_id', '=', 'enrollments.id')
                             ->join('class_subject_details', 'class_subject_details.class_details_id', '=', 'class_details.id')
                             ->join('rooms', 'rooms.id', '=', 'class_details.room_id')
                             ->join('faculty_informations', 'faculty_informations.id', '=', 'class_subject_details.faculty_id')
                             ->join('section_details', 'section_details.id', '=', 'class_details.section_id')
                             ->join('subject_details', 'subject_details.id', '=', 'class_subject_details.subject_id')
                             ->where('student_information_id', $StudentInformation->id)
-                            // ->where('faculty_informations.id', $ClassDetail->adviser_id)
-                            // ->where('class_subject_details.status', 1)
                             ->where('class_subject_details.status', '!=', 0)
                             ->where('class_subject_details.sem', 1)
                             ->where('enrollments.status', 1)
                             ->where('class_details.status', 1)                            
-                            ->where('class_details.school_year_id', $SchoolYear->id)
+                            ->find('class_details.school_year_id', $SchoolYear->id)
                             ->select(\DB::raw("
                                 enrollments.id as enrollment_id,
                                 enrollments.class_details_id as cid,
@@ -96,7 +89,7 @@ class GradeSheetController extends Controller
                 $grade_level = 1;
                 
                 
-                    $StudentEnrolledSubject = \App\StudentEnrolledSubject::where('enrollments_id', $Enrollment2->enrollment_id)
+                $StudentEnrolledSubject = \App\StudentEnrolledSubject::where('enrollments_id', $Enrollment2->enrollment_id)
                     ->get();
                     
         //   2ndsem
@@ -131,6 +124,7 @@ class GradeSheetController extends Controller
                 "))
                 ->orderBy('class_subject_details.class_time_from', 'ASC')
                 ->get();
+                
                 $GradeSheetData1 = [];
                 $grade_level = 1;
                 // return json_encode(['Enrollment' => $Enrollment,'StudentInformation' => $StudentInformation, 'SchoolYear' => $SchoolYear]);
@@ -207,7 +201,9 @@ class GradeSheetController extends Controller
 
             $GradeSheetData = json_decode(json_encode($GradeSheetData));
             $GradeSheetData1 = json_decode(json_encode($GradeSheetData1));
-            return view('control_panel_student.grade_sheet.index', compact('SchoolYear','StudentEnrolledSubject2','StudentEnrolledSubject','GradeSheetData', 'grade_level' ,'StudentInformation','GradeSheetData1','Enrollment2','Enrollment'));
+            return view('control_panel_student.grade_sheet.index',
+                compact('SchoolYear','StudentEnrolledSubject2','StudentEnrolledSubject','findSchoolYear',
+                'GradeSheetData', 'grade_level' ,'StudentInformation','GradeSheetData1','Enrollment2','Enrollment'));
             return json_encode(['GradeSheetData' => $GradeSheetData,]);
             return json_encode(['GradeSheetData1' => $GradeSheetData1,]);
         }
@@ -217,7 +213,6 @@ class GradeSheetController extends Controller
     {
         $StudentInformation = \App\StudentInformation::where('user_id', \Auth::user()->id)->first();
         $SchoolYear = \App\SchoolYear::where('current', 1)->where('status', 1)->first();
-
         
         
         if ($StudentInformation) 
@@ -283,8 +278,6 @@ class GradeSheetController extends Controller
                 ->where('class_details.id', $Enrollment[0]->cid)
                 ->first();
             }
-
-            
             
 
             $GradeSheetData = [];
