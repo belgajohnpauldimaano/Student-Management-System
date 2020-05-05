@@ -498,6 +498,7 @@
             $('body').on('change', '#user--photo', function (e) {
                 readURL($(this))
             })
+
             function readURL(input) {
                 var url = input[0].value;
                 var id = $(this).data('id');
@@ -530,6 +531,8 @@
                 }
             }
         });
+
+        
 
         
     </script>

@@ -28,6 +28,13 @@ class AccountProfileController extends Controller
             'first_name' => 'required',
             'middle_name' => 'required',
             'last_name' => 'required',
+            'contact_number' => 'required',
+            'profile_email'=>'required',
+            'c_address'=> 'required',
+            'p_address'=> 'required',
+            'father_name'=> 'required',
+            'mother_name'=> 'required',
+            'birthday'=> 'required',
         ];
         
         $validator = \Validator::make($request->all(), $rules);
@@ -44,7 +51,7 @@ class AccountProfileController extends Controller
         $Profile->middle_name = $request->middle_name;
         $Profile->last_name = $request->last_name;
         $Profile->contact_number = $request->contact_number;
-        $Profile->email = $request->email;
+        $Profile->email = $request->profile_email;
         $Profile->c_address = $request->c_address;
         $Profile->p_address = $request->p_address;
         $Profile->father_name = $request->father_name;
@@ -70,8 +77,6 @@ class AccountProfileController extends Controller
         $name = time().'.'.$request->user_photo->getClientOriginalExtension();
         $destinationPath = public_path('/img/account/photo/');
         $request->user_photo->move($destinationPath, $name);
-
-
 
         $User = \Auth::user();
         $Profile = \App\StudentInformation::where('user_id', $User->id)->first();

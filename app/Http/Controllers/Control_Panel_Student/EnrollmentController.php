@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Control_Panel_Student;
 
 use App\Enrollment;
 use App\SchoolYear;
+use App\TuitionFee;
 use App\ClassDetail;
 use App\DownpaymentFee;
 use App\PaymentCategory;
@@ -17,6 +18,7 @@ class EnrollmentController extends Controller
     {
     
         $StudentInformation = StudentInformation::where('user_id', \Auth::user()->id)->first();
+        $User = \Auth::user();
         $SchoolYear = SchoolYear::where('current', 1)
             ->where('status', 1)
             ->first();
@@ -85,13 +87,15 @@ class EnrollmentController extends Controller
 
                 $grade_level_id = ($ClassDetail->grade_level + 1);
 
+                $Tuition = TuitionFee::where('id', $grade_level_id)->first();
                 $PaymentCategory = PaymentCategory::with('misc_fee','tuition')
                                 ->where('grade_level_id', $grade_level_id)->first();
                                 
                 $Downpayment = DownpaymentFee::where('current', 1)->first();
+                $Profile = StudentInformation::where('user_id', $User->id)->first();
 
                 return view('control_panel_student.enrollment.index', 
-                    compact('grade_level', 'ClassDetail','PaymentCategory','Downpayment'));
+                    compact('grade_level', 'ClassDetail','PaymentCategory','Downpayment','Profile','StudentInformation','Tuition'));
                     return json_encode(['GradeSheetData' => $GradeSheetData,]);
                     
             }else{

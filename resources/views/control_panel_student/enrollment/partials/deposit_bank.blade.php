@@ -1,5 +1,5 @@
 <div class="col-md-6">
-    <div class="box box-primary">
+    <div class="box box-primary" style="height: 33em;">
         <div class="box-header with-border">
           <h3 class="box-title col-lg-12">Enrollment Form</h3>
         </div>
@@ -9,12 +9,14 @@
                 <label for="exampleInputEmail1">You are incoming Grade-level <i style="color:red">{{$ClassDetail->grade_level+1}}</i></label>
                     <br><br>
                 <label for="exampleInputEmail1">Available Tuition Fee and Misc Fee</label>
-                @if($PaymentCategory)
-                <select name="tution_category" id="tution_category" class="form-control" style="width: 100%;">
-                    <option selected value="{{$PaymentCategory->id}}">
-                        Tuition Fee ({{number_format($PaymentCategory->tuition->tuition_amt, 2)}}) | Miscellenous Fee ({{number_format($PaymentCategory->misc_fee->misc_amt,2)}})
-                    </option>    
-                </select>
+                @if($Tuition)
+                    @if(!empty($PaymentCategory->tuition))
+                    <select name="tution_category" id="tution_category" class="form-control" style="width: 100%;">
+                        <option selected value="{{$PaymentCategory->id}}">
+                            Tuition Fee ({{number_format($PaymentCategory->tuition->tuition_amt, 2 ?? '')}}) | Miscellenous Fee ({{number_format($PaymentCategory->misc_fee->misc_amt,2)}})
+                        </option>    
+                    </select>
+                    @endif
                 @endif
             </div>    
             <div class="form-group col-lg-12">
@@ -38,11 +40,7 @@
                 <input type="email" class="form-control" id="email" name="email" placeholder="your@email.com">
                 <div class="help-block text-left" id="js-email"></div>
             </div>             
-            <div class="checkbox col-lg-12">
-              <label>
-                <input type="checkbox" id="terms">I have read and Agree the <a href="">Terms of service</a>
-              </label>
-            </div>
+            
           </div>
         </div>
 </div>
@@ -89,6 +87,11 @@
                 <input type="file" id="exampleInputFile">
                 <div class="help-block text-left" id="js-image_receipt"></div>
             </div>
+            <div class="checkbox col-lg-12">
+                <label>
+                  <input type="checkbox" id="terms">I have read and Agree the <a href="">Terms of service</a>
+                </label>
+              </div>
             <div class="box-footer col-lg-12">
             <button type="submit" class="btn-reset btn btn-danger pull-left">Reset</button>
             <button type="submit" class="btn btn-primary pull-right">Enroll</button>

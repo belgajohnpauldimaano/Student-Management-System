@@ -9,12 +9,14 @@
                 <label for="exampleInputEmail1">You are incoming Grade-level <i style="color:red">{{$ClassDetail->grade_level+1}}</i></label>
                     <br><br>
                 <label for="exampleInputEmail1">Available Tuition Fee and Misc Fee</label>
-                @if($PaymentCategory)
-                <select name="tution_category" id="tution_category" class="form-control" style="width: 100%;">
-                    <option selected value="{{$PaymentCategory->id}}">
-                        Tuition Fee ({{number_format($PaymentCategory->tuition->tuition_amt, 2)}}) | Miscellenous Fee ({{number_format($PaymentCategory->misc_fee->misc_amt,2)}})
-                    </option>    
-                </select>
+                @if($Tuition)
+                  @if(!empty($PaymentCategory->tuition))
+                  <select name="tution_category" id="tution_category" class="form-control" style="width: 100%;">
+                      <option selected value="{{$PaymentCategory->id}}">
+                          Tuition Fee ({{$PaymentCategory->tuition ? number_format($PaymentCategory->tuition->tuition_amt, 2) : ''}}) | Miscellenous Fee ({{number_format($PaymentCategory->misc_fee->misc_amt,2)}})
+                      </option>    
+                  </select>
+                  @endif
                 @endif
             </div>    
             <div class="form-group col-lg-12">

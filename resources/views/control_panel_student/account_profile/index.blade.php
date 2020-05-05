@@ -14,9 +14,9 @@
                 <div class="box-header">
                     <h3 class="box-title">Personal Information</h3>
                     <div class="box-tools pull-right">
-                        {{-- <button type="button" class="btn btn-flat btn-box-tool btn--update-photo" title="Change photo">
+                        <button type="button" class="btn btn-flat btn-box-tool btn--update-photo" title="Change photo">
                             <i class="fa fa-image"></i>
-                        </button> --}}
+                        </button>
                         <form class="hidden" id="form_user_photo_uploader">
                             <input type="file" id="user--photo" name="user_photo">
                             <button type="submit">fsdfasd</button>
@@ -288,6 +288,7 @@
                     }
                 })
             })
+
             $('body').on('submit', '#form--update-profile', function (e) {
                 e.preventDefault();
                 var formData = new FormData($(this)[0]);
@@ -395,7 +396,7 @@
                         $('#img--user_photo').attr('src', e.target.result);
                         
                         var formData = new FormData($('#form_user_photo_uploader')[0]);
-                        {{--  formData.append('user_photo', $('#user--photo'));  --}}
+                        formData.append('user_photo', $('#user--photo'));
                         formData.append('_token', '{{ csrf_token() }}');
                         console.log(formData)
                         $.ajax({

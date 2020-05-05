@@ -160,6 +160,85 @@ class GradeSheetController extends Controller
                 $StudentEnrolledSubject = \App\StudentEnrolledSubject::where('enrollments_id', $Enrollment[0]->enrollment_id)
                     ->where('sem', 1)
                     ->get();
+
+                    $Enrollment_first_sem = \App\Enrollment::join('class_details', 'class_details.id', '=', 'enrollments.class_details_id')
+                    // ->join('student_enrolled_subjects', 'student_enrolled_subjects.enrollments_id', '=', 'enrollments.id')
+                    ->join('class_subject_details', 'class_subject_details.class_details_id', '=', 'class_details.id')
+                    ->join('rooms', 'rooms.id', '=', 'class_details.room_id')
+                    ->join('faculty_informations', 'faculty_informations.id', '=', 'class_subject_details.faculty_id')
+                    ->join('section_details', 'section_details.id', '=', 'class_details.section_id')
+                    ->join('subject_details', 'subject_details.id', '=', 'class_subject_details.subject_id')                                
+                    ->select(\DB::raw("
+                        enrollments.id as enrollment_id,
+                        enrollments.class_details_id as cid,
+                        enrollments.attendance_first,
+                        enrollments.attendance_second,
+                        enrollments.j_lacking_unit,
+                        enrollments.s1_lacking_unit,
+                        class_details.grade_level,
+                        class_subject_details.id as class_subject_details_id,
+                        class_subject_details.class_days,
+                        class_subject_details.class_time_from,
+                        class_subject_details.class_time_to,
+                        class_subject_details.status as grade_status,
+                        class_subject_details.class_subject_order,
+                        class_subject_details.class_details_id,
+                        CONCAT(faculty_informations.last_name, ', ', faculty_informations.first_name, ' ', faculty_informations.middle_name) as faculty_name,
+                        subject_details.id AS subject_id,
+                        subject_details.subject_code,
+                        subject_details.subject,
+                        rooms.room_code,
+                        section_details.section
+                        
+                    "))
+                    ->where('enrollments.student_information_id', $StudentInformation->id)
+                    ->where('class_subject_details.status', '!=', 0)
+                    ->where('enrollments.status', 1)
+                    ->where('class_details.status', 1)
+                    ->where('class_subject_details.sem', 1)
+                    ->where('class_details.school_year_id', $SchoolYear->id)
+                    ->orderBy('class_subject_details.class_subject_order', 'ASC')
+                    ->get();
+                    
+                    
+    
+                $Enrollment_secondsem = \App\Enrollment::join('class_details', 'class_details.id', '=', 'enrollments.class_details_id')
+                    // ->join('student_enrolled_subjects', 'student_enrolled_subjects.enrollments_id', '=', 'enrollments.id')
+                    ->join('class_subject_details', 'class_subject_details.class_details_id', '=', 'class_details.id')
+                    ->join('rooms', 'rooms.id', '=', 'class_details.room_id')
+                    ->join('faculty_informations', 'faculty_informations.id', '=', 'class_subject_details.faculty_id')
+                    ->join('section_details', 'section_details.id', '=', 'class_details.section_id')
+                    ->join('subject_details', 'subject_details.id', '=', 'class_subject_details.subject_id')
+                    ->where('student_information_id', $StudentInformation->id)
+                    // ->where('faculty_informations.id', $ClassDetail->adviser_id)
+                    // ->where('class_subject_details.status', 1)
+                    ->where('class_subject_details.status', '!=', 0)
+                    ->where('class_subject_details.sem', 2)
+                    ->where('enrollments.status', 1)
+                    ->where('class_details.status', 1)                            
+                    ->where('class_details.school_year_id', $SchoolYear->id)
+                    ->select(\DB::raw("
+                        enrollments.id as enrollment_id,
+                        enrollments.class_details_id as cid,
+                        enrollments.attendance_first,
+                        enrollments.attendance_second,
+                        enrollments.s2_lacking_unit,
+                        class_details.grade_level,
+                        class_subject_details.id as class_subject_details_id,
+                        class_subject_details.class_days,
+                        class_subject_details.class_time_from,
+                        class_subject_details.class_time_to,
+                        class_subject_details.status as grade_status,
+                        CONCAT(faculty_informations.last_name, ', ', faculty_informations.first_name, ' ', faculty_informations.middle_name) as faculty_name,
+                        subject_details.id AS subject_id,
+                        subject_details.subject_code,
+                        subject_details.subject,
+                        rooms.room_code,
+                        section_details.section
+                        
+                    "))
+                    ->orderBy('class_subject_details.class_subject_order', 'ASC')
+                    ->get();
                 
                 $GradeSheet = 1;
 
