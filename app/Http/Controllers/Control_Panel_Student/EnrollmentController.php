@@ -2,23 +2,26 @@
 
 namespace App\Http\Controllers\Control_Panel_Student;
 
+use Carbon\Carbon;
 use App\Enrollment;
 use App\SchoolYear;
 use App\TuitionFee;
 use App\ClassDetail;
+use App\Transaction;
+use App\Mail\SendMail;
 use App\DownpaymentFee;
 use App\PaymentCategory;
 use App\StudentInformation;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 
 class EnrollmentController extends Controller
 {
-    public function index()
-    {
-    
-        $StudentInformation = StudentInformation::where('user_id', \Auth::user()->id)->first();
+    public function index(Request $request)
+    {    
         $User = \Auth::user();
+        $StudentInformation = StudentInformation::where('user_id', $User->id)->first();
         $SchoolYear = SchoolYear::where('current', 1)
             ->where('status', 1)
             ->first();
@@ -106,5 +109,45 @@ class EnrollmentController extends Controller
             $GradeSheet = 0;
             return view('control_panel_student.enrollment.index', compact('GradeSheet'));
         }
+    }
+
+    public function save(Request $request){
+
+        $User = \Auth::user();
+        $StudentInformation = StudentInformation::where('user_id', $User->id)->first();
+        $mytime = Carbon::now();
+        $SchoolYear = SchoolYear::where('current', 1)
+            ->where('status', 1)
+            ->orderBY('id', 'DESC')
+            ->first();
+
+        $rules = [
+            'tution_category' => 'required',
+            'e_downpayment' => 'required',
+            'pay_fee' => 'required',
+            // 'phone' => 'required',
+            'email'=>'required'
+        ];
+        
+        $validator = \Validator::make($request->all(), $rules);
+
+        if ($validator->fails())
+        {   
+            return response()->json(['res_code' => 1, 'res_msg' => 'Please fill all required fields.', 'res_error_msg' => $validator->getMessageBag()]);
+        }
+      
+        $Enrollment = new Transaction();
+        $Enrollment->or_number = $StudentInformation->first_name.''.$mytime->toDateTimeString();
+        $Enrollment->payment_category_id = $request->tution_category;
+        $Enrollment->student_id = $StudentInformation->id;
+        $Enrollment->school_year_id = $SchoolYear->id;
+        $Enrollment->downpayment = $request->pay_fee;
+        $Enrollment->save();
+
+        $payment = Transaction::find($Enrollment->id);
+
+        \Mail::to($request->email)->send(new SendMail($payment));
+
+        return response()->json(['res_code' => 0, 'res_msg' => 'You have successfuly enrolled.']);
     }
 }

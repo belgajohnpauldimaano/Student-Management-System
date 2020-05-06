@@ -1,27 +1,29 @@
 <div class="col-md-6">
+  <form id="js-enrollment_transaction_form">
+    {{ csrf_field() }}
     <div class="box box-primary">
         <div class="box-header with-border">
           <h3 class="box-title col-lg-12">Online Enrollment Form</h3>
-        </div>
-        <form role="form">
+        </div>        
           <div class="box-body">
             <div class="form-group col-lg-12">
                 <label for="exampleInputEmail1">You are incoming Grade-level <i style="color:red">{{$ClassDetail->grade_level+1}}</i></label>
                     <br><br>
                 <label for="exampleInputEmail1">Available Tuition Fee and Misc Fee</label>
-                @if($Tuition)
-                  @if(!empty($PaymentCategory->tuition))
+                
+                  @if($PaymentCategory))
                   <select name="tution_category" id="tution_category" class="form-control" style="width: 100%;">
                       <option selected value="{{$PaymentCategory->id}}">
-                          Tuition Fee ({{$PaymentCategory->tuition ? number_format($PaymentCategory->tuition->tuition_amt, 2) : ''}}) | Miscellenous Fee ({{number_format($PaymentCategory->misc_fee->misc_amt,2)}})
+                          Tuition Fee ({{number_format($PaymentCategory->tuition->tuition_amt, 2) }}) | Miscellenous Fee ({{number_format($PaymentCategory->misc_fee->misc_amt,2)}})
                       </option>    
                   </select>
                   @endif
-                @endif
+                
             </div>    
             <div class="form-group col-lg-12">
               <label for="exampleInputEmail1">Downpayment Fee</label>
               @if($Downpayment)
+              <input type="hidden" value="{{$Downpayment->id}}" name="e_downpayment">
               <select name="downpayment" id="downpayment" class="form-control" style="width: 100%;">
                   <option selected value="{{$Downpayment->downpayment_amt}}">
                       {{number_format($Downpayment->downpayment_amt,2)}}
@@ -94,8 +96,8 @@
 
             </table>
             <div class="box-footer col-lg-12">
-              <button type="submit" class="btn-reset btn btn-danger pull-left">Reset</button>
-              <button type="submit" class="btn btn-primary pull-right">Enroll</button>
+              <button type="button" class="btn-reset btn btn-danger pull-left">Reset</button>
+              <button type="submit" id="btn-enroll" class="btn btn-primary pull-right">Enroll</button>
             </div>
           </form>
         </div>

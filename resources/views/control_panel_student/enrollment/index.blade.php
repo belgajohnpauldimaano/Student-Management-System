@@ -65,7 +65,38 @@
             })
         });
 
-        
+        $('body').on('submit', '#js-enrollment_transaction_form', function (e) {
+            e.preventDefault();
+            var formData = new FormData($(this)[0]);
+            $.ajax({
+                url         : "{{ route('student.enrollment.save_data') }}",
+                type        : 'POST',
+                data        : formData,
+                processData : false,
+                contentType : false,
+                success     : function (res) {
+                    $('.help-block').html('');
+                    if (res.res_code == 1)
+                    {
+                        for (var err in res.res_error_msg)
+                        {
+                            $('#js-' + err).html('<code> '+ res.res_error_msg[err] +' </code>');
+                        }
+                    }
+                    else
+                    {
+                        // $('.js-modal_holder .modal').modal('hide');
+                        show_toast_alert({
+                            heading : 'Success',
+                            message : res.res_msg,
+                            type    : 'success'
+                        });
+
+                        // fetch_data();
+                    }
+                }
+            });
+        });
 
         function validate_form(){            
         

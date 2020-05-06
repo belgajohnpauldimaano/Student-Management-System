@@ -375,12 +375,13 @@ Route::group(['prefix' => 'shared/faculty-class-schedule', 'middleware' => ['aut
     Route::get('print-handled-subject-all', 'Control_Panel\ClassScheduleController@print_handled_subject_all')->name('shared.faculty_class_schedules.print_handled_subject_all');
 });
 
-
+// student
 Route::group(['prefix' => 'student', 'middleware' => ['auth', 'userroles'], 'roles' => ['student']], function() {
     Route::get('dashboard', 'Control_Panel_Student\DashboardController@index')->name('student.dashboard');
 
     Route::group(['prefix' => 'enrollment'], function () {
         Route::get('', 'Control_Panel_Student\EnrollmentController@index')->name('student.enrollment.index');
+        Route::post('save-data', 'Control_Panel_Student\EnrollmentController@save')->name('student.enrollment.save_data');
     });
 
     Route::group(['prefix' => 'class-schedule'], function() {
