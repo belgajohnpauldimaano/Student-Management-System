@@ -1,5 +1,5 @@
 <div class="col-md-6">
-  <form id="js-enrollment_transaction_form">
+  <form id="js-checkout-form">
     {{ csrf_field() }}
     <div class="box box-primary">
         <div class="box-header with-border">
@@ -97,8 +97,9 @@
             </table>
             <div class="box-footer col-lg-12">
               <button type="button" class="btn-reset btn btn-danger pull-left">Reset</button>
-              <button type="submit" id="btn-enroll" class="btn btn-primary pull-right">Enroll</button>
+              <button type="button" disabled id="btn-enroll" class="btn btn-primary pull-right">Enroll</button>
             </div>
+            @include('control_panel_student.enrollment.partials.modal_paypal')
           </form>
         </div>
       </div>

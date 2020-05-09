@@ -17,6 +17,7 @@
         @include('control_panel_student.enrollment.partials.data_list')
     </div>
     @include('control_panel_student.enrollment.partials.modal_profile')
+    
 @endsection
 
 @section ('scripts')
@@ -65,6 +66,12 @@
             })
         });
 
+        $(document).ready(function(){                   
+            $('#modal-alert').modal({ backdrop : 'static' });   
+        });
+
+        
+
         $('body').on('submit', '#js-enrollment_transaction_form', function (e) {
             e.preventDefault();
             var formData = new FormData($(this)[0]);
@@ -93,6 +100,44 @@
                         });
 
                         // fetch_data();
+                    }
+                }
+            });
+        });
+  
+        
+        $('body').on('submit', '#js-checkout-form', function (e) {
+            e.preventDefault();
+            
+            var formData = new FormData($(this)[0]);
+            $.ajax({
+                headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+                url         : "{{ route('student.create-payment.paypal') }}",
+                type        : 'POST',
+                data        : formData,
+                processData : false,
+                contentType : false,
+                success     : function (res) {
+                    $('.help-block').html('');
+                    // var url_paypal = $.parseJSON(res.url);
+                    
+
+                    if (res.res_code == 1)
+                    {
+                        for (var err in res.res_error_msg)
+                        {
+                            $('#js-' + err).html('<code> '+ res.res_error_msg[err] +' </code>');
+                        }
+                    }
+                    else
+                    {
+                        window.location.href = res;
+
+                        // alertify.defaults.theme.ok = "btn btn-primary btn-flat"; 
+                        // alertify           
+                        // .alert('Success', "Your transaction is successfuly saved!.", function(){                
+                        //     alertify.success('Thank you!');                
+                        // });
                     }
                 }
             });
@@ -532,6 +577,20 @@
         }
     }
 
+    // checkbox
+
+    $("#terms").change(function() {
+        if(this.checked) {
+            $("#btn-enroll").prop('disabled', false);
+        }else{
+            $("#btn-enroll").prop('disabled', true);
+        }
+    });
+
+    $('#btn-enroll').click(function(e){
+        e.preventDefault();
+        $('#paypal-modal').modal({ backdrop : 'static' });
+    })
 
     $('body').on('submit', '#form--update-profile', function (e) {
         e.preventDefault();

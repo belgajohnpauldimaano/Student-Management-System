@@ -7,7 +7,7 @@ use App\Enrollment;
 use App\SchoolYear;
 use App\TuitionFee;
 use App\ClassDetail;
-use App\Transaction;
+// use App\Transaction;
 use App\Mail\SendMail;
 use App\DownpaymentFee;
 use App\PaymentCategory;
@@ -16,8 +16,43 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 
+// paypal
+use PayPal\Api\Amount;
+use PayPal\Api\Details;
+use PayPal\Api\Item;
+
+/** All Paypal Details class **/
+use PayPal\Api\ItemList;
+use PayPal\Api\Payer;
+use PayPal\Api\Payment;
+use PayPal\Api\PaymentExecution;
+use PayPal\Api\RedirectUrls;
+use PayPal\Api\Transaction;
+use PayPal\Auth\OAuthTokenCredential;
+use PayPal\Rest\ApiContext;
+use Redirect;
+use Session;
+use URL;
+
 class EnrollmentController extends Controller
 {
+    private $_api_context;
+    /**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+    /** PayPal api context **/
+            $paypal_conf = config('paypal');
+            $this->_api_context = new ApiContext(new OAuthTokenCredential(
+                $paypal_conf['client_id'],
+                $paypal_conf['secret'])
+            );
+            $this->_api_context->setConfig($paypal_conf['settings']);
+    }
+
     public function index(Request $request)
     {    
         $User = \Auth::user();
@@ -136,18 +171,23 @@ class EnrollmentController extends Controller
             return response()->json(['res_code' => 1, 'res_msg' => 'Please fill all required fields.', 'res_error_msg' => $validator->getMessageBag()]);
         }
       
-        $Enrollment = new Transaction();
-        $Enrollment->or_number = $StudentInformation->first_name.''.$mytime->toDateTimeString();
-        $Enrollment->payment_category_id = $request->tution_category;
-        $Enrollment->student_id = $StudentInformation->id;
-        $Enrollment->school_year_id = $SchoolYear->id;
-        $Enrollment->downpayment = $request->pay_fee;
-        $Enrollment->save();
+        // $Enrollment = new App\Transaction();
+        // $Enrollment->or_number = $StudentInformation->first_name.''.$mytime->toDateTimeString();
+        // $Enrollment->payment_category_id = $request->tution_category;
+        // $Enrollment->student_id = $StudentInformation->id;
+        // $Enrollment->school_year_id = $SchoolYear->id;
+        // $Enrollment->downpayment = $request->pay_fee;
+        // $Enrollment->save();
 
-        $payment = Transaction::find($Enrollment->id);
+        // $payment = App\Transaction::find($Enrollment->id);
 
-        \Mail::to($request->email)->send(new SendMail($payment));
+        // \Mail::to($request->email)->send(new SendMail($payment));
+
+
+        
 
         return response()->json(['res_code' => 0, 'res_msg' => 'You have successfuly enrolled.']);
     }
+
+    
 }
