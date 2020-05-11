@@ -140,9 +140,15 @@ class PaymentController extends Controller
             $Enrollment->student_id = $StudentInformation->id;
             $Enrollment->school_year_id = $SchoolYear->id;
             $Enrollment->downpayment = $request->pay_fee;
-            $Enrollment->save();
-
-            return response()->json([$redirect_url]);
+            $Enrollment->number = $request->phone;
+            $Enrollment->email = $request->email;
+            
+            if($Enrollment->save()){
+                return response()->json([$redirect_url]);
+            }else{
+                return redirect()->back()->withError('Unknown error occurred');
+            }
+            
         }
 
         // If we don't have redirect url, we have unknown error.
@@ -179,10 +185,23 @@ class PaymentController extends Controller
             return redirect()->route('student.enrollment.index')->withError('Payment was not successful.');
         }
         
-        // $Enrollment = new \App\Transaction();
-        // $payment = \App\Transaction::find($Enrollment->id);
+        $User = \Auth::user();
+        $StudentInformation = StudentInformation::where('user_id', $User->id)->first();
 
-        // \Mail::to($request->email)->send(new SendMail($payment));
+        $SchoolYear = SchoolYear::where('current', 1)
+            ->where('status', 1)
+            ->orderBY('id', 'DESC')
+            ->first();
+
+        $IsReceived = \App\Transaction::where('student_id', $StudentInformation->id)->where('school_year_id', $SchoolYear->id)->orderBy('id', 'Desc')->first();
+        $IsReceived->or_number =  $payment->invoice_id;
+        $IsReceived->isSuccess = 1;  
+        $IsReceived->save();
+
+        $payment = \App\Transaction::find($IsReceived->id);
+
+            \Mail::to($IsReceived->email)->send(new SendMail($payment));
+               
       
         return redirect()->route('student.enrollment.index')->withSuccess('Payment made successfully.');
     }

@@ -96,6 +96,7 @@
 
             </table>
             <div class="box-footer col-lg-12">
+              
               <button type="button" class="btn-reset btn btn-danger pull-left">Reset</button>
               <button type="button" disabled id="btn-enroll" class="btn btn-primary pull-right">Enroll</button>
             </div>

@@ -13,10 +13,12 @@
                         <input type="number" class="form-control" name="amount">
                         <div class="help-block text-left" id="js-pay_fee"></div>
                     </div>                         --}}
-                </div>     
-                <div class="modal-footer">                   
-                    <input type="image" class="btn btn-lg" src="https://www.sandbox.paypal.com/en_US/i/btn/btn_paynowCC_LG.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!">
+                   
+                        
+                      
+                    <input type="submit" width="200" class="btn btn-lg btnpaypal" src="https://www.sandbox.paypal.com/en_US/i/btn/btn_paynowCC_LG.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!">
                     <img alt="" border="0" src="https://www.sandbox.paypal.com/en_US/i/scr/pixel.gif" width="1" height="1">
+                    
                 </div>     
             
         </div><!-- /.modal-content -->

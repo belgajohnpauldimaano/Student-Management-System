@@ -278,7 +278,6 @@
                 
                 var stud_status = $('#stud_status').val();
                 var balance = $('#js-current_balance').val();
-
                 
                 if (or_num) {
                     if(downpayment == '' || payment_category == ''){

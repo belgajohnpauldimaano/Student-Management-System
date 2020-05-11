@@ -105,6 +105,9 @@
             });
         });
   
+        $('.btnpaypal').click(function(){
+            loader_overlay();
+        })
         
         $('body').on('submit', '#js-checkout-form', function (e) {
             e.preventDefault();
@@ -119,8 +122,7 @@
                 contentType : false,
                 success     : function (res) {
                     $('.help-block').html('');
-                    // var url_paypal = $.parseJSON(res.url);
-                    
+                    // var url_paypal = $.parseJSON(res.url);                    
 
                     if (res.res_code == 1)
                     {
@@ -131,6 +133,7 @@
                     }
                     else
                     {
+                        
                         window.location.href = res;
 
                         // alertify.defaults.theme.ok = "btn btn-primary btn-flat"; 
