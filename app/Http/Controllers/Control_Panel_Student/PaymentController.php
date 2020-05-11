@@ -96,10 +96,15 @@ class PaymentController extends Controller
         // Create a transaction and amount and description.
         $transaction = new Transaction();
         $transaction->setAmount($amount)->setItemList($itemList)
-        ->setDescription('SJAI Tuition Fee Payment');
+        ->setDescription($request->description_name);
         //You can set custom data with '->setCustom($data)' or put it in a session.
 
         // Create a redirect urls, cancel url brings us back to current page, return url takes us to confirm payment.
+        // $baseUrl = getBaseUrl();
+        // $redirectUrls = new RedirectUrls();
+        // $redirectUrls->setReturnUrl("$baseUrl/ExecutePayment.php?success=true")
+        // ->setCancelUrl("$baseUrl/ExecutePayment.php?success=false");
+        
         $redirect_urls = new RedirectUrls();
         $redirect_urls->setReturnUrl(route('confirm-payment'))
         ->setCancelUrl(route('student.create-payment.paypal'));
@@ -142,7 +147,9 @@ class PaymentController extends Controller
             $Enrollment->downpayment = $request->pay_fee;
             $Enrollment->number = $request->phone;
             $Enrollment->email = $request->email;
-            
+            $Enrollment->balance = $request->result_current_bal;
+            $Enrollment->payment_option = 'Credit Card/Debit Card';   
+
             if($Enrollment->save()){
                 return response()->json([$redirect_url]);
             }else{
@@ -179,139 +186,162 @@ class PaymentController extends Controller
 
         // Get value store in array and verified data integrity
         // $value = $request->session()->pull('key', 'default');
+        // print_r($request->session()->pull('key', 'default'));
 
         // Check if payment is approved
         if ($result->getState() != 'approved'){
             return redirect()->route('student.enrollment.index')->withError('Payment was not successful.');
+        }else{
+            $User = \Auth::user();
+            $StudentInformation = StudentInformation::where('user_id', $User->id)->first();
+
+            $SchoolYear = SchoolYear::where('current', 1)
+                ->where('status', 1)
+                ->orderBY('id', 'DESC')
+                ->first();
+
+            $IsReceived = \App\Transaction::where('student_id', $StudentInformation->id)
+                ->where('school_year_id', $SchoolYear->id)->orderBy('id', 'Desc')->first();
+            $IsReceived->or_number =  $payment->invoice_id;
+            $IsReceived->isSuccess = 1;  
+            
+            if($IsReceived->save()){
+                $payment = \App\Transaction::find($IsReceived->id);
+                \Mail::to($IsReceived->email)->send(new SendMail($payment));
+
+                return redirect()->route('student.enrollment.index')
+                    ->withSuccess('Payment made successfully.');
+            }else{
+                return redirect()->route('student.enrollment.index')
+                    ->withError('Payment was not successful.');
+            }   
+            
         }
-        
-        $User = \Auth::user();
-        $StudentInformation = StudentInformation::where('user_id', $User->id)->first();
-
-        $SchoolYear = SchoolYear::where('current', 1)
-            ->where('status', 1)
-            ->orderBY('id', 'DESC')
-            ->first();
-
-        $IsReceived = \App\Transaction::where('student_id', $StudentInformation->id)->where('school_year_id', $SchoolYear->id)->orderBy('id', 'Desc')->first();
-        $IsReceived->or_number =  $payment->invoice_id;
-        $IsReceived->isSuccess = 1;  
-        $IsReceived->save();
-
-        $payment = \App\Transaction::find($IsReceived->id);
-
-            \Mail::to($IsReceived->email)->send(new SendMail($payment));
-               
-      
-        return redirect()->route('student.enrollment.index')->withSuccess('Payment made successfully.');
     }
     
     // start of function
     // this espects a post request from the paypal pay now form
     function paypalPdt(Request $r){
 
-        return redirect()->route('student.enrollment.index')->withSuccess('PDT made successfully.');
-        // // Change to www.sandbox.paypal.com for testing or www.paypal.com for live
-        // $pp_hostname = "www.paypal.com"; 
+        // return redirect()->route('student.enrollment.index')->withSuccess('PDT made successfully.');
+        // Change to www.sandbox.paypal.com for testing or www.paypal.com for live
+        $pp_hostname = "https://www.sandbox.paypal.com/"; 
 
-        // // read the post from PayPal system and add 'cmd'
-        // $req = 'cmd=_notify-synch';
+        // read the post from PayPal system and add 'cmd'
+        $req = 'cmd=_notify-synch';
         
-        // //transaction number
-        // $tx_token = $_GET['tx']; 
+        //transaction number
+        $tx_token = $_GET['tx']; 
 
-        // // you'll get this in paypal pdt settings
-        // $auth_token = "kusdhgushrtiughsoriugsdiufhgisudfhgiudhfigushdofiuhgsodfiugh";
+        // you'll get this in paypal pdt settings
+        $auth_token = $tx_token;
 
-        // $req .= "&tx=$tx_token&at=$auth_token";
+        $req .= "&tx=$tx_token&at=$auth_token";
         
-        // // curl from paypal
-        // $ch = curl_init();
-        // curl_setopt($ch, CURLOPT_URL, "https://$pp_hostname/cgi-bin/webscr");
-        // curl_setopt($ch, CURLOPT_POST, 1);
-        // curl_setopt($ch, CURLOPT_RETURNTRANSFER,1);
-        // curl_setopt($ch, CURLOPT_POSTFIELDS, $req);
-        // curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 1);
-        // //set cacert.pem verisign certificate path in curl using 'CURLOPT_CAINFO' field here,
-        // //if your server does not bundled with default verisign certificates.
-        // curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 2);
-        // curl_setopt($ch, CURLOPT_HTTPHEADER, array("Host: $pp_hostname"));
-        // $res = curl_exec($ch);
-        // curl_close($ch);
-        // if(!$res){
-        //     return "curl error";
-        // }else{
-        //     // parse the data from the submitted paypal pay now form
-        //     $lines = explode("\n", trim($res));
-        //     $keyarray = array();
-        //     // if payment status in paypal is success
-        //     if (strcmp ($lines[0], "SUCCESS") == 0) {
-        //         for ($i = 1; $i < count($lines); $i++) {
-        //             $temp = explode("=", $lines[$i],2);
-        //             $keyarray[urldecode($temp[0])] = urldecode($temp[1]);
-        //         }
+        // curl from paypal
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, "https://$pp_hostname/cgi-bin/webscr");
+        curl_setopt($ch, CURLOPT_POST, 1);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER,1);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $req);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 1);
+        //set cacert.pem verisign certificate path in curl using 'CURLOPT_CAINFO' field here,
+        //if your server does not bundled with default verisign certificates.
+        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 2);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, array("Host: $pp_hostname"));
+        $res = curl_exec($ch);
+        curl_close($ch);
+        if(!$res){
+            return "curl error";
+        }else{
+            // parse the data from the submitted paypal pay now form
+            $lines = explode("\n", trim($res));
+            $keyarray = array();
+            // if payment status in paypal is success
+            if (strcmp ($lines[0], "SUCCESS") == 0) {
+                for ($i = 1; $i < count($lines); $i++) {
+                    $temp = explode("=", $lines[$i],2);
+                    $keyarray[urldecode($temp[0])] = urldecode($temp[1]);
+                }
 
-        //     // assign data to variable
-        //     $firstname = $keyarray['first_name'];
-        //     $lastname = $keyarray['last_name'];
-        //     $itemname = $keyarray['item_name'];
-        //     $amount = $keyarray['mc_gross'];
+            // assign data to variable
+            $firstname = $keyarray['first_name'];
+            $lastname = $keyarray['last_name'];
+            $itemname = $keyarray['item_name'];
+            $amount = $keyarray['mc_gross'];
 
-        //     // these are custom aditional variable that is set in the paypal pay now form
-        //     // I used this to Identify the referrer url and the id that points to the database row id 
-        //     parse_str($keyarray['custom'],$_MYVAR);
+            // these are custom aditional variable that is set in the paypal pay now form
+            // I used this to Identify the referrer url and the id that points to the database row id 
+            parse_str($keyarray['custom'],$_MYVAR);
             
-        //     // here I assigned the referrer to a variable
-        //     $referrer =  $_MYVAR['web'];
-        //     // here I assigned the row id to a variable
-        //     $referrer_trans_id = $_MYVAR['id'];
+            // here I assigned the referrer to a variable
+            $referrer =  $_MYVAR['web'];
+            // here I assigned the row id to a variable
+            $referrer_trans_id = $_MYVAR['id'];
             
-        //     // here I deal with the each referrer because I have 2 websites pap and papja using the same paypal account
-        //     // papja payment referrer
-        //     if($referrer == '0'){
-        //         // update the database row as paid
-        //         Ticket::where('id', $referrer_trans_id)->update([
-        //             'status' => 1,
-        //             'method' => 2,
-        //             'reference' => $keyarray['txn_id']
-        //         ]);
-        //         User::where('ticket', $referrer_trans_id)->update([
-        //             'status' => 1
-        //         ]);
+            // here I deal with the each referrer because I have 2 websites pap and papja using the same paypal account
+            // papja payment referrer
+            if($referrer == '0'){
+                // update the database row as paid
+                $User = \Auth::user();
+                $StudentInformation = StudentInformation::where('user_id', $User->id)->first();
 
-        //         // get the updated database row
-        //         $ticket = Ticket::find($referrer_trans_id);
+                $SchoolYear = SchoolYear::where('current', 1)
+                    ->where('status', 1)
+                    ->orderBY('id', 'DESC')
+                    ->first();
 
-        //         // queue email notification
-        //         \Mail::to($ticket->email)->send(new Activate($ticket));
+                $IsReceived = \App\Transaction::where('student_id', $StudentInformation->id)->where('school_year_id', $SchoolYear->id)->orderBy('id', 'Desc')->first();
+                $IsReceived->or_number =  $payment->invoice_id;
+                $IsReceived->isSuccess = 1;  
+                $IsReceived->save();
+
+                $payment = \App\Transaction::find($IsReceived->id);
+
+                    \Mail::to($IsReceived->email)->send(new SendMail($payment));
+                // Ticket::where('id', $referrer_trans_id)->update([
+                //     'status' => 1,
+                //     'method' => 2,
+                //     'reference' => $keyarray['txn_id']
+                // ]);
+                // User::where('ticket', $referrer_trans_id)->update([
+                //     'status' => 1
+                // ]);
+
+                // // get the updated database row
+                // $ticket = Ticket::find($referrer_trans_id);
+
+                // queue email notification
+                // \Mail::to($ticket->email)->send(new Activate($ticket));
                 
-        //         // redirect to thank you page 
-        //         return redirect('/paypal/status/' . 1);
-        //     }
-        //     // for pap payment referrer
-        //     elseif($referrer == '1'){
+                // redirect to thank you page 
+                // return redirect('/paypal/status/' . 1);
+                return redirect()->route('student.enrollment.index')->withSuccess('Payment made successfully.');
+            }
+            // for pap payment referrer
+            elseif($referrer == '1'){
 
-        //             // update database row as paid
-        //             $registration = PapRegistration::find($referrer_trans_id);
-        //             PapRegistration::where('id', $referrer_trans_id)->update([
-        //                 'status' => 1
-        //             ]);
+                    // update database row as paid
+                    $registration = PapRegistration::find($referrer_trans_id);
+                    PapRegistration::where('id', $referrer_trans_id)->update([
+                        'status' => 1
+                    ]);
 
-        //             // queue email notification
-        //             \Mail::to($registration->email)
-        //             ->send(new PapRenew($registration));
+                    // queue email notification
+                    \Mail::to($registration->email)
+                    ->send(new PapRenew($registration));
                     
-        //             // redirect to thank you page or home page
-        //             // temporary page
-        //             return redirect('https://www.pap.org.ph/');
-        //         }
-        //     }
+                    // redirect to thank you page or home page
+                    // temporary page
+                    return redirect('https://www.pap.org.ph/');
+                }
+            }
             
-        //     // if payment failed redirect to failed page
-        //     else if (strcmp ($lines[0], "FAIL") == 0) {
-        //         // redirect to failed page
-        //         return redirect('/paypal/status/' . 0);
-        //     }
-        // }
+            // if payment failed redirect to failed page
+            else if (strcmp ($lines[0], "FAIL") == 0) {
+                // redirect to failed page
+                return redirect('/paypal/status/' . 0);
+            }
+        }
     }
 }

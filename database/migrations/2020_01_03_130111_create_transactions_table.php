@@ -23,6 +23,8 @@ class CreateTransactionsTable extends Migration
             $table->double('balance');
             $table->string('email');
             $table->string('number');
+            $table->string('payment_option')->nullable();
+            $table->enum('approval', array('Approved', 'Not yet approved'))->default('Not yet approved');
             $table->tinyInteger('isSuccess')->nullable();
             $table->tinyInteger('status')->default('1');
             $table->timestamps();

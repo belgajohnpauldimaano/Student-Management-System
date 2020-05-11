@@ -13,6 +13,35 @@
                         <input type="number" class="form-control" name="amount">
                         <div class="help-block text-left" id="js-pay_fee"></div>
                     </div>                         --}}
+                    <div id="paypal-button-container"></div>
+                    {{-- <script src="https://www.paypal.com/sdk/js?client-id=ASVJ0J0h6UgKmn1IGKMhGQhhLIW1JnEneYPjYqtUsN2Yg_H3i12b2neDar0Wuskc7J_mPpm4JniAvEiA&currency=USD"
+                     data-sdk-integration-source="button-factory"></script>
+                    <script>
+                        var amount1 = $('#pay_fee').val();
+                    paypal.Buttons({
+                        style: {
+                            shape: 'rect',
+                            color: 'gold',
+                            layout: 'vertical',
+                            label: 'pay',
+                            
+                        },
+                        createOrder: function(data, actions) {
+                            return actions.order.create({
+                                purchase_units: [{
+                                    amount: {
+                                        value: '1'
+                                    }
+                                }]
+                            });
+                        },
+                        onApprove: function(data, actions) {
+                            return actions.order.capture().then(function(details) {
+                                alert('Transaction completed by ' + details.payer.name.given_name + '!');
+                            });
+                        }
+                    }).render('#paypal-button-container');
+                    </script> --}}
                    
                         
                       

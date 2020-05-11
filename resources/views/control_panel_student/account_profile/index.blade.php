@@ -172,7 +172,7 @@
                         </div>
                         <div class="form-group">
                             <label for="">Contact Number</label>
-                            <input type="text" class="form-control" name="contact_number" id="contact_number">
+                            <input type="text" class="form-control" name="contact_number" id="contact_number" placeholder="9561234567">
                         </div>
                         <div class="form-group">
                             <label for="">Email Address</label>

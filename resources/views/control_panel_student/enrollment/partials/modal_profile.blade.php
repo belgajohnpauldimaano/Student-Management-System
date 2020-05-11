@@ -61,7 +61,7 @@
                         </div>
                         <div class="form-group phone">
                             <label for="">Contact Number</label>
-                            <input type="text" class="form-control" name="contact_number" id="contact_number" >
+                            <input type="text" class="form-control" name="contact_number" id="contact_number" value="" placeholder="9561234567">
                             <div class="help-block text-left" id="js-contact_number"></div>
                         </div>
                         <div class="form-group e_add">

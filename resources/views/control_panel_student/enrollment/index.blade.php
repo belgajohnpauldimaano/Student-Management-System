@@ -1,17 +1,67 @@
 @extends('control_panel_student.layouts.master')
 
 @section ('styles') 
+    <style>
+        .loader {
+            display: block;
+            margin: 20px auto 0;
+            vertical-align: middle;
+        }
+
+        #preloader {
+            width: 100%;
+            height: 100%;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            background: rgba(255, 255, 255, 0.63);
+            z-index: 11000;
+            position: fixed;
+            display: block;
+        }
+
+        .preloader {
+            position: absolute;
+            margin: 0 auto;
+            left: 1%;
+            right: 1%;
+            top: 47%;
+            width: 100px;
+            height: 100px;
+            background: center center no-repeat none;
+            background-size: 65px 65px;
+            -webkit-border-radius: 50%;
+            -moz-border-radius: 50%;
+            -ms-border-radius: 50%;
+            -o-border-radius: 50%;
+            border-radius: 50%;
+        }
+
+    </style>
 @endsection
 
 @section ('content_title')
-    Enrollment
-    
+    Enrollment    
 @endsection
 
 @section ('content')    
-<button style="display: none; margin-top: -2.4em" id="back_method" class="btn-success btn pull-right">
-    <i class="fas fa-arrow-left"></i> back
-</button>
+<div class="row" id="back_method" style="display: none; margin-top: -7em !important">
+    <div class="col-md-6">
+        {{-- <a href="#" style="margin-top: -1em" class="btn-info btn">
+            <i class="fas fa-info"></i>  Instructions
+        </a> --}}
+    </div>
+    <div class="col-md-6">
+        <button style="margin-top: -3em" class="btn-success btn pull-right">
+        <i class="fas fa-arrow-left"></i> back
+        </button>
+    </div>
+</div>
+
+    <div id="preloader" style="display: none">
+        <img class="preloader" src="{{ asset('img/loader.gif')}}" alt="">
+    </div>
     <div class="overlay hidden" id="js-loader-overlay"><i class="fa fa-refresh fa-spin"></i></div>
     <div class="js-data-container" style="margin-top: 10px;">
         @include('control_panel_student.enrollment.partials.data_list')
@@ -81,6 +131,10 @@
                 data        : formData,
                 processData : false,
                 contentType : false,
+                beforeSend: function() {
+                    $('#preloader').show();
+                    // loader_overlay();
+                },
                 success     : function (res) {
                     $('.help-block').html('');
                     if (res.res_code == 1)
@@ -110,48 +164,86 @@
         })
         
         $('body').on('submit', '#js-checkout-form', function (e) {
-            e.preventDefault();
-            
-            var formData = new FormData($(this)[0]);
-            $.ajax({
-                headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-                url         : "{{ route('student.create-payment.paypal') }}",
-                type        : 'POST',
-                data        : formData,
-                processData : false,
-                contentType : false,
-                success     : function (res) {
-                    $('.help-block').html('');
-                    // var url_paypal = $.parseJSON(res.url);                    
-
-                    if (res.res_code == 1)
-                    {
-                        for (var err in res.res_error_msg)
-                        {
-                            $('#js-' + err).html('<code> '+ res.res_error_msg[err] +' </code>');
+            e.preventDefault();            
+                var formData = new FormData($(this)[0]);
+                $.ajax({
+                    headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+                    url         : "{{ route('student.create-payment.paypal') }}",
+                    type        : 'POST',
+                    data        : formData,
+                    processData : false,
+                    contentType : false,   
+                    beforeSend: function() {
+                        if($('#pay_fee').val() != '' && $('#phone').val() != '' && $('#email').val() != ''){ 
+                            $('#preloader').show();
                         }
+                        else{
+                            $('.help-block').html('');
+                            check_payfee();
+                            check_phone();
+                            check_email();   
+                        }
+                        // loader_overlay();
+                    },                 
+                    success     : function (res) {                            
+                        if (res.res_code == 1)
+                        {
+                            for (var err in res.res_error_msg)
+                            {
+                                $('#js-' + err).html('<code> '+ res.res_error_msg[err] +' </code>');
+                            }
+                        }
+                        else
+                        {
+                            window.location.href = res;
+                        }   
                     }
-                    else
-                    {
-                        
-                        window.location.href = res;
-
-                        // alertify.defaults.theme.ok = "btn btn-primary btn-flat"; 
-                        // alertify           
-                        // .alert('Success', "Your transaction is successfuly saved!.", function(){                
-                        //     alertify.success('Thank you!');                
-                        // });
-                    }
-                }
-            });
+                });
+            
         });
 
-        function validate_form(){            
+    function validate_form(){            
         
         $('#pay_fee').keyup(function() {
+            check_payfee();
+        });
+
+        $('#phone').keyup(function() {
+            check_phone();
+        });
+
+        $("#email").keyup(function(){
+            check_email();
+        });
+
+        
+
+        // function isValidEmailAddress(emailAddress) {
+        //     var pattern = new RegExp(/^(("[\w-\s]+")|([\w-]+(?:\.[\w-]+)*)|("[\w-\s]+")([\w-]+(?:\.[\w-]+)*))(@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$)|(@\[?((25[0-5]\.|2[0-4][0-9]\.|1[0-9]{2}\.|[0-9]{1,2}\.))((25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\.){2}(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\]?$)/i);
+        //     return pattern.test(emailAddress);
+        // }
+        
+
+        $('.btn-reset').on('click', function(){
+            location.reload();
+        });
+    }
+        // online-bank
+        function check_payfee(){
+            function currencyFormat(num) {
+                return num.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')
+            }   
+
             var payment = $('#pay_fee').val();
             var downpayment = $('#downpayment').val();
-            $('#dp_enrollment').text(payment);
+            
+            $('#dp_enrollment').text(currencyFormat(parseFloat(payment)));        
+
+            var total_tuition = $('#total_tuition').val();
+            result_bal = parseFloat(total_tuition) - parseFloat(payment);
+            document.getElementById('result_current_bal').value = (result_bal);
+            
+            $('#current_balance').text(currencyFormat(result_bal));
 
             if(payment>=downpayment){
                 $('.input-payment').addClass('has-success');
@@ -160,11 +252,11 @@
             }else if(payment<downpayment){
                 $('.input-payment').addClass('has-error');
                 $('.input-payment').removeClass('has-success');
-                $('#js-pay_fee').text('You have to enter the amount of downpayment.');
+                $('#js-pay_fee').text('You have to enter the amount of downpayment or above amount.');
             }
-        });
-
-        $('#phone').keyup(function() {
+        }
+        
+        function check_phone(){
             var phone = $('#phone').val();
             var len = jQuery('#phone').html().length
             if(phone.length===13){
@@ -176,9 +268,9 @@
                 $('.input-phone').removeClass('has-success');
                 $('#js-number').text('You must be enter your phone number.');
             }
-        });
+        }
 
-        $("#email").keyup(function(){
+        function check_email(){
             var email = $("#email").val();
 
             if(email != 0)
@@ -198,34 +290,104 @@
                 $('.input-email').removeClass('has-success');
                 $('#js-email').text('You must be enter your email address.');       
             }
-
+        }
+        // deposit-bank
+       
+        $('#bank_pay_fee').keyup(function() {
+            bank_pay_fee();
         });
 
-        // function isValidEmailAddress(emailAddress) {
-        //     var pattern = new RegExp(/^(("[\w-\s]+")|([\w-]+(?:\.[\w-]+)*)|("[\w-\s]+")([\w-]+(?:\.[\w-]+)*))(@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$)|(@\[?((25[0-5]\.|2[0-4][0-9]\.|1[0-9]{2}\.|[0-9]{1,2}\.))((25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\.){2}(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\]?$)/i);
-        //     return pattern.test(emailAddress);
-        // }
+        $('#bank_phone').keyup(function() {
+            check_phone();
+        });
+
+        $("#bank_email").keyup(function(){
+            check_bank_email();
+        });
+
+        $("#bank_transaction_id").keyup(function(){
+            bank_transaction();
+        });
+
+        function bank_transaction(){
+            var phone = $('#bank_transaction_id').val();
+            
+            if(phone != ''){
+                $('.input-bank_transaction_id').addClass('has-success');
+                $('.input-bank_transaction_id').removeClass('has-error');
+                $('#js-number').text('You are good to go!');               
+            }else{
+                $('.input-bank_transaction_id').addClass('has-error');
+                $('.input-bank_transaction_id').removeClass('has-success');
+                $('#js-bank_transaction_id').text('You must be enter your transaction number.');
+            }
+        }
+
+        function bank_pay_fee(){
+            var payment = $('#bank_pay_fee').val();
+            var downpayment = $('#bank_downpayment').val();
+
+            if(payment>=downpayment){
+                $('.input-bank_pay_fee').addClass('has-success');
+                $('.input-bank_pay_fee').removeClass('has-error');
+                $('#js-bank_pay_fee').text('You are good to go!');
+            }else if(payment<downpayment){
+                $('.input-bank_pay_fee').addClass('has-error');
+                $('.input-bank_pay_fee').removeClass('has-success');
+                $('#js-bank_pay_fee').text('You have to enter the amount of downpayment or above amount.');
+            }
+        }
         
+        function check_phone(){
+            var phone = $('#bank_phone').val();
+            var len = jQuery('#bank_phone').html().length
+            if(phone.length===13){
+                $('.input-bank_phone').addClass('has-success');
+                $('.input-bank_phone').removeClass('has-error');
+                $('#js-number').text('You are good to go!');               
+            }else{
+                $('.input-bank_phone').addClass('has-error');
+                $('.input-bank_phone').removeClass('has-success');
+                $('#js-bank_phone').text('You must be enter your phone number.');
+            }
+        }
 
-        $('.btn-reset').on('click', function(){
-            location.reload();
-        });
-    }
+        function check_bank_email(){
+            var email = $("#bank_email").val();
+
+            if(email != 0)
+            {
+                if(isValidEmailAddress(email))
+                {
+                    $('.input-bank_email').addClass('has-success');
+                    $('.input-bank_email').removeClass('has-error');
+                    $('#js-bank_email').text('You are good to go!'); 
+                } else {
+                    $('.input-bank_email').addClass('has-error');
+                    $('.input-bank_email').removeClass('has-success');
+                    $('#js-bank_email').text('invalid email address.');
+                }
+            } else {
+                $('.input-bank_email').addClass('has-error');
+                $('.input-bank_email').removeClass('has-success');
+                $('#js-bank_email').text('You must be enter your email address.');       
+            }
+        }
 
     $('body').on('change','#payment_category', function(){
         var payment_category = $('#payment_category').val();
         if(payment_category==1){
             $('#form_method').addClass('has-success');
             $('#form_method').removeClass('has-error');
-            $('#js-payment_category').html('<i class="fa fa-check"></i> Choose your desire method'); 
+            $('#js-payment_category').html('<i class="fa fa-check"></i> You chose Credit card/Debit card'); 
         }else if(payment_category==2){
             $('#form_method').addClass('has-success');
             $('#form_method').removeClass('has-error');
-            $('#js-payment_category').html('<i class="fa fa-check"></i> Choose your desire method'); 
+            $('#js-payment_category').html('<i class="fa fa-check"></i> You chose Bank Deposit'); 
         }else if(payment_category==0){
             $('#form_method').addClass('has-error');
             $('#form_method').removeClass('has-success');
-            $('#js-payment_category').html('<i class="fa fa-times-circle-o"></i> Choose your desire method');       
+            $('#js-payment_category').html('<i class="fa fa-times-circle-o"></i> Choose your preferred method');       
         }
          
     });
@@ -430,6 +592,7 @@
                 $('.e_add').removeClass('has-success');
                   
             }
+            
 
     });
 
@@ -589,11 +752,19 @@
             $("#btn-enroll").prop('disabled', true);
         }
     });
+    
+    $("#bank_terms").change(function() {
+        if(this.checked) {
+            $(".btn-bank-enroll").prop('disabled', false);
+        }else{
+            $(".btn-bank-enroll").prop('disabled', true);
+        }
+    });
 
-    $('#btn-enroll').click(function(e){
-        e.preventDefault();
-        $('#paypal-modal').modal({ backdrop : 'static' });
-    })
+    // $('#btn-enroll').click(function(e){
+    //     e.preventDefault();
+    //     $('#paypal-modal').modal({ backdrop : 'static' });
+    // })
 
     $('body').on('submit', '#form--update-profile', function (e) {
         e.preventDefault();

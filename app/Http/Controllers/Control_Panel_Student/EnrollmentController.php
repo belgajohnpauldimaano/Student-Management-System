@@ -7,7 +7,8 @@ use App\Enrollment;
 use App\SchoolYear;
 use App\TuitionFee;
 use App\ClassDetail;
-// use App\Transaction;
+
+use App\Transaction;
 use App\Mail\SendMail;
 use App\DownpaymentFee;
 use App\PaymentCategory;
@@ -16,23 +17,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 
-// paypal
-use PayPal\Api\Amount;
-use PayPal\Api\Details;
-use PayPal\Api\Item;
 
-/** All Paypal Details class **/
-use PayPal\Api\ItemList;
-use PayPal\Api\Payer;
-use PayPal\Api\Payment;
-use PayPal\Api\PaymentExecution;
-use PayPal\Api\RedirectUrls;
-use PayPal\Api\Transaction;
-use PayPal\Auth\OAuthTokenCredential;
-use PayPal\Rest\ApiContext;
-use Redirect;
-use Session;
-use URL;
 
 class EnrollmentController extends Controller
 {
@@ -130,48 +115,46 @@ class EnrollmentController extends Controller
         }
     }
 
-    public function save(Request $request){
+    // public function save(Request $request){
 
-        $User = \Auth::user();
-        $StudentInformation = StudentInformation::where('user_id', $User->id)->first();
-        $mytime = Carbon::now();
-        $SchoolYear = SchoolYear::where('current', 1)
-            ->where('status', 1)
-            ->orderBY('id', 'DESC')
-            ->first();
+    //     $User = \Auth::user();
+    //     $StudentInformation = StudentInformation::where('user_id', $User->id)->first();
+    //     $mytime = Carbon::now();
 
-        $rules = [
-            'tution_category' => 'required',
-            'e_downpayment' => 'required',
-            'pay_fee' => 'required',
-            // 'phone' => 'required',
-            'email'=>'required'
-        ];
+    //     $SchoolYear = SchoolYear::where('current', 1)
+    //         ->where('status', 1)
+    //         ->orderBY('id', 'DESC')
+    //         ->first();
+
+    //     $rules = [
+    //         'tution_category' => 'required',
+    //         'e_downpayment' => 'required',
+    //         'pay_fee' => 'required',
+    //         // 'phone' => 'required',
+    //         'email'=>'required'
+    //     ];
         
-        $validator = \Validator::make($request->all(), $rules);
+    //     $validator = \Validator::make($request->all(), $rules);
 
-        if ($validator->fails())
-        {   
-            return response()->json(['res_code' => 1, 'res_msg' => 'Please fill all required fields.', 'res_error_msg' => $validator->getMessageBag()]);
-        }
+    //     if ($validator->fails())
+    //     {   
+    //         return response()->json(['res_code' => 1, 'res_msg' => 'Please fill all required fields.', 'res_error_msg' => $validator->getMessageBag()]);
+    //     }
       
-        // $Enrollment = new App\Transaction();
-        // $Enrollment->or_number = $StudentInformation->first_name.''.$mytime->toDateTimeString();
-        // $Enrollment->payment_category_id = $request->tution_category;
-        // $Enrollment->student_id = $StudentInformation->id;
-        // $Enrollment->school_year_id = $SchoolYear->id;
-        // $Enrollment->downpayment = $request->pay_fee;
-        // $Enrollment->save();
+    //     // $Enrollment = new App\Transaction();
+    //     // $Enrollment->or_number = $StudentInformation->first_name.''.$mytime->toDateTimeString();
+    //     // $Enrollment->payment_category_id = $request->tution_category;
+    //     // $Enrollment->student_id = $StudentInformation->id;
+    //     // $Enrollment->school_year_id = $SchoolYear->id;
+    //     // $Enrollment->downpayment = $request->pay_fee;
+    //     // $Enrollment->save();
 
-        // $payment = App\Transaction::find($Enrollment->id);
+    //     // $payment = App\Transaction::find($Enrollment->id);
 
-        // \Mail::to($request->email)->send(new SendMail($payment));
+    //     // \Mail::to($request->email)->send(new SendMail($payment));
 
-
-        
-
-        return response()->json(['res_code' => 0, 'res_msg' => 'You have successfuly enrolled.']);
-    }
+    //     return response()->json(['res_code' => 0, 'res_msg' => 'You have successfuly enrolled.']);
+    // }
 
     
 }

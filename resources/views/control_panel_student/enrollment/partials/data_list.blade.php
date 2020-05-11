@@ -33,13 +33,16 @@
         <div class="form-group col-lg-6 col-lg-offset-3" id="form_method">
           <select name="payment_category" id="payment_category" class="form-control">            
             <option value="0" selected>
-              Enrollment Method
+              --Select Preferred Enrollment Method --
             </option>
             <option value="1">
-              Online Payment
+              Credit card/Debit card
             </option>
             <option value="2">
               Bank Deposit
+            </option>
+            <option value="2">
+              Gcash
             </option>    
           </select>
           <div class="help-block text-left" id="js-payment_category"></div>
@@ -54,6 +57,6 @@
     @include('control_panel_student.enrollment.partials.online_bank')
 </div>
 
-<div class="row" id="deposit" style="display: none">    
+<div class="row" id="deposit" style="display: none; padding:0 16px 0 16px">    
     @include('control_panel_student.enrollment.partials.deposit_bank')
 </div>
