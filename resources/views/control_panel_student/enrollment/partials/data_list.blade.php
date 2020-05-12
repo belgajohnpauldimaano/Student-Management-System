@@ -36,7 +36,7 @@
               --Select Preferred Enrollment Method --
             </option>
             <option value="1">
-              Credit card/Debit card
+              Credit card/Debit card/PayMaya
             </option>
             <option value="2">
               Bank Deposit

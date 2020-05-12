@@ -173,5 +173,62 @@ class EnrollmentController extends Controller
         return response()->json(['res_code' => 0, 'res_msg' => 'You have successfuly enrolled.']);
     }
 
+    public function save_data(Request $request){
+        $User = \Auth::user();
+        $StudentInformation = StudentInformation::where('user_id', $User->id)->first();
+        $mytime = Carbon::now();
+
+        $SchoolYear = SchoolYear::where('current', 1)
+            ->where('status', 1)
+            ->orderBY('id', 'DESC')
+            ->first();
+
+        $rules = [
+            'gcash_tution_amt' => 'required',
+            'gcash_phone' => 'required',
+            'gcash_email' => 'required',
+            'Gcash'=>'required',
+            'gcash_transaction_id'=>'required',
+            'gcash_pay_fee' => 'required',
+            'gcash_image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            // 'bank_image' => 'required'
+        ];
+        
+        $validator = \Validator::make($request->all(), $rules);
+
+        if ($validator->fails())
+        {   
+            return response()->json(['res_code' => 1, 'res_msg' => 'Please fill all required fields.', 'res_error_msg' => $validator->getMessageBag()]);
+        }
+      
+        $Enrollment_total = $request->bank_tution - $request->gcash_pay_fee;
+
+        $Enrollment = new Transaction();
+        $Enrollment->or_number = $request->gcash_transaction_id;
+        $Enrollment->email = $request->gcash_email;
+        $Enrollment->number = $request->gcash_phone;
+        $Enrollment->payment_category_id = $request->gcash_tution_amt;
+        $Enrollment->student_id = $StudentInformation->id;
+        $Enrollment->school_year_id = $SchoolYear->id;
+        $Enrollment->downpayment = $request->gcash_pay_fee;
+        $Enrollment->payment_option = $request->Gcash;
+        // $Enrollment->receipt_img = $request->bank_image;
+        $Enrollment->isSuccess = 1;
+        $Enrollment->balance = $Enrollment_total;
+
+        // image
+        $imageName = time().'.'.$request->gcash_image->getClientOriginalExtension();
+        $request->gcash_image->move(public_path('/img/receipt/'), $imageName); 
+
+        $Enrollment->receipt_img = $imageName; 
+            
+        $Enrollment->save();
+
+        $payment = Transaction::find($Enrollment->id);
+            \Mail::to($request->gcash_email)->send(new SendMail($payment));
+
+        return response()->json(['res_code' => 0, 'res_msg' => 'You have successfuly enrolled.']);
+    }
+
     
 }

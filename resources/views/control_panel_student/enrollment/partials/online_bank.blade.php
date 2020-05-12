@@ -12,7 +12,16 @@
     </div>
     <!-- /.box-header -->
     <div class="box-body" style="">
-        <p>Follow the steps to continue to payment.</p>
+        <p>Debit/Credit/PayMaya Transaction</p>
+        <p>
+          Step 1. Fill up necessary information below.
+        </p>
+        <p>
+          Step 2. Click the enroll button to proceed with the payment.
+        </p>
+        <p>
+          Step 3. Wait for the text or confirmation upon successful payment via Debit/Credit card or PayMaya.
+        </p>
     </div>
     <!-- /.box-body -->
   </div>

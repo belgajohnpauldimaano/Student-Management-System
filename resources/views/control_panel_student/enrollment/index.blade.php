@@ -131,8 +131,27 @@
                 data        : formData,
                 processData : false,
                 contentType : false,
-                beforeSend: function() {
-                    $('#preloader').show();
+                beforeSend: function() {                    
+                    if(
+                        $('#bank_email').val() != '' && 
+                        $('#bank_phone').val() != '' && 
+                        $('#bank').val() != '' && 
+                        $('#bank_pay_fee').val() != '' && 
+                        $('#bank_transaction_id').val() != '' && 
+                        $('#bank_image').val() != ""
+                    )
+                    {  
+                        $('#preloader').show();
+                    }
+                    else{
+                        $('.help-block').html('');
+                        bank_pay_fee();
+                        check_bank_phone();
+                        check_bank_email();
+                        bank_transaction();
+                        check_b_image();
+                        check_bank();
+                    }
                 },
                 success     : function (res) {
                     $('.help-block').html('');                    
@@ -168,6 +187,75 @@
                             bank_transaction();
                             check_b_image();
                             check_bank();
+                        }
+                    }
+                    
+                }
+            });
+        });
+
+        $('body').on('submit', '#js-gcash-form', function (e) {
+            e.preventDefault();
+            
+            var formData = new FormData($(this)[0]);
+            $.ajax({
+                url         : "{{ route('student.enrollment.save') }}",
+                type        : 'POST',
+                data        : formData,
+                processData : false,
+                contentType : false,
+                beforeSend: function() {                    
+                    if(
+                        $('#gcash_email').val() != '' && 
+                        $('#gcash_phone').val() != '' && 
+                        $('#gcash_pay_fee').val() != '' && 
+                        $('#gcash_transaction_id').val() != '' && 
+                        $('#gcash_image').val() != ""
+                    )
+                    {  
+                        $('#preloader').show();
+                    }
+                    else{
+                        $('.help-block').html('');
+                        gcash_pay_fee();
+                        check_gcash_phone();
+                        check_gcash_email();
+                        gcash_transaction();
+                        check_g_image();                        
+                    }
+                },
+                success     : function (res) {
+                    $('.help-block').html('');                    
+                    $('#preloader').hide();                      
+                    
+                    if (res.res_code == 1){
+                        for (var err in res.res_error_msg)
+                        {
+                            $('#js-' + err).html('<code> '+ res.res_error_msg[err] +' </code>');
+                        }
+                    }else{   
+                        if(
+                            $('#gcash_email').val() != '' && 
+                            $('#gcash_phone').val() != '' && 
+                            $('#gcash_pay_fee').val() != '' && 
+                            $('#gcash_transaction_id').val() != '' && 
+                            $('#gcash_image').val() != ""
+                        )
+                        {  
+                            $('#preloader').hide();
+                            show_toast_alert({
+                                heading : 'Success',
+                                message : res.res_msg,
+                                type    : 'success'
+                            });
+                        }
+                        else{
+                            $('.help-block').html('');
+                            gcash_pay_fee();
+                            check_gcash_phone();
+                            check_gcash_email();
+                            gcash_transaction();
+                            check_g_image();
                         }
                     }
                     
@@ -435,19 +523,17 @@
         }
 
         function readImageURL(input) {
-                if (input.files && input.files[0]) {
-                    var reader = new FileReader();
-
-                    reader.onload = function (e) {
-                        $('#image-receipt')
-                            .attr('src', e.target.result)
-                            .width(150)
-                            ;
-                    };
-
-                    reader.readAsDataURL(input.files[0]);
-                }
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+                reader.onload = function (e) {
+                    $('#image-receipt')
+                        .attr('src', e.target.result)
+                        .width(150)
+                        ;
+                };
+                reader.readAsDataURL(input.files[0]);
             }
+        }
 
         
 
@@ -544,8 +630,9 @@
         }
         
         function check_g_image(){
-            var image = $('#gcash_image').attr("src");
-            if(image != 'No file chosen'){
+            var image = $('#gcash_image').val();
+
+            if(image != ''){
                 $('.input-gcash_image').addClass('has-success');
                 $('.input-gcash_image').removeClass('has-error');
                 $('#js-gcash_image').text('You are good to go!');               
@@ -553,6 +640,19 @@
                 $('.input-gcash_image').addClass('has-error');
                 $('.input-gcash_image').removeClass('has-success');
                 $('#js-gcash_image').text('You must upload the copy of reciept.');
+            }
+        }        
+
+        function readImageURLGcash(input) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+                reader.onload = function (e) {
+                    $('#image-receipt-gcash')
+                        .attr('src', e.target.result)
+                        .width(150)
+                        ;
+                };
+                reader.readAsDataURL(input.files[0]);
             }
         }
 
@@ -626,7 +726,7 @@
         var payment_category = $('#payment_category').val();
         
         if(payment_category==1){
-            // getProfiledata();
+            getProfiledata();
             
             $("#online").fadeIn();
             $('#selector_payment').hide();
@@ -637,7 +737,7 @@
 
             
         }else if(payment_category==2){
-            // getProfiledata();
+            getProfiledata();
             
             $("#deposit").fadeIn();
             $('#selector_payment').hide();
@@ -647,7 +747,7 @@
             $('#js-payment_category').html('');
 
         }else if(payment_category==3){
-            // getProfiledata();
+            getProfiledata();
             
             $("#gcash").fadeIn();
             $('#selector_payment').hide();

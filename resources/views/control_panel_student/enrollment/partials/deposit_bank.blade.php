@@ -11,7 +11,38 @@
     </div>
     <!-- /.box-header -->
     <div class="box-body" style="">
-        <p>Follow the steps to continue to payment.</p>
+        <p>Bank transaction</p>
+        <p>
+            Step 1. Choose one (1) of the following bank that is nearest to you to proceed with the deposit transaction. 
+            Saint John’s Academy Incorporated bank accounts are as follows:<br/>
+            PNB Dinalupihan Branch<br/>
+            Account Name: Saint John’s Academy Inc.<br/>
+            Account Number: 0785-89547-458
+        </p>
+        <ul>
+            <li>
+                Metrobank Dinalupihan Branch<br/>
+                Account Name: Saint John’s Academy Inc.<br/>
+                Account Number: 1141-25547-578
+            </li>
+            <li>
+                Chinabank Dinalupihan Branch<br/>
+                Account Name: Saint John’s Academy Inc.<br/>
+                Account Number: 2564-65549-254
+            </li>
+            <li>
+                Eastwest Bank Dinalupihan Branch<br/>
+                Account Name: Saint John’s Academy Inc.<br/>
+                Account Number: 6897-245247-6548
+            </li>
+        </ul>
+        <p>
+            Step 2. After the successful deposit transaction, fill out all the necessary information below. Take a photo of the deposit slip and upload it on the icon below (upload file)
+        </p>
+        <p>
+            Step 3. You will receive a text message and email confirmation once the transaction has been successfully done.
+        </p> 
+
     </div>
     <!-- /.box-body -->
 </div>
