@@ -142,9 +142,9 @@
         {{-- Finance Menu --}}
         @if (Auth::user()->role == 6)
           <li><a href="{{ route('finance.dashboard') }}"><i class="fa fa-home fa-fw fa-lg"></i>&nbsp;&nbsp;&nbsp; <span>Dashboard</span></a></li>
-          <li><a href="{{ route('finance.dashboard') }}"><i class="fas fa-clipboard-list"></i>&nbsp;&nbsp;&nbsp; <span>Student Admission</span></a></li>
-          <li><a href="{{ route('finance.student_account') }}"><i class="fa fa-info-circle fa-lg"></i>&nbsp;&nbsp;&nbsp; <span>Student Account</span></a></li>
-          <li><a href="{{ route('registrar.class_details') }}"><i class="fa fa-list-alt fa-lg "></i>&nbsp;&nbsp;&nbsp; <span>Report</span></a></li>
+          <li><a href="{{ route('finance.dashboard') }}"><i class="fas fa-clipboard-list"></i>&nbsp;&nbsp;&nbsp; <span>Student Payment</span></a></li>
+          {{-- <li><a href="{{ route('finance.student_account') }}"><i class="fa fa-info-circle fa-lg"></i>&nbsp;&nbsp;&nbsp; <span>Student Account</span></a></li>
+          <li><a href="{{ route('registrar.class_details') }}"><i class="fa fa-list-alt fa-lg "></i>&nbsp;&nbsp;&nbsp; <span>Report</span></a></li> --}}
           <li>
             <a href="#">
               <i class="fa fa-cog fa-lg ">
