@@ -23,17 +23,17 @@ class Transaction extends Model
 
     public function stud_category()
     {        
-        return $this->belongsTo(StudentCategory::class, 'stud_id', 'student_category_id' );
+        return $this->hasOne(StudentCategory::class, 'stud_id', 'student_category_id' );
     }
 
     public function tuition()
     {        
-        return $this->belongsTo(TuitionFee::class, 'tuition_fee_id', 'tuition_fee_id' );
+        return $this->hasOne(TuitionFee::class, 'tuition_fee_id', 'tuition_fee_id' );
     }
 
     public function misc_fee()
     {        
-        return $this->belongsTo(MiscFee::class, 'misc_fee_id', 'misc_fee_id' );
+        return $this->hasOne(MiscFee::class, 'misc_fee_id', 'misc_fee_id' );
     }
     
 }

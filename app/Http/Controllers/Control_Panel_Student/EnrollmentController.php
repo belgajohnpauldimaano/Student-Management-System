@@ -94,7 +94,8 @@ class EnrollmentController extends Controller
 
                 $grade_level_id = ($ClassDetail->grade_level + 1);
 
-                $Tuition = TuitionFee::where('id', $grade_level_id)->first();
+                $Tuition = PaymentCategory::where('grade_level_id', $grade_level_id)->first();
+
                 $PaymentCategory = PaymentCategory::with('misc_fee','tuition')
                                 ->where('grade_level_id', $grade_level_id)->first();
                                 
@@ -115,46 +116,62 @@ class EnrollmentController extends Controller
         }
     }
 
-    // public function save(Request $request){
+    public function save(Request $request){
+        $User = \Auth::user();
+        $StudentInformation = StudentInformation::where('user_id', $User->id)->first();
+        $mytime = Carbon::now();
 
-    //     $User = \Auth::user();
-    //     $StudentInformation = StudentInformation::where('user_id', $User->id)->first();
-    //     $mytime = Carbon::now();
+        $SchoolYear = SchoolYear::where('current', 1)
+            ->where('status', 1)
+            ->orderBY('id', 'DESC')
+            ->first();
 
-    //     $SchoolYear = SchoolYear::where('current', 1)
-    //         ->where('status', 1)
-    //         ->orderBY('id', 'DESC')
-    //         ->first();
-
-    //     $rules = [
-    //         'tution_category' => 'required',
-    //         'e_downpayment' => 'required',
-    //         'pay_fee' => 'required',
-    //         // 'phone' => 'required',
-    //         'email'=>'required'
-    //     ];
+        $rules = [
+            'bank_tution_amt' => 'required',
+            'bank_phone' => 'required',
+            'bank_email' => 'required',
+            'bank'=>'required',
+            'bank_transaction_id'=>'required',
+            'bank_pay_fee' => 'required',
+            'bank_image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            // 'bank_image' => 'required'
+        ];
         
-    //     $validator = \Validator::make($request->all(), $rules);
+        $validator = \Validator::make($request->all(), $rules);
 
-    //     if ($validator->fails())
-    //     {   
-    //         return response()->json(['res_code' => 1, 'res_msg' => 'Please fill all required fields.', 'res_error_msg' => $validator->getMessageBag()]);
-    //     }
+        if ($validator->fails())
+        {   
+            return response()->json(['res_code' => 1, 'res_msg' => 'Please fill all required fields.', 'res_error_msg' => $validator->getMessageBag()]);
+        }
       
-    //     // $Enrollment = new App\Transaction();
-    //     // $Enrollment->or_number = $StudentInformation->first_name.''.$mytime->toDateTimeString();
-    //     // $Enrollment->payment_category_id = $request->tution_category;
-    //     // $Enrollment->student_id = $StudentInformation->id;
-    //     // $Enrollment->school_year_id = $SchoolYear->id;
-    //     // $Enrollment->downpayment = $request->pay_fee;
-    //     // $Enrollment->save();
+        $Enrollment_total = $request->bank_tution - $request->bank_pay_fee;
 
-    //     // $payment = App\Transaction::find($Enrollment->id);
+        $Enrollment = new Transaction();
+        $Enrollment->or_number = $request->bank_transaction_id;
+        $Enrollment->email = $request->bank_email;
+        $Enrollment->number = $request->bank_phone;
+        $Enrollment->payment_category_id = $request->bank_tution_amt;
+        $Enrollment->student_id = $StudentInformation->id;
+        $Enrollment->school_year_id = $SchoolYear->id;
+        $Enrollment->downpayment = $request->bank_pay_fee;
+        $Enrollment->payment_option = $request->bank;
+        // $Enrollment->receipt_img = $request->bank_image;
+        $Enrollment->isSuccess = 1;
+        $Enrollment->balance = $Enrollment_total;
 
-    //     // \Mail::to($request->email)->send(new SendMail($payment));
+        // image
+        $imageName = time().'.'.$request->bank_image->getClientOriginalExtension();
+        $request->bank_image->move(public_path('/img/receipt/'), $imageName); 
 
-    //     return response()->json(['res_code' => 0, 'res_msg' => 'You have successfuly enrolled.']);
-    // }
+        $Enrollment->receipt_img = $imageName; 
+            
+        $Enrollment->save();
+
+        $payment = Transaction::find($Enrollment->id);
+            \Mail::to($request->bank_email)->send(new SendMail($payment));
+
+        return response()->json(['res_code' => 0, 'res_msg' => 'You have successfuly enrolled.']);
+    }
 
     
 }

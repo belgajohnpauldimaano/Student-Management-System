@@ -119,11 +119,11 @@
         $(document).ready(function(){                   
             $('#modal-alert').modal({ backdrop : 'static' });   
         });
-
         
 
-        $('body').on('submit', '#js-enrollment_transaction_form', function (e) {
+        $('body').on('submit', '.js-bank-form', function (e) {
             e.preventDefault();
+            
             var formData = new FormData($(this)[0]);
             $.ajax({
                 url         : "{{ route('student.enrollment.save_data') }}",
@@ -133,41 +133,56 @@
                 contentType : false,
                 beforeSend: function() {
                     $('#preloader').show();
-                    // loader_overlay();
                 },
                 success     : function (res) {
-                    $('.help-block').html('');
-                    if (res.res_code == 1)
-                    {
+                    $('.help-block').html('');                    
+                    $('#preloader').hide();                      
+                    
+                    if (res.res_code == 1){
                         for (var err in res.res_error_msg)
                         {
                             $('#js-' + err).html('<code> '+ res.res_error_msg[err] +' </code>');
                         }
+                    }else{   
+                        if(
+                            $('#bank_email').val() != '' && 
+                            $('#bank_phone').val() != '' && 
+                            $('#bank').val() != '' && 
+                            $('#bank_pay_fee').val() != '' && 
+                            $('#bank_transaction_id').val() != '' && 
+                            $('#bank_image').val() != ""
+                        )
+                        {  
+                            $('#preloader').hide();
+                            show_toast_alert({
+                                heading : 'Success',
+                                message : res.res_msg,
+                                type    : 'success'
+                            });
+                        }
+                        else{
+                            $('.help-block').html('');
+                            bank_pay_fee();
+                            check_bank_phone();
+                            check_bank_email();
+                            bank_transaction();
+                            check_b_image();
+                            check_bank();
+                        }
                     }
-                    else
-                    {
-                        // $('.js-modal_holder .modal').modal('hide');
-                        show_toast_alert({
-                            heading : 'Success',
-                            message : res.res_msg,
-                            type    : 'success'
-                        });
-
-                        // fetch_data();
-                    }
+                    
                 }
             });
         });
   
-        $('.btnpaypal').click(function(){
-            loader_overlay();
-        })
+        // $('.btnpaypal').click(function(){
+        //     loader_overlay();
+        // })
         
         $('body').on('submit', '#js-checkout-form', function (e) {
             e.preventDefault();            
                 var formData = new FormData($(this)[0]);
                 $.ajax({
-                    headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
                     url         : "{{ route('student.create-payment.paypal') }}",
                     type        : 'POST',
                     data        : formData,
@@ -202,6 +217,8 @@
             
         });
 
+        
+
     function validate_form(){            
         
         $('#pay_fee').keyup(function() {
@@ -229,6 +246,10 @@
         });
     }
         // online-bank
+        // check_payfee();
+        // check_phone();
+        // check_email();
+
         function check_payfee(){
             function currencyFormat(num) {
                 return num.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')
@@ -259,6 +280,7 @@
         function check_phone(){
             var phone = $('#phone').val();
             var len = jQuery('#phone').html().length
+            
             if(phone.length===13){
                 $('.input-phone').addClass('has-success');
                 $('.input-phone').removeClass('has-error');
@@ -298,7 +320,7 @@
         });
 
         $('#bank_phone').keyup(function() {
-            check_phone();
+            check_bank_phone();
         });
 
         $("#bank_email").keyup(function(){
@@ -309,13 +331,36 @@
             bank_transaction();
         });
 
+        $('#bank_image').on('change', function(){
+            check_b_image();
+        });
+
+        $('#bank').on('change', function(){
+            check_bank();
+        });
+            
+        function check_bank(){
+            var bank = $('#bank').val();
+            
+            if(bank != ''){
+                $('.input-bank').addClass('has-success');
+                $('.input-bank').removeClass('has-error');
+                $('#js-bank').text('You are good to go!');               
+            }else{
+                $('.input-bank').addClass('has-error');
+                $('.input-bank').removeClass('has-success');
+                $('#js-bank').text('You must be enter your transaction number.');
+            }
+        }
+        
+
         function bank_transaction(){
             var phone = $('#bank_transaction_id').val();
             
             if(phone != ''){
                 $('.input-bank_transaction_id').addClass('has-success');
                 $('.input-bank_transaction_id').removeClass('has-error');
-                $('#js-number').text('You are good to go!');               
+                $('#js-bank_transaction_id').text('You are good to go!');               
             }else{
                 $('.input-bank_transaction_id').addClass('has-error');
                 $('.input-bank_transaction_id').removeClass('has-success');
@@ -338,13 +383,13 @@
             }
         }
         
-        function check_phone(){
+        function check_bank_phone(){
             var phone = $('#bank_phone').val();
             var len = jQuery('#bank_phone').html().length
             if(phone.length===13){
                 $('.input-bank_phone').addClass('has-success');
                 $('.input-bank_phone').removeClass('has-error');
-                $('#js-number').text('You are good to go!');               
+                $('#js-bank_phone').text('You are good to go!');               
             }else{
                 $('.input-bank_phone').addClass('has-error');
                 $('.input-bank_phone').removeClass('has-success');
@@ -373,6 +418,148 @@
                 $('#js-bank_email').text('You must be enter your email address.');       
             }
         }
+        
+        function check_b_image(){
+            var image = $('#bank_image').val();
+
+            if(image != ''){
+                
+                $('.input-bank_image').addClass('has-success');
+                $('.input-bank_image').removeClass('has-error');
+                $('#js-bank_image').text('You are good to go!');               
+            }else{
+                $('.input-bank_image').addClass('has-error');
+                $('.input-bank_image').removeClass('has-success');
+                $('#js-bank_image').text('You must upload the copy of reciept.');
+            }
+        }
+
+        function readImageURL(input) {
+                if (input.files && input.files[0]) {
+                    var reader = new FileReader();
+
+                    reader.onload = function (e) {
+                        $('#image-receipt')
+                            .attr('src', e.target.result)
+                            .width(150)
+                            ;
+                    };
+
+                    reader.readAsDataURL(input.files[0]);
+                }
+            }
+
+        
+
+
+        // gcash
+
+        // deposit-bank
+       
+        $('#gcash_pay_fee').keyup(function() {
+            gcash_pay_fee();
+        });
+
+        $('#gcash_phone').keyup(function() {
+            check_gcash_phone();
+        });
+
+        $("#gcash_email").keyup(function(){
+            check_gcash_email();
+        });
+
+        $("#gcash_transaction_id").keyup(function(){
+            gcash_transaction();
+        });
+
+        $('#gcash_image').change(function(){
+            check_g_image();
+        });
+            
+        
+
+        function gcash_transaction(){
+            var phone = $('#gcash_transaction_id').val();
+            
+            if(phone != ''){
+                $('.input-gcash_transaction_id').addClass('has-success');
+                $('.input-gcash_transaction_id').removeClass('has-error');
+                $('#js-gcash_transaction_id').text('You are good to go!');               
+            }else{
+                $('.input-gcash_transaction_id').addClass('has-error');
+                $('.input-gcash_transaction_id').removeClass('has-success');
+                $('#js-gcash_transaction_id').text('You must be enter your transaction number.');
+            }
+        }
+
+        function gcash_pay_fee(){
+            var payment = $('#gcash_pay_fee').val();
+            var downpayment = $('#gcash_downpayment').val();
+
+            if(payment>=downpayment){
+                $('.input-gcash_pay_fee').addClass('has-success');
+                $('.input-gcash_pay_fee').removeClass('has-error');
+                $('#js-gcash_pay_fee').text('You are good to go!');
+            }else if(payment<downpayment){
+                $('.input-gcash_pay_fee').addClass('has-error');
+                $('.input-gcash_pay_fee').removeClass('has-success');
+                $('#js-gcash_pay_fee').text('You have to enter the amount of downpayment or above amount.');
+            }
+        }
+        
+        function check_gcash_phone(){
+            var phone = $('#gcash_phone').val();
+            var len = jQuery('#gcash_phone').html().length
+            if(phone.length===13){
+                $('.input-gcash_phone').addClass('has-success');
+                $('.input-gcash_phone').removeClass('has-error');
+                $('#js-gcash_phone').text('You are good to go!');               
+            }else{
+                $('.input-gcash_phone').addClass('has-error');
+                $('.input-gcash_phone').removeClass('has-success');
+                $('#js-gcash_phone').text('You must be enter your phone number.');
+            }
+        }
+
+        function check_gcash_email(){
+            var email = $("#gcash_email").val();
+
+            if(email != 0)
+            {
+                if(isValidEmailAddress(email))
+                {
+                    $('.input-gcash_email').addClass('has-success');
+                    $('.input-gcash_email').removeClass('has-error');
+                    $('#js-gcash_email').text('You are good to go!'); 
+                } else {
+                    $('.input-gcash_email').addClass('has-error');
+                    $('.input-gcash_email').removeClass('has-success');
+                    $('#js-gcash_email').text('invalid email address.');
+                }
+            } else {
+                $('.input-gcash_email').addClass('has-error');
+                $('.input-gcash_email').removeClass('has-success');
+                $('#js-gcash_email').text('You must be enter your email address.');       
+            }
+        }
+        
+        function check_g_image(){
+            var image = $('#gcash_image').attr("src");
+            if(image != 'No file chosen'){
+                $('.input-gcash_image').addClass('has-success');
+                $('.input-gcash_image').removeClass('has-error');
+                $('#js-gcash_image').text('You are good to go!');               
+            }else{
+                $('.input-gcash_image').addClass('has-error');
+                $('.input-gcash_image').removeClass('has-success');
+                $('#js-gcash_image').text('You must upload the copy of reciept.');
+            }
+        }
+
+        function isValidEmailAddress(emailAddress) {
+            var pattern = new RegExp(/^(("[\w-\s]+")|([\w-]+(?:\.[\w-]+)*)|("[\w-\s]+")([\w-]+(?:\.[\w-]+)*))(@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$)|(@\[?((25[0-5]\.|2[0-4][0-9]\.|1[0-9]{2}\.|[0-9]{1,2}\.))((25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\.){2}(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\]?$)/i);
+            return pattern.test(emailAddress);
+        }
 
     $('body').on('change','#payment_category', function(){
         var payment_category = $('#payment_category').val();
@@ -384,6 +571,10 @@
             $('#form_method').addClass('has-success');
             $('#form_method').removeClass('has-error');
             $('#js-payment_category').html('<i class="fa fa-check"></i> You chose Bank Deposit'); 
+        }else if(payment_category==3){
+            $('#form_method').addClass('has-success');
+            $('#form_method').removeClass('has-error');
+            $('#js-payment_category').html('<i class="fa fa-check"></i> You chose Gcash Deposit'); 
         }else if(payment_category==0){
             $('#form_method').addClass('has-error');
             $('#form_method').removeClass('has-success');
@@ -443,6 +634,8 @@
             $('#deposit').css('display','none');
             $('#back_method').css('display','block');
             $('#js-payment_category').html('');
+
+            
         }else if(payment_category==2){
             // getProfiledata();
             
@@ -452,6 +645,17 @@
             $('#online').css('display','none');
             $('#deposit').css('display','block');
             $('#js-payment_category').html('');
+
+        }else if(payment_category==3){
+            // getProfiledata();
+            
+            $("#gcash").fadeIn();
+            $('#selector_payment').hide();
+            $('#back_method').css('display','block');
+            $('#online').css('display','none');
+            $('#gcash').css('display','block');
+            $('#js-payment_category').html('');
+
         }else if(payment_category==0){
             // alert('sorry')
             $('#form_method').addClass('has-error');
@@ -466,6 +670,7 @@
         $('#back_method').css('display','none');
         $('#deposit').css('display','none');
         $('#online').css('display','none');
+        $('#gcash').css('display','none');
     });
 
     //photo 
@@ -480,6 +685,7 @@
     })
 
     $('#form_user_photo_uploader').hide();
+    
     function readURL(input) {
         var url = input[0].value;        	
         
@@ -517,140 +723,142 @@
         $('#js-warning-modal').html('<i class="fa fa-times-circle-o"></i> Please, input all the blank fields it is required before you proceed to enrollment procedure.');     
     })
 
-    $('#contact_number').keyup(function() {
-        if($('#contact_number').val().length===13){
-            $('.phone').addClass('has-success');
-            $('.phone').removeClass('has-error');
-            $('#js-contact_number').text('You are good to go!'); 
-        }else{                
-            $('.phone').addClass('has-error');
-            $('.phone').removeClass('has-success');
-        }
-    });
+    validate_Profile_keyup();
+    function validate_Profile_keyup(){
+        $('#contact_number').keyup(function() {
+            if($('#contact_number').val().length===13){
+                $('.phone').addClass('has-success');
+                $('.phone').removeClass('has-error');
+                $('#js-contact_number').text('You are good to go!'); 
+            }else{                
+                $('.phone').addClass('has-error');
+                $('.phone').removeClass('has-success');
+            }
+        });
 
-    $('#first_name').keyup(function() {
-        if($('#first_name').val() == ''){
-            $('.first').addClass('has-error');
-            $('.first').removeClass('has-success');
-        }else{                
-            $('.first').addClass('has-success');
-            $('.first').removeClass('has-error');
-            $('#js-first_name').text('You are good to go!'); 
-        }
-    });
-    
-    $('#middle_name').keyup(function() {
-        if($('#middle_name').val() == ''){
-            $('.middle').addClass('has-error'); 
-            $('.middle').removeClass('has-success');
-        }else{                
-            $('.middle').addClass('has-success');
-            $('.middle').removeClass('has-error');
-            $('#js-middle_name').text('You are good to go!'); 
-        }   
-    });
+        $('#first_name').keyup(function() {
+            if($('#first_name').val() == ''){
+                $('.first').addClass('has-error');
+                $('.first').removeClass('has-success');
+            }else{                
+                $('.first').addClass('has-success');
+                $('.first').removeClass('has-error');
+                $('#js-first_name').text('You are good to go!'); 
+            }
+        });
+        
+        $('#middle_name').keyup(function() {
+            if($('#middle_name').val() == ''){
+                $('.middle').addClass('has-error'); 
+                $('.middle').removeClass('has-success');
+            }else{                
+                $('.middle').addClass('has-success');
+                $('.middle').removeClass('has-error');
+                $('#js-middle_name').text('You are good to go!'); 
+            }   
+        });
 
-    $('#last_name').keyup(function() {
-        if($('#last_name').val() == ''){
-            $('.last').addClass('has-error');
-            $('.last').removeClass('has-success');
-        }else{                
-            $('.last').addClass('has-success');
-            $('.last').removeClass('has-error');
-            $('#js-last_name').text('You are good to go!'); 
-        }
-    });
+        $('#last_name').keyup(function() {
+            if($('#last_name').val() == ''){
+                $('.last').addClass('has-error');
+                $('.last').removeClass('has-success');
+            }else{                
+                $('.last').addClass('has-success');
+                $('.last').removeClass('has-error');
+                $('#js-last_name').text('You are good to go!'); 
+            }
+        });
 
-    $('#gender').keyup(function() {
-        if($('#gender').val() == ''){
-            $('.gender').addClass('has-error');
-            $('.gender').removeClass('has-success');
-        }else{                
-            $('.gender').addClass('has-success');
-            $('.gender').removeClass('has-error');
-            $('#js-gender').text('You are good to go!'); 
-        }
-    });
-    
-    $("#profile_email").keyup(function(){
-            var email = $("#profile_email").val();
+        $('#gender').keyup(function() {
+            if($('#gender').val() == ''){
+                $('.gender').addClass('has-error');
+                $('.gender').removeClass('has-success');
+            }else{                
+                $('.gender').addClass('has-success');
+                $('.gender').removeClass('has-error');
+                $('#js-gender').text('You are good to go!'); 
+            }
+        });
+        
+        $("#profile_email").keyup(function(){
+                var email = $("#profile_email").val();
 
-            if(email != 0)
-            {
-                if(isValidEmailAddress(email))
+                if(email != 0)
                 {
-                    $('.e_add').addClass('has-success');
-                    $('.e_add').removeClass('has-error');
-                    $('#js-profile_email').text('You are good to go!'); 
+                    if(isValidEmailAddress(email))
+                    {
+                        $('.e_add').addClass('has-success');
+                        $('.e_add').removeClass('has-error');
+                        $('#js-profile_email').text('You are good to go!'); 
+                    } else {
+                        $('.e_add').addClass('has-error');
+                        $('.e_add').removeClass('has-success');
+                        // $('#js-profile_email').text('You are good to go!'); 
+                    }
                 } else {
                     $('.e_add').addClass('has-error');
-                    $('.e_add').removeClass('has-success');
-                    // $('#js-profile_email').text('You are good to go!'); 
+                    $('.e_add').removeClass('has-success');                  
                 }
-            } else {
-                $('.e_add').addClass('has-error');
-                $('.e_add').removeClass('has-success');
-                  
-            }
-            
+                
 
-    });
+        });
 
-    function isValidEmailAddress(emailAddress) {
-        var pattern = new RegExp(/^(("[\w-\s]+")|([\w-]+(?:\.[\w-]+)*)|("[\w-\s]+")([\w-]+(?:\.[\w-]+)*))(@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$)|(@\[?((25[0-5]\.|2[0-4][0-9]\.|1[0-9]{2}\.|[0-9]{1,2}\.))((25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\.){2}(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\]?$)/i);
-        return pattern.test(emailAddress);
-    }
-
-    $('#birthday').keyup(function() {
-        if($('#birthday').val() == ''){
-            $('.b_day').addClass('has-error');
-            $('.b_day').removeClass('has-success');
-        }else{                
-            $('.b_day').addClass('has-success');
-            $('.b_day').removeClass('has-error');
-            $('#js-birthday').text('You are good to go!'); 
-        }   
-    });
-    $('#c_address').keyup(function() {
-        if($('#c_address').val() == ''){
-            $('.c_add').addClass('has-error');
-            $('.c_add').removeClass('has-success');
-        }else{                
-            $('.c_add').addClass('has-success');
-            $('.c_add').removeClass('has-error');
-            $('#js-c_address').text('You are good to go!');
-        }  
-    });
-    $('#p_address').keyup(function() {
-        if($('#p_address').val() == ''){
-            $('.p_add').addClass('has-error');
-            $('.p_add').removeClass('has-success');
-        }else{                
-            $('.p_add').addClass('has-success');
-            $('.p_add').removeClass('has-error');
-            $('#js-p_address').text('You are good to go!');
-        }   
-    });
-    $('#father_name').keyup(function() {
-        if($('#father_name').val() == ''){
-            $('.f_name').addClass('has-error');
-            $('.f_name').removeClass('has-success');
-        }else{                
-            $('.f_name').addClass('has-success');
-            $('.f_name').removeClass('has-error');
-            $('#js-father_name').text('You are good to go!');
-        }  
-    });
-    $('#mother_name').keyup(function() {
-        if($('#mother_name').val() == ''){
-            $('.m_name').addClass('has-error');
-            $('.m_name').removeClass('has-success');
-        }else{                
-            $('.m_name').addClass('has-success');
-            $('.m_name').removeClass('has-error');
-            $('#js-mother_name').text('You are good to go!');
+        function isValidEmailAddress(emailAddress) {
+            var pattern = new RegExp(/^(("[\w-\s]+")|([\w-]+(?:\.[\w-]+)*)|("[\w-\s]+")([\w-]+(?:\.[\w-]+)*))(@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$)|(@\[?((25[0-5]\.|2[0-4][0-9]\.|1[0-9]{2}\.|[0-9]{1,2}\.))((25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\.){2}(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\]?$)/i);
+            return pattern.test(emailAddress);
         }
-    });
+
+        $('#birthday').keyup(function() {
+            if($('#birthday').val() == ''){
+                $('.b_day').addClass('has-error');
+                $('.b_day').removeClass('has-success');
+            }else{                
+                $('.b_day').addClass('has-success');
+                $('.b_day').removeClass('has-error');
+                $('#js-birthday').text('You are good to go!'); 
+            }   
+        });
+        $('#c_address').keyup(function() {
+            if($('#c_address').val() == ''){
+                $('.c_add').addClass('has-error');
+                $('.c_add').removeClass('has-success');
+            }else{                
+                $('.c_add').addClass('has-success');
+                $('.c_add').removeClass('has-error');
+                $('#js-c_address').text('You are good to go!');
+            }  
+        });
+        $('#p_address').keyup(function() {
+            if($('#p_address').val() == ''){
+                $('.p_add').addClass('has-error');
+                $('.p_add').removeClass('has-success');
+            }else{                
+                $('.p_add').addClass('has-success');
+                $('.p_add').removeClass('has-error');
+                $('#js-p_address').text('You are good to go!');
+            }   
+        });
+        $('#father_name').keyup(function() {
+            if($('#father_name').val() == ''){
+                $('.f_name').addClass('has-error');
+                $('.f_name').removeClass('has-success');
+            }else{                
+                $('.f_name').addClass('has-success');
+                $('.f_name').removeClass('has-error');
+                $('#js-father_name').text('You are good to go!');
+            }  
+        });
+        $('#mother_name').keyup(function() {
+            if($('#mother_name').val() == ''){
+                $('.m_name').addClass('has-error');
+                $('.m_name').removeClass('has-success');
+            }else{                
+                $('.m_name').addClass('has-success');
+                $('.m_name').removeClass('has-error');
+                $('#js-mother_name').text('You are good to go!');
+            }
+        });
+    }
     
     function validateProfile(){
        
@@ -744,22 +952,37 @@
     }
 
     // checkbox
+    checkbox_button();
+    function checkbox_button(){    
+        var  checkTutionfee = $('.checkTution').val();
+        if( checkTutionfee != 1){  
+            $("#terms").change(function() {
+                if(this.checked) {
+                    $("#btn-enroll").prop('disabled', false);
+                }else{
+                    $("#btn-enroll").prop('disabled', true);
+                }                        
+            });   
+            
+            $("#bank_terms").change(function() {
+                if(this.checked) {
+                    $(".btn-bank-enroll").prop('disabled', false);
+                }else{
+                    $(".btn-bank-enroll").prop('disabled', true);
+                }
+            });
 
-    $("#terms").change(function() {
-        if(this.checked) {
-            $("#btn-enroll").prop('disabled', false);
-        }else{
-            $("#btn-enroll").prop('disabled', true);
+            $("#gcash_terms").change(function() {
+                if(this.checked) {
+                    $(".btn-gcash-enroll").prop('disabled', false);
+                }else{
+                    $(".btn-gcash-enroll").prop('disabled', true);
+                }
+            });
         }
-    });
-    
-    $("#bank_terms").change(function() {
-        if(this.checked) {
-            $(".btn-bank-enroll").prop('disabled', false);
-        }else{
-            $(".btn-bank-enroll").prop('disabled', true);
-        }
-    });
+    }
+        
+   
 
     // $('#btn-enroll').click(function(e){
     //     e.preventDefault();
