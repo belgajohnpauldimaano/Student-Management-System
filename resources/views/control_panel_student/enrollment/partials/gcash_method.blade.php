@@ -22,7 +22,7 @@
         </ul>
         
 
-        <p>Step 2. After the successful deposit transaction, fill out all the necessary information below. Take a screenshot of the transaction and upload it on the icon below (upload file)</p>
+        <p>Step 2. After the successful Gcash transaction, fill out all the necessary information below. Take a screenshot of the transaction and upload it on the icon below (upload file)</p>
 
         <p>Step 3. You will receive a text message and email confirmation once the transaction has been successfully done. </p>
 

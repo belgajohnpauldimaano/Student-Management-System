@@ -211,7 +211,7 @@ class EnrollmentController extends Controller
             return response()->json(['res_code' => 1, 'res_msg' => 'Please fill all required fields.', 'res_error_msg' => $validator->getMessageBag()]);
         }
       
-        $Enrollment_total = $request->bank_tution - $request->gcash_pay_fee;
+        $Enrollment_total = $request->gcash_tution_total - $request->gcash_pay_fee;
 
         $Enrollment = new Transaction();
         $Enrollment->or_number = $request->gcash_transaction_id;

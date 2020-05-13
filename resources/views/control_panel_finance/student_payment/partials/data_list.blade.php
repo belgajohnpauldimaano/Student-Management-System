@@ -47,7 +47,9 @@
                                                         </span>
                                                     </td>
                                                     <td>
+                                                        <button class="btn btn-sm btn-primary btn-disapprove-modal" data-id="{{$data->id}}">View</button>
                                                         <button class="btn btn-sm btn-success btn-approve" data-id="{{$data->id}}">Approve</button>
+                                                        
                                                         {{-- <button class="btn btn-sm btn-danger">Disapprove</button> --}}
                                                     </td>
                                                 </tr>
@@ -94,6 +96,7 @@
                                                         </span>
                                                     </td>
                                                     <td>
+                                                        <button class="btn btn-sm btn-primary btn-disapprove-modal" data-id="{{$data->id}}">View</button>
                                                         <button class="btn btn-sm btn-success btn-disapprove" data-id="{{$data->id}}">Disapprove</button>
                                                         {{-- <button class="btn btn-sm btn-danger">Disapprove</button> --}}
                                                     </td>

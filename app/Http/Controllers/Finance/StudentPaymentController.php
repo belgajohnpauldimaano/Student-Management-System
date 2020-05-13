@@ -28,8 +28,9 @@ class StudentPaymentController extends Controller
             ->first();
 
             $NotyetApproved = Transaction::with('student')->where('school_year_id', $SchoolYear->id)
-                    ->where('isSuccess', 1)->where('approval', 'Not yet approved')
-                    ->where('student_id', $StudentInformation->id)
+                    ->where('isSuccess', 1)
+                    ->where('approval', 'Not yet approved')
+                    // ->where('student_id', $StudentInformation->id)
                     ->paginate(10);
 
             $Approved = Transaction::where('school_year_id', $SchoolYear->id)
@@ -42,10 +43,7 @@ class StudentPaymentController extends Controller
 
         $SchoolYear = SchoolYear::where('current', 1)
             ->where('status', 1)
-            ->orderBY('id', 'DESC')
-            ->first();
-
-         
+            ->orderBY('id', 'DESC') ->first();         
 
         $NotyetApproved = Transaction::where('school_year_id', $SchoolYear->id)
                 ->where('isSuccess', 1)                
@@ -53,10 +51,22 @@ class StudentPaymentController extends Controller
                 ->paginate(10);
 
         $Approved = Transaction::where('school_year_id', $SchoolYear->id)
-                ->where('isSuccess', 1)->where('approval', 'Approved')
+                ->where('isSuccess', 1)
+                ->where('approval', 'Approved')
                 ->paginate(10);
 
         return view('control_panel_finance.student_payment.index', compact('NotyetApproved','Approved'));
+    }
+
+    
+    public function modal_data (Request $request) 
+    {
+        $Modal_data = NULL;
+        if ($request->id)
+        {
+            $Modal_data = \App\Transaction::where('id', $request->id)->first();
+        }
+        return view('control_panel_finance.student_payment.partials.modal_data', compact('Modal_data'))->render();
     }
 
     public function approve(Request $request)
