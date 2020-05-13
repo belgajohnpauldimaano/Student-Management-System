@@ -18,6 +18,7 @@ use PayPal\Api\Transaction;
 use PayPal\Rest\ApiContext;
 use Illuminate\Http\Request;
 use PayPal\Api\RedirectUrls;
+use App\Mail\NotifyAdminMail;
 use PayPal\Api\PaymentExecution;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
@@ -204,13 +205,14 @@ class PaymentController extends Controller
                 ->where('school_year_id', $SchoolYear->id)->orderBy('id', 'Desc')->first();
             $IsReceived->or_number =  $payment->invoice_id;
             $IsReceived->isSuccess = 1;  
-            
+            $admin_email = 'info@sja-bataan.com';
             if($IsReceived->save()){
                 $payment = \App\Transaction::find($IsReceived->id);
-                \Mail::to($IsReceived->email)->send(new SendMail($payment));
+                    \Mail::to($IsReceived->email)->send(new SendMail($payment));
+                    \Mail::to($admin_email)->send(new NotifyAdminMail($payment));
 
                 return redirect()->route('student.enrollment.index')
-                    ->withSuccess('Payment made successfully.');
+                    ->withSuccess('You have successfully accomplished the form. Check your email for review of Finance Dept. Thank you!');
             }else{
                 return redirect()->route('student.enrollment.index')
                     ->withError('Payment was not successful.');

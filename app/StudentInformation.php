@@ -20,4 +20,9 @@ class StudentInformation extends Model
     {
         return $this->hasOne(Transaction::class, 'student_id', 'id');
     }
+
+    public function fullname()
+    {
+        return $this->last_name . ", " . $this->first_name;
+    }
 }

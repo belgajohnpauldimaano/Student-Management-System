@@ -100,7 +100,7 @@
                     <div class="form-group col-lg-12 input-gcash_image ">
                         <img id="image-receipt-gcash" style="cursor: pointer; padding-top: 20px" src="images/avatar.png" width="200">
                         <br/>
-                        <label for="gcash_image">Image of receipt deposit slip</label>
+                        <label for="gcash_image">Image of receipt from Gcash transaction</label>
                         <input type="file" id="gcash_image" name="gcash_image" src="" onchange="readImageURLGcash(this);" accept="*/image">
                         <div class="help-block text-left" id="js-gcash_image"></div>
                     </div>

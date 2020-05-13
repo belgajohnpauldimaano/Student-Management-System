@@ -426,6 +426,13 @@ Route::group(['prefix' => 'finance', 'middleware' => ['auth', 'userroles'], 'rol
         Route::get('print-enrollment-bill', 'Finance\StudentController@print_enrollment_bill')->name('finance.print_enrollment_bill');
         Route::post('save', 'Finance\StudentController@save_modal_account')->name('finance.student_account.save_modal_account');
     });
+
+    Route::group(['prefix' => 'student-payment'], function () {
+        Route::get('', 'Finance\StudentPaymentController@index')->name('finance.student_payment');
+        Route::post('', 'Finance\StudentPaymentController@index')->name('finance.student_payment');
+        Route::post('approve', 'Finance\StudentPaymentController@approve')->name('finance.student_payment.approve');
+        Route::post('disapprove', 'Finance\StudentPaymentController@approve')->name('finance.student_payment.disapprove');
+    });
     
     Route::group(['prefix' => 'student-payment-account'], function (){
         Route::get('', 'Finance\StudentAccountController@index')->name('finance.student_payment_account');

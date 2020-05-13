@@ -14,6 +14,7 @@ use App\DownpaymentFee;
 use App\PaymentCategory;
 use App\StudentInformation;
 use Illuminate\Http\Request;
+use App\Mail\NotifyAdminMail;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 
@@ -91,6 +92,13 @@ class EnrollmentController extends Controller
                     ->first();
                 }                
 
+                $SchoolYear1 = SchoolYear::where('current', 1)
+                ->where('status', 1)
+                ->orderBy('id', 'Desc')->first();
+
+                $AlreadyEnrolled = Transaction::where('student_id', $User->id)
+                    ->where('school_year_id', $SchoolYear1->id)
+                    ->orderBy('id', 'Desc')->first();
 
                 $grade_level_id = ($ClassDetail->grade_level + 1);
 
@@ -103,7 +111,7 @@ class EnrollmentController extends Controller
                 $Profile = StudentInformation::where('user_id', $User->id)->first();
 
                 return view('control_panel_student.enrollment.index', 
-                    compact('grade_level', 'ClassDetail','PaymentCategory','Downpayment','Profile','StudentInformation','Tuition'));
+                    compact('AlreadyEnrolled','grade_level', 'ClassDetail','PaymentCategory','Downpayment','Profile','StudentInformation','Tuition'));
                     return json_encode(['GradeSheetData' => $GradeSheetData,]);
                     
             }else{
@@ -166,11 +174,13 @@ class EnrollmentController extends Controller
         $Enrollment->receipt_img = $imageName; 
             
         $Enrollment->save();
+        $admin_email = 'info@sja-bataan.com';
 
         $payment = Transaction::find($Enrollment->id);
             \Mail::to($request->bank_email)->send(new SendMail($payment));
+            \Mail::to($admin_email)->send(new NotifyAdminMail($payment));
 
-        return response()->json(['res_code' => 0, 'res_msg' => 'You have successfuly enrolled.']);
+        return response()->json(['res_code' => 0, 'res_msg' => 'You have successfully accomplished the form. Check your email for review of Finance Dept. Thank you!']);
     }
 
     public function save_data(Request $request){
@@ -224,10 +234,14 @@ class EnrollmentController extends Controller
             
         $Enrollment->save();
 
+        $admin_email = 'info@sja-bataan.com';
         $payment = Transaction::find($Enrollment->id);
             \Mail::to($request->gcash_email)->send(new SendMail($payment));
+            \Mail::to($admin_email)->send(new NotifyAdminMail($payment));
 
-        return response()->json(['res_code' => 0, 'res_msg' => 'You have successfuly enrolled.']);
+        return response()->json(['res_code' => 0,
+         'res_msg' =>
+          'You have successfully accomplished the form. Check your email for review of Finance Dept. Thank you!']);
     }
 
     

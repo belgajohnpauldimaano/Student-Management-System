@@ -46,18 +46,18 @@
 @endsection
 
 @section ('content')    
-<div class="row" id="back_method" style="display: none; margin-top: -7em !important">
-    <div class="col-md-6">
-        {{-- <a href="#" style="margin-top: -1em" class="btn-info btn">
-            <i class="fas fa-info"></i>  Instructions
-        </a> --}}
+    <div class="row" id="back_method" style="display: none; margin-top: -7em !important">
+        <div class="col-md-6">
+            {{-- <a href="#" style="margin-top: -1em" class="btn-info btn">
+                <i class="fas fa-info"></i>  Instructions
+            </a> --}}
+        </div>
+        <div class="col-md-6">
+            <button style="margin-top: -3em" class="btn-success btn pull-right">
+            <i class="fas fa-arrow-left"></i> back
+            </button>
+        </div>
     </div>
-    <div class="col-md-6">
-        <button style="margin-top: -3em" class="btn-success btn pull-right">
-        <i class="fas fa-arrow-left"></i> back
-        </button>
-    </div>
-</div>
 
     <div id="preloader" style="display: none">
         <img class="preloader" src="{{ asset('img/loader.gif')}}" alt="">
@@ -120,7 +120,7 @@
             $('#modal-alert').modal({ backdrop : 'static' });   
         });
         
-
+        //  
         $('body').on('submit', '.js-bank-form', function (e) {
             e.preventDefault();
             
@@ -173,10 +173,11 @@
                         )
                         {  
                             $('#preloader').hide();
-                            show_toast_alert({
-                                heading : 'Success',
-                                message : res.res_msg,
-                                type    : 'success'
+                            alertify.defaults.theme.ok = "btn btn-primary btn-flat";
+                            alertify
+                            .alert('Confirmation', res.res_msg, function(){
+                                alertify.message('OK');
+                                location.reload();
                             });
                         }
                         else{
@@ -243,10 +244,12 @@
                         )
                         {  
                             $('#preloader').hide();
-                            show_toast_alert({
-                                heading : 'Success',
-                                message : res.res_msg,
-                                type    : 'success'
+
+                            alertify.defaults.theme.ok = "btn btn-primary btn-flat";
+                            alertify
+                            .alert('Confirmation', res.res_msg, function(){
+                                alertify.message('OK');
+                                location.reload();
                             });
                         }
                         else{
@@ -262,6 +265,14 @@
                 }
             });
         });
+
+        
+           
+              
+             
+            
+        
+        
   
         // $('.btnpaypal').click(function(){
         //     loader_overlay();
@@ -330,6 +341,10 @@
         
 
         $('.btn-reset').on('click', function(){
+            location.reload();
+        });
+
+        $('.btn-success-close').on('click', function(){
             location.reload();
         });
     }
