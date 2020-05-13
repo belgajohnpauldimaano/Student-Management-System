@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Finance;
 use App\SchoolYear;
 use App\Transaction;
 use App\PaymentCategory;
+use App\StudentInformation;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
@@ -14,13 +15,21 @@ class StudentPaymentController extends Controller
 
         if ($request->ajax())
         {
+            // $StudentInformation = StudentInformation::where('status', 1)
+            //  ->where(function ($query) use ($request) {
+            //      $query->where('first_name', 'like', '%'.$request->search.'%');
+            //      $query->orWhere('middle_name', 'like', '%'.$request->search.'%');
+            //      $query->orWhere('last_name', 'like', '%'.$request->search.'%');
+            // })->get();
+
             $SchoolYear = SchoolYear::where('current', 1)
             ->where('status', 1)
             ->orderBY('id', 'DESC')
             ->first();
 
-            $NotyetApproved = Transaction::where('school_year_id', $SchoolYear->id)
+            $NotyetApproved = Transaction::with('student')->where('school_year_id', $SchoolYear->id)
                     ->where('isSuccess', 1)->where('approval', 'Not yet approved')
+                    ->where('student_id', $StudentInformation->id)
                     ->paginate(10);
 
             $Approved = Transaction::where('school_year_id', $SchoolYear->id)
@@ -36,8 +45,11 @@ class StudentPaymentController extends Controller
             ->orderBY('id', 'DESC')
             ->first();
 
+         
+
         $NotyetApproved = Transaction::where('school_year_id', $SchoolYear->id)
-                ->where('isSuccess', 1)->where('approval', 'Not yet approved')
+                ->where('isSuccess', 1)                
+                ->where('approval', 'Not yet approved')
                 ->paginate(10);
 
         $Approved = Transaction::where('school_year_id', $SchoolYear->id)

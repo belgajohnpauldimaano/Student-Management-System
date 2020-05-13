@@ -14,12 +14,14 @@
         <p>Bank transaction</p>
         <p>
             Step 1. Choose one (1) of the following bank that is nearest to you to proceed with the deposit transaction. 
-            Saint John’s Academy Incorporated bank accounts are as follows:<br/>
-            PNB Dinalupihan Branch<br/>
-            Account Name: Saint John’s Academy Inc.<br/>
-            Account Number: 0785-89547-458
+            Saint John’s Academy Incorporated bank accounts are as follows:
         </p>
         <ul>
+            <li>
+                PNB Dinalupihan Branch<br/>
+                Account Name: Saint John’s Academy Inc.<br/>
+                Account Number: 0785-89547-458
+            </li>
             <li>
                 Metrobank Dinalupihan Branch<br/>
                 Account Name: Saint John’s Academy Inc.<br/>
