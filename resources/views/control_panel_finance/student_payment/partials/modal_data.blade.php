@@ -83,17 +83,17 @@
                       </tr>
                   </tbody>
                 </table>
-
-                <div class="form-group">
-                    <label for="">Image Receipt</label>
-                    <img class="img-responsive"
-                    id="img-receipt"
-                    src="{{ $Modal_data->receipt_img ? \File::exists(public_path('/img/receipt/'.$Modal_data->receipt_img)) ?
-                    asset('/img/receipt/'.$Modal_data->receipt_img) : asset('/img/receipt/blank-user.gif') :
-                    asset('/img/receipt/blank-user.gif') }}" 
-                    alt="User profile picture">
-                </div> 
-
+                @if($Modal_data->payment_option != 'Credit Card/Debit Card')
+                    <div class="form-group">
+                        <label for="">Image Receipt</label>
+                        <img class="img-responsive"
+                        id="img-receipt"
+                        src="{{ $Modal_data->receipt_img ? \File::exists(public_path('/img/receipt/'.$Modal_data->receipt_img)) ?
+                        asset('/img/receipt/'.$Modal_data->receipt_img) : asset('/img/receipt/blank-user.gif') :
+                        asset('/img/receipt/blank-user.gif') }}" 
+                        alt="User profile picture">
+                    </div> 
+                @endif
             </div>           
             <div class="moda-footer">
 
