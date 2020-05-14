@@ -1,30 +1,5 @@
 <?php
 
-
-Route::group(['prefix' => 'admin/student-information', 'middleware' => ['auth', 'userroles'], 'roles' => ['admin', 'root', 'registrar']], function() {
-    Route::get('', 'Control_Panel\StudentController@index')->name('admin.student.information');
-    Route::post('', 'Control_Panel\StudentController@index')->name('admin.student.information');
-    Route::post('modal-data', 'Control_Panel\StudentController@modal_data')->name('admin.student.information.modal_data');
-    Route::get('modal-data', 'Control_Panel\StudentController@modal_data')->name('admin.student.information.modal_data');
-    Route::post('save-data', 'Control_Panel\StudentController@save_data')->name('admin.student.information.save_data');
-    Route::post('deactivate-data', 'Control_Panel\StudentController@deactivate_data')->name('admin.student.information.deactivate_data');
-    Route::post('print-student-grade-modal', 'Control_Panel\StudentController@print_student_grade_modal')->name('admin.student.information.print_student_grade_modal');
-    
-    Route::get('print-student-grades', 'Control_Panel\StudentController@print_student_grades')->name('admin.student.information.print_student_grades');
-    Route::post('change-student-photo', 'Control_Panel\StudentController@change_my_photo')->name('admin.student.change_my_photo');
-});
-
-Route::group(['prefix' => 'admin/faculty-information', 'middleware' => ['auth', 'userroles'], 'roles' => ['admin', 'root', 'registrar']], function() {
-    Route::get('', 'Control_Panel\FacultyController@index')->name('admin.faculty_information');
-    Route::post('', 'Control_Panel\FacultyController@index')->name('admin.faculty_information');
-    Route::post('modal-data', 'Control_Panel\FacultyController@modal_data')->name('admin.faculty_information.modal_data');
-    Route::post('save-data', 'Control_Panel\FacultyController@save_data')->name('admin.faculty_information.save_data');
-    Route::post('deactivate-data', 'Control_Panel\FacultyController@deactivate_data')->name('admin.faculty_information.deactivate_data');
-    Route::post('additional-information', 'Control_Panel\FacultyController@additional_information')->name('admin.faculty_information.additional_information');
-
-     Route::post('e-signature', 'Control_Panel\FacultyController@change_esignature')->name('admin.faculty.e_signature');
-});
-
 Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'userroles'], 'roles' => ['admin', 'root']], function() {
     Route::get('dashboard', 'Control_Panel\DashboardController@index')->name('admin.dashboard');
 

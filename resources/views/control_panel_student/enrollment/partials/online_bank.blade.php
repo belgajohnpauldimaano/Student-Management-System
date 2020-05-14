@@ -37,31 +37,37 @@
           <div class="box-body">
             <div class="form-group col-lg-12">
                 <label for="exampleInputEmail1">You are incoming Grade-level <i style="color:red">{{$ClassDetail->grade_level+1}}</i></label>
-                    <br><br>
+                <br><br>
                 <label for="exampleInputEmail1">Available Tuition Fee and Misc Fee</label>
                 
-                  @if($Tuition)
-                    <input type="hidden" value="0" class="checkTution">
-                    <input type="hidden" class="form-control" value="{{$PaymentCategory->id}}" name="tution_category">
-                    <input type="hidden" id="total_tuition" name="total_tuition" value="{{$Tuition ? $PaymentCategory->tuition->tuition_amt + $PaymentCategory->misc_fee->misc_amt : ''}}">
-                    <input type="hidden" id="total_misc" name="total_misc" value="{{$PaymentCategory->misc_fee->misc_amt}}">
-                    <input type="hidden" class="form-control" name="description_name" value="SJAI {{$ClassDetail->grade_level+1}} Tuition Fee ({{number_format($PaymentCategory->tuition->tuition_amt, 2) }}) | Miscellenous Fee ({{number_format($PaymentCategory->misc_fee->misc_amt,2)}})" name="tution_category">
-                    <p>Tuition Fee ({{number_format($PaymentCategory->tuition->tuition_amt, 2) }}) | Miscellenous Fee ({{number_format($PaymentCategory->misc_fee->misc_amt,2)}})</p>
-                  @else
-                    <input type="hidden" value="1" class="checkTution">
-                    <p>There is no Tution and Miscellenous Fee</p>
-                  @endif
+                @if($Tuition)
+                  <input type="hidden" value="0" class="checkTution">
+                  <input type="hidden" class="form-control" value="{{$PaymentCategory->id}}" name="tution_category">
+                  <input type="hidden" id="total_tuition" name="total_tuition" value="{{$Tuition ? $PaymentCategory->tuition->tuition_amt + $PaymentCategory->misc_fee->misc_amt : ''}}">
+                  <input type="hidden" id="total_misc" name="total_misc" value="{{$PaymentCategory->misc_fee->misc_amt}}">
+                  <input type="hidden" class="form-control" name="description_name" value="SJAI {{$ClassDetail->grade_level+1}} Tuition Fee ({{number_format($PaymentCategory->tuition->tuition_amt, 2) }}) | Miscellenous Fee ({{number_format($PaymentCategory->misc_fee->misc_amt,2)}})" name="tution_category">
+                  <p>Tuition Fee ({{number_format($PaymentCategory->tuition->tuition_amt, 2) }}) | Miscellenous Fee ({{number_format($PaymentCategory->misc_fee->misc_amt,2)}})</p>
+                @else
+                  <input type="hidden" value="1" class="checkTution">
+                  <p>There is no Tution and Miscellenous Fee</p>
+                @endif
                 
-            </div>    
-            <div class="form-group col-lg-12">
-              <label for="exampleInputEmail1">Downpayment Fee</label>
-              @if($Downpayment)
-                <input type="hidden" value="{{$Downpayment->id}}" name="e_downpayment">
-                <input type="hidden" id="downpayment" value="{{$Downpayment->downpayment_amt}}" name="e_downpayment">
-                <p>{{number_format($Downpayment->downpayment_amt,2)}}</p>             
-              @else
-                <p>There is no Downpayment yet</p>
-              @endif
+                <label for="previous_balance">Current Balance Fee</label>         
+                @if($AlreadyEnrolled)    
+                  <input type="hidden" class="form-control" value="{{$AlreadyEnrolled->balance}}" id="previous_balance" name="previous_balance">
+                  <p>₱ {{number_format($AlreadyEnrolled->balance,2)}}</p> 
+                @else
+                  ₱ <p>0.00</p>  
+                @endif               
+            
+                <label for="downpayment">Downpayment Fee</label>
+                @if($Downpayment)
+                  <input type="hidden" value="{{$Downpayment->id}}" name="e_downpayment">
+                  <input type="hidden" id="downpayment" value="{{$Downpayment->downpayment_amt}}" name="e_downpayment">
+                  <p>₱ {{number_format($Downpayment->downpayment_amt,2)}}</p>             
+                @else
+                  <p>There is no Downpayment yet</p>
+                @endif
             </div>    
 
             <div class="form-group col-lg-12 input-payment">
@@ -72,7 +78,7 @@
            
             <div class="form-group col-lg-12 input-phone">
                 <label for="phone">Phone number</label>
-            <input type="text" class="form-control" id="phone" name="phone" placeholder="+639000000000" value="+639{{ $StudentInformation->contact_number }}">
+                <input type="text" class="form-control" id="phone" name="phone" placeholder="+639000000000" value="{{ $StudentInformation->contact_number ? $StudentInformation->contact_number : '+639' }}">
                 <div class="help-block text-left" id="js-number"></div>
             </div>  
             <div class="form-group col-lg-12 input-email">
@@ -98,43 +104,54 @@
               <tbody>
                   <tr>                       
                       <tr>
-                          <td style="width:140px">Tuition Fee</td>
+                          <td style="width:120px">Tuition Fee</td>
                           <td align="right" id="tuition_fee"> 
                             @if($Tuition)                             
-                              {{number_format($PaymentCategory->tuition->tuition_amt, 2)}}
+                            ₱ {{number_format($PaymentCategory->tuition->tuition_amt, 2)}}
                             @else
                               <p>There is no Tution Fee yet</p>
                             @endif
                           </td>
                       </tr>
                       <tr>
-                          <td style="width:140px">Misc Fee</td>
+                          <td style="width:120px">Misc Fee</td>
                           <td align="right" id="misc_fee">
                             @if($Tuition)
-                              {{number_format($PaymentCategory->misc_fee->misc_amt,2)}}
+                            ₱ {{number_format($PaymentCategory->misc_fee->misc_amt,2)}}
                             @else
                               <p>There is no Miscellenous Fee yet</p>
                             @endif
                           </td>
                       </tr>
                       <tr>
-                        <td style="width:140px">Total Fees</td>
+                        <td style="width:120px">Total Fees</td>
                         <td align="right" id="misc_fee">
                           @if($Tuition)
-                            {{number_format($PaymentCategory->misc_fee->misc_amt + $PaymentCategory->tuition->tuition_amt, 2)}}
+                          ₱ {{number_format($PaymentCategory->misc_fee->misc_amt + $PaymentCategory->tuition->tuition_amt, 2)}}
                           @else
                             <p>There is no Tution and Miscellenous fee yet</p>
                           @endif
                         </td>
-                    </tr>
+                      </tr>
                       <tr>
-                          <td style="width:140px">Payment</td>
+                        <td style="width:120px">Previous Balance</td>
+                        <td align="right" id="misc_fee">
+                          @if($AlreadyEnrolled)    
+                           <p>₱ {{number_format($AlreadyEnrolled->balance,2)}}</p> 
+                          @else
+                            <p>0.00</p>  
+                          @endif
+                        </td>
+                      </tr>
+                     
+                      <tr>
+                          <td style="width:120px">Payment</td>
                           <td align="right">
                               ₱ <span id="dp_enrollment">0</span>
                           </td>
                       </tr>
                       <tr>
-                          <td style="width:140px">Current Balance</td>
+                          <td style="width:120px">Current Balance</td>
                           <td align="right">
                             <input type="hidden" id="result_current_bal" name="result_current_bal">
                               ₱ <span id="current_balance">0</span>

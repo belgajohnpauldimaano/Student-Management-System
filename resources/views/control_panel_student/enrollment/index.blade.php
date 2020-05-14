@@ -46,7 +46,7 @@
 @endsection
 
 @section ('content')    
-    <div class="row" id="back_method" style="display: none; margin-top: -7em !important">
+    <div class="row" id="back_method" style="display: none;">
         <div class="col-md-6">
             {{-- <a href="#" style="margin-top: -1em" class="btn-info btn">
                 <i class="fas fa-info"></i>  Instructions
@@ -66,7 +66,7 @@
     <div class="js-data-container" style="margin-top: 10px;">
         @include('control_panel_student.enrollment.partials.data_list')
     </div>
-    @include('control_panel_student.enrollment.partials.modal_profile')
+    
     
 @endsection
 
@@ -360,11 +360,17 @@
 
             var payment = $('#pay_fee').val();
             var downpayment = $('#downpayment').val();
-            
-            $('#dp_enrollment').text(currencyFormat(parseFloat(payment)));        
+            var previous_balance = $('#previous_balance').val();
 
+            $('#dp_enrollment').text(currencyFormat(parseFloat(payment)));        
             var total_tuition = $('#total_tuition').val();
-            result_bal = parseFloat(total_tuition) - parseFloat(payment);
+            var result_bal = 0;
+            if(previous_balance){                
+                result_bal = parseFloat(previous_balance) - parseFloat(payment);
+            }else{
+                result_bal = parseFloat(total_tuition) - parseFloat(payment);
+            }
+            
             document.getElementById('result_current_bal').value = (result_bal);
             
             $('#current_balance').text(currencyFormat(result_bal));
@@ -474,16 +480,31 @@
         function bank_pay_fee(){
             var payment = $('#bank_pay_fee').val();
             var downpayment = $('#bank_downpayment').val();
+            var bank_previous_balance = $('#bank_previous_balance').val();
+            var bank_tution = $('#bank_tution').val();
 
+            function currencyFormat(num) {
+                return num.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')
+            } 
+                     
+            if(bank_previous_balance){
+                result_bal = parseFloat(bank_previous_balance) - parseFloat(payment);
+            }else{
+                result_bal = parseFloat(bank_tution) - parseFloat(payment);
+            }
+
+            document.getElementById('bank_balance').value = (result_bal);
+           
             if(payment>=downpayment){
                 $('.input-bank_pay_fee').addClass('has-success');
                 $('.input-bank_pay_fee').removeClass('has-error');
-                $('#js-bank_pay_fee').text('You are good to go!');
+                $('#js-bank_pay_fee').text('Here is your balance now '+currencyFormat(result_bal)+' and You are good to go! ');
             }else if(payment<downpayment){
                 $('.input-bank_pay_fee').addClass('has-error');
                 $('.input-bank_pay_fee').removeClass('has-success');
-                $('#js-bank_pay_fee').text('You have to enter the amount of downpayment or above amount.');
+                $('#js-bank_pay_fee').text('Here is your balance now '+currencyFormat(result_bal)+' and You have to enter the amount of downpayment or above amount.');
             }
+        
         }
         
         function check_bank_phone(){
@@ -596,15 +617,29 @@
         function gcash_pay_fee(){
             var payment = $('#gcash_pay_fee').val();
             var downpayment = $('#gcash_downpayment').val();
+            var gcash_previous_balance = $('#gcash_previous_balance').val();
+            var gcash_tution = $('#gcash_tution_total').val();
+
+            function currencyFormat(num) {
+                return num.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')
+            } 
+                     
+            if(gcash_previous_balance){
+                result_bal = parseFloat(gcash_previous_balance) - parseFloat(payment);
+            }else{
+                result_bal = parseFloat(gcash_tution) - parseFloat(payment);
+            }
+
+            document.getElementById('gcash_balance').value = (result_bal);
 
             if(payment>=downpayment){
                 $('.input-gcash_pay_fee').addClass('has-success');
                 $('.input-gcash_pay_fee').removeClass('has-error');
-                $('#js-gcash_pay_fee').text('You are good to go!');
+                $('#js-gcash_pay_fee').text('Here is you balance now '+currencyFormat(result_bal)+' You are good to go!');
             }else if(payment<downpayment){
                 $('.input-gcash_pay_fee').addClass('has-error');
                 $('.input-gcash_pay_fee').removeClass('has-success');
-                $('#js-gcash_pay_fee').text('You have to enter the amount of downpayment or above amount.');
+                $('#js-gcash_pay_fee').text('Here is you balance now '+currencyFormat(result_bal)+' You have to enter the amount of downpayment or above amount.');
             }
         }
         
@@ -741,7 +776,7 @@
         var payment_category = $('#payment_category').val();
         
         if(payment_category==1){
-            getProfiledata();
+            // getProfiledata();
             
             $("#online").fadeIn();
             $('#selector_payment').hide();
@@ -752,7 +787,7 @@
 
             
         }else if(payment_category==2){
-            getProfiledata();
+            // getProfiledata();
             
             $("#deposit").fadeIn();
             $('#selector_payment').hide();
@@ -762,7 +797,7 @@
             $('#js-payment_category').html('');
 
         }else if(payment_category==3){
-            getProfiledata();
+            // getProfiledata();
             
             $("#gcash").fadeIn();
             $('#selector_payment').hide();

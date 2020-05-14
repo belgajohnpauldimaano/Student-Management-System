@@ -32,25 +32,28 @@
             </div><!-- /.modal-dialog -->
           </div>
         @endif   
-                
-        <div class="form-group col-lg-6 col-lg-offset-3" id="form_method">
-          <select name="payment_category" id="payment_category" class="form-control">            
-            <option value="0" selected>
-              --Select Preferred Enrollment Method --
-            </option>
-            <option value="1">
-              Credit card/Debit card/PayMaya
-            </option>
-            <option value="2">
-              Bank Deposit
-            </option>
-            <option value="3">
-              Gcash
-            </option>    
-          </select>
-          <div class="help-block text-left" id="js-payment_category"></div>
-          <button type="button" id="btn_method" class="btn btn-primary pull-right">Submit</button>
-        </div>
+        
+          <div class="form-group col-lg-6 col-lg-offset-3" id="form_method">
+              <select name="payment_category" id="payment_category" class="form-control">            
+                <option value="0" selected>
+                  --Select Preferred Enrollment Method --
+                </option>
+                <option value="1">
+                  Credit card/Debit card/PayMaya
+                </option>
+                <option value="2">
+                  Bank Deposit
+                </option>
+                <option value="3">
+                  Gcash
+                </option>    
+              </select>
+            <div class="help-block text-left" id="js-payment_category"></div>
+            <button type="button" id="btn_method" class="btn btn-primary pull-right">Submit</button>
+          </div>
+          {{-- {{$ClassDetail->school_year_id}} --}}
+        
+
        </div>
     </div>
   </div>
@@ -66,4 +69,6 @@
 
 <div class="row" id="gcash" style="display: none; padding:0 16px 0 16px">    
   @include('control_panel_student.enrollment.partials.gcash_method')
-</div>
+</div> 
+@include('control_panel_student.enrollment.partials.modal_profile')
+

@@ -43,31 +43,38 @@
                         <label for="exampleInputEmail1">You are incoming Grade-level <i style="color:red">{{$ClassDetail->grade_level+1}}</i></label>
                             <br><br>
                         <label for="exampleInputEmail1">Available Tuition Fee and Misc Fee</label>
-                        @if($Downpayment)
+                        @if($Tuition)
                         <input type="hidden" name="gcash_tution_amt" value="{{$PaymentCategory->id}}">
                         <input type="hidden" name="gcash_tution_total" value="{{$PaymentCategory->tuition->tuition_amt + $PaymentCategory->misc_fee->misc_amt}}">
                             <p>
                                 Tuition Fee ({{number_format($PaymentCategory->tuition->tuition_amt, 2 ?? '')}}) | Miscellenous Fee ({{number_format($PaymentCategory->misc_fee->misc_amt,2)}})
                             </p>
-                        @endif                
-                    </div>    
-                    <div class="form-group col-lg-12">
-                    <label for="exampleInputEmail1">Downpayment Fee </label>              
+                        @endif                                    
+
+                        <label for="previous_balance">Current Balance Fee</label>  
+                        @if($AlreadyEnrolled)    
+                            <input type="hidden" class="form-control" value="{{$AlreadyEnrolled->balance}}" id="gcash_previous_balance" name="gcash_previous_balance">
+                            <p>₱ {{number_format($AlreadyEnrolled->balance,2)}}</p> 
+                        @else
+                            <p>₱ 0.00</p>  
+                        @endif  
+                   
+                        <label for="exampleInputEmail1">Downpayment Fee </label>              
                         @if($Downpayment)
                             <input type="hidden" name="gcash_downpayment" value="{{$Downpayment->id}}">
                             <input type="hidden" id="gcash_downpayment" value="{{$Downpayment->downpayment_amt}}">                        
-                            <p>{{number_format($Downpayment->downpayment_amt,2)}}</p>
+                            <p>₱ {{number_format($Downpayment->downpayment_amt,2)}}</p>
                         @endif
-                    </div>  
+                    </div>
 
                     <div class="form-group col-lg-12 input-gcash_phone">
                         <label for="phone">Phone number</label>
-                        <input type="text" class="form-control" id="gcash_phone" name="gcash_phone" placeholder="+639000000000" value="+639">
+                        <input type="text" class="form-control" id="gcash_phone" name="gcash_phone" placeholder="+639000000000" value="{{ $StudentInformation->contact_number ? $StudentInformation->contact_number : '+639' }}">
                         <div class="help-block text-left" id="js-gcash_phone"></div>
                     </div>  
                     <div class="form-group col-lg-12 input-gcash_email">
                         <label for="gcash_email">Email Address</label>
-                        <input type="email" class="form-control" id="gcash_email" name="gcash_email" placeholder="your@email.com">
+                        <input type="email" class="form-control" id="gcash_email" name="gcash_email" placeholder="your@email.com" value="{{ $StudentInformation->email }}">
                         <div class="help-block text-left" id="js-gcash_email"></div>
                     </div>    
                 
@@ -95,6 +102,7 @@
                     <div class="form-group col-lg-12 input-gcash_pay_fee">
                         <label for="gcash_pay_fee">Enter your payment fee</label>
                         <input type="number" class="form-control" id="gcash_pay_fee" name="gcash_pay_fee" placeholder=" {{number_format($Downpayment->downpayment_amt,2)}}">
+                        <input type="hidden" id="gcash_balance" name="gcash_balance">
                         <div class="help-block text-left" id="js-gcash_pay_fee"></div>
                     </div> 
                     <div class="form-group col-lg-12 input-gcash_image ">

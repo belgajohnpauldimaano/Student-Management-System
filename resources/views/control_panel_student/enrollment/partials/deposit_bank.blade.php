@@ -71,24 +71,31 @@
                         @else
                             <p>There is no Tution and Miscellenous Fee</p>
                         @endif                
-                    </div>    
-                    <div class="form-group col-lg-12">
-                    <label for="exampleInputEmail1">Downpayment Fee </label>              
+                    
+                        <label for="previous_balance">Current Balance Fee</label>         
+                        @if($AlreadyEnrolled)    
+                            <input type="hidden" class="form-control" value="{{$AlreadyEnrolled->balance}}" id="bank_previous_balance" name="bank_previous_balance">
+                            <p>₱ {{number_format($AlreadyEnrolled->balance,2)}}</p> 
+                        @else
+                            <p>₱ 0.00</p>  
+                        @endif  
+
+                        <label for="exampleInputEmail1">Downpayment Fee </label>              
                         @if($Downpayment)
                             <input type="hidden" name="bank_downpayment" value="{{$Downpayment->id}}">
                             <input type="hidden" id="bank_downpayment" value="{{$Downpayment->downpayment_amt}}">                        
-                            <p>{{number_format($Downpayment->downpayment_amt,2)}}</p>
+                            <p>₱ {{number_format($Downpayment->downpayment_amt,2)}}</p>
                         @endif
                     </div>  
 
                     <div class="form-group col-lg-12 input-bank_phone">
                         <label for="phone">Phone number</label>
-                        <input type="text" class="form-control" id="bank_phone" name="bank_phone" placeholder="+639000000000" value="+639">
+                        <input type="text" class="form-control" id="bank_phone" name="bank_phone" placeholder="+639000000000" value="{{ $StudentInformation->contact_number ? $StudentInformation->contact_number : '+639' }}">
                         <div class="help-block text-left" id="js-bank_phone"></div>
                     </div>  
                     <div class="form-group col-lg-12 input-bank_email">
                         <label for="bank_email">Email Address</label>
-                        <input type="email" class="form-control" id="bank_email" name="bank_email" placeholder="your@email.com">
+                        <input type="email" class="form-control" id="bank_email" name="bank_email" placeholder="your@email.com" value="{{ $StudentInformation->email }}">
                         <div class="help-block text-left" id="js-bank_email"></div>
                     </div>    
                 
@@ -127,6 +134,7 @@
                     <div class="form-group col-lg-12 input-bank_pay_fee">
                         <label for="bank_pay_fee">Enter your payment fee</label>
                         <input type="number" class="form-control" id="bank_pay_fee" name="bank_pay_fee" placeholder=" {{number_format($Downpayment->downpayment_amt,2)}}">
+                        <input type="hidden" id="bank_balance" name="bank_balance">
                         <div class="help-block text-left" id="js-bank_pay_fee"></div>
                     </div> 
                     <div class="form-group col-lg-12 input-bank_image ">

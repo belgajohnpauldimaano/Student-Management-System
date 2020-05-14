@@ -1,11 +1,21 @@
 <?php
 
+// student
 Route::group(['prefix' => 'student', 'middleware' => ['auth', 'userroles'], 'roles' => ['student']], function() {
     Route::get('dashboard', 'Control_Panel_Student\DashboardController@index')->name('student.dashboard');
 
     Route::group(['prefix' => 'enrollment'], function () {
         Route::get('', 'Control_Panel_Student\EnrollmentController@index')->name('student.enrollment.index');
+        Route::post('save-data', 'Control_Panel_Student\EnrollmentController@save')->name('student.enrollment.save_data');
+        Route::post('save', 'Control_Panel_Student\EnrollmentController@save_data')->name('student.enrollment.save');
+        // checkout
+        Route::post('/check-out', 'Control_Panel_Student\PaymentController@createPayment')->name('student.create-payment.paypal');
+        Route::get('confirm', 'Control_Panel_Student\PaymentController@confirmPayment')->name('confirm-payment');
+        Route::post('/notify-student', 'Control_Panel_Student\PaymentController@paypalPdt');
     });
+
+    // Route::post('paypal', 'Control_Panel_Student\PaymentController@payWithpaypal');
+    // Route::get('status', 'PaymentController@getPaymentStatus');
 
     Route::group(['prefix' => 'class-schedule'], function() {
         Route::get('', 'Control_Panel_Student\ClassScheduleController@index')->name('student.class_schedule.index');

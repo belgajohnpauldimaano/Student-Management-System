@@ -71,26 +71,39 @@ class StudentPaymentController extends Controller
 
     public function approve(Request $request)
     {
-        $Approve = \App\Transaction::where('id', $request->id)->first();
+
+        $Student_id = Transaction::where('id', $request->id)->first();
+        $StudentInformation = StudentInformation::where('status', 1)
+             ->where('id', $Student_id->student_id)->first();
+
+        $name = $StudentInformation->first_name.' '.$StudentInformation->last_name;
+                
+        $Approve = Transaction::where('id', $request->id)->first();
 
         if ($Approve)
         {
             $Approve->approval = 'Approved';
             $Approve->save();
-            return response()->json(['res_code' => 0, 'res_msg' => 'Payment status successfully approved.']);
+            return response()->json(['res_code' => 0, 'res_msg' => 'Student '.$name.' payment status successfully approved.']);
         }
         return response()->json(['res_code' => 1, 'res_msg' => 'Invalid request.']);
     }
 
     public function disapprove(Request $request)
     {
-        $NotyetApproved = \App\Transaction::where('id', $request->id)->first();
+        $Student_id = Transaction::where('id', $request->id)->first();
+        $StudentInformation = StudentInformation::where('status', 1)
+        ->where('id', $request->student_id)->first();
 
-        if ($NotyetApproved)
+        $name = $StudentInformation->first_name.' '.$StudentInformation->last_name;
+        $NotyetApproved = Transaction::where('id', $request->id)->first();
+        
+        
+            if ($NotyetApproved)
         {
             $NotyetApproved->approval = 'Not yet approved';
             $NotyetApproved->save();
-            return response()->json(['res_code' => 0, 'res_msg' => 'Payment status successfully disapproved.']);
+            return response()->json(['res_code' => 0, 'res_msg' => 'Student '.$name.' payment status successfully disapproved.']);
         }
         return response()->json(['res_code' => 1, 'res_msg' => 'Invalid request.']);
     }
