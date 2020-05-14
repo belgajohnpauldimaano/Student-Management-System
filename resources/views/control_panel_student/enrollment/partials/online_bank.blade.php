@@ -63,7 +63,9 @@
                   <input type="hidden" class="form-control" value="{{$AlreadyEnrolled->balance}}" id="previous_balance" name="previous_balance">
                   <p>₱ {{number_format($AlreadyEnrolled->balance,2)}}</p> 
                 @else
-                  ₱ <p>0.00</p>  
+                  @if($Tuition)
+                    <p>₱ {{number_format($Tuition ? $PaymentCategory->tuition->tuition_amt + $PaymentCategory->misc_fee->misc_amt : '', 2)}}</p> 
+                  @endif      
                 @endif               
             
                 <label for="downpayment">Downpayment Fee</label>
