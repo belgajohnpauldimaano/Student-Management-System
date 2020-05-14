@@ -48,7 +48,9 @@
                         <td>Previous Balance</td>
                         <td>₱ <?php $lastId = ($payment->id - 1 );
                             $current_bal = \App\Transaction::where('id', $lastId)->first();
-                            echo $current_bal->balance;?>
+                            if($current_bal){
+                                echo $current_bal->balance;
+                            }?>
                         </td>
                     </tr>
                     <tr style="margin-top: 10px">

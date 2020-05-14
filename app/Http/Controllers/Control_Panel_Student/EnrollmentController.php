@@ -205,6 +205,11 @@ class EnrollmentController extends Controller
     }
 
     public function modal_data(Request $request){
+
+        $Transaction = Transaction::where('student_id', $request->id)
+            ->where('school_year_id', $request->school_year_id)->orderBY('id', 'desc')
+            ->first();
+
         $Transaction_history = NULL;
         if ($request->id && $request->school_year_id)
         {
@@ -212,7 +217,7 @@ class EnrollmentController extends Controller
                 ->where('school_year_id', $request->school_year_id)->orderBY('id', 'desc')
                 ->get();
         }
-        return view('control_panel_student.enrollment.partials.modal_data', compact('Transaction_history'))->render();
+        return view('control_panel_student.enrollment.partials.modal_data', compact('Transaction_history','Transaction'))->render();
     }
     
 }
