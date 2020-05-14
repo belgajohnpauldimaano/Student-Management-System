@@ -45,6 +45,13 @@
                         <td>{{number_format($payment->downpayment, 2)}}</td>
                     </tr>
                     <tr style="margin-top: 10px">
+                        <td>Previous Balance</td>
+                        <td>₱ <?php $lastId = ($payment->id - 1 );
+                            $current_bal = \App\Transaction::where('id', $lastId)->first();
+                            echo $current_bal->balance;?>
+                        </td>
+                    </tr>
+                    <tr style="margin-top: 10px">
                         <td>Balance</td>
                         <td>{{number_format($payment->balance, 2)}}</td>
                     </tr>

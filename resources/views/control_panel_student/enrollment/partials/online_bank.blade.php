@@ -20,7 +20,13 @@
           Step 2. Click the enroll button to proceed with the payment.
         </p>
         <p>
-          Step 3. Wait for the text or confirmation upon successful payment via Debit/Credit card or PayMaya.
+          Step 3. Wait for the portal of paypal.
+        </p>
+        <p>
+          Step 4. Choose your preferred method and enter the required information.
+        </p>
+        <p>
+          Step 5. Wait for the text/email or confirmation upon successful payment via Debit/Credit card or PayMaya.
         </p>
     </div>
     <!-- /.box-body -->

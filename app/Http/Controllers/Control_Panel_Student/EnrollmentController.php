@@ -103,7 +103,7 @@ class EnrollmentController extends Controller
         }
         
        if($request->bank_balance){
-            $Enrollment_total = $request->bank_balance - $request->bank_pay_fee;
+            $Enrollment_total = $request->bank_balance;
         }else{
             $Enrollment_total = $request->bank_tution - $request->bank_pay_fee;
         }
@@ -167,7 +167,7 @@ class EnrollmentController extends Controller
         }
       
         if($request->gcash_balance){
-            $Enrollment_total = $request->gcash_balance - $request->gcash_pay_fee;
+            $Enrollment_total = $request->gcash_balance;
         }else{
             $Enrollment_total = $request->gcash_tution_total - $request->gcash_pay_fee;
         }

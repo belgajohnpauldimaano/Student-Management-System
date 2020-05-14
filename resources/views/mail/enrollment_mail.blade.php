@@ -27,26 +27,33 @@
                 <tbody>
                     <tr>
                         <td>Tuition Fee</td>
-                        <td>{{number_format($payment->payment_cat->tuition->tuition_amt, 2)}}</td>
+                        <td>₱ {{number_format($payment->payment_cat->tuition->tuition_amt, 2)}}</td>
                     </tr>
                     <tr>
                         <td>Misc Fee</td>
-                        <td>{{number_format($payment->payment_cat->misc_fee->misc_amt, 2)}}</td>
+                        <td>₱ {{number_format($payment->payment_cat->misc_fee->misc_amt, 2)}}</td>
                     </tr>
                     <tr>
                         <td>Total Fees</td>
-                        <td>{{number_format($payment->payment_cat->tuition->tuition_amt + $payment->payment_cat->misc_fee->misc_amt, 2)}}</td>
+                        <td>₱ {{number_format($payment->payment_cat->tuition->tuition_amt + $payment->payment_cat->misc_fee->misc_amt, 2)}}</td>
                     </tr>
                     <tr>
                         <td colspan="2" style="text-align:left">Payment</td>
                     </tr>
                     <tr>
                         <td>{{$payment->payment_option}}</td>
-                        <td>{{number_format($payment->downpayment, 2)}}</td>
+                        <td>₱ {{number_format($payment->downpayment, 2)}}</td>
                     </tr>
                     <tr style="margin-top: 10px">
-                        <td>Balance</td>
-                        <td>{{number_format($payment->balance, 2)}}</td>
+                        <td>Previous Balance</td>
+                        <td>₱ <?php $lastId = ($payment->id - 1 );
+                            $current_bal = \App\Transaction::where('id', $lastId)->first();
+                            echo $current_bal->balance;?>
+                        </td>
+                    </tr>
+                    <tr style="margin-top: 10px">
+                        <td>Current Balance</td>
+                        <td>₱ {{number_format($payment->balance, 2)}}</td>
                     </tr>
                     <tr style="margin-top: 10px">
                         <td>Date and Time:</td>
@@ -54,7 +61,7 @@
                     </tr>
                     <tr style="margin-top: 10px">
                         <td>Total Amount paid (to be confirmed by finance)</td>
-                        <td>{{number_format($payment->downpayment, 2)}}</td>
+                        <td>₱ {{number_format($payment->downpayment, 2)}}</td>
                     </tr>
                     
                 </tbody>
