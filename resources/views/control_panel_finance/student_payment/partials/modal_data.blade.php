@@ -47,7 +47,7 @@
                     </div>
                                         
                    
-                        
+                     <p>Date and Time: {{ $payment ? date_format(date_create($payment->created_at), 'F d, Y h:i A') : '' }}</p>   
                     <div class="box-body ">
                         <table class="table table-bordered">
                             <tbody>

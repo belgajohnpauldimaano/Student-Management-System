@@ -61,7 +61,7 @@ class EnrollmentController extends Controller
                 $Profile = StudentInformation::where('user_id', $User->id)->first();
 
                 return view('control_panel_student.enrollment.index', 
-                    compact('AlreadyEnrolled','grade_level', 'ClassDetail','PaymentCategory','Downpayment','Profile','StudentInformation','Tuition','Enrollment','User'));
+                    compact('AlreadyEnrolled','grade_level', 'ClassDetail','PaymentCategory','Downpayment','Profile','StudentInformation','Tuition','Enrollment','User','SchoolYear'));
                 return json_encode(['GradeSheetData' => $GradeSheetData,]);
                     
             }else{
@@ -204,5 +204,15 @@ class EnrollmentController extends Controller
           'You have successfully accomplished the form. Check your email for review of Finance Dept. Thank you!']);
     }
 
+    public function modal_data(Request $request){
+        $Transaction_history = NULL;
+        if ($request->id && $request->school_year_id)
+        {
+            $Transaction_history = Transaction::where('student_id', $request->id)
+                ->where('school_year_id', $request->school_year_id)->orderBY('id', 'desc')
+                ->get();
+        }
+        return view('control_panel_student.enrollment.partials.modal_data', compact('Transaction_history'))->render();
+    }
     
 }

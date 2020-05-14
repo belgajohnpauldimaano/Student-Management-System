@@ -452,6 +452,8 @@
             }
         })
     }
+
+    
     
     $('#btn_method').on('click', function(e){
         e.preventDefault(e);

@@ -1,77 +1,125 @@
-<div class="modal fade" tabindex="-1" role="dialog">
+<div class="modal fade" tabindex="-1" role="dialog" data-keyboard="false">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
-            <form id="js-form_subject_details">
-                {{ csrf_field() }}
-                @if ($ClassDetail)
-                    <input type="hidden" name="id" value="{{ $ClassDetail->id }}">
-                @endif
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title">
-                        {{ $ClassDetail ? 'Edit Class' : 'Add Class' }}
-                    </h4>
-                </div>
-                <div class="modal-body">                    
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title"><i class="fas fa-history"></i> Transaction History</h4>
+            </div>
+            <div class="modal-body" style="background-color: #ecf0f5;">
+                
+                <div class="box">
+                    <div class="box-header">
+                        <h3 class="box-title">
+                            Account Payment
+                        </h3>                        
+                    </div>
+                    <!-- /.box-header -->
+                    <div class="box-body no-padding">
+                        <table class="table table-striped">
+                            <tbody>
+                                <tr>
+                                    <th style="width: 10px">#</th>
+                                    <th>Description</th>
+                                    <th>Amount</th>
+                                </tr>
+                                <tr>
+                                    <td>1.</td>
+                                    <td>Tuition Fee</td>
+                                    <td>
+                                        ₱ {{ number_format($Transaction_history[0]->payment_cat->tuition->tuition_amt, 2)}}
+                                    </td>                                        
+                                </tr>
+                                <tr>
+                                    <td>2.</td>
+                                    <td>Miscelleneous Fee</td>
+                                    <td>
+                                        ₱ {{ number_format($Transaction_history[0]->payment_cat->misc_fee->misc_amt, 2)}}
+                                    </td>                                        
+                                </tr>
+                                <tr>
+                                    <td>3.</td>
+                                    <td>Discount Fee</td>
+                                    <td>
+                                        ₱ 
+                                    </td>                                        
+                                </tr>
+                                <tr>
+                                    <td>4.</td>
+                                    <td>Total Fees</td>
+                                    <td>
+                                        ₱ {{ number_format($Transaction_history[0]->payment_cat->tuition->tuition_amt + $Transaction_history[0]->payment_cat->misc_fee->misc_amt, 2)}}
+                                    </td>                                        
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
                     
-                    <div class="form-group">
-                        <label for="">Section</label>
-                        <select name="section" id="section" class="form-control">
-                            <option value="">Select section</option>
-                            @foreach ($SectionDetail as $data) 
-                                <option value="{{ $data->id }}" {{ $ClassDetail ? $ClassDetail->section_id == $data->id ? 'selected' : '' : '' }}>{{ $data->section }}</option>
-                            @endforeach
-                        </select>
-                        <div class="help-block text-red text-center" id="js-section">
+                </div> 
+                
+                <h4>History</h4>
+                @foreach ($Transaction_history as $key => $transaction)
+                    <div class="box">
+                        <div class="box-header">
+                            <p style="font-weight: bold">
+                                Payment Option - {{$transaction->payment_option}}
+                            </p>
+                            <p style="color: #008fef">Date and Time: {{ $transaction ? date_format(date_create($transaction->created_at), 'F d, Y h:i A') : '' }}</p>   
                         </div>
-                    </div>
-                                 
-                    <div class="form-group">
-                        <label for="">Room</label>
-                        <select name="room" id="room" class="form-control">
-                            <option value="">Select room</option>
-                            @foreach ($Room as $data) 
-                                <option value="{{ $data->id }}" {{ $ClassDetail ? $ClassDetail->room_id == $data->id ? 'selected' : '' : '' }}>{{ $data->room_code }}</option>
-                            @endforeach
-                        </select>
-                        <div class="help-block text-red text-center" id="js-room">
+                        <!-- /.box-header -->
+                        <div class="box-body no-padding">
+                            <table class="table table-striped">
+                                <tbody>
+                                    <tr>
+                                        <th style="width: 10px">#</th>
+                                        <th>Description</th>
+                                        <th>Amount</th>
+                                    </tr>
+                                    <tr>
+                                        <td>1.</td>
+                                        <td>Payment</td>
+                                        <td>
+                                            ₱ {{ number_format($transaction->downpayment, 2)}}
+                                        </td>                                        
+                                    </tr>
+                                    <tr>
+                                        <td>2.</td>
+                                        <td>Balance</td>
+                                        <td>
+                                            ₱ {{ number_format($transaction->balance, 2)}}
+                                        </td>                                        
+                                    </tr>
+                                    <div class="lightbox-target" id="img_receipt">
+                                        <img src="{{ $transaction->receipt_img ? \File::exists(public_path('/img/receipt/'.$transaction->receipt_img)) ?
+                                            asset('/img/receipt/'.$transaction->receipt_img) : asset('/img/receipt/blank-user.gif') :
+                                            asset('/img/receipt/blank-user.gif') }}"/>
+                                        <a class="lightbox-close" href="#"></a>
+                                    </div>
+                                    
+                                    @if($transaction->payment_option != 'Credit Card/Debit Card')
+                                        <div class="form-group" style="padding: 10px">
+                                            <label for="">Image Receipt <small>(Click to zoom)</small></label>
+                                            <a class="lightbox" href="#img_receipt">
+                                                <img class="img-responsive" 
+                                                id="img-receipt"
+                                                src="{{ $transaction->receipt_img ? \File::exists(public_path('/img/receipt/'.$transaction->receipt_img)) ?
+                                                asset('/img/receipt/'.$transaction->receipt_img) : asset('/img/receipt/blank-user.gif') :
+                                                asset('/img/receipt/blank-user.gif') }}" 
+                                                alt="User profile picture">
+                                            </a>
+                                        </div> 
+                                    @endif
+                                </tbody>
+                                
+                            </table>
                         </div>
-                    </div>
-                            
-                    <div class="form-group">
-                        <label for="">School Year</label>
-                        <select name="school_year" id="school_year" class="form-control">
-                            <option value="">Select school year</option>
-                            @foreach ($SchoolYear as $data) 
-                                <option value="{{ $data->id }}" {{ $ClassDetail ? $ClassDetail->school_year_id == $data->id ? 'selected' : '' : '' }}>{{ $data->school_year }}</option>
-                            @endforeach
-                        </select>
-                        <div class="help-block text-red text-center" id="js-school_year">
-                        </div>
-                    </div>
-                    
-                    {{--  <div class="bootstrap-timepicker">
-                        <div class="form-group">
-                        <label>Time</label>
-
-                        <div class="input-group">
-                            <input type="text" class="form-control timepicker">
-
-                            <div class="input-group-addon">
-                            <i class="fa fa-clock-o"></i>
-                            </div>
-                        </div>
-                        </div>
-                    </div>  --}}
-
-
-
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default btn-flat" data-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary btn-flat">Save</button>
-                </div>
-            </form>
+                        
+                    </div>                    
+                @endforeach                
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default btn-flat" data-dismiss="modal">Close</button>
+            </div>
         </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->

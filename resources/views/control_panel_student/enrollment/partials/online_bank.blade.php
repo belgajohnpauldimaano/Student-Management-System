@@ -103,7 +103,16 @@
 <div class="col-md-6">
     <div class="box box-primary">
         <div class="box-header with-border">
-          <h3 class="box-title col-lg-12">Transaction Summary</h3>
+          <h3 class="box-title">
+            Transaction Summary
+          </h3> 
+
+          <a class="btn btn-info pull-right btn-transaction-history" 
+            data-id="{{$StudentInformation->id}}" 
+            data-school_year_id="{{$SchoolYear->id}}" 
+            href="#">
+            <i class="fas fa-history"></i> Transaction History
+          </a>
         </div>
         <div class="box-body">                  
             <table class="table  table-invoice table-striped">

@@ -82,7 +82,14 @@
             </div>
             <div class="col-md-6">        
                     <div class="box-header with-border">
-                        <h3 class="box-title col-lg-12">Upload with Gcash</h3>
+                        <h3 class="box-title">Upload with Gcash</h3>
+                        <a class="btn btn-info pull-right btn-transaction-history" 
+                            data-id="{{$StudentInformation->id}}" 
+                            data-school_year_id="{{$SchoolYear->id}}" 
+                            href="#">
+                            <i class="fas fa-history"></i> Transaction History
+                        </a>
+
                     </div>
                     <div class="form-group col-lg-12" style="margin-top: 10px">
                         <label for="Gcash">Gcash Name</label>               

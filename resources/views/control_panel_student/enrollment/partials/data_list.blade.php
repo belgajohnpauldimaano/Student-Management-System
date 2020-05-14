@@ -51,9 +51,7 @@
             <div class="help-block text-left" id="js-payment_category"></div>
             <button type="button" id="btn_method" class="btn btn-primary pull-right">Submit</button>
           </div>
-          {{-- {{$ClassDetail->school_year_id}} --}}
-        
-
+          
        </div>
     </div>
   </div>
