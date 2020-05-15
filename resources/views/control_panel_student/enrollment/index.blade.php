@@ -143,6 +143,7 @@
         top: 0;
         bottom: 0;
         left: 0;
+        z-index: 2000;
     }
 
     .lightbox-target:target img {
@@ -192,6 +193,7 @@
     <script src="{{ asset('cms/plugins/datepicker/bootstrap-datepicker.js') }}"></script>
     <script src="{{ asset('js/custom_validator.js') }}"></script>
     <script>
+        $('#btn-success-alert').trigger('click');
         var page = 1;
         function fetch_data () {
             var formData = new FormData($('#js-form_search')[0]);

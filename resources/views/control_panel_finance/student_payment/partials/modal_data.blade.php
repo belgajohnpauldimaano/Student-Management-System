@@ -9,8 +9,7 @@
                         </h4>
                 </div>
             
-                <div class="modal-body">
-                    
+                <div class="modal-body">                    
                     <div class="row">
                         <div class="col-md-6">
                             <div class="form-group">
@@ -46,79 +45,85 @@
                         </div>
                     </div>
                                         
-                   
-                     <p>Date and Time: {{ $payment ? date_format(date_create($payment->created_at), 'F d, Y h:i A') : '' }}</p>   
-                    <div class="box-body ">
-                        <table class="table table-bordered">
-                            <tbody>
-                                <tr>
-                                    <th style="width: 10px">#</th>
-                                    <th>Description</th>
-                                    <th>Amount</th>
-                                    {{-- <th style="width: 40px">Label</th> --}}
-                                </tr>
-                                <tr>
-                                    <td>1.</td>
-                                        <td>Tuition Fee</td>
-                                        <td>
-                                            {{ number_format($Modal_data->payment_cat->tuition->tuition_amt, 2)}}
-                                        </td>                                
+                    <div class="box">
+                        <div class="box-header ">
+                            <p class="box-title">
+                                Date and Time: {{ $Modal_data ? date_format(date_create($Modal_data->created_at), 'F d, Y h:i A') : '' }}
+                            </p>
+                        </div>
+                        
+                        <div class="box-body no-padding">
+                            <table class="table table-bordered">
+                                <tbody>
+                                    <tr>
+                                        <th style="width: 10px">#</th>
+                                        <th>Description</th>
+                                        <th>Amount</th>
+                                        {{-- <th style="width: 40px">Label</th> --}}
                                     </tr>
                                     <tr>
-                                        <td>2.</td>
-                                        <td>Misc Fee</td>
-                                        <td>
-                                            {{ number_format($Modal_data->payment_cat->misc_fee->misc_amt, 2)}}
-                                        </td>                                
-                                    </tr>
-                                    <tr>
-                                        <td>3.</td>
-                                        <td>Total Fees</td>
-                                        <td>
-                                            {{ number_format($Modal_data->payment_cat->tuition->tuition_amt + $Modal_data->payment_cat->misc_fee->misc_amt, 2)}}
-                                        </td>                                
-                                    </tr>
-                                    <tr>
-                                        <td>4.</td>
-                                        <td>Payment</td>
-                                        <td>
-                                            {{ number_format($Modal_data->downpayment, 2)}}
-                                        </td>                                    
-                                    </tr>
-                                    <tr>
-                                        <td>5.</td>
-                                        <td>Balance</td>
-                                        <td>
-                                            {{ number_format($Modal_data->payment_cat->tuition->tuition_amt, 2)}}
-                                        </td>                                    
-                                    </tr>
-                            </tbody>
-                        </table>
-                    </div>
+                                        <td>1.</td>
+                                            <td>Tuition Fee</td>
+                                            <td>
+                                                {{ number_format($Modal_data->payment_cat->tuition->tuition_amt, 2)}}
+                                            </td>                                
+                                        </tr>
+                                        <tr>
+                                            <td>2.</td>
+                                            <td>Misc Fee</td>
+                                            <td>
+                                                {{ number_format($Modal_data->payment_cat->misc_fee->misc_amt, 2)}}
+                                            </td>                                
+                                        </tr>
+                                        <tr>
+                                            <td>3.</td>
+                                            <td>Total Fees</td>
+                                            <td>
+                                                {{ number_format($Modal_data->payment_cat->tuition->tuition_amt + $Modal_data->payment_cat->misc_fee->misc_amt, 2)}}
+                                            </td>                                
+                                        </tr>
+                                        <tr>
+                                            <td>4.</td>
+                                            <td>Payment</td>
+                                            <td>
+                                                {{ number_format($Modal_data->downpayment, 2)}}
+                                            </td>                                    
+                                        </tr>
+                                        <tr>
+                                            <td>5.</td>
+                                            <td>Balance</td>
+                                            <td>
+                                                {{ number_format($Modal_data->payment_cat->tuition->tuition_amt, 2)}}
+                                            </td>                                    
+                                        </tr>
+                                </tbody>
+                            </table>
+                        </div>
                         <!-- /.box-body -->
                     
 
-                    <div class="lightbox-target" id="img_receipt">
-                        <img src="{{ $Modal_data->receipt_img ? \File::exists(public_path('/img/receipt/'.$Modal_data->receipt_img)) ?
-                            asset('/img/receipt/'.$Modal_data->receipt_img) : asset('/img/receipt/blank-user.gif') :
-                            asset('/img/receipt/blank-user.gif') }}"/>
-                        <a class="lightbox-close" href="#"></a>
-                    </div>
-                    
-                    @if($Modal_data->payment_option != 'Credit Card/Debit Card')
-                        <div class="form-group">
-                            <label for="">Image Receipt <small>(Click to zoom)</small></label>
-                            <a class="lightbox" href="#img_receipt">
-                                <img class="img-responsive" 
-                                id="img-receipt"
-                                src="{{ $Modal_data->receipt_img ? \File::exists(public_path('/img/receipt/'.$Modal_data->receipt_img)) ?
+                        <div class="lightbox-target" id="img_receipt">
+                            <img src="{{ $Modal_data->receipt_img ? \File::exists(public_path('/img/receipt/'.$Modal_data->receipt_img)) ?
                                 asset('/img/receipt/'.$Modal_data->receipt_img) : asset('/img/receipt/blank-user.gif') :
-                                asset('/img/receipt/blank-user.gif') }}" 
-                                alt="User profile picture">
-                            </a>
-                        </div> 
-                    @endif
-                </div>           
+                                asset('/img/receipt/blank-user.gif') }}"/>
+                            <a class="lightbox-close" href="#"></a>
+                        </div>
+                    
+                        @if($Modal_data->payment_option != 'Credit Card/Debit Card')
+                            <div class="form-group">
+                                <label for="">Image Receipt <small>(Click to zoom)</small></label>
+                                <a class="lightbox" href="#img_receipt">
+                                    <img class="img-responsive" 
+                                    id="img-receipt"
+                                    src="{{ $Modal_data->receipt_img ? \File::exists(public_path('/img/receipt/'.$Modal_data->receipt_img)) ?
+                                    asset('/img/receipt/'.$Modal_data->receipt_img) : asset('/img/receipt/blank-user.gif') :
+                                    asset('/img/receipt/blank-user.gif') }}" 
+                                    alt="User profile picture">
+                                </a>
+                            </div> 
+                        @endif
+                    </div>
+                </div>            
                 <div class="moda-footer">
                     <button class="btn btn-success btn-flat btn-approve pull-right" data-id="{{$Modal_data->id}}">
                         {{ $Modal_data->approval ? $Modal_data->approval =='Approved' ? 'Disapprove' : 'Approve' : 'Disapprove'}}

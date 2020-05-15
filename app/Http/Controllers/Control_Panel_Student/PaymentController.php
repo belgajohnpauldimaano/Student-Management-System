@@ -108,14 +108,14 @@ class PaymentController extends Controller
         
         $redirect_urls = new RedirectUrls();
         $redirect_urls->setReturnUrl(route('confirm-payment'))
-        ->setCancelUrl(route('student.create-payment.paypal'));
+            ->setCancelUrl(route('student.create-payment.paypal'));
         
 
         // We set up the payment with the payer, urls and transactions.
         // Note: you can have different itemLists, then different transactions for it.
         $payment = new Payment();
         $payment->setIntent('Sale')->setPayer($payer)->setRedirectUrls($redirect_urls)
-        ->setTransactions(array($transaction));
+            ->setTransactions(array($transaction));
 
         // Put the payment creation in try and catch in case of exceptions.
         try {

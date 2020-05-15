@@ -417,7 +417,6 @@
 
     var $getEvent = '';
     
-
     function getProfiledata(){
       $.ajax({
             url : "{{ route('student.my_account.fetch_profile') }}",
@@ -440,6 +439,7 @@
                     $('#father_name').val(res.Profile.father_name);     
                     $('#mother_name').val(res.Profile.mother_name);    
                     $('#gender').val(res.Profile.gender);
+                    $('#isEsc').val(res.Profile.isEsc);
                     $('.birthday').datepicker({
                         autoclose: true
                     })                     
@@ -460,7 +460,7 @@
         var payment_category = $('#payment_category').val();
         
         if(payment_category==1){
-            // getProfiledata();
+            getProfiledata();
             
             $("#online").fadeIn();
             $('#selector_payment').hide();
@@ -471,7 +471,7 @@
 
             
         }else if(payment_category==2){
-            // getProfiledata();
+            getProfiledata();
             
             $("#deposit").fadeIn();
             $('#selector_payment').hide();
@@ -858,7 +858,7 @@
                                 bday = new Date(res.Profile.birthdate)
                             }
                             $('#display__full_name').text((res.Profile.first_name != null ? res.Profile.first_name : '') + ' ' + (res.Profile.middle_name != null ? res.Profile.middle_name : '') + ' '  + (res.Profile.last_name != null ? res.Profile.last_name : ''));
-                            $('#display__contact_number').text((res.Profile.contact_number != null ? res.Profile.contact_number : ''));
+                            $('#display__contact_number').text((res.Profile.contact_number != null ? res.Profile.contact_number : '+639'));
                             $('#display__email').text((res.Profile.email != null ? res.Profile.email : ''));
                             $('#display__address').text((res.Profile.address != null ? res.Profile.address : ''));
                             $('#display__birthday').text((res.Profile.birthdate != null ?  bday.getDate() + ' ' + bday.toLocaleString('en-US', {month: "long"}) + ' ' + bday.getFullYear()  : ''));
@@ -868,6 +868,7 @@
                             $('#display__father_name').text((res.Profile.father_name != null ? res.Profile.father_name : ''));
                             $('#display__mother_name').text((res.Profile.mother_name != null ? res.Profile.mother_name : ''));
                             $('#display__gender').text((res.Profile.gender == 1 ? 'Male' : 'Female'));
+                            $('#display__esc').text((res.Profile.isEsc));
                         }
                     })
                     $('.modal-update-profile').modal('hide');
@@ -881,3 +882,14 @@
             }
         });
     })
+
+    $('#btn-success-alert').click(function(e){
+        e.preventDefault();
+        var value = $(this).data('value');
+        alertify.defaults.theme.ok = "btn btn-primary btn-flat";
+        alertify
+        .alert('Confirmation', value, function(){
+            alertify.message('OK');
+            location.reload();
+        });
+    });

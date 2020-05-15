@@ -34,7 +34,16 @@
                         {{ csrf_field() }}
                         <div class="form-group" id="warning-modal">
                             <div class="help-block text-center" id="js-warning-modal"></div>
-                        </div>                 
+                        </div>  
+                        <div class="form-group gender">
+                            <label for="">Are you ESC?</label>
+                            <select name="isEsc" id="isEsc" class="form-control">
+                                <option value="" {{ $StudentInformation ? $StudentInformation->isEsc == 0 ? 'selected' : '' : '' }}>--Select--</option>
+                                <option value="1" {{ $StudentInformation ? $StudentInformation->isEsc == 1 ? 'selected' : '' : '' }}>Yes</option>
+                                <option value="2" {{ $StudentInformation ? $StudentInformation->isEsc == 2 ? 'selected' : '' : '' }}>No</option>
+                            </select>
+                            <div class="help-block text-left" id="js-isEsc"></div>
+                        </div>               
                         <div class="form-group first">
                             <label for="">First name</label>
                             <input type="text" class="form-control" name="first_name" id="first_name">
