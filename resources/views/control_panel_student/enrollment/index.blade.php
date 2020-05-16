@@ -191,7 +191,7 @@
 @section ('scripts')
     <script src="{{ asset('cms/plugins/timepicker/bootstrap-timepicker.min.js') }}"></script>
     <script src="{{ asset('cms/plugins/datepicker/bootstrap-datepicker.js') }}"></script>
-    
+    <script src="{{ asset('js/custom_validator.js') }}"></script>
     <script>
         $('#btn-success-alert').trigger('click');
         var page = 1;
@@ -447,5 +447,5 @@
 
         
     </script>
-    <script src="{{ asset('js/custom_validator.js') }}"></script>
+    
 @endsection

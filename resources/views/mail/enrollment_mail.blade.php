@@ -7,7 +7,7 @@
     <body>
     <div style="padding: 20px">
         <h3 style="text-align:center; margin-bottom:10px">
-            SJAI Online Registration Confirmation:
+            SJAI Online Registration Confirmation
         </h3>
         <br/>
         <br/>
@@ -46,11 +46,21 @@
                     </tr>
                     <tr style="margin-top: 10px">
                         <td>Previous Balance</td>
-                        <td>₱ <?php $lastId = ($payment->id - 1 );
-                            $current_bal = \App\Transaction::where('id', $lastId)->first();
-                            if($current_bal){
-                                echo $current_bal->balance;
-                            }
+                        <td>₱ 
+                            <?php $lastId = ($payment->id - 1 );
+                                $current_bal = \App\Transaction::where('student_id', $payment->student_id)
+                                    ->where('school_year_id', $payment->school_year_id)
+                                    ->orderBY('id', 'desc')
+                                    ->skip(1)
+                                    ->take(1)
+                                    ->first();
+                                if($current_bal){
+                                    echo number_format($current_bal->balance, 2);
+                                }else{
+                                ?>                                
+                                    {{number_format($payment->payment_cat->tuition->tuition_amt + $payment->payment_cat->misc_fee->misc_amt, 2)}}
+                                <?php
+                                }
                             ?>
                         </td>
                     </tr>
