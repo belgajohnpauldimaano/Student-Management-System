@@ -63,7 +63,7 @@
                             <br><br>
                         <label for="exampleInputEmail1">Available Tuition Fee and Misc Fee</label>
                         @if($Tuition)
-                            <input type="hidden" name="bank_tution" value="{{ $PaymentCategory->tuition->tuition_amt + $PaymentCategory->misc_fee->misc_amt }}">
+                            <input type="text" name="bank_tution" id="bank_tution" value="{{ $PaymentCategory->tuition->tuition_amt + $PaymentCategory->misc_fee->misc_amt }}">
                             <input type="hidden" name="bank_tution_amt" value="{{$PaymentCategory->id}}">
                             <p>
                                 Tuition Fee ({{number_format($PaymentCategory->tuition->tuition_amt, 2 ?? '')}}) | Miscellenous Fee ({{number_format($PaymentCategory->misc_fee->misc_amt,2)}})
@@ -142,7 +142,7 @@
                     <div class="form-group col-lg-12 input-bank_pay_fee">
                         <label for="bank_pay_fee">Enter your payment fee</label>
                         <input type="number" class="form-control" id="bank_pay_fee" name="bank_pay_fee" placeholder=" {{number_format($Downpayment->downpayment_amt,2)}}">
-                        <input type="hidden" id="bank_balance" name="bank_balance">
+                        <input type="text" id="bank_balance" name="bank_balance">
                         <div class="help-block text-left" id="js-bank_pay_fee"></div>
                     </div> 
                     <div class="form-group col-lg-12 input-bank_image ">

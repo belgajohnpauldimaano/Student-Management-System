@@ -64,6 +64,7 @@
                   <p>₱ {{number_format($AlreadyEnrolled->balance,2)}}</p> 
                 @else
                   @if($Tuition)
+                  
                     <p>₱ {{number_format($Tuition ? $PaymentCategory->tuition->tuition_amt + $PaymentCategory->misc_fee->misc_amt : '', 2)}}</p> 
                   @endif      
                 @endif               
@@ -80,13 +81,15 @@
 
             <div class="form-group col-lg-12 input-payment">
                 <label for="pay_fee">Enter your payment fee</label>
-                <input type="number" class="form-control" id="pay_fee" name="pay_fee" placeholder=" {{number_format($Downpayment->downpayment_amt,2)}}">
+                <input type="number" class="form-control" id="pay_fee" name="pay_fee" 
+                  placeholder=" {{number_format($Downpayment->downpayment_amt,2)}}">
                 <div class="help-block text-left" id="js-pay_fee"></div>
             </div>
            
             <div class="form-group col-lg-12 input-phone">
                 <label for="phone">Phone number</label>
-                <input type="text" class="form-control" id="phone" name="phone" placeholder="+639000000000" value="{{ $StudentInformation->contact_number ? $StudentInformation->contact_number : '+639' }}">
+                <input type="text" class="form-control" id="phone" name="phone" 
+                placeholder="+639000000000" value="{{ $StudentInformation->contact_number ? $StudentInformation->contact_number : '+639' }}">
                 <div class="help-block text-left" id="js-number"></div>
             </div>  
             <div class="form-group col-lg-12 input-email">

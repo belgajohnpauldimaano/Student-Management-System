@@ -191,7 +191,7 @@
 @section ('scripts')
     <script src="{{ asset('cms/plugins/timepicker/bootstrap-timepicker.min.js') }}"></script>
     <script src="{{ asset('cms/plugins/datepicker/bootstrap-datepicker.js') }}"></script>
-    <script src="{{ asset('js/custom_validator.js') }}"></script>
+    
     <script>
         $('#btn-success-alert').trigger('click');
         var page = 1;
@@ -389,60 +389,63 @@
         
         $('body').on('submit', '#js-checkout-form', function (e) {
             e.preventDefault();            
-                var formData = new FormData($(this)[0]);
-                $.ajax({
-                    url         : "{{ route('student.create-payment.paypal') }}",
-                    type        : 'POST',
-                    data        : formData,
-                    processData : false,
-                    contentType : false,   
-                    beforeSend: function() {
-                        if($('#pay_fee').val() != '' && $('#phone').val() != '' && $('#email').val() != ''){ 
-                            $('#preloader').show();
-                        }
-                        else{
-                            $('.help-block').html('');
-                            check_payfee();
-                            check_phone();
-                            check_email();   
-                        }
-                        // loader_overlay();
-                    },                 
-                    success     : function (res) {                            
-                        if (res.res_code == 1)
-                        {
-                            for (var err in res.res_error_msg)
-                            {
-                                $('#js-' + err).html('<code> '+ res.res_error_msg[err] +' </code>');
-                            }
-                        }
-                        else
-                        {
-                            window.location.href = res;
-                        }   
-                    }
-                });
+             var formData = new FormData($(this)[0]);
+             $.ajax({
+                 url         : "{{ route('student.create-payment.paypal') }}",
+                 type        : 'POST',
+                 data        : formData,
+                 processData : false,
+                 contentType : false,   
+                 beforeSend: function() {
+                     if($('#pay_fee').val() != '' && $('#phone').val() != '' && $('#email').val() != ''){ 
+                         $('#preloader').show();
+                     }
+                     else{
+                         $('.help-block').html('');
+                         check_payfee();
+                         check_phone();
+                         check_email();   
+                     }
+                     // loader_overlay();
+                 },                 
+                 success     : function (res) {                            
+                     if (res.res_code == 1)
+                     {
+                         for (var err in res.res_error_msg)
+                         {
+                             $('#js-' + err).html('<code> '+ res.res_error_msg[err] +' </code>');
+                         }
+                     }
+                     else
+                     {
+                         window.location.href = res;
+                     }   
+                 }
+             });
             
         });
 
         $('body').on('click', '.btn-transaction-history', function (e) {
-                e.preventDefault();
-                 
-                var id = $(this).data('id');
-                var school_year_id = $(this).data('school_year_id');
-                $.ajax({
-                    url : "{{ route('student.transaction_history.modal_account') }}",
-                    type : 'POST',
-                    data : { _token : '{{ csrf_token() }}', id : id,  school_year_id : school_year_id},
-                    success : function (res) {
-                        $('.js-modal_holder').html(res);
-                        $('.js-modal_holder .modal').modal({ backdrop : 'static' });
-                        $('.js-modal_holder .modal').on('shown.bs.modal', function () {
-                                                             
-                            
-                        });
-                    }
-                });
+            e.preventDefault();
+             
+            var id = $(this).data('id');
+            var school_year_id = $(this).data('school_year_id');
+            $.ajax({
+                url : "{{ route('student.transaction_history.modal_account') }}",
+                type : 'POST',
+                data : { _token : '{{ csrf_token() }}', id : id,  school_year_id : school_year_id},
+                success : function (res) {
+                    $('.js-modal_holder').html(res);
+                    $('.js-modal_holder .modal').modal({ backdrop : 'static' });
+                    $('.js-modal_holder .modal').on('shown.bs.modal', function () {
+                                                         
+                        
+                    });
+                }
             });
+        });
+
+        
     </script>
+    <script src="{{ asset('js/custom_validator.js') }}"></script>
 @endsection

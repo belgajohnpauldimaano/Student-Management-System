@@ -306,7 +306,7 @@
                 return num.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')
             } 
                      
-            if(gcash_previous_balance){
+            if(gcash_previous_balance != null){
                 result_bal = parseFloat(gcash_previous_balance) - parseFloat(payment);
             }else{
                 result_bal = parseFloat(gcash_tution) - parseFloat(payment);
