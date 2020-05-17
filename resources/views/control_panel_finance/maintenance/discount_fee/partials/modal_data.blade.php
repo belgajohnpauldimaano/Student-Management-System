@@ -27,7 +27,7 @@
                             </div>
                     </div>
 
-                    <div class="form-group">
+                    {{-- <div class="form-group">
                         <label for="">Set as Current Discount Fee</label>
                         <select name="current_sy" id="current_sy" class="form-control">
                             <option value="1" {{ $DiscountFee ? ($DiscountFee->current == 1 ? 'selected' : '')  : 'selected' }}>Yes</option>
@@ -35,7 +35,7 @@
                         </select>
                         <div class="help-block text-red text-center" id="js-current_sy">
                         </div>
-                    </div>
+                    </div> --}}
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default btn-flat" data-dismiss="modal">Close</button>

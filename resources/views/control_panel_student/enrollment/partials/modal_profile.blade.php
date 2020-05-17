@@ -38,7 +38,7 @@
                         <div class="form-group gender">
                             <label for="">Are you ESC?</label>
                             <select name="isEsc" id="isEsc" class="form-control">
-                                <option value="" {{ $StudentInformation ? $StudentInformation->isEsc == 0 ? 'selected' : '' : '' }}>--Select--</option>
+                                <option value="0" {{ $StudentInformation ? $StudentInformation->isEsc == 0 ? 'selected' : '' : 'selected' }}>--Select--</option>
                                 <option value="1" {{ $StudentInformation ? $StudentInformation->isEsc == 1 ? 'selected' : '' : '' }}>Yes</option>
                                 <option value="2" {{ $StudentInformation ? $StudentInformation->isEsc == 2 ? 'selected' : '' : '' }}>No</option>
                             </select>

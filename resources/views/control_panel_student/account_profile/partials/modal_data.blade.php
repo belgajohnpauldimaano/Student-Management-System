@@ -50,7 +50,7 @@
                         <div class="form-group gender">
                             <label for="">Are you ESC?</label>
                             <select name="isEsc" id="isEsc" class="form-control">
-                                <option value="">--Select--</option>
+                                <option value="0" {{ $Profile ? $Profile->isEsc == 0 ? 'selected' : '' : 'selected' }}>--Select--</option>
                                 <option value="1" {{ $Profile ? $Profile->isEsc == 1 ? 'selected' : '' : '' }}>Yes</option>
                                 <option value="2" {{ $Profile ? $Profile->isEsc == 2 ? 'selected' : '' : '' }}>No</option>
                             </select>

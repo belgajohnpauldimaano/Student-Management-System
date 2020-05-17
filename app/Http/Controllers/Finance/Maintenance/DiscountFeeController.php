@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Finance\Maintenance;
 
+use App\DiscountFee;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
@@ -11,11 +12,11 @@ class DiscountFeeController extends Controller
     {
         if ($request->ajax())
         {
-            $DiscountFee = \App\DiscountFee::where('status', 1)->where('disc_type', 'like', '%'.$request->search.'%')->paginate(10);
+            $DiscountFee = DiscountFee::where('status', 1)->where('disc_type', 'like', '%'.$request->search.'%')->paginate(10);
             return view('control_panel_finance.maintenance.discount_fee.partials.data_list', compact('DiscountFee'))->render();
         }
         
-        $DiscountFee = \App\DiscountFee::where('status', 1)->paginate(10);
+        $DiscountFee = DiscountFee::where('status', 1)->paginate(10);
         return view('control_panel_finance.maintenance.discount_fee.index', compact('DiscountFee'));
     }
 
@@ -24,7 +25,7 @@ class DiscountFeeController extends Controller
         $DiscountFee = NULL;
         if ($request->id)
         {
-            $DiscountFee = \App\DiscountFee::where('id', $request->id)->first();
+            $DiscountFee = DiscountFee::where('id', $request->id)->first();
         }
         return view('control_panel_finance.maintenance.discount_fee.partials.modal_data', compact('DiscountFee'))->render();
     }
@@ -45,25 +46,25 @@ class DiscountFeeController extends Controller
         // update
         if ($request->id)
         {
-            $DiscountFee = \App\DiscountFee::where('id', $request->id)->first();
+            $DiscountFee = DiscountFee::where('id', $request->id)->first();
             $DiscountFee->disc_type = $request->disc_type;
             $DiscountFee->disc_amt = $request->disc_fee;
-            $DiscountFee->current = $request->current_sy;
+            // $DiscountFee->current = $request->current_sy;
             $DiscountFee->save();
             return response()->json(['res_code' => 0, 'res_msg' => 'Data successfully saved.']);
         }
         // save
-        $DiscountFee = new \App\DiscountFee();
+        $DiscountFee = new DiscountFee();
         $DiscountFee->disc_type = $request->disc_type;
         $DiscountFee->disc_amt = $request->disc_fee;
-        $DiscountFee->current = $request->current_sy;
+        // $DiscountFee->current = $request->current_sy;
         $DiscountFee->save();
         return response()->json(['res_code' => 0, 'res_msg' => 'Data successfully saved.']);
     }
 
     public function toggle_current_sy (Request $request)
     {
-        $DiscountFee = \App\DiscountFee::where('id', $request->id)->first();
+        $DiscountFee = DiscountFee::where('id', $request->id)->first();
         if ($DiscountFee) 
         {
             if ($DiscountFee->current == 0) 
@@ -83,7 +84,7 @@ class DiscountFeeController extends Controller
 
     public function deactivate_data (Request $request) 
     {
-        $DiscountFee = \App\DiscountFee::where('id', $request->id)->first();
+        $DiscountFee = DiscountFee::where('id', $request->id)->first();
 
         if ($DiscountFee)
         {

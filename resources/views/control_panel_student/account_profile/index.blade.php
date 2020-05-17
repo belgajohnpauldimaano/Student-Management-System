@@ -81,7 +81,7 @@
                         $('#first_name').val(res.Profile.first_name);
                         $('#middle_name').val(res.Profile.middle_name);
                         $('#last_name').val(res.Profile.last_name);
-                        $('#contact_number').val(res.Profile.contact_number);
+                        $('#contact_number').val(res.Profile.contact_number != null ? res.Profile.contact_number : '+639');
                         $('#profile_email').val(res.Profile.email);
                         $('#c_address').val(res.Profile.c_address);
                         $('#p_address').val(res.Profile.p_address);
