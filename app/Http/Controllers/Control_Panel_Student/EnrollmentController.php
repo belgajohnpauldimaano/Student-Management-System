@@ -8,6 +8,7 @@ use App\SchoolYear;
 use App\TuitionFee;
 use App\ClassDetail;
 
+use App\DiscountFee;
 use App\Transaction;
 use App\Mail\SendMail;
 use App\DownpaymentFee;
@@ -58,10 +59,15 @@ class EnrollmentController extends Controller
                                 ->where('grade_level_id', $grade_level_id)->first();
                                 
                 $Downpayment = DownpaymentFee::where('current', 1)->first();
+
                 $Profile = StudentInformation::where('user_id', $User->id)->first();
 
+                // discount
+                $Discount = DiscountFee::where('status', 1)->where('current', 1)->first();
+
                 return view('control_panel_student.enrollment.index', 
-                    compact('AlreadyEnrolled','grade_level', 'ClassDetail','PaymentCategory','Downpayment','Profile','StudentInformation','Tuition','Enrollment','User','SchoolYear'));
+                    compact('AlreadyEnrolled','grade_level', 'ClassDetail','PaymentCategory','Downpayment',
+                    'Profile','StudentInformation','Tuition','Enrollment','User','SchoolYear','Discount'));
                 return json_encode(['GradeSheetData' => $GradeSheetData,]);
                     
             }else{
