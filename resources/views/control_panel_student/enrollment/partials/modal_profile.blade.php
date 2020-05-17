@@ -62,7 +62,7 @@
                         <div class="form-group gender">
                             <label for="">Gender</label>
                             <select name="gender" id="gender" class="form-control">
-                                <option value="">Select a gender</option>
+                                <option value="" {{ $StudentInformation ? $StudentInformation->gender == '' ? 'selected' : '' : 'selected' }}>Select a gender</option>
                                 <option value="1" {{ $StudentInformation ? $StudentInformation->gender == 1 ? 'selected' : '' : '' }}>Male</option>
                                 <option value="2" {{ $StudentInformation ? $StudentInformation->gender == 2 ? 'selected' : '' : '' }}>Female</option>
                             </select>

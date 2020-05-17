@@ -15,11 +15,17 @@ class CreateTransactionMonthPaidsTable extends Migration
     {
         Schema::create('transaction_month_paids', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('or_no');
+            $table->string('or_no')->nullable();
             $table->integer('student_id');
             $table->double('payment');
-            $table->string('month_paid');
             $table->integer('school_year_id');
+            $table->float('balance');
+            $table->string('email', 100);
+            $table->string('number', 100);
+            $table->string('receipt_img', 100)->nullable();
+            $table->string('payment_option', 191);
+            $table->tinyInteger('approval')->nullable();
+            $table->tinyInteger('isSuccess')->nullable();
             $table->tinyInteger('status')->default('1');
             $table->timestamps();
         });

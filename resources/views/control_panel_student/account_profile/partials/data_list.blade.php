@@ -20,7 +20,8 @@
             <img class="profile-user-img img-responsive img-circle" id="img--user_photo" src="{{ $Profile->photo ? \File::exists(public_path('/img/account/photo/'.$Profile->photo)) ? asset('/img/account/photo/'.$Profile->photo) : asset('/img/account/photo/blank-user.gif') : asset('/img/account/photo/blank-user.gif') }}" alt="User profile picture">
             <h3 class="profile-username text-center" id="display__full_name">{{ $Profile->first_name . ' ' . $Profile->middle_name . ' ' .  $Profile->last_name }}</h3>
             <p class="text-muted text-center">Student</p>
-            {{--  <div class="form-group">
+           
+            {{-- <div class="form-group">
                 <label for="">Department</label>
                 <div class="form-control">{{ collect(\App\FacultyInformation::DEPARTMENTS)->firstWhere('id', $Profile->department_id)['department_name'] }}</div>
             </div>  --}}
@@ -84,9 +85,9 @@
         <div class="box-header">
             <h3 class="box-title">User Account</h3>
             <div class="box-tools pull-right">
-                {{-- <button type="button" class="btn btn-flat btn-box-tool btn-change-password" title="change password">
+                <button type="button" class="btn btn-flat btn-box-tool btn-change-password" title="change password">
                     <i class="fa fa-wrench"></i>
-                </button> --}}
+                </button>
             </div>
         </div>
         

@@ -14,10 +14,10 @@ class CreateTransactionDiscountsTable extends Migration
     public function up()
     {
         Schema::create('transaction_discounts', function (Blueprint $table) {
-            $table->increments('id');
-            $table->string('or_no');
+            $table->bigIncrements('id');
+            $table->integer('transaction_month_id');
             $table->integer('student_id');
-            $table->integer('discount_fee_id');
+            $table->float('discount_fee');
             $table->integer('school_year_id');
             $table->timestamps();
         });

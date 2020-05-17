@@ -47,7 +47,7 @@
                         <input type="hidden" name="gcash_tution_amt" value="{{$PaymentCategory->id}}">
                         <input type="hidden" name="gcash_tution_total" id="gcash_tution_total" value="{{$PaymentCategory->tuition->tuition_amt + $PaymentCategory->misc_fee->misc_amt}}">
                             <p>
-                                Tuition Fee ({{number_format($PaymentCategory->tuition->tuition_amt, 2 ?? '')}}) | Miscellenous Fee ({{number_format($PaymentCategory->misc_fee->misc_amt,2)}})
+                                Tuition Fee (₱ {{number_format($PaymentCategory->tuition->tuition_amt, 2 ?? '')}}) | Miscellenous Fee (₱ {{number_format($PaymentCategory->misc_fee->misc_amt,2)}})
                             </p>
                         @endif                                    
 

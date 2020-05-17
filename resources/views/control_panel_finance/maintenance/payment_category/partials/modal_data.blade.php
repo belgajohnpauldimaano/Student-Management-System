@@ -71,7 +71,7 @@
                     </div>
 
                     
-                    <div class="form-group">
+                    {{-- <div class="form-group">
                         <label for="">Total of Months</label>
                         <select name="total_months" id="total_months" class="form-control">
                             <option value="">Select total no. of months</option>
@@ -80,7 +80,7 @@
                         </select>
                         <div class="help-block text-red text-center" id="js-total_months">
                         </div>
-                    </div>                   
+                    </div>                    --}}
                     
                 </div>
                 <div class="modal-footer">

@@ -7,6 +7,7 @@ use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use App\Transaction;
+use App\TransactionMonthPaid;
 use App\PaymentCategory;
 
 class SendMail extends Mailable

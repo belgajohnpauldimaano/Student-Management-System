@@ -11,7 +11,9 @@ class DiscountFeeController extends Controller
     {
         if ($request->ajax())
         {
-            $DiscountFee = \App\DiscountFee::where('status', 1)->where('disc_type', 'like', '%'.$request->search.'%')->paginate(10);
+            $DiscountFee = \App\DiscountFee::where('status', 1)
+                ->where('disc_type', 'like', '%'.$request->search.'%')
+                ->paginate(10);
             return view('control_panel_finance.maintenance.discount_fee.partials.data_list', compact('DiscountFee'))->render();
         }
         
@@ -48,7 +50,8 @@ class DiscountFeeController extends Controller
             $DiscountFee = \App\DiscountFee::where('id', $request->id)->first();
             $DiscountFee->disc_type = $request->disc_type;
             $DiscountFee->disc_amt = $request->disc_fee;
-            $DiscountFee->current = $request->current_sy;
+            $DiscountFee->apply_from = $request->apply_from;
+            // $DiscountFee->current = $request->current_sy;
             $DiscountFee->save();
             return response()->json(['res_code' => 0, 'res_msg' => 'Data successfully saved.']);
         }
@@ -56,7 +59,8 @@ class DiscountFeeController extends Controller
         $DiscountFee = new \App\DiscountFee();
         $DiscountFee->disc_type = $request->disc_type;
         $DiscountFee->disc_amt = $request->disc_fee;
-        $DiscountFee->current = $request->current_sy;
+        $DiscountFee->apply_from = $request->apply_from;
+        // $DiscountFee->current = $request->current_sy;
         $DiscountFee->save();
         return response()->json(['res_code' => 0, 'res_msg' => 'Data successfully saved.']);
     }

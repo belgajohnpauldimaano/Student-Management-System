@@ -21,13 +21,23 @@
                     </div>
 
                     <div class="form-group">
-                            <label for="">Discount Fee Amount</label>
-                            <input type="number" class="form-control" name="disc_fee" value="{{ $DiscountFee ? $DiscountFee->disc_amt : '' }}">
-                            <div class="help-block text-red text-center" id="js-disc_fee">
-                            </div>
+                        <label for="">Discount Fee Amount</label>
+                        <input type="number" class="form-control" name="disc_fee" value="{{ $DiscountFee ? $DiscountFee->disc_amt : '' }}">
+                        <div class="help-block text-red text-center" id="js-disc_fee">
+                        </div>
                     </div>
 
                     <div class="form-group">
+                        <label for="">Apply from</label>
+                        <select name="apply_from" id="apply_from" class="form-control">
+                            <option value="0" {{ $DiscountFee ? ($DiscountFee->apply_from == 0 ? 'selected' : '')  : 'selected' }}>--Assign--</option>
+                            <option value="1" {{ $DiscountFee ? ($DiscountFee->apply_from == 1 ? 'selected' : '')  : '' }}>Student</option>
+                            <option value="2" {{ $DiscountFee ? ($DiscountFee->apply_from == 2 ? 'selected' : '')  : '' }}>Finance</option>
+                        </select>
+                        <div class="help-block text-red text-center" id="js-apply_from">
+                    </div>
+
+                    {{-- <div class="form-group">
                         <label for="">Set as Current Discount Fee</label>
                         <select name="current_sy" id="current_sy" class="form-control">
                             <option value="1" {{ $DiscountFee ? ($DiscountFee->current == 1 ? 'selected' : '')  : 'selected' }}>Yes</option>
@@ -35,7 +45,7 @@
                         </select>
                         <div class="help-block text-red text-center" id="js-current_sy">
                         </div>
-                    </div>
+                    </div> --}}
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default btn-flat" data-dismiss="modal">Close</button>

@@ -8,6 +8,7 @@ use App\SchoolYear;
 use App\TuitionFee;
 use App\ClassDetail;
 
+use App\DiscountFee;
 use App\Transaction;
 use App\Mail\SendMail;
 use App\DownpaymentFee;
@@ -30,48 +31,47 @@ class EnrollmentController extends Controller
             ->where('status', 1)
             ->first();
 
-        $findSchoolYear = ClassDetail::where('school_year_id' , $SchoolYear->id)->first();
+              
+        if ($StudentInformation) 
+        {
+            $Enrollment = Enrollment::where('student_information_id', $StudentInformation->id)
+                ->where('status', 1)
+                ->where('current', 1)
+                ->orderBy('id', 'DESC')
+                ->first();
+                               
+            $ClassDetail = ClassDetail::where('id', $Enrollment->class_details_id)
+                ->where('status', 1)->where('current', 1)->orderBY('grade_level', 'DESC')->first();
+
+            // $SchoolYear1 = SchoolYear::where('current', 1)
+            //     ->where('status', 1)->orderBy('id', 'Desc')->first();
+
+            $AlreadyEnrolled = Transaction::where('student_id', $StudentInformation->id)
+                ->where('school_year_id', $SchoolYear->id)->orderBy('id', 'Desc')->first();
+
+            $grade_level_id = ($ClassDetail->grade_level + 1);
+
+            $Tuition = PaymentCategory::where('grade_level_id', $grade_level_id)->first();
+
+            $PaymentCategory = PaymentCategory::with('misc_fee','tuition')
+                            ->where('grade_level_id', $grade_level_id)->first();
+                            
+            $Downpayment = DownpaymentFee::where('current', 1)->first();
+            $Profile = StudentInformation::where('user_id', $User->id)->first();
+
+            // discount
+            $Discount = \App\DiscountFee::where('status', 1)->where('apply_from', 1)->first();
+
+            return view('control_panel_student.enrollment.index', 
+                compact('AlreadyEnrolled','grade_level', 'ClassDetail','PaymentCategory','Downpayment',
+                'Profile','StudentInformation','Tuition','Enrollment','User','SchoolYear','Discount'));
+            
+            return json_encode(['GradeSheetData' => $GradeSheetData,]);
+                
+        }else{
+            echo "Invalid request";
+        }
         
-        // if($findSchoolYear){        
-            if ($StudentInformation) 
-            {
-                $Enrollment = Enrollment::where('student_information_id', $StudentInformation->id)
-                    ->where('status', 1)
-                    ->where('current', 1)
-                    ->orderBy('id', 'DESC')
-                    ->first();
-                                   
-                $ClassDetail = ClassDetail::where('id', $Enrollment->class_details_id)
-                        ->where('status', 1)->where('current', 1)->orderBY('grade_level', 'DESC')->first();
-
-                // $SchoolYear1 = SchoolYear::where('current', 1)
-                //     ->where('status', 1)->orderBy('id', 'Desc')->first();
-
-                $AlreadyEnrolled = Transaction::where('student_id', $StudentInformation->id)
-                    ->where('school_year_id', $SchoolYear->id)->orderBy('id', 'Desc')->first();
-
-                $grade_level_id = ($ClassDetail->grade_level + 1);
-
-                $Tuition = PaymentCategory::where('grade_level_id', $grade_level_id)->first();
-
-                $PaymentCategory = PaymentCategory::with('misc_fee','tuition')
-                                ->where('grade_level_id', $grade_level_id)->first();
-                                
-                $Downpayment = DownpaymentFee::where('current', 1)->first();
-                $Profile = StudentInformation::where('user_id', $User->id)->first();
-
-                return view('control_panel_student.enrollment.index', 
-                    compact('AlreadyEnrolled','grade_level', 'ClassDetail','PaymentCategory','Downpayment','Profile','StudentInformation','Tuition','Enrollment','User','SchoolYear'));
-                return json_encode(['GradeSheetData' => $GradeSheetData,]);
-                    
-            }else{
-                echo "Invalid request";
-            }
-        // }
-        // else{
-        //     $GradeSheet = 0;
-        //     return view('control_panel_student.enrollment.index', compact('GradeSheet'));
-        // }
     }
 
     public function save(Request $request){

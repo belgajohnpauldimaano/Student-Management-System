@@ -66,7 +66,7 @@
                             <input type="hidden" name="bank_tution" id="bank_tution" value="{{ $PaymentCategory->tuition->tuition_amt + $PaymentCategory->misc_fee->misc_amt }}">
                             <input type="hidden" name="bank_tution_amt" value="{{$PaymentCategory->id}}">
                             <p>
-                                Tuition Fee ({{number_format($PaymentCategory->tuition->tuition_amt, 2 ?? '')}}) | Miscellenous Fee ({{number_format($PaymentCategory->misc_fee->misc_amt,2)}})
+                                Tuition Fee (₱ {{number_format($PaymentCategory->tuition->tuition_amt, 2 ?? '')}}) | Miscellenous Fee (₱ {{number_format($PaymentCategory->misc_fee->misc_amt,2)}})
                             </p>
                         @else
                             <p>There is no Tution and Miscellenous Fee</p>
@@ -88,6 +88,8 @@
                             <input type="hidden" id="bank_downpayment" value="{{$Downpayment->downpayment_amt}}">                        
                             <p>₱ {{number_format($Downpayment->downpayment_amt,2)}}</p>
                         @endif
+
+
                     </div>  
 
                     <div class="form-group col-lg-12 input-bank_phone">

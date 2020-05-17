@@ -6,6 +6,7 @@
                                 <tr>
                                     <th>Discount Name</th>
                                     <th>Discount Fee Amount</th>
+                                    <th>Apply to</th>
                                     <th>Current</th>
                                     <th>Status</th>
                                     <th>Actions</th>
@@ -17,6 +18,15 @@
                                         <tr>
                                             <td>{{ $data->disc_type }}</td>
                                             <td>{{ number_format($data->disc_amt ,2) }}</td>
+                                            <td>
+                                                @if($data->apply_from == 0)
+                                                    Not yet Assigned
+                                                @elseif($data->apply_from == 1)
+                                                    Student
+                                                @else
+                                                    Finance
+                                                @endif                                                
+                                            </td>
                                             <td>{{ $data->current == 1 ? 'Yes' : 'No' }}</td>
                                             <td>{{ $data->status == 1 ? 'Active' : 'Inactive' }}</td>
                                             <td>
@@ -25,8 +35,8 @@
                                                         <span class="fa fa-caret-down"></span></button>
                                                     <ul class="dropdown-menu">
                                                         <li><a href="#" class="js-btn_update_sy" data-id="{{ $data->id }}">Edit</a></li>
-                                                        <li><a href="#" class="js-btn_deactivate" data-id="{{ $data->id }}">Deactivate</a></li>
-                                                        <li><a href="#" class="js-btn_toggle_current" data-id="{{ $data->id }}" data-toggle_title="{{ ( $data->current ? 'Remove from current active' : 'Add to current active' ) }}">{{ ( $data->current ? 'Remove from current Active' : 'Add to current Active' ) }}</a></li>
+                                                        {{-- <li><a href="#" class="js-btn_deactivate" data-id="{{ $data->id }}">Deactivate</a></li>
+                                                        <li><a href="#" class="js-btn_toggle_current" data-id="{{ $data->id }}" data-toggle_title="{{ ( $data->current ? 'Remove from current active' : 'Add to current active' ) }}">{{ ( $data->current ? 'Remove from current Active' : 'Add to current Active' ) }}</a></li> --}}
                                                     </ul>>
                                                 </div>
                                             </td>

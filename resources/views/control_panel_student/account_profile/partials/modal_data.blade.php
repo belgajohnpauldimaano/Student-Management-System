@@ -50,7 +50,7 @@
                         <div class="form-group gender">
                             <label for="">Are you ESC?</label>
                             <select name="isEsc" id="isEsc" class="form-control">
-                                <option value="">--Select--</option>
+                                <option value="0" {{ $Profile ? $Profile->isEsc == 0 ? 'selected' : '' : 'selected' }}>--Select--</option>
                                 <option value="1" {{ $Profile ? $Profile->isEsc == 1 ? 'selected' : '' : '' }}>Yes</option>
                                 <option value="2" {{ $Profile ? $Profile->isEsc == 2 ? 'selected' : '' : '' }}>No</option>
                             </select>
@@ -82,7 +82,7 @@
                         </div>
                         <div class="form-group">
                             <label for="">Contact Number</label>
-                            <input type="text" class="form-control" name="contact_number" id="contact_number" placeholder="9561234567">
+                            <input type="text" class="form-control" name="contact_number" id="contact_number" placeholder="+639561234567">
                             <div class="help-block text-left" id="js-contact_number"></div>
                         </div>
                         <div class="form-group">
@@ -92,7 +92,7 @@
                         </div>
                         <div class="form-group">
                             <label>Birthday</label>
-                            <input type="text" name="birthday" id="birthday" class="form-control pull-right">
+                            <input type="text" name="birthday" id="birthday" class="form-control">
                             <div class="help-block text-left" id="js-birthday"></div>
                         </div>
                         <div class="form-group">

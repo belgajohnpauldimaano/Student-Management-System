@@ -52,7 +52,7 @@
                   <input type="hidden" id="total_tuition" name="total_tuition" value="{{$Tuition ? $PaymentCategory->tuition->tuition_amt + $PaymentCategory->misc_fee->misc_amt : ''}}">
                   <input type="hidden" id="total_misc" name="total_misc" value="{{$PaymentCategory->misc_fee->misc_amt}}">
                   <input type="hidden" class="form-control" name="description_name" value="SJAI {{$ClassDetail->grade_level+1}} Tuition Fee ({{number_format($PaymentCategory->tuition->tuition_amt, 2) }}) | Miscellenous Fee ({{number_format($PaymentCategory->misc_fee->misc_amt,2)}})" name="tution_category">
-                  <p>Tuition Fee ({{number_format($PaymentCategory->tuition->tuition_amt, 2) }}) | Miscellenous Fee ({{number_format($PaymentCategory->misc_fee->misc_amt,2)}})</p>
+                  <p>Tuition Fee (₱ {{number_format($PaymentCategory->tuition->tuition_amt, 2) }}) | Miscellenous Fee (₱ {{number_format($PaymentCategory->misc_fee->misc_amt,2)}})</p>
                 @else
                   <input type="hidden" value="1" class="checkTution">
                   <p>There is no Tution and Miscellenous Fee</p>
@@ -63,8 +63,7 @@
                   <input type="hidden" class="form-control" value="{{$AlreadyEnrolled->balance}}" id="previous_balance" name="previous_balance">
                   <p>₱ {{number_format($AlreadyEnrolled->balance,2)}}</p> 
                 @else
-                  @if($Tuition)
-                  
+                  @if($Tuition)                  
                     <p>₱ {{number_format($Tuition ? $PaymentCategory->tuition->tuition_amt + $PaymentCategory->misc_fee->misc_amt : '', 2)}}</p> 
                   @endif      
                 @endif               
@@ -77,13 +76,26 @@
                 @else
                   <p>There is no Downpayment yet</p>
                 @endif
+
+                <label for="e_discount">Discount Fee</label>
+                @if($StudentInformation->isEsc == '1')
+                  <input type="hidden" value="{{$Discount->id}}" name="e_discount">
+                  <input type="hidden" id="e_discount" value="{{$Discount->disc_amt}}" name="e_discount">
+                  <p>{{($Discount->disc_type)}} (₱ {{number_format($Discount->disc_amt,2)}})</p>             
+                @else
+                  <p>-NA-</p>
+                @endif
             </div>    
 
             <div class="form-group col-lg-12 input-payment">
                 <label for="pay_fee">Enter your payment fee</label>
+                @if($Downpayment)
                 <input type="number" class="form-control" id="pay_fee" name="pay_fee" 
                   placeholder=" {{number_format($Downpayment->downpayment_amt,2)}}">
                 <div class="help-block text-left" id="js-pay_fee"></div>
+                @else
+                  <p>There is no downpayment amt yet</p>
+                @endif
             </div>
            
             <div class="form-group col-lg-12 input-phone">
@@ -159,7 +171,11 @@
                           @if($AlreadyEnrolled)    
                            <p>₱ {{number_format($AlreadyEnrolled->balance,2)}}</p> 
                           @else
-                            <p>0.00</p>  
+                            @if($Tuition)
+                              <p>₱ {{number_format($PaymentCategory->misc_fee->misc_amt + $PaymentCategory->tuition->tuition_amt, 2)}}</p>
+                            @else
+                              <p>There is no Tution and Miscellenous fee yet</p>
+                            @endif
                           @endif
                         </td>
                       </tr>
@@ -169,6 +185,12 @@
                           <td align="right">
                               ₱ <span id="dp_enrollment">0</span>
                           </td>
+                      </tr>
+                      <tr>
+                        <td style="width:120px">Discount</td>
+                        <td align="right">
+                            ₱ <span id="disc_enrollment">{{ $Discount ? number_format($Discount->disc_amt,2) : '0.00'}}</span>
+                        </td>
                       </tr>
                       <tr>
                           <td style="width:120px">Current Balance</td>
