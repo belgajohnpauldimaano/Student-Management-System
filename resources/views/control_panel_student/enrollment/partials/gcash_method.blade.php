@@ -67,6 +67,16 @@
                             <input type="hidden" id="gcash_downpayment" value="{{$Downpayment->downpayment_amt}}">                        
                             <p>₱ {{number_format($Downpayment->downpayment_amt,2)}}</p>
                         @endif
+
+                        <label for="gcash_discount">Discount Fee</label>
+                        @if($StudentInformation->isEsc == '1')
+                            <input type="hidden" value="{{$Discount->id}}" name="gcash_discount">
+                            <input type="hidden" id="gcash_discount" value="{{$Discount->disc_amt}}" name="gcash_discount">
+                            <p>{{($Discount->disc_type)}} (₱ {{number_format($Discount->disc_amt,2)}})</p>             
+                        @else
+                            <p>-NA-</p>
+                        @endif
+
                     </div>
 
                     <div class="form-group col-lg-12 input-gcash_phone">
@@ -79,6 +89,7 @@
                         <input type="email" class="form-control" id="gcash_email" name="gcash_email" placeholder="your@email.com" value="{{ $StudentInformation->email }}">
                         <div class="help-block text-left" id="js-gcash_email"></div>
                     </div>    
+                    
                 
                 {{-- </div> --}}
             </div>
@@ -91,7 +102,6 @@
                             href="#">
                             <i class="fas fa-history"></i> Transaction History
                         </a>
-
                     </div>
                     <div class="form-group col-lg-12" style="margin-top: 10px">
                         <label for="Gcash">Gcash Name</label>               

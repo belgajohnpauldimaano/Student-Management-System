@@ -88,6 +88,15 @@
                             <input type="hidden" id="bank_downpayment" value="{{$Downpayment->downpayment_amt}}">                        
                             <p>₱ {{number_format($Downpayment->downpayment_amt,2)}}</p>
                         @endif
+
+                        <label for="bank_discount">Discount Fee</label>
+                        @if($StudentInformation->isEsc == '1')
+                            <input type="hidden" value="{{$Discount->id}}" name="bank_discount">
+                            <input type="hidden" id="bank_discount" value="{{$Discount->disc_amt}}" name="bank_discount">
+                            <p>{{($Discount->disc_type)}} (₱ {{number_format($Discount->disc_amt,2)}})</p>             
+                        @else
+                            <p>-NA-</p>
+                        @endif
                     </div>  
 
                     <div class="form-group col-lg-12 input-bank_phone">

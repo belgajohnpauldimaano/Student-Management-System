@@ -34,6 +34,20 @@
                         <td>₱ {{number_format($payment->payment_cat->misc_fee->misc_amt, 2)}}</td>
                     </tr>
                     <tr>
+                        <td>Discount Fee</td>
+                        <?php
+                            $discount = \App\TransactionDiscount::where('student_id', $payment->student_id)
+                                ->where('')
+
+
+                        ?>
+                        @if($payment->disc_transaction_fee)
+                            <td>{{$payment->disc_transaction_fee->discount_amt}}</td>
+                        @else
+                            <td>--NA--</td>
+                        @endif
+                    </tr>
+                    <tr>
                         <td>Total Fees</td>
                         <td>₱ {{number_format($payment->payment_cat->tuition->tuition_amt + $payment->payment_cat->misc_fee->misc_amt, 2)}}</td>
                     </tr>
@@ -64,6 +78,7 @@
                             ?>
                         </td>
                     </tr>
+                    
                     <tr style="margin-top: 10px">
                         <td>Current Balance</td>
                         <td>₱ {{number_format($payment->balance, 2)}}</td>

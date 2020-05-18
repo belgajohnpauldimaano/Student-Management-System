@@ -89,7 +89,7 @@
                         $('#father_name').val(res.Profile.father_name);     
                         $('#mother_name').val(res.Profile.mother_name);    
                         $('#gender').val(res.Profile.gender);
-                        $('#isEsc').val(res.Profile.isEsc);
+                        // $('#isEsc').val(res.Profile.isEsc);
                         
                     }
                 })

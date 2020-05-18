@@ -16,6 +16,7 @@ use PayPal\Api\ItemList;
 use App\StudentInformation;
 use PayPal\Api\Transaction;
 use PayPal\Rest\ApiContext;
+use App\TransactionDiscount;
 use Illuminate\Http\Request;
 use PayPal\Api\RedirectUrls;
 use App\Mail\NotifyAdminMail;
@@ -139,23 +140,63 @@ class PaymentController extends Controller
 
         // We redirect to paypal tp make payment
         if(isset($redirect_url)) {
-            
-            $Enrollment = new \App\Transaction();
-            $Enrollment->or_number = $StudentInformation->first_name.''.$mytime->toDateTimeString();
-            $Enrollment->payment_category_id = $request->tution_category;
-            $Enrollment->student_id = $StudentInformation->id;
-            $Enrollment->school_year_id = $SchoolYear->id;
-            $Enrollment->downpayment = $request->pay_fee;
-            $Enrollment->number = $request->phone;
-            $Enrollment->email = $request->email;
-            $Enrollment->balance = $request->result_current_bal;
-            $Enrollment->payment_option = 'Credit Card/Debit Card';   
 
-            if($Enrollment->save()){
-                return response()->json([$redirect_url]);
+            $checkAccount = TransactionDiscount::where('school_year_id', $SchoolYear->id)
+                ->where('student_id', $StudentInformation->id)
+                ->first();
+            
+            if($checkAccount){       
+
+                $Enrollment = new \App\Transaction();
+                $Enrollment->or_number = $StudentInformation->first_name.''.$mytime->toDateTimeString();
+                $Enrollment->payment_category_id = $request->tution_category;
+                $Enrollment->student_id = $StudentInformation->id;
+                $Enrollment->school_year_id = $SchoolYear->id;
+                $Enrollment->downpayment = $request->pay_fee;
+                $Enrollment->number = $request->phone;
+                $Enrollment->email = $request->email;
+                $Enrollment->balance = $request->result_current_bal;
+                $Enrollment->payment_option = 'Credit Card/Debit Card'; 
+
+                if($Enrollment->save()){
+                    return response()->json([$redirect_url]);
+                }else{
+                    return redirect()->back()->withError('Unknown error occurred');
+                }
+                
             }else{
-                return redirect()->back()->withError('Unknown error occurred');
+                
+                $Enrollment = new \App\Transaction();
+                $Enrollment->or_number = $StudentInformation->first_name.''.$mytime->toDateTimeString();
+                $Enrollment->payment_category_id = $request->tution_category;
+                $Enrollment->student_id = $StudentInformation->id;
+                $Enrollment->school_year_id = $SchoolYear->id;
+                $Enrollment->downpayment = $request->pay_fee;
+                $Enrollment->number = $request->phone;
+                $Enrollment->email = $request->email;
+                $Enrollment->balance = $request->result_current_bal;
+                $Enrollment->payment_option = 'Credit Card/Debit Card';   
+    
+                if($Enrollment->save()){
+                    
+                    $Discount = new TransactionDiscount();
+                    $Discount->student_id =  $StudentInformation->id;
+                    $Discount->school_year_id = $SchoolYear->id;
+                    $Discount->discount_type = $request->e_discount_type;
+                    $Discount->discount_amt = $request->e_discount;
+                    $Discount->transaction_id = $Enrollment->id;
+                    
+                    if($Discount->save()){
+                        return response()->json([$redirect_url]);
+                    }else{
+                        return redirect()->back()->withError('Unknown error occurred');
+                    }          
+                          
+                }else{
+                    return redirect()->back()->withError('Unknown error occurred');
+                }
             }
+            
             
         }
 
@@ -209,7 +250,7 @@ class PaymentController extends Controller
             if($IsReceived->save()){
                 $payment = \App\Transaction::find($IsReceived->id);
                     \Mail::to($IsReceived->email)->send(new SendMail($payment));
-                    \Mail::to($admin_email)->send(new NotifyAdminMail($payment));
+                    // \Mail::to($admin_email)->send(new NotifyAdminMail($payment));
 
                 return redirect()->route('student.enrollment.index')
                     ->withSuccess('You have successfully accomplished the form. Check your email for review of Finance Dept. Thank you!');

@@ -43,14 +43,21 @@
             var payment = $('#pay_fee').val();
             var downpayment = $('#downpayment').val();
             var previous_balance = $('#previous_balance').val();
-
+            var discount = $('#e_discount').val();
+            
             $('#dp_enrollment').text(currencyFormat(parseFloat(payment)));        
             var total_tuition = $('#total_tuition').val();
             var result_bal = 0;
-            if(previous_balance){                
+
+            if(previous_balance){  
                 result_bal = parseFloat(previous_balance) - parseFloat(payment);
             }else{
-                result_bal = parseFloat(total_tuition) - parseFloat(payment);
+                if(discount){
+                    result_bal = parseFloat(total_tuition) - parseFloat(payment) - parseFloat(discount);
+                }else{
+                    result_bal = parseFloat(total_tuition) - parseFloat(payment);
+                }
+                
             }
             
             document.getElementById('result_current_bal').value = (result_bal);
