@@ -40,16 +40,20 @@
                                     </tr>
                                     <tr>
                                         <td>3.</td>
-                                        <td>Discount Fee</td>
+                                        <td>{{$Discount ? $Discount->discount_type : ''}} Discount Fee</td>
                                         <td>
-                                            ₱ 
+                                            ₱   {{$Discount ? number_format($Discount->discount_amt,2) : '--NA--'}} 
                                         </td>                                        
                                     </tr>
                                     <tr>
                                         <td>4.</td>
                                         <td>Total Fees</td>
                                         <td>
-                                            ₱ {{ number_format($Transaction_history[0]->payment_cat->tuition->tuition_amt + $Transaction_history[0]->payment_cat->misc_fee->misc_amt, 2)}}
+                                            @if($Discount)
+                                                ₱ {{ number_format($tuition_misc_fee, 2)}}
+                                            @else
+                                                ₱ {{ number_format($tuition_misc_fee, 2)}}
+                                            @endif
                                         </td>                                        
                                     </tr>
                                 </tbody>
@@ -88,6 +92,13 @@
                                             <td>Balance</td>
                                             <td>
                                                 ₱ {{ number_format($transaction->balance, 2)}}
+                                            </td>                                        
+                                        </tr>
+                                        <tr>
+                                            <td>3.</td>
+                                            <td>Status</td>
+                                            <td>
+                                                <span class="label label-{{ $transaction->approval=='Approved' ? 'success': 'danger'}}">{{ $transaction->approval}}</span>
                                             </td>                                        
                                         </tr>
                                         <div class="lightbox-target" id="img_receipt">

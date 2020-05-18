@@ -83,6 +83,7 @@
                   <input type="hidden" id="e_discount" value="{{$Discount->disc_amt}}" name="e_discount">
                   <p>{{($Discount->disc_type)}} (₱ {{number_format($Discount->disc_amt,2)}})</p>             
                 @else
+                  <input type="hidden" id="e_discount" value="0" name="e_discount">
                   <p>-NA-</p>
                 @endif
             </div>    
@@ -189,7 +190,7 @@
                       <tr>
                         <td style="width:120px">Discount</td>
                         <td align="right">
-                            ₱ <span id="disc_enrollment">{{ $Discount ? number_format($Discount->disc_amt,2) : '0.00'}}</span>
+                            ₱ <span id="disc_enrollment">{{ $StudentInformation->isEsc == 1 ? number_format($Discount->disc_amt,2) : '0.00'}}</span>
                         </td>
                       </tr>
                       <tr>

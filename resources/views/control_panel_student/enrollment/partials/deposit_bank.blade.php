@@ -91,10 +91,11 @@
 
                         <label for="bank_discount">Discount Fee</label>
                         @if($StudentInformation->isEsc == '1')
-                            <input type="hidden" value="{{$Discount->id}}" name="bank_discount">
+                            <input type="hidden" value="{{$Discount->disc_type}}" name="bank_discount_type">
                             <input type="hidden" id="bank_discount" value="{{$Discount->disc_amt}}" name="bank_discount">
                             <p>{{($Discount->disc_type)}} (₱ {{number_format($Discount->disc_amt,2)}})</p>             
                         @else
+                            <input type="hidden" id="bank_discount" value="0" name="bank_discount">
                             <p>-NA-</p>
                         @endif
                     </div>  

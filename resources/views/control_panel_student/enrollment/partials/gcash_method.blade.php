@@ -70,10 +70,11 @@
 
                         <label for="gcash_discount">Discount Fee</label>
                         @if($StudentInformation->isEsc == '1')
-                            <input type="hidden" value="{{$Discount->id}}" name="gcash_discount">
+                            <input type="hidden" value="{{$Discount->disc_type}}" name="gcash_discount_type">
                             <input type="hidden" id="gcash_discount" value="{{$Discount->disc_amt}}" name="gcash_discount">
                             <p>{{($Discount->disc_type)}} (₱ {{number_format($Discount->disc_amt,2)}})</p>             
                         @else
+                            <input type="hidden" id="gcash_discount" value="0" name="gcash_discount">
                             <p>-NA-</p>
                         @endif
 
@@ -88,8 +89,7 @@
                         <label for="gcash_email">Email Address</label>
                         <input type="email" class="form-control" id="gcash_email" name="gcash_email" placeholder="your@email.com" value="{{ $StudentInformation->email }}">
                         <div class="help-block text-left" id="js-gcash_email"></div>
-                    </div>    
-                    
+                    </div>                        
                 
                 {{-- </div> --}}
             </div>

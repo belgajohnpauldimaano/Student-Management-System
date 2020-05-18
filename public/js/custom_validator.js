@@ -171,6 +171,7 @@
             var downpayment = $('#bank_downpayment').val();
             var bank_previous_balance = $('#bank_previous_balance').val();
             var bank_tution = $('#bank_tution').val();
+            var discount = $('#bank_discount').val();
 
             function currencyFormat(num) {
                 return num.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')
@@ -179,7 +180,11 @@
             if(bank_previous_balance){
                 result_bal = parseFloat(bank_previous_balance) - parseFloat(payment);
             }else{
-                result_bal = parseFloat(bank_tution) - parseFloat(payment);
+                if(discount){
+                    result_bal = parseFloat(bank_tution) - parseFloat(payment) - discount;
+                }else{
+                    result_bal = parseFloat(total_tuition) - parseFloat(payment);
+                }
             }
 
             document.getElementById('bank_balance').value = (result_bal);
@@ -308,6 +313,7 @@
             var downpayment = $('#gcash_downpayment').val();
             var gcash_previous_balance = $('#gcash_previous_balance').val();
             var gcash_tution = $('#gcash_tution_total').val();
+            var discount = $('#gcash_discount').val();
 
             function currencyFormat(num) {
                 return num.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')
@@ -316,7 +322,12 @@
             if(gcash_previous_balance != null){
                 result_bal = parseFloat(gcash_previous_balance) - parseFloat(payment);
             }else{
-                result_bal = parseFloat(gcash_tution) - parseFloat(payment);
+                if(discount){
+                    result_bal = parseFloat(gcash_tution) - parseFloat(payment) - discount;
+                }else{
+                    result_bal = parseFloat(gcash_tution) - parseFloat(payment);
+                }
+                
             }
 
             document.getElementById('gcash_balance').value = (result_bal);

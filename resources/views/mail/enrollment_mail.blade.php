@@ -3,7 +3,7 @@
         <meta http-equiv=3D"Content-Type" content=3D"text/html; charset==3DUTF-8" />
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
     </head>
- 
+    
     <body>
     <div style="padding: 20px">
         <h3 style="text-align:center; margin-bottom:10px">
@@ -35,24 +35,40 @@
                     </tr>
                     <tr>
                         <td>Discount Fee</td>
-                        <?php
-                            $discount = \App\TransactionDiscount::where('student_id', $payment->student_id)
-                                ->where('')
-
-
-                        ?>
-                        @if($payment->disc_transaction_fee)
-                            <td>{{$payment->disc_transaction_fee->discount_amt}}</td>
-                        @else
-                            <td>--NA--</td>
-                        @endif
+                        <td> ₱ 
+                            <?php
+                                $discount = \App\TransactionDiscount::where('student_id', $payment->student_id)
+                                        ->where('school_year_id', $payment->school_year_id)->first();
+                                
+                                if($discount){
+                                    echo number_format($discount->discount_amt, 2);
+                                }else{
+                                    echo '--NA--';
+                                }
+                            ?>
+                        </td>
                     </tr>
                     <tr>
                         <td>Total Fees</td>
-                        <td>₱ {{number_format($payment->payment_cat->tuition->tuition_amt + $payment->payment_cat->misc_fee->misc_amt, 2)}}</td>
+                        <?php
+                            $tuitionMisc_fee = $payment->payment_cat->tuition->tuition_amt + $payment->payment_cat->misc_fee->misc_amt;
+                            if($discount){
+                                $totalDiscount =  number_format($tuitionMisc_fee - $discount->discount_amt, 2);
+                            }                            
+                         ?>
+                        @if($discount)
+                            <td>₱ {{$totalDiscount}}</td>
+                        @else
+                            <td>₱ {{number_format($tuitionMisc_fee,2)}}</td>
+                        @endif
+                        
                     </tr>
+                    
                     <tr>
-                        <td colspan="2" style="text-align:left">Payment</td>
+                        <td colspan="2" style="text-align:left">
+                        <br>
+                            <b>Payment</b>
+                        </td>
                     </tr>
                     <tr>
                         <td>{{$payment->payment_option}}</td>
