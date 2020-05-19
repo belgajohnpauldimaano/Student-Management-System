@@ -17,6 +17,7 @@ use App\StudentInformation;
 use App\TransactionDiscount;
 use Illuminate\Http\Request;
 use App\Mail\NotifyAdminMail;
+use App\TransactionMonthPaid;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 
@@ -49,7 +50,7 @@ class EnrollmentController extends Controller
                 // $SchoolYear1 = SchoolYear::where('current', 1)
                 //     ->where('status', 1)->orderBy('id', 'Desc')->first();
 
-                $AlreadyEnrolled = Transaction::where('student_id', $StudentInformation->id)
+                $AlreadyEnrolled = TransactionMonthPaid::where('student_id', $StudentInformation->id)
                     ->where('school_year_id', $SchoolYear->id)->orderBy('id', 'Desc')->first();
 
                 $grade_level_id = ($ClassDetail->grade_level + 1);
@@ -88,7 +89,6 @@ class EnrollmentController extends Controller
 
         $SchoolYear = SchoolYear::where('current', 1)
             ->where('status', 1)
-            ->orderBY('id', 'DESC')
             ->first();
 
         $rules = [
@@ -119,41 +119,70 @@ class EnrollmentController extends Controller
             ->where('student_id', $StudentInformation->id)
             ->first();
 
-        $Enrollment = new Transaction();
-        $Enrollment->or_number = $request->bank_transaction_id;
-        $Enrollment->email = $request->bank_email;
-        $Enrollment->number = $request->bank_phone;
-        $Enrollment->payment_category_id = $request->bank_tution_amt;
-        $Enrollment->student_id = $StudentInformation->id;
-        $Enrollment->school_year_id = $SchoolYear->id;
-        $Enrollment->downpayment = $request->bank_pay_fee;
-        $Enrollment->payment_option = $request->bank;
-        $Enrollment->isSuccess = 1;
-        $Enrollment->balance = $Enrollment_total;
-        // image
-        $imageName = time().'.'.$request->bank_image->getClientOriginalExtension();
-        $request->bank_image->move(public_path('/img/receipt/'), $imageName);
-        $Enrollment->receipt_img = $imageName;            
-        
-        if($Enrollment->save()){
-            if(!$checkAccount){
+        if($checkAccount){
+
+            $TransactionAccount = Transaction::where('school_year_id', $SchoolYear->id)
+                ->where('student_id', $StudentInformation->id)
+                ->first();
+
+            $Enrollment = new TransactionMonthPaid();
+            $Enrollment->or_no = $request->bank_transaction_id;
+            $Enrollment->student_id = $StudentInformation->id;
+            $Enrollment->payment = $request->bank_pay_fee;
+            $Enrollment->school_year_id = $SchoolYear->id;
+            $Enrollment->balance = $Enrollment_total;
+            $Enrollment->email = $request->bank_email;
+            $Enrollment->number = $request->bank_phone;
+            $Enrollment->payment_option = $request->bank;
+            $Enrollment->isSuccess = 1;
+            $Enrollment->transaction_id = $TransactionAccount->id;            
+            // image
+            $imageName = time().'.'.$request->bank_image->getClientOriginalExtension();
+            $request->bank_image->move(public_path('/img/receipt/'), $imageName);
+            $Enrollment->receipt_img = $imageName;
+            $Enrollment->save();
+
+        }else{
+            
+            $EnrollmentTransaction = new Transaction();
+            $EnrollmentTransaction->or_number = $request->bank_transaction_id;
+            $EnrollmentTransaction->payment_category_id = $request->bank_tution_amt;
+            $EnrollmentTransaction->student_id = $StudentInformation->id;
+            $EnrollmentTransaction->school_year_id = $SchoolYear->id;                                
+            $EnrollmentTransaction->save();
+
+            $Enrollment = new TransactionMonthPaid();
+            $Enrollment->or_no = $request->bank_transaction_id;
+            $Enrollment->student_id = $StudentInformation->id;
+            $Enrollment->payment = $request->bank_pay_fee;
+            $Enrollment->school_year_id = $SchoolYear->id;
+            $Enrollment->balance = $Enrollment_total;
+            $Enrollment->email = $request->bank_email;
+            $Enrollment->number = $request->bank_phone;
+            $Enrollment->payment_option = $request->bank;
+            $Enrollment->isSuccess = 1;
+            $Enrollment->transaction_id = $EnrollmentTransaction->id;            
+            // image
+            $imageName = time().'.'.$request->bank_image->getClientOriginalExtension();
+            $request->bank_image->move(public_path('/img/receipt/'), $imageName);
+            $Enrollment->receipt_img = $imageName;            
+            
+            if($Enrollment->save()){            
                 if($request->bank_discount!=0){
                     $Discount = new TransactionDiscount();
                     $Discount->student_id =  $StudentInformation->id;
                     $Discount->school_year_id = $SchoolYear->id;
                     $Discount->discount_type = $request->bank_discount_type;
                     $Discount->discount_amt = $request->bank_discount;
-                    $Discount->transaction_id = $Enrollment->id;
+                    $Discount->transaction_id = $EnrollmentTransaction->id;
                     $Discount->save();
                 }            
             }
         }       
         
-        $admin_email = 'info@sja-bataan.com';
-
-        $payment = Transaction::find($Enrollment->id);
+        $payment = Transaction::find($Enrollment->transaction_id);
             \Mail::to($request->bank_email)->send(new SendMail($payment));
-            \Mail::to($admin_email)->send(new NotifyAdminMail($payment));
+            \Mail::to('info@sja-bataan.com')->send(new NotifyAdminMail($payment));
 
         return response()->json(['res_code' => 0, 'res_msg' => 'You have successfully accomplished the form. Check your email for review of Finance Dept. Thank you!']);
     }
@@ -165,7 +194,6 @@ class EnrollmentController extends Controller
 
         $SchoolYear = SchoolYear::where('current', 1)
             ->where('status', 1)
-            ->orderBY('id', 'DESC')
             ->first();
 
         $rules = [
@@ -196,52 +224,79 @@ class EnrollmentController extends Controller
             ->where('student_id', $StudentInformation->id)
             ->first();
 
-        $Enrollment = new Transaction();
-        $Enrollment->or_number = $request->gcash_transaction_id;
-        $Enrollment->email = $request->gcash_email;
-        $Enrollment->number = $request->gcash_phone;
-        $Enrollment->payment_category_id = $request->gcash_tution_amt;
-        $Enrollment->student_id = $StudentInformation->id;
-        $Enrollment->school_year_id = $SchoolYear->id;
-        $Enrollment->downpayment = $request->gcash_pay_fee;
-        $Enrollment->payment_option = $request->Gcash;
-        // $Enrollment->receipt_img = $request->bank_image;
-        $Enrollment->isSuccess = 1;
-        $Enrollment->balance = $Enrollment_total;
+        if($checkAccount){
+            $TransactionAccount = Transaction::where('school_year_id', $SchoolYear->id)
+                ->where('student_id', $StudentInformation->id)
+                ->first();
 
-        // image
-        $imageName = time().'.'.$request->gcash_image->getClientOriginalExtension();
-        $request->gcash_image->move(public_path('/img/receipt/'), $imageName); 
+            $Enrollment = new TransactionMonthPaid();
+            $Enrollment->or_no = $request->gcash_transaction_id;
+            $Enrollment->student_id = $StudentInformation->id;
+            $Enrollment->payment = $request->gcash_pay_fee;
+            $Enrollment->school_year_id = $SchoolYear->id;
+            $Enrollment->balance = $Enrollment_total;
+            $Enrollment->email = $request->gcash_email;
+            $Enrollment->number = $request->gcash_phone;
+            $Enrollment->payment_option = $request->Gcash;
+            $Enrollment->isSuccess = 1;
+            $Enrollment->transaction_id = $TransactionAccount->id;            
+            // image
+            $imageName = time().'.'.$request->gcash_image->getClientOriginalExtension();
+            $request->gcash_image->move(public_path('/img/receipt/'), $imageName);
+            $Enrollment->receipt_img = $imageName;
+            $Enrollment->save();
 
-        $Enrollment->receipt_img = $imageName; 
+        }else{
+
+            $EnrollmentTransaction = new Transaction();
+            $EnrollmentTransaction->payment_category_id = $request->gcash_tution_amt;
+            $EnrollmentTransaction->student_id = $StudentInformation->id;
+            $EnrollmentTransaction->school_year_id = $SchoolYear->id;                                
+            $EnrollmentTransaction->save();
+
+            $Enrollment = new TransactionMonthPaid();
+            $Enrollment->or_no = $request->gcash_transaction_id;
+            $Enrollment->student_id = $StudentInformation->id;
+            $Enrollment->payment = $request->gcash_pay_fee;
+            $Enrollment->school_year_id = $SchoolYear->id;
+            $Enrollment->balance = $Enrollment_total;
+            $Enrollment->email = $request->gcash_email;
+            $Enrollment->number = $request->gcash_phone;
+            $Enrollment->payment_option = $request->Gcash;
+            $Enrollment->isSuccess = 1;
+            $Enrollment->transaction_id = $EnrollmentTransaction->id;            
+            // image
+            $imageName = time().'.'.$request->gcash_image->getClientOriginalExtension();
+            $request->gcash_image->move(public_path('/img/receipt/'), $imageName);
+            $Enrollment->receipt_img = $imageName;
+            if($Enrollment->save()){
             
-        if($Enrollment->save()){
-            if(!$checkAccount){
                 if($request->gcash_discount!=0){
                     $Discount = new TransactionDiscount();
                     $Discount->student_id =  $StudentInformation->id;
                     $Discount->school_year_id = $SchoolYear->id;
                     $Discount->discount_type = $request->gcash_discount_type;
                     $Discount->discount_amt = $request->gcash_discount;
-                    $Discount->transaction_id = $Enrollment->id;
+                    $Discount->transaction_id = $EnrollmentTransaction->id;
                     $Discount->save();
                 }            
-            }
-        }       
+                
+            }       
+        }   
 
-        $admin_email = 'info@sja-bataan.com';
-        $payment = Transaction::find($Enrollment->id);
+        $payment = Transaction::find($Enrollment->transaction_id);
             \Mail::to($request->gcash_email)->send(new SendMail($payment));
-            \Mail::to($admin_email)->send(new NotifyAdminMail($payment));
+            \Mail::to('info@sja-bataan.com')->send(new NotifyAdminMail($payment));
 
         return response()->json(['res_code' => 0,
          'res_msg' =>
-          'You have successfully accomplished the form. Check your email for review of Finance Dept. Thank you!']);
+          'You have successfully accomplished the form. Check your email for review of Finance Dept. Thank you!']);        
+        
     }
 
     public function modal_data(Request $request){
 
-        $Transaction = Transaction::where('student_id', $request->id)
+        $hasTransaction = TransactionMonthPaid::where('student_id', $request->id)
             ->where('school_year_id', $request->school_year_id)
             ->orderBY('id', 'desc')
             ->first();
@@ -258,8 +313,13 @@ class EnrollmentController extends Controller
                 ->orderBY('id', 'desc')
                 ->get();
 
+            $Transaction = TransactionMonthPaid::where('student_id', $request->id)
+               ->where('school_year_id', $request->school_year_id)
+               ->orderBY('id', 'desc')
+                ->get();
 
-            if($Transaction){
+
+            if($hasTransaction){
                 if($Discount){
                     $tuition_misc_fee = ($Transaction_history[0]->payment_cat->tuition->tuition_amt + $Transaction_history[0]->payment_cat->misc_fee->misc_amt) - $Discount->discount_amt;
                 }else{
@@ -269,7 +329,7 @@ class EnrollmentController extends Controller
             
             
         }
-        return view('control_panel_student.enrollment.partials.modal_data', compact('Transaction_history','Transaction','Discount','tuition_misc_fee'))->render();
+        return view('control_panel_student.enrollment.partials.modal_data', compact('Transaction_history','Transaction','Discount','tuition_misc_fee','hasTransaction'))->render();
     }
     
 }

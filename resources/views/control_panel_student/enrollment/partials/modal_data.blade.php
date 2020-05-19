@@ -8,12 +8,13 @@
                 <h4 class="modal-title"><i class="fas fa-history"></i> Transaction History</h4>
             </div>
             <div class="modal-body" style="background-color: #ecf0f5;">
-                @if($Transaction)
+                @if($hasTransaction)
                     <div class="box">
                         <div class="box-header">
                             <h3 class="box-title">
                                 Account Payment
-                            </h3>                        
+                            </h3>   
+                            
                         </div>
                         <!-- /.box-header -->
                         <div class="box-body no-padding">
@@ -56,6 +57,16 @@
                                             @endif
                                         </td>                                        
                                     </tr>
+                                    <tr>
+                                        <td>5.</td>
+                                        <td>Payment Status</td>
+                                        <td>
+                                            <span class="label label-{{ $Transaction_history[0]->status=='1' ? 'danger': 'success'}}">
+                                                {{ $Transaction_history[0]->status=='1' ? 'Not yet Paid': 'Paid'}}
+                                            </span>
+                                        </td>
+                                    </tr>
+                                    
                                 </tbody>
                             </table>
                         </div>
@@ -63,7 +74,7 @@
                     </div> 
                     
                     <h4>History</h4>
-                    @foreach ($Transaction_history as $key => $transaction)
+                    @foreach ($Transaction as $key => $transaction)
                         <div class="box">
                             <div class="box-header">
                                 <p style="font-weight: bold">
@@ -84,7 +95,7 @@
                                             <td>1.</td>
                                             <td>Payment</td>
                                             <td>
-                                                ₱ {{ number_format($transaction->downpayment, 2)}}
+                                                ₱ {{ number_format($transaction->payment, 2)}}
                                             </td>                                        
                                         </tr>
                                         <tr>

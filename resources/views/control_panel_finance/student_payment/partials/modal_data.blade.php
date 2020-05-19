@@ -24,23 +24,23 @@
 
                             <div class="form-group">
                                 <label for="">Email address</label>
-                                <p>{{$Modal_data->email}}</p>
+                                <p>{{$Monthly_history->email}}</p>
                             </div>  
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="">Status</label><br/>
-                                <span class="label {{ $Modal_data->approval ? $Modal_data->approval =='Approved' ? 'label-success' : 'label-danger' : 'label-danger'}}">
-                                    {{ $Modal_data->approval ? $Modal_data->approval =='Approved' ? 'Approved' : 'Not yet approved' : 'Not yet approved'}}
+                                <span class="label {{ $Monthly_history->approval ? $Monthly_history->approval =='Approved' ? 'label-success' : 'label-danger' : 'label-danger'}}">
+                                    {{ $Monthly_history->approval ? $Monthly_history->approval =='Approved' ? 'Approved' : 'Not yet approved' : 'Not yet approved'}}
                                 </span>
                             </div>
                             <div class="form-group">
                                 <label for="">Payment option</label>
-                                <p>{{$Modal_data->payment_option}}</p>
+                                <p>{{$Monthly_history->payment_option}}</p>
                             </div>  
                             <div class="form-group">
                                 <label for="">Phone number</label>
-                                <p>{{$Modal_data->number}}</p>
+                                <p>{{$Monthly_history->number}}</p>
                             </div>  
                         </div>
                     </div>
@@ -48,7 +48,7 @@
                     <div class="box">
                         <div class="box-header ">
                             <p class="box-title">
-                                Date and Time: {{ $Modal_data ? date_format(date_create($Modal_data->created_at), 'F d, Y h:i A') : '' }}
+                                Date and Time: {{ $Monthly_history ? date_format(date_create($Monthly_history->created_at), 'F d, Y h:i A') : '' }}
                             </p>
                         </div>
                         
@@ -74,28 +74,73 @@
                                             <td>
                                                 {{ number_format($Modal_data->payment_cat->misc_fee->misc_amt, 2)}}
                                             </td>                                
-                                        </tr>
+                                        </tr>                                        
                                         <tr>
                                             <td>3.</td>
-                                            <td>Total Fees</td>
-                                            <td>
-                                                {{ number_format($Modal_data->payment_cat->tuition->tuition_amt + $Modal_data->payment_cat->misc_fee->misc_amt, 2)}}
-                                            </td>                                
+                                            <td>Discount Fee</td>
+                                            <td>{{$Modal_data->disc_transaction_fee ? number_format($Modal_data->disc_transaction_fee->discount_amt,2) : '0.00'}}</td>
                                         </tr>
                                         <tr>
                                             <td>4.</td>
-                                            <td>Payment</td>
+                                            <td>Total Fees</td>
                                             <td>
-                                                {{ number_format($Modal_data->downpayment, 2)}}
-                                            </td>                                    
+                                                @if($Modal_data->disc_transaction_fee)
+                                                    {{ number_format($Modal_data->payment_cat->tuition->tuition_amt + $Modal_data->payment_cat->misc_fee->misc_amt - $Modal_data->disc_transaction_fee->discount_amt, 2)}}
+                                                @else
+                                                    {{ number_format($Modal_data->payment_cat->tuition->tuition_amt + $Modal_data->payment_cat->misc_fee->misc_amt, 2)}}
+                                                @endif                                                
+                                            </td>                                
                                         </tr>
                                         <tr>
                                             <td>5.</td>
-                                            <td>Balance</td>
+                                            <td>Payment</td>
                                             <td>
-                                                {{ number_format($Modal_data->payment_cat->tuition->tuition_amt, 2)}}
+                                                {{ number_format($Monthly_history->payment, 2)}}
                                             </td>                                    
                                         </tr>
+                                        <tr>
+                                            <td>6.</td>
+                                            <td>Previous Balance</td>
+                                            <td>
+                                                
+
+                                                @if($current_bal)
+                                                    @if($current_bal->balance==0)
+                                                        @if($Modal_data->disc_transaction_fee)
+                                                            {{ number_format($Modal_data->payment_cat->tuition->tuition_amt + $Modal_data->payment_cat->misc_fee->misc_amt - $Modal_data->disc_transaction_fee->discount_amt, 2)}}
+                                                        @else
+                                                            {{ number_format($Modal_data->payment_cat->tuition->tuition_amt + $Modal_data->payment_cat->misc_fee->misc_amt, 2)}}
+                                                        @endif
+                                                    @else
+                                                        @if($Modal_data->disc_transaction_fee)
+                                                            {{ number_format($Modal_data->payment_cat->tuition->tuition_amt + $Modal_data->payment_cat->misc_fee->misc_amt - $Modal_data->disc_transaction_fee->discount_amt, 2)}}
+                                                        @else
+                                                            {{ number_format($Modal_data->payment_cat->tuition->tuition_amt + $Modal_data->payment_cat->misc_fee->misc_amt, 2)}}
+                                                        @endif
+                                                    @endif
+                                                @else
+                                                    {{ number_format($Modal_data->payment_cat->tuition->tuition_amt + $Modal_data->payment_cat->misc_fee->misc_amt, 2)}}
+                                                @endif
+                                                {{-- @if($current_bal->balance == $Monthly_history->balance)
+                                                    @if($Modal_data->disc_transaction_fee)
+                                                        {{ number_format($Modal_data->payment_cat->tuition->tuition_amt + $Modal_data->payment_cat->misc_fee->misc_amt - $Modal_data->disc_transaction_fee->discount_amt, 2)}}
+                                                    @else
+                                                        {{ number_format($Modal_data->payment_cat->tuition->tuition_amt + $Modal_data->payment_cat->misc_fee->misc_amt, 2)}}
+                                                    @endif
+                                                @else
+                                                    {{number_format($current_bal->balance, 2)}}
+                                                @endif --}}
+                                                
+                                            </td>                                    
+                                        </tr>
+                                        <tr>
+                                            <td>7.</td>
+                                            <td>Balance</td>
+                                            <td>
+                                                {{ number_format($Monthly_history->balance, 2)}}
+                                            </td>                                    
+                                        </tr>
+                                       
                                 </tbody>
                             </table>
                         </div>
@@ -103,20 +148,20 @@
                     
 
                         <div class="lightbox-target" id="img_receipt">
-                            <img src="{{ $Modal_data->receipt_img ? \File::exists(public_path('/img/receipt/'.$Modal_data->receipt_img)) ?
-                                asset('/img/receipt/'.$Modal_data->receipt_img) : asset('/img/receipt/blank-user.gif') :
+                            <img src="{{ $Monthly_history->receipt_img ? \File::exists(public_path('/img/receipt/'.$Monthly_history->receipt_img)) ?
+                                asset('/img/receipt/'.$Monthly_history->receipt_img) : asset('/img/receipt/blank-user.gif') :
                                 asset('/img/receipt/blank-user.gif') }}"/>
                             <a class="lightbox-close" href="#"></a>
                         </div>
                     
-                        @if($Modal_data->payment_option != 'Credit Card/Debit Card')
+                        @if($Monthly_history->payment_option != 'Credit Card/Debit Card')
                             <div class="form-group">
                                 <label for="">Image Receipt <small>(Click to zoom)</small></label>
                                 <a class="lightbox" href="#img_receipt">
                                     <img class="img-responsive" 
                                     id="img-receipt"
-                                    src="{{ $Modal_data->receipt_img ? \File::exists(public_path('/img/receipt/'.$Modal_data->receipt_img)) ?
-                                    asset('/img/receipt/'.$Modal_data->receipt_img) : asset('/img/receipt/blank-user.gif') :
+                                    src="{{ $Monthly_history->receipt_img ? \File::exists(public_path('/img/receipt/'.$Monthly_history->receipt_img)) ?
+                                    asset('/img/receipt/'.$Monthly_history->receipt_img) : asset('/img/receipt/blank-user.gif') :
                                     asset('/img/receipt/blank-user.gif') }}" 
                                     alt="User profile picture">
                                 </a>
@@ -126,7 +171,7 @@
                 </div>            
                 <div class="moda-footer">
                     <button class="btn btn-success btn-flat btn-approve pull-right" data-id="{{$Modal_data->id}}">
-                        {{ $Modal_data->approval ? $Modal_data->approval =='Approved' ? 'Disapprove' : 'Approve' : 'Disapprove'}}
+                        {{ $Modal_data->approval ? $Modal_data->approval =='Approved' ? 'Disapprove' : 'Disapprove' : 'Approve'}}
                     </button>
                 </div>     
             </div>    

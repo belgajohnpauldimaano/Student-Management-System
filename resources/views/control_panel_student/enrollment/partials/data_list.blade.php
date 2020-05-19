@@ -37,6 +37,12 @@
             <div class="help-block text-left" id="js-payment_category"></div>
             <button type="button" id="btn_method" class="btn btn-primary pull-right">Submit</button>
           </div>
+          <a class="btn btn-info pull-right btn-transaction-history" 
+            data-id="{{$StudentInformation->id}}" 
+            data-school_year_id="{{$SchoolYear->id}}" 
+            href="#">
+            <i class="fas fa-history"></i> Transaction History
+          </a>
           
        </div>
     </div>

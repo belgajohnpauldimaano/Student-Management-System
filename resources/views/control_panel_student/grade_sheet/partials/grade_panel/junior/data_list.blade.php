@@ -1,6 +1,7 @@
 <h4>
     <span class="logo-mini"><img src="{{ asset('/img/sja-logo.png') }}" style="height: 60px;"></span> 
-<b> Grade-level/Section : <i style="color:red">{{$ClassDetail->grade_level.' '.$ClassDetail->section}}</i></b></h4>
+    <b> Grade-level/Section : <i style="color:red">{{$ClassDetail->grade_level.' '.$ClassDetail->section}}</i></b>
+</h4>
 <hr/> 
 <div class="table-responsive">
     <table class="table no-margin table-bordered">
@@ -16,9 +17,7 @@
                 <th style="text-align: center">Faculty</th>
             </tr>
         </thead>
-        <tbody>
-
-            
+        <tbody>            
             @if ($GradeSheetData)
                 <?php
                     $showGenAvg = 0;

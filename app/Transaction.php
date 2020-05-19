@@ -11,6 +11,10 @@ class Transaction extends Model
         return $this->hasMany(TransactionOtherFee::class, 'or_number', 'or_number');
     }
 
+    public function monthly(){
+        return $this->hasOne(TransactionMonthPaid::class, 'transaction_id', 'id');
+    }
+
     public function payment_cat() 
     {
         return $this->hasOne(PaymentCategory::class, 'id', 'payment_category_id');
@@ -40,6 +44,7 @@ class Transaction extends Model
     {        
         return $this->hasOne(TransactionDiscount::class, 'transaction_id', 'id' );
     }
+    
 }
 
 

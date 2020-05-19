@@ -54,7 +54,8 @@ class StudentAccountController extends Controller
 
                 $TransactionOR = TransactionOtherFee::where('student_id', $stud_id)
                     ->where('school_year_id', $SchoolYear->id)->orderBY('id', 'DESC')
-                    ->distinct()->get(['or_no']);   
+                    ->distinct()
+                    ->get(['or_no']);   
 
                 $AccountOthers = TransactionOtherFee::where('student_id', $stud_id)
                     ->where('school_year_id', $SchoolYear->id)->first();

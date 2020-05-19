@@ -2,15 +2,15 @@
                         <div class="nav-tabs-custom">
                             <ul class="nav nav-tabs">
                                 <li class="active">
-                                    <a href="#progress" data-toggle="tab">Not yet Approved</a>
+                                    <a href="#js-disapproved" data-toggle="tab">Not yet Approved</a>
                                 </li>                                
                                 <li>
-                                    <a href="#queue" data-toggle="tab">Approved</a>
+                                    <a href="#js-approved" data-toggle="tab">Approved</a>
                                 </li>
                                 
                             </ul>
                             <div class="tab-content">                                
-                                <div class="active tab-pane" id="progress">     
+                                <div class="active tab-pane" id="js-disapproved">     
                                     <div class="pull-right">
                                         {{ $NotyetApproved ? $NotyetApproved->links() : '' }}
                                     </div>                             
@@ -22,6 +22,7 @@
                                                 <th>Student level</th>
                                                 <th>Tuition Fee</th>
                                                 <th>Misc Fee</th>
+                                                <th>Disc Fee</th>
                                                 <th>Total Fees</th>
                                                 <th>Payment</th>
                                                 <th>Balance</th>
@@ -30,36 +31,35 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            @if($NotyetApproved)
-                                                @foreach ($NotyetApproved as $key => $data)
+                                            @foreach($NotyetApproved as $key => $data)
                                                 <tr>
-                                                    <td>{{$key + 1}}.</td>
-                                                    <td>{{$data->student->last_name.', '.$data->student->first_name.' '.$data->student->middle_name}}</td>
-                                                    <td>{{$data->payment_cat->stud_category->student_category.'-'.$data->payment_cat->grade_level_id}}</td>
-                                                    <td>{{ number_format($data->payment_cat->tuition->tuition_amt, 2)}}</td>
-                                                    <td>{{ number_format($data->payment_cat->misc_fee->misc_amt, 2)}}</td>
-                                                    <td>{{ number_format($data->payment_cat->tuition->tuition_amt + $data->payment_cat->misc_fee->misc_amt, 2)}}</td>
-                                                    <td>{{ number_format($data->downpayment, 2)}}</td>
-                                                    <td>{{ number_format($data->balance, 2)}}</td>
+                                                    <td>{{$key + 1}}</td>
+                                                    <td>{{$data->student_name}}</td>
+                                                    <td>{{$data->student_level}}</td>
+                                                    <td>{{number_format($data->tuition_amt,2)}}</td>
+                                                    <td>{{number_format($data->misc_amt,2)}}</td>
+                                                    <td>
+                                                        {{number_format($data->discount_amt, 2)}}
+                                                    </td>
+                                                    <td>{{number_format($data->tuition_amt + $data->misc_amt, 2)}}</td>
+                                                    <td>{{number_format($data->payment,2)}}</td>
+                                                    <td>{{number_format($data->balance,2)}}</td>
                                                     <td>
                                                         <span class="label {{ $data->approval ? $data->approval =='Approved' ? 'label-success' : 'label-danger' : 'label-danger'}}">
                                                         {{ $data->approval ? $data->approval =='Approved' ? 'Approved' : 'Not yet approved' : 'Not yet approved'}}
                                                         </span>
                                                     </td>
                                                     <td>
-                                                        <button class="btn btn-sm btn-primary btn-disapprove-modal" data-id="{{$data->id}}">View</button>
-                                                        <button class="btn btn-sm btn-success btn-approve" data-id="{{$data->id}}">Approve</button>
-                                                        
-                                                        {{-- <button class="btn btn-sm btn-danger">Disapprove</button> --}}
+                                                        <button class="btn btn-sm btn-primary btn-view-modal" data-id="{{$data->transaction_id}}"  data-monthly_id="{{$data->transact_monthly_id}}">View</button>
+                                                        <button class="btn btn-sm btn-success btn-approve" data-id="{{$data->transact_monthly_id}}">Approve</button>
                                                     </td>
                                                 </tr>
-                                                @endforeach
-                                            @endif                                            
+                                            @endforeach
                                         </tbody>
                                     </table>
                                 </div>                                 
                         
-                                <div class="tab-pane" id="queue">
+                                <div class="tab-pane" id="js-approved">
                                     <div class="pull-right">
                                         {{ $Approved ? $Approved->links() : '' }}
                                     </div>
@@ -79,30 +79,30 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            @if($Approved)
-                                                @foreach ($Approved as $key => $data)
+                                            @foreach($Approved as $key => $data)
                                                 <tr>
-                                                    <td>{{$key + 1}}.</td>
-                                                    <td>{{$data->student->last_name.', '.$data->student->first_name.' '.$data->student->middle_name}}</td>
-                                                    <td>{{$data->payment_cat->stud_category->student_category.'-'.$data->payment_cat->grade_level_id}}</td>
-                                                    <td>{{ number_format($data->payment_cat->tuition->tuition_amt, 2)}}</td>
-                                                    <td>{{ number_format($data->payment_cat->misc_fee->misc_amt, 2)}}</td>
-                                                    <td>{{ number_format($data->payment_cat->tuition->tuition_amt + $data->payment_cat->misc_fee->misc_amt, 2)}}</td>
-                                                    <td>{{ number_format($data->downpayment, 2)}}</td>
-                                                    <td>{{ number_format($data->balance, 2)}}</td>
+                                                    <td>{{$key + 1}}</td>
+                                                    <td>{{$data->student_name}}</td>
+                                                    <td>{{$data->student_level}}</td>
+                                                    <td>{{number_format($data->tuition_amt,2)}}</td>
+                                                    <td>{{number_format($data->misc_amt,2)}}</td>
+                                                    <td>
+                                                        {{number_format($data->discount_amt, 2)}}
+                                                    </td>
+                                                    <td>{{number_format($data->tuition_amt + $data->misc_amt, 2)}}</td>
+                                                    <td>{{number_format($data->downpayment,2)}}</td>
+                                                    <td>{{number_format($data->balance,2)}}</td>
                                                     <td>
                                                         <span class="label {{ $data->approval ? $data->approval =='Approved' ? 'label-success' : 'label-danger' : 'label-danger'}}">
                                                         {{ $data->approval ? $data->approval =='Approved' ? 'Approved' : 'Not yet approved' : 'Not yet approved'}}
                                                         </span>
                                                     </td>
                                                     <td>
-                                                        <button class="btn btn-sm btn-primary btn-disapprove-modal" data-id="{{$data->id}}">View</button>
-                                                        <button class="btn btn-sm btn-success btn-disapprove" data-id="{{$data->id}}">Disapprove</button>
-                                                        {{-- <button class="btn btn-sm btn-danger">Disapprove</button> --}}
+                                                        <button class="btn btn-sm btn-primary btn-view-modal" data-id="{{$data->transactions_id}}" data-monthly_id="{{$data->transact_monthly_id}}">View</button>
+                                                        <button class="btn btn-sm btn-danger btn-disapprove" data-id="{{$data->transact_monthly_id}}">Disapprove</button>
                                                     </td>
                                                 </tr>
-                                                @endforeach
-                                            @endif                                            
+                                            @endforeach
                                         </tbody>
                                     </table> 
                                 </div>  
@@ -110,7 +110,5 @@
                                  
                             </div>                  
                         </div> 
-                        <div class="pull-right">
-                            {{-- {{ $StudentInformation ? $StudentInformation->links() : '' }} --}}
-                        </div>
+                        
                         

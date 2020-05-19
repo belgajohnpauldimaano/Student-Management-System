@@ -20,8 +20,16 @@ Route::group(['prefix' => 'finance', 'middleware' => ['auth', 'userroles'], 'rol
         Route::get('', 'Finance\StudentPaymentController@index')->name('finance.student_payment');
         Route::post('', 'Finance\StudentPaymentController@index')->name('finance.student_payment');
         Route::post('approve', 'Finance\StudentPaymentController@approve')->name('finance.student_payment.approve');
-        Route::post('disapprove', 'Finance\StudentPaymentController@approve')->name('finance.student_payment.disapprove');
+        Route::post('disapprove', 'Finance\StudentPaymentController@disapprove')->name('finance.student_payment.disapprove');
         Route::post('modal-data', 'Finance\StudentPaymentController@modal_data')->name('finance.student_payment.modal');
+    });
+
+    Route::group(['prefix' => 'student-finance-account'], function () {
+        Route::get('', 'Finance\StudentFinanceAccountController@index')->name('finance.student_acct');
+        Route::post('', 'Finance\StudentFinanceAccountController@index')->name('finance.student_acct');
+        // Route::post('approve', 'Finance\StudentFinanceAccountController@approve')->name('finance.student_acct.approve');
+        // Route::post('disapprove', 'Finance\StudentFinanceAccountController@approve')->name('finance.student_acct.disapprove');
+        Route::post('modal-data', 'Finance\StudentFinanceAccountController@modal_data')->name('finance.student_acct.modal');
     });
     
     Route::group(['prefix' => 'student-payment-account'], function (){

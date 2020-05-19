@@ -20,6 +20,7 @@ use App\TransactionDiscount;
 use Illuminate\Http\Request;
 use PayPal\Api\RedirectUrls;
 use App\Mail\NotifyAdminMail;
+use App\TransactionMonthPaid;
 use PayPal\Api\PaymentExecution;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
@@ -145,18 +146,21 @@ class PaymentController extends Controller
                 ->where('student_id', $StudentInformation->id)
                 ->first();
             
-            if($checkAccount){       
+            if($checkAccount){
+                $TransactionAccount = Transaction::where('school_year_id', $SchoolYear->id)
+                    ->where('student_id', $StudentInformation->id)
+                    ->first();
 
-                $Enrollment = new \App\Transaction();
-                $Enrollment->or_number = $StudentInformation->first_name.''.$mytime->toDateTimeString();
-                $Enrollment->payment_category_id = $request->tution_category;
+                $Enrollment = new TransactionMonthPaid();
+                $Enrollment->or_no = $StudentInformation->first_name.''.$mytime->toDateTimeString();
                 $Enrollment->student_id = $StudentInformation->id;
+                $Enrollment->payment = $request->pay_fee;
                 $Enrollment->school_year_id = $SchoolYear->id;
-                $Enrollment->downpayment = $request->pay_fee;
-                $Enrollment->number = $request->phone;
-                $Enrollment->email = $request->email;
                 $Enrollment->balance = $request->result_current_bal;
-                $Enrollment->payment_option = 'Credit Card/Debit Card'; 
+                $Enrollment->email = $request->email;
+                $Enrollment->number = $request->phone;
+                $Enrollment->payment_option = 'Credit Card/Debit Card';
+                $Enrollment->transaction_id = $TransactionAccount->id;
 
                 if($Enrollment->save()){
                     return response()->json([$redirect_url]);
@@ -166,39 +170,48 @@ class PaymentController extends Controller
                 
             }else{
                 
-                $Enrollment = new \App\Transaction();
-                $Enrollment->or_number = $StudentInformation->first_name.''.$mytime->toDateTimeString();
-                $Enrollment->payment_category_id = $request->tution_category;
-                $Enrollment->student_id = $StudentInformation->id;
-                $Enrollment->school_year_id = $SchoolYear->id;
-                $Enrollment->downpayment = $request->pay_fee;
-                $Enrollment->number = $request->phone;
-                $Enrollment->email = $request->email;
-                $Enrollment->balance = $request->result_current_bal;
-                $Enrollment->payment_option = 'Credit Card/Debit Card';   
-    
-                if($Enrollment->save()){  
+                $EnrollmentTransaction = new \App\Transaction();
+                $EnrollmentTransaction->payment_category_id = $request->tution_category;
+                $EnrollmentTransaction->student_id = $StudentInformation->id;
+                $EnrollmentTransaction->school_year_id = $SchoolYear->id;                                
+                $EnrollmentTransaction->save();
 
+                $Enrollment = new TransactionMonthPaid();
+                $Enrollment->or_no = $StudentInformation->first_name.''.$mytime->toDateTimeString();
+                $Enrollment->student_id = $StudentInformation->id;
+                $Enrollment->payment = $request->pay_fee;
+                $Enrollment->school_year_id = $SchoolYear->id;
+                $Enrollment->balance = $request->result_current_bal;
+                $Enrollment->email = $request->email;
+                $Enrollment->number = $request->phone;
+                $Enrollment->payment_option = 'Credit Card/Debit Card';
+                $Enrollment->transaction_id = $EnrollmentTransaction->id;
+        
+                if($Enrollment->save()){  
+    
                     if($request->e_discount != 0){
                         $Discount = new TransactionDiscount();
                         $Discount->student_id =  $StudentInformation->id;
                         $Discount->school_year_id = $SchoolYear->id;
                         $Discount->discount_type = $request->e_discount_type;
                         $Discount->discount_amt = $request->e_discount;
-                        $Discount->transaction_id = $Enrollment->id;
+                        $Discount->transaction_id = $EnrollmentTransaction->id;                            
                         
                         if($Discount->save()){
                             return response()->json([$redirect_url]);
                         }else{
                             return redirect()->back()->withError('Unknown error occurred');
                         }    
-                    }   
-                    
-                    return response()->json([$redirect_url]);
+                    }else{
+                        return response()->json([$redirect_url]);
+                    }
 
                 }else{
                     return redirect()->back()->withError('Unknown error occurred');
                 }
+                              
+
+                
             }
             
             
@@ -246,16 +259,15 @@ class PaymentController extends Controller
                 ->orderBY('id', 'DESC')
                 ->first();
 
-            $IsReceived = \App\Transaction::where('student_id', $StudentInformation->id)
+            $IsReceived = TransactionMonthPaid::where('student_id', $StudentInformation->id)
                 ->where('school_year_id', $SchoolYear->id)->orderBy('id', 'Desc')->first();
-
-            $IsReceived->or_number =  $payment->invoice_id;
-            $IsReceived->isSuccess = 1;  
-            $admin_email = 'info@sja-bataan.com';
+            // $IsReceived->or_number =  $payment->paymentId;
+            $IsReceived->isSuccess = 1;
             if($IsReceived->save()){
-                $payment = \App\Transaction::find($IsReceived->id);
+
+                $payment = \App\Transaction::find($IsReceived->transaction_id);
                     \Mail::to($IsReceived->email)->send(new SendMail($payment));
-                    \Mail::to($admin_email)->send(new NotifyAdminMail($payment));
+                    \Mail::to('info@sja-bataan.com')->send(new NotifyAdminMail($payment));
 
                 return redirect()->route('student.enrollment.index')
                     ->withSuccess('You have successfully accomplished the form. Check your email for review of Finance Dept. Thank you!');

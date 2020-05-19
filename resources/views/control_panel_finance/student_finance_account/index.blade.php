@@ -141,7 +141,7 @@
         <div class="box-body">
             
             <div class="js-data-container">
-                @include('control_panel_finance.student_payment.partials.data_list')       
+                @include('control_panel_finance.student_finance_account.partials.data_list')       
             </div>
             
         </div>        
@@ -158,7 +158,7 @@
             formData.append('page', page);
             loader_overlay();
             $.ajax({
-                url : "{{ route('finance.student_payment') }}",
+                url : "{{ route('finance.student_acct') }}",
                 type : 'POST',
                 data : formData,
                 processData : false,
@@ -248,15 +248,14 @@
         
        
         $(function () {            
-            $('body').on('click', '.btn-view-modal', function (e) {
+            $('body').on('click', '.btn-disapprove-modal', function (e) {
                 e.preventDefault();
                  
                 var id = $(this).data('id');
-                var monthly_id = $(this).data('monthly_id');
                 $.ajax({
-                    url : "{{ route('finance.student_payment.modal') }}",
+                    url : "{{ route('finance.student_acct.modal') }}",
                     type : 'POST',
-                    data : { _token : '{{ csrf_token() }}', id : id , monthly_id : monthly_id},
+                    data : { _token : '{{ csrf_token() }}', id : id },
                     success : function (res) {
                         $('.js-modal_holder').html(res);
                         $('.js-modal_holder .modal').modal({ backdrop : 'static' });
@@ -268,8 +267,9 @@
                 });
             });
 
-            
         });
+
+            
 
        
 
