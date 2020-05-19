@@ -71,6 +71,7 @@
                                                 <th>Student level</th>
                                                 <th>Tuition Fee</th>
                                                 <th>Misc Fee</th>
+                                                <th>Disc Fee</th>
                                                 <th>Total Fees</th>
                                                 <th>Payment</th>
                                                 <th>Balance</th>
@@ -90,7 +91,7 @@
                                                         {{number_format($data->discount_amt, 2)}}
                                                     </td>
                                                     <td>{{number_format($data->tuition_amt + $data->misc_amt, 2)}}</td>
-                                                    <td>{{number_format($data->downpayment,2)}}</td>
+                                                    <td>{{number_format($data->payment,2)}}</td>
                                                     <td>{{number_format($data->balance,2)}}</td>
                                                     <td>
                                                         <span class="label {{ $data->approval ? $data->approval =='Approved' ? 'label-success' : 'label-danger' : 'label-danger'}}">
@@ -98,7 +99,7 @@
                                                         </span>
                                                     </td>
                                                     <td>
-                                                        <button class="btn btn-sm btn-primary btn-view-modal" data-id="{{$data->transactions_id}}" data-monthly_id="{{$data->transact_monthly_id}}">View</button>
+                                                        <button class="btn btn-sm btn-primary btn-view-modal" data-id="{{$data->transaction_id}}"  data-monthly_id="{{$data->transact_monthly_id}}">View</button>
                                                         <button class="btn btn-sm btn-danger btn-disapprove" data-id="{{$data->transact_monthly_id}}">Disapprove</button>
                                                     </td>
                                                 </tr>

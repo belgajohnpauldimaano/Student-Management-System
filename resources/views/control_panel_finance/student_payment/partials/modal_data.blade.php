@@ -3,10 +3,10 @@
         <div class="modal-content">
             <div class="box-body">
                 <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>                            
-                        <h4 style="margin-right: 5em;" class="modal-title">
-                            Student Payment Information
-                        </h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>                            
+                    <h4 style="margin-right: 5em;" class="modal-title">
+                        Student Payment Information
+                    </h4>
                 </div>
             
                 <div class="modal-body">                    
@@ -170,8 +170,9 @@
                     </div>
                 </div>            
                 <div class="moda-footer">
-                    <button class="btn btn-success btn-flat btn-approve pull-right" data-id="{{$Modal_data->id}}">
-                        {{ $Modal_data->approval ? $Modal_data->approval =='Approved' ? 'Disapprove' : 'Disapprove' : 'Approve'}}
+                    <button class="btn btn-flat btn-{{ $Modal_data->approval ? $Modal_data->approval =='Approve' ? 'success btn-approve' : 'danger btn-disapprove' : 'success btn-approve'}} pull-right"
+                         data-id="{{$Monthly_history->id}}">
+                        {{ $Modal_data->approval ? $Modal_data->approval =='Approve' ? 'Approve' : 'Disapprove' : 'Approve'}}
                     </button>
                 </div>     
             </div>    
