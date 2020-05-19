@@ -19,8 +19,8 @@ class CreateTransactionDiscountsTable extends Migration
             $table->integer('student_id');
             $table->string('discount_type');
             $table->float('discount_amt');
-            $table->integer('school_year_id');
             $table->integer('transaction_id');
+            $table->integer('school_year_id');            
             $table->timestamps();
         });
     }
