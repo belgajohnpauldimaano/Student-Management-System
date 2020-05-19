@@ -170,15 +170,15 @@
             });
         }
 
-        $('body').on('click', '.btn-approve', function (e) {
+        $('body').on('click', '.btn-paid', function (e) {
                 e.preventDefault();
                 var id = $(this).data('id');
                 alertify.defaults.transition = "slide";
                 alertify.defaults.theme.ok = "btn btn-primary btn-flat";
                 alertify.defaults.theme.cancel = "btn btn-danger btn-flat";
-                alertify.confirm('Confirmation', 'Are you sure you want to approve?', function(){  
+                alertify.confirm('Confirmation', 'Are you sure you want the status paid?', function(){  
                     $.ajax({
-                        url         : "{{ route('finance.student_payment.approve') }}",
+                        url         : "{{ route('finance.student_acct.paid') }}",
                         type        : 'POST',
                         data        : { _token : '{{ csrf_token() }}', id : id },
                         success     : function (res) {
@@ -208,15 +208,15 @@
                 });
             });
 
-            $('body').on('click', '.btn-disapprove', function (e) {
+            $('body').on('click', '.btn-unpaid', function (e) {
                 e.preventDefault();
                 var id = $(this).data('id');
                 alertify.defaults.transition = "slide";
                 alertify.defaults.theme.ok = "btn btn-primary btn-flat";
                 alertify.defaults.theme.cancel = "btn btn-danger btn-flat";
-                alertify.confirm('Confirmation', 'Are you sure you want to disapprove?', function(){  
+                alertify.confirm('Confirmation', 'Are you sure you want the status unpaid?', function(){  
                     $.ajax({
-                        url         : "{{ route('finance.student_payment.disapprove') }}",
+                        url         : "{{ route('finance.student_acct.unpaid') }}",
                         type        : 'POST',
                         data        : { _token : '{{ csrf_token() }}', id : id },
                         success     : function (res) {

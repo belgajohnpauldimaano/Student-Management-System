@@ -30,8 +30,9 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="">Status</label><br/>
-                                <span class="label {{ $Modal_data->status ? $Modal_data->status ==0 ? 'label-success' : 'label-danger' : 'label-danger'}}">
-                                    {{ $Modal_data->status ? $Modal_data->status == 0 ? 'Paid' : 'Not yet paid' : 'Not yet paid'}}
+                                <span class="label {{ $Modal_data->status ? $Modal_data->status ==0 ? 'label-success' : 'label-danger' : 'label-success'}}">
+                                    {{ $Modal_data->status ? $Modal_data->status == 0 ? 'Paid' : 'Not yet paid' : 'Paid'}}
+                                    {{-- {{ $Modal_data->status ? $Modal_data->status == 0 ? 'Unpaid' : 'Paid' : 'Unpaid'}} --}}
                                 </span>
                             </div>
                             <div class="form-group">
@@ -104,6 +105,10 @@
                                 <p class="box-title">
                                     Date and Time: {{ $data ? date_format(date_create($data->created_at), 'F d, Y h:i A') : '' }}
                                 </p>
+                                <br>Status: 
+                                <span class="label {{ $data->approval ? $data->approval == 'Approved' ? 'label-success' : 'label-danger' : 'label-danger'}}">
+                                    {{ $data->approval ? $data->approval == 'Approved' ? 'Approved' : 'Not yet Approved' : 'Not yet Approved'}}
+                                </span>
                             </div>
                                 
                             <div class="box-body no-padding">
@@ -164,8 +169,8 @@
                             </div>                        
                         @endforeach
                         <div class="modal-footer">
-                            <button class="btn btn-success btn-flat btn-approve pull-right" data-id="">
-                                {{ $Modal_data->status ? $Modal_data->status == 0 ? 'Turn to Not Paid' : 'Turn to Paid' : 'Turn to Not Paid'}}
+                        <button class="btn btn-flat  {{ $Modal_data->status ? $Modal_data->status == 0 ? 'btn-danger btn-unpaid' : 'btn-success btn-paid' : 'btn-danger btn-unpaid'}} pull-right" data-id="{{$Modal_data->id}}">
+                                {{ $Modal_data->status ? $Modal_data->status == 0 ? 'Unpaid' : 'Paid' : 'Unpaid'}}
                             </button>
                         </div> 
                     </div> 
