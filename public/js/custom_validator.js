@@ -2,6 +2,10 @@
 
         function validate_form(){            
             
+            $('#pay_fee').change(function (){
+                check_payfee();
+            });
+
             $('#pay_fee').keyup(function() {
                 check_payfee();
             });
@@ -114,6 +118,10 @@
         // deposit-bank
        
         $('#bank_pay_fee').keyup(function() {
+            bank_pay_fee();
+        });
+
+        $('#bank_pay_fee').change(function (){
             bank_pay_fee();
         });
 
@@ -273,6 +281,10 @@
         // deposit-bank
        
         $('#gcash_pay_fee').keyup(function() {
+            gcash_pay_fee();
+        });
+
+        $('#gcash_pay_fee').change(function (){
             gcash_pay_fee();
         });
 
