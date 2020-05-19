@@ -499,7 +499,7 @@
             $('#js-payment_category').html('');
 
         }else if(payment_category==3){
-            // getProfiledata();
+            getProfiledata();
             
             $("#gcash").fadeIn();
             $('#selector_payment').hide();
