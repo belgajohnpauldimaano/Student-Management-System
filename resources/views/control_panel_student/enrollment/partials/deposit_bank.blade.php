@@ -70,7 +70,24 @@
                             </p>
                         @else
                             <p>There is no Tution and Miscellenous Fee</p>
-                        @endif                
+                        @endif    
+                        
+                        <label for="bank_discount">Discount Fee</label>
+                        @if($StudentInformation->isEsc == '1')
+                            <input type="hidden" value="{{$Discount->disc_type}}" name="bank_discount_type">
+                            <input type="hidden" id="bank_discount" value="{{$Discount->disc_amt}}" name="bank_discount">
+                            <p>{{($Discount->disc_type)}} (₱ {{number_format($Discount->disc_amt,2)}})</p>             
+                        @else
+                            <input type="hidden" id="bank_discount" value="0" name="bank_discount">
+                            <p>-NA-</p>
+                        @endif
+
+                        <label for="exampleInputEmail1">Downpayment Fee </label>              
+                        @if($Downpayment)
+                            <input type="hidden" name="bank_downpayment" value="{{$Downpayment->id}}">
+                            <input type="hidden" id="bank_downpayment" value="{{$Downpayment->downpayment_amt}}">                        
+                            <p>₱ {{number_format($Downpayment->downpayment_amt,2)}}</p>
+                        @endif
                     
                         <label for="previous_balance">Current Balance Fee</label>         
                         @if($AlreadyEnrolled)    
@@ -81,23 +98,6 @@
                                 <p>₱ {{number_format($Tuition ? $PaymentCategory->tuition->tuition_amt + $PaymentCategory->misc_fee->misc_amt : '', 2)}}</p> 
                             @endif       
                         @endif  
-
-                        <label for="exampleInputEmail1">Downpayment Fee </label>              
-                        @if($Downpayment)
-                            <input type="hidden" name="bank_downpayment" value="{{$Downpayment->id}}">
-                            <input type="hidden" id="bank_downpayment" value="{{$Downpayment->downpayment_amt}}">                        
-                            <p>₱ {{number_format($Downpayment->downpayment_amt,2)}}</p>
-                        @endif
-
-                        <label for="bank_discount">Discount Fee</label>
-                        @if($StudentInformation->isEsc == '1')
-                            <input type="hidden" value="{{$Discount->disc_type}}" name="bank_discount_type">
-                            <input type="hidden" id="bank_discount" value="{{$Discount->disc_amt}}" name="bank_discount">
-                            <p>{{($Discount->disc_type)}} (₱ {{number_format($Discount->disc_amt,2)}})</p>             
-                        @else
-                            <input type="hidden" id="bank_discount" value="0" name="bank_discount">
-                            <p>-NA-</p>
-                        @endif
                     </div>  
 
                     <div class="form-group col-lg-12 input-bank_phone">
@@ -105,6 +105,7 @@
                         <input type="text" class="form-control" id="bank_phone" name="bank_phone" placeholder="+639000000000" value="{{ $StudentInformation->contact_number ? $StudentInformation->contact_number : '+639' }}">
                         <div class="help-block text-left" id="js-bank_phone"></div>
                     </div>  
+
                     <div class="form-group col-lg-12 input-bank_email">
                         <label for="bank_email">Email Address</label>
                         <input type="email" class="form-control" id="bank_email" name="bank_email" placeholder="your@email.com" value="{{ $StudentInformation->email }}">

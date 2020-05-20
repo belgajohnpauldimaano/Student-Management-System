@@ -1,7 +1,7 @@
 <div class="modal fade" tabindex="-1" role="dialog">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
-            {{-- <div class="box-body"> --}}
+            <div class="box-body">
                 <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>                            
                         <h4 style="margin-right: 5em;" class="modal-title">
@@ -144,7 +144,7 @@
                                     </tbody>
                                 </table>
                             </div>
-                            <div class="lightbox-target" id="img_receipt">
+                            <div class="lightbox-target" id="img_receipt{{$data->receipt_img}}">
                                 <img src="{{ $data->receipt_img ? \File::exists(public_path('/img/receipt/'.$data->receipt_img)) ?
                                     asset('/img/receipt/'.$data->receipt_img) : 
                                     asset('/img/receipt/blank-user.gif') :
@@ -155,7 +155,7 @@
                             @if($data->payment_option != 'Credit Card/Debit Card')
                                 <div class="form-group" style="margin-top: 10px">
                                     <label for="">Image Receipt <small>(Click to zoom)</small></label>
-                                    <a class="lightbox" href="#img_receipt">
+                                    <a class="lightbox" href="#img_receipt{{$data->receipt_img}}">
                                         <img class="img-responsive" 
                                         id="img-receipt"
                                         src="{{ $data->receipt_img ? \File::exists(public_path('/img/receipt/'.$data->receipt_img)) ?
@@ -166,8 +166,9 @@
                                     </a>
                                 </div> 
                             @endif
-                            </div>                        
+                                                    
                         @endforeach
+                    </div>
                         <div class="modal-footer">
                         <button class="btn btn-flat  btn-{{ $Modal_data->status ? $Modal_data->status == 0 ? 'danger btn-unpaid' : 'success btn-paid' : 'danger btn-unpaid'}} pull-right" data-id="{{$Modal_data->id}}">
                                 {{ $Modal_data->status ? $Modal_data->status == 0 ? 'Unpaid' : 'Paid' : 'Unpaid'}}
@@ -177,7 +178,7 @@
                                        
                 </div>
                 
-            {{-- </div>    --}}
+            </div>   
         </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->

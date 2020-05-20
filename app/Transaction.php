@@ -12,7 +12,7 @@ class Transaction extends Model
     }
 
     public function monthly(){
-        return $this->hasOne(TransactionMonthPaid::class, 'transaction_id', 'id');
+        return $this->hasOne(TransactionMonthPaid::class, 'transaction_id', 'id')->orderBY('id', 'DESC');
     }
 
     public function payment_cat() 

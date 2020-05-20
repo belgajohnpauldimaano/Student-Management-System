@@ -56,90 +56,79 @@
                             <table class="table table-bordered">
                                 <tbody>
                                     <tr>
-                                        <th style="width: 10px">#</th>
                                         <th>Description</th>
                                         <th>Amount</th>
                                         {{-- <th style="width: 40px">Label</th> --}}
                                     </tr>
+                                    
                                     <tr>
-                                        <td>1.</td>
-                                            <td>Tuition Fee</td>
-                                            <td>
-                                                {{ number_format($Modal_data->payment_cat->tuition->tuition_amt, 2)}}
-                                            </td>                                
-                                        </tr>
-                                        <tr>
-                                            <td>2.</td>
-                                            <td>Misc Fee</td>
-                                            <td>
-                                                {{ number_format($Modal_data->payment_cat->misc_fee->misc_amt, 2)}}
-                                            </td>                                
-                                        </tr>                                        
-                                        <tr>
-                                            <td>3.</td>
-                                            <td>Discount Fee</td>
-                                            <td>{{$Modal_data->disc_transaction_fee ? number_format($Modal_data->disc_transaction_fee->discount_amt,2) : '0.00'}}</td>
-                                        </tr>
-                                        <tr>
-                                            <td>4.</td>
-                                            <td>Total Fees</td>
-                                            <td>
-                                                @if($Modal_data->disc_transaction_fee)
-                                                    {{ number_format($Modal_data->payment_cat->tuition->tuition_amt + $Modal_data->payment_cat->misc_fee->misc_amt - $Modal_data->disc_transaction_fee->discount_amt, 2)}}
-                                                @else
-                                                    {{ number_format($Modal_data->payment_cat->tuition->tuition_amt + $Modal_data->payment_cat->misc_fee->misc_amt, 2)}}
-                                                @endif                                                
-                                            </td>                                
-                                        </tr>
-                                        <tr>
-                                            <td>5.</td>
-                                            <td>Payment</td>
-                                            <td>
-                                                {{ number_format($Monthly_history->payment, 2)}}
-                                            </td>                                    
-                                        </tr>
-                                        <tr>
-                                            <td>6.</td>
-                                            <td>Previous Balance</td>
-                                            <td>
-                                                
-
-                                                @if($current_bal)
-                                                    @if($current_bal->balance==0)
-                                                        @if($Modal_data->disc_transaction_fee)
-                                                            {{ number_format($Modal_data->payment_cat->tuition->tuition_amt + $Modal_data->payment_cat->misc_fee->misc_amt - $Modal_data->disc_transaction_fee->discount_amt, 2)}}
-                                                        @else
-                                                            {{ number_format($Modal_data->payment_cat->tuition->tuition_amt + $Modal_data->payment_cat->misc_fee->misc_amt, 2)}}
-                                                        @endif
-                                                    @else
-                                                        @if($Modal_data->disc_transaction_fee)
-                                                            {{ number_format($Modal_data->payment_cat->tuition->tuition_amt + $Modal_data->payment_cat->misc_fee->misc_amt - $Modal_data->disc_transaction_fee->discount_amt, 2)}}
-                                                        @else
-                                                            {{ number_format($Modal_data->payment_cat->tuition->tuition_amt + $Modal_data->payment_cat->misc_fee->misc_amt, 2)}}
-                                                        @endif
-                                                    @endif
-                                                @else
-                                                    {{ number_format($Modal_data->payment_cat->tuition->tuition_amt + $Modal_data->payment_cat->misc_fee->misc_amt, 2)}}
-                                                @endif
-                                                {{-- @if($current_bal->balance == $Monthly_history->balance)
+                                        <td>Tuition Fee</td>
+                                        <td>
+                                            {{ number_format($Modal_data->payment_cat->tuition->tuition_amt, 2)}}
+                                        </td>                                
+                                    </tr>
+                                    <tr>                                        
+                                        <td>Misc Fee</td>
+                                        <td>
+                                            {{ number_format($Modal_data->payment_cat->misc_fee->misc_amt, 2)}}
+                                        </td>                                
+                                    </tr>   
+                                    <tr>                                        
+                                        <td>Sub Total</td>
+                                        <td>
+                                            {{ number_format($Modal_data->payment_cat->tuition->tuition_amt + $Modal_data->payment_cat->misc_fee->misc_amt, 2)}}
+                                        </td>                                
+                                    </tr>                                       
+                                    <tr>
+                                        <td>Less Discount Fee</td>
+                                        <td>{{$Modal_data->disc_transaction_fee ? number_format($Modal_data->disc_transaction_fee->discount_amt,2) : '0.00'}}</td>
+                                    </tr>
+                                    <tr>
+                                        
+                                        <td>Total Fees</td>
+                                        <td>
+                                            @if($Modal_data->disc_transaction_fee)
+                                                {{ number_format($Modal_data->payment_cat->tuition->tuition_amt + $Modal_data->payment_cat->misc_fee->misc_amt - $Modal_data->disc_transaction_fee->discount_amt, 2)}}
+                                            @else
+                                                {{ number_format($Modal_data->payment_cat->tuition->tuition_amt + $Modal_data->payment_cat->misc_fee->misc_amt, 2)}}
+                                            @endif                                                
+                                        </td>                                
+                                    </tr>                                    
+                                    <tr>                                        
+                                        <td>Previous Balance</td>
+                                        <td>
+                                            @if($current_bal)
+                                                @if($current_bal->balance==0)
                                                     @if($Modal_data->disc_transaction_fee)
                                                         {{ number_format($Modal_data->payment_cat->tuition->tuition_amt + $Modal_data->payment_cat->misc_fee->misc_amt - $Modal_data->disc_transaction_fee->discount_amt, 2)}}
                                                     @else
                                                         {{ number_format($Modal_data->payment_cat->tuition->tuition_amt + $Modal_data->payment_cat->misc_fee->misc_amt, 2)}}
                                                     @endif
                                                 @else
-                                                    {{number_format($current_bal->balance, 2)}}
-                                                @endif --}}
-                                                
-                                            </td>                                    
-                                        </tr>
-                                        <tr>
-                                            <td>7.</td>
-                                            <td>Balance</td>
-                                            <td>
-                                                {{ number_format($Monthly_history->balance, 2)}}
-                                            </td>                                    
-                                        </tr>
+                                                    @if($Modal_data->disc_transaction_fee)
+                                                        {{ number_format($Modal_data->payment_cat->tuition->tuition_amt + $Modal_data->payment_cat->misc_fee->misc_amt - $Modal_data->disc_transaction_fee->discount_amt, 2)}}
+                                                    @else
+                                                        {{ number_format($Modal_data->payment_cat->tuition->tuition_amt + $Modal_data->payment_cat->misc_fee->misc_amt, 2)}}
+                                                    @endif
+                                                @endif
+                                            @else
+                                                {{ number_format($Modal_data->payment_cat->tuition->tuition_amt + $Modal_data->payment_cat->misc_fee->misc_amt, 2)}}
+                                            @endif                                                                                                
+                                        </td>                                    
+                                    </tr>
+                                    <tr>                                        
+                                        <td>Payment</td>
+                                        <td>
+                                            {{ number_format($Monthly_history->payment, 2)}}
+                                        </td>                                    
+                                    </tr>
+                                    <tr>
+                                        
+                                        <td>Balance</td>
+                                        <td>
+                                            {{ number_format($Monthly_history->balance, 2)}}
+                                        </td>                                    
+                                    </tr>
                                        
                                 </tbody>
                             </table>

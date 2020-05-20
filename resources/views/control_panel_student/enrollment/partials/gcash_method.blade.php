@@ -49,25 +49,8 @@
                             <p>
                                 Tuition Fee ({{number_format($PaymentCategory->tuition->tuition_amt, 2 ?? '')}}) | Miscellenous Fee ({{number_format($PaymentCategory->misc_fee->misc_amt,2)}})
                             </p>
-                        @endif                                    
-
-                        <label for="previous_balance">Current Balance Fee</label>  
-                        @if($AlreadyEnrolled)    
-                            <input type="hidden" class="form-control" value="{{$AlreadyEnrolled->balance}}" id="gcash_previous_balance" name="gcash_previous_balance">
-                            <p>₱ {{number_format($AlreadyEnrolled->balance,2)}}</p> 
-                        @else
-                            @if($Tuition)
-                                <p>₱ {{number_format($Tuition ? $PaymentCategory->tuition->tuition_amt + $PaymentCategory->misc_fee->misc_amt : '', 2)}}</p> 
-                            @endif      
-                        @endif  
-                   
-                        <label for="exampleInputEmail1">Downpayment Fee </label>              
-                        @if($Downpayment)
-                            <input type="hidden" name="gcash_downpayment" value="{{$Downpayment->id}}">
-                            <input type="hidden" id="gcash_downpayment" value="{{$Downpayment->downpayment_amt}}">                        
-                            <p>₱ {{number_format($Downpayment->downpayment_amt,2)}}</p>
-                        @endif
-
+                        @endif   
+                        
                         <label for="gcash_discount">Discount Fee</label>
                         @if($StudentInformation->isEsc == '1')
                             <input type="hidden" value="{{$Discount->disc_type}}" name="gcash_discount_type">
@@ -77,6 +60,23 @@
                             <input type="hidden" id="gcash_discount" value="0" name="gcash_discount">
                             <p>-NA-</p>
                         @endif
+
+                        <label for="exampleInputEmail1">Downpayment Fee </label>              
+                        @if($Downpayment)
+                            <input type="hidden" name="gcash_downpayment" value="{{$Downpayment->id}}">
+                            <input type="hidden" id="gcash_downpayment" value="{{$Downpayment->downpayment_amt}}">                        
+                            <p>₱ {{number_format($Downpayment->downpayment_amt,2)}}</p>
+                        @endif      
+
+                        <label for="previous_balance">Current Balance Fee</label>  
+                        @if($AlreadyEnrolled)    
+                            <input type="hidden" class="form-control" value="{{$AlreadyEnrolled->balance}}" id="gcash_previous_balance" name="gcash_previous_balance">
+                            <p>₱ {{number_format($AlreadyEnrolled->balance,2)}}</p> 
+                        @else
+                            @if($Tuition)
+                                <p>₱ {{number_format($Tuition ? $PaymentCategory->tuition->tuition_amt + $PaymentCategory->misc_fee->misc_amt : '', 2)}}</p> 
+                            @endif      
+                        @endif            
 
                     </div>
 

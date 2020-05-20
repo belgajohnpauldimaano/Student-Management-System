@@ -57,6 +57,26 @@
                   <input type="hidden" value="1" class="checkTution">
                   <p>There is no Tution and Miscellenous Fee</p>
                 @endif
+
+                <label for="e_discount">Discount Fee</label>
+                @if($StudentInformation->isEsc == '1')
+                  <input type="hidden" value="{{$Discount->disc_type}}" name="e_discount_type">
+                  <input type="hidden" id="e_discount" value="{{$Discount->disc_amt}}" name="e_discount">
+                  <p>{{($Discount->disc_type)}} (₱ {{number_format($Discount->disc_amt,2)}})</p>             
+                @else
+                  <input type="hidden" id="e_discount" value="0" name="e_discount">
+                  <p>-NA-</p>
+                @endif
+
+                <label for="downpayment">Downpayment Fee</label>
+                @if($Downpayment)
+                  <input type="hidden" value="{{$Downpayment->id}}" name="e_downpayment">
+                  <input type="hidden" id="downpayment" value="{{$Downpayment->downpayment_amt}}" name="e_downpayment">
+                  <p>₱ {{number_format($Downpayment->downpayment_amt,2)}}</p>             
+                @else
+                  <p>There is no Downpayment yet</p>
+                @endif
+
                 
                 <label for="previous_balance">Current Balance Fee</label>         
                 @if($AlreadyEnrolled)    
@@ -68,36 +88,18 @@
                   @endif      
                 @endif               
             
-                <label for="downpayment">Downpayment Fee</label>
-                @if($Downpayment)
-                  <input type="hidden" value="{{$Downpayment->id}}" name="e_downpayment">
-                  <input type="hidden" id="downpayment" value="{{$Downpayment->downpayment_amt}}" name="e_downpayment">
-                  <p>₱ {{number_format($Downpayment->downpayment_amt,2)}}</p>             
-                @else
-                  <p>There is no Downpayment yet</p>
-                @endif
-
-                <label for="e_discount">Discount Fee</label>
-                @if($StudentInformation->isEsc == '1')
-                  <input type="hidden" value="{{$Discount->disc_type}}" name="e_discount_type">
-                  <input type="hidden" id="e_discount" value="{{$Discount->disc_amt}}" name="e_discount">
-                  <p>{{($Discount->disc_type)}} (₱ {{number_format($Discount->disc_amt,2)}})</p>             
-                @else
-                  <input type="hidden" id="e_discount" value="0" name="e_discount">
-                  <p>-NA-</p>
-                @endif
             </div>    
 
-            <div class="form-group col-lg-12 input-payment">
-                <label for="pay_fee">Enter your payment fee</label>
-                @if($Downpayment)
-                <input type="number" class="form-control" id="pay_fee" name="pay_fee" 
-                  placeholder=" {{number_format($Downpayment->downpayment_amt,2)}}">
-                <div class="help-block text-left" id="js-pay_fee"></div>
-                @else
-                  <p>There is no downpayment amt yet</p>
-                @endif
-            </div>
+          <div class="form-group col-lg-12 input-payment">
+              <label for="pay_fee">Enter your payment fee</label>
+              @if($Downpayment)
+              <input type="number" class="form-control" id="pay_fee" name="pay_fee" 
+                placeholder=" {{number_format($Downpayment->downpayment_amt,2)}}">
+              <div class="help-block text-left" id="js-pay_fee"></div>
+              @else
+                <p>There is no downpayment amt yet</p>
+              @endif
+          </div>            
            
             <div class="form-group col-lg-12 input-phone">
                 <label for="phone">Phone number</label>
@@ -157,6 +159,12 @@
                           </td>
                       </tr>
                       <tr>
+                        <td style="width:120px">Discount</td>
+                        <td align="right">
+                            ₱ <span id="disc_enrollment">{{ $StudentInformation->isEsc == 1 ? number_format($Discount->disc_amt,2) : '0.00'}}</span>
+                        </td>
+                      </tr>
+                      <tr>
                         <td style="width:120px">Total Fees</td>
                         <td align="right" id="misc_fee">
                           @if($Tuition)
@@ -179,28 +187,20 @@
                             @endif
                           @endif
                         </td>
-                      </tr>
-                     
+                      </tr>                     
                       <tr>
                           <td style="width:120px">Payment</td>
                           <td align="right">
                               ₱ <span id="dp_enrollment">0</span>
                           </td>
-                      </tr>
-                      <tr>
-                        <td style="width:120px">Discount</td>
-                        <td align="right">
-                            ₱ <span id="disc_enrollment">{{ $StudentInformation->isEsc == 1 ? number_format($Discount->disc_amt,2) : '0.00'}}</span>
-                        </td>
-                      </tr>
+                      </tr>                      
                       <tr>
                           <td style="width:120px">Current Balance</td>
                           <td align="right">
                             <input type="hidden" id="result_current_bal" name="result_current_bal">
                               ₱ <span id="current_balance">0</span>
                           </td>
-                      </tr>
-                      
+                      </tr>                      
                   </tr>
               </tbody>
              

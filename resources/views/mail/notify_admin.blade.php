@@ -10,7 +10,6 @@
             SJAI Online Registration Confirmation
         </h3>
         <br/>
-        <br/>
         <p style="text-align: right;">Date: {{ $payment ? date_format(date_create($payment->created_at), 'F d, Y h:i A') : '' }}</p>
 
         <p>Dear Admin</p>

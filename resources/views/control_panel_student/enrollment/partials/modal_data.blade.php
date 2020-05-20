@@ -112,7 +112,7 @@
                                                 <span class="label label-{{ $transaction->approval=='Approved' ? 'success': 'danger'}}">{{ $transaction->approval}}</span>
                                             </td>                                        
                                         </tr>
-                                        <div class="lightbox-target" id="img_receipt">
+                                        <div class="lightbox-target" id="img_receipt{{$transaction->receipt_img}}">
                                             <img src="{{ $transaction->receipt_img ? \File::exists(public_path('/img/receipt/'.$transaction->receipt_img)) ?
                                                 asset('/img/receipt/'.$transaction->receipt_img) : asset('/img/receipt/blank-user.gif') :
                                                 asset('/img/receipt/blank-user.gif') }}"/>
@@ -122,7 +122,7 @@
                                         @if($transaction->payment_option != 'Credit Card/Debit Card')
                                             <div class="form-group" style="padding: 10px">
                                                 <label for="">Image Receipt <small>(Click to zoom)</small></label>
-                                                <a class="lightbox" href="#img_receipt">
+                                                <a class="lightbox" href="#img_receipt{{$transaction->receipt_img}}">
                                                     <img class="img-responsive" 
                                                     id="img-receipt"
                                                     src="{{ $transaction->receipt_img ? \File::exists(public_path('/img/receipt/'.$transaction->receipt_img)) ?
