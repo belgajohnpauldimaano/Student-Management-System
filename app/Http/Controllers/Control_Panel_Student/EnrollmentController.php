@@ -119,7 +119,7 @@ class EnrollmentController extends Controller
             ->where('student_id', $StudentInformation->id)
             ->first();
 
-        if($checkAccount){
+        if(!$checkAccount){
 
             $TransactionAccount = Transaction::where('school_year_id', $SchoolYear->id)
                 ->where('student_id', $StudentInformation->id)
@@ -145,7 +145,6 @@ class EnrollmentController extends Controller
         }else{
             
             $EnrollmentTransaction = new Transaction();
-            $EnrollmentTransaction->or_number = $request->bank_transaction_id;
             $EnrollmentTransaction->payment_category_id = $request->bank_tution_amt;
             $EnrollmentTransaction->student_id = $StudentInformation->id;
             $EnrollmentTransaction->school_year_id = $SchoolYear->id;                                
