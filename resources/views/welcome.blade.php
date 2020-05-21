@@ -12,7 +12,7 @@
               <div class="carousel-item active" style="background-image: url('{{ asset('img/intro-banner/1.jpg') }}');">
                 <div class="carousel-container">
                   <div class="carousel-content">
-                    <h2>Saint John Academy</h2>
+                    <h2>Saint John Academy Inc</h2>
                     <p>Striving for Academic Excellence and Christian Formation</p>
                     {{-- <a href="#featured-services" class="btn-get-started scrollto">Get Started</a> --}}
                     <a href="#" class="btn-get-started scrollto">About SJA</a>
@@ -1372,7 +1372,7 @@
                         <div class="contact-email">
                             <i class="ion-ios-email-outline"></i>
                             <h3>Email</h3>
-                            <p><a href="mailto:info@sja.com">info@sja.com</a></p>
+                            <p><a href="mailto:info@sja-bataan.com">info@sja-bataan.com</a></p>
                         </div>
                     </div>
                 </div>

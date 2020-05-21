@@ -30,6 +30,31 @@ Route::group(['prefix' => 'registrar/class-details', 'middleware' => 'auth', 'ro
     Route::post('fetch_section-by-grade-level', 'Registrar\ClassListController@fetch_section_by_grade_level')->name('registrar.class_details.fetch_section_by_grade_level');
 });
 
+Route::group(['prefix' => 'registrar/student-list', 'middleware' => 'auth', 'roles' => ['admin', 'root', 'registrar']], function() {
+    // Route::get('', 'Registrar\StudentAdmissionController@index')->name('registrar.student_admission');
+    // Route::post('', 'Registrar\StudentAdmissionController@index')->name('registrar.student_admission');
+    Route::get('grade7', 'Registrar\StudentAdmissionController@grade7')->name('registrar.student_admission.grade7');
+    Route::post('grade7', 'Registrar\StudentAdmissionController@grade7')->name('registrar.student_admission.grade7');
+    Route::get('grade8', 'Registrar\StudentAdmissionController@grade8')->name('registrar.student_admission.grade8');
+    Route::post('grade8', 'Registrar\StudentAdmissionController@grade8')->name('registrar.student_admission.grade8');
+    Route::get('grade9', 'Registrar\StudentAdmissionController@grade9')->name('registrar.student_admission.grade9');
+    Route::post('grade9', 'Registrar\StudentAdmissionController@grade9')->name('registrar.student_admission.grade9');
+    Route::get('grade10', 'Registrar\StudentAdmissionController@grade10')->name('registrar.student_admission.grade10');
+    Route::post('grade10', 'Registrar\StudentAdmissionController@grade10')->name('registrar.student_admission.grade10');
+    Route::get('grade11', 'Registrar\StudentAdmissionController@grade11')->name('registrar.student_admission.grade11');
+    Route::post('grade11', 'Registrar\StudentAdmissionController@grade11')->name('registrar.student_admission.grade11');
+    Route::get('grade12', 'Registrar\StudentAdmissionController@grade12')->name('registrar.student_admission.grade12');
+    Route::post('grade12', 'Registrar\StudentAdmissionController@grade12')->name('registrar.student_admission.grade12');
+    Route::post('enroll-student', 'Registrar\StudentAdmissionController@enroll_student')->name('registrar.student_admission.enroll_student');
+});
+
+Route::group(['prefix' => 'registrar/incoming-student', 'middleware' => 'auth', 'roles' => ['admin', 'root', 'registrar']], function() {
+    Route::get('', 'Registrar\IncomingStudentController@index')->name('registrar.incoming_student');
+    Route::post('', 'Registrar\IncomingStudentController@index')->name('registrar.incoming_student');
+    // Route::post('enroll-student', 'Registrar\IncomingStudentController@enroll_student')->name('registrar.incoming_student.enroll_student');
+});
+
+
 Route::group(['prefix' => 'registrar/class-subjects/{class_id}', 'middleware' => 'auth'], function() {
     Route::get('', 'Registrar\ClassSubjectsController@index')->name('registrar.class_subjects');
     Route::post('', 'Registrar\ClassSubjectsController@index')->name('registrar.class_subjects');

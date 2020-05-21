@@ -82,7 +82,10 @@ class StudentPaymentController extends Controller
                 ->orderBy('transaction_month_paids.id', 'DESC')
                 ->paginate(10);
 
-            return view('control_panel_finance.student_payment.partials.data_list', compact('NotyetApproved','Approved'));
+                $NotyetApprovedCount = TransactionMonthPaid::where('approval', 'Not yet Approved')
+                    ->count();
+
+            return view('control_panel_finance.student_payment.partials.data_list', compact('NotyetApproved','Approved', 'NotyetApprovedCount'));
         } 
 
         $SchoolYear = SchoolYear::where('current', 1)
@@ -117,6 +120,9 @@ class StudentPaymentController extends Controller
             ->orderBy('transaction_month_paids.id', 'DESC')
             ->paginate(10);
 
+        $NotyetApprovedCount = TransactionMonthPaid::where('approval', 'Not yet Approved')
+            ->count();
+
             
         $Approved = StudentInformation::join('transactions','transactions.student_id', '=' ,'student_informations.id')    
             ->join('transaction_month_paids', 'transaction_month_paids.student_id', '=', 'student_informations.id')                                   
@@ -147,7 +153,7 @@ class StudentPaymentController extends Controller
             ->paginate(10);
         
 
-        return view('control_panel_finance.student_payment.index', compact('NotyetApproved','Approved','SchoolYear'));
+        return view('control_panel_finance.student_payment.index', compact('NotyetApproved','Approved','SchoolYear','NotyetApprovedCount'));
     }
 
     
@@ -204,5 +210,11 @@ class StudentPaymentController extends Controller
             return response()->json(['res_code' => 0, 'res_msg' => 'Student '.$name.' payment status successfully disapproved.']);
         }
         return response()->json(['res_code' => 1, 'res_msg' => 'Invalid request.']);
+    }
+    
+    public function badge(Request $request){
+        $NotyetApprovedCount = TransactionMonthPaid::where('approval', 'Not yet Approved')
+            ->count();
+
     }
 }

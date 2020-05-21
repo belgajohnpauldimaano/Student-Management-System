@@ -5,6 +5,7 @@
 Route::get('/home', 'HomeController@index')->name('home');
 
 Route::get('/transcript-of-record', 'TranscriptOfRecordController@tor')->name('tor');
+Route::get('/registration', 'RegistrationController@registration')->name('registration');
 
 /*
 |About SJA Pages --------------------------------------------------------------------------

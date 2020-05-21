@@ -74,7 +74,7 @@
                         </ul>
                     </li>
                     <li class="menu">
-                        <a class="btn-enroll" href="{{ route('login') }}"><i class="fas fa-mouse-pointer"></i> Enroll Now</a>
+                        <a class="btn-enroll" data-toggle="modal" data-target="#js-registration"  href="#"><i class="fas fa-mouse-pointer"></i> Registration</a>
                     </li>
                     <li class="menu">
                         <a class="btn-login" href="{{ route('login') }}"><i class="fas fa-sign-in-alt"></i> Login</a>

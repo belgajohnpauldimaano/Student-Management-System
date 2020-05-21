@@ -2,36 +2,30 @@
                         <div class="nav-tabs-custom">
                             <ul class="nav nav-tabs">
                                 <li class="active">
-                                <a href="#js-disapproved" data-toggle="tab">Not yet Approved &nbsp;<span class="label label-danger pull-right">{{$NotyetApprovedCount}}</span></a>
+                                    <a href="#js-disapproved" data-toggle="tab">Not yet Approved</a>
                                 </li>                                
                                 <li>
                                     <a href="#js-approved" data-toggle="tab">Approved</a>
-                                </li>
-                                
+                                </li>                                
                             </ul>
                             <div class="tab-content">                                
                                 <div class="active tab-pane" id="js-disapproved">     
                                     <div class="pull-right">
-                                        {{ $NotyetApproved ? $NotyetApproved->links() : '' }}
+                                        {{-- {{ $NotyetApproved ? $NotyetApproved->links() : '' }} --}}
                                     </div>                             
                                     <table class="table no-margin table-bordered table-striped">
                                         <thead>
                                             <tr>
                                                 <th>No.</th>
                                                 <th>Name</th>
+                                                <th>Student type</th>
                                                 <th>Student level</th>
-                                                <th>Tuition Fee</th>
-                                                <th>Misc Fee</th>
-                                                <th>Disc Fee</th>
-                                                <th>Total Fees</th>
-                                                <th>Payment</th>
-                                                <th>Balance</th>
                                                 <th>Status</th>
                                                 <th>Action</th>
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            @foreach($NotyetApproved as $key => $data)
+                                            {{-- @foreach($NotyetApproved as $key => $data)
                                                 <tr>
                                                     <td>{{$key + 1}}</td>
                                                     <td>{{$data->student_name}}</td>
@@ -54,33 +48,28 @@
                                                         <button class="btn btn-sm btn-success btn-approve" data-id="{{$data->transact_monthly_id}}">Approve</button>
                                                     </td>
                                                 </tr>
-                                            @endforeach
+                                            @endforeach --}}
                                         </tbody>
                                     </table>
                                 </div>                                 
                         
                                 <div class="tab-pane" id="js-approved">
                                     <div class="pull-right">
-                                        {{ $Approved ? $Approved->links() : '' }}
+                                        {{-- {{ $Approved ? $Approved->links() : '' }} --}}
                                     </div>
                                     <table class="table no-margin table-bordered table-striped">
                                         <thead>
                                             <tr>
                                                 <th>No.</th>
                                                 <th>Name</th>
+                                                <th>Student type</th>
                                                 <th>Student level</th>
-                                                <th>Tuition Fee</th>
-                                                <th>Misc Fee</th>
-                                                <th>Disc Fee</th>
-                                                <th>Total Fees</th>
-                                                <th>Payment</th>
-                                                <th>Balance</th>
                                                 <th>Status</th>
                                                 <th>Action</th>
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            @foreach($Approved as $key => $data)
+                                            {{-- @foreach($Approved as $key => $data)
                                                 <tr>
                                                     <td>{{$key + 1}}</td>
                                                     <td>{{$data->student_name}}</td>
@@ -103,7 +92,7 @@
                                                         <button class="btn btn-sm btn-danger btn-disapprove" data-id="{{$data->transact_monthly_id}}">Disapprove</button>
                                                     </td>
                                                 </tr>
-                                            @endforeach
+                                            @endforeach --}}
                                         </tbody>
                                     </table> 
                                 </div>  

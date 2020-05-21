@@ -89,11 +89,29 @@
         
         {{--  Registrar Menu  --}}
         @if (Auth::user()->role == 3)
-          <li><a href="{{ route('registrar.dashboard') }}"><i class="fa fa-home fa-fw fa-lg"></i> <span>Dashboard</span></a></li>
-          <li><a href="{{ route('shared.faculty_class_schedules.index') }}"><i class="fa fa-file-text-o fa-lg"></i> <span>Faculty Class Schedule</span></a></li>
+          <li><a href="{{ route('registrar.dashboard') }}"><i class="fa fa-home fa-fw fa-lg"></i>&nbsp;&nbsp;&nbsp; <span>Dashboard</span></a></li>
+          <li><a href="{{ route('registrar.incoming_student') }}"><i class="fas fa-users fa-lg"></i>&nbsp;&nbsp;&nbsp; <span>Incoming Student</span></a></li>
+          <li><a href="{{ route('registrar.class_details') }}"><i class="fa fa-list-alt fa-lg "></i>&nbsp;&nbsp;&nbsp; <span>Class Lists</span></a></li>  
+          <li>
+            <a href="#">
+              <i class="fas fa-users fa-lg"></i>&nbsp;&nbsp;&nbsp; 
+              <span>Student Sectioning</span>
+              <span class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span>
+            </a>
+            {{-- <a href="{{ route('registrar.student_admission') }}"><i class="fas fa-users fa-lg"></i>&nbsp;&nbsp;&nbsp; <span>Student Admission</span></a> --}}
+              <ul class="treeview-menu">
+                {{--  Admin Menu  --}}
+                  <li><a href="{{ route('registrar.student_admission.grade7')}}"><i class="fa fa-circle-o"></i>&nbsp;&nbsp;&nbsp; <span>Grade 7</span></a></li>
+                  <li><a href="{{ route('registrar.student_admission.grade8')}}"><i class="fa fa-circle-o"></i>&nbsp;&nbsp;&nbsp; <span>Grade 8</span></a></li>
+                  <li><a href="{{ route('registrar.student_admission.grade9')}}"><i class="fa fa-circle-o"></i>&nbsp;&nbsp;&nbsp; <span>Grade 9</span></a></li>
+                  <li><a href="{{ route('registrar.student_admission.grade10')}}"><i class="fa fa-circle-o"></i>&nbsp;&nbsp;&nbsp; <span>Grade 10</span></a></li>
+                  <li><a href="{{ route('registrar.student_admission.grade11')}}"><i class="fa fa-circle-o"></i>&nbsp;&nbsp;&nbsp; <span>Grade 11</span></a></li>
+                  <li><a href="{{ route('registrar.student_admission.grade12')}}"><i class="fa fa-circle-o"></i>&nbsp;&nbsp;&nbsp; <span>Grade 12</span></a></li>
+              </ul>
+          </li>
+          <li><a href="{{ route('shared.faculty_class_schedules.index') }}"><i class="fa fa-file-text-o fa-lg"></i>&nbsp;&nbsp;&nbsp; <span>Faculty Class Schedule</span></a></li>
           <li><a href="{{ route('admin.faculty_information') }}"><i class="fa fa-info-circle fa-lg"></i>&nbsp;&nbsp;&nbsp; <span>Faculty Information</span></a></li>
-          <li><a href="{{ route('admin.student.information') }}"><i class="fa fa-info-circle fa-lg"></i>&nbsp;&nbsp;&nbsp; <span>Student Information</span></a></li>
-          <li><a href="{{ route('registrar.class_details') }}"><i class="fa fa-list-alt fa-lg "></i>&nbsp;&nbsp;&nbsp; <span>Class Lists</span></a></li>   
+          <li><a href="{{ route('admin.student.information') }}"><i class="fa fa-info-circle fa-lg"></i>&nbsp;&nbsp;&nbsp; <span>Student Information</span></a></li>           
         @endif
         
         {{--  Faculty Menu  --}}
@@ -142,7 +160,9 @@
         {{-- Finance Menu --}}
         @if (Auth::user()->role == 6)
           <li><a href="{{ route('finance.dashboard') }}"><i class="fa fa-home fa-fw fa-lg"></i>&nbsp;&nbsp;&nbsp; <span>Dashboard</span></a></li>
-          <li><a href="{{ route('finance.student_payment') }}">&nbsp;<i class="fas fa-clipboard-list"></i>&nbsp;&nbsp;&nbsp; <span>Student Payment</span></a></li>
+        <li><a href="{{ route('finance.student_payment') }}">&nbsp;<i class="fas fa-clipboard-list fa-lg"></i>&nbsp;&nbsp;&nbsp; <span>Student Payment </i>
+          {{-- <span class="label label-primary pull-right">{{$NotyetApprovedCount}}</span> --}}
+        </span></a></li>
           <li><a href="{{ route('finance.student_acct') }}"><i class="fa fa-info-circle fa-lg"></i>&nbsp;&nbsp;&nbsp; <span>Student Account</span></a></li>
           {{-- <li><a href="{{ route('registrar.class_details') }}"><i class="fa fa-list-alt fa-lg "></i>&nbsp;&nbsp;&nbsp; <span>Report</span></a></li> --}}
           <li>

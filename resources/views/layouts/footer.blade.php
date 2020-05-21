@@ -70,6 +70,7 @@
     <script src="{{ asset('theme/contactform/contactform.js') }}"></script>
     <!-- Template Main Javascript File -->
     <script src="{{ asset('theme/js/main.js') }}"></script>
+    
 </body>
 
 </html>
