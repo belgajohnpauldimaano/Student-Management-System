@@ -70,6 +70,87 @@
     <script src="{{ asset('theme/contactform/contactform.js') }}"></script>
     <!-- Template Main Javascript File -->
     <script src="{{ asset('theme/js/main.js') }}"></script>
+    {{-- alertify --}}
+    <script src="{{ asset('cms/plugins/alertifyjs/alertify.min.js') }}"></script>
+    <!-- jquery-toast-plugin -->
+    <script src="{{ asset('cms/plugins/jquery-toast-plugin/jquery.toast.min.js') }}"></script>
+    <!-- alertifyjs -->
+    <script src="{{ asset('cms/plugins/alertifyjs/alertify.min.js') }}"></script>
+    <script src="{{ asset('cms/plugins/datepicker/bootstrap-datepicker.js') }}"></script>
+    <link rel="stylesheet" href="{{ asset('cms/plugins/datepicker/datepicker3.css') }}">
+    <script>
+        $('#birthday').datepicker({
+            autoclose: true
+        })
+    </script>
+    <script>
+        $(function () {
+            $('.btn--update-photo').click(function(){
+                $('.btn-upload-photo').click();
+            })
+
+            
+
+           
+            $('body').on('submit', '#js-form_subject_details', function (e) {
+                e.preventDefault();
+                
+                var formData = new FormData($(this)[0]);
+                alertify.defaults.transition = "slide";
+                alertify.defaults.theme.ok = "btn btn-primary btn-flat";
+                alertify.defaults.theme.cancel = "btn btn-danger btn-flat";
+                alertify.confirm('Confirmation', 'Are you sure you want the status paid?', function(){ 
+                    
+                    $.ajax({
+                        url         : "{{ route('registration.store') }}",
+                        type        : 'POST',
+                        data        : formData,
+                        processData : false,
+                        contentType : false,
+                        success     : function (res) {
+                            $('.help-block').html('');
+                            if (res.res_code == 1)
+                            {
+                                for (var err in res.res_error_msg)
+                                {
+                                    $('#js-' + err).html('<code> '+ res.res_error_msg[err] +' </code>');
+                                }
+                            }
+                            else
+                            {
+                                alertify.alert("Your information successfully submited. Please wait the confirmation from Admission Department. Thank you!", function(){
+                                    $('#js-form_subject_details')[0].reset();
+                                    $('#js-registration').modal('hide');
+                                });
+                            }
+                        }
+                    });
+                    
+                    // $('#js-registration').modal('hide');
+                }, function(){  
+
+                });
+                
+
+                
+            });
+            
+        });
+
+        function readImageURL(input) {
+                if (input.files && input.files[0]) {
+                    var reader = new FileReader();
+                    reader.onload = function (e) {
+                        $('#img--user_photo')
+                            .attr('src', e.target.result)
+                            .width(150)
+                            ;
+                    };
+                    reader.readAsDataURL(input.files[0]);
+                }
+            }
+
+    </script>
 </body>
 
 </html>

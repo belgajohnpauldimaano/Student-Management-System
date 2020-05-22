@@ -7,6 +7,8 @@
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <meta content="" name="keywords">
     <meta content="" name="description">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.10/css/all.css" 
+    integrity="sha384-+d0P83n9kaQMCwj8F4RJB66tzIwOKmrdb46+porD/OvrJ+37WqIM7UoBtwHO6Nlg" crossorigin="anonymous">
     <!-- Favicons -->
     {{-- <link href="{{ asset('theme/img/favicon.png') }}" rel="icon"> --}}
     {{-- <link href="{{ asset('theme/img/apple-touch-icon.png') }}" rel="apple-touch-icon"> --}}
@@ -23,6 +25,10 @@
     <!-- Main Stylesheet File -->
     <link href="{{ asset('theme/css/style.css?v=1') }}" rel="stylesheet">
     <link href="{{ asset('img/sja-logo.png') }}" rel=icon>
+
+    {{-- alertify --}}
+    <link rel="stylesheet" href="{{ asset('cms/plugins/alertifyjs/css/alertify.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('cms/plugins/alertifyjs/css/themes/bootstrap.min.css') }}">
 </head>
 
 <body>
@@ -36,10 +42,11 @@
             <nav id="nav-menu-container">
                 <ul class="nav-menu">
                     <li class="menu"><a href="{{ route('home_page') }}">Home</a></li>
-                    <li class="menu-has-children"><a href="">About SJA</a>
+                    <li class="menu-has-children"><a href="#">About SJA</a>
                         <ul>
                             <li><a href="{{ route('school_profile') }}">School Profile</a></li>
                             <li><a href="{{ route('vision_mission') }}">Vision  Mission</a></li>
+                            <li><a href="{{ route('philosophy') }}">Philosophy</a></li>
                             <li><a href="{{ route('history') }}">History</a></li>
                             <li><a href="{{ route('hymn') }}">Hymn</a></li>
                             <li><a href="{{ route('award_recognition') }}">Awards & Recognition</a></li>
@@ -47,13 +54,13 @@
                             <li><a href="{{ route('faculty_staff') }}">Faculty and Staff</a></li>
                         </ul>
                     </li>
-                    <li class="menu-has-children"><a href="">Academic</a>
+                    <li class="menu-has-children"><a href="#">Academic</a>
                         <ul>
                             <li><a href="{{ route('junior_high') }}">Junior High</a></li>
                             <li><a href="{{ route('senior_high') }}">Senior High</a></li>
                         </ul>
                     </li>
-                    <li class="menu-has-children"><a href="">Students</a>
+                    <li class="menu-has-children"><a href="#">Students</a>
                         <ul>
                             <li><a href="{{ route('students_organizations') }}">Students Organizations</a></li>
                             <li><a href="{{ route('students_services') }}">Students Services</a></li>
@@ -62,7 +69,7 @@
                             <li><a href="{{ route('students_handbook') }}">Students Handbook</a></li>
                         </ul>
                     </li>
-                    <li class="menu-has-children"><a href="">Alumni</a>
+                    <li class="menu-has-children"><a href="#">Alumni</a>
                         <ul>
                             <li><a href="#">Alumni Association</a></li>
                             <li><a href="#">Alumni Achievers</a></li>
@@ -70,7 +77,13 @@
                             {{-- <li><a href="#">Transport & Diploma</a></li> --}}
                         </ul>
                     </li>
-                    <li class="menu"><a href="{{ route('login') }}">Login</a></li>
+                    <li class="menu">
+                        <a class="btn-enroll" data-toggle="modal" data-target="#js-registration"  href="#"><i class="fas fa-mouse-pointer"></i> Registration</a>
+                    </li>
+                    <li class="menu">
+                        <a class="btn-login" href="{{ route('login') }}"><i class="fas fa-sign-in-alt"></i> Login</a>
+                    </li>
+                    
                     {{-- <li class="menu-has-children"><a href="">Links</a>
                         <ul>
                             <li><a href="#">Administration</a></li>

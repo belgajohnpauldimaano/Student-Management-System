@@ -465,7 +465,7 @@ class AdvisoryClassController extends Controller
             ->join('subject_details', 'subject_details.id', '=', 'class_subject_details.subject_id')
             ->where('student_information_id', $StudentInformation->id)
             // ->where('class_subject_details.status', 1)
-            ->where('class_subject_details.status', '!=', 0)
+            ->where('class_subject_details.status', 1)
             ->where('enrollments.status', 1)
             ->where('class_details.status', 1)
             ->where('class_details.school_year_id', $SchoolYear->id)
@@ -513,6 +513,17 @@ class AdvisoryClassController extends Controller
                 ]
             ]));
 
+            $Totalsubject = \App\ClassSubjectDetail::join('subject_details', 'subject_details.id', '=' ,'class_subject_details.subject_id')
+                ->join('class_details', 'class_details.id', '=' ,'class_subject_details.class_details_id')
+                ->join('faculty_informations', 'faculty_informations.id', '=' ,'class_subject_details.faculty_id')           
+                ->selectRaw("                
+                                class_subject_details.class_subject_order
+                            ")
+                ->where('class_subject_details.class_details_id', $ClassDetail->id)
+                ->where('class_subject_details.status', 1)
+                ->where('class_details.school_year_id', $SchoolYear->id)         
+                ->orderBY('class_subject_details.class_subject_order','DESC')
+                ->count();
             // return json_encode(['c' => count($Enrollment),'Enrollment' => $Enrollment,'StudentInformation' => $StudentInformation, ]);
             if ($StudentInformation && count($Enrollment)>0)
             {

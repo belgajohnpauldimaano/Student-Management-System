@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Registrar;
 
+use App\Transaction;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
@@ -11,8 +12,6 @@ class StudentEnrollmentController extends Controller
     {
         // echo json_encode($request->user()->get_user_role('admin'), $request->user()->role);
         // return;
-
-        
         
         $ClassDetail = \App\ClassDetail::join('section_details', 'section_details.id', '=' ,'class_details.section_id')
             ->join('rooms', 'rooms.id', '=' ,'class_details.room_id')
@@ -35,7 +34,6 @@ class StudentEnrollmentController extends Controller
             // ->where('school_years.current', 1)
             ->where('class_details.id', $id)
             ->first();
-            
         if ($request->ajax())
         {
             if (!$request->search_fn &&
@@ -44,8 +42,7 @@ class StudentEnrollmentController extends Controller
                 !$request->search_student_id) 
             {
                 $StudentInformation = [];
-                $Semester = \App\Semester::where('current', 1)->first(); 
-                return view('control_panel_registrar.student_enrollment.partials.data_list', compact('StudentInformation','Semester'))->render();
+                return view('control_panel_registrar.student_enrollment.partials.data_list', compact('StudentInformation'))->render();
             }
 
             $StudentInformation = \App\StudentInformation::with(['user'])
@@ -105,9 +102,9 @@ class StudentEnrollmentController extends Controller
             // })
             ->orderByRaw('fullname')
             ->paginate(10);
-            $Semester = \App\Semester::where('current', 1)->first(); 
+
             // return json_encode(['s' => $StudentInformation, 'req' => $request->all(), 'class_details_id' => $id]);
-            return view('control_panel_registrar.student_enrollment.partials.data_list', compact('StudentInformation','Semester'))->render();
+            return view('control_panel_registrar.student_enrollment.partials.data_list', compact('StudentInformation'))->render();
         }
         // $StudentInformation = \App\StudentInformation::with(['user'])->where('status', 1)->paginate(10);
         $StudentInformation = [];
@@ -142,7 +139,6 @@ class StudentEnrollmentController extends Controller
                 enrollments.id AS enrollment_id
             ")
             ->where('class_details_id', $id)
-            // ->where('student_informations.gender', 1)
             ->orderByRaw('fullname')
             ->paginate(70);
 
@@ -151,40 +147,12 @@ class StudentEnrollmentController extends Controller
         {
             $Enrollment_ids .= $data->enrollment_id . '@';
         }
-        $Semester = \App\Semester::where('current', 1)->first();
-        
-        return view('control_panel_registrar.student_enrollment.index', compact('StudentInformation', 'ClassDetail', 'id', 'Enrollment', 'Enrollment_ids','Semester'));
+        return view('control_panel_registrar.student_enrollment.index', compact('StudentInformation', 'ClassDetail', 'id', 'Enrollment', 'Enrollment_ids'));
     }
-
     public function fetch_enrolled_student (Request $request, $id)
     {
-        $Semester = \App\Semester::where('current', 1)->first();
-
-            $ClassDetail = \App\ClassDetail::join('section_details', 'section_details.id', '=' ,'class_details.section_id')
-            ->join('rooms', 'rooms.id', '=' ,'class_details.room_id')
-            ->join('school_years', 'school_years.id', '=' ,'class_details.school_year_id')
-            ->selectRaw('
-                class_details.id,
-                class_details.section_id,
-                class_details.room_id,
-                class_details.school_year_id,
-                class_details.grade_level,
-                class_details.current,
-                section_details.section,
-                section_details.grade_level as section_grade_level,
-                school_years.id AS sy_id,
-                school_years.school_year,
-                rooms.room_code,
-                rooms.room_description
-            ')
-            ->where('section_details.status', 1)
-            // ->where('school_years.current', 1)
-            ->where('class_details.id', $id)
-            ->first();
-
         $Enrollment = \App\Enrollment::join('student_informations', 'student_informations.id', '=', 'enrollments.student_information_id')
             ->join('users', 'users.id', '=', 'student_informations.user_id')
-            
             ->where(function ($query) use ($request) {
                 if ($request->search_fn)
                 {
@@ -214,15 +182,12 @@ class StudentEnrollmentController extends Controller
                 enrollments.id AS enrollment_id
             ")
             ->where('class_details_id', $id)
-            ->whereRaw('gender', 1)
             ->orderByRaw('fullname')
             // ->orWhere('first_name', 'like', '%'.$request->search.'%')
             ->paginate(70); //
 
             // return json_encode($StudentInformation);
-            
-            
-        return view('control_panel_registrar.student_enrollment.partials.data_list_enrolled', compact('Enrollment','Semester','ClassDetail','school_year_id'))->render();
+        return view('control_panel_registrar.student_enrollment.partials.data_list_enrolled', compact('Enrollment'))->render();
     }
     public function modal_data (Request $request) 
     {
@@ -279,7 +244,6 @@ class StudentEnrollmentController extends Controller
         
         return response()->json(['res_code' => 0, 'res_msg' => 'Data successfully saved.']);
     }
-
     public function deactivate_data (Request $request)
     {
         $StudentInformation = \App\StudentInformation::where('id', $request->id)->first();
@@ -299,37 +263,14 @@ class StudentEnrollmentController extends Controller
         }
         return response()->json(['res_code' => 1, 'res_msg' => 'Invalid request.']);
     }
-
     public function enroll_student (Request $request, $id) 
     {
         $StudentInformation = \App\StudentInformation::where('id', $request->student_id)->first();
         $ClassDetail = \App\ClassDetail::with('class_subjects')->where('id', $id)->first();
-        
-        $SchoolYear = \App\SchoolYear::where('status', 1)->where('current', 1)->first();
 
         // $ClassDetail = \App\ClassDetail::with('class_subjects')->get();
         // return response()->json(['res_code' => 1, 'res_msg' => 'There is a problem in enrolling student.', 'ClassDetail' => $ClassDetail]);
-        $ClassDetail1 = \App\ClassDetail::join('section_details', 'section_details.id', '=' ,'class_details.section_id')
-        ->join('rooms', 'rooms.id', '=' ,'class_details.room_id')
-        ->join('school_years', 'school_years.id', '=' ,'class_details.school_year_id')
-        ->selectRaw('
-            class_details.id,
-            class_details.section_id,
-            class_details.room_id,
-            class_details.school_year_id,
-            class_details.grade_level,
-            class_details.current,
-            section_details.section,
-            section_details.grade_level as section_grade_level,
-            school_years.id AS sy_id,
-            school_years.school_year,
-            rooms.room_code,
-            rooms.room_description
-        ')
-        ->where('section_details.status', 1)
-        // ->where('school_years.current', 1)
-        ->where('class_details.id', $ClassDetail->id)
-        ->first();
+
 
         $Enrollment = new \App\Enrollment();
         $Enrollment->student_information_id = $StudentInformation->id;
@@ -341,119 +282,27 @@ class StudentEnrollmentController extends Controller
             {
                 foreach ($ClassDetail->class_subjects as $data) 
                 {
-                   
-
-                    if($ClassDetail1->grade_level == 11 || $ClassDetail1->grade_level == 12)
-                    {
-                        $StudentEnrolledSubject = new \App\StudentEnrolledSubject();
-                        $StudentEnrolledSubject->subject_id = $data->subject_id;
-                        $StudentEnrolledSubject->enrollments_id = $Enrollment->id;
-                        $StudentEnrolledSubject->class_subject_details_id = $data->id;
-                        // $StudentEnrolledSubject->student_information_id = $StudentInformation->id;
-                        $StudentEnrolledSubject->save();
-                        
-                        $SaveSecondSem2 = new \App\Grade_sheet_firstsem();
-                        $SaveSecondSem2->enrollment_id = $Enrollment->id;
-                        $SaveSecondSem2->school_year_id = $SchoolYear->id;
-                        $SaveSecondSem2->section_details_id = $ClassDetail1->section_id;
-                        $SaveSecondSem2->save();
-    
-                        $SaveSecondSem2 = new \App\Grade_sheet_firstsemsecond();
-                        $SaveSecondSem2->school_year_id = $SchoolYear->id;
-                        $SaveSecondSem2->enrollment_id = $Enrollment->id;
-                        $SaveSecondSem2->section_details_id = $ClassDetail1->section_id;
-                        $SaveSecondSem2->save();  
-                    }
-                    else
-                    {
-                        $StudentEnrolledSubject = new \App\StudentEnrolledSubject();
-                        $StudentEnrolledSubject->subject_id = $data->subject_id;
-                        $StudentEnrolledSubject->enrollments_id = $Enrollment->id;
-                        $StudentEnrolledSubject->class_subject_details_id = $data->id;
-                        // $StudentEnrolledSubject->student_information_id = $StudentInformation->id;
-                        $StudentEnrolledSubject->save();
-
-                        $SaveToGradeSheet1 = new \App\Grade_sheet_first();
-                        $SaveToGradeSheet1->enrollment_id = $Enrollment->id;
-                        $SaveToGradeSheet1->school_year_id = $SchoolYear->id;
-                        $SaveToGradeSheet1->section_details_id = $ClassDetail1->section_id;
-                        $SaveToGradeSheet1->save();
-
-                        $SaveToGradeSheet2 = new \App\Grade_sheet_second();
-                        $SaveToGradeSheet2->enrollment_id = $Enrollment->id;
-                        $SaveToGradeSheet2->school_year_id = $SchoolYear->id;
-                        $SaveToGradeSheet2->section_details_id = $ClassDetail1->section_id;
-                        $SaveToGradeSheet2->save();
-
-                        $SaveToGradeSheet3 = new \App\Grade_sheet_third();
-                        $SaveToGradeSheet3->enrollment_id = $Enrollment->id;
-                        $SaveToGradeSheet3->school_year_id = $SchoolYear->id;
-                        $SaveToGradeSheet3->section_details_id = $ClassDetail1->section_id;
-                        $SaveToGradeSheet3->save();
-
-                        $SaveToGradeSheet4 = new \App\Grade_sheet_fourth();
-                        $SaveToGradeSheet4->enrollment_id = $Enrollment->id;
-                        $SaveToGradeSheet4->school_year_id = $SchoolYear->id;
-                        $SaveToGradeSheet4->section_details_id = $ClassDetail1->section_id;
-                        $SaveToGradeSheet4->save();
-                    }                                   
-
-                    
+                    $StudentEnrolledSubject = new \App\StudentEnrolledSubject();
+                    $StudentEnrolledSubject->subject_id = $data->subject_id;
+                    $StudentEnrolledSubject->enrollments_id = $Enrollment->id;
+                    $StudentEnrolledSubject->class_subject_details_id = $data->id;
+                    // $StudentEnrolledSubject->student_information_id = $StudentInformation->id;
+                    $StudentEnrolledSubject->save();
                 }
-                return response()->json(['res_code' => 0, 
+            }
+            return response()->json(['res_code' => 0, 
                 'res_msg' => 'Student successfully enrolled.', 
                 'StudentInformation' => $StudentInformation, 
                 'ClassDetail' => $ClassDetail,
                 'Enrollment' => $Enrollment,
-                ]);
-            }
-            
+            ]);
         }
 
         return response()->json(['res_code' => 1, 'res_msg' => 'There is a problem in enrolling student.', 'Enrollment' => $Enrollment]);
     }
-
     public function re_enroll_student (Request $request, $id)
     {
         $ClassDetail = \App\ClassDetail::with('class_subjects')->where('id', $id)->first();
-        $SchoolYear = \App\SchoolYear::where('status', 1)->where('current', 1)->first();
-
-        $ClassDetail1 = \App\ClassDetail::join('section_details', 'section_details.id', '=' ,'class_details.section_id')
-            ->join('rooms', 'rooms.id', '=' ,'class_details.room_id')
-            ->join('school_years', 'school_years.id', '=' ,'class_details.school_year_id')
-            ->selectRaw('
-                class_details.id,
-                class_details.section_id,
-                class_details.room_id,
-                class_details.school_year_id,
-                class_details.grade_level,
-                class_details.current,
-                section_details.section,
-                section_details.grade_level as section_grade_level,
-                school_years.id AS sy_id,
-                school_years.school_year,
-                rooms.room_code,
-                rooms.room_description
-            ')
-            ->where('section_details.status', 1)
-            // ->where('school_years.current', 1)
-            ->where('class_details.id', $request->class_detail_id)
-            ->first();
-
-
-            $SaveSecondSem = new \App\Grade11_Second_Sem();
-            $SaveSecondSem->enrollment_id = $request->enrollment_id;
-            $SaveSecondSem->section_details_id = $ClassDetail1->section_id;
-            $SaveSecondSem->school_year_id = $SchoolYear->id;
-            $SaveSecondSem->save();
-
-            $SaveSecondSem2 = new \App\Grade_sheet_secondsemsecond();
-            $SaveSecondSem2->enrollment_id = $request->enrollment_id;
-            $SaveSecondSem2->section_details_id = $ClassDetail1->section_id;
-            $SaveSecondSem2->school_year_id = $SchoolYear->id;
-            $SaveSecondSem2->save();
-
-            
         $StudentEnrolledSubject_list = [];
         if ($ClassDetail->class_subjects)
         {
@@ -461,14 +310,13 @@ class StudentEnrollmentController extends Controller
                 // ->where('subject_id', $class_subject->subject_id)
                 ->get();
                 
-            return json_encode(['ClassDetail' => $ClassDetail, 'StudentEnrolledSubject' => $StudentEnrolledSubject, 'class_subjects' => $ClassDetail->class_subjects]);
+            // return json_encode(['ClassDetail' => $ClassDetail, 'StudentEnrolledSubject' => $StudentEnrolledSubject, 'class_subjects' => $ClassDetail->class_subjects]);
             foreach ($ClassDetail->class_subjects as $key => $class_subject)
             {
                 
                 $StudentEnrolledSubject = \App\StudentEnrolledSubject::where('enrollments_id', $request->enrollment_id)
                 ->where('class_subject_details_id', $class_subject->id)
                 ->first();
-                
                 if ($StudentEnrolledSubject) {
                     $StudentEnrolledSubject_list[] = $StudentEnrolledSubject;
                 } 
@@ -478,10 +326,8 @@ class StudentEnrollmentController extends Controller
                     $newStudentEnrolledSubject->class_subject_details_id = $class_subject->id;
                     $newStudentEnrolledSubject->subject_id = $class_subject->subject_id;
                     $newStudentEnrolledSubject->enrollments_id = $request->enrollment_id;
-                    $newStudentEnrolledSubject->sem = 2;
                     $newStudentEnrolledSubject->save();
                     $StudentEnrolledSubject_list[] = $newStudentEnrolledSubject;
-                    
                 }
                 // if ($StudentEnrolledSubject[$key]) 
                 // {
@@ -507,34 +353,9 @@ class StudentEnrollmentController extends Controller
         return response()->json(['res_code' => 1, 'res_msg' => 'Unable to perform action.']);
 
     }
-    
     public function re_enroll_student_all (Request $request, $id)
     {
         $ClassDetail = \App\ClassDetail::with('class_subjects')->where('id', $id)->first();
-        $SchoolYear = \App\SchoolYear::where('status', 1)->where('current', 1)->first();
-
-        $ClassDetail1 = \App\ClassDetail::join('section_details', 'section_details.id', '=' ,'class_details.section_id')
-            ->join('rooms', 'rooms.id', '=' ,'class_details.room_id')
-            ->join('school_years', 'school_years.id', '=' ,'class_details.school_year_id')
-            ->selectRaw('
-                class_details.id,
-                class_details.section_id,
-                class_details.room_id,
-                class_details.school_year_id,
-                class_details.grade_level,
-                class_details.current,
-                section_details.section,
-                section_details.grade_level as section_grade_level,
-                school_years.id AS sy_id,
-                school_years.school_year,
-                rooms.room_code,
-                rooms.room_description
-            ')
-            ->where('section_details.status', 1)
-            ->where('school_years.current', 1)
-            ->where('class_details.id', $request->class_detail_id)
-            ->first();
-
         $enrollment_ids = explode('@', $request->enrollment_ids);
         array_pop($enrollment_ids);
 
@@ -543,17 +364,6 @@ class StudentEnrollmentController extends Controller
         {
             foreach($enrollment_ids as $enrollment_id)
             {
-                $SaveSecondSem = new \App\Grade11_Second_Sem();
-                $SaveSecondSem->enrollment_id = $enrollment_id;
-                $SaveSecondSem->school_year_id = $SchoolYear->id;
-                $SaveSecondSem->section_details_id = $ClassDetail1->section_id;
-                $SaveSecondSem->save();
-
-                $SaveSecondSem2 = new \App\Grade_sheet_secondsemsecond();
-                $SaveSecondSem2->enrollment_id = $enrollment_id;
-                $SaveSecondSem2->school_year_id = $SchoolYear->id;
-                $SaveSecondSem2->section_details_id = $ClassDetail1->section_id;
-                $SaveSecondSem2->save();
                 // $StudentEnrolledSubject = \App\StudentEnrolledSubject::where('enrollments_id', $enrollment_id)->get();
                 foreach ($ClassDetail->class_subjects as $key => $class_subject)
                 {
@@ -561,23 +371,17 @@ class StudentEnrollmentController extends Controller
                     ->where('class_subject_details_id', $class_subject->id)
                     ->first();
                     
-                    
-                    
                     if ($StudentEnrolledSubject) {
                         $StudentEnrolledSubject_list[] = $StudentEnrolledSubject;
                     } 
                     else 
                     {
-                        
                         $newStudentEnrolledSubject = new \App\StudentEnrolledSubject();
                         $newStudentEnrolledSubject->class_subject_details_id = $class_subject->id;
-                        // $newStudentEnrolledSubject->school_year_id = $SchoolYear->id;
                         $newStudentEnrolledSubject->subject_id = $class_subject->subject_id;
                         $newStudentEnrolledSubject->enrollments_id = $enrollment_id;
-                        $newStudentEnrolledSubject->sem = 2;
                         $newStudentEnrolledSubject->save();
                         $StudentEnrolledSubject_list[] = $newStudentEnrolledSubject;
-                        
                     }
                     // if ($StudentEnrolledSubject[$key]) 
                     // {
@@ -587,10 +391,7 @@ class StudentEnrollmentController extends Controller
                     //     $StudentEnrolledSubject_tmp->save();
                     //     $StudentEnrolledSubject_list[] = $StudentEnrolledSubject_tmp;
                     // }
-                    
-
                 }
-                
             }
             return response()->json(['res_code' => 0, 'res_msg' => 'Successfully re-enrolled.']);
         }
@@ -600,12 +401,25 @@ class StudentEnrollmentController extends Controller
     }
     public function cancel_enroll_student (Request $request, $id) 
     {
+        $SchoolYear = \App\SchoolYear::where('status', 1)->where('current', 1)->first();
         $Enrollment = \App\Enrollment::where('id', $request->enrollment_id)->first();
+
         if ($Enrollment)
         {
             \DB::table('student_enrolled_subjects')->where('enrollments_id', $Enrollment->id)->delete();
-            $Enrollment->delete();
-            return response()->json(['res_code' => 0, 'res_msg' => 'Student successfully enrolled.']);
+            
+            $IsEnrolled = Transaction::where('student_id', $request->student_id)->where('school_year_id', $SchoolYear->id)->first();
+            $IsEnrolled->IsEnrolled = 0; 
+
+            if($IsEnrolled->save() && $Enrollment->delete())
+            {
+                return response()->json(['res_code' => 0, 'res_msg' => 'Student successfully canceled.']);
+            }
+            else{
+                return response()->json(['res_code' => 1, 'res_msg' => 'There is a problem in enrolling student.']);   
+            }
+            return response()->json(['res_code' => 0, 'res_msg' => 'Student successfully canceled.'.$request->student_id]);
+            
         }
         return response()->json(['res_code' => 1, 'res_msg' => 'There is a problem in enrolling student.']);   
     }

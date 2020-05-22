@@ -166,9 +166,8 @@
 
                                                     if($second_sem)
                                                     {
-                                                        
-                                                            echo round($final_ave = (round($second_sem->thi_g) + round($second_sem->fou_g)) / 2);
-                                                            $total_sem2 += round($final_ave) ;   
+                                                        echo round($final_ave = (round($second_sem->thi_g) + round($second_sem->fou_g)) / 2);
+                                                        $total_sem2 += round($final_ave) ;   
                                                     }      
                                             ?>
                                         </center>

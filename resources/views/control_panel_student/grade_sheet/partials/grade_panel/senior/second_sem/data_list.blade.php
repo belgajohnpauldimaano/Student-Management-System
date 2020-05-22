@@ -103,5 +103,5 @@
     </table>
 
 
-    {{-- @include('control_panel_student.grade_sheet.partials.grade_panel.senior.second_sem.attendance') --}}
+    @include('control_panel_student.grade_sheet.partials.grade_panel.senior.second_sem.attendance')
 </div>

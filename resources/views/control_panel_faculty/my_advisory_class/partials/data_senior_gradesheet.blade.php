@@ -266,19 +266,19 @@
                                     </td>
                                     <td><center>{{  round($sub->subject_7) }}</center></td>
                                     <td style="text-align:center">
-                                            <?php 
-                                                echo $fg7 = round(($sub->subject_7 + $subject7) / 2);
-                                            ?>
+                                        <?php 
+                                            echo $fg7 = round(($sub->subject_7 + $subject7) / 2);
+                                        ?>
                                     </td>
                                                                                 
 
                                     <td>
-                                            <center>                                                
-                                                    <?php
-                                                        $formattedNum = number_format($average = ($fg1 + $fg2 + $fg3 + $fg4 + $fg5 + $fg6 + $fg7)/7, 2);
-                                                        echo $formattedNum;
-                                                    ?>
-                                            </center>
+                                        <center>                                                
+                                                <?php
+                                                    $formattedNum = number_format($average = ($fg1 + $fg2 + $fg3 + $fg4 + $fg5 + $fg6 + $fg7)/7, 2);
+                                                    echo $formattedNum;
+                                                ?>
+                                        </center>
                                     </td>
                                     
 
@@ -311,9 +311,7 @@
                                     <td>
                                         <center>Failed</center>
                                     </td>
-                                @endif
-                                        
-                                                                    
+                                @endif                              
                                 
 
                             @elseif($NumberOfSubject->class_subject_order == 8)
@@ -342,38 +340,38 @@
                                         ?>
                                     </td>
                                     <td style="text-align:center">
-                                            <?php                                                    
-                                                echo $subject3 = round(\App\Grade_sheet_firstsem::where('enrollment_id', $sub->enrollment_id)->first()->subject_3);
-                                            ?>
+                                        <?php                                                    
+                                            echo $subject3 = round(\App\Grade_sheet_firstsem::where('enrollment_id', $sub->enrollment_id)->first()->subject_3);
+                                        ?>
                                     </td>
                                     <td><center>{{ round($sub->subject_3) }}</center></td>
                                     <td style="text-align:center">
-                                            <?php 
-                                                echo $fg3 = round(($sub->subject_3 + $subject3) / 2);
-                                            ?>
+                                        <?php 
+                                            echo $fg3 = round(($sub->subject_3 + $subject3) / 2);
+                                        ?>
                                     </td>
                                     <td style="text-align:center">
-                                            <?php                                                    
-                                                echo $subject4 = round(\App\Grade_sheet_firstsem::where('enrollment_id', $sub->enrollment_id)->first()->subject_4);
-                                            ?>
+                                        <?php                                                    
+                                            echo $subject4 = round(\App\Grade_sheet_firstsem::where('enrollment_id', $sub->enrollment_id)->first()->subject_4);
+                                        ?>
                                     </td>
                                     <td><center>{{ round($sub->subject_4) }}</center></td>
                                     <td style="text-align:center">
-                                            <?php 
-                                                echo $fg4 = round(($sub->subject_4 + $subject4) / 2);
-                                            ?>
+                                        <?php 
+                                            echo $fg4 = round(($sub->subject_4 + $subject4) / 2);
+                                        ?>
                                     </td>
                                     
                                     <td style="text-align:center">
-                                            <?php                                                    
-                                                echo $subject5 = round(\App\Grade_sheet_firstsem::where('enrollment_id', $sub->enrollment_id)->first()->subject_5);
-                                            ?>
+                                        <?php                                                    
+                                            echo $subject5 = round(\App\Grade_sheet_firstsem::where('enrollment_id', $sub->enrollment_id)->first()->subject_5);
+                                        ?>
                                     </td>
                                     <td><center>{{ round($sub->subject_5) }}</center></td>
                                     <td style="text-align:center">
-                                            <?php 
-                                                echo $fg5 = round(($sub->subject_5 + $subject5) / 2);
-                                            ?>
+                                        <?php 
+                                            echo $fg5 = round(($sub->subject_5 + $subject5) / 2);
+                                        ?>
                                     </td>
                                     <td style="text-align:center">
                                             <?php                                                    
@@ -411,12 +409,12 @@
                                 
 
                                     <td>
-                                            <center>                                                
-                                                    <?php
-                                                        $formattedNum = number_format($average = ($fg1 + $fg2 + $fg3 + $fg4 + $fg5 + $fg6 + $fg7 + $fg8)/8, 2);
-                                                        echo $formattedNum;
-                                                    ?>
-                                            </center>
+                                        <center>                                                
+                                                <?php
+                                                    $formattedNum = number_format($average = ($fg1 + $fg2 + $fg3 + $fg4 + $fg5 + $fg6 + $fg7 + $fg8)/8, 2);
+                                                    echo $formattedNum;
+                                                ?>
+                                        </center>
                                     </td>
                                     
 

@@ -73,9 +73,9 @@
       <ul class="sidebar-menu" data-widget="tree">
         <li class="header">STUDENT NAVIGATION</li>
           <li><a href="{{ route('student.dashboard') }}"><i class="fa fa-home fa-fw fa-lg"></i>&nbsp;&nbsp;&nbsp; <span>Home</span></a></li>
+          <li><a href="{{ route('student.enrollment.index') }}"><i class="fas fa-file fa-lg"></i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span>Enrollment</span></a></li> 
           <li><a href="{{ route('student.class_schedule.index') }}"><i class="fa fa-calendar fa-lgx"></i>&nbsp;&nbsp;&nbsp; <span>Class Schedule</span></a></li>
           <li><a href="{{ route('student.grade_sheet.index') }}"><i class="fa fa-file-text-o fa-lg"></i>&nbsp;&nbsp;&nbsp; <span>Grade Sheet</span></a></li>
-          {{--  <li><a href="{{ route('admin.faculty_information') }}"><i class="fa fa-circle-o"></i> <span>Balances</span></a></li>  --}}
           <li><a href="{{ route('student.my_account.index') }}"><i class="fa fa-user fa-lg"></i>&nbsp;&nbsp;&nbsp;  <span>My Profile</span></a></li>
       </ul>
     </section>

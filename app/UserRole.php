@@ -12,5 +12,6 @@ class UserRole extends Model
         ['id' => 3, 'department_name' => 'Registrar'],
         ['id' => 4, 'department_name' => 'Faculty'],
         ['id' => 5, 'department_name' => 'Student'],
+        ['id' => 6, 'department_name' => 'Finance'],
     ];
 }
