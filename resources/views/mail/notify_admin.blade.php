@@ -91,7 +91,11 @@
                                 }                                    
                             }else{
                             ?>                                
-                                {{number_format($tuitionMisc_fee,2)}}
+                                @if($discount)
+                                    ₱ {{$totalDiscount}}
+                                @else
+                                    ₱ {{number_format($tuitionMisc_fee,2)}}
+                                @endif
                             <?php
                             }
                         ?>

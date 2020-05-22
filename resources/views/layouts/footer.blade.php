@@ -85,15 +85,22 @@
     </script>
     <script>
         $(function () {
+            $('.btn--update-photo').click(function(){
+                $('.btn-upload-photo').click();
+            })
+
+            
+
+           
             $('body').on('submit', '#js-form_subject_details', function (e) {
                 e.preventDefault();
-
                 
                 var formData = new FormData($(this)[0]);
                 alertify.defaults.transition = "slide";
                 alertify.defaults.theme.ok = "btn btn-primary btn-flat";
                 alertify.defaults.theme.cancel = "btn btn-danger btn-flat";
-                alertify.confirm('Confirmation', 'Are you sure you want the status paid?', function(){  
+                alertify.confirm('Confirmation', 'Are you sure you want the status paid?', function(){ 
+                    
                     $.ajax({
                         url         : "{{ route('registration.store') }}",
                         type        : 'POST',
@@ -111,13 +118,15 @@
                             }
                             else
                             {
-                                alertify
-                                    .alert("Your information successfully submited. Please wait the confirmation from Admission Department. Thank you!", function(){
-                                        $('.js-registration .modal').modal('hide');
-                                    });
+                                alertify.alert("Your information successfully submited. Please wait the confirmation from Admission Department. Thank you!", function(){
+                                    $('#js-form_subject_details')[0].reset();
+                                    $('#js-registration').modal('hide');
+                                });
                             }
                         }
                     });
+                    
+                    // $('#js-registration').modal('hide');
                 }, function(){  
 
                 });
@@ -127,6 +136,19 @@
             });
             
         });
+
+        function readImageURL(input) {
+                if (input.files && input.files[0]) {
+                    var reader = new FileReader();
+                    reader.onload = function (e) {
+                        $('#img--user_photo')
+                            .attr('src', e.target.result)
+                            .width(150)
+                            ;
+                    };
+                    reader.readAsDataURL(input.files[0]);
+                }
+            }
 
     </script>
 </body>

@@ -145,8 +145,12 @@ class PaymentController extends Controller
             $checkAccount = TransactionDiscount::where('school_year_id', $SchoolYear->id)
                 ->where('student_id', $StudentInformation->id)
                 ->first();
+
+            $checkAccount1 = \App\Transaction::where('school_year_id', $SchoolYear->id)
+                ->where('student_id', $StudentInformation->id)
+                ->first();
             
-            if($checkAccount){
+            if($checkAccount1){
                 $TransactionAccount = \App\Transaction::where('school_year_id', $SchoolYear->id)
                     ->where('student_id', $StudentInformation->id)
                     ->first();

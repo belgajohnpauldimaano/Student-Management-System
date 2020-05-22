@@ -82,7 +82,7 @@ class StudentPaymentController extends Controller
                 ->orderBy('transaction_month_paids.id', 'DESC')
                 ->paginate(10);
 
-                $NotyetApprovedCount = TransactionMonthPaid::where('approval', 'Not yet Approved')
+                $NotyetApprovedCount = TransactionMonthPaid::where('approval', 'Not yet Approved')->where('isSuccess', 1)
                     ->count();
 
             return view('control_panel_finance.student_payment.partials.data_list', compact('NotyetApproved','Approved', 'NotyetApprovedCount'));
@@ -120,7 +120,7 @@ class StudentPaymentController extends Controller
             ->orderBy('transaction_month_paids.id', 'DESC')
             ->paginate(10);
 
-        $NotyetApprovedCount = TransactionMonthPaid::where('approval', 'Not yet Approved')
+        $NotyetApprovedCount = TransactionMonthPaid::where('approval', 'Not yet Approved')->where('isSuccess', 1)
             ->count();
 
             
@@ -213,7 +213,7 @@ class StudentPaymentController extends Controller
     }
     
     public function badge(Request $request){
-        $NotyetApprovedCount = TransactionMonthPaid::where('approval', 'Not yet Approved')
+        $NotyetApprovedCount = TransactionMonthPaid::where('approval', 'Not yet Approved')->where('isSuccess', 1)
             ->count();
 
     }
