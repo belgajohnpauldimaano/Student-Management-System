@@ -183,7 +183,7 @@
                 <br/>
                 <p class="report-progress m0">REPORT ON LEARNING PROGRESS AND ACHIEVEMENT</p>
                 <p class="report-progress m0">( {{ $ClassDetail ?  $ClassDetail->section_grade_level >= 11 ? 'SENIOR HIGH SCHOOL' : 'JUNIOR HIGH SCHOOL' : ''}} )</p>
-                <img style="margin-right: 3em; margin-top: {{ $ClassDetail ?  $ClassDetail->section_grade_level >= 11 ? '4em' : '4.5em' : ''}}"  class="logo sja-logo" width="{{ $ClassDetail ?  $ClassDetail->section_grade_level >= 11 ? 115 : 100 : ''}}" src="{{ $ClassDetail ?  $ClassDetail->section_grade_level >= 11 ? asset('img/SHS_logo.png') : asset('img/sja-logo.png') : ''}}" />
+                <img style="margin-right: 3em; margin-top: {{ $ClassDetail ?  $ClassDetail->section_grade_level >= 11 ? '4em' : '4.5em' : ''}}"  class="logo sja-logo" width="{{ $ClassDetail ?  $ClassDetail->section_grade_level >= 11 ? 115 : 100 : ''}}" src="{{ $ClassDetail ?  $ClassDetail->section_grade_level >= 11 ? asset('img/sja-logo.png') : asset('img/sja-logo.png') : ''}}" />
                 <img style="margin-left: 3em; margin-top: 4.5em;" class="logo deped-bataan-logo" width="100" src="{{ asset('img/deped-bataan-logo.png') }}" />
                 <br/>
 
