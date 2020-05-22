@@ -25,6 +25,10 @@
     <!-- Main Stylesheet File -->
     <link href="{{ asset('theme/css/style.css?v=1') }}" rel="stylesheet">
     <link href="{{ asset('img/sja-logo.png') }}" rel=icon>
+
+    {{-- alertify --}}
+    <link rel="stylesheet" href="{{ asset('cms/plugins/alertifyjs/css/alertify.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('cms/plugins/alertifyjs/css/themes/bootstrap.min.css') }}">
 </head>
 
 <body>

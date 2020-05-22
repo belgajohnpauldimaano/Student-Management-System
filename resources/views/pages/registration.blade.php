@@ -24,21 +24,21 @@
 
                 <div class="form-row">
                     <div class="form-group col-md-4">
-                        <label for="">Student LRN</label>
-                        <input type="text" class="form-control" name="username" placeholder="01234567890">
-                        <div class="help-block text-red text-center" id="js-username">
+                        <label for="lrn">Student LRN</label>
+                        <input type="text" class="form-control" name="lrn" placeholder="01234567890">
+                        <div class="help-block text-red text-center" id="js-lrn">
                         </div>
                         <div class="validation"></div>
                     </div>
                     <div class="form-group col-md-4">
                         <div class="form-group">
                             <label for="">Registration type</label>
-                            <select name="reg_type" id="gender" class="form-control">
+                            <select name="reg_type" id="reg_type" class="form-control">
                                 <option value="">--Select--</option>
                                 <option value="1">Transferee</option>
                                 <option value="2">Freshman</option>
                             </select>
-                            <div class="help-block text-red text-center" id="js-gender">
+                            <div class="help-block text-red text-center" id="js-reg_type">
                             </div>
                         </div>
                         <div class="validation"></div>
@@ -46,12 +46,16 @@
                     <div class="form-group col-md-4">
                         <div class="form-group">
                             <label for="">Grade</label>
-                            <select name="grade_lvl" id="gender" class="form-control">
+                            <select name="grade_lvl" id="grade_lvl" class="form-control">
                                 <option value="">--Select--</option>
-                                <option value="1">Transferee</option>
-                                <option value="2">Freshman</option>
+                                <option value="7">Grade 7</option>
+                                <option value="8">Grade 8</option>
+                                <option value="9">Grade 9</option>
+                                <option value="10">Grade 10</option>
+                                <option value="11">Grade 11</option>
+                                <option value="12">Grade 12</option>
                             </select>
-                            <div class="help-block text-red text-center" id="js-gender">
+                            <div class="help-block text-red text-center" id="js-grade_lvl">
                             </div>
                         </div>
                         <div class="validation"></div>
@@ -113,12 +117,12 @@
                         </div>
                     </div>
                 </div>                
-
+                
                 <div class="form-row">
                     <div class="form-group col-md-6">
                         <label for="">Date of Birth <i class="fa fa-calendar"></i></label>
                         <div class="input-group date">
-                            <input type="text" name="birthdate" class="form-control pull-right" id="datepicker">
+                            <input type="text" name="birthdate" class="form-control pull-right" id="birthday">
                         </div>
                         <div class="help-block text-red text-center" id="js-birthdate">
                         </div>
@@ -134,6 +138,7 @@
                         </div>
                     </div>        
                 </div>
+                
             </div>
             <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
