@@ -42,7 +42,14 @@
         </div>        
           <div class="box-body">
             <div class="form-group col-lg-12">
-                <label for="exampleInputEmail1">You are incoming Grade-level <i style="color:red">{{$ClassDetail->grade_level+1}}</i></label>
+                <label for="exampleInputEmail1">You are incoming Grade-level <i style="color:red">
+                  @if($IncomingStudentCount)
+                    {{$IncomingStudentCount->grade_level_id}}
+                  @else
+                    {{$ClassDetail->grade_level+1}}
+                  @endif
+                  </i>
+                </label>
                 <br><br>
                 <label for="exampleInputEmail1">Available Tuition Fee and Misc Fee</label>
                 
@@ -51,7 +58,7 @@
                   <input type="hidden" class="form-control" value="{{$PaymentCategory->id}}" name="tution_category">
                   <input type="hidden" id="total_tuition" name="total_tuition" value="{{$Tuition ? $PaymentCategory->tuition->tuition_amt + $PaymentCategory->misc_fee->misc_amt : ''}}">
                   <input type="hidden" id="total_misc" name="total_misc" value="{{$PaymentCategory->misc_fee->misc_amt}}">
-                  <input type="hidden" class="form-control" name="description_name" value="SJAI {{$ClassDetail->grade_level+1}} Tuition Fee ({{number_format($PaymentCategory->tuition->tuition_amt, 2) }}) | Miscellenous Fee ({{number_format($PaymentCategory->misc_fee->misc_amt,2)}})" name="tution_category">
+                  <input type="hidden" class="form-control" name="description_name" value="SJAI {{$IncomingStudentCount ? $IncomingStudentCount->grade_level_id : $ClassDetail->grade_level+1 }} Tuition Fee ({{number_format($PaymentCategory->tuition->tuition_amt, 2) }}) | Miscellenous Fee ({{number_format($PaymentCategory->misc_fee->misc_amt,2)}})" name="tution_category">
                   <p>Tuition Fee (₱ {{number_format($PaymentCategory->tuition->tuition_amt, 2) }}) | Miscellenous Fee (₱ {{number_format($PaymentCategory->misc_fee->misc_amt,2)}})</p>
                 @else
                   <input type="hidden" value="1" class="checkTution">
