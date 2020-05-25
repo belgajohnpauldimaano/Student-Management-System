@@ -183,6 +183,7 @@
           {{-- <span class="label label-primary pull-right">{{$NotyetApprovedCount}}</span> --}}
         </span></a></li>
           <li><a href="{{ route('finance.student_acct') }}"><i class="fa fa-info-circle fa-lg"></i>&nbsp;&nbsp;&nbsp; <span>Student Account</span></a></li>
+          <li><a href="{{ route('finance.summary') }}"><i class="fa fa-info-circle fa-lg"></i>&nbsp;&nbsp;&nbsp; <span>Payment Summary</span></a></li>
           {{-- <li><a href="{{ route('registrar.class_details') }}"><i class="fa fa-list-alt fa-lg "></i>&nbsp;&nbsp;&nbsp; <span>Report</span></a></li> --}}
           <li>
             <a href="#">

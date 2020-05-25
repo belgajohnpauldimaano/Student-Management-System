@@ -22,8 +22,17 @@ Route::group(['prefix' => 'finance', 'middleware' => ['auth', 'userroles'], 'rol
         Route::post('approve', 'Finance\StudentPaymentController@approve')->name('finance.student_payment.approve');
         Route::post('disapprove', 'Finance\StudentPaymentController@disapprove')->name('finance.student_payment.disapprove');
         Route::post('modal-data', 'Finance\StudentPaymentController@modal_data')->name('finance.student_payment.modal');
+        
     });
 
+    Route::group(['prefix' => 'summary-payment'], function () {
+        Route::get('', 'Finance\FinanceSummaryController@index')->name('finance.summary');
+        Route::post('', 'Finance\FinanceSummaryController@index')->name('finance.summary');
+        Route::post('report-summary', 'Finance\FinanceSummaryController@fetch_record')->name('finance.summary.fetch_record');
+        Route::get('print', 'Finance\FinanceSummaryController@print')->name('finance.summary.print');
+    });
+
+    
     Route::group(['prefix' => 'student-finance-account'], function () {
         Route::get('', 'Finance\StudentFinanceAccountController@index')->name('finance.student_acct');
         Route::post('', 'Finance\StudentFinanceAccountController@index')->name('finance.student_acct');

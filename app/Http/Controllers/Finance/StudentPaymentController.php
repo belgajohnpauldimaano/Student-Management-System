@@ -12,7 +12,8 @@ use App\Http\Controllers\Controller;
 
 class StudentPaymentController extends Controller
 {
-    public function index(Request $request){
+    public function index(Request $request)
+    {
 
         if ($request->ajax())
         {
@@ -212,9 +213,11 @@ class StudentPaymentController extends Controller
         return response()->json(['res_code' => 1, 'res_msg' => 'Invalid request.']);
     }
     
-    public function badge(Request $request){
+    public function badge(Request $request)
+    {
         $NotyetApprovedCount = TransactionMonthPaid::where('approval', 'Not yet Approved')->where('isSuccess', 1)
             ->count();
-
     }
+
+    
 }
