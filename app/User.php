@@ -66,23 +66,23 @@ class User extends Authenticatable
         $UserInformation = NULL;
         if ($this->role == 0 || $this->role == 1)
         {
-            $UserInformation = \App\AdminInformation::where('user_id', $this->id)->first();
+            $UserInformation = \App\AdminInformation::where('user_id', $this->id)->where('status', 1)->first();
         }
         else if ($this->role == 3)
         {
-            $UserInformation = \App\RegistrarInformation::where('user_id', $this->id)->first();
+            $UserInformation = \App\RegistrarInformation::where('user_id', $this->id)->where('status', 1)->first();
         }
         else if ($this->role == 4)
         {
-            $UserInformation = \App\FacultyInformation::where('user_id', $this->id)->first();
+            $UserInformation = \App\FacultyInformation::where('user_id', $this->id)->where('status', 1)->first();
         }
         else if ($this->role == 5)
         {
-            $UserInformation = \App\StudentInformation::where('user_id', $this->id)->first();
+            $UserInformation = \App\StudentInformation::where('user_id', $this->id)->where('status', 1)->first();
         }
         else if ($this->role == 6)
         {
-            $UserInformation = \App\FinanceInformation::where('user_id', $this->id)->first();
+            $UserInformation = \App\FinanceInformation::where('user_id', $this->id)->where('status', 1)->first();
         }
         return $UserInformation;
     }

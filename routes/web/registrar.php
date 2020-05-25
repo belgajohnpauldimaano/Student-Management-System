@@ -51,6 +51,9 @@ Route::group(['prefix' => 'registrar/student-list', 'middleware' => 'auth', 'rol
 Route::group(['prefix' => 'registrar/incoming-student', 'middleware' => 'auth', 'roles' => ['admin', 'root', 'registrar']], function() {
     Route::get('', 'Registrar\IncomingStudentController@index')->name('registrar.incoming_student');
     Route::post('', 'Registrar\IncomingStudentController@index')->name('registrar.incoming_student');
+    Route::post('modal', 'Registrar\IncomingStudentController@modal_data')->name('registrar.incoming_student.modal');
+    Route::post('approve', 'Registrar\IncomingStudentController@approve')->name('registrar.incoming_student.approve');
+    Route::post('disapprove', 'Registrar\IncomingStudentController@disapprove')->name('registrar.incoming_student.disapprove');
     // Route::post('enroll-student', 'Registrar\IncomingStudentController@enroll_student')->name('registrar.incoming_student.enroll_student');
 });
 

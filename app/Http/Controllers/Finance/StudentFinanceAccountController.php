@@ -107,7 +107,7 @@ class StudentFinanceAccountController extends Controller
         if ($request->id)
         {
             $Modal_data = Transaction::where('id', $request->id)->first();
-            $Mo_history = TransactionMonthPaid::where('transaction_id', $request->id)->get();
+            $Mo_history = TransactionMonthPaid::where('transaction_id', $request->id)->where('isSuccess', 1)->get();
         }
         return view('control_panel_finance.student_finance_account.partials.modal_data', compact('Modal_data','Mo_history'))->render();
     }

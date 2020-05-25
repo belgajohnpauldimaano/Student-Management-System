@@ -55,11 +55,16 @@
             <div class="col-md-6">    
                 <div class="box-header with-border">
                     <h3 class="box-title col-lg-12">Enrollment Form </h3>
-                </div>            
-                    
+                </div>      
                     <input type="hidden" name="payment-cat" value="over the counter - bank">
                     <div class="form-group col-lg-12" style="margin-top: 10px">
-                        <label for="exampleInputEmail1">You are incoming Grade-level <i style="color:red">{{$ClassDetail->grade_level+1}}</i></label>
+                        <label for="exampleInputEmail1">You are incoming Grade-level <i style="color:red">
+                            @if($IncomingStudentCount)
+                                {{$IncomingStudentCount->grade_level_id}}
+                            @else
+                                {{$ClassDetail->grade_level+1}}
+                            @endif
+                        </i></label>
                             <br><br>
                         <label for="exampleInputEmail1">Available Tuition Fee and Misc Fee</label>
                         @if($Tuition)
@@ -118,8 +123,8 @@
                     <div class="box-header with-border">
                         <h3 class="box-title">Upload with Bank</h3>
                         <a class="btn btn-info pull-right btn-transaction-history" 
-                            data-id="{{$StudentInformation->id}}" 
-                            data-school_year_id="{{$SchoolYear->id}}" 
+                            data-id="{{$StudentInformation->id}}"
+                            data-school_year_id="{{$SchoolYear->id}}"
                             href="#">
                             <i class="fas fa-history"></i> Transaction History
                         </a>

@@ -40,7 +40,13 @@
                     
                     <input type="hidden" name="payment-cat" value="Transfer - Gcash">
                     <div class="form-group col-lg-12" style="margin-top: 10px">
-                        <label for="exampleInputEmail1">You are incoming Grade-level <i style="color:red">{{$ClassDetail->grade_level+1}}</i></label>
+                        <label for="exampleInputEmail1">You are incoming Grade-level <i style="color:red">
+                            @if($IncomingStudentCount)
+                                {{$IncomingStudentCount->grade_level_id}}
+                            @else
+                                {{$ClassDetail->grade_level+1}}
+                            @endif
+                        </i></label>
                             <br><br>
                         <label for="exampleInputEmail1">Available Tuition Fee and Misc Fee</label>
                         @if($Tuition)

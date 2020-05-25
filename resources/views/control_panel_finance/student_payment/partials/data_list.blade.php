@@ -41,7 +41,9 @@
                                                     <td>
                                                         {{number_format($data->discount_amt, 2)}}
                                                     </td>
-                                                    <td>{{number_format($data->tuition_amt + $data->misc_amt, 2)}}</td>
+                                                    <td>
+                                                        {{number_format(($data->tuition_amt + $data->misc_amt) - $data->discount_amt, 2)}}
+                                                    </td>
                                                     <td>{{number_format($data->payment,2)}}</td>
                                                     <td>{{number_format($data->balance,2)}}</td>
                                                     <td>

@@ -25,6 +25,10 @@
     <!-- Main Stylesheet File -->
     <link href="{{ asset('theme/css/style.css?v=1') }}" rel="stylesheet">
     <link href="{{ asset('img/sja-logo.png') }}" rel=icon>
+
+    {{-- alertify --}}
+    <link rel="stylesheet" href="{{ asset('cms/plugins/alertifyjs/css/alertify.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('cms/plugins/alertifyjs/css/themes/bootstrap.min.css') }}">
 </head>
 
 <body>
@@ -73,6 +77,7 @@
                             {{-- <li><a href="#">Transport & Diploma</a></li> --}}
                         </ul>
                     </li>
+                    <li class="menu-has-children"><a href="{{route('pages.faqs')}}">FAQs</a></li>
                     <li class="menu">
                         <a class="btn-enroll" data-toggle="modal" data-target="#js-registration"  href="#"><i class="fas fa-mouse-pointer"></i> Registration</a>
                     </li>

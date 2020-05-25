@@ -81,9 +81,28 @@
           <li><a href="{{ route('admin.registrar_information') }}"><i class="fa fa-info-circle fa-lg"></i>&nbsp;&nbsp;&nbsp; <span>Registrar Information</span></a></li>
           <li><a href="{{ route('admin.finance_information') }}"><i class="fa fa-info-circle fa-lg"></i>&nbsp;&nbsp;&nbsp; <span>Finance Information</span></a></li>
           <li><a href="{{ route('admin.student.information') }}"><i class="fa fa-info-circle fa-lg"></i>&nbsp;&nbsp;&nbsp; <span>Student Information</span></a></li>
+          <li><a href="{{ route('registrar.incoming_student') }}"><i class="fas fa-users fa-lg"></i>&nbsp;&nbsp;&nbsp; <span>Incoming Student</span></a></li>
           <li><a href="{{ route('registrar.class_details') }}"><i class="fa fa-list-alt  fa-lg"></i>&nbsp;&nbsp;&nbsp; <span>Class Lists</span></a></li>
+          <li>
+            <a href="#">
+              <i class="fas fa-users fa-lg"></i>&nbsp;&nbsp;&nbsp; 
+              <span>Student Sectioning</span>
+              <span class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span>
+            </a>
+            {{-- <a href="{{ route('registrar.student_admission') }}"><i class="fas fa-users fa-lg"></i>&nbsp;&nbsp;&nbsp; <span>Student Admission</span></a> --}}
+              <ul class="treeview-menu">
+                {{--  Admin Menu  --}}
+                  <li><a href="{{ route('registrar.student_admission.grade7')}}"><i class="fa fa-circle-o"></i>&nbsp;&nbsp;&nbsp; <span>Grade 7</span></a></li>
+                  <li><a href="{{ route('registrar.student_admission.grade8')}}"><i class="fa fa-circle-o"></i>&nbsp;&nbsp;&nbsp; <span>Grade 8</span></a></li>
+                  <li><a href="{{ route('registrar.student_admission.grade9')}}"><i class="fa fa-circle-o"></i>&nbsp;&nbsp;&nbsp; <span>Grade 9</span></a></li>
+                  <li><a href="{{ route('registrar.student_admission.grade10')}}"><i class="fa fa-circle-o"></i>&nbsp;&nbsp;&nbsp; <span>Grade 10</span></a></li>
+                  <li><a href="{{ route('registrar.student_admission.grade11')}}"><i class="fa fa-circle-o"></i>&nbsp;&nbsp;&nbsp; <span>Grade 11</span></a></li>
+                  <li><a href="{{ route('registrar.student_admission.grade12')}}"><i class="fa fa-circle-o"></i>&nbsp;&nbsp;&nbsp; <span>Grade 12</span></a></li>
+              </ul>
+          </li>
           <li><a href="{{ route('admin.transcript_archieve') }}"><i class="fa fa-archive fa-lg"></i>&nbsp;&nbsp;&nbsp; <span>Transcript Archive</span></a></li>
           <li><a href="{{ route('admin.articles') }}"><i class="fa fa-newspaper-o fa-lg"></i>&nbsp;&nbsp;&nbsp; <span>News and Events</span></a></li>
+
         @endif
         {{--  Admin Menu End  --}}
         
