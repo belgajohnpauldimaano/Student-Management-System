@@ -14,7 +14,7 @@
             <div class="modal-body">
                 <div class="form-row mb-5" align="center">
                     <div class="col-md-12">
-                        <img class="profile-user-img img-responsive img-circle" id="img--user_photo" src="{{  asset('/img/account/photo/blank-user.png') }}" 
+                        <img class="profile-user-img img-responsive img-circle" id="img--user_photo" src="{{  asset('/img/account/photo/blank-user.gif') }}" 
                         style="width:150px; height:150px;  border-radius:50%;">
                         <br/><br/>
                         <button type="button" class="btn btn-flat btn-primary btn--update-photo" title="Change photo">
@@ -22,7 +22,7 @@
                         </button> 
                         <input type="file" class="btn-upload-photo" style="display: none" id="student_img" name="student_img" src=""
                          onchange="readImageURL(this);" accept="*/image">
-                         <input type="hidden" id="default-img" value={{asset('/img/account/photo/blank-user.png')}} />   
+                         <input type="hidden" id="default-img" value={{asset('/img/account/photo/blank-user.gif')}} />   
                          <div class="help-block text-red text-center" id="js-student_img">
                         </div>
                     </div>                                
