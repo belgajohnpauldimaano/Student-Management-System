@@ -143,16 +143,33 @@
                             <div class="card-header" id="headingNine">
                               <h2 class="mb-0">
                                 <button class="btn btn-link btn-block text-left collapsed" type="button" data-toggle="collapse" data-target="#collapseNine" aria-expanded="false" aria-controls="collapseNine">
-                                  
+                                  How do I register?
                                 </button>
                               </h2>
                             </div>
-                            <div id="collapseThree" class="collapse" aria-labelledby="headingNine" data-parent="#accordionExample">
+                            <div id="collapseNine" class="collapse" aria-labelledby="headingNine" data-parent="#accordionExample">
                               <div class="card-body">
-                                  
+                                  <p><b>For old students</b> (Grade 8 – Grade 11), login to our official website using your username and password. </p>
+
+                                  <img src="" alt="">
                               </div>
                             </div>
                         </div>
+
+                        <div class="card">
+                          <div class="card-header" id="headingNine">
+                            <h2 class="mb-0">
+                              <button class="btn btn-link btn-block text-left collapsed" type="button" data-toggle="collapse" data-target="#collapseTen" aria-expanded="false" aria-controls="collapseTen">
+                                
+                              </button>
+                            </h2>
+                          </div>
+                          <div id="collapseTen" class="collapse" aria-labelledby="headingNine" data-parent="#accordionExample">
+                            <div class="card-body">
+                                
+                            </div>
+                          </div>
+                      </div>
                     </div>	
 				
 				</div>
