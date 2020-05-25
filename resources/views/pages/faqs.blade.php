@@ -150,8 +150,16 @@
                             <div id="collapseNine" class="collapse" aria-labelledby="headingNine" data-parent="#accordionExample">
                               <div class="card-body">
                                   <p><b>For old students</b> (Grade 8 – Grade 11), login to our official website using your username and password. </p>
-
-                                  <img src="" alt="">
+                                  <div align="center">
+                                    <img class="img-responsive testimonial-img" src="{{ asset('/img/faqs/login.png')}}" alt="login" width="70%">
+                                    <p class="mt-2">Upon opening your account, click “Enrollment”</p>
+                                  </div>
+                                  
+                                  <div align="center">
+                                    <img class="img-responsive testimonial-img" src="{{ asset('/img/faqs/enrollment.png')}}" alt="login" width="70%">
+                                    <p class="mt-2">Fill up the necessary information and process your online enrollment.</p>
+                                  </div>
+                                  
                               </div>
                             </div>
                         </div>
@@ -159,17 +167,196 @@
                         <div class="card">
                           <div class="card-header" id="headingNine">
                             <h2 class="mb-0">
-                              <button class="btn btn-link btn-block text-left collapsed" type="button" data-toggle="collapse" data-target="#collapseTen" aria-expanded="false" aria-controls="collapseTen">
+                              <button class="btn btn-link btn-block text-left collapsed" type="button" data-toggle="collapse" data-target="#collapseEleven" aria-expanded="false" aria-controls="collapseEleven">
+                                For incoming students (Grade 7 and transferees)
+                              </button>
+                            </h2>
+                          </div>
+                          <div id="collapseEleven" class="collapse" aria-labelledby="headingNine" data-parent="#accordionExample">
+                            <div class="card-body">
+                                <p>Go to <a href="http://www.sja-bataan.com">www.sja-bataan.com</a>  and click “registration”</p>
+
+                                <div align="center">
+                                  <img class="img-responsive testimonial-img" src="{{ asset('/img/faqs/registration.png')}}" alt="login" width="70%">
+                                  <p class="mt-2">Fill up the information needed. You will receive confirmation via email address that you have provided in the form indicating username, passwords and procedures to register accordingly.</p>
+                                </div>
                                 
+                            </div>
+                          </div>
+                        </div>
+
+                        <div class="card">
+                          <div class="card-header" id="headingNine">
+                            <h2 class="mb-0">
+                              <button class="btn btn-link btn-block text-left collapsed" type="button" data-toggle="collapse" data-target="#collapseTen" aria-expanded="false" aria-controls="collapseTen">
+                                How does the system work?
                               </button>
                             </h2>
                           </div>
                           <div id="collapseTen" class="collapse" aria-labelledby="headingNine" data-parent="#accordionExample">
                             <div class="card-body">
-                                
+                                SJAI started embracing the digital technology and full automation of records and other processes last 2018. It has developed its own management information system (MIS) that allows administration, faculty, and students access their own portal online even at the comforts of their homes. This year, SJAI launches its own online registration and enrollment to facilitate digital registration.   
                             </div>
                           </div>
-                      </div>
+                        </div>
+
+
+                        <div class="card">
+                          <div class="card-header" id="headingNine">
+                            <h2 class="mb-0">
+                              <button class="btn btn-link btn-block text-left collapsed" type="button" data-toggle="collapse" data-target="#collapse13" aria-expanded="false" aria-controls="collapse13">
+                                How do I change my account information?
+                              </button>
+                            </h2>
+                          </div>
+                          <div id="collapse13" class="collapse" aria-labelledby="headingNine" data-parent="#accordionExample">
+                            <div class="card-body">
+                                <p>Upon opening your account, personal information will appear. Browse on the details and make the necessary changes. If you wish to change information again, go to “My Profile” and proceed on editing your information.</p>
+                            
+                                <div align="center">
+                                  <img class="img-responsive testimonial-img" src="{{ asset('/img/faqs/profile.png')}}" alt="login" width="70%">
+                                  <p class="mt-2">
+                                    After opening “My Profile” proceed to the edit icon on the upper right portion
+                                  </p>
+                                </div>
+
+                                <div align="center">
+                                  <img class="img-responsive testimonial-img" src="{{ asset('/img/faqs/change_profile.png')}}" alt="login" width="70%">
+                                  {{-- <p class="mt-2">
+                                    After opening “My Profile” proceed to the edit icon on the upper right portion
+                                  </p> --}}
+                                </div>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div class="card">
+                          <div class="card-header" id="headingNine">
+                            <h2 class="mb-0">
+                              <button class="btn btn-link btn-block text-left collapsed" type="button" data-toggle="collapse" data-target="#collapse14" aria-expanded="false" aria-controls="collapse14">
+                                Is my credit card or debit card information safe when I pay online?
+                              </button>
+                            </h2>
+                          </div>
+                          <div id="collapse14" class="collapse" aria-labelledby="headingNine" data-parent="#accordionExample">
+                            <div class="card-body">
+                                <p>
+                                  Yes. Bank details are highly secured in the payment mode we have selected. This is the same payment service portal large companies and online banking are currently using.
+                                </p>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div class="card">
+                          <div class="card-header" id="headingNine">
+                            <h2 class="mb-0">
+                              <button class="btn btn-link btn-block text-left collapsed" type="button" data-toggle="collapse" data-target="#collapse15" aria-expanded="false" aria-controls="collapse15">
+                                Is my information secure?
+                              </button>
+                            </h2>
+                          </div>
+                          <div id="collapse15" class="collapse" aria-labelledby="headingNine" data-parent="#accordionExample">
+                            <div class="card-body">
+                                <p>
+                                  The bank of your choice or the third party handling your information are the channels responsible of the details you have provided. Secure giving details to authorized agents and websites only.
+                                </p>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div class="card">
+                          <div class="card-header" id="headingNine">
+                            <h2 class="mb-0">
+                              <button class="btn btn-link btn-block text-left collapsed" type="button" data-toggle="collapse" data-target="#collapse16" aria-expanded="false" aria-controls="collapse16">
+                                What will happen if I accidentally deleted my current email notification, what should I do?
+                              </button>
+                            </h2>
+                          </div>
+                          <div id="collapse16" class="collapse" aria-labelledby="headingNine" data-parent="#accordionExample">
+                            <div class="card-body">
+                                <p>
+                                  In your email account, deleted messages are not yet permanently deleted if accidentally committed to one. Go to “deleted email/messages” or “trash” on your account to retrieve the message. 
+                                  <br>
+                                  If the message is permanently deleted, email us at info@sja.com or message at 0956-928-3325 for retrieval.
+                                </p>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div class="card">
+                          <div class="card-header" id="headingNine">
+                            <h2 class="mb-0">
+                              <button class="btn btn-link btn-block text-left collapsed" type="button" data-toggle="collapse" data-target="#collapse17" aria-expanded="false" aria-controls="collapse17">
+                                Can I use more than one payment method per transaction?
+                              </button>
+                            </h2>
+                          </div>
+                          <div id="collapse17" class="collapse" aria-labelledby="headingNine" data-parent="#accordionExample">
+                            <div class="card-body">
+                              Yes. You can use multiple payment mode on your online registration.
+                            </div>
+                          </div>
+                        </div>
+
+                        <div class="card">
+                          <div class="card-header" id="headingNine">
+                            <h2 class="mb-0">
+                              <button class="btn btn-link btn-block text-left collapsed" type="button" data-toggle="collapse" data-target="#collapse18" aria-expanded="false" aria-controls="collapse18">
+                                It is possible for more  than one person to enrol online for the same account?
+                              </button>
+                            </h2>
+                          </div>
+                          <div id="collapse18" class="collapse" aria-labelledby="headingNine" data-parent="#accordionExample">
+                            <div class="card-body">
+                              Only one person is entitled for username and password. 
+                            </div>
+                          </div>
+                        </div>
+
+                        <div class="card">
+                          <div class="card-header" id="headingNine">
+                            <h2 class="mb-0">
+                              <button class="btn btn-link btn-block text-left collapsed" type="button" data-toggle="collapse" data-target="#collapse19" aria-expanded="false" aria-controls="collapse19">
+                                What if  I forgot my password, how do I retrieve it?
+                              </button>
+                            </h2>
+                          </div>
+                          <div id="collapse19" class="collapse" aria-labelledby="headingNine" data-parent="#accordionExample">
+                            <div class="card-body">
+                              Retrieval of password must be duly endorsed by the adviser to the MIS Department.
+                            </div>
+                          </div>
+                        </div>
+
+                        <div class="card">
+                          <div class="card-header" id="headingNine">
+                            <h2 class="mb-0">
+                              <button class="btn btn-link btn-block text-left collapsed" type="button" data-toggle="collapse" data-target="#collapse20" aria-expanded="false" aria-controls="collapse20">
+                                Will other persons have online access to my own account?
+                              </button>
+                            </h2>
+                          </div>
+                          <div id="collapse20" class="collapse" aria-labelledby="headingNine" data-parent="#accordionExample">
+                            <div class="card-body">
+                              None. You are the only one given the username and password. Please ensure security of it.
+                            </div>
+                          </div>
+                        </div>
+                        
+                        <div class="card">
+                          <div class="card-header" id="headingNine">
+                            <h2 class="mb-0">
+                              <button class="btn btn-link btn-block text-left collapsed" type="button" data-toggle="collapse" data-target="#collapse21" aria-expanded="false" aria-controls="collapse21">
+                                How long my payment history would be maintained?
+                              </button>
+                            </h2>
+                          </div>
+                          <div id="collapse21" class="collapse" aria-labelledby="headingNine" data-parent="#accordionExample">
+                            <div class="card-body">
+                              Payment details and history are maintained in the duration of the semester that you have processed the online payment.
+                            </div>
+                          </div>
+                        </div>
                     </div>	
 				
 				</div>
