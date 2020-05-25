@@ -75,7 +75,7 @@
                     </tr>
                     <tr style="margin-top: 10px">
                         <td>Previous Balance</td>
-                        <td>₱ 
+                        <td> 
                             <?php 
                                 $current_bal = \App\TransactionMonthPaid::where('student_id', $payment->student_id)
                                     ->where('school_year_id', $payment->school_year_id)
