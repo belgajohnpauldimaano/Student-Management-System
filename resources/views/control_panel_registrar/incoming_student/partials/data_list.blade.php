@@ -2,9 +2,11 @@
                         <div class="nav-tabs-custom">
                             <ul class="nav nav-tabs">
                                 <li class="active">
-                                    <a href="#js-disapproved" data-toggle="tab">Not yet Approved &nbsp;<span class="{{$IncomingStudentCount == 0 ? '' : 'label label-danger'}} pull-right">
-                                        {{$IncomingStudentCount == 0 ? '' : $IncomingStudentCount}}
-                                    </span></a>
+                                    <a href="#js-disapproved" data-toggle="tab">Not yet Approved &nbsp;
+                                        <span class="{{$IncomingStudentCount == 0 ? '' : 'label label-danger'}} pull-right">
+                                            {{$IncomingStudentCount == 0 ? '' : $IncomingStudentCount}}
+                                        </span>
+                                    </a>
                                 </li>                                
                                 <li>
                                     <a href="#js-approved" data-toggle="tab">Approved</a>

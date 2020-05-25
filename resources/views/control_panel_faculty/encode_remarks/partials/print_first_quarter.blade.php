@@ -99,7 +99,7 @@
     <p class="heading1">Region III</p>
     <p class="heading1">Division of Bataan</p>
     <br/>  --}}
-    <h2 class="heading2 heading2-title">Saint John Academy</h2>
+    <h2 class="heading2 heading2-title">Saint John Academy Inc</h2>
     <p class="heading2 heading2-subtitle">Dinalupihan, Bataan</p>
     
     <p class="report-progress m0">JUNIOR HIGH SCHOOL</p>

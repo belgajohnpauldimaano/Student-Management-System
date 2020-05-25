@@ -2,12 +2,16 @@
                         <div class="nav-tabs-custom">
                             <ul class="nav nav-tabs">
                                 <li class="active">
-                                <a href="#js-disapproved" data-toggle="tab">Not yet Approved &nbsp;<span class="label label-danger pull-right">{{$NotyetApprovedCount}}</span></a>
+                                    <a href="#js-disapproved" data-toggle="tab">Not yet Approved &nbsp;
+                                        <span class="{{$NotyetApprovedCount == 0 ? '' : 'label label-danger'}} pull-right">
+                                            {{$NotyetApprovedCount == 0 ? '' : $IncomingStudentCount}}
+                                        </span>
+                                    </a>
                                 </li>                                
                                 <li>
                                     <a href="#js-approved" data-toggle="tab">Approved</a>
                                 </li>
-                                
+                                                               
                             </ul>
                             <div class="tab-content">                                
                                 <div class="active tab-pane" id="js-disapproved">     
@@ -92,7 +96,9 @@
                                                     <td>
                                                         {{number_format($data->discount_amt, 2)}}
                                                     </td>
-                                                    <td>{{number_format($data->tuition_amt + $data->misc_amt, 2)}}</td>
+                                                    <td>
+                                                        {{number_format(($data->tuition_amt + $data->misc_amt) - $data->discount_amt, 2)}}
+                                                    </td>
                                                     <td>{{number_format($data->payment,2)}}</td>
                                                     <td>{{number_format($data->balance,2)}}</td>
                                                     <td>
@@ -108,9 +114,9 @@
                                             @endforeach
                                         </tbody>
                                     </table> 
-                                </div>  
+                                </div> 
                                 
-                                 
+                                
                             </div>                  
                         </div> 
                         

@@ -26,7 +26,7 @@
 </head>
 <body>
 
-            <h2>Enrolled Students</h2>
+    <h2>Enrolled Students</h2>
     <div>
 
         <div></div><label for="">School Year:</label> <strong>{{ $ClassDetail->school_year }}</strong></div>

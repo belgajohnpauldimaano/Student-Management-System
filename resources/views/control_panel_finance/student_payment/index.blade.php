@@ -152,6 +152,10 @@
     <script src="{{ asset('cms/plugins/datepicker/bootstrap-datepicker.js') }}"></script>
     
     <script>
+        $('.datepicker').datepicker({
+            autoclose: true
+        }) 
+
         var page = 1;
         function fetch_data () {
             var formData = new FormData($('#js-form_search')[0]);
@@ -267,9 +271,12 @@
                     }
                 });
             });
-
-            
         });
+
+        
+
+
+        
 
        
 
