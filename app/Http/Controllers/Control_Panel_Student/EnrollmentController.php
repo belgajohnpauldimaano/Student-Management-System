@@ -43,7 +43,8 @@ class EnrollmentController extends Controller
             if($IncomingStudentCount){                
 
                 $AlreadyEnrolled = TransactionMonthPaid::where('student_id', $StudentInformation->id)
-                    ->where('school_year_id', $SchoolYear->id)->orderBy('id', 'Desc')->first();
+                    ->where('school_year_id', $SchoolYear->id)
+                    ->where('isSuccess', 1)->orderBy('id', 'Desc')->first();
 
                 $Tuition = PaymentCategory::where('grade_level_id', $IncomingStudentCount->grade_level_id)->first();
 
@@ -80,7 +81,8 @@ class EnrollmentController extends Controller
                     //     ->where('status', 1)->orderBy('id', 'Desc')->first();
 
                     $AlreadyEnrolled = TransactionMonthPaid::where('student_id', $StudentInformation->id)
-                        ->where('school_year_id', $SchoolYear->id)->orderBy('id', 'Desc')->first();
+                        ->where('school_year_id', $SchoolYear->id)
+                        ->where('isSuccess', 1)->orderBy('id', 'Desc')->first();
 
                     $grade_level_id = ($ClassDetail->grade_level + 1);
 
@@ -337,6 +339,7 @@ class EnrollmentController extends Controller
 
         $hasTransaction = TransactionMonthPaid::where('student_id', $request->id)
             ->where('school_year_id', $request->school_year_id)
+            ->where('isSuccess', 1)
             ->orderBY('id', 'desc')
             ->first();
 
@@ -353,7 +356,7 @@ class EnrollmentController extends Controller
                 ->get();
 
             $Transaction = TransactionMonthPaid::where('student_id', $request->id)
-               ->where('school_year_id', $request->school_year_id)
+               ->where('school_year_id', $request->school_year_id)->where('isSuccess', 1)
                ->orderBY('id', 'desc')
                 ->get();
 

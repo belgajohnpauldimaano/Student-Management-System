@@ -10,6 +10,7 @@ Route::group(['middleware' => ['guest']], function () {
     Route::post('/save', 'RegistrationController@store')->name('registration.store');
 });
 
+Route::get('faqs', 'FaqsController@faqs')->name('pages.faqs');
 
 /*
 |About SJA Pages --------------------------------------------------------------------------

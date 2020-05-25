@@ -14,6 +14,7 @@ use PayPal\Api\Details;
 use PayPal\Api\Payment;
 use PayPal\Api\ItemList;
 use App\StudentInformation;
+use PayPal\Api\InputFields;
 use PayPal\Api\Transaction;
 use PayPal\Rest\ApiContext;
 use App\TransactionDiscount;
@@ -28,7 +29,6 @@ use Illuminate\Support\Facades\Mail;
 use PayPal\Auth\OAuthTokenCredential;
 use Illuminate\Support\Facades\Validator;
 use PayPal\Exception\PayPalConnectionException;
-
 
 class PaymentController extends Controller
 {
@@ -91,11 +91,12 @@ class PaymentController extends Controller
         // Create item list and set array of items for the item list.
         $itemList = new ItemList();
         $itemList->setItems(array($item));
-
         // Create and setup the total amount.
         $amount = new Amount();
         $amount->setCurrency('PHP')->setTotal($pay_amount);
 
+        $inputFields = new InputFields();
+        $inputFields->setNoShipping(1)->setAddressOverride(0);
         // Create a transaction and amount and description.
         $transaction = new Transaction();
         $transaction->setAmount($amount)->setItemList($itemList)

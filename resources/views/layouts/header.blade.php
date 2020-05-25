@@ -77,6 +77,7 @@
                             {{-- <li><a href="#">Transport & Diploma</a></li> --}}
                         </ul>
                     </li>
+                    <li class="menu-has-children"><a href="{{route('pages.faqs')}}">FAQs</a></li>
                     <li class="menu">
                         <a class="btn-enroll" data-toggle="modal" data-target="#js-registration"  href="#"><i class="fas fa-mouse-pointer"></i> Registration</a>
                     </li>
