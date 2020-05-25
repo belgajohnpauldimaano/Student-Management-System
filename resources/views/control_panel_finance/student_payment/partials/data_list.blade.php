@@ -4,7 +4,7 @@
                                 <li class="active">
                                     <a href="#js-disapproved" data-toggle="tab">Not yet Approved &nbsp;
                                         <span class="{{$NotyetApprovedCount == 0 ? '' : 'label label-danger'}} pull-right">
-                                            {{$NotyetApprovedCount == 0 ? '' : $IncomingStudentCount}}
+                                            {{$NotyetApprovedCount == 0 ? '' : $NotyetApprovedCount}}
                                         </span>
                                     </a>
                                 </li>                                
