@@ -574,8 +574,8 @@
 			}, 'show');
         }); 
 
-        
-        $.getJSON('../json/list_reservation.json', function(data){
+        $url_reservatoin = "{{ asset('json/list_reservation.json') }}";
+        $.getJSON($url_reservatoin, function(data){
                 var company_table = '';
                 $.each(data, function(key, value){
                     company_table += '<tr align="center">';
@@ -588,7 +588,8 @@
                 $('#reservation tbody').append(company_table);
         });
 
-        $.getJSON('../json/entrance_passer.json', function(data){
+        $entrance_passer = "{{ asset('json/entrance_passer.json') }}";
+        $.getJSON($entrance_passer, function(data){
                 var passer_table = '';
                 $.each(data, function(key, value){
                     passer_table += '<tr align="center">';
@@ -600,7 +601,8 @@
                 $('#passer tbody').append(passer_table);
         });
 
-        $.getJSON('../json/waiting_jan2020.json', function(data){
+        $waiting_jan2020 = "{{ asset('json/waiting_jan2020.json') }}";
+        $.getJSON($waiting_jan2020, function(data){
                 var passer_table = '';
                 $.each(data, function(key, value){
                     passer_table += '<tr align="center">';
@@ -612,7 +614,8 @@
                 $('#waiting_jan_2020 tbody').append(passer_table);
         });
 
-        $.getJSON('../json/list_feb2020.json', function(data){
+        $list_feb2020 = "{{ asset('json/list_feb2020.json') }}";
+        $.getJSON($list_feb2020, function(data){
                 var passer_table = '';
                 $.each(data, function(key, value){
                     passer_table += '<tr align="center">';
@@ -624,7 +627,8 @@
                 $('#list_feb2020 tbody').append(passer_table);
         });
 
-        $.getJSON('../json/waiting_feb2020.json', function(data){
+        $waiting_feb2020 = "{{ asset('json/waiting_feb2020.json') }}";
+        $.getJSON($waiting_feb2020, function(data){
                 var passer_table = '';
                 $.each(data, function(key, value){
                     passer_table += '<tr align="center">';

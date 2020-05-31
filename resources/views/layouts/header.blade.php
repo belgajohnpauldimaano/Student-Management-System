@@ -13,6 +13,7 @@
     {{-- <link href="{{ asset('theme/img/favicon.png') }}" rel="icon"> --}}
     {{-- <link href="{{ asset('theme/img/apple-touch-icon.png') }}" rel="apple-touch-icon"> --}}
     <!-- Google Fonts -->
+    
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,700,700i|Montserrat:300,400,500,700" rel="stylesheet">
     <!-- Bootstrap CSS File -->
     <link href="{{ asset('theme/lib/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">

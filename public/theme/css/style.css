@@ -1615,6 +1615,10 @@ Center vertical */
   }
 }
 
+.modal-xl {
+  max-width: 1140px;
+}
+
 .modal-body .nav-link:hover, .nav-link:active, .nav-link:focus { 
     color: #fff;
     background-color: #007bff;
