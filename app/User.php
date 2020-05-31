@@ -32,6 +32,7 @@ class User extends Authenticatable
         'registrar' => [ 'id' => 3, 'display' => 'Registrar'],
         'faculty'   => [ 'id' => 4, 'display' => 'Faculty'],
         'student'   => [ 'id' => 5, 'display' => 'Student'],
+        'finance'   => [ 'id' => 6, 'display' => 'Finance'],
     ];
     public function get_user_role ($roles) 
     {
@@ -65,19 +66,23 @@ class User extends Authenticatable
         $UserInformation = NULL;
         if ($this->role == 0 || $this->role == 1)
         {
-            $UserInformation = \App\AdminInformation::where('user_id', $this->id)->first();
+            $UserInformation = \App\AdminInformation::where('user_id', $this->id)->where('status', 1)->first();
         }
         else if ($this->role == 3)
         {
-            $UserInformation = \App\RegistrarInformation::where('user_id', $this->id)->first();
+            $UserInformation = \App\RegistrarInformation::where('user_id', $this->id)->where('status', 1)->first();
         }
         else if ($this->role == 4)
         {
-            $UserInformation = \App\FacultyInformation::where('user_id', $this->id)->first();
+            $UserInformation = \App\FacultyInformation::where('user_id', $this->id)->where('status', 1)->first();
         }
         else if ($this->role == 5)
         {
-            $UserInformation = \App\StudentInformation::where('user_id', $this->id)->first();
+            $UserInformation = \App\StudentInformation::where('user_id', $this->id)->where('status', 1)->first();
+        }
+        else if ($this->role == 6)
+        {
+            $UserInformation = \App\FinanceInformation::where('user_id', $this->id)->where('status', 1)->first();
         }
         return $UserInformation;
     }

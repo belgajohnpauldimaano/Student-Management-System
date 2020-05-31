@@ -77,7 +77,17 @@
                             {{-- <li><a href="#">Transport & Diploma</a></li> --}}
                         </ul>
                     </li>
-                    
+
+                    <li class="menu-has-children"><a href="#">FAQs</a>
+                        <ul>
+                            <li><a href="{{route('pages.faqs')}}">Frequently Ask Questions</a></li>
+                            <li><a href="{{ route('pages.faqs_on_distance_learning') }}">Frequency Asked Questions on Distance Learning</a></li>
+                        </ul>
+                    </li>
+                    <li class="menu">
+                        <a class="btn-enroll" data-toggle="modal" data-target="#js-registration"  href="#"><i class="fas fa-mouse-pointer"></i> Registration</a>
+                    </li>
+
                     <li class="menu">
                         <a class="btn-login" href="{{ route('login') }}"><i class="fas fa-sign-in-alt"></i> Login</a>
                     </li>

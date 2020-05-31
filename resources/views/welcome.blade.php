@@ -1404,4 +1404,5 @@
             </div>
         </section>
     </main>
+    @include('pages.reservation')
 @endsection

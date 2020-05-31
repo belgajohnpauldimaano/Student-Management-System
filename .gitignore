@@ -4,6 +4,7 @@
 /public/content
 /public/storage
 /public/img/account
+/public/img/receipt
 /storage/*.key
 /vendor
 /enrollment

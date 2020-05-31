@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers\Control_Panel_Student;
 
+use App\StudentInformation;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 
 class AccountProfileController extends Controller
 {
@@ -14,11 +16,13 @@ class AccountProfileController extends Controller
         // $RegistrarInformation = collect(\App\RegistrarInformation::DEPARTMENTS); 
         return view('control_panel_student.account_profile.index', compact('User', 'Profile'));
     }
+
     public function fetch_profile (Request $request)
     {
-        $User = \Auth::user();
-        $Profile = \App\StudentInformation::where('user_id', $User->id)->first();
-        // return json_encode($Profile); date('Y-m-d', strtotime($request->birthdate));
+        $User = Auth::user();
+        $Profile = StudentInformation::where('user_id', $User->id)->first();
+        // return json_encode($Profile);
+        //  date('Y-m-d', strtotime($request->birthdate));
         return response()->json(['res_code' => 0, 'res_msg' => '', 'Profile' => $Profile]);
     }
     
@@ -28,6 +32,16 @@ class AccountProfileController extends Controller
             'first_name' => 'required',
             'middle_name' => 'required',
             'last_name' => 'required',
+            'contact_number' => 'required',
+            'profile_email'=>'required',
+            'c_address'=> 'required',
+            'p_address'=> 'required',
+            'father_name'=> 'required',
+            'mother_name'=> 'required',
+            'birthday'=> 'required',
+            'isEsc'=> 'required',
+            'gender' => 'required',
+
         ];
         
         $validator = \Validator::make($request->all(), $rules);
@@ -37,19 +51,20 @@ class AccountProfileController extends Controller
             return response()->json(['res_code' => 1, 'res_msg' => 'Please fill all required fields.', 'res_error_msg' => $validator->getMessageBag()]);
         }
 
-        $User = \Auth::user();
-        $Profile = \App\StudentInformation::where('user_id', $User->id)->first();
+        $User = Auth::user();
+        $Profile = StudentInformation::where('user_id', $User->id)->first();
 
         $Profile->first_name = $request->first_name;
         $Profile->middle_name = $request->middle_name;
         $Profile->last_name = $request->last_name;
         $Profile->contact_number = $request->contact_number;
-        $Profile->email = $request->email;
+        $Profile->email = $request->profile_email;
         $Profile->c_address = $request->c_address;
         $Profile->p_address = $request->p_address;
         $Profile->father_name = $request->father_name;
         $Profile->mother_name = $request->mother_name;
         $Profile->gender = $request->gender;
+        $Profile->isEsc = $request->isEsc;
 
         if ($request->birthday) {
             $Profile->birthdate = date('Y-m-d', strtotime($request->birthday));
@@ -71,10 +86,8 @@ class AccountProfileController extends Controller
         $destinationPath = public_path('/img/account/photo/');
         $request->user_photo->move($destinationPath, $name);
 
-
-
-        $User = \Auth::user();
-        $Profile = \App\StudentInformation::where('user_id', $User->id)->first();
+        $User = Auth::user();
+        $Profile = StudentInformation::where('user_id', $User->id)->first();
 
         if ($Profile->photo) 
         {

@@ -28,19 +28,19 @@
                                                     <td>
                                                         <div class="input-group-btn pull-left text-left">
                                                             @if($ClassDetail->grade_level == 11 || $ClassDetail->grade_level == 12)
-                                                                <button type="button" style="margin-right:2px" class="btn btn-danger js-btn_cancel_enroll_student" data-id="{{ $data->enrollment_id }}" aria-expanded="true">
+                                                                <button type="button" style="margin-right:2px" class="btn btn-danger js-btn_cancel_enroll_student" data-student_id="{{$data->student_information_id}}" data-id="{{ $data->enrollment_id }}" aria-expanded="true">
                                                                     Cancel Enroll
                                                                 </button>
-                                                                <button type="button" style="margin-right:2px" class="btn btn-danger js-btn_re_enroll_student" data-id="{{ $data->enrollment_id }}" aria-expanded="true">
+                                                                <button type="button" style="margin-right:2px" class="btn btn-danger js-btn_re_enroll_student" data-student_id="{{$data->student_information_id}}" data-id="{{ $data->enrollment_id }}" aria-expanded="true">
                                                                     Re-Enroll
                                                                 </button>
                                                             @else
                                                             
-                                                                <button type="button" style="margin-right:2px" class="btn btn-danger js-btn_cancel_enroll_student" data-id="{{ $data->enrollment_id }}" aria-expanded="true">
+                                                                <button type="button" style="margin-right:2px" class="btn btn-danger js-btn_cancel_enroll_student" data-student_id="{{$data->student_information_id}}" data-id="{{ $data->enrollment_id }}" aria-expanded="true">
                                                                     Cancel Enroll
                                                                 </button>
     
-                                                                <button type="button" style="margin-right:2px" class="btn btn-danger js-btn_re_enroll_student" data-id="{{ $data->enrollment_id }}" aria-expanded="true">
+                                                                <button type="button" style="margin-right:2px" class="btn btn-danger js-btn_re_enroll_student" data-student_id="{{$data->student_information_id}}" data-id="{{ $data->enrollment_id }}" aria-expanded="true">
                                                                     Re-Enroll
                                                                 </button>
                                                             @endif
@@ -84,19 +84,18 @@
                                                     <td>
                                                         <div class="input-group-btn pull-left text-left">
                                                             @if($ClassDetail->grade_level == 11 || $ClassDetail->grade_level == 12)
-                                                                <button type="button" style="margin-right:2px" class="btn btn-danger js-btn_cancel_enroll_student" data-id="{{ $data->enrollment_id }}" aria-expanded="true">
+                                                                <button type="button" style="margin-right:2px" class="btn btn-danger js-btn_cancel_enroll_student" data-student_id="{{$data->student_information_id}}" data-id="{{ $data->enrollment_id }}" aria-expanded="true">
                                                                     Cancel Enroll
                                                                 </button>
-                                                                <button type="button" style="margin-right:2px" class="btn btn-danger js-btn_re_enroll_student" data-id="{{ $data->enrollment_id }}" aria-expanded="true">
+                                                                <button type="button" style="margin-right:2px" class="btn btn-danger js-btn_re_enroll_student" data-student_id="{{$data->student_information_id}}" data-id="{{ $data->enrollment_id }}" aria-expanded="true">
                                                                     Re-Enroll
                                                                 </button>
-                                                            @else
-                                                            
-                                                                <button type="button" style="margin-right:2px" class="btn btn-danger js-btn_cancel_enroll_student" data-id="{{ $data->enrollment_id }}" aria-expanded="true">
+                                                            @else                                                            
+                                                                <button type="button" style="margin-right:2px" class="btn btn-danger js-btn_cancel_enroll_student" data-student_id="{{$data->student_information_id}}" data-id="{{ $data->enrollment_id }}" aria-expanded="true">
                                                                     Cancel Enroll
                                                                 </button>
     
-                                                                <button type="button" style="margin-right:2px" class="btn btn-danger js-btn_re_enroll_student" data-id="{{ $data->enrollment_id }}" aria-expanded="true">
+                                                                <button type="button" style="margin-right:2px" class="btn btn-danger js-btn_re_enroll_student" data-student_id="{{$data->student_information_id}}" data-id="{{ $data->enrollment_id }}" aria-expanded="true">
                                                                     Re-Enroll
                                                                 </button>
                                                             @endif

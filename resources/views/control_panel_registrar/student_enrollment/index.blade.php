@@ -295,14 +295,16 @@
             $('body').on('click', '.js-btn_cancel_enroll_student', function (e) {
                 e.preventDefault();
                 var enrollment_id = $(this).data('id');
+                var student_id = $(this).data('student_id');
+               
                 alertify.defaults.transition = "slide";
                 alertify.defaults.theme.ok = "btn btn-primary btn-flat";
                 alertify.defaults.theme.cancel = "btn btn-danger btn-flat";
-                alertify.confirm('Confirmation', 'Are you sure you want to cancel enrollment?', function(){  
+                alertify.confirm('Confirmation', 'Are you sure you want to cancel or remove this student on this section?', function(){  
                     $.ajax({
                         url         : "{{ route('registrar.student_enrollment.cancel_enroll_student', $id) }}",
                         type        : 'POST',
-                        data        : { _token : '{{ csrf_token() }}', enrollment_id : enrollment_id, class_detail_id : '{{ $ClassDetail->id }}' },
+                        data        : { _token : '{{ csrf_token() }}', enrollment_id : enrollment_id, class_detail_id : '{{ $ClassDetail->id }}', student_id : student_id },
                         success     : function (res) {
                             $('.help-block').html('');
                             if (res.res_code == 1)
@@ -312,6 +314,8 @@
                                     message : res.res_msg,
                                     type    : 'error'
                                 });
+
+                                location.reload();  
                             }
                             else
                             {
@@ -323,6 +327,7 @@
                                 $('.js-modal_holder .modal').modal('hide');
                                 fetch_data();
                                 fetch_data_enrolled();
+                                location.reload();  
                             }
                         }
                     });

@@ -2,6 +2,10 @@
 
         function validate_form(){            
             
+            $('#pay_fee').change(function (){
+                check_payfee();
+            });
+
             $('#pay_fee').keyup(function() {
                 check_payfee();
             });
@@ -43,14 +47,21 @@
             var payment = $('#pay_fee').val();
             var downpayment = $('#downpayment').val();
             var previous_balance = $('#previous_balance').val();
-
+            var discount = $('#e_discount').val();
+            
             $('#dp_enrollment').text(currencyFormat(parseFloat(payment)));        
             var total_tuition = $('#total_tuition').val();
             var result_bal = 0;
-            if(previous_balance){                
+
+            if(previous_balance){  
                 result_bal = parseFloat(previous_balance) - parseFloat(payment);
             }else{
-                result_bal = parseFloat(total_tuition) - parseFloat(payment);
+                if(discount){
+                    result_bal = parseFloat(total_tuition) - parseFloat(payment) - parseFloat(discount);
+                }else{
+                    result_bal = parseFloat(total_tuition) - parseFloat(payment);
+                }
+                
             }
             
             document.getElementById('result_current_bal').value = (result_bal);
@@ -110,6 +121,10 @@
             bank_pay_fee();
         });
 
+        $('#bank_pay_fee').change(function (){
+            bank_pay_fee();
+        });
+
         $('#bank_phone').keyup(function() {
             check_bank_phone();
         });
@@ -164,6 +179,7 @@
             var downpayment = $('#bank_downpayment').val();
             var bank_previous_balance = $('#bank_previous_balance').val();
             var bank_tution = $('#bank_tution').val();
+            var discount = $('#bank_discount').val();
 
             function currencyFormat(num) {
                 return num.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')
@@ -172,7 +188,11 @@
             if(bank_previous_balance){
                 result_bal = parseFloat(bank_previous_balance) - parseFloat(payment);
             }else{
-                result_bal = parseFloat(bank_tution) - parseFloat(payment);
+                if(discount){
+                    result_bal = parseFloat(bank_tution) - parseFloat(payment) - discount;
+                }else{
+                    result_bal = parseFloat(total_tuition) - parseFloat(payment);
+                }
             }
 
             document.getElementById('bank_balance').value = (result_bal);
@@ -264,6 +284,10 @@
             gcash_pay_fee();
         });
 
+        $('#gcash_pay_fee').change(function (){
+            gcash_pay_fee();
+        });
+
         $('#gcash_phone').keyup(function() {
             check_gcash_phone();
         });
@@ -301,15 +325,21 @@
             var downpayment = $('#gcash_downpayment').val();
             var gcash_previous_balance = $('#gcash_previous_balance').val();
             var gcash_tution = $('#gcash_tution_total').val();
+            var discount = $('#gcash_discount').val();
 
             function currencyFormat(num) {
                 return num.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')
             } 
                      
-            if(gcash_previous_balance){
+            if(gcash_previous_balance != null){
                 result_bal = parseFloat(gcash_previous_balance) - parseFloat(payment);
             }else{
-                result_bal = parseFloat(gcash_tution) - parseFloat(payment);
+                if(discount){
+                    result_bal = parseFloat(gcash_tution) - parseFloat(payment) - discount;
+                }else{
+                    result_bal = parseFloat(gcash_tution) - parseFloat(payment);
+                }
+                
             }
 
             document.getElementById('gcash_balance').value = (result_bal);
@@ -415,88 +445,13 @@
          
     });
 
-    var $getEvent = '';
     
-
-    function getProfiledata(){
-      $.ajax({
-            url : "{{ route('student.my_account.fetch_profile') }}",
-            type : 'POST',
-            data        : {_token: '{{ csrf_token() }}'},
-            success     : function (res) {
-                const bday = new Date(res.Profile.birthdate)
-                $('.help-block').html('');
-                if(res.Profile.first_name == null || res.Profile.middle_name ==null || res.Profile.last_name ==null || res.Profile.contact_number == null || res.Profile.email == null || res.Profile.p_address == null || bday == null || res.Profile.father_name == null || res.Profile.mother_name == null || res.Profile.gender == null){
-                    $getEvent = 'true';
-                    $('.modal-update-profile').modal({ backdrop : 'static' });
-                    $('#first_name').val(res.Profile.first_name);
-                    $('#middle_name').val(res.Profile.middle_name);
-                    $('#last_name').val(res.Profile.last_name);
-                    $('#contact_number').val(res.Profile.contact_number != null ? res.Profile.contact_number : '+639');
-                    $('#profile_email').val(res.Profile.email);
-                    $('#c_address').val(res.Profile.c_address);
-                    $('#p_address').val(res.Profile.p_address);
-                    $('#birthday').val((bday.getMonth() + 1).toLocaleString('en-US', {minimumIntegerDigits: 2, useGrouping:false}) + `/` + bday.getDate().toLocaleString('en-US', {minimumIntegerDigits: 2, useGrouping:false}) +`/` + bday.getFullYear());
-                    $('#father_name').val(res.Profile.father_name);     
-                    $('#mother_name').val(res.Profile.mother_name);    
-                    $('#gender').val(res.Profile.gender);
-                    $('.birthday').datepicker({
-                        autoclose: true
-                    })                     
-                }
-                else
-                {
-                    $getEvent = 'false';
-                }
-                
-            }
-        })
-    }
+    
+    
 
     
     
-    $('#btn_method').on('click', function(e){
-        e.preventDefault(e);
-        var payment_category = $('#payment_category').val();
-        
-        if(payment_category==1){
-            // getProfiledata();
-            
-            $("#online").fadeIn();
-            $('#selector_payment').hide();
-            $('#online').css('display','block');
-            $('#deposit').css('display','none');
-            $('#back_method').css('display','block');
-            $('#js-payment_category').html('');
-
-            
-        }else if(payment_category==2){
-            // getProfiledata();
-            
-            $("#deposit").fadeIn();
-            $('#selector_payment').hide();
-            $('#back_method').css('display','block');
-            $('#online').css('display','none');
-            $('#deposit').css('display','block');
-            $('#js-payment_category').html('');
-
-        }else if(payment_category==3){
-            // getProfiledata();
-            
-            $("#gcash").fadeIn();
-            $('#selector_payment').hide();
-            $('#back_method').css('display','block');
-            $('#online').css('display','none');
-            $('#gcash').css('display','block');
-            $('#js-payment_category').html('');
-
-        }else if(payment_category==0){
-            // alert('sorry')
-            $('#form_method').addClass('has-error');
-            $('#form_method').removeClass('has-success');
-            $('#js-payment_category').html('<i class="fa fa-times-circle-o"></i> Choose your desire method');       
-        }
-    });
+    
 
     $('#back_method').on('click', function(){
         $("#selector_payment").fadeIn();
@@ -858,7 +813,7 @@
                                 bday = new Date(res.Profile.birthdate)
                             }
                             $('#display__full_name').text((res.Profile.first_name != null ? res.Profile.first_name : '') + ' ' + (res.Profile.middle_name != null ? res.Profile.middle_name : '') + ' '  + (res.Profile.last_name != null ? res.Profile.last_name : ''));
-                            $('#display__contact_number').text((res.Profile.contact_number != null ? res.Profile.contact_number : ''));
+                            $('#display__contact_number').text((res.Profile.contact_number != null ? res.Profile.contact_number : '+639'));
                             $('#display__email').text((res.Profile.email != null ? res.Profile.email : ''));
                             $('#display__address').text((res.Profile.address != null ? res.Profile.address : ''));
                             $('#display__birthday').text((res.Profile.birthdate != null ?  bday.getDate() + ' ' + bday.toLocaleString('en-US', {month: "long"}) + ' ' + bday.getFullYear()  : ''));
@@ -868,6 +823,7 @@
                             $('#display__father_name').text((res.Profile.father_name != null ? res.Profile.father_name : ''));
                             $('#display__mother_name').text((res.Profile.mother_name != null ? res.Profile.mother_name : ''));
                             $('#display__gender').text((res.Profile.gender == 1 ? 'Male' : 'Female'));
+                            $('#display__esc').text((res.Profile.isEsc));
                         }
                     })
                     $('.modal-update-profile').modal('hide');
@@ -881,3 +837,14 @@
             }
         });
     })
+
+    $('#btn-success-alert').click(function(e){
+        e.preventDefault();
+        var value = $(this).data('value');
+        alertify.defaults.theme.ok = "btn btn-primary btn-flat";
+        alertify
+        .alert('Confirmation', value, function(){
+            alertify.message('OK');
+            location.reload();
+        });
+    });

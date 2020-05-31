@@ -9,7 +9,7 @@ class ClassListController extends Controller
 {
     public function index (Request $request) 
     {
-
+        $SchoolYear = \App\SchoolYear::where('status', 1)->where('current', 1)->first();
 
         $ClassDetail = \App\ClassDetail::join('section_details', 'section_details.id', '=' ,'class_details.section_id')
             ->join('rooms', 'rooms.id', '=' ,'class_details.room_id')
@@ -33,6 +33,7 @@ class ClassListController extends Controller
             ->where('section_details.status', 1)
             ->where('class_details.current', 1)
             ->where('class_details.status', 1)
+            ->where('school_year_id', $SchoolYear->id)
             ->where(function ($query) use($request) {
                 if ($request->sy_search) 
                 {
@@ -51,7 +52,7 @@ class ClassListController extends Controller
             return view('control_panel_registrar.class_details.partials.data_list', compact('ClassDetail'))->render();
         }
 
-        $SchoolYear = \App\SchoolYear::where('status', 1)->where('current', 1)->orderBy('current', 'DESC')->get();
+        $SchoolYear = \App\SchoolYear::where('status', 1)->orderBy('school_year', 'DESC')->get();
 
         $ClassDetail = $ClassDetail->paginate(10);
         

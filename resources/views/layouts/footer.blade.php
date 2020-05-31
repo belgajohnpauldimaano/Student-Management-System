@@ -107,7 +107,7 @@
                     )
                     {
                         $.ajax({
-                           
+                            url         : "{{ route('registration.store') }}",
                             type        : 'POST',
                             data        : formData,
                             processData : false,
@@ -566,6 +566,76 @@
                     reader.readAsDataURL(input.files[0]);
                 }
             }
+        
+        $(window).on('load',function(){            
+			$('#js_reservation').modal({
+					backdrop: 'static',
+					keyboard: false
+			}, 'show');
+        }); 
+
+        
+        $.getJSON('../json/list_reservation.json', function(data){
+                var company_table = '';
+                $.each(data, function(key, value){
+                    company_table += '<tr align="center">';
+                    company_table += '<td>'+value.column0+'';
+                    company_table += '<td>'+value.column1+'';
+                    company_table += '<td>'+value.column2+'';
+                });
+               
+                $("#reservation tbody").html("");
+                $('#reservation tbody').append(company_table);
+        });
+
+        $.getJSON('../json/entrance_passer.json', function(data){
+                var passer_table = '';
+                $.each(data, function(key, value){
+                    passer_table += '<tr align="center">';
+                    passer_table += '<td style="width: 10%">'+value.column0+'';
+                    passer_table += '<td>'+value.column2+'';
+                });
+               
+                $("#passer tbody").html("");
+                $('#passer tbody').append(passer_table);
+        });
+
+        $.getJSON('../json/waiting_jan2020.json', function(data){
+                var passer_table = '';
+                $.each(data, function(key, value){
+                    passer_table += '<tr align="center">';
+                    passer_table += '<td style="width: 10%">'+value.column0+'';
+                    passer_table += '<td>'+value.column2+'';
+                });
+               
+                $("#waiting_jan_2020 tbody").html("");
+                $('#waiting_jan_2020 tbody').append(passer_table);
+        });
+
+        $.getJSON('../json/list_feb2020.json', function(data){
+                var passer_table = '';
+                $.each(data, function(key, value){
+                    passer_table += '<tr align="center">';
+                    passer_table += '<td style="width: 10%">'+value.column0+'';
+                    passer_table += '<td>'+value.column2+'';
+                });
+               
+                $("#list_feb2020 tbody").html("");
+                $('#list_feb2020 tbody').append(passer_table);
+        });
+
+        $.getJSON('../json/waiting_feb2020.json', function(data){
+                var passer_table = '';
+                $.each(data, function(key, value){
+                    passer_table += '<tr align="center">';
+                    passer_table += '<td style="width: 10%">'+value.column0+'';
+                    passer_table += '<td>'+value.column2+'';
+                });
+               
+                $("#waiting_feb2020 tbody").html("");
+                $('#waiting_feb2020 tbody').append(passer_table);
+        });
+
 
     </script>
 </body>
