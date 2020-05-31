@@ -229,8 +229,7 @@
                 ['key' => 'total',],
             ];
     }
-        
-    
+
     
     $attendance_data = json_decode(json_encode([
         'days_of_school' => [

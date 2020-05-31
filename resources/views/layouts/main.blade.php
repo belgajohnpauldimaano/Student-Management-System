@@ -1,6 +1,7 @@
 @include('layouts.header')
 
 @yield('content')
+
 @include('pages.registration')
 
 
