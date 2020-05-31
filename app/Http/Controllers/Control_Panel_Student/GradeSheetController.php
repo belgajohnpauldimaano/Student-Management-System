@@ -9,7 +9,6 @@ use App\Http\Controllers\Controller;
 
 class GradeSheetController extends Controller
 {
- 
 
     public function index (Request $request)
     {
@@ -55,9 +54,13 @@ class GradeSheetController extends Controller
                     ->get();
 
                 $ClassDetail = [];
-                
+                // if($Enrollment){
+                //     $GradeSheet = 0;
+                //     return view('control_panel_student.grade_sheet.index', compact('GradeSheet'));
+                // }   
                 if ($Enrollment)
-                {                
+                {       
+                          
                     $ClassDetail = \App\ClassDetail::join('section_details', 'section_details.id', '=' ,'class_details.section_id')
                     ->join('rooms', 'rooms.id', '=' ,'class_details.room_id')
                     ->join('school_years', 'school_years.id', '=' ,'class_details.school_year_id')
@@ -79,6 +82,7 @@ class GradeSheetController extends Controller
                     ->first();
                 }
 
+                
                 $GradeSheetData = [];
                 $grade_level = 1;
                 $sub_total = 0;

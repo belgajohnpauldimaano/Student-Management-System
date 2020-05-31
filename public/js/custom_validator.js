@@ -445,88 +445,13 @@
          
     });
 
-    var $getEvent = '';
     
-    function getProfiledata(){
-      $.ajax({
-            url : "{{ route('student.my_account.fetch_profile') }}",
-            type : 'POST',
-            data        : {_token: '{{ csrf_token() }}'},
-            success     : function (res) {
-                const bday = new Date(res.Profile.birthdate)
-                $('.help-block').html('');
-                if(res.Profile.first_name == null || res.Profile.middle_name ==null || res.Profile.last_name ==null || res.Profile.contact_number == null || res.Profile.email == null || res.Profile.p_address == null || bday == null || res.Profile.father_name == null || res.Profile.mother_name == null || res.Profile.gender == null){
-                    $getEvent = 'true';
-                    $('.modal-update-profile').modal({ backdrop : 'static' });
-                    $('#first_name').val(res.Profile.first_name);
-                    $('#middle_name').val(res.Profile.middle_name);
-                    $('#last_name').val(res.Profile.last_name);
-                    $('#contact_number').val(res.Profile.contact_number != null ? res.Profile.contact_number : '+639');
-                    $('#profile_email').val(res.Profile.email);
-                    $('#c_address').val(res.Profile.c_address);
-                    $('#p_address').val(res.Profile.p_address);
-                    $('#birthday').val((bday.getMonth() + 1).toLocaleString('en-US', {minimumIntegerDigits: 2, useGrouping:false}) + `/` + bday.getDate().toLocaleString('en-US', {minimumIntegerDigits: 2, useGrouping:false}) +`/` + bday.getFullYear());
-                    $('#father_name').val(res.Profile.father_name);     
-                    $('#mother_name').val(res.Profile.mother_name);    
-                    $('#gender').val(res.Profile.gender);
-                    $('#isEsc').val(res.Profile.isEsc);
-                    $('.birthday').datepicker({
-                        autoclose: true
-                    })                     
-                }
-                else
-                {
-                    $getEvent = 'false';
-                }
-                
-            }
-        })
-    }
+    
+    
 
     
     
-    $('#btn_method').on('click', function(e){
-        e.preventDefault(e);
-        var payment_category = $('#payment_category').val();
-        
-        if(payment_category==1){
-            getProfiledata();
-            
-            $("#online").fadeIn();
-            $('#selector_payment').hide();
-            $('#online').css('display','block');
-            $('#deposit').css('display','none');
-            $('#back_method').css('display','block');
-            $('#js-payment_category').html('');
-
-            
-        }else if(payment_category==2){
-            getProfiledata();
-            
-            $("#deposit").fadeIn();
-            $('#selector_payment').hide();
-            $('#back_method').css('display','block');
-            $('#online').css('display','none');
-            $('#deposit').css('display','block');
-            $('#js-payment_category').html('');
-
-        }else if(payment_category==3){
-            getProfiledata();
-            
-            $("#gcash").fadeIn();
-            $('#selector_payment').hide();
-            $('#back_method').css('display','block');
-            $('#online').css('display','none');
-            $('#gcash').css('display','block');
-            $('#js-payment_category').html('');
-
-        }else if(payment_category==0){
-            // alert('sorry')
-            $('#form_method').addClass('has-error');
-            $('#form_method').removeClass('has-success');
-            $('#js-payment_category').html('<i class="fa fa-times-circle-o"></i> Choose your desire method');       
-        }
-    });
+    
 
     $('#back_method').on('click', function(){
         $("#selector_payment").fadeIn();

@@ -122,7 +122,7 @@
 @endsection
 
 @section ('content_title')
-    Student List
+    Student Account
 @endsection
 
 @section ('content')
@@ -138,8 +138,7 @@
             </form>
         </div>
         <div class="overlay hidden" id="js-loader-overlay"><i class="fa fa-refresh fa-spin"></i></div>
-        <div class="box-body">
-            
+        <div class="box-body">            
             <div class="js-data-container">
                 @include('control_panel_finance.student_finance_account.partials.data_list')       
             </div>

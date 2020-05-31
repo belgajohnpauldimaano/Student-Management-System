@@ -5,11 +5,11 @@
     <table class="table no-margin table-bordered table-striped">
                 <thead>
                     <tr>
-                        <th>No.</th>
-                        <th>Name</th>
-                        <th>Student level</th>
-                        <th>Status</th>
-                        <th>Action</th>
+                        <th width="5%">No.</th>
+                        <th width="20%">Name</th>
+                        <th width="20%">Student level</th>
+                        <th width="10%">Status</th>
+                        <th width="20%">Action</th>
                     </tr>
                 </thead>
                 <tbody>                                            

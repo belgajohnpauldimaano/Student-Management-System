@@ -122,7 +122,7 @@
 @endsection
 
 @section ('content_title')
-    Student List
+    Student Payment
 @endsection
 
 @section ('content')

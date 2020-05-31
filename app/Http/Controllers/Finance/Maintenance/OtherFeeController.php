@@ -12,11 +12,11 @@ class OtherFeeController extends Controller
     {
         if ($request->ajax())
         {
-            $OtherFee = \App\OtherFee::where('status', 1)->where('other_fee_name', 'like', '%'.$request->search.'%')->paginate(10);
+            $OtherFee = OtherFee::where('status', 1)->where('other_fee_name', 'like', '%'.$request->search.'%')->paginate(10);
             return view('control_panel_finance.maintenance.others_fee.partials.data_list', compact('OtherFee'))->render();
         }
         
-        $OtherFee = \App\OtherFee::where('status', 1)->paginate(10);
+        $OtherFee = OtherFee::where('status', 1)->paginate(10);
         return view('control_panel_finance.maintenance.others_fee.index', compact('OtherFee'));
     }
 
@@ -25,7 +25,7 @@ class OtherFeeController extends Controller
         $OtherFee = NULL;
         if ($request->id)
         {
-            $OtherFee = \App\OtherFee::where('id', $request->id)->first();
+            $OtherFee = OtherFee::where('id', $request->id)->first();
         }
         return view('control_panel_finance.maintenance.others_fee.partials.modal_data', compact('OtherFee'))->render();
     }
@@ -84,7 +84,7 @@ class OtherFeeController extends Controller
 
     public function deactivate_data (Request $request) 
     {
-        $OtherFee = \App\OtherFee::where('id', $request->id)->first();
+        $OtherFee = OtherFee::where('id', $request->id)->first();
 
         if ($OtherFee)
         {

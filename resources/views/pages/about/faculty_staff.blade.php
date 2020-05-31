@@ -225,7 +225,7 @@
                             </div>
                         </div>
                     </div> --}}
-                    <div class="col-lg-3 col-md-6 wow fadeInUp" data-wow-delay="0.3s">
+                    {{-- <div class="col-lg-3 col-md-6 wow fadeInUp" data-wow-delay="0.3s">
                         <div class="member">
                             <img src="{{ asset('img/faculty/Collado-Randolph.jpg') }}" class="img-fluid" alt="">
                             <div class="member-info">
@@ -234,7 +234,7 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </div> --}}
                     {{-- <div class="col-lg-3 col-md-6 wow fadeInUp" data-wow-delay="0.3s">
                         <div class="member">
                             <img src="{{ asset('img/faculty/De-Guzman-Marie-Estela-S.jpg') }}" class="img-fluid" alt="">
@@ -436,7 +436,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-lg-3 col-md-6 wow fadeInUp" data-wow-delay="0.3s">
+                    {{-- <div class="col-lg-3 col-md-6 wow fadeInUp" data-wow-delay="0.3s">
                         <div class="member">
                             <img src="{{ asset('img/faculty/Soriano-Noli-A.jpg') }}" class="img-fluid" alt="">
                             <div class="member-info">
@@ -445,7 +445,7 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </div> --}}
                     <div class="col-lg-3 col-md-6 wow fadeInUp" data-wow-delay="0.3s">
                         <div class="member">
                             <img src="{{ asset('img/faculty/Tabjan-Ritchelle-Ann-P.jpg') }}" class="img-fluid" alt="">

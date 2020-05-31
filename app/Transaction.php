@@ -6,6 +6,11 @@ use Illuminate\Database\Eloquent\Model;
 
 class Transaction extends Model
 {
+    public function transactions() 
+    {
+        return $this->hasOne(TransactionOtherFee::class, 'or_number', 'or_number');
+    }
+
     public function transaction_others_fee() 
     {
         return $this->hasMany(TransactionOtherFee::class, 'or_number', 'or_number');

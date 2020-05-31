@@ -49,7 +49,7 @@ class EnrollmentController extends Controller
                 $Tuition = PaymentCategory::where('grade_level_id', $IncomingStudentCount->grade_level_id)->first();
 
                 $PaymentCategory = PaymentCategory::with('misc_fee','tuition')
-                                ->where('grade_level_id',  $IncomingStudentCount->grade_level_id)->first();
+                    ->where('grade_level_id',  $IncomingStudentCount->grade_level_id)->first();
                                 
                 $Downpayment = DownpaymentFee::where('current', 1)->first();
 
@@ -216,7 +216,7 @@ class EnrollmentController extends Controller
             }
         }       
         
-        $payment = Transaction::find($Enrollment->transaction_id);
+            $payment = Transaction::find($Enrollment->transaction_id);
             \Mail::to($request->bank_email)->send(new SendMail($payment));
             \Mail::to('info@sja-bataan.com')->send(new NotifyAdminMail($payment));
 
@@ -282,8 +282,9 @@ class EnrollmentController extends Controller
             $Enrollment->isSuccess = 1;
             $Enrollment->transaction_id = $TransactionAccount->id;            
             // image
-            $imageName = time().'.'.$request->gcash_image->getClientOriginalExtension();
-            $request->gcash_image->move(public_path('/img/receipt/'), $imageName);
+                $imageName = time().'.'.$request->gcash_image->getClientOriginalExtension();
+                $request->gcash_image->move(public_path('/img/receipt/'), $imageName);           
+            //
             $Enrollment->receipt_img = $imageName;
             $Enrollment->save();
 

@@ -396,6 +396,7 @@
                     return;
                 }
             });
+            
             $('body').on('submit', '#js-form_search', function (e) {
                 e.preventDefault();
                 if (!$('#quarter_grades').val()) {

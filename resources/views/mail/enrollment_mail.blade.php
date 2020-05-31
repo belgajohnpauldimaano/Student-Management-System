@@ -7,7 +7,8 @@
     <body>
     <div style="padding: 20px">
         <h3 style="text-align:center; margin-bottom:10px">
-            SJAI Online Registration Confirmation
+            St. John's Academy Inc.<br/>
+            Online Registration Confirmation
         </h3>
         <br/>
         <p style="text-align: right;">Date: {{ $payment ? date_format(date_create($payment->created_at), 'F d, Y h:i A') : '' }}</p>

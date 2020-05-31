@@ -16,53 +16,52 @@
                     <input type="text" class="form-control" name="search">
                 </div>  --}}
                 
-                
                 @if($ClassSubjectDetail->grade_level <= 10)
-                <form id="js-form_search">
-                    {{ csrf_field() }}
-                    <div class="form-group col-sm-12 col-md-3" style="padding-right:0">
-                        <select name="search_sy" id="search_sy" class="form-control search_sy">
-                            <option value="">Select SY</option>
-                            @foreach ($SchoolYear as $data)
-                                <option value="{{ $data->id }}">{{ $data->school_year }}</option>
-                            @endforeach
-                        </select>
-                    </div> 
-                    &nbsp;
-                        <div class="form-group col-sm-12 col-md-5" style="padding-right:0">
-                            <select name="search_class_subject" id="search_class_subject" class="form-control search_class_subject">
-                                <option value="">Select Class Subject</option>
-                            </select>
-                        </div>
-                    &nbsp;
-                    <button type="submit" class="btn btn-flat btn-success">Search</button>
-                </form>
-                @else
-                <form id="js-form_search1">
-                    {{ csrf_field() }}
-                    <div class="form-group col-sm-12 col-md-3" style="padding-right:0">
-                        <select name="search_sy1" id="search_sy1" class="form-control search_sy">
-                            <option value="">Select SY</option>
-                            @foreach ($SchoolYear as $data)
-                                <option value="{{ $data->id }}">{{ $data->school_year }}</option>
-                            @endforeach
-                        </select>
-                    </div> 
-                    &nbsp;
+                    <form id="js-form_search">
+                        {{ csrf_field() }}
                         <div class="form-group col-sm-12 col-md-3" style="padding-right:0">
-                            <select name="search_semester" id="search_semester" class="form-control search_semester">
-                                <option value="">Select Semester</option>
+                            <select name="search_sy" id="search_sy" class="form-control search_sy">
+                                <option value="">Select SY</option>
+                                @foreach ($SchoolYear as $data)
+                                    <option value="{{ $data->id }}">{{ $data->school_year }}</option>
+                                @endforeach
                             </select>
-                        </div>
-                    &nbsp;
-                        <div class="form-group col-sm-12 col-md-5" style="padding-right:0">
-                            <select name="search_class_subject_sem" id="search_class_subject_sem" class="form-control search_class_subject">
-                                <option value="">Select Class Subject</option>
+                        </div> 
+                        &nbsp;
+                            <div class="form-group col-sm-12 col-md-5" style="padding-right:0">
+                                <select name="search_class_subject" id="search_class_subject" class="form-control search_class_subject">
+                                    <option value="">Select Class Subject</option>
+                                </select>
+                            </div>
+                        &nbsp;
+                        <button type="submit" class="btn btn-flat btn-success">Search</button>
+                    </form>
+                @else
+                    <form id="js-form_search1">
+                        {{ csrf_field() }}
+                        <div class="form-group col-sm-12 col-md-3" style="padding-right:0">
+                            <select name="search_sy1" id="search_sy1" class="form-control search_sy">
+                                <option value="">Select SY</option>
+                                @foreach ($SchoolYear as $data)
+                                    <option value="{{ $data->id }}">{{ $data->school_year }}</option>
+                                @endforeach
                             </select>
-                        </div>
-                    &nbsp;
-                    <button type="submit" class="btn btn-flat btn-success">Search</button>
-                </form>
+                        </div> 
+                        &nbsp;
+                            <div class="form-group col-sm-12 col-md-3" style="padding-right:0">
+                                <select name="search_semester" id="search_semester" class="form-control search_semester">
+                                    <option value="">Select Semester</option>
+                                </select>
+                            </div>
+                        &nbsp;
+                            <div class="form-group col-sm-12 col-md-5" style="padding-right:0">
+                                <select name="search_class_subject_sem" id="search_class_subject_sem" class="form-control search_class_subject">
+                                    <option value="">Select Class Subject</option>
+                                </select>
+                            </div>
+                        &nbsp;
+                        <button type="submit" class="btn btn-flat btn-success">Search</button>
+                    </form>
                 @endif
                 
                 {{--  <button type="button" class="pull-right btn btn-flat btn-danger btn-sm" id="js-button-add"><i class="fa fa-plus"></i> Add</button>  --}}
@@ -98,6 +97,7 @@
                 }
             });
         }
+        
         $(function () {
 
             $('body').on('submit', '#js-form_search', function (e) {
@@ -114,6 +114,7 @@
                 page = $(this).attr('href').split('=')[1];
                 fetch_data();
             });
+
             $('body').on('change', '#search_sy', function () {
                 $.ajax({
                     url : "{{ route('faculty.student_grade_sheet.list_class_subject_details') }}",
@@ -128,26 +129,23 @@
             })
             
             function fetch_data1() {
-            var formData = new FormData($('#js-form_search1')[0]);
-            formData.append('page', page);
-            loader_overlay();
-            
-            var semester_grades = $('#search_semester').val();
-            
-                    
-            $.ajax({
-                url : "{{ route('faculty.student_grade_sheet.list_students_by_class1') }}",
-                type : 'POST',
-                data : formData,
-                processData : false,
-                contentType : false,
-                success     : function (res) {
-                    loader_overlay();
-                    $('.js-data-container').html(res);
-                }
-            });
-                    
-                   
+                var formData = new FormData($('#js-form_search1')[0]);
+                formData.append('page', page);
+                loader_overlay();
+                
+                var semester_grades = $('#search_semester').val();                
+                        
+                $.ajax({
+                    url : "{{ route('faculty.student_grade_sheet.list_students_by_class1') }}",
+                    type : 'POST',
+                    data : formData,
+                    processData : false,
+                    contentType : false,
+                    success     : function (res) {
+                        loader_overlay();
+                        $('.js-data-container').html(res);
+                    }
+                });
             }
 
             

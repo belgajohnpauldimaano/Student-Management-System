@@ -14,8 +14,7 @@ class FinanceSummaryController extends Controller
 {
     public function index(Request $request)
     {
-       
-        return view('control_panel_finance.payment_summary.index');
+       return view('control_panel_finance.payment_summary.index');
     }
     
     function fetch_record(Request $request)

@@ -34,7 +34,7 @@
 						<li>To provide innovative curriculum and instruction that will develop learners' skills to become globally competitive.</li>
 						<li>To foster an inclusive environment conducive to character development and Christian formation that will produce model graduates catered to transform society</li>
 						<li>To provide communal activities that will enable the school personnel, faculty and students to become individual who can lead, relate and respond to the changing needs of the society</li>
-						<li>To develop a roster of excellent administrative and faculty members who will continually engae in their holistic development.</li>
+						<li>To develop a roster of excellent administrative and faculty members who will continually engage in their holistic development.</li>
 					</ol>			
 					<br>
 					<br>

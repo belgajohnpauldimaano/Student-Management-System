@@ -16,11 +16,13 @@ class AccountProfileController extends Controller
         // $RegistrarInformation = collect(\App\RegistrarInformation::DEPARTMENTS); 
         return view('control_panel_student.account_profile.index', compact('User', 'Profile'));
     }
+
     public function fetch_profile (Request $request)
     {
         $User = Auth::user();
         $Profile = StudentInformation::where('user_id', $User->id)->first();
-        // return json_encode($Profile); date('Y-m-d', strtotime($request->birthdate));
+        // return json_encode($Profile);
+        //  date('Y-m-d', strtotime($request->birthdate));
         return response()->json(['res_code' => 0, 'res_msg' => '', 'Profile' => $Profile]);
     }
     

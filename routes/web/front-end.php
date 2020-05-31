@@ -11,6 +11,7 @@ Route::group(['middleware' => ['guest']], function () {
 });
 
 Route::get('faqs', 'FaqsController@faqs')->name('pages.faqs');
+Route::get('faqs-on-distance-learning', 'FaqsController@faqs_on_distance_learning')->name('pages.faqs_on_distance_learning');
 
 /*
 |About SJA Pages --------------------------------------------------------------------------

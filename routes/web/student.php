@@ -15,6 +15,11 @@ Route::group(['prefix' => 'student', 'middleware' => ['auth', 'userroles'], 'rol
         Route::post('/notify-student', 'Control_Panel_Student\PaymentController@paypalPdt');        
     });
 
+    Route::group(['prefix' => 'online-appointment'], function(){
+        Route::get('', 'Finance\Maintenance\OnlineAppointmentController@appointment')->name('student.student_appointment');
+        Route::post('', 'Finance\Maintenance\OnlineAppointmentController@appointment')->name('student.student_appointment');
+        Route::post('reserve', 'Finance\Maintenance\OnlineAppointmentController@reserve')->name('student.student_appointment.reserve');
+    });
     // Route::post('paypal', 'Control_Panel_Student\PaymentController@payWithpaypal');
     // Route::get('status', 'PaymentController@getPaymentStatus');
 

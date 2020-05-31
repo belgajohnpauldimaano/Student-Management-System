@@ -7,7 +7,7 @@
     <body>
     <div style="padding: 20px">
         <h3 style="text-align:center; margin-bottom:10px">
-            St. John Academy Inc
+            Saint John's Academy Inc.
         </h3>
         <br/>
         

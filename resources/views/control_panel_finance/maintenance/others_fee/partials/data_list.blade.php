@@ -1,5 +1,5 @@
                         <div class="pull-right">
-                            
+                            {{ $OtherFee ? $OtherFee->links() : '' }}                  
                         </div>
                         <table class="table no-margin">
                             <thead>

@@ -35,14 +35,14 @@
     <header id="header">
         <div class="container-fluid">
             <div id="logo" class="pull-left">
-                <h1><a href="{{ route('home_page') }}" class="scrollto">St. John</a></h1>
+                <h1><a href="{{ route('home_page') }}" class="scrollto">St. John's</a></h1>
                 <!-- Uncomment below if you prefer to use an image logo -->
                 <!-- <a href="#intro"><img src="img/logo.png" alt="" title="" /></a>-->
             </div>
             <nav id="nav-menu-container">
                 <ul class="nav-menu">
                     <li class="menu"><a href="{{ route('home_page') }}">Home</a></li>
-                    <li class="menu-has-children"><a href="#">About SJA</a>
+                    <li class="menu-has-children"><a href="#">About SJAI</a>
                         <ul>
                             <li><a href="{{ route('school_profile') }}">School Profile</a></li>
                             <li><a href="{{ route('vision_mission') }}">Vision  Mission</a></li>
@@ -77,7 +77,12 @@
                             {{-- <li><a href="#">Transport & Diploma</a></li> --}}
                         </ul>
                     </li>
-                    <li class="menu"><a href="{{route('pages.faqs')}}">FAQs</a></li>
+                    <li class="menu-has-children"><a href="#">FAQs</a>
+                        <ul>
+                            <li><a href="{{route('pages.faqs')}}">Frequently Ask Questions</a></li>
+                            <li><a href="{{ route('pages.faqs_on_distance_learning') }}">Frequency Asked Questions on Distance Learning</a></li>
+                        </ul>
+                    </li>
                     <li class="menu">
                         <a class="btn-enroll" data-toggle="modal" data-target="#js-registration"  href="#"><i class="fas fa-mouse-pointer"></i> Registration</a>
                     </li>

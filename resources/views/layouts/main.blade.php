@@ -3,4 +3,5 @@
 @yield('content')
 @include('pages.registration')
 
+
 @include('layouts.footer')

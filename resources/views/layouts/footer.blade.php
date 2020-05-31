@@ -4,11 +4,11 @@
             <div class="container">
                 <div class="row">
                     <div class="col-lg-4 col-md-6 footer-info">
-                        <h3>St. John</h3>
-                        <p>SAINT JOHN ACADEMY INC was born out of a clamor for a Catholic educational institution which will provide a deeply-rooted Christian formation to the young and which can supply the volunteers for the Parochial catechetical program at the public schools within the parish... <a href="{{ route('history') }}">readmore</a></p>
+                        <h3>St. John's</h3>
+                        <p>ST. JOHN'S ACADEMY INC was born out of a clamor for a Catholic educational institution which will provide a deeply-rooted Christian formation to the young and which can supply the volunteers for the Parochial catechetical program at the public schools within the parish... <a href="{{ route('history') }}">readmore</a></p>
                     </div>
                     <div class="col-lg-4 col-md-6 footer-links">
-                        <h4>About SJA</h4>
+                        <h4>About SJAI</h4>
                         <ul>
                             <li><i class="ion-ios-arrow-right"></i> <a href="{{ route('home_page') }}">Home</a></li>
                             <li><i class="ion-ios-arrow-right"></i> <a href="{{ route('vision_mission') }}">Vision Mission</a></li>
@@ -20,10 +20,9 @@
                         <h4>Contact Us</h4>
                         <p>
                             Rizal Street, Dinalupihan
-                            <br> Bataan, 2110 Dinalupihan
-                            <br> Bataan
+                            <br> Bataan, 2110 
                             <br>
-                            <strong>Phone:</strong> (047) 481 1762
+                            <strong>Contact Numbers:</strong> (047) 636 5560 | (047) 636 0088
                             <br>
                         </p>
                         {{-- <div class="social-links">
@@ -43,7 +42,7 @@
         </div>
         <div class="container">
             <div class="copyright">
-                &copy; Copyright <strong>St. John</strong>. All Rights Reserved
+                &copy; Copyright <strong>St. John's</strong>. All Rights Reserved
             </div>
             {{-- <div class="credits">
                 Best <a href="https://bootstrapmade.com/">Bootstrap Templates</a> by BootstrapMade
@@ -567,6 +566,76 @@
                     reader.readAsDataURL(input.files[0]);
                 }
             }
+        
+        $(window).on('load',function(){            
+			$('#js_reservation').modal({
+					backdrop: 'static',
+					keyboard: false
+			}, 'show');
+        }); 
+
+        
+        $.getJSON('../json/list_reservation.json', function(data){
+                var company_table = '';
+                $.each(data, function(key, value){
+                    company_table += '<tr align="center">';
+                    company_table += '<td>'+value.column0+'';
+                    company_table += '<td>'+value.column1+'';
+                    company_table += '<td>'+value.column2+'';
+                });
+               
+                $("#reservation tbody").html("");
+                $('#reservation tbody').append(company_table);
+        });
+
+        $.getJSON('../json/entrance_passer.json', function(data){
+                var passer_table = '';
+                $.each(data, function(key, value){
+                    passer_table += '<tr align="center">';
+                    passer_table += '<td style="width: 10%">'+value.column0+'';
+                    passer_table += '<td>'+value.column2+'';
+                });
+               
+                $("#passer tbody").html("");
+                $('#passer tbody').append(passer_table);
+        });
+
+        $.getJSON('../json/waiting_jan2020.json', function(data){
+                var passer_table = '';
+                $.each(data, function(key, value){
+                    passer_table += '<tr align="center">';
+                    passer_table += '<td style="width: 10%">'+value.column0+'';
+                    passer_table += '<td>'+value.column2+'';
+                });
+               
+                $("#waiting_jan_2020 tbody").html("");
+                $('#waiting_jan_2020 tbody').append(passer_table);
+        });
+
+        $.getJSON('../json/list_feb2020.json', function(data){
+                var passer_table = '';
+                $.each(data, function(key, value){
+                    passer_table += '<tr align="center">';
+                    passer_table += '<td style="width: 10%">'+value.column0+'';
+                    passer_table += '<td>'+value.column2+'';
+                });
+               
+                $("#list_feb2020 tbody").html("");
+                $('#list_feb2020 tbody').append(passer_table);
+        });
+
+        $.getJSON('../json/waiting_feb2020.json', function(data){
+                var passer_table = '';
+                $.each(data, function(key, value){
+                    passer_table += '<tr align="center">';
+                    passer_table += '<td style="width: 10%">'+value.column0+'';
+                    passer_table += '<td>'+value.column2+'';
+                });
+               
+                $("#waiting_feb2020 tbody").html("");
+                $('#waiting_feb2020 tbody').append(passer_table);
+        });
+
 
     </script>
 </body>

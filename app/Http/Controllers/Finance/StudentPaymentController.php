@@ -76,6 +76,11 @@ class StudentPaymentController extends Controller
                     transaction_month_paids.transaction_id,
                     transaction_discounts.discount_amt
                 ')
+                ->where(function ($query) use ($request) {
+                    $query->where('student_informations.first_name', 'like', '%'.$request->search.'%');
+                    $query->orWhere('student_informations.middle_name', 'like', '%'.$request->search.'%');
+                    $query->orWhere('student_informations.last_name', 'like', '%'.$request->search.'%');
+                })
                 ->where('transaction_month_paids.school_year_id', $SchoolYear->id)
                 ->where('student_informations.status', 1)
                 ->where('transaction_month_paids.isSuccess', 1)

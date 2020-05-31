@@ -1,5 +1,5 @@
-                        <div class="pull-right">
-                            
+                        <div class="pull-right">                            
+                            {{ $PaymentCategory ? $PaymentCategory->links() : '' }}                                    
                         </div>
                         <table class="table no-margin">
                             <thead>

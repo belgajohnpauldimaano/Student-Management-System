@@ -32,6 +32,14 @@ Route::group(['prefix' => 'finance', 'middleware' => ['auth', 'userroles'], 'rol
         Route::get('print', 'Finance\FinanceSummaryController@print')->name('finance.summary.print');
     });
 
+    Route::group(['prefix' => 'online-appointment'], function () {        
+        Route::get('', 'Finance\Maintenance\OnlineAppointmentController@date_time')->name('finance.online_appointment.date_time');
+        Route::post('', 'Finance\Maintenance\OnlineAppointmentController@date_time')->name('finance.online_appointment.date_time');
+        Route::post('appointment', 'Finance\Maintenance\OnlineAppointmentController@show')->name('finance.online_appointment.show');
+        Route::post('done', 'Finance\Maintenance\OnlineAppointmentController@done')->name('finance.online_appointment.done');
+        Route::post('deactivate', 'Finance\Maintenance\OnlineAppointmentController@deactivate_date')->name('finance.online_appointment.deactivate_date');
+    });
+
     
     Route::group(['prefix' => 'student-finance-account'], function () {
         Route::get('', 'Finance\StudentFinanceAccountController@index')->name('finance.student_acct');
@@ -103,6 +111,16 @@ Route::group(['prefix' => 'finance', 'middleware' => ['auth', 'userroles'], 'rol
             Route::post('save-data', 'Finance\Maintenance\OtherFeeController@save_data')->name('finance.maintenance.other_fee.save_data');
             Route::post('deactivate-data', 'Finance\Maintenance\OtherFeeController@deactivate_data')->name('finance.maintenance.other_fee.deactivate_data');
             Route::post('toggle-current-sy', 'Finance\Maintenance\OtherFeeController@toggle_current_sy')->name('finance.maintenance.other_fee.toggle_current_sy');
+        
+        });
+
+        Route::group(['prefix' => 'setup-queue'], function () {
+            Route::get('', 'Finance\Maintenance\OnlineAppointmentController@index')->name('finance.maintenance.queue');
+            Route::post('', 'Finance\Maintenance\OnlineAppointmentController@index')->name('finance.maintenance.queue');
+            Route::post('modal-data', 'Finance\Maintenance\OnlineAppointmentController@modal_data')->name('finance.maintenance.queue.modal_data');
+            Route::post('save-data', 'Finance\Maintenance\OnlineAppointmentController@save_data')->name('finance.maintenance.queue.save_data');
+            Route::post('deactivate-data', 'Finance\Maintenance\OnlineAppointmentController@deactivate_data')->name('finance.maintenance.queue.deactivate_data');
+            Route::post('toggle-current-sy', 'Finance\Maintenance\OnlineAppointmentController@toggle_current_sy')->name('finance.maintenance.queue.toggle_current_sy');
         
         });
     });

@@ -4,7 +4,7 @@
 @endsection
 
 @section ('content_title')
-    Student list
+    Student list: Grade 11
 @endsection
 
 @section ('content')
