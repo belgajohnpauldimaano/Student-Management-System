@@ -1,6 +1,9 @@
 <h4>
+    @if($ClassDetail)
     <span class="logo-mini"><img src="{{ asset('/img/sja-logo.png') }}" style="height: 60px;"></span> 
-<b> Grade-level/Section : <i style="color:red">{{$ClassDetail->grade_level.' '.$ClassDetail->section}}</i></b></h4>
+    <b>Grade-level/Section : <i style="color:red">{{$ClassDetail->grade_level.' '.$ClassDetail->section}}</i></b>
+    @endif
+</h4>
 <hr/> 
 <div class="table-responsive">
     <table class="table no-margin table-bordered">

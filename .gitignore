@@ -6,6 +6,8 @@
 /public/img/account
 /storage/*.key
 /vendor
+/enrollment
+/staging
 /.idea
 /.vscode
 /.vagrant

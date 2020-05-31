@@ -4,18 +4,16 @@
     <section id="intro">
         <div class="intro-container">
           <div id="introCarousel" class="carousel  slide carousel-fade" data-ride="carousel">
-
             <ol class="carousel-indicators"></ol>
-
             <div class="carousel-inner" role="listbox">
 
               <div class="carousel-item active" style="background-image: url('{{ asset('img/intro-banner/1.jpg') }}');">
                 <div class="carousel-container">
                   <div class="carousel-content">
-                    <h2>Saint John Academy</h2>
-                    <p>Striving for Academic Excellence and Christian Formation</p>
+                    <h2>St. John's Academy Inc.</h2>
+                    <p>Striving for Academic Excellence, Innovation and Christian Formation</p>
                     {{-- <a href="#featured-services" class="btn-get-started scrollto">Get Started</a> --}}
-                    <a href="#" class="btn-get-started scrollto">About SJA</a>
+                    <a href="#" class="btn-get-started scrollto">About SJAI</a>
                   </div>
                 </div>
               </div>
@@ -90,12 +88,12 @@
 
         <section id="about">
             <div class="container">
-                <header class="section-header">
+                {{-- <header class="section-header">
                     <h3>About Us</h3>
                     <p>The establishment of Catholic schools in Bataan goes back to 1959 when the late Fr. Conrado Ma. Quiambao founded St. Catherine of Siena Academy of Samal.</p>
-                    {{-- <h3>Saint John Academy</h3>
-                    <p>Striving for Academic Excellence & Christian Formation</p> --}}
-                </header>
+                    <h3>Saint John Academy</h3>
+                    <p>Striving for Academic Excellence & Christian Formation</p>
+                </header> --}}
                 <div class="row about-cols">
                     <div class="col-md-4 wow fadeInUp">
                         <div class="about-col" style="height: 26.5em !important">
@@ -1365,14 +1363,14 @@
                         <div class="contact-phone">
                             <i class="ion-ios-telephone-outline"></i>
                             <h3>Phone Number</h3>
-                            <p><a href="tel:0474811762">(047) 481 1762</a></p>
+                            <p><a href="tel:0474811762">(047) 636 5560<br/>(047) 636 0088</a></p>
                         </div>
                     </div>
                     <div class="col-md-4">
                         <div class="contact-email">
                             <i class="ion-ios-email-outline"></i>
                             <h3>Email</h3>
-                            <p><a href="mailto:info@sja.com">info@sja.com</a></p>
+                            <p><a href="mailto:info@sja-bataan.com">info@sja-bataan.com</a></p>
                         </div>
                     </div>
                 </div>
