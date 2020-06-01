@@ -574,6 +574,20 @@
 			}, 'show');
         }); 
 
+        $grade7_list = "{{ asset('json/grade7_list.json') }}";
+        $.getJSON($grade7_list, function(data){
+                var company_table = '';
+                $.each(data, function(key, value){
+                    company_table += '<tr align="center">';
+                    company_table += '<td>'+value.column0+'';
+                    company_table += '<td>'+value.column1+'';
+                    });
+               
+                $("#reservation_grade7 tbody").html("");
+                $('#reservation_grade7 tbody').append(company_table);
+        });
+
+
         $url_reservatoin = "{{ asset('json/list_reservation.json') }}";
         $.getJSON($url_reservatoin, function(data){
                 var company_table = '';
