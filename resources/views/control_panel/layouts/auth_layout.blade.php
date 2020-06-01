@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>St. John Academy Admin Panel | Log in</title>
+  <title>St. John's Academy Inc. Admin Panel | Log in</title>
   <!-- Tell the browser to be responsive to screen width -->
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
   <!-- Bootstrap 3.3.6 -->
@@ -29,7 +29,7 @@
 <body class="hold-transition login-page">
 <div class="login-box">
   <div class="login-logo">
-    <a href="{{ route('home_page') }}"><b>St. John </b>Academy</a>
+    <a href="{{ route('home_page') }}"><b>St. John's </b>Academy Inc.</a>
   </div>
   <!-- /.login-logo -->
   <div class="login-box-body">
