@@ -202,18 +202,6 @@
         <td style="border: 0"></td>   
     </tr>
 
-    <tr style="margin-top: .5em">
-        <td colspan="3" style="border: 0">Eligible to transfer and admission to:               
-            @if($general_avg && $general_avg > 74) 
-                <strong><u>&nbsp;&nbsp;Grade {{ $ClassDetail->section_grade_level + 1 }}&nbsp;&nbsp;&nbsp;&nbsp;</u></strong>
-            @elseif($general_avg && $general_avg < 75) 
-                <strong><u>&nbsp;&nbsp;Grade {{ $ClassDetail->section_grade_level }}&nbsp;&nbsp;&nbsp;&nbsp;</u></strong>
-            @else 
-                _______________________                                            
-            @endif
-        </td>                
-    </tr>
-
     <?php 
         $SchoolYear = \App\SchoolYear::where('current', 1)
             ->where('status', 1)
@@ -235,6 +223,7 @@
                 enrollments.id as enrollment_id,
                 enrollments.class_details_id as cid,
                 enrollments.j_lacking_unit,
+                enrollments.eligible_transfer,
                 class_details.grade_level,
                 class_subject_details.id as class_subject_details_id,
                 class_subject_details.class_days,
@@ -251,6 +240,21 @@
             ->orderBy('class_subject_details.class_subject_order', 'ASC')
             ->get();
     ?>
+
+    <tr style="margin-top: .5em">
+        <td colspan="3" style="border: 0">Eligible to transfer and admission to:               
+            {{-- @if($general_avg && $general_avg > 74) 
+                <strong><u>&nbsp;&nbsp;Grade {{ $ClassDetail->section_grade_level + 1 }}&nbsp;&nbsp;&nbsp;&nbsp;</u></strong>
+            @elseif($general_avg && $general_avg < 75)  --}}
+                <strong><u>&nbsp;&nbsp;{{ $Enrollment[0]->eligible_transfer  ? $Enrollment[0]->eligible_transfer : $ClassDetail->section_grade_level + 1}}&nbsp;&nbsp;&nbsp;</u></strong>
+            {{-- @else 
+                _______________________                                            
+            @endif --}}
+            
+        </td>                
+    </tr>
+
+    
 
     <tr style="margin-top: .5em">
         <td colspan="3" style="border: 0">Lacking units in:____<u> {{$Enrollment[0]->j_lacking_unit}}</u>____</td>                
