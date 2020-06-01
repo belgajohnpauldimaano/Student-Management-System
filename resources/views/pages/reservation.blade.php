@@ -13,8 +13,7 @@
               <ul class="nav nav-tabs" id="myTab" role="tablist">
                 <li class="nav-item">
                     <a style="font-size: 13px" class="nav-link active" id="list_reservation-tab" data-toggle="tab" href="#list_reservation" role="tab" aria-controls="home" aria-selected="true">
-                      List of Reservation<br>
-                      &nbsp;
+                      List of SJAI<br/> Entrance Exam Passers<br>
                     </a>
                 </li>
                 <li class="nav-item">
@@ -42,7 +41,7 @@
                 <div class="tab-pane fade show active" id="list_reservation" role="tabpanel" aria-labelledby="list_reservation-tab">
 
                     <h5 class="text-center mt-5">
-                        LIST OF RESERVATION
+                        List of SJAI Entrance Exam Passers
                     </h5>
 
                     <div class="row py-3 pl-3 pr-3">                        

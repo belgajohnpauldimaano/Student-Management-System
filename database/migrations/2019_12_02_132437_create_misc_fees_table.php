@@ -16,7 +16,7 @@ class CreateMiscFeesTable extends Migration
         Schema::create('misc_fees', function (Blueprint $table) {
             $table->increments('id');
             $table->double('misc_amt', 191);
-            $table->integer('student_cat');
+            $table->integer('student_cat')->nullable();
             $table->tinyInteger('current')->default('1');
             $table->tinyInteger('status')->default('1');
             $table->timestamps();

@@ -76,7 +76,7 @@
                     </tr>
                     <tr style="margin-top: 10px">
                         <td>Previous Balance</td>
-                        <td> 
+                        <td> ₱
                             <?php 
                                 $current_bal = \App\TransactionMonthPaid::where('student_id', $payment->student_id)
                                     ->where('school_year_id', $payment->school_year_id)
@@ -93,9 +93,9 @@
                                 }else{
                                 ?>                                
                                     @if($discount)
-                                        ₱ {{$totalDiscount}}
+                                         {{$totalDiscount}}
                                     @else
-                                        ₱ {{number_format($tuitionMisc_fee,2)}}
+                                         {{number_format($tuitionMisc_fee,2)}}
                                     @endif
                                 <?php
                                 }
