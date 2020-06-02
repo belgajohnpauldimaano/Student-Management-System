@@ -52,11 +52,11 @@
                       </nav>
                       <div class="tab-content" id="nav-tabContent">
                         <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
-                            <div class="col-md-6 offset-3 py-3">                         
+                            <div class=" py-3">                         
                                 <table class="table table-bordered table-hover" id="reservation_grade7" style="font-size: 13px">
                                     <thead align="center">
                                         <tr>
-                                            <th>No.</th>
+                                            <th width="7%">No.</th>
                                             <th>Student Name</th>
                                         </tr>
                                     </thead>
@@ -91,12 +91,12 @@
                         LIST OF INCOMING GRADE 7 WHO PASSED THE ENTRANCE TEST <br/>HELD ON JAN 18, 2020
                     </h5>
 
-                    <div class="row " align="center">      
-                        <div class="col-md-6 offset-3">             
+                    <div class="row" align="center">      
+                        <div class="col-md-12">             
                             <table class="table table-bordered table-hover" id="passer" style="font-size: 13px;">
                                 <thead align="center">
                                     <tr>
-                                        <th>No.</th>
+                                        <th width="7%">No.</th>
                                         <th>Student Name</th>
                                     </tr>
                                 </thead>
@@ -112,7 +112,7 @@
                     </h5>
 
                     <div class="row " align="center">      
-                        <div class="col-md-6 offset-3">             
+                        <div class="col-md-12">             
                             <table class="table table-bordered table-hover" id="waiting_jan_2020" style="font-size: 13px;">
                                 <thead align="center">
                                     <tr>
@@ -132,7 +132,7 @@
                     </h5>
 
                     <div class="row " align="center">      
-                        <div class="col-md-6 offset-3">             
+                        <div class="col-md-12">             
                             <table class="table table-bordered table-hover" id="list_feb2020" style="font-size: 13px;">
                                 <thead align="center">
                                     <tr>
@@ -152,7 +152,7 @@
                     </h5>
 
                     <div class="row " align="center">      
-                        <div class="col-md-6 offset-3">             
+                        <div class="col-md-12">             
                             <table class="table table-bordered table-hover" id="waiting_feb2020" style="font-size: 13px;">
                                 <thead align="center">
                                     <tr>
