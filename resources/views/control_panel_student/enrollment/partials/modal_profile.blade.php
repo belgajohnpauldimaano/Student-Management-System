@@ -10,7 +10,7 @@
                 
                 <div class="modal-body">
                     <div class="form-group" align="center">
-
+                        
                         <img class="profile-user-img img-responsive img-circle" 
                             id="img--user_photo" 
                             src="{{ $Profile->photo ? \File::exists(public_path('/img/account/photo/'.$Profile->photo)) ? 

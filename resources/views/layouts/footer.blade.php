@@ -116,14 +116,16 @@
                                 $('.help-block').html('');
                                 if (res.res_code == 1)
                                 {
-                                    for (var err in res.res_error_msg)
-                                    {
-                                        $('#js-' + err).html('<code> '+ res.res_error_msg[err] +' </code>');
-                                    }
+                                    alertify.alert('<i style="color: red" class="fas fa-exclamation-triangle fa-lg"></i> Reminder',
+                                        ''+res.res_msg+'', function(){
+                                            $('.input-lrn').addClass('has-error');
+                                            $('.input-lrn').removeClass('has-success');
+                                            $('#js-lrn').css('color', 'red').text('You must be enter your LRN.');
+                                    });                                    
                                 }
                                 else
                                 {
-                                    alertify.alert('<i style="color: green" class="fas fa-check-circle"></i> Confirmation',
+                                    alertify.alert('<i style="color: green" class="fas fa-check-circle fa-lg"></i> Confirmation',
                                     "Your information successfully submited. Please wait the confirmation from Admission Department. Thank you!", function(){
                                         $('#js-form_subject_details')[0].reset();                                    
                                         var source = $("#default-img").val();

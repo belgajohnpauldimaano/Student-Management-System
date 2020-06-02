@@ -56,7 +56,7 @@ class EnrollmentController extends Controller
                 $Profile = StudentInformation::where('user_id', $User->id)->first();
 
                 // discount
-                $Discount = DiscountFee::where('status', 1)->where('current', 1)->where('disc_type', 'ESC')->first();                    
+                $Discount = DiscountFee::where('status', 1)->where('current', 1)->where('apply_to', 1)->get();                    
 
                 return view('control_panel_student.enrollment.index', 
                     compact('AlreadyEnrolled','grade_level', 'ClassDetail','PaymentCategory','Downpayment',
@@ -96,7 +96,7 @@ class EnrollmentController extends Controller
                     $Profile = StudentInformation::where('user_id', $User->id)->first();
 
                     // discount
-                    $Discount = DiscountFee::where('status', 1)->where('current', 1)->where('disc_type', 'ESC')->first();                    
+                    $Discount =  DiscountFee::where('status', 1)->where('current', 1)->where('apply_to', 1)->get();        
 
                     return view('control_panel_student.enrollment.index', 
                         compact('AlreadyEnrolled','grade_level', 'ClassDetail','PaymentCategory','Downpayment',

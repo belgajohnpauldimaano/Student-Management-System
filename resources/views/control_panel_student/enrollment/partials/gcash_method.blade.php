@@ -70,8 +70,8 @@
                         <label for="exampleInputEmail1">Downpayment Fee </label>              
                         @if($Downpayment)
                             <input type="hidden" name="gcash_downpayment" value="{{$Downpayment->id}}">
-                            <input type="hidden" id="gcash_downpayment" value="{{$Downpayment->downpayment_amt}}">                        
-                            <p>₱ {{number_format($Downpayment->downpayment_amt,2)}}</p>
+                            <input type="hidden" id="gcash_downpayment" value="{{$Downpayment ? $Downpayment->downpayment_amt : ''}}">                        
+                            <p>₱ {{ $Downpayment ? number_format($Downpayment->downpayment_amt,2) : ''}}</p>
                         @endif      
 
                         <label for="previous_balance">Current Balance Fee</label>  
@@ -126,7 +126,7 @@
                     
                     <div class="form-group col-lg-12 input-gcash_pay_fee">
                         <label for="gcash_pay_fee">Enter your payment fee</label>
-                        <input type="number" class="form-control" id="gcash_pay_fee" name="gcash_pay_fee" placeholder=" {{number_format($Downpayment->downpayment_amt,2)}}">
+                        <input type="number" class="form-control" id="gcash_pay_fee" name="gcash_pay_fee" placeholder=" {{ $Downpayment ? number_format($Downpayment->downpayment_amt,2) : ''}}">
                         <input type="hidden" id="gcash_balance" name="gcash_balance">
                         <div class="help-block text-left" id="js-gcash_pay_fee"></div>
                     </div> 

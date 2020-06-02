@@ -65,15 +65,41 @@
                   <p>There is no Tution and Miscellenous Fee</p>
                 @endif
 
-                <label for="e_discount">Discount Fee</label>
-                @if($StudentInformation->isEsc == '1')
+                
+                {{-- @if($StudentInformation->isEsc == '1')
                   <input type="hidden" value="{{$Discount->disc_type}}" name="e_discount_type">
                   <input type="hidden" id="e_discount" value="{{$Discount->disc_amt}}" name="e_discount">
                   <p>{{($Discount->disc_type)}} (₱ {{number_format($Discount->disc_amt,2)}})</p>             
                 @else
                   <input type="hidden" id="e_discount" value="0" name="e_discount">
                   <p>-NA-</p>
-                @endif
+                @endif --}}
+                
+                {{-- @foreach ($Discount as $item)
+                <div class="checkbox">
+                  <label for="disc-{{$item->disc_type}}">
+                    <input type="checkbox" id="disc-{{$item->disc_type}}" name="discount" value="{{$item->disc_amt}}">
+                      {{$item->disc_type}} ({{number_format($item->disc_amt, 2)}})
+                  </label>
+                </div>
+                @endforeach --}}
+
+                <label for="e_discount">Discount Fee</label>
+                
+                <select name="discount[]" id="discount" class="form-control select2 discountSelected" multiple="multiple" data-placeholder="Select Discount" style="width: 100%;">
+                  <option value="">Select Discount Fee</option>
+                  @if($Discount)
+                    @foreach($Discount as $item)
+                        <option value="{{$item->id}}"
+                                data-type="{{$item->disc_type}}" 
+                                data-fee="{{$item->disc_amt}}"
+                        >
+                            {{$item->disc_type}} {{number_format($item->disc_amt)}}
+                        </option>                    
+                    @endforeach
+                  @endif
+                </select><br/><br/>
+
 
                 <label for="downpayment">Downpayment Fee</label>
                 @if($Downpayment)

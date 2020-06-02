@@ -27,15 +27,15 @@
                             </div>
                     </div>
 
-                    {{-- <div class="form-group">
-                        <label for="">Set as Current Discount Fee</label>
-                        <select name="current_sy" id="current_sy" class="form-control">
-                            <option value="1" {{ $DiscountFee ? ($DiscountFee->current == 1 ? 'selected' : '')  : 'selected' }}>Yes</option>
-                            <option value="0" {{ $DiscountFee ? ($DiscountFee->current == 0 ? 'selected' : '')  : '' }}>No</option>
+                    <div class="form-group">
+                        <label for="">Apply to</label>
+                        <select name="apply_to" id="apply_to" class="form-control">
+                            <option value="1" {{ $DiscountFee ? ($DiscountFee->apply_to == 1 ? 'selected' : '')  : 'selected' }}>Student|Finance</option>
+                            <option value="0" {{ $DiscountFee ? ($DiscountFee->apply_to == 0 ? 'selected' : '')  : '' }}>Finance</option>
                         </select>
-                        <div class="help-block text-red text-center" id="js-current_sy">
+                        <div class="help-block text-red text-center" id="js-apply_to">
                         </div>
-                    </div> --}}
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default btn-flat" data-dismiss="modal">Close</button>

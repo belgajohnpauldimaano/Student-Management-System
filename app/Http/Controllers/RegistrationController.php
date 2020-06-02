@@ -47,6 +47,13 @@ class RegistrationController extends Controller
                 ->orderBY('id', 'DESC')
                 ->first();
 
+            $User = User::find($request->lrn);
+            $User = \App\User::where('username', $request->lrn)->first();
+            if ($User) 
+            {
+                return response()->json(['res_code' => 1,'res_msg' => 'LRN already used. Please contact the administrator to confirm it. Thank you']);
+            }           
+
             $User = new User();
             $User->username = $request->lrn;
             $User->password = bcrypt($request->first_name . '.' . $request->last_name);
