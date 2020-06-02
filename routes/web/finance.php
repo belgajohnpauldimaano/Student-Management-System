@@ -5,6 +5,14 @@
 Route::group(['prefix' => 'finance', 'middleware' => ['auth', 'userroles'], 'roles' => ['finance']], function () {
     
     Route::get('dashboard', 'Finance\FinanceDashboardController@index')->name('finance.dashboard');
+
+    Route::group(['prefix' => 'my-account', 'middleware' => ['auth']], function() {
+        Route::get('', 'Finance\UserProfileController@view_my_profile')->name('finance.my_account.index');
+        Route::post('update-profile', 'Finance\UserProfileController@update_profile')->name('finance.my_account.update_profile');
+        Route::post('fetch-profile', 'Finance\UserProfileController@fetch_profile')->name('finance.my_account.fetch_profile');
+        Route::post('change-my-photo', 'Finance\UserProfileController@change_my_photo')->name('finance.my_account.change_my_photo');
+        Route::post('change-my-password', 'Finance\UserProfileController@change_my_password')->name('finance.my_account.change_my_password');
+    });
     
     Route::group(['prefix' => 'student-information'], function (){
         Route::get('', 'Finance\StudentController@index')->name('finance.student_account');

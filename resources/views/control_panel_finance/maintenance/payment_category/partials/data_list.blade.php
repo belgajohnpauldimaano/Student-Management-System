@@ -8,7 +8,7 @@
                                     <th>Grade Lvl</th>
                                     <th>Tuition Fee</th>
                                     <th>Misc Fee</th>
-                                    <th>Total Months</th>
+                                    {{-- <th>Total Months</th> --}}
                                     <th>Current</th>
                                     <th>Status</th>
                                     <th>Actions</th>
@@ -30,7 +30,7 @@
                                                     {{ number_format($data->misc_fee->misc_amt, 2) }}
                                                 @endif
                                             </td>
-                                            <td>{{ $data->months }}</td>
+                                            {{-- <td>{{ $data->months }}</td> --}}
                                             <td>{{ $data->current == 1 ? 'Yes' : 'No' }}</td> 
                                             <td>{{ $data->status == 1 ? 'Active' : 'Inactive' }}</td>
                                             <td>

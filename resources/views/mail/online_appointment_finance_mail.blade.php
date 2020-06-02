@@ -18,7 +18,7 @@
         <br/>
         <p style="text-align: right;">Date: {{ $hasAppointment ? date_format(date_create($hasAppointment->created_at), 'F d, Y h:i A') : '' }}</p>
 
-        <p>Dear: Finance,</p>
+        <p>Dear Finance,</p>
         
         <p>You have new appointment from MR. {{$hasAppointment->student->last_name.', '.$hasAppointment->student->first_name}}, Please see details below:</p>
         

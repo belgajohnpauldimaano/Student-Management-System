@@ -208,7 +208,7 @@ class OnlineAppointmentController extends Controller
                 $hasAppointment = StudentTimeAppointment::find($StudentTimeAppointment->id);
                 \Mail::to($request->email)->send(new OnlineAppointmentMail($hasAppointment));
                 \Mail::to('finance@sja-bataan.com')->send(new OnlineAppointmentFinanceMail($hasAppointment));
-                return response()->json(['res_code' => 0, 'res_msg' => 'You have successfully reserve your appointment!']);
+                return response()->json(['res_code' => 0, 'res_msg' => 'You have successfully reserve your appointment! Please check your email.']);
             }
             
         }

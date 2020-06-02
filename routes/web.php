@@ -27,6 +27,8 @@ include 'web/finance.php';
 
 include 'web/student.php';
 
+include 'web/admission.php';
+
 
 
 

@@ -56,8 +56,7 @@ class PaymentCategoryController extends Controller
             'stud_cat' => 'required',
             'gradelvl' => 'required',
             'tuitionfee' => 'required',     
-            'misc_fee' => 'required',
-            'total_months' => 'required'  
+            'misc_fee' => 'required'
         ];
 
         $Validator = \Validator($request->all(), $rules);
@@ -76,7 +75,7 @@ class PaymentCategoryController extends Controller
             $PaymentCategory->grade_level_id = $request->gradelvl;
             $PaymentCategory->tuition_fee_id = $request->tuitionfee;
             $PaymentCategory->misc_fee_id = $request->misc_fee;
-            $PaymentCategory->months = $request->total_months;
+            // $PaymentCategory->months = $request->total_months;
             $PaymentCategory->save();
             return response()->json(['res_code' => 0, 'res_msg' => 'Data successfully saved.']);
         }
