@@ -19,24 +19,15 @@
         <ul>
             <li>
                 PNB Dinalupihan Branch<br/>
-                Account Name: Saint John’s Academy Inc.<br/>
-                Account Number: 0785-89547-458
-            </li>
-            <li>
-                Metrobank Dinalupihan Branch<br/>
-                Account Name: Saint John’s Academy Inc.<br/>
-                Account Number: 1141-25547-578
+                Account Name: ST. John Academy<br/>
+                Account Number: 2053-70002-058
             </li>
             <li>
                 Chinabank Dinalupihan Branch<br/>
                 Account Name: Saint John’s Academy Inc.<br/>
                 Account Number: 2564-65549-254
             </li>
-            <li>
-                Eastwest Bank Dinalupihan Branch<br/>
-                Account Name: Saint John’s Academy Inc.<br/>
-                Account Number: 6897-245247-6548
-            </li>
+            
         </ul>
         <p>
             Step 2. After the successful deposit transaction, fill out all the necessary information below. Take a photo of the deposit slip and upload it on the icon below (upload file)
@@ -136,12 +127,12 @@
                             <option  value="PNB">
                                 PNB
                             </option>   
-                            <option  value="East West">
+                            {{-- <option  value="East West">
                                 East West
                             </option>
                             <option  value="Metrobank">
                                 Metrobank
-                            </option>
+                            </option> --}}
                             <option  value="Chinabank">
                                 Chinabank
                             </option> 

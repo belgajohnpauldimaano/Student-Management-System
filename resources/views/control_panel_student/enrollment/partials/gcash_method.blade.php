@@ -17,7 +17,7 @@
         <ul>
             <li>
                 GCash Account: 	<br>
-                Saint John’s Academy Inc. – 0917-527-2548
+                Saint John’s Academy Inc. – 0945-836-4135
             </li>
         </ul>
         

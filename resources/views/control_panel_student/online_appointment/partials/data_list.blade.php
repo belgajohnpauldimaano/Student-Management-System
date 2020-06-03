@@ -58,11 +58,13 @@
                                         <td> 
                                             <?php                                         
                                                 $Appointed = \App\StudentTimeAppointment::where('student_id', $StudentInformation->id)
-                                                    ->where('school_year_id', $SchoolYear->id)
+                                                    // ->where('school_year_id', $SchoolYear->id)
+                                                    // ->where('status', 1)
                                                     ->where('online_appointment_id', $item->id)->first(); 
         
                                                 if($Appointed){
-                                                    $OnlineAppointment = \App\OnlineAppointment::where('status', 1)->where('id', $Appointed->online_appointment_id)
+                                                    $OnlineAppointment = \App\OnlineAppointment::where('status', 1)
+                                                        ->where('id', $Appointed->online_appointment_id)
                                                         ->first();
                                                 }
                                             ?>

@@ -18,16 +18,16 @@ class DashboardController extends Controller
         $StudentInformation = StudentInformation::where('user_id', $User->id)
             ->first();
 
-        $SchoolYear = SchoolYear::where('current', 1)
-            ->where('status', 1)
-            ->first();
+        // $SchoolYear = SchoolYear::where('status', 1)
+        //     ->where('status', 1)
+        //     ->first();
 
         if ($request->ajax())
         {
             $Appointed = StudentTimeAppointment::with('appointment')
                 ->where('student_id', $StudentInformation->id)
-                ->where('school_year_id', $SchoolYear->id)
-                ->where('current', 1)
+                // ->where('school_year_id', $SchoolYear->id)
+                ->where('status', 1)
                 ->get();
 
             $OnlineAppointment = OnlineAppointment::where('status', 1)
@@ -35,8 +35,8 @@ class DashboardController extends Controller
 
             $hasAppointment =  StudentTimeAppointment::with('appointment')
                 ->where('student_id', $StudentInformation->id)
-                ->where('school_year_id', $SchoolYear->id)
-                ->where('current', 1)
+                // ->where('school_year_id', $SchoolYear->id)
+                ->where('status', 1)
                 ->first();
 
             return view('control_panel_student.online_appointment.partials.data_list', 
@@ -47,8 +47,8 @@ class DashboardController extends Controller
 
         $Appointed = StudentTimeAppointment::with('appointment')
             ->where('student_id', $StudentInformation->id)
-            ->where('school_year_id', $SchoolYear->id)
-            ->where('current', 1)
+            // ->where('school_year_id', $SchoolYear->id)
+            ->where('status', 1)
             ->get();
         
         $OnlineAppointment = OnlineAppointment::where('status', 1)
@@ -56,8 +56,8 @@ class DashboardController extends Controller
 
         $hasAppointment =  StudentTimeAppointment::with('appointment')
             ->where('student_id', $StudentInformation->id)
-            ->where('school_year_id', $SchoolYear->id)
-            ->where('current', 1)
+            // ->where('school_year_id', $SchoolYear->id)
+            ->where('status', 1)
             ->first();
 
         $StudentInformation = \App\StudentInformation::where('user_id', \Auth::user()->id)->first();

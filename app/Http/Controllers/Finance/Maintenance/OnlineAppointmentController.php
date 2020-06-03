@@ -58,14 +58,14 @@ class OnlineAppointmentController extends Controller
             return response()->json(['res_code' => 1, 'res_msg' => 'Please fill all required fields.', 'res_error_msg' => $Validator->getMessageBag()]);
         }   
         
-        $SchoolYear = SchoolYear::where('current', 1)
-            ->where('status', 1)
-            ->first();
+        // $SchoolYear = SchoolYear::where('current', 1)
+        //     ->where('status', 1)
+        //     ->first();
         // update
         if ($request->id)
         {
             $OnlineAppointment = OnlineAppointment::where('id', $request->id)->first();
-            $OnlineAppointment->school_year_id = $SchoolYear->id;
+            // $OnlineAppointment->school_year_id = $SchoolYear->id;
             $OnlineAppointment->date = $request->date;
             $OnlineAppointment->time = $request->time;
             $OnlineAppointment->available_students = $request->appointee;
@@ -74,7 +74,7 @@ class OnlineAppointmentController extends Controller
         }
         // save
         $OnlineAppointment = new OnlineAppointment();
-        $OnlineAppointment->school_year_id = $SchoolYear->id;
+        // $OnlineAppointment->school_year_id = $SchoolYear->id;
         $OnlineAppointment->date = $request->date;
         $OnlineAppointment->time = $request->time;
         $OnlineAppointment->available_students = $request->appointee;
@@ -121,16 +121,16 @@ class OnlineAppointmentController extends Controller
         $StudentInformation = StudentInformation::where('user_id', $User->id)
             ->first();
 
-        $SchoolYear = SchoolYear::where('current', 1)
-            ->where('status', 1)
-            ->first();
+        // $SchoolYear = SchoolYear::where('current', 1)
+        //     ->where('status', 1)
+        //     ->first();
 
         if ($request->ajax())
         {
             $Appointed = StudentTimeAppointment::with('appointment')
                 ->where('student_id', $StudentInformation->id)
-                ->where('school_year_id', $SchoolYear->id)
-                ->where('current', 1)
+                // ->where('school_year_id', $SchoolYear->id)
+                ->where('status', 1)
                 ->get();
 
             $OnlineAppointment = OnlineAppointment::where('status', 1)
@@ -138,8 +138,8 @@ class OnlineAppointmentController extends Controller
 
             $hasAppointment =  StudentTimeAppointment::with('appointment')
                 ->where('student_id', $StudentInformation->id)
-                ->where('school_year_id', $SchoolYear->id)
-                ->where('current', 1)
+                // ->where('school_year_id', $SchoolYear->id)
+                ->where('status', 1)
                 ->first();
 
             return view('control_panel_student.online_appointment.partials.data_list', 
@@ -150,8 +150,8 @@ class OnlineAppointmentController extends Controller
 
         $Appointed = StudentTimeAppointment::with('appointment')
             ->where('student_id', $StudentInformation->id)
-            ->where('school_year_id', $SchoolYear->id)
-            ->where('current', 1)
+            // ->where('school_year_id', $SchoolYear->id)
+            ->where('status', 1)
             ->get();
         
         $OnlineAppointment = OnlineAppointment::where('status', 1)
@@ -159,8 +159,8 @@ class OnlineAppointmentController extends Controller
 
         $hasAppointment =  StudentTimeAppointment::with('appointment')
             ->where('student_id', $StudentInformation->id)
-            ->where('school_year_id', $SchoolYear->id)
-            ->where('current', 1)
+            // ->where('school_year_id', $SchoolYear->id)
+            ->where('status', 1)
             ->first();
         
         return view('control_panel_student.online_appointment.index', 
@@ -173,12 +173,12 @@ class OnlineAppointmentController extends Controller
         $StudentInformation = StudentInformation::where('user_id', $User->id)
             ->first();
 
-        $SchoolYear = SchoolYear::where('current', 1)
-            ->where('status', 1)
-            ->first();
+        // $SchoolYear = SchoolYear::where('current', 1)
+        //     ->where('status', 1)
+        //     ->first();
 
         $Reserved = OnlineAppointment::where('id', $request->id)
-            ->where('school_year_id', $SchoolYear->id)
+            // ->where('school_year_id', $SchoolYear->id)
             ->first();
 
         if ($Reserved)
@@ -188,7 +188,7 @@ class OnlineAppointmentController extends Controller
             $Reserved->save();
 
             $StudentTimeAppointment = new StudentTimeAppointment();
-            $StudentTimeAppointment->school_year_id = $SchoolYear->id;
+            // $StudentTimeAppointment->school_year_id = $SchoolYear->id;
             $StudentTimeAppointment->online_appointment_id = $request->id;
             $StudentTimeAppointment->student_id = $StudentInformation->id;            
                 
@@ -217,11 +217,11 @@ class OnlineAppointmentController extends Controller
     
     public function date_time(Request $request){
         
-        $SchoolYear = SchoolYear::where('current', 1)
-            ->where('status', 1)
-            ->first();      
+        // $SchoolYear = SchoolYear::where('current', 1)
+        //     ->where('status', 1)
+        //     ->first();      
 
-        $date_time = OnlineAppointment::where('status', 1)->where('school_year_id', $SchoolYear->id)
+        $date_time = OnlineAppointment::where('status', 1)
             ->get();
 
         return view('control_panel_finance.online_appointment.index', compact('date_time'))->render();
@@ -230,9 +230,9 @@ class OnlineAppointmentController extends Controller
     public function show(Request $request){
         
         if($request->js_date){
-            $SchoolYear = SchoolYear::where('current', 1)
-            ->where('status', 1)
-            ->first();        
+            // $SchoolYear = SchoolYear::where('current', 1)
+            // ->where('status', 1)
+            // ->first();        
 
             $appointment = OnlineAppointment::join('student_time_appointments', 'student_time_appointments.online_appointment_id','=','online_appointments.id')
                 ->join('student_informations', 'student_informations.id','=','student_time_appointments.student_id')
@@ -246,7 +246,7 @@ class OnlineAppointmentController extends Controller
                 ->where('student_time_appointments.status', 1)
                 ->where('online_appointments.status', 1)
                 ->where('online_appointments.id', $request->js_date)
-                ->where('online_appointments.school_year_id', $SchoolYear->id)
+                // ->where('online_appointments.school_year_id', $SchoolYear->id)
                 ->orderBy('student_time_appointments.id', 'ASC')
                 ->get();
 
@@ -255,12 +255,11 @@ class OnlineAppointmentController extends Controller
                     student_time_appointments.id as student_appointment_id
                 "))
                 ->where('student_time_appointments.status', 1)
-                ->where('online_appointments.school_year_id', $SchoolYear->id)
+                // ->where('online_appointments.school_year_id', $SchoolYear->id)
                 ->where('online_appointments.id', $request->js_date)
                 ->first();
 
-            $OnlineAppointment =  OnlineAppointment::where('school_year_id', $SchoolYear->id)
-                ->where('id', $request->js_date)
+            $OnlineAppointment =  OnlineAppointment::where('id', $request->js_date)
                 ->where('current', 1)
                 ->first();
 
