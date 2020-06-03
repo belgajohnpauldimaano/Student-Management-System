@@ -9,13 +9,13 @@
     <div class="box">
                     <div class="overlay hidden" id="js-loader-overlay"><i class="fa fa-refresh fa-spin"></i></div>
                     <div class="box-body">
-                        @if($ClassSubjectDetail)                        
+                        {{-- @if($ClassSubjectDetail)                        
                             <h4><b>Year and Section: <i style="color: red">Grade:{{ $ClassSubjectDetail->grade_level }} - {{ $ClassSubjectDetail->section }}</i></b></h4>     
                         @else
                             <h4><b>Year and Section: <i style="color: red">Not Available</i></b></h4>     
-                        @endif
+                        @endif --}}
                         <div class="js-data-container1">
-                                <button class="btn btn-flat btn-danger pull-right" id="js-btn_print" data-id=""><i class="fa fa-file-pdf"></i> Print</button>
+                                {{-- <button class="btn btn-flat btn-danger pull-right" id="js-btn_print" data-id=""><i class="fa fa-file-pdf"></i> Print</button> --}}
                                 
                                 
                                         <table class="table no-margin table-striped table-bordered">
