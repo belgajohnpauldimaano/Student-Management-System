@@ -121,7 +121,7 @@
    
   @if($quarter == "Fourth")
 
-        @if($ClassSubjectDetail->grade_level == 7 || $ClassSubjectDetail->grade_level == 8 || $ClassSubjectDetail->grade_level == 9 || $ClassSubjectDetail->grade_level == 10)
+        @if($ClassSubjectDetail->grade_level == 7 || $ClassSubjectDetail->grade_level == 8 || $ClassSubjectDetail->grade_level == 9)
 
         {{-- <table class="table no-margin table-striped table-bordered"> --}}
             <table class="table no-margin table-striped table-bordered" style="font-size: 10px; width: 100%">

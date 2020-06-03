@@ -86,10 +86,10 @@
                 @endforeach --}}
                 
                 
-                <select name="discount[]" id="discount" class="form-control select2 discountSelected" multiple="multiple" data-placeholder="Select Discount" style="width: 100%;">
+                <select name="discount[]" class="form-control select2 discountSelected" multiple="multiple" data-placeholder="Select Discount" style="width: 100%;">
                   <option value="">Select Discount Fee</option>
-                  @if($Discount)
-                    @foreach($Discount as $item)
+                    @if($Discount)
+                      @foreach($Discount as $item)
                         <option value="{{$item->id}}"
                                 data-type="{{$item->disc_type}}" 
                                 data-fee="{{$item->disc_amt}}"
@@ -193,9 +193,12 @@
                       </tr>
                       <tr>
                         <td style="width:120px">Discount</td>
-                        <td align="right">
-                            ₱ <span id="disc_enrollment">{{ $StudentInformation->isEsc == 1 ? number_format($Discount->disc_amt,2) : '0.00'}}</span>
-                        </td>
+                        {{-- <td align="right">
+                            ₱ <span id="disc_enrollment">
+                              {{ $StudentInformation->isEsc == 1 ? number_format($Discount->disc_amt,2) : '0.00'}}
+                            </span>
+                        </td> --}}
+                        <td id="disc_amt" align="right">0</td>
                       </tr>
                       <tr>
                         <td style="width:120px">Total Fees</td>
