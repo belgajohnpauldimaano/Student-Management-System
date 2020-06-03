@@ -74,17 +74,17 @@
                   <input type="hidden" id="e_discount" value="0" name="e_discount">
                   <p>-NA-</p>
                 @endif --}}
-                
+                <label for="e_discount">Discount Fee</label>
+
                 {{-- @foreach ($Discount as $item)
                 <div class="checkbox">
                   <label for="disc-{{$item->disc_type}}">
-                    <input type="checkbox" id="disc-{{$item->disc_type}}" name="discount" value="{{$item->disc_amt}}">
+                    <input type="checkbox" id="disc-{{$item->disc_type}}" name="discount[]" value="{{$item->disc_amt}}">
                       {{$item->disc_type}} ({{number_format($item->disc_amt, 2)}})
                   </label>
                 </div>
                 @endforeach --}}
-
-                <label for="e_discount">Discount Fee</label>
+                
                 
                 <select name="discount[]" id="discount" class="form-control select2 discountSelected" multiple="multiple" data-placeholder="Select Discount" style="width: 100%;">
                   <option value="">Select Discount Fee</option>
