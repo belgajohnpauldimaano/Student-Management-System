@@ -4,7 +4,7 @@
 <table class="table no-margin">
     <thead>
         <tr>
-            <th>Tuition Fee Amount</th>
+            <th>Downpayment Fee</th>
             {{-- <th>Student Category</th> --}}
             <th>Current</th>
             <th>Status</th>
