@@ -198,7 +198,7 @@
                               {{ $StudentInformation->isEsc == 1 ? number_format($Discount->disc_amt,2) : '0.00'}}
                             </span>
                         </td> --}}
-                        <td id="disc_amt" align="right">0</td>
+                        <td id="disc_amt" style="margin-top: 10px !important">0</td>
                       </tr>
                       <tr>
                         <td style="width:120px">Total Fees</td>

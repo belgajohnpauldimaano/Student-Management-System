@@ -612,39 +612,11 @@
                 }
             });
 
-            dicount_change();
-
-            function dicount_change(){
-                disc_total = 0;
-                $(".discountSelected").change(function () {
-                    var str = "";
-                    disc = [];
-                    $('#disc_amt').html("");
-                    $( ".discountSelected option:selected" ).each(function() {
-                        disc.push({
-                            type: $(this).data('type'),
-                            fee: $(this).data('fee')
-                        });
-                    });
-                    $.each(disc, function (index, value) {
-                        
-                        disc_total += parseFloat(value.fee);
-
-                        $item = ''
-                            + value.type +' '+ value.fee + '<br/>'
-                            ;
-
-                        $('#disc_amt').append($item);
-                        alert($item);
-                    });
-                    // $( "div" ).text( str );
-                    // alert('str')
-                    // total_fees();
-                })
-                .change();
-            }
+            
             
     })
+
+    
         
     </script>
     

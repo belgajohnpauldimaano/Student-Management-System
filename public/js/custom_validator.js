@@ -39,7 +39,39 @@
         // check_phone();
         // check_email();
 
+        check_payfee();
+        
+
         function check_payfee(){
+            disc_total = 0;
+            less_total = 0;
+            total = 0;
+
+            $(".discountSelected").change(function () {
+                var str = "";
+                disc = [];
+                $('#disc_amt').html("");
+                $( ".discountSelected option:selected" ).each(function() {
+                    disc.push({
+                        type: $(this).data('type'),
+                        fee: $(this).data('fee')
+                    });
+                });
+                $.each(disc, function (index, value) {
+                    
+                    disc_total += parseFloat(value.fee);
+
+                    $item = '<div class="col-md-6">'+ value.type +'</div><div class="col-md-6" align="right">'+ value.fee + '</div>';
+
+                    $('#disc_amt').append($item);
+                    // alert($item);
+                });
+                // $( "div" ).text( str );
+                // alert('str')
+                // total_fees();
+            })
+            .change();
+
             function currencyFormat(num) {
                 return num.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')
             }   
@@ -47,7 +79,7 @@
             var payment = $('#pay_fee').val();
             var downpayment = $('#downpayment').val();
             var previous_balance = $('#previous_balance').val();
-            var discount = $('#e_discount').val();
+            var discount = disc_total;
             
             $('#dp_enrollment').text(currencyFormat(parseFloat(payment)));        
             var total_tuition = $('#total_tuition').val();
@@ -77,8 +109,19 @@
                 $('.input-payment').removeClass('has-success');
                 $('#js-pay_fee').text('You have to enter the amount of downpayment or above amount.');
             }
+            
+            function total_fees(){
+                less_total= disc_total + downpayment_total;
+                total = tuition_total + misc_total - less_total;
+                $('#total_balance').text(currencyFormat(total));           
+            }
+            
         }
+
         
+        
+        
+
         function check_phone(){
             var phone = $('#phone').val();
             var len = jQuery('#phone').html().length
