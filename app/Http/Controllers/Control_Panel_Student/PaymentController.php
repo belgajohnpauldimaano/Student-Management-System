@@ -4,9 +4,10 @@ namespace App\Http\Controllers\Control_Panel_Student;
 
 use Carbon\Carbon;
 use App\SchoolYear;
-use PayPal\Api\Item;
+use App\DiscountFee;
 
 /** Paypal Details classes **/
+use PayPal\Api\Item;
 use PayPal\Api\Payer;
 use App\Mail\SendMail;
 use PayPal\Api\Amount;
@@ -165,9 +166,25 @@ class PaymentController extends Controller
                 $Enrollment->email = $request->email;
                 $Enrollment->number = $request->phone;
                 $Enrollment->payment_option = 'Credit Card/Debit Card';
-                $Enrollment->transaction_id = $TransactionAccount->id;
+                $Enrollment->transaction_id = $TransactionAccount->id;               
 
                 if($Enrollment->save()){
+                    if(!empty($request->discount)){
+                        foreach($request->discount as $get_data){
+                            $DiscountFee = DiscountFee::where('id', $get_data)
+                                ->where('apply_to', 1)//finance|student
+                                ->where('current', 1)
+                                ->where('status', 1)->first();
+                            
+                            $DiscountFeeSave = new TransactionDiscount();
+                            $DiscountFeeSave->student_id = $StudentInformation->id;
+                            $DiscountFeeSave->discount_amt = $DiscountFee->disc_amt;
+                            $DiscountFeeSave->discount_type = $DiscountFee->disc_type;        
+                            $DiscountFeeSave->transaction_month_paid_id = $Enrollment->id;                
+                            $DiscountFeeSave->school_year_id = $SchoolYear->id;
+                            $DiscountFeeSave->save();
+                        }
+                    }
                     return response()->json([$redirect_url]);
                 }else{
                     return redirect()->back()->withError('Unknown error occurred');

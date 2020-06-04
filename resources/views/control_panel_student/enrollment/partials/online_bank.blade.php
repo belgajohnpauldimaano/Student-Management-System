@@ -66,40 +66,23 @@
                 @endif
 
                 
-                {{-- @if($StudentInformation->isEsc == '1')
-                  <input type="hidden" value="{{$Discount->disc_type}}" name="e_discount_type">
-                  <input type="hidden" id="e_discount" value="{{$Discount->disc_amt}}" name="e_discount">
-                  <p>{{($Discount->disc_type)}} (₱ {{number_format($Discount->disc_amt,2)}})</p>             
-                @else
-                  <input type="hidden" id="e_discount" value="0" name="e_discount">
-                  <p>-NA-</p>
-                @endif --}}
                 <label for="e_discount">Discount Fee</label>
 
-                {{-- @foreach ($Discount as $item)
+                @foreach ($Discount as $item)
                 <div class="checkbox">
-                  <label for="disc-{{$item->disc_type}}">
-                    <input type="checkbox" id="disc-{{$item->disc_type}}" name="discount[]" value="{{$item->disc_amt}}">
-                      {{$item->disc_type}} ({{number_format($item->disc_amt, 2)}})
+                  <label>
+                    <?php 
+                      $hasAlreadyDiscount = \App\TransactionDiscount::where('student_id', $StudentInformation->id)
+                        ->where('school_year_id', $SchoolYear->id)->where('discount_type', $item->disc_type)->first();
+                    ?>
+                    <input type="checkbox" {{$hasAlreadyDiscount ? 'disabled' : ''  }} class="discountSelected" name="discount[]" value="{{$item->id}}"
+                      data-type="{{$item->disc_type}}" 
+                      data-fee="{{$item->disc_amt}}">
+                      {{$item->disc_type}} ({{number_format($item->disc_amt, 2)}}) <b>{{$hasAlreadyDiscount ? 'Already used' : ''  }} </b>
                   </label>
                 </div>
-                @endforeach --}}
+                @endforeach
                 
-                
-                <select name="discount[]" class="form-control select2 discountSelected" multiple="multiple" data-placeholder="Select Discount" style="width: 100%;">
-                  <option value="">Select Discount Fee</option>
-                    @if($Discount)
-                      @foreach($Discount as $item)
-                        <option value="{{$item->id}}"
-                                data-type="{{$item->disc_type}}" 
-                                data-fee="{{$item->disc_amt}}"
-                        >
-                            {{$item->disc_type}} {{number_format($item->disc_amt)}}
-                        </option>                    
-                    @endforeach
-                  @endif
-                </select><br/><br/>
-
 
                 <label for="downpayment">Downpayment Fee</label>
                 @if($Downpayment)
@@ -191,23 +174,14 @@
                             @endif
                           </td>
                       </tr>
-                      <tr>
+                      <tr >
                         <td style="width:120px">Discount</td>
-                        {{-- <td align="right">
-                            ₱ <span id="disc_enrollment">
-                              {{ $StudentInformation->isEsc == 1 ? number_format($Discount->disc_amt,2) : '0.00'}}
-                            </span>
-                        </td> --}}
-                        <td id="disc_amt" style="margin-top: 10px !important">0</td>
+                        <td id="disc_amt" align="right">₱ 0</td>
                       </tr>
-                      <tr>
+                     <tr>
                         <td style="width:120px">Total Fees</td>
-                        <td align="right" id="misc_fee">
-                          @if($Tuition)
-                          ₱ {{number_format($PaymentCategory->misc_fee->misc_amt + $PaymentCategory->tuition->tuition_amt, 2)}}
-                          @else
-                            <p>There is no Tution and Miscellenous fee yet</p>
-                          @endif
+                        <td align="right" id="total_fee">
+                          ₱ 0
                         </td>
                       </tr>
                       <tr>
@@ -227,9 +201,9 @@
                       <tr>
                           <td style="width:120px">Payment</td>
                           <td align="right">
-                              ₱ <span id="dp_enrollment">0</span>
+                              ₱ <span id="dp_enrollment"></span>
                           </td>
-                      </tr>                      
+                      </tr>                    
                       <tr>
                           <td style="width:120px">Current Balance</td>
                           <td align="right">
@@ -242,6 +216,8 @@
              
 
             </table>
+
+            
             
             <div class="box-footer col-lg-12">              
               <button type="button" class="btn-reset btn btn-danger pull-left">Reset</button>

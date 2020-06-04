@@ -9,15 +9,14 @@
 		<div class="global-header__block">
 			<div class="va-block">
 				<div class="va-middle text-center">
-					<h1>Frequency Asked Questions on Distance Learning</h1>
+					<h1>Frequently Asked Questions on Distance Learning</h1>
 				</div>
 			</div>
 		</div>
 	</div>
     <main id="main">
 		<div class="container">
-			<div class="row">
-				
+			<div class="row">		
 					
                     <div class="accordion mb-4" id="accordionExample">
                         <div class="card">

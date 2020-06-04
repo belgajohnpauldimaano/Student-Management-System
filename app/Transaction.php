@@ -47,7 +47,7 @@ class Transaction extends Model
     
     public function disc_transaction_fee()
     {        
-        return $this->hasOne(TransactionDiscount::class, 'transaction_id', 'id' );
+        return $this->hasMany(TransactionDiscount::class, 'transaction_id', 'id' );
     }
     
 }

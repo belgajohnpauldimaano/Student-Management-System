@@ -45,7 +45,7 @@
 
   @include('control_panel_student.enrollment.partials.modal_profile')
 
-  <div class="row" id="online" style="display: none">
+  <div class="row" id="online" style="display: none;">
       @include('control_panel_student.enrollment.partials.online_bank')
   </div>
 
