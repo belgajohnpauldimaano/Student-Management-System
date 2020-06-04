@@ -246,7 +246,8 @@
             {{-- @if($general_avg && $general_avg > 74) 
                 <strong><u>&nbsp;&nbsp;Grade {{ $ClassDetail->section_grade_level + 1 }}&nbsp;&nbsp;&nbsp;&nbsp;</u></strong>
             @elseif($general_avg && $general_avg < 75)  --}}
-                <strong><u>&nbsp;&nbsp;{{ $Enrollment[0]->eligible_transfer  ? $Enrollment[0]->eligible_transfer : $ClassDetail->section_grade_level + 1 }}&nbsp;&nbsp;&nbsp;</u></strong>
+                <strong><u>&nbsp;&nbsp;{{ $Enrollment[0]->eligible_transfer  ? '' : 'Grade ' }}
+                    {{ $Enrollment[0]->eligible_transfer  ? $Enrollment[0]->eligible_transfer : $ClassDetail->section_grade_level + 1 }}&nbsp;&nbsp;&nbsp;</u></strong>
             {{-- @else 
                 _______________________                                            
             @endif --}}
