@@ -40,38 +40,53 @@
                     
                     <input type="hidden" name="payment-cat" value="Transfer - Gcash">
                     <div class="form-group col-lg-12" style="margin-top: 10px">
-                        <label for="exampleInputEmail1">You are incoming Grade-level <i style="color:red">
+                        <h4>
+                            {{$AlreadyEnrolled ? 'You are enrolled to ' : 'You are incoming' }} Grade-level <i style="color:red">
                             @if($IncomingStudentCount)
-                                {{$IncomingStudentCount->grade_level_id}}
+                              {{$IncomingStudentCount->grade_level_id}}
                             @else
-                                {{$ClassDetail->grade_level+1}}
+                              {{$ClassDetail->grade_level+1}}
                             @endif
-                        </i></label>
-                            <br><br>
+                            </i>
+                        </h4>
+                        <br/>
                         <label for="exampleInputEmail1">Available Tuition Fee and Misc Fee</label>
                         @if($Tuition)
-                        <input type="hidden" name="gcash_tution_amt" value="{{$PaymentCategory->id}}">
-                        <input type="hidden" name="gcash_tution_total" id="gcash_tution_total" value="{{$PaymentCategory->tuition->tuition_amt + $PaymentCategory->misc_fee->misc_amt}}">
+                            <input type="hidden" name="gcash_tution_amt" value="{{$PaymentCategory->id}}">
+                            <input type="hidden" name="gcash_tution_total" id="gcash_tution_total" value="{{ $Tuition ? $sum_total_item : '' }}">
                             <p>
                                 Tuition Fee ({{number_format($PaymentCategory->tuition->tuition_amt, 2 ?? '')}}) | Miscellenous Fee ({{number_format($PaymentCategory->misc_fee->misc_amt,2)}})
                             </p>
+
+                            <label for="exampleInputEmail1">Other(s) Fee</label>
+                            <input type="hidden" name="other_id" value="{{$PaymentCategory->other_fee->id}}">
+                            <input type="hidden" name="other_name" value="{{$PaymentCategory->other_fee->other_fee_name}}">
+                            <input type="hidden" name="other_price" value="{{$PaymentCategory->other_fee->other_fee_amt}}">
+                            <p>{{$PaymentCategory->other_fee->other_fee_name}} - (₱ {{number_format($PaymentCategory->other_fee->other_fee_amt, 2) }})</p>
                         @endif   
                         
-                        <label for="gcash_discount">Discount Fee</label>
-                        @if($StudentInformation->isEsc == '1')
-                            <input type="hidden" value="{{$Discount->disc_type}}" name="gcash_discount_type">
-                            <input type="hidden" id="gcash_discount" value="{{$Discount->disc_amt}}" name="gcash_discount">
-                            <p>{{($Discount->disc_type)}} (₱ {{number_format($Discount->disc_amt,2)}})</p>             
-                        @else
-                            <input type="hidden" id="gcash_discount" value="0" name="gcash_discount">
-                            <p>-NA-</p>
-                        @endif
+                        <label for="e_discount">Discount Fee</label>
+                        <div class="checkbox" style="margin-top: -2.5px;">
+                            @foreach ($Discount as $item)                
+                                <label>                      
+                                <?php 
+                                    $hasAlreadyDiscount = \App\TransactionDiscount::where('student_id', $StudentInformation->id)
+                                    ->where('school_year_id', $SchoolYear->id)->where('discount_type', $item->disc_type)->first();
+                                ?>
+                                <input type="checkbox" {{$hasAlreadyDiscount ? 'disabled' : ''  }} class="discountGcashSelected" name="discount_bank[]" value="{{$item->id}}"
+                                    data-type="{{$item->disc_type}}" 
+                                    data-fee="{{$item->disc_amt}}">
+                                    <span style="{{$hasAlreadyDiscount ? 'text-decoration: line-through;color: red;' : ''  }}">{{$item->disc_type}} ({{number_format($item->disc_amt, 2)}}) <b> </span></b>
+                                </label> 
+                                &nbsp;&nbsp;               
+                            @endforeach
+                        </div>
 
                         <label for="exampleInputEmail1">Downpayment Fee </label>              
                         @if($Downpayment)
                             <input type="hidden" name="gcash_downpayment" value="{{$Downpayment->id}}">
                             <input type="hidden" id="gcash_downpayment" value="{{$Downpayment ? $Downpayment->downpayment_amt : ''}}">                        
-                            <p>₱ {{ $Downpayment ? number_format($Downpayment->downpayment_amt,2) : ''}}</p>
+                            <p>₱ {{ $Downpayment ? number_format($Downpayment->downpayment_amt, 2) : ''}}</p>
                         @endif      
 
                         <label for="previous_balance">Current Balance Fee</label>  
@@ -80,7 +95,7 @@
                             <p>₱ {{number_format($AlreadyEnrolled->balance,2)}}</p> 
                         @else
                             @if($Tuition)
-                                <p>₱ {{number_format($Tuition ? $PaymentCategory->tuition->tuition_amt + $PaymentCategory->misc_fee->misc_amt : '', 2)}}</p> 
+                                <p>₱ {{number_format($Tuition ? $sum_total_item : '', 2)}}</p> 
                             @endif      
                         @endif            
 
@@ -102,10 +117,10 @@
             <div class="col-md-6">        
                     <div class="box-header with-border">
                         <h3 class="box-title">Upload with Gcash</h3>
-                        <a class="btn btn-info pull-right btn-transaction-history" 
+                        <a class="btn btn-sm btn-info pull-right btn-transaction-history" 
                             data-id="{{$StudentInformation->id}}" 
                             data-school_year_id="{{$SchoolYear->id}}" 
-                            href="#">
+                            href="#" style="margin-top: -10px">
                             <i class="fas fa-history"></i> Transaction History
                         </a>
                     </div>
@@ -144,7 +159,7 @@
                     </div>
                     <div class="box-footer col-lg-12">
                         <button type="button" class="btn-reset btn btn-danger pull-left">Reset</button>
-                        <button type="submit" disabled class="btn-gcash-enroll btn btn-primary pull-right">Enroll</button>
+                        <button type="submit" disabled class="btn-gcash-enroll btn btn-primary pull-right">{{$AlreadyEnrolled ? 'Pay ' : 'Enroll' }}</button>
                     </div>
             </div>
         </form>

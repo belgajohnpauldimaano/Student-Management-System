@@ -1,14 +1,62 @@
-        validate_form();   
+        validate_form();
         
         
         function validate_form(){            
             
             $('#pay_fee').change(function (){
                 check_payfee();
+                var payment = $('#pay_fee').val();
+                var downpayment = $('#downpayment').val();
+                if(downpayment)
+                {
+                    if(payment>=downpayment){
+                        $('.input-payment').addClass('has-success');
+                        $('.input-payment').removeClass('has-error');
+                        $('#js-pay_fee').text('You are good to go!');
+                    }else if(payment<downpayment){
+                        $('.input-payment').addClass('has-error');
+                        $('.input-payment').removeClass('has-success');
+                        $('#js-pay_fee').text('You have to enter the amount of downpayment or above amount.');
+                    }
+                }else{
+                    if(payment != ''){
+                        $('.input-payment').addClass('has-success');
+                        $('.input-payment').removeClass('has-error');
+                        $('#js-pay_fee').text('You are good to go!');
+                    }else if(payment<downpayment){
+                        $('.input-payment').addClass('has-error');
+                        $('.input-payment').removeClass('has-success');
+                        $('#js-pay_fee').text('You have to enter the amount of downpayment or above amount.');
+                    }
+                }
             });
 
             $('#pay_fee').keyup(function() {
                 check_payfee();
+                var payment = $('#pay_fee').val();
+                var downpayment = $('#downpayment').val();
+                if(downpayment)
+                {
+                    if(payment>=downpayment){
+                        $('.input-payment').addClass('has-success');
+                        $('.input-payment').removeClass('has-error');
+                        $('#js-pay_fee').text('You are good to go!');
+                    }else if(payment<downpayment){
+                        $('.input-payment').addClass('has-error');
+                        $('.input-payment').removeClass('has-success');
+                        $('#js-pay_fee').text('You have to enter the amount of downpayment or above amount.');
+                    }
+                }else{
+                    if(payment != ''){
+                        $('.input-payment').addClass('has-success');
+                        $('.input-payment').removeClass('has-error');
+                        $('#js-pay_fee').text('You are good to go!');
+                    }else if(payment<downpayment){
+                        $('.input-payment').addClass('has-error');
+                        $('.input-payment').removeClass('has-success');
+                        $('#js-pay_fee').text('You have to enter the amount of downpayment or above amount.');
+                    }
+                }
             });
 
             $('#phone').keyup(function() {
@@ -35,7 +83,8 @@
                 location.reload();
             });
         }
-        
+
+        disc_total = 0;
         function total_fees(){
             disc_total = 0;
             less_total = 0;
@@ -49,8 +98,7 @@
                 return num.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')
             } 
 
-            $('input[name="discount[]"]:checked').each(function () {
-                
+            $('input[name="discount[]"]:checked').each(function () {                
                 disc.push({
                     type: $(this).data('type'),
                     fee: $(this).data('fee')
@@ -71,15 +119,19 @@
             total_fee = total_tuition - disc_total;
             grandTotal = current_bal - disc_total;             
             
-            $('#current_balance').text(currencyFormat(grandTotal));
+            // $('#current_balance').text(currencyFormat(grandTotal));
             $('#total_fee').text(currencyFormat(total_fee));
-            document.getElementById('result_current_bal').value = (grandTotal);
+            // $('#result_current_bal').val(grandTotal);
+            // document.getElementById('result_current_bal').value = (grandTotal);
+            
             // alert(grandTotal);
         }
 
         $('.discountSelected').on('click', function (e) {
            total_fees();
+           check_payfee();
         });
+        
 
         function check_payfee(){
             function currencyFormat(num) {
@@ -91,30 +143,28 @@
             var previous_balance = $('#previous_balance').val();
             // var discount = $('#e_discount').val();
             
-            $('#dp_enrollment').text(currencyFormat(parseFloat(payment)));        
+                    
             var total_tuition = $('#total_tuition').val();
             var result_bal = 0;
 
             if(previous_balance){  
-                result_bal = parseFloat(previous_balance) - parseFloat(payment);
+                result_bal = parseFloat(previous_balance) - parseFloat(payment) - disc_total;
             }else{                
-                result_bal = parseFloat(total_tuition) - parseFloat(payment);                
+                result_bal = parseFloat(total_tuition) - parseFloat(payment) - disc_total;                
             }
             
-            document.getElementById('result_current_bal').value = (result_bal);
-            
-            $('#current_balance').text(currencyFormat(result_bal));
-            total_fees();
-
-            if(payment>=downpayment){
-                $('.input-payment').addClass('has-success');
-                $('.input-payment').removeClass('has-error');
-                $('#js-pay_fee').text('You are good to go!');
-            }else if(payment<downpayment){
-                $('.input-payment').addClass('has-error');
-                $('.input-payment').removeClass('has-success');
-                $('#js-pay_fee').text('You have to enter the amount of downpayment or above amount.');
+            if(payment == 0){
+                document.getElementById('result_current_bal').value = (0);                       
+                $('#current_balance').text(currencyFormat(0));
+                $('#dp_enrollment').text(currencyFormat(parseFloat(0)));
+            }else{
+                $('#dp_enrollment').text(currencyFormat(parseFloat(payment)));
+                document.getElementById('result_current_bal').value = (result_bal);                       
+                $('#current_balance').text(currencyFormat(result_bal));    
             }
+            
+            total_fees();           
+                
         }
         
         function check_phone(){
@@ -157,6 +207,8 @@
        
         $('#bank_pay_fee').keyup(function() {
             bank_pay_fee();
+
+            
         });
 
         $('#bank_pay_fee').change(function (){
@@ -212,29 +264,70 @@
             }
         }
 
+        discount_total = 0;
+        function total_bank_fees(){
+            discount_total = 0;
+            less_total = 0;
+            downpayment_total = 0;
+            total = 0;  
+            grandTotal = 0;
+            disc = [];
+            // $('#disc_amt').html("");
+
+            function currencyFormat(num) {
+                return num.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')
+            } 
+
+            $('.discountBankSelected:checked').each(function () {                
+                disc.push({
+                    type: $(this).data('type'),
+                    fee: $(this).data('fee')
+                });
+            });
+            $.each(disc, function (index, value) {                
+                discount_total += parseFloat(value.fee);
+                // $item = '<div class="col-md-6">'+ value.type +'</div><div class="col-md-6" style="padding-right: 0" align="right">₱ '+ currencyFormat(value.fee) + '</div>';
+                // $('#disc_amt').append($item);                
+            }); 
+
+            current_bal = $('#bank_balance').val();
+            total_tuition = $('#bank_tution').val();
+            total_fee = total_tuition - discount_total;
+            // grandTotal = current_bal - disc_total;             
+            
+            $('#total_fee').text(currencyFormat(total_fee));
+        }
+
+        $('.discountBankSelected').on('click', function (e) {
+            total_bank_fees();
+            bank_pay_fee();
+        });
+
         function bank_pay_fee(){
             var payment = $('#bank_pay_fee').val();
             var downpayment = $('#bank_downpayment').val();
             var bank_previous_balance = $('#bank_previous_balance').val();
             var bank_tution = $('#bank_tution').val();
-            var discount = $('#bank_discount').val();
+            // var discount = $('#bank_discount').val();
 
             function currencyFormat(num) {
                 return num.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')
             } 
                      
             if(bank_previous_balance){
-                result_bal = parseFloat(bank_previous_balance) - parseFloat(payment);
+                result_bal = parseFloat(bank_previous_balance) - parseFloat(payment) - discount_total;
             }else{
-                if(discount){
-                    result_bal = parseFloat(bank_tution) - parseFloat(payment) - discount;
-                }else{
-                    result_bal = parseFloat(total_tuition) - parseFloat(payment);
-                }
+                result_bal = parseFloat(total_tuition) - parseFloat(payment) - discount_total;
             }
 
-            document.getElementById('bank_balance').value = (result_bal);
-           
+            if(payment == 0){
+                document.getElementById('bank_balance').value = (0);  
+                result_bal = 0;                     
+            }else{
+                document.getElementById('bank_balance').value = (result_bal);         
+            }
+            total_bank_fees();    
+            
             if(payment>=downpayment){
                 $('.input-bank_pay_fee').addClass('has-success');
                 $('.input-bank_pay_fee').removeClass('has-error');
@@ -320,10 +413,61 @@
        
         $('#gcash_pay_fee').keyup(function() {
             gcash_pay_fee();
+
+            var payment = $('#gcash_pay_fee').val();
+            var downpayment = $('#gcash_downpayment').val();
+            
+            if(downpayment){
+                if(payment>=downpayment){
+                    $('.input-gcash_pay_fee').addClass('has-success');
+                    $('.input-gcash_pay_fee').removeClass('has-error');
+                    $('#js-gcash_pay_fee').text('Here is you balance now '+currencyFormat(result_bal)+' You are good to go!');
+                }else if(payment<downpayment){
+                    $('.input-gcash_pay_fee').addClass('has-error');
+                    $('.input-gcash_pay_fee').removeClass('has-success');
+                    $('#js-gcash_pay_fee').text('Here is you balance now '+currencyFormat(result_bal)+' You have to enter the amount of downpayment or above amount.');
+                }
+            }else{
+                if(payment != ''){
+                    $('.input-gcash_pay_fee').addClass('has-success');
+                    $('.input-gcash_pay_fee').removeClass('has-error');
+                    $('#js-gcash_pay_fee').text('Here is you balance now '+currencyFormat(result_bal)+' You are good to go!');
+                }else if(payment<downpayment){
+                    $('.input-gcash_pay_fee').addClass('has-error');
+                    $('.input-gcash_pay_fee').removeClass('has-success');
+                    $('#js-gcash_pay_fee').text('Here is you balance now '+currencyFormat(result_bal)+' You have to enter the amount of downpayment or above amount.');
+                }
+            }
+            
         });
 
         $('#gcash_pay_fee').change(function (){
             gcash_pay_fee();
+
+            var payment = $('#gcash_pay_fee').val();
+            var downpayment = $('#gcash_downpayment').val();
+            
+            if(downpayment){
+                if(payment>=downpayment){
+                    $('.input-gcash_pay_fee').addClass('has-success');
+                    $('.input-gcash_pay_fee').removeClass('has-error');
+                    $('#js-gcash_pay_fee').text('Here is you balance now '+currencyFormat(result_bal)+' You are good to go!');
+                }else if(payment<downpayment){
+                    $('.input-gcash_pay_fee').addClass('has-error');
+                    $('.input-gcash_pay_fee').removeClass('has-success');
+                    $('#js-gcash_pay_fee').text('Here is you balance now '+currencyFormat(result_bal)+' You have to enter the amount of downpayment or above amount.');
+                }
+            }else{
+                if(payment != ''){
+                    $('.input-gcash_pay_fee').addClass('has-success');
+                    $('.input-gcash_pay_fee').removeClass('has-error');
+                    $('#js-gcash_pay_fee').text('Here is you balance now '+currencyFormat(result_bal)+' You are good to go!');
+                }else if(payment<downpayment){
+                    $('.input-gcash_pay_fee').addClass('has-error');
+                    $('.input-gcash_pay_fee').removeClass('has-success');
+                    $('#js-gcash_pay_fee').text('Here is you balance now '+currencyFormat(result_bal)+' You have to enter the amount of downpayment or above amount.');
+                }
+            }
         });
 
         $('#gcash_phone').keyup(function() {
@@ -358,29 +502,70 @@
             }
         }
 
+        gdiscount_total = 0;
+        function total_gcash_fees(){
+            gdiscount_total = 0;
+            less_total = 0;
+            downpayment_total = 0;
+            total = 0;  
+            grandTotal = 0;
+            disc = [];
+            // $('#disc_amt').html("");
+
+            function currencyFormat(num) {
+                return num.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')
+            } 
+
+            $('.discountGcashSelected:checked').each(function () {                
+                disc.push({
+                    type: $(this).data('type'),
+                    fee: $(this).data('fee')
+                });
+            });
+            $.each(disc, function (index, value) {                
+                gdiscount_total += parseFloat(value.fee);
+                // $item = '<div class="col-md-6">'+ value.type +'</div><div class="col-md-6" style="padding-right: 0" align="right">₱ '+ currencyFormat(value.fee) + '</div>';
+                // $('#disc_amt').append($item);                
+            }); 
+
+            current_bal = $('#gcash_balance').val();
+            total_tuition = $('#gcash_tution_total').val();
+            total_fee = total_tuition - discount_total;
+            // grandTotal = current_bal - disc_total;             
+            
+            // $('#total_fee').text(currencyFormat(total_fee));
+        }
+
+        $('.discountGcashSelected').on('click', function (e) {
+            total_gcash_fees();
+            bank_pay_fee();
+        });
+
         function gcash_pay_fee(){
             var payment = $('#gcash_pay_fee').val();
             var downpayment = $('#gcash_downpayment').val();
             var gcash_previous_balance = $('#gcash_previous_balance').val();
             var gcash_tution = $('#gcash_tution_total').val();
-            var discount = $('#gcash_discount').val();
+            // var discount = $('#gcash_discount').val();
 
             function currencyFormat(num) {
                 return num.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')
             } 
                      
             if(gcash_previous_balance != null){
-                result_bal = parseFloat(gcash_previous_balance) - parseFloat(payment);
+                result_bal = parseFloat(gcash_previous_balance) - parseFloat(payment) - gdiscount_total;
             }else{
-                if(discount){
-                    result_bal = parseFloat(gcash_tution) - parseFloat(payment) - discount;
-                }else{
-                    result_bal = parseFloat(gcash_tution) - parseFloat(payment);
-                }
-                
+                result_bal = parseFloat(gcash_tution) - parseFloat(payment) - gdiscount_total;
             }
-
-            document.getElementById('gcash_balance').value = (result_bal);
+            
+            if(payment == 0){
+                document.getElementById('gcash_balance').value = (0);  
+                result_bal = 0;                     
+            }else{
+                document.getElementById('gcash_balance').value = (result_bal);
+            }
+            total_gcash_fees();
+            
 
             if(payment>=downpayment){
                 $('.input-gcash_pay_fee').addClass('has-success');
@@ -481,13 +666,7 @@
             $('#js-payment_category').html('<i class="fa fa-times-circle-o"></i> Choose your preferred method');       
         }
          
-    });
-
-    
-    
-    
-
-    
+    });   
     
     
 

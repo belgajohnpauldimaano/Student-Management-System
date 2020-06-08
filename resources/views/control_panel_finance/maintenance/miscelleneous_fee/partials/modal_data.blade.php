@@ -9,12 +9,12 @@
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                     <h4 class="modal-title">
-                        {{ $MiscFee ? 'Edit Miscelleneous Fee' : 'Add Miscelleneous Fee' }}
+                        {{ $MiscFee ? 'Edit Miscellaneous Fee' : 'Add Miscellaneous Fee' }}
                     </h4>
                 </div>
                 <div class="modal-body">
                     <div class="form-group">
-                        <label for="">Miscelleneous Fee Amount</label>
+                        <label for="">Miscellaneous Fee Amount</label>
                         <input type="number" class="form-control" name="misc_fee" value="{{ $MiscFee ? $MiscFee->misc_amt : '' }}">
                         <div class="help-block text-red text-center" id="js-misc_fee">
                         </div>

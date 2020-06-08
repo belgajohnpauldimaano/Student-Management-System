@@ -22,9 +22,9 @@
           <div class="form-group col-lg-6 col-lg-offset-3" id="form_method">
               <select name="payment_category" id="payment_category" class="form-control">    
                 <option value="0" selected>
-                  --Not yet Ready --
+                  --Not yet Ready--
                 </option>
-                {{-- <option value="1">
+                <option value="1">
                   Credit card/Debit card/PayMaya
                 </option>
                 <option value="2">
@@ -32,7 +32,7 @@
                 </option>
                 <option value="3">
                   Gcash
-                </option>     --}}
+                </option>    
               </select>
             <div class="help-block text-left" id="js-payment_category"></div>
             <button type="button" id="btn_method" class="btn btn-primary pull-right">Submit</button>

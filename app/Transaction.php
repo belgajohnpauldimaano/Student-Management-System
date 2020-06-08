@@ -11,10 +11,7 @@ class Transaction extends Model
         return $this->hasOne(TransactionOtherFee::class, 'or_number', 'or_number');
     }
 
-    public function transaction_others_fee() 
-    {
-        return $this->hasMany(TransactionOtherFee::class, 'or_number', 'or_number');
-    }
+ 
 
     public function monthly(){
         return $this->hasOne(TransactionMonthPaid::class, 'transaction_id', 'id')->orderBY('id', 'DESC');
@@ -45,10 +42,17 @@ class Transaction extends Model
         return $this->hasOne(MiscFee::class, 'misc_fee_id', 'misc_fee_id' );
     }
     
+    public function others() 
+    {
+        return $this->hasOne(OtherFee::class, 'other_fee_id', 'id');
+    }
+    
     public function disc_transaction_fee()
     {        
-        return $this->hasMany(TransactionDiscount::class, 'transaction_id', 'id' );
+        return $this->hasMany(TransactionDiscount::class, 'transaction_month_paid_id', 'id' );
     }
+
+
     
 }
 

@@ -19,6 +19,7 @@ class CreatePaymentCategoriesTable extends Migration
             $table->integer('grade_level_id');
             $table->integer('tuition_fee_id');
             $table->integer('misc_fee_id');
+            $table->integer('other_fee_id');
             $table->integer('months')->nullable();
             $table->tinyInteger('current')->default('1');
             $table->tinyInteger('status')->default('1');

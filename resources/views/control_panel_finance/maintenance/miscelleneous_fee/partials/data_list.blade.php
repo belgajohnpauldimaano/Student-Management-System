@@ -4,7 +4,7 @@
                         <table class="table no-margin">
                             <thead>
                                 <tr>
-                                    <th>Miscelleneous Fee Amount</th>
+                                    <th>Miscellaneous Fee Amount</th>
                                     <th>Current</th>
                                     <th>Status</th>
                                     <th>Actions</th>

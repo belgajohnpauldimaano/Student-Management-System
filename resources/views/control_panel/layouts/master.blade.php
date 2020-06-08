@@ -206,7 +206,7 @@
             <ul class="treeview-menu menu-open" style="display: block">
                 <li><a href="{{ route('finance.maintenance.tuition_fee') }}"><i class="fa fa-circle-o"></i>&nbsp;&nbsp;&nbsp; <span>Tuition Fee</span></a></li>
                 <li><a href="{{ route('finance.maintenance.downpayment') }}"><i class="fa fa-circle-o"></i>&nbsp;&nbsp;&nbsp; <span>Downpayment Fee</span></a></li>
-                <li><a href="{{ route('finance.maintenance.misc_fee') }}"><i class="fa fa-circle-o"></i>&nbsp;&nbsp;&nbsp; <span>Miscelleneous Fee</span></a></li>                
+                <li><a href="{{ route('finance.maintenance.misc_fee') }}"><i class="fa fa-circle-o"></i>&nbsp;&nbsp;&nbsp; <span>Miscellaneous Fee</span></a></li>                
                 <li><a href="{{ route('finance.maintenance.disc_fee') }}"><i class="fa fa-circle-o"></i>&nbsp;&nbsp;&nbsp; <span>Discount</span></a></li>
                 <li><a href="{{ route('finance.maintenance.payment_category') }}"><i class="fa fa-circle-o"></i>&nbsp;&nbsp;&nbsp; <span>Payment Category</span></a></li>
                 <li><a href="{{ route('finance.maintenance.other_fee') }}"><i class="fa fa-circle-o"></i>&nbsp;&nbsp;&nbsp; <span>Other Fee</span></a></li>

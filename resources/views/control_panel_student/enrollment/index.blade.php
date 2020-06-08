@@ -515,7 +515,7 @@
                 var payment_category = $('#payment_category').val();
                 // $('.modal-update-profile').modal({ backdrop : 'static' });
                 if(payment_category==1){
-                    // getProfiledata();
+                    getProfiledata();
                     
                     $("#online").fadeIn();
                     $('#selector_payment').hide();
@@ -526,7 +526,7 @@
 
                     
                 }else if(payment_category==2){
-                    // getProfiledata();
+                    getProfiledata();
                     
                     $("#deposit").fadeIn();
                     $('#selector_payment').hide();
@@ -536,7 +536,7 @@
                     $('#js-payment_category').html('');
 
                 }else if(payment_category==3){
-                    // getProfiledata();
+                    getProfiledata();
                     
                     $("#gcash").fadeIn();
                     $('#selector_payment').hide();

@@ -15,12 +15,14 @@ class CreateTransactionOtherFeesTable extends Migration
     {
         Schema::create('transaction_other_fees', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('or_no');
+            $table->integer('transaction_id');
+            $table->string('or_no')->nullable();
             $table->integer('student_id');
             $table->integer('others_fee_id');
             $table->integer('school_year_id');
+            $table->string('other_name');
             $table->integer('item_qty');
-            $table->double('item_price');       
+            $table->double('item_price');
             $table->timestamps();
         });
     }

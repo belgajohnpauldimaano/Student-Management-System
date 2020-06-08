@@ -45,6 +45,7 @@ Route::group(['prefix' => 'finance', 'middleware' => ['auth', 'userroles'], 'rol
         Route::post('', 'Finance\Maintenance\OnlineAppointmentController@date_time')->name('finance.online_appointment.date_time');
         Route::post('appointment', 'Finance\Maintenance\OnlineAppointmentController@show')->name('finance.online_appointment.show');
         Route::post('done', 'Finance\Maintenance\OnlineAppointmentController@done')->name('finance.online_appointment.done');
+        Route::post('disapprove', 'Finance\Maintenance\OnlineAppointmentController@disapprove')->name('finance.online_appointment.disapprove');
         Route::post('deactivate', 'Finance\Maintenance\OnlineAppointmentController@deactivate_date')->name('finance.online_appointment.deactivate_date');
     });
 
@@ -82,6 +83,7 @@ Route::group(['prefix' => 'finance', 'middleware' => ['auth', 'userroles'], 'rol
             Route::post('modal-data', 'Finance\Maintenance\DownpaymentController@modal_data')->name('finance.maintenance.downpayment.modal_data');
             Route::post('save-data', 'Finance\Maintenance\DownpaymentController@save_data')->name('finance.maintenance.downpayment.save_data');
             Route::post('deactivate-data', 'Finance\Maintenance\DownpaymentController@deactivate_data')->name('finance.maintenance.downpayment.deactivate_data');
+            Route::post('modify', 'Finance\Maintenance\DownpaymentController@modify')->name('finance.maintenance.downpayment.modify');
             Route::post('toggle-current-sy', 'Finance\Maintenance\DownpaymentController@toggle_current_sy')->name('finance.maintenance.downpayment.toggle_current_sy');
         });
 

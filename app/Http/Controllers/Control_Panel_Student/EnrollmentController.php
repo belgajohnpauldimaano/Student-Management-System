@@ -16,6 +16,7 @@ use App\IncomingStudent;
 use App\PaymentCategory;
 use App\StudentInformation;
 use App\TransactionDiscount;
+use App\TransactionOtherFee;
 use Illuminate\Http\Request;
 use App\Mail\NotifyAdminMail;
 use App\TransactionMonthPaid;
@@ -44,23 +45,36 @@ class EnrollmentController extends Controller
 
                 $AlreadyEnrolled = TransactionMonthPaid::where('student_id', $StudentInformation->id)
                     ->where('school_year_id', $SchoolYear->id)
-                    ->where('isSuccess', 1)->orderBy('id', 'Desc')->first();
+                    ->where('isSuccess', 1)->where('approval', 'Approved')->orderBy('id', 'Desc')->first();
 
                 $Tuition = PaymentCategory::where('grade_level_id', $IncomingStudentCount->grade_level_id)->first();
 
                 $PaymentCategory = PaymentCategory::with('misc_fee','tuition')
                     ->where('grade_level_id',  $IncomingStudentCount->grade_level_id)->first();
-                                
-                $Downpayment = DownpaymentFee::where('current', 1)->first();
+
+                $Downpayment = DownpaymentFee::where('current', 1)->where('grade_level_id', $IncomingStudentCount->grade_level_id)->first();
 
                 $Profile = StudentInformation::where('user_id', $User->id)->first();
 
                 // discount
-                $Discount = DiscountFee::where('status', 1)->where('current', 1)->where('apply_to', 1)->get();                    
+                $Discount = DiscountFee::where('status', 1)->where('current', 1)->where('apply_to', 1)->get();
+                
+                $TransactionDiscount = TransactionDiscount::where('student_id', $StudentInformation->id)->where('school_year_id', $SchoolYear->id)->get();
+                                  
+                $TransactionDiscountTotal = TransactionDiscount::where('student_id', $StudentInformation->id)->where('school_year_id', $SchoolYear->id)->sum('discount_amt');
+
+                $tuition_fee = $PaymentCategory->tuition->tuition_amt;
+                $misc_fee = $PaymentCategory->misc_fee->misc_amt;
+                $other_fee = $PaymentCategory->other_fee->other_fee_amt;
+                $discount_fee = $TransactionDiscountTotal;
+
+                if($Tuition){
+                    $sum_total_item = ( $tuition_fee + $misc_fee + $other_fee) - $discount_fee;
+                }
 
                 return view('control_panel_student.enrollment.index', 
-                    compact('AlreadyEnrolled','grade_level', 'ClassDetail','PaymentCategory','Downpayment',
-                    'Profile','StudentInformation','Tuition','Enrollment','User','SchoolYear','Discount', 'IncomingStudentCount'));
+                    compact('AlreadyEnrolled','grade_level', 'ClassDetail','PaymentCategory','Downpayment','sum_total_item',
+                    'Profile','StudentInformation','Tuition','Enrollment','User','SchoolYear','Discount', 'IncomingStudentCount','TransactionDiscount','TransactionDiscountTotal'));
                 return json_encode(['GradeSheetData' => $GradeSheetData,]);
 
             }else{
@@ -98,9 +112,22 @@ class EnrollmentController extends Controller
                     // discount
                     $Discount =  DiscountFee::where('status', 1)->where('current', 1)->where('apply_to', 1)->get();        
 
+                    $TransactionDiscount = TransactionDiscount::where('student_id', $StudentInformation->id)->where('school_year_id', $SchoolYear->id)->get();
+
+                    $TransactionDiscountTotal = TransactionDiscount::where('student_id', $StudentInformation->id)->where('school_year_id', $SchoolYear->id)->sum('discount_amt');
+
+                    $tuition_fee = $PaymentCategory->tuition->tuition_amt;
+                    $misc_fee = $PaymentCategory->misc_fee->misc_amt;
+                    $other_fee = $PaymentCategory->other_fee->other_fee_amt;
+                    $discount_fee = $TransactionDiscountTotal;
+
+                    if($Tuition){
+                        $sum_total_item = ( $tuition_fee + $misc_fee + $other_fee) - $discount_fee;
+                    }
+                    
                     return view('control_panel_student.enrollment.index', 
-                        compact('AlreadyEnrolled','grade_level', 'ClassDetail','PaymentCategory','Downpayment',
-                        'Profile','StudentInformation','Tuition','Enrollment','User','SchoolYear','Discount', 'IncomingStudentCount'));
+                        compact('AlreadyEnrolled','grade_level', 'ClassDetail','PaymentCategory','Downpayment','sum_total_item',
+                        'Profile','StudentInformation','Tuition','Enrollment','User','SchoolYear','Discount', 'IncomingStudentCount','TransactionDiscount','TransactionDiscountTotal'));
                     return json_encode(['GradeSheetData' => $GradeSheetData,]);
                         
                 }else{
@@ -179,6 +206,22 @@ class EnrollmentController extends Controller
             $Enrollment->receipt_img = $imageName;
             $Enrollment->save();
 
+            if($request->discount_bank != 0){
+                foreach($request->discount_bank as $get_data){
+                    $DiscountFee = DiscountFee::where('id', $get_data)
+                        ->where('apply_to', 1)//finance|student
+                        ->where('current', 1)
+                        ->where('status', 1)->first();                        
+                    $DiscountFeeSave = new TransactionDiscount();
+                    $DiscountFeeSave->student_id = $StudentInformation->id;
+                    $DiscountFeeSave->discount_amt = $DiscountFee->disc_amt;
+                    $DiscountFeeSave->discount_type = $DiscountFee->disc_type;        
+                    $DiscountFeeSave->transaction_month_paid_id = $Enrollment->id;                
+                    $DiscountFeeSave->school_year_id = $SchoolYear->id;
+                    $DiscountFeeSave->save();
+                }    
+            }                 
+
         }else{
             
             $EnrollmentTransaction = new Transaction();
@@ -203,17 +246,43 @@ class EnrollmentController extends Controller
             $request->bank_image->move(public_path('/img/receipt/'), $imageName);
             $Enrollment->receipt_img = $imageName;            
             
-            if($Enrollment->save()){            
-                if($request->bank_discount!=0){
-                    $Discount = new TransactionDiscount();
-                    $Discount->student_id =  $StudentInformation->id;
-                    $Discount->school_year_id = $SchoolYear->id;
-                    $Discount->discount_type = $request->bank_discount_type;
-                    $Discount->discount_amt = $request->bank_discount;
-                    $Discount->transaction_id = $EnrollmentTransaction->id;
-                    $Discount->save();
-                }            
-            }
+            $Enrollment->save();          
+                // if($request->bank_discount!=0){
+                //     $Discount = new TransactionDiscount();
+                //     $Discount->student_id =  $StudentInformation->id;
+                //     $Discount->school_year_id = $SchoolYear->id;
+                //     $Discount->discount_type = $request->bank_discount_type;
+                //     $Discount->discount_amt = $request->bank_discount;
+                //     $Discount->transaction_id = $EnrollmentTransaction->id;
+                //     $Discount->save();
+                // }            
+            
+
+            if($request->discount_bank != 0){
+                foreach($request->discount_bank as $get_data){
+                    $DiscountFee = DiscountFee::where('id', $get_data)
+                        ->where('apply_to', 1)//finance|student
+                        ->where('current', 1)
+                        ->where('status', 1)->first();                        
+                    $DiscountFeeSave = new TransactionDiscount();
+                    $DiscountFeeSave->student_id = $StudentInformation->id;
+                    $DiscountFeeSave->discount_amt = $DiscountFee->disc_amt;
+                    $DiscountFeeSave->discount_type = $DiscountFee->disc_type;        
+                    $DiscountFeeSave->transaction_month_paid_id = $Enrollment->id;                
+                    $DiscountFeeSave->school_year_id = $SchoolYear->id;
+                    $DiscountFeeSave->save();
+                }    
+            }                   
+            
+            $Other = new TransactionOtherFee();
+            $Other->transaction_id = $EnrollmentTransaction->id;
+            $Other->student_id = $StudentInformation->id;
+            $Other->others_fee_id = $request->other_id;
+            $Other->school_year_id = $SchoolYear->id;
+            $Other->item_qty = 1;
+            $Other->item_price = $request->other_price;
+            $Other->other_name = $request->other_name;
+            $Other->save();
         }       
         
             $payment = Transaction::find($Enrollment->transaction_id);
@@ -288,6 +357,22 @@ class EnrollmentController extends Controller
             $Enrollment->receipt_img = $imageName;
             $Enrollment->save();
 
+            if($request->discount_bank != 0){
+                foreach($request->discount_bank as $get_data){
+                    $DiscountFee = DiscountFee::where('id', $get_data)
+                        ->where('apply_to', 1)//finance|student
+                        ->where('current', 1)
+                        ->where('status', 1)->first();                        
+                    $DiscountFeeSave = new TransactionDiscount();
+                    $DiscountFeeSave->student_id = $StudentInformation->id;
+                    $DiscountFeeSave->discount_amt = $DiscountFee->disc_amt;
+                    $DiscountFeeSave->discount_type = $DiscountFee->disc_type;        
+                    $DiscountFeeSave->transaction_month_paid_id = $Enrollment->id;                
+                    $DiscountFeeSave->school_year_id = $SchoolYear->id;
+                    $DiscountFeeSave->save();
+                }    
+            }      
+
         }else{
 
             $EnrollmentTransaction = new Transaction();
@@ -311,19 +396,33 @@ class EnrollmentController extends Controller
             $imageName = time().'.'.$request->gcash_image->getClientOriginalExtension();
             $request->gcash_image->move(public_path('/img/receipt/'), $imageName);
             $Enrollment->receipt_img = $imageName;
-            if($Enrollment->save()){
+            $Enrollment->save();
+
+            if($request->discount_bank != 0){
+                foreach($request->discount_bank as $get_data){
+                    $DiscountFee = DiscountFee::where('id', $get_data)
+                        ->where('apply_to', 1)//finance|student
+                        ->where('current', 1)
+                        ->where('status', 1)->first();                        
+                    $DiscountFeeSave = new TransactionDiscount();
+                    $DiscountFeeSave->student_id = $StudentInformation->id;
+                    $DiscountFeeSave->discount_amt = $DiscountFee->disc_amt;
+                    $DiscountFeeSave->discount_type = $DiscountFee->disc_type;        
+                    $DiscountFeeSave->transaction_month_paid_id = $Enrollment->id;                
+                    $DiscountFeeSave->school_year_id = $SchoolYear->id;
+                    $DiscountFeeSave->save();
+                }    
+            }                   
             
-                if($request->gcash_discount!=0){
-                    $Discount = new TransactionDiscount();
-                    $Discount->student_id =  $StudentInformation->id;
-                    $Discount->school_year_id = $SchoolYear->id;
-                    $Discount->discount_type = $request->gcash_discount_type;
-                    $Discount->discount_amt = $request->gcash_discount;
-                    $Discount->transaction_id = $EnrollmentTransaction->id;
-                    $Discount->save();
-                }            
-                
-            }       
+            $Other = new TransactionOtherFee();
+            $Other->transaction_id = $EnrollmentTransaction->id;
+            $Other->student_id = $StudentInformation->id;
+            $Other->others_fee_id = $request->other_id;
+            $Other->school_year_id = $SchoolYear->id;
+            $Other->item_qty = 1;
+            $Other->item_price = $request->other_price;
+            $Other->other_name = $request->other_name;
+            $Other->save();
         }   
 
         $payment = Transaction::find($Enrollment->transaction_id);
@@ -346,9 +445,14 @@ class EnrollmentController extends Controller
 
         $Discount = TransactionDiscount::where('student_id', $request->id)
             ->where('school_year_id', $request->school_year_id)
-            ->first();
+            ->sum('discount_amt');
+
+        $Discount_amt = TransactionDiscount::where('student_id', $request->id)
+            ->where('school_year_id', $request->school_year_id)
+            ->get();
 
         $Transaction_history = NULL;
+
         if ($request->id && $request->school_year_id)
         {
             $Transaction_history = Transaction::where('student_id', $request->id)
@@ -360,19 +464,30 @@ class EnrollmentController extends Controller
                ->where('school_year_id', $request->school_year_id)->where('isSuccess', 1)
                ->orderBY('id', 'desc')
                 ->get();
-
-
+            
             if($hasTransaction){
+                
+                $OtherFee = TransactionOtherFee::where('student_id', $request->id)
+                    ->where('school_year_id', $request->school_year_id)->where('transaction_id', $Transaction_history[0]->id)
+                    ->get();
+
+                
+                $Other_price = TransactionOtherFee::where('student_id', $request->id)
+                    ->where('school_year_id', $request->school_year_id)->where('transaction_id', $Transaction_history[0]->id)
+                    ->sum('item_price');
+
                 if($Discount){
-                    $tuition_misc_fee = ($Transaction_history[0]->payment_cat->tuition->tuition_amt + $Transaction_history[0]->payment_cat->misc_fee->misc_amt) - $Discount->discount_amt;
+                    $tuition_misc_fee = ($Transaction_history[0]->payment_cat->tuition->tuition_amt + $Transaction_history[0]->payment_cat->misc_fee->misc_amt + $Other_price) - $Discount ;
                 }else{
-                    $tuition_misc_fee = $Transaction_history[0]->payment_cat->tuition->tuition_amt + $Transaction_history[0]->payment_cat->misc_fee->misc_amt;
+                    $tuition_misc_fee = $Transaction_history[0]->payment_cat->tuition->tuition_amt + $Transaction_history[0]->payment_cat->misc_fee->misc_amt + $Other_price;
                 }
             }
             
             
         }
-        return view('control_panel_student.enrollment.partials.modal_data', compact('Transaction_history','Transaction','Discount','tuition_misc_fee','hasTransaction'))->render();
+        return view('control_panel_student.enrollment.partials.modal_data',
+            compact('Discount_amt','Transaction_history','Transaction','Discount','tuition_misc_fee','hasTransaction','OtherFee'))
+            ->render();
     }
     
 }

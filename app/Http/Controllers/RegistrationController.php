@@ -77,7 +77,8 @@ class RegistrationController extends Controller
             $StudentInformation->contact_number = $request->phone;
             $imageName = time().'.'.$request->student_img->getClientOriginalExtension();
             $request->student_img->move(public_path('img/account/photo/'), $imageName);
-            $StudentInformation->photo = $imageName;    
+            $StudentInformation->photo = $imageName;   
+            // $StudentInformation->status = 0;    
             $StudentInformation->save();
 
             $Incoming_student = new IncomingStudent();

@@ -19,6 +19,7 @@ use PayPal\Api\InputFields;
 use PayPal\Api\Transaction;
 use PayPal\Rest\ApiContext;
 use App\TransactionDiscount;
+use App\TransactionOtherFee;
 use Illuminate\Http\Request;
 use PayPal\Api\RedirectUrls;
 use App\Mail\NotifyAdminMail;
@@ -41,7 +42,9 @@ class PaymentController extends Controller
     public function __construct()
     {
         $this->api_context = new ApiContext(
-            new OAuthTokenCredential(config('paypal.client_id'), config('paypal.secret'))
+            new OAuthTokenCredential(
+                config('paypal.client_id'), 
+                config('paypal.secret'))
         );
         $this->api_context->setConfig(config('paypal.settings'));
     }
@@ -53,9 +56,7 @@ class PaymentController extends Controller
     {
         $rules = [
             'tution_category' => 'required',
-            'e_downpayment' => 'required',
             'pay_fee' => 'required',
-            // 'phone' => 'required',
             'email'=>'required'
         ];
         
@@ -80,7 +81,7 @@ class PaymentController extends Controller
 
         // We create the payer and set payment method, could be any of "credit_card", "bank", "paypal", "pay_upon_invoice", "carrier", "alternate_payment". 
         $payer = new Payer();
-        $payer->setPaymentMethod('paypal');
+            $payer->setPaymentMethod('paypal');
 
         // Create and setup items being paid for.. Could multiple items like: 'item1, item2 etc'.
         $item = new Item();
@@ -118,7 +119,8 @@ class PaymentController extends Controller
         // We set up the payment with the payer, urls and transactions.
         // Note: you can have different itemLists, then different transactions for it.
         $payment = new Payment();
-        $payment->setIntent('Sale')->setPayer($payer)->setRedirectUrls($redirect_urls)
+        $payment->setIntent('Sale')->setPayer($payer)
+            ->setRedirectUrls($redirect_urls)
             ->setTransactions(array($transaction));
 
         // Put the payment creation in try and catch in case of exceptions.
@@ -167,27 +169,23 @@ class PaymentController extends Controller
                 $Enrollment->number = $request->phone;
                 $Enrollment->payment_option = 'Credit Card/Debit Card';
                 $Enrollment->transaction_id = $TransactionAccount->id;               
-
-                if($Enrollment->save()){
-                    if(!empty($request->discount)){
-                        foreach($request->discount as $get_data){
-                            $DiscountFee = DiscountFee::where('id', $get_data)
-                                ->where('apply_to', 1)//finance|student
-                                ->where('current', 1)
-                                ->where('status', 1)->first();
-                            
-                            $DiscountFeeSave = new TransactionDiscount();
-                            $DiscountFeeSave->student_id = $StudentInformation->id;
-                            $DiscountFeeSave->discount_amt = $DiscountFee->disc_amt;
-                            $DiscountFeeSave->discount_type = $DiscountFee->disc_type;        
-                            $DiscountFeeSave->transaction_month_paid_id = $Enrollment->id;                
-                            $DiscountFeeSave->school_year_id = $SchoolYear->id;
-                            $DiscountFeeSave->save();
-                        }
+                $Enrollment->save();
+                
+                if(!empty($request->discount)){
+                    foreach($request->discount as $get_data){
+                        $DiscountFee = DiscountFee::where('id', $get_data)
+                            ->where('apply_to', 1)//finance|student
+                            ->where('current', 1)
+                            ->where('status', 1)->first();
+                        
+                        $DiscountFeeSave = new TransactionDiscount();
+                        $DiscountFeeSave->student_id = $StudentInformation->id;
+                        $DiscountFeeSave->discount_amt = $DiscountFee->disc_amt;
+                        $DiscountFeeSave->discount_type = $DiscountFee->disc_type;        
+                        $DiscountFeeSave->transaction_month_paid_id = $Enrollment->id;                
+                        $DiscountFeeSave->school_year_id = $SchoolYear->id;
+                        $DiscountFeeSave->save();                        
                     }
-                    return response()->json([$redirect_url]);
-                }else{
-                    return redirect()->back()->withError('Unknown error occurred');
                 }
                 
             }else{
@@ -208,35 +206,37 @@ class PaymentController extends Controller
                 $Enrollment->number = $request->phone;
                 $Enrollment->payment_option = 'Credit Card/Debit Card';
                 $Enrollment->transaction_id = $EnrollmentTransaction->id;
-        
-                if($Enrollment->save()){  
-    
-                    if($request->e_discount != 0){
-                        $Discount = new TransactionDiscount();
-                        $Discount->student_id =  $StudentInformation->id;
-                        $Discount->school_year_id = $SchoolYear->id;
-                        $Discount->discount_type = $request->e_discount_type;
-                        $Discount->discount_amt = $request->e_discount;
-                        $Discount->transaction_id = $EnrollmentTransaction->id;                            
-                        
-                        if($Discount->save()){
-                            return response()->json([$redirect_url]);
-                        }else{
-                            return redirect()->back()->withError('Unknown error occurred');
-                        }    
-                    }else{
-                        return response()->json([$redirect_url]);
-                    }
-
-                }else{
-                    return redirect()->back()->withError('Unknown error occurred');
-                }
-                              
-
+                $Enrollment->save();
                 
+                if($request->discount != 0){
+                    foreach($request->discount as $get_data){
+                        $DiscountFee = DiscountFee::where('id', $get_data)
+                            ->where('apply_to', 1)//finance|student
+                            ->where('current', 1)
+                            ->where('status', 1)->first();                        
+                        $DiscountFeeSave = new TransactionDiscount();
+                        $DiscountFeeSave->student_id = $StudentInformation->id;
+                        $DiscountFeeSave->discount_amt = $DiscountFee->disc_amt;
+                        $DiscountFeeSave->discount_type = $DiscountFee->disc_type;        
+                        $DiscountFeeSave->transaction_month_paid_id = $Enrollment->id;                
+                        $DiscountFeeSave->school_year_id = $SchoolYear->id;
+                        $DiscountFeeSave->save();
+                    }    
+                }                   
+                
+                $Other = new TransactionOtherFee();
+                $Other->transaction_id = $EnrollmentTransaction->id;
+                $Other->student_id = $StudentInformation->id;
+                $Other->others_fee_id = $request->other_id;
+                $Other->school_year_id = $SchoolYear->id;
+                $Other->item_qty = 1;
+                $Other->item_price = $request->other_price;
+                $Other->other_name = $request->other_name;
+                $Other->save();
+                // return response()->json([$redirect_url]);
             }
-            
-            
+
+            return response()->json([$redirect_url]);
         }
 
         // If we don't have redirect url, we have unknown error.
@@ -257,6 +257,7 @@ class PaymentController extends Controller
             
         // We retrieve the payment from the paymentId.
         $payment = Payment::get($request->query('paymentId'), $this->api_context);
+        
 
         // We create a payment execution with the PayerId
         $execution = new PaymentExecution();

@@ -30,6 +30,12 @@ class DashboardController extends Controller
                 ->where('status', 1)
                 ->get();
 
+            $AppointedCount = StudentTimeAppointment::with('appointment')
+                ->where('student_id', $StudentInformation->id)
+                // ->where('school_year_id', $SchoolYear->id)
+                ->where('status', 1)
+                ->count();
+
             $OnlineAppointment = OnlineAppointment::where('status', 1)
                 ->get();
 
@@ -40,10 +46,15 @@ class DashboardController extends Controller
                 ->first();
 
             return view('control_panel_student.online_appointment.partials.data_list', 
-                compact('OnlineAppointment', 'Appointed','StudentInformation','SchoolYear','hasAppointment'))
+                compact('OnlineAppointment', 'Appointed','StudentInformation','SchoolYear','hasAppointment','AppointedCount'))
                 ->render();
         }
 
+        $AppointedCount = StudentTimeAppointment::with('appointment')
+                ->where('student_id', $StudentInformation->id)
+                // ->where('school_year_id', $SchoolYear->id)
+                ->where('status', 1)
+                ->count();
 
         $Appointed = StudentTimeAppointment::with('appointment')
             ->where('student_id', $StudentInformation->id)
@@ -61,7 +72,7 @@ class DashboardController extends Controller
             ->first();
 
         $StudentInformation = \App\StudentInformation::where('user_id', \Auth::user()->id)->first();
-        return view('control_panel_student.dashboard.index',compact('StudentInformation','OnlineAppointment', 'Appointed','StudentInformation','SchoolYear', 'hasAppointment'));
+        return view('control_panel_student.dashboard.index',compact('StudentInformation','OnlineAppointment', 'Appointed','StudentInformation','SchoolYear', 'hasAppointment','AppointedCount'));
     }
 
     

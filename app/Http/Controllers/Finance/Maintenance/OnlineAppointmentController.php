@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\finance\Maintenance;
 
 use App\SchoolYear;
+use App\IncomingStudent;
 use App\OnlineAppointment;
 use App\StudentInformation;
 use Illuminate\Http\Request;
@@ -11,6 +12,7 @@ use App\Mail\OnlineAppointmentMail;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use App\Mail\OnlineAppointmentFinanceMail;
+use App\Mail\NotifyDisapproveAppointmentMail;
 
 class OnlineAppointmentController extends Controller
 {
@@ -117,22 +119,115 @@ class OnlineAppointmentController extends Controller
 
     public function appointment(Request $request){
 
-        $User = Auth::user();
+        $User = \Auth::user();
         $StudentInformation = StudentInformation::where('user_id', $User->id)
             ->first();
+        $SchoolYear = SchoolYear::where('current', 1)
+            ->where('status', 1)
+            ->first();
+        $IncomingStudentCount = IncomingStudent::where('student_id', $StudentInformation->id)->where('school_year_id', $SchoolYear->id)->first();
 
-        // $SchoolYear = SchoolYear::where('current', 1)
-        //     ->where('status', 1)
-        //     ->first();
-
-        if ($request->ajax())
+        if($IncomingStudentCount)
         {
+
+            if ($request->ajax())
+            {
+                $Appointed = StudentTimeAppointment::with('appointment')
+                    ->where('student_id', $StudentInformation->id)
+                    // ->where('school_year_id', $SchoolYear->id)
+                    ->where('status', 1)
+                    ->get();
+
+                $OnlineAppointment = OnlineAppointment::where('status', 1)
+                    ->get();
+
+                $hasAppointment =  StudentTimeAppointment::with('appointment')
+                    ->where('student_id', $StudentInformation->id)
+                    // ->where('school_year_id', $SchoolYear->id)
+                    ->where('status', 1)
+                    ->first();
+
+                $AppointedCount = StudentTimeAppointment::with('appointment')
+                    ->where('student_id', $StudentInformation->id)
+                    // ->where('school_year_id', $SchoolYear->id)
+                    ->where('status', 1)
+                    ->count();
+
+                return view('control_panel_student.online_appointment.partials.data_list', 
+                    compact('AppointedCount','OnlineAppointment', 'Appointed','StudentInformation','SchoolYear','hasAppointment','IncomingStudentCount'))
+                    ->render();
+            }
+
+
             $Appointed = StudentTimeAppointment::with('appointment')
                 ->where('student_id', $StudentInformation->id)
                 // ->where('school_year_id', $SchoolYear->id)
                 ->where('status', 1)
                 ->get();
+            
+            $OnlineAppointment = OnlineAppointment::where('status', 1)
+                ->get();
 
+            $hasAppointment =  StudentTimeAppointment::with('appointment')
+                ->where('student_id', $StudentInformation->id)
+                // ->where('school_year_id', $SchoolYear->id)
+                ->where('status', 1)
+                ->first();
+            
+            $AppointedCount = StudentTimeAppointment::with('appointment')
+                ->where('student_id', $StudentInformation->id)
+                // ->where('school_year_id', $SchoolYear->id)
+                ->where('status', 1)
+                ->count();            
+            
+            return view('control_panel_student.online_appointment.index', 
+                compact('AppointedCount','OnlineAppointment', 'Appointed','StudentInformation','SchoolYear', 'hasAppointment','IncomingStudentCount'))->render();
+        }else{
+
+            $Enrollment = Enrollment::where('student_information_id', $StudentInformation->id)
+                ->where('status', 1)
+                ->where('current', 1)
+                ->orderBy('id', 'DESC')
+                ->first();
+                        
+            $ClassDetail = ClassDetail::where('id', $Enrollment->class_details_id)
+                ->where('status', 1)->where('current', 1)->orderBY('grade_level', 'DESC')->first();
+
+            if ($request->ajax())
+            {
+                $Appointed = StudentTimeAppointment::with('appointment')
+                    ->where('student_id', $StudentInformation->id)
+                    // ->where('school_year_id', $SchoolYear->id)
+                    ->where('status', 1)
+                    ->get();
+
+                $OnlineAppointment = OnlineAppointment::where('status', 1)
+                    ->get();
+
+                $hasAppointment =  StudentTimeAppointment::with('appointment')
+                    ->where('student_id', $StudentInformation->id)
+                    // ->where('school_year_id', $SchoolYear->id)
+                    ->where('status', 1)
+                    ->first();
+
+                $AppointedCount = StudentTimeAppointment::with('appointment')
+                    ->where('student_id', $StudentInformation->id)
+                    // ->where('school_year_id', $SchoolYear->id)
+                    ->where('status', 1)
+                    ->count();
+
+                return view('control_panel_student.online_appointment.partials.data_list', 
+                    compact('AppointedCount','OnlineAppointment', 'Appointed','StudentInformation','SchoolYear','hasAppointment','IncomingStudentCount','ClassDetail'))
+                    ->render();
+            }
+
+
+            $Appointed = StudentTimeAppointment::with('appointment')
+                ->where('student_id', $StudentInformation->id)
+                // ->where('school_year_id', $SchoolYear->id)
+                ->where('status', 1)
+                ->get();
+            
             $OnlineAppointment = OnlineAppointment::where('status', 1)
                 ->get();
 
@@ -142,29 +237,15 @@ class OnlineAppointmentController extends Controller
                 ->where('status', 1)
                 ->first();
 
-            return view('control_panel_student.online_appointment.partials.data_list', 
-                compact('OnlineAppointment', 'Appointed','StudentInformation','SchoolYear','hasAppointment'))
-                ->render();
+            $AppointedCount = StudentTimeAppointment::with('appointment')
+                ->where('student_id', $StudentInformation->id)
+                // ->where('school_year_id', $SchoolYear->id)
+                ->where('status', 1)
+                ->count();
+            
+            return view('control_panel_student.online_appointment.index', 
+                compact('AppointedCount','OnlineAppointment', 'Appointed','StudentInformation','SchoolYear', 'hasAppointment','IncomingStudentCount','ClassDetail'))->render();
         }
-
-
-        $Appointed = StudentTimeAppointment::with('appointment')
-            ->where('student_id', $StudentInformation->id)
-            // ->where('school_year_id', $SchoolYear->id)
-            ->where('status', 1)
-            ->get();
-        
-        $OnlineAppointment = OnlineAppointment::where('status', 1)
-            ->get();
-
-        $hasAppointment =  StudentTimeAppointment::with('appointment')
-            ->where('student_id', $StudentInformation->id)
-            // ->where('school_year_id', $SchoolYear->id)
-            ->where('status', 1)
-            ->first();
-        
-        return view('control_panel_student.online_appointment.index', 
-            compact('OnlineAppointment', 'Appointed','StudentInformation','SchoolYear', 'hasAppointment'))->render();
     }
 
     public function reserve(Request $request)
@@ -190,7 +271,9 @@ class OnlineAppointmentController extends Controller
             $StudentTimeAppointment = new StudentTimeAppointment();
             // $StudentTimeAppointment->school_year_id = $SchoolYear->id;
             $StudentTimeAppointment->online_appointment_id = $request->id;
-            $StudentTimeAppointment->student_id = $StudentInformation->id;            
+            $StudentTimeAppointment->student_id = $StudentInformation->id; 
+            $StudentTimeAppointment->grade_lvl = $request->grade_lvl;
+            $StudentTimeAppointment->email = $request->email;            
                 
             $hasNumber =  StudentTimeAppointment::where('online_appointment_id', $Reserved->id)->orderBY('queueing_number', 'DESC')->first();
 
@@ -240,7 +323,8 @@ class OnlineAppointmentController extends Controller
                     student_time_appointments.id as student_time_appointment_id, 
                     CONCAT(student_informations.last_name, ', ', student_informations.first_name, ' ', student_informations.middle_name) as student_name,
                     student_time_appointments.queueing_number,
-                    student_time_appointments.status
+                    student_time_appointments.status,
+                    student_time_appointments.grade_lvl
 
                 "))
                 ->where('student_time_appointments.status', 1)
@@ -249,6 +333,7 @@ class OnlineAppointmentController extends Controller
                 // ->where('online_appointments.school_year_id', $SchoolYear->id)
                 ->orderBy('student_time_appointments.id', 'ASC')
                 ->get();
+                
 
             $hasAppointment =  OnlineAppointment::join('student_time_appointments', 'student_time_appointments.online_appointment_id','=','online_appointments.id')
                 ->select(\DB::raw("
@@ -280,6 +365,25 @@ class OnlineAppointmentController extends Controller
             $OnlineAppointment->status = 0;
             $OnlineAppointment->save();
             return response()->json(['res_code' => 0, 'res_msg' => 'This appointment successfully done.']);
+        }
+        return response()->json(['res_code' => 1, 'res_msg' => 'Invalid request.']);
+    }
+
+    public function disapprove (Request $request) 
+    {
+        $OnlineAppointment = StudentTimeAppointment::where('id', $request->id)
+            ->first();
+
+        if ($OnlineAppointment)
+        {
+            $OnlineAppointment->status = 0;
+            $OnlineAppointment->approval = 0;
+            $OnlineAppointment->save();
+
+            $hasAppointment = StudentTimeAppointment::find($OnlineAppointment->id);
+            \Mail::to($OnlineAppointment->email)->send(new NotifyDisapproveAppointmentMail($hasAppointment));
+
+            return response()->json(['res_code' => 0, 'res_msg' => 'This appointment successfully disapproved.']);
         }
         return response()->json(['res_code' => 1, 'res_msg' => 'Invalid request.']);
     }

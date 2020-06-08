@@ -42,55 +42,65 @@
         </div>        
           <div class="box-body">
             <div class="form-group col-lg-12">
-                <label for="exampleInputEmail1">You are incoming Grade-level <i style="color:red">
+                <h4>
+                  {{$AlreadyEnrolled ? 'You are enrolled to ' : 'You are incoming' }} Grade-level <i style="color:red">
                   @if($IncomingStudentCount)
                     {{$IncomingStudentCount->grade_level_id}}
                   @else
                     {{$ClassDetail->grade_level+1}}
                   @endif
                   </i>
-                </label>
-                <br><br>
+                </h4>
+                <br/>
                 <label for="exampleInputEmail1">Available Tuition Fee and Misc Fee</label>
                 
                 @if($Tuition)
                   <input type="hidden" value="0" class="checkTution">
-                  <input type="hidden" class="form-control" value="{{$PaymentCategory->id}}" name="tution_category">
-                  <input type="hidden" id="total_tuition" name="total_tuition" value="{{$Tuition ? $PaymentCategory->tuition->tuition_amt + $PaymentCategory->misc_fee->misc_amt : ''}}">
+                  <input type="hidden" class="form-control" value="{{$PaymentCategory->id}}" name="tution_category">                  
+                  <input type="hidden" id="total_tuition" name="total_tuition" value="{{$Tuition ? $sum_total_item : ''}}">
                   <input type="hidden" id="total_misc" name="total_misc" value="{{$PaymentCategory->misc_fee->misc_amt}}">
-                  <input type="hidden" class="form-control" name="description_name" value="SJAI {{$IncomingStudentCount ? $IncomingStudentCount->grade_level_id : $ClassDetail->grade_level+1 }} Tuition Fee ({{number_format($PaymentCategory->tuition->tuition_amt, 2) }}) | Miscellenous Fee ({{number_format($PaymentCategory->misc_fee->misc_amt,2)}})" name="tution_category">
-                  <p>Tuition Fee (₱ {{number_format($PaymentCategory->tuition->tuition_amt, 2) }}) | Miscellenous Fee (₱ {{number_format($PaymentCategory->misc_fee->misc_amt,2)}})</p>
+                  <input type="hidden" class="form-control" name="description_name" value="SJAI {{$IncomingStudentCount ? $IncomingStudentCount->grade_level_id : $ClassDetail->grade_level+1 }} Tuition Fee ({{number_format($PaymentCategory->tuition->tuition_amt, 2) }}) | Miscellaneous Fee ({{number_format($PaymentCategory->misc_fee->misc_amt,2)}}) | Other(s) {{$PaymentCategory->other_fee ? $PaymentCategory->other_fee->other_fee_name : 'N/A'}} - (₱ {{number_format($PaymentCategory->other_fee ? $PaymentCategory->other_fee->other_fee_amt : '', 2) }})" name="tution_category">
+                  <p>Tuition Fee (₱ {{number_format($PaymentCategory->tuition->tuition_amt, 2) }}) | Miscellaneous Fee (₱ {{number_format($PaymentCategory->misc_fee->misc_amt,2)}})</p>
+                  
+                  <label for="exampleInputEmail1">Other(s) Fee</label>
+                  <input type="hidden" name="other_id" value="{{$PaymentCategory->other_fee->id}}">
+                  <input type="hidden" name="other_name" value="{{$PaymentCategory->other_fee->other_fee_name}}">
+                  <input type="hidden" name="other_price" value="{{$PaymentCategory->other_fee->other_fee_amt}}">
+                  <p>{{$PaymentCategory->other_fee->other_fee_name}} - (₱ {{number_format($PaymentCategory->other_fee->other_fee_amt, 2) }})</p>
+                
                 @else
                   <input type="hidden" value="1" class="checkTution">
-                  <p>There is no Tution and Miscellenous Fee</p>
+                  <p>There is no Tution and Miscellaneous Fee</p>
                 @endif
 
                 
-                <label for="e_discount">Discount Fee</label>
+                          
+                  <label for="e_discount">Discount Fee</label>
+                  <div class="checkbox" style="margin-top: -2.5px;">
+                    @foreach ($Discount as $item)                
+                      <label>                      
+                        <?php 
+                          $hasAlreadyDiscount = \App\TransactionDiscount::where('student_id', $StudentInformation->id)
+                            ->where('school_year_id', $SchoolYear->id)->where('discount_type', $item->disc_type)->first();
+                        ?>
+                        <input type="checkbox" {{$hasAlreadyDiscount ? 'disabled' : ''  }} class="discountSelected" name="discount[]" value="{{$item->id}}"
+                          data-type="{{$item->disc_type}}" 
+                          data-fee="{{$item->disc_amt}}">
+                          <span style="{{$hasAlreadyDiscount ? 'text-decoration: line-through;color: red;' : ''  }}">{{$item->disc_type}} ({{number_format($item->disc_amt, 2)}}) <b></span> </b>
+                      </label> 
+                      &nbsp;&nbsp;               
+                    @endforeach
+                  </div>
+                @if(!$AlreadyEnrolled)
+                  <label for="downpayment">Downpayment Fee</label>
+                    @if($Downpayment)
+                      <input type="hidden" value="{{$Downpayment->id}}" name="e_downpayment">
+                      <input type="hidden" id="downpayment" value="{{$Downpayment->downpayment_amt}}" name="e_downpayment">
+                      <p>₱ {{number_format($Downpayment->downpayment_amt,2)}}</p>             
+                    @else
+                      <p>There is no Downpayment yet</p>
+                    @endif
 
-                @foreach ($Discount as $item)
-                <div class="checkbox">
-                  <label>
-                    <?php 
-                      $hasAlreadyDiscount = \App\TransactionDiscount::where('student_id', $StudentInformation->id)
-                        ->where('school_year_id', $SchoolYear->id)->where('discount_type', $item->disc_type)->first();
-                    ?>
-                    <input type="checkbox" {{$hasAlreadyDiscount ? 'disabled' : ''  }} class="discountSelected" name="discount[]" value="{{$item->id}}"
-                      data-type="{{$item->disc_type}}" 
-                      data-fee="{{$item->disc_amt}}">
-                      {{$item->disc_type}} ({{number_format($item->disc_amt, 2)}}) <b>{{$hasAlreadyDiscount ? 'Already used' : ''  }} </b>
-                  </label>
-                </div>
-                @endforeach
-                
-
-                <label for="downpayment">Downpayment Fee</label>
-                @if($Downpayment)
-                  <input type="hidden" value="{{$Downpayment->id}}" name="e_downpayment">
-                  <input type="hidden" id="downpayment" value="{{$Downpayment->downpayment_amt}}" name="e_downpayment">
-                  <p>₱ {{number_format($Downpayment->downpayment_amt,2)}}</p>             
-                @else
-                  <p>There is no Downpayment yet</p>
                 @endif
 
                 
@@ -143,7 +153,7 @@
             Transaction Summary
           </h3> 
 
-          <a class="btn btn-info pull-right btn-transaction-history" 
+          <a class="btn btn-sm btn-info pull-right btn-transaction-history" 
             data-id="{{$StudentInformation->id}}" 
             data-school_year_id="{{$SchoolYear->id}}" 
             href="#">
@@ -153,7 +163,8 @@
         <div class="box-body">                  
             <table class="table  table-invoice table-striped">
               <tbody>
-                  <tr>                       
+                  <tr>           
+                    @if(!$AlreadyEnrolled)            
                       <tr>
                           <td style="width:120px">Tuition Fee</td>
                           <td align="right" id="tuition_fee"> 
@@ -170,20 +181,44 @@
                             @if($Tuition)
                             ₱ {{number_format($PaymentCategory->misc_fee->misc_amt,2)}}
                             @else
-                              <p>There is no Miscellenous Fee yet</p>
+                              <p>There is no Miscellaneous Fee yet</p>
                             @endif
                           </td>
                       </tr>
+                      <tr>
+                        <td style="width:120px">Other(s) Fee</td>
+                        <td align="right" id="misc_fee">
+                          @if($Tuition)
+                          ₱ {{number_format($PaymentCategory->other_fee->other_fee_amt,2)}}
+                          @else
+                            <p>There is no Miscellaneous Fee yet</p>
+                          @endif
+                        </td>
+                      </tr>
                       <tr >
                         <td style="width:120px">Discount</td>
-                        <td id="disc_amt" align="right">₱ 0</td>
-                      </tr>
+                        <td  align="right" id="disc_amt"> 
+                          @if($TransactionDiscount)
+                            @foreach ($TransactionDiscount as $item)
+                                <div class="col-md-6">{{$item->discount_type}}</div>
+                                <div class="col-md-6" align="right"  style="padding-right: 0">₱ {{$item->discount_amt}}</div>
+                            @endforeach
+                            <span id="disc_amt">
+                            </span>
+                          @else
+                          <span id="disc_amt">
+                            ₱ 0
+                          </span>
+                          @endif
+                        </td>
+                      </tr>                    
                      <tr>
                         <td style="width:120px">Total Fees</td>
                         <td align="right" id="total_fee">
-                          ₱ 0
+                          ₱ {{$Tuition ? $PaymentCategory->tuition->tuition_amt + $PaymentCategory->misc_fee->misc_amt - $TransactionDiscountTotal : ''}}
                         </td>
                       </tr>
+                      @endif
                       <tr>
                         <td style="width:120px">Previous Balance</td>
                         <td align="right" id="misc_fee">
@@ -191,9 +226,9 @@
                            <p>₱ {{number_format($AlreadyEnrolled->balance,2)}}</p> 
                           @else
                             @if($Tuition)
-                              <p>₱ {{number_format($PaymentCategory->misc_fee->misc_amt + $PaymentCategory->tuition->tuition_amt, 2)}}</p>
+                              <p>₱ {{number_format($sum_total_item, 2)}}</p>
                             @else
-                              <p>There is no Tution and Miscellenous fee yet</p>
+                              <p>There is no Tution and Miscellaneous fee yet</p>
                             @endif
                           @endif
                         </td>
@@ -201,7 +236,7 @@
                       <tr>
                           <td style="width:120px">Payment</td>
                           <td align="right">
-                              ₱ <span id="dp_enrollment"></span>
+                              ₱ <span id="dp_enrollment">0</span>
                           </td>
                       </tr>                    
                       <tr>
@@ -222,7 +257,7 @@
             <div class="box-footer col-lg-12">              
               <button type="button" class="btn-reset btn btn-danger pull-left">Reset</button>
               <button type="submit" disabled id="btn-enroll" class="btn btn-primary pull-right">
-                <i class="fab fa-cc-visa"></i> <i class="fab fa-cc-mastercard"></i> Enroll 
+                <i class="fab fa-cc-visa"></i> <i class="fab fa-cc-mastercard"></i> {{$AlreadyEnrolled ? 'Pay ' : 'Enroll' }}
               </button>
             </div>
             {{-- @include('control_panel_student.enrollment.partials.modal_paypal') --}}

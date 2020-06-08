@@ -64,26 +64,37 @@
                                     <tr>
                                         <td>Tuition Fee</td>
                                         <td>
-                                            {{ number_format($Modal_data->payment_cat->tuition->tuition_amt, 2)}}
+                                            ₱ {{ number_format($Modal_data->payment_cat->tuition->tuition_amt, 2)}}
                                         </td>                                
                                     </tr>
                                     <tr>
                                         <td>Misc Fee</td>
                                         <td>
-                                            {{ number_format($Modal_data->payment_cat->misc_fee->misc_amt, 2)}}
+                                            ₱ {{ number_format($Modal_data->payment_cat->misc_fee->misc_amt, 2)}}
                                         </td>                                
                                     </tr>
                                     <tr>
-                                        <td>Discount Fee</td>
-                                        <td>{{$Modal_data->disc_transaction_fee ? number_format($Modal_data->disc_transaction_fee->discount_amt,2) : '0.00'}}</td>
+                                        <td>Other Fee - {{ $other_fee ? $other_fee->other_name : 'NA'}}</td>
+                                        <td>
+                                            ₱ {{ number_format($other_fee ? $other_fee->item_price : '', 2)}}
+                                        </td>
                                     </tr>
+                                    @foreach ($Discount_amt as $item)
+                                    <tr>
+                                        <td>Discount Fee ({{$item->discount_type}})</td>
+                                        <td>
+                                            ₱ {{ number_format($item->discount_amt,2) }}
+                                        </td>
+                                    </tr>
+                                    @endforeach
+                                    
                                     <tr>
                                         <td>Total Fees</td>
-                                        <td>
-                                            @if($Modal_data->disc_transaction_fee)
-                                                {{ number_format($Modal_data->payment_cat->tuition->tuition_amt + $Modal_data->payment_cat->misc_fee->misc_amt - $Modal_data->disc_transaction_fee->discount_amt, 2)}}
+                                        <td>  ₱
+                                            @if($Discount)
+                                                 {{ number_format($total, 2)}}
                                             @else
-                                                {{ number_format($Modal_data->payment_cat->tuition->tuition_amt + $Modal_data->payment_cat->misc_fee->misc_amt, 2)}}
+                                                {{ number_format($total, 2)}}
                                             @endif                                                
                                         </td>                                
                                     </tr>
@@ -122,13 +133,13 @@
                                         </tr>
                                             <td>Tuition Fee</td>
                                             <td>
-                                                {{ number_format($data->payment, 2)}}
+                                                ₱ {{ number_format($data->payment, 2)}}
                                             </td>                                
                                         </tr>
                                         <tr>
                                             <td>Misc Fee</td>
                                             <td>
-                                                {{ number_format($data->balance, 2)}}
+                                                ₱ {{ number_format($data->balance, 2)}}
                                             </td>                                
                                         </tr>
                                         </tr>

@@ -34,26 +34,77 @@
                         <td>₱ {{number_format($payment->payment_cat->misc_fee->misc_amt, 2)}}</td>
                     </tr>
                     <tr>
-                        <td>Discount Fee</td>
-                        <td> ₱ 
-                            <?php
-                                $discount = \App\TransactionDiscount::where('student_id', $payment->student_id)
-                                        ->where('school_year_id', $payment->school_year_id)->first();
-                                
-                                if($discount){
-                                    echo number_format($discount->discount_amt, 2);
-                                }else{
-                                    echo '--NA--';
-                                }
-                            ?>
+                        <td>Other Fee 
+                            <?php  if($other){
+                                echo '('.$other->other_name.')';
+                            }else{
+                                echo '';
+                            }?>
+                        </td>
+                        <td> ₱
+                            <?php  if($other){
+                                echo number_format($other->item_price, 2);
+                            }else{
+                                echo '0';
+                            }?>
                         </td>
                     </tr>
                     <tr>
+                        <?php 
+                            $discount_transction = \App\Transaction::where('id', $payment->id)->first();
+                        
+                            $discount = \App\TransactionDiscount::where('student_id', $discount_transction->student_id)
+                                    ->where('school_year_id', $discount_transction->school_year_id)
+                                    ->get();
+                                    
+                            $total_discount = \App\TransactionDiscount::where('student_id', $discount_transction->student_id)
+                                    ->where('school_year_id', $discount_transction->school_year_id)
+                                    ->sum('discount_amt');
+                                    
+                            $hasDiscount = \App\TransactionDiscount::where('student_id', $discount_transction->student_id)
+                                    ->where('school_year_id', $discount_transction->school_year_id)
+                                    ->first();   
+                        ?>
+                        
+                        @if(!$hasDiscount)
+                            <td>Discount Fee</td>
+                            <td>--NA--</td>
+                        @else
+                            <td colspan="2">Discount Fee</td>
+
+                        @endif
+                    </tr>
+                    @if($hasDiscount)
+                        <tr>
+                            <td>
+                                <?php
+                                    foreach ($discount as $item) {
+                                        echo $item->discount_type.'<br/>';
+                                    }
+                                ?>                                
+                            </td>
+                            <td>  
+                                <?php
+                                    $total_disc = 0;
+                                    if($discount){
+                                        foreach ($discount as $item) {
+                                            echo '₱ '.number_format($item->discount_amt, 2).'<br/>';
+                                            // $total_disc += $item->discount_amt;
+                                        }
+                                    }else{
+                                        echo '--NA--';
+                                    }
+                                ?>
+                                {{-- {{number_format($payment->disc_transaction_fee->discount_amt, 2)}} --}}                            
+                            </td>
+                        </tr>
+                    @endif
+                    <tr>
                         <td>Total Fees</td>
                         <?php
-                            $tuitionMisc_fee = $payment->payment_cat->tuition->tuition_amt + $payment->payment_cat->misc_fee->misc_amt;
+                            $tuitionMisc_fee = $payment->payment_cat->tuition->tuition_amt + $payment->payment_cat->misc_fee->misc_amt + $other->item_price;
                             if($discount){
-                                $totalDiscount =  number_format($tuitionMisc_fee - $discount->discount_amt, 2);
+                                $totalDiscount =  number_format($tuitionMisc_fee - $total_discount, 2);
                             }                            
                          ?>
                         @if($discount)

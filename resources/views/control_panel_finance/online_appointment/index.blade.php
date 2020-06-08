@@ -25,7 +25,7 @@
                     </select>
                 </div> 
                 &nbsp;
-                <button type="submit" class="btn btn-flat btn-success">Search</button>
+                <button type="submit" class="btn btn-flat btn-success"><i class="fas fa-search"></i> Search</button>
             </form>
         </div>
         <div class="overlay hidden" id="js-loader-overlay"><i class="fa fa-refresh fa-spin"></i></div>
@@ -83,6 +83,56 @@
                 alertify.confirm('Confirmation', 'Are you sure you want the status done?', function(){  
                     $.ajax({
                         url         : "{{ route('finance.online_appointment.done') }}",
+                        type        : 'POST',
+                        data        : { _token : '{{ csrf_token() }}', id : id },
+                        success     : function (res) {
+                            $('.help-block').html('');
+                            if (res.res_code == 1)
+                            {
+                                show_toast_alert({
+                                    heading : 'Error',
+                                    message : res.res_msg,
+                                    type    : 'error'
+                                });
+                            }
+                            else
+                            {
+                                self.closest('tr').remove();
+
+                                if(rows == 0){
+                                    var total_output = '';
+                                    total_output +='<tr>';
+                                    total_output +='<td colspan="5">There is no active appointment</td>';
+                                    total_output +='</tr>';
+                                    $('#myTable tbody').html(total_output);
+                                }
+
+                                show_toast_alert({
+                                    heading : 'Success',
+                                    message : res.res_msg,
+                                    type    : 'success'
+                                });
+                                
+                            }
+                        }
+                    });
+                }, function(){  
+
+                });
+            });
+
+            $('body').on('click', '.btn_disapprove', function (e) {
+                e.preventDefault();
+                var id = $(this).data('id');
+                var self = $(this);
+                var rows= $('#myTable tbody tr').length;
+
+                alertify.defaults.transition = "slide";
+                alertify.defaults.theme.ok = "btn btn-primary btn-flat";
+                alertify.defaults.theme.cancel = "btn btn-danger btn-flat";
+                alertify.confirm('Confirmation', 'Are you sure you want it to disapprove?', function(){  
+                    $.ajax({
+                        url         : "{{ route('finance.online_appointment.disapprove') }}",
                         type        : 'POST',
                         data        : { _token : '{{ csrf_token() }}', id : id },
                         success     : function (res) {
