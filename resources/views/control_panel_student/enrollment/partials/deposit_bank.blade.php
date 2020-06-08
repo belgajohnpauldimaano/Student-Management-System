@@ -67,11 +67,13 @@
                                 Tuition Fee ({{number_format($PaymentCategory->tuition->tuition_amt, 2 ?? '')}}) | Miscellenous Fee ({{number_format($PaymentCategory->misc_fee->misc_amt,2)}})
                             </p>
 
+                            @if($hasOtherfee->other_fee_id != '')
                             <label for="exampleInputEmail1">Other(s) Fee</label>
                             <input type="hidden" name="other_id" value="{{$PaymentCategory->other_fee->id}}">
                             <input type="hidden" name="other_name" value="{{$PaymentCategory->other_fee->other_fee_name}}">
                             <input type="hidden" name="other_price" value="{{$PaymentCategory->other_fee->other_fee_amt}}">
                             <p>{{$PaymentCategory->other_fee->other_fee_name}} - (₱ {{number_format($PaymentCategory->other_fee->other_fee_amt, 2) }})</p>
+                            @endif
                             
                         @else
                             <p>There is no Tution and Miscellenous Fee</p>

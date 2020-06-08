@@ -52,6 +52,8 @@ class EnrollmentController extends Controller
                 $PaymentCategory = PaymentCategory::with('misc_fee','tuition')
                     ->where('grade_level_id',  $IncomingStudentCount->grade_level_id)->first();
 
+                $hasOtherfee = PaymentCategory::where('grade_level_id',  $IncomingStudentCount->grade_level_id)->first();
+
                 $Downpayment = DownpaymentFee::where('current', 1)->where('grade_level_id', $IncomingStudentCount->grade_level_id)->first();
 
                 $Profile = StudentInformation::where('user_id', $User->id)->first();
@@ -63,18 +65,27 @@ class EnrollmentController extends Controller
                                   
                 $TransactionDiscountTotal = TransactionDiscount::where('student_id', $StudentInformation->id)->where('school_year_id', $SchoolYear->id)->sum('discount_amt');
 
-                $tuition_fee = $PaymentCategory->tuition->tuition_amt;
-                $misc_fee = $PaymentCategory->misc_fee->misc_amt;
-                $other_fee = $PaymentCategory->other_fee->other_fee_amt;
-                $discount_fee = $TransactionDiscountTotal;
-
+                
                 if($Tuition){
-                    $sum_total_item = ( $tuition_fee + $misc_fee + $other_fee) - $discount_fee;
+                    $tuition_fee = $PaymentCategory->tuition->tuition_amt;
+                    $misc_fee = $PaymentCategory->misc_fee->misc_amt;
+                    if($hasOtherfee->other_fee_id != NULL){
+                        $other_fee = $PaymentCategory->other_fee->other_fee_amt;
+                    }
+                    else{
+                        $other_fee = 0;
+                    }        
+                    $discount_fee = $TransactionDiscountTotal;
+
+                    if($Tuition){
+                        $sum_total_item = ( $tuition_fee + $misc_fee + $other_fee) - $discount_fee;
+                    }
                 }
 
                 return view('control_panel_student.enrollment.index', 
-                    compact('AlreadyEnrolled','grade_level', 'ClassDetail','PaymentCategory','Downpayment','sum_total_item',
-                    'Profile','StudentInformation','Tuition','Enrollment','User','SchoolYear','Discount', 'IncomingStudentCount','TransactionDiscount','TransactionDiscountTotal'));
+                    compact('AlreadyEnrolled','grade_level', 'ClassDetail','PaymentCategory','Downpayment','sum_total_item', 'hasOtherfee',
+                    'Profile','StudentInformation','Tuition','Enrollment','User','SchoolYear','Discount', 'IncomingStudentCount',
+                    'TransactionDiscount','TransactionDiscountTotal'));
                 return json_encode(['GradeSheetData' => $GradeSheetData,]);
 
             }else{
@@ -104,6 +115,9 @@ class EnrollmentController extends Controller
 
                     $PaymentCategory = PaymentCategory::with('misc_fee','tuition')
                                     ->where('grade_level_id', $grade_level_id)->first();
+
+                    $hasOtherfee = PaymentCategory::where('grade_level_id',  $IncomingStudentCount->grade_level_id)->first();
+
                                     
                     $Downpayment = DownpaymentFee::where('current', 1)->first();
 
@@ -116,17 +130,24 @@ class EnrollmentController extends Controller
 
                     $TransactionDiscountTotal = TransactionDiscount::where('student_id', $StudentInformation->id)->where('school_year_id', $SchoolYear->id)->sum('discount_amt');
 
-                    $tuition_fee = $PaymentCategory->tuition->tuition_amt;
-                    $misc_fee = $PaymentCategory->misc_fee->misc_amt;
-                    $other_fee = $PaymentCategory->other_fee->other_fee_amt;
-                    $discount_fee = $TransactionDiscountTotal;
+                    if($Tuition){                    
+                        $tuition_fee = $PaymentCategory->tuition->tuition_amt;
+                        $misc_fee = $PaymentCategory->misc_fee->misc_amt;
+                        if($hasOtherfee->other_fee_id != NULL){
+                            $other_fee = $PaymentCategory->other_fee->other_fee_amt;
+                        }
+                        else{
+                            $other_fee = 0;
+                        }        
+                        $discount_fee = $TransactionDiscountTotal;
 
-                    if($Tuition){
-                        $sum_total_item = ( $tuition_fee + $misc_fee + $other_fee) - $discount_fee;
+                        if($Tuition){
+                            $sum_total_item = ( $tuition_fee + $misc_fee + $other_fee) - $discount_fee;
+                        }
                     }
                     
                     return view('control_panel_student.enrollment.index', 
-                        compact('AlreadyEnrolled','grade_level', 'ClassDetail','PaymentCategory','Downpayment','sum_total_item',
+                        compact('AlreadyEnrolled','grade_level', 'ClassDetail','PaymentCategory','Downpayment','sum_total_item','hasOtherfee',
                         'Profile','StudentInformation','Tuition','Enrollment','User','SchoolYear','Discount', 'IncomingStudentCount','TransactionDiscount','TransactionDiscountTotal'));
                     return json_encode(['GradeSheetData' => $GradeSheetData,]);
                         

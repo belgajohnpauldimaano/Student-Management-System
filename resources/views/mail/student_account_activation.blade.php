@@ -15,7 +15,7 @@
 
         <p>Dear {{$student->last_name.', '.$student->first_name.' '.$student->middle_name}}</p>
         <p>
-            Your account in St. John Academy Inc is now activated. Below is your account credentials, you can now enroll online using this account to our website https://www&#46;sja-bataan&#46;com.          
+            Your account in St. John Academy Inc. is now activated. Below is your account credentials, you can now enroll online using this account to our website https://www&#46;sja-bataan&#46;com.          
         </p>
         <ul>
             <li>username: {{$student->user->username}}</li>
