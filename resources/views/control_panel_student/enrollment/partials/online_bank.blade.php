@@ -75,7 +75,6 @@
                   <input type="hidden" value="1" class="checkTution">
                   <p>There is no Tution and Miscellaneous Fee</p>
                 @endif
-
                 
                           
                   <label for="e_discount">Discount Fee</label>
@@ -103,7 +102,6 @@
                     @else
                       <p>There is no Downpayment yet</p>
                     @endif
-
                 @endif
 
                 
