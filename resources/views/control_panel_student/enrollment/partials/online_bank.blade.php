@@ -123,7 +123,7 @@
                   <p>₱ {{number_format($AlreadyEnrolled->balance,2)}}</p> 
                 @else
                   @if($Tuition)                  
-                    <p>₱ {{number_format($Tuition ? $PaymentCategory->tuition->tuition_amt + $PaymentCategory->misc_fee->misc_amt : '', 2)}}</p> 
+                    <p>₱ {{number_format($Tuition ? $sum_total_item : '', 2)}}</p> 
                   @endif      
                 @endif               
             

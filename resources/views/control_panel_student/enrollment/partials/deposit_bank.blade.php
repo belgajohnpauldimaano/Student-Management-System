@@ -20,12 +20,12 @@
             <li>
                 PNB Dinalupihan Branch<br/>
                 Account Name: ST. John Academy<br/>
-                Account Number: 2053-70002-058
+                Account Number: 205370002058
             </li>
             <li>
                 Chinabank Dinalupihan Branch<br/>
                 Account Name: Saint John’s Academy Inc.<br/>
-                Account Number: 2564-65549-254
+                Account Number: 167600000464
             </li>
             
         </ul>

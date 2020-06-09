@@ -28,7 +28,7 @@
                   Credit card/Debit card/PayMaya
                 </option>
                 <option value="2">
-                  Bank Deposit
+                  Bank Deposit/Fund Transfer/Mobile Banking
                 </option>
                 <option value="3">
                   Gcash
