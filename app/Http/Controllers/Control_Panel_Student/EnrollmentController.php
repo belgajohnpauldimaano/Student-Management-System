@@ -39,7 +39,9 @@ class EnrollmentController extends Controller
        
         
         if($findSchoolYear){  
-            $IncomingStudentCount = IncomingStudent::where('student_id', $StudentInformation->id)->where('school_year_id', $SchoolYear->id)->first();
+            $IncomingStudentCount = IncomingStudent::where('student_id', $StudentInformation->id)
+                ->where('school_year_id', $SchoolYear->id)
+                ->first();
 
             if($IncomingStudentCount){                
 
@@ -123,11 +125,11 @@ class EnrollmentController extends Controller
                                     ->where('grade_level_id', $grade_level_id)->first();
 
                     if($Tuition){
-                        $hasOtherfee = PaymentCategory::where('grade_level_id',  $IncomingStudentCount->grade_level_id)->first();
+                        $hasOtherfee = PaymentCategory::where('grade_level_id',  $grade_level_id)->first();
                     } 
 
                                     
-                    $Downpayment = DownpaymentFee::where('status', 1)->where('grade_level_id', $IncomingStudentCount->grade_level_id)->get();
+                    $Downpayment = DownpaymentFee::where('status', 1)->where('grade_level_id', $grade_level_id)->get();
 
                     $Profile = StudentInformation::where('user_id', $User->id)->first();
 
