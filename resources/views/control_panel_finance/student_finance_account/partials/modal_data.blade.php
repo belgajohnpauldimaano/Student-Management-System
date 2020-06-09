@@ -54,7 +54,7 @@
                         </div>
                         
                         <div class="box-body no-padding">
-                            <table class="table table-bordered">
+                            <table class="table table-bordered table-striped table-hover">
                                 <tbody>
                                     <tr>
                                         <th style="width: 50%">Description</th>
@@ -76,7 +76,7 @@
                                     <tr>
                                         <td>Other Fee - {{ $other_fee ? $other_fee->other_name : 'NA'}}</td>
                                         <td>
-                                            ₱ {{ number_format($other_fee ? $other_fee->item_price : '', 2)}}
+                                            ₱ {{ number_format($other, 2)}}
                                         </td>
                                     </tr>
                                     @foreach ($Discount_amt as $item)
@@ -118,7 +118,7 @@
                             </div>
                                 
                             <div class="box-body no-padding">
-                                <table class="table table-bordered">
+                                <table class="table table-bordered table-striped table-hover">
                                     <tbody>
                                         <tr>
                                             <th style="width: 50%">Description</th>

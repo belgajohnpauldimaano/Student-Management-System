@@ -116,16 +116,36 @@ class StudentFinanceAccountController extends Controller
 
             $Discount_amt = TransactionDiscount::where('student_id', $Modal_data->student_id)
                 ->where('school_year_id', $Modal_data->school_year_id)
+                ->where('isSuccess', 1)
                 ->get();
+
+            
+            $other_fee = Transaction::join('transaction_other_fees', 'transaction_other_fees.transaction_id','=', 'transactions.id')
+                ->selectRaw('
+                    transactions.student_id,
+                    transactions.id as transactions_id,
+                    transaction_other_fees.item_price, 
+                    transaction_other_fees.other_name
+                ')
+                ->where('transactions.id', $request->id)
+                ->where('transaction_other_fees.isSuccess', 1)
+                ->first();
                 
-            $other_fee = TransactionOtherFee::where('student_id', $Modal_data->student_id)
-                ->where('school_year_id', $Modal_data->school_year_id)
-                ->where('transaction_id', $Modal_data->id)->first();
+            // $other_fee = TransactionOtherFee::where('student_id', $Modal_data->student_id)
+            //     ->where('school_year_id', $Modal_data->school_year_id)
+            //     ->where('transaction_id', $Modal_data->id)
+            //     ->where('isSuccess', 1)
+            //     ->first();
+            $other = 0;
+            if($other_fee){
+                $other = $other_fee->item_price;
+            }
+
             $Mo_history = TransactionMonthPaid::where('transaction_id', $request->id)->where('isSuccess', 1)->get();
 
-            $total = ($Modal_data->payment_cat->tuition->tuition_amt + $Modal_data->payment_cat->misc_fee->misc_amt + $other_fee->item_price) - $Discount;
+            $total = ($Modal_data->payment_cat->tuition->tuition_amt + $Modal_data->payment_cat->misc_fee->misc_amt + $other) - $Discount;
         }
-        return view('control_panel_finance.student_finance_account.partials.modal_data', compact('Modal_data','Mo_history','other_fee','Discount','Discount_amt','total'))->render();
+        return view('control_panel_finance.student_finance_account.partials.modal_data', compact('Modal_data','Mo_history','other_fee','Discount','Discount_amt','total','other'))->render();
     }
 
     public function paid(Request $request)

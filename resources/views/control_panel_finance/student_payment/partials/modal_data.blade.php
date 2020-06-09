@@ -53,7 +53,7 @@
                         </div>
                         
                         <div class="box-body no-padding">
-                            <table class="table table-bordered">
+                            <table class="table table-bordered table-hover table-striped">
                                 <tbody>
                                     <tr>
                                         <th>Description</th>
@@ -73,17 +73,34 @@
                                             {{ number_format($Modal_data->payment_cat->misc_fee->misc_amt, 2)}}
                                         </td>                                
                                     </tr>   
-                                    <tr>                                        
-                                        <td>Sub Total</td>
+                                    <tr>
+                                        <td>Other Fee {{ $Modal_data->others ? $Modal_data->others->other_name : '' }}</td>
                                         <td>
-                                            {{ number_format($Modal_data->payment_cat->tuition->tuition_amt + $Modal_data->payment_cat->misc_fee->misc_amt, 2)}}
+                                            <?php 
+                                                $others_fee =  0;
+                                                if($Modal_data->others){
+                                                    $others_fee = $Modal_data->others->item_price;
+                                                }    
+                                            ?>
+                                            {{ number_format($others_fee, 2)}}
+                                        </td>
+                                    </tr>
+                                    <tr>                                        
+                                        <td><b>Sub Total</b></td>
+                                        <td>
+                                            <b>
+                                            {{ number_format($Modal_data->payment_cat->tuition->tuition_amt + $Modal_data->payment_cat->misc_fee->misc_amt + $others_fee, 2)}}
+                                            </b>
                                         </td>                                
                                     </tr>                                       
                                     <tr>
                                         <td>Less Discount Fee</td>
                                         <td>
                                             <?php 
-                                                $discount = \App\TransactionDiscount::where('student_id', $Monthly_history->student_id)->where('school_year_id', $Monthly_history->school_year_id)->sum('discount_amt');
+                                                $discount = \App\TransactionDiscount::where('student_id', $Monthly_history->student_id)
+                                                ->where('school_year_id', $Monthly_history->school_year_id)
+                                                ->where('isSuccess', 1)
+                                                ->sum('discount_amt');
                                                 echo number_format($discount, 2);
                                             ?>
                                         </td>
@@ -91,13 +108,15 @@
                                     </tr>
                                     <tr>
                                         
-                                        <td>Total Fees</td>
+                                        <td><b>Total Fees</b></td>
                                         <td>
+                                            <b>
                                             @if($Modal_data->disc_transaction_fee)
-                                                {{ number_format($Modal_data->payment_cat->tuition->tuition_amt + $Modal_data->payment_cat->misc_fee->misc_amt - $discount, 2)}}
+                                                {{ number_format($Modal_data->payment_cat->tuition->tuition_amt + $Modal_data->payment_cat->misc_fee->misc_amt + $others_fee - $discount, 2)}}
                                             @else
-                                                {{ number_format($Modal_data->payment_cat->tuition->tuition_amt + $Modal_data->payment_cat->misc_fee->misc_amt, 2)}}
-                                            @endif                                                
+                                                {{ number_format($Modal_data->payment_cat->tuition->tuition_amt + $Modal_data->payment_cat->misc_fee->misc_amt + $others_fee, 2)}}
+                                            @endif
+                                            </b>                                                
                                         </td>                                
                                     </tr>                                    
                                     <tr>                                        
@@ -120,7 +139,7 @@
                                                             ->take(1)
                                                             ->first();
 
-                                                        echo $current_bal->balance;
+                                                        echo $current_bal->balance + $others_fee;
                                                     ?>
                                                     {{-- {{$Monthly_history->balance}} --}}
                                                     {{-- @if($Modal_data->disc_transaction_fee)
@@ -130,7 +149,7 @@
                                                     @endif --}}
                                                 @endif
                                             @else
-                                                {{ number_format($Modal_data->payment_cat->tuition->tuition_amt + $Modal_data->payment_cat->misc_fee->misc_amt, 2)}}
+                                                {{ number_format($Modal_data->payment_cat->tuition->tuition_amt + $Modal_data->payment_cat->misc_fee->misc_amt + $others_fee, 2)}}
                                             @endif                                                                                                
                                         </td>                                    
                                     </tr>
@@ -142,9 +161,9 @@
                                     </tr>
                                     <tr>
                                         
-                                        <td>Balance</td>
+                                        <td><b>Balance</b></td>
                                         <td>
-                                            {{ number_format($Monthly_history->balance, 2)}}
+                                            <b>{{ number_format($Monthly_history->balance, 2)}}</b>
                                         </td>                                    
                                     </tr>
                                        

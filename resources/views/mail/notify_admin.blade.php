@@ -13,9 +13,9 @@
         <br/>
         <p style="text-align: right;">Date: {{ $payment ? date_format(date_create($payment->created_at), 'F d, Y h:i A') : '' }}</p>
 
-        <p>Dear {{$payment->student->last_name.', '.$payment->student->first_name}}</p>
+        <p>Dear Finance,</p>
         
-        <p>Thank you for using online payment. Below is your payment history.</p>
+        <p>You have received the payment of {{$payment->student->last_name.', '.$payment->student->first_name}}.</p>
 
         <p>Student Level : {{$payment->payment_cat->stud_category->student_category.'-'.$payment->payment_cat->grade_level_id}}</p>
         
