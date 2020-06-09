@@ -25,7 +25,7 @@ class RegistrationController extends Controller
             'p_address' => 'required',
             'birthdate' => 'required',
             'gender'    => 'required',
-            'email' => 'required',
+            'email' => 'email|required',
             'phone' => 'required',
             'mother_name' => 'required',
             'father_name' => 'required',

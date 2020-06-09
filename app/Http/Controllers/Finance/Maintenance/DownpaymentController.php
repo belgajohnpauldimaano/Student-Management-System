@@ -13,11 +13,16 @@ class DownpaymentController extends Controller
     {
         if ($request->ajax())
         {
-            $DownpaymentFee = DownpaymentFee::where('status', 1)->where('downpayment_amt', 'like', '%'.$request->search.'%')->paginate(10);
+            $DownpaymentFee = DownpaymentFee::where('status', 1)->where('downpayment_amt', 'like', '%'.$request->search.'%')
+                ->orderBY('grade_level_id', 'ASC')
+                ->paginate(10);
             return view('control_panel_finance.maintenance.downpayment.partials.data_list', compact('DownpaymentFee'))->render();
         }
         
-        $DownpaymentFee = DownpaymentFee::where('status', 1)->paginate(10);
+        $DownpaymentFee = DownpaymentFee::where('status', 1)
+            ->orderBY('grade_level_id', 'ASC')
+            ->paginate(10);
+            
         return view('control_panel_finance.maintenance.downpayment.index', compact('DownpaymentFee'));
     }
 

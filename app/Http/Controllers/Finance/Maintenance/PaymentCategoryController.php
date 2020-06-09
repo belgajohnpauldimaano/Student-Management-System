@@ -18,14 +18,14 @@ class PaymentCategoryController extends Controller
         if ($request->ajax())
         {
             $PaymentCategory = PaymentCategory::with('stud_category','tuition','misc_fee')
-                ->where('status', 1)->paginate(10);
+                ->where('status', 1)->orderBY('grade_level_id', 'ASC')->paginate(10);
             // $PaymentCategory = PaymentCategory::where('status', 1)->where('disc_type', 'like', '%'.$request->search.'%')->paginate(10);
             // return view('control_panel_finance.maintenance.payment_category.partials.data_list', compact('PaymentCategory'))->render();
             return view('control_panel_finance.maintenance.payment_category.partials.data_list', compact('PaymentCategory'));
         }
         
         $PaymentCategory = PaymentCategory::with('stud_category','tuition','misc_fee')
-            ->where('status', 1)->paginate(10);
+            ->where('status', 1)->orderBY('grade_level_id', 'ASC')->paginate(10);
         // return view('control_panel_finance.maintenance.discount_fee.index', compact('PaymentCategory'));
         return view('control_panel_finance.maintenance.payment_category.index', compact('PaymentCategory'));
     }

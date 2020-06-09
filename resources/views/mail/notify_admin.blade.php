@@ -34,19 +34,29 @@
                         <td>₱ {{number_format($payment->payment_cat->misc_fee->misc_amt, 2)}}</td>
                     </tr>
                     <tr>
+                        <?php $other = \App\TransactionOtherFee::where('student_id', $payment->student_id)
+                                ->where('school_year_id', $payment->school_year_id)
+                                ->where('transaction_id', $payment->id)
+                                ->where('isSuccess', 1)
+                                ->first();
+                        ?>
                         <td>Other Fee 
-                            <?php  if($other){
-                                echo '('.$other->other_name.')';
-                            }else{
-                                echo '';
-                            }?>
+                            <?php  
+                                if($other){
+                                    echo '('.$other->other_name.')';
+                                }else{
+                                    echo '';
+                                }
+                            ?>
                         </td>
                         <td> ₱
-                            <?php  if($other){
-                                echo number_format($other->item_price, 2);
-                            }else{
-                                echo '0';
-                            }?>
+                            <?php  
+                                if($other){
+                                    echo number_format($other->item_price, 2);
+                                }else{
+                                    echo '0.00';
+                                }
+                            ?>
                         </td>
                     </tr>
                     <tr>
@@ -54,15 +64,15 @@
                             $discount_transction = \App\Transaction::where('id', $payment->id)->first();
                         
                             $discount = \App\TransactionDiscount::where('student_id', $discount_transction->student_id)
-                                    ->where('school_year_id', $discount_transction->school_year_id)
+                                    ->where('school_year_id', $discount_transction->school_year_id)->where('isSuccess', 1)
                                     ->get();
                                     
                             $total_discount = \App\TransactionDiscount::where('student_id', $discount_transction->student_id)
-                                    ->where('school_year_id', $discount_transction->school_year_id)
+                                    ->where('school_year_id', $discount_transction->school_year_id)->where('isSuccess', 1)
                                     ->sum('discount_amt');
                                     
                             $hasDiscount = \App\TransactionDiscount::where('student_id', $discount_transction->student_id)
-                                    ->where('school_year_id', $discount_transction->school_year_id)
+                                    ->where('school_year_id', $discount_transction->school_year_id)->where('isSuccess', 1)
                                     ->first();   
                         ?>
                         
@@ -102,7 +112,13 @@
                     <tr>
                         <td>Total Fees</td>
                         <?php
-                            $tuitionMisc_fee = $payment->payment_cat->tuition->tuition_amt + $payment->payment_cat->misc_fee->misc_amt + $other->item_price;
+                            $other_total = 0;
+                            if($other){
+                                $other_total = $other->item_price;
+                            }else{
+                                $other_total = 0;
+                            }
+                            $tuitionMisc_fee = $payment->payment_cat->tuition->tuition_amt + $payment->payment_cat->misc_fee->misc_amt + $other_total;
                             if($discount){
                                 $totalDiscount =  number_format($tuitionMisc_fee - $total_discount, 2);
                             }                            
@@ -171,7 +187,11 @@
             </table>
         
         <br/>
-        <p>This is auto generated receipt. Thank you!</p>
+        {{-- <p>This is auto generated receipt. Thank you!</p> --}}
+        <br>
+        <p>
+            DISCLAIMER : The message (including the attachments) contains Confidential Information and is intended for the named recipient only. Unless you are the intended recipient (or authorized to receive for the intended recipient), you may not read, print, retain, use, copy, distribute nor disclose to anyone this message or any information contained herein. If you have received the message in error, please advise the sender immediately by reply e-mail, and destroy all copies of the original message (including the attachments).
+        </p>
     </div>
     </body>
 </html>

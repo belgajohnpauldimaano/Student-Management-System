@@ -23,6 +23,7 @@ class CreateTransactionOtherFeesTable extends Migration
             $table->string('other_name');
             $table->integer('item_qty');
             $table->double('item_price');
+            $table->tinyInteger('isSuccess')->default(0);
             $table->timestamps();
         });
     }

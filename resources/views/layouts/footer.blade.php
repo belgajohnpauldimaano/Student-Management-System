@@ -101,63 +101,63 @@
                     if(
                         $('#lrn').val() != '' && $('#reg_type').val() != '' && $('#grade_lvl').val() != '' &&
                         $('#first_name').val() != '' && $('#middle_name').val() != '' && $('#last_name').val() != '' && 
-                        $("#student_email").val() != '' && $('#phone').val() != '' && $('#guardian').val() != '' &&
+                        $("#student_email").val() != '' && $('#phone').val().length == 13 && $('#guardian').val() != '' &&
                         $('#address').val() != '' && $('#birthday').val() != '' && $('#gender').val() != '' && $('#student_img').val() != '' &&
                         $('#mother_name').val() != '' && $('#father_name').val() != '' && $('#p_address').val() != ''
                     )
                     {
-                        $.ajax({
-                            url         : "{{ route('registration.store') }}",
-                            type        : 'POST',
-                            data        : formData,
-                            processData : false,
-                            contentType : false,
-                            success     : function (res) {
-                                $('.help-block').html('');
-                                if (res.res_code == 1)
-                                {
-                                    alertify.alert('<i style="color: red" class="fas fa-exclamation-triangle fa-lg"></i> Reminder',
-                                        ''+res.res_msg+'', function(){
-                                            $('.input-lrn').addClass('has-error');
-                                            $('.input-lrn').removeClass('has-success');
-                                            $('#js-lrn').css('color', 'red').text('You must enter your LRN.');
-                                    });                                    
+                            $.ajax({
+                                url         : "{{ route('registration.store') }}",
+                                type        : 'POST',
+                                data        : formData,
+                                processData : false,
+                                contentType : false,
+                                success     : function (res) {
+                                    $('.help-block').html('');
+                                    if (res.res_code == 1)
+                                    {
+                                        alertify.alert('<i style="color: red" class="fas fa-exclamation-triangle fa-lg"></i> Reminder',
+                                            ''+res.res_msg+'', function(){
+                                                $('.input-lrn').addClass('has-error');
+                                                $('.input-lrn').removeClass('has-success');
+                                                $('#js-lrn').css('color', 'red').text('You must enter your LRN.');
+                                        });                                    
+                                    }
+                                    else
+                                    {
+                                        alertify.alert('<i style="color: green" class="fas fa-check-circle fa-lg"></i> Confirmation',
+                                        "Your information successfully submited. Please wait the confirmation from Admission Department. Thank you!", function(){
+                                            $('#js-form_subject_details')[0].reset();                                    
+                                            var source = $("#default-img").val();
+                                            $('#img--user_photo').attr('src', source);
+                                            $('#js-registration').modal('hide');
+                                        });
+                                    }
                                 }
-                                else
-                                {
-                                    alertify.alert('<i style="color: green" class="fas fa-check-circle fa-lg"></i> Confirmation',
-                                    "Your information successfully submited. Please wait the confirmation from Admission Department. Thank you!", function(){
-                                        $('#js-form_subject_details')[0].reset();                                    
-                                        var source = $("#default-img").val();
-                                        $('#img--user_photo').attr('src', source);
-                                        $('#js-registration').modal('hide');
-                                    });
-                                }
-                            }
-                        });
+                            });
 
                     }else{
-                       
-                        alertify.alert('<i style="color: red" class="fas fa-exclamation-circle"></i> Error',"Please fill out all fields! Thank you", function(){   
-                            check_lrn();  
-                            check_regtype();  
-                            check_grade_lvl();     
-                            check_first_name();  
-                            check_middle_name();
-                            check_last_name();
-                            check_email();
-                            check_phone();
-                            check_guardian();
-                            check_gender();
-                            check_birthday();
-                            check_address();
-                            check_image();
-                            check_p_address();
-                            check_father_name();
-                            check_mother_name();
-                        });
+                        
+                            alertify.alert('<i style="color: red" class="fas fa-exclamation-circle"></i> Error',"Please fill out all fields! Thank you", function(){   
+                                check_lrn();  
+                                check_regtype();  
+                                check_grade_lvl();     
+                                check_first_name();  
+                                check_middle_name();
+                                check_last_name();
+                                check_email();
+                                check_phone();
+                                check_guardian();
+                                check_gender();
+                                check_birthday();
+                                check_address();
+                                check_image();
+                                check_p_address();
+                                check_father_name();
+                                check_mother_name();
+                            });
                     }
-                    
+
                 }, function(){  
                     check_lrn();  
                     check_regtype();  

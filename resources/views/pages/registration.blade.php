@@ -31,7 +31,7 @@
                 <div class="form-row">
                     <div class="form-group col-md-4 input-lrn">
                         <label for="lrn">Student LRN</label>
-                        <input type="text" class="form-control" id="lrn" name="lrn" placeholder="01234567890">
+                        <input type="number" class="form-control" id="lrn" name="lrn" placeholder="01234567890">
                         <div class="help-block text-red text-left" id="js-lrn">
                         </div>
                         

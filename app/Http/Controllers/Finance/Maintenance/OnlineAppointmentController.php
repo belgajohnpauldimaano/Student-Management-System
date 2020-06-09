@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers\finance\Maintenance;
 
+use App\Enrollment;
 use App\SchoolYear;
+use App\ClassDetail;
 use App\IncomingStudent;
 use App\OnlineAppointment;
 use App\StudentInformation;
@@ -21,13 +23,13 @@ class OnlineAppointmentController extends Controller
         if ($request->ajax())
         {
             $OnlineAppointment = OnlineAppointment::where('status', 1)
-                ->where('date', 'like', '%'.$request->search.'%')
+                ->where('date', 'like', '%'.$request->search.'%')->orderBY('date', 'ASC')
                 ->paginate(10);
 
             return view('control_panel_finance.maintenance.online_appointment.partials.data_list', compact('OnlineAppointment'))->render();
         }
         
-        $OnlineAppointment = OnlineAppointment::where('status', 1)
+        $OnlineAppointment = OnlineAppointment::where('status', 1)->orderBY('date', 'ASC')
             ->paginate(10);
 
         return view('control_panel_finance.maintenance.online_appointment.index', compact('OnlineAppointment'));

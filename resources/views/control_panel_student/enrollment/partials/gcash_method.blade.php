@@ -74,7 +74,9 @@
                                 <label>                      
                                 <?php 
                                     $hasAlreadyDiscount = \App\TransactionDiscount::where('student_id', $StudentInformation->id)
-                                    ->where('school_year_id', $SchoolYear->id)->where('discount_type', $item->disc_type)->first();
+                                        ->where('school_year_id', $SchoolYear->id)->where('discount_type', $item->disc_type)
+                                        ->where('isSuccess', 1)
+                                        ->first();
                                 ?>
                                 <input type="checkbox" {{$hasAlreadyDiscount ? 'disabled' : ''  }} class="discountGcashSelected" name="discount_bank[]" value="{{$item->id}}"
                                     data-type="{{$item->disc_type}}" 
@@ -85,12 +87,25 @@
                             @endforeach
                         </div>
 
-                        <label for="exampleInputEmail1">Downpayment Fee </label>              
-                        @if($Downpayment)
-                            <input type="hidden" name="gcash_downpayment" value="{{$Downpayment->id}}">
-                            <input type="hidden" id="gcash_downpayment" value="{{$Downpayment ? $Downpayment->downpayment_amt : ''}}">                        
-                            <p>₱ {{ $Downpayment ? number_format($Downpayment->downpayment_amt, 2) : ''}}</p>
-                        @endif      
+                        @if(!$AlreadyEnrolled)
+                            <div class="gcash-downpayment">                
+                            <label for="">Downpayment Fee</label>                   
+                            <div class="radio" style="margin-top: -2.5px;">
+                            @foreach ($Downpayment as $item)                
+                                <label>                      
+                                <input type="radio" class="downpaymentgSelected" name="downpayment[]" value="{{$item->id}}"
+                                    data-modified="{{$item->modified}}" 
+                                    data-fee="{{$item->downpayment_amt}}">
+                                    {{number_format($item->downpayment_amt, 2)}} {{$item->modified == 1 ? '- modified' : ''}}                           
+                                </label>                       
+                                &nbsp;&nbsp;               
+                            @endforeach
+                            <div class="help-block text-left" id="js-gcash_downpayment"></div>
+                            </div>
+                            </div>
+                        @else
+                            <input type="hidden" class="hasDownpayment" value="0">
+                        @endif
 
                         <label for="previous_balance">Current Balance Fee</label>  
                         @if($AlreadyEnrolled)    
@@ -144,7 +159,7 @@
                     
                     <div class="form-group col-lg-12 input-gcash_pay_fee">
                         <label for="gcash_pay_fee">Enter your payment fee</label>
-                        <input type="number" class="form-control" id="gcash_pay_fee" name="gcash_pay_fee" placeholder=" {{ $Downpayment ? number_format($Downpayment->downpayment_amt,2) : ''}}">
+                        <input type="number" class="form-control" id="gcash_pay_fee" name="gcash_pay_fee" placeholder="0.00">
                         <input type="hidden" id="gcash_balance" name="gcash_balance">
                         <div class="help-block text-left" id="js-gcash_pay_fee"></div>
                     </div> 

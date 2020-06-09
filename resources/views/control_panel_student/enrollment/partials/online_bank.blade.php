@@ -83,25 +83,37 @@
                       <label>                      
                         <?php 
                           $hasAlreadyDiscount = \App\TransactionDiscount::where('student_id', $StudentInformation->id)
-                            ->where('school_year_id', $SchoolYear->id)->where('discount_type', $item->disc_type)->first();
+                            ->where('school_year_id', $SchoolYear->id)->where('discount_type', $item->disc_type)
+                            ->where('isSuccess', 1)
+                            ->first();
                         ?>
                         <input type="checkbox" {{$hasAlreadyDiscount ? 'disabled' : ''  }} class="discountSelected" name="discount[]" value="{{$item->id}}"
                           data-type="{{$item->disc_type}}" 
                           data-fee="{{$item->disc_amt}}">
                           <span style="{{$hasAlreadyDiscount ? 'text-decoration: line-through;color: red;' : ''  }}">{{$item->disc_type}} ({{number_format($item->disc_amt, 2)}}) <b></span> </b>
                       </label> 
-                      &nbsp;&nbsp;               
+                      &nbsp;&nbsp;        
                     @endforeach
                   </div>
+
                 @if(!$AlreadyEnrolled)
-                  <label for="downpayment">Downpayment Fee</label>
-                    @if($Downpayment)
-                      <input type="hidden" value="{{$Downpayment->id}}" name="e_downpayment">
-                      <input type="hidden" id="downpayment" value="{{$Downpayment->downpayment_amt}}" name="e_downpayment">
-                      <p>₱ {{number_format($Downpayment->downpayment_amt,2)}}</p>             
-                    @else
-                      <p>There is no Downpayment yet</p>
-                    @endif
+                  <div class="check-downpayment">                
+                    <label for="">Downpayment Fee</label>                   
+                    <div class="radio check-downpayment" style="margin-top: -2.5px;">
+                    @foreach ($Downpayment as $item)                
+                      <label>                      
+                        <input type="radio" class="downpaymentSelected" name="downpayment[]" value="{{$item->id}}"
+                          data-modified="{{$item->modified}}" 
+                          data-fee="{{$item->downpayment_amt}}">
+                          {{number_format($item->downpayment_amt, 2)}} {{$item->modified == 1 ? '- modified' : ''}}                           
+                      </label>                       
+                      &nbsp;&nbsp;               
+                    @endforeach
+                    <div class="help-block text-left js-downpayment" id="js-downpayment"></div>
+                    </div>
+                  </div>
+                @else
+                  <input type="hidden" class="hasDownpayment" value="0">
                 @endif
 
                 
@@ -121,7 +133,7 @@
               <label for="pay_fee">Enter your payment fee</label>
               @if($Downpayment)
               <input type="number" class="form-control" id="pay_fee" name="pay_fee" 
-                placeholder=" {{number_format($Downpayment->downpayment_amt,2)}}">
+                placeholder="">
               <div class="help-block text-left" id="js-pay_fee"></div>
               @else
                 <p>There is no downpayment amt yet</p>
@@ -193,10 +205,10 @@
                             @if($hasOtherfee->other_fee_id != NULL)
                             ₱ {{number_format($PaymentCategory->other_fee->other_fee_amt,2)}}
                             @else
-                              <p>There is no Other Fee yet</p>
+                              <p>There is no other Fee yet</p>
                             @endif
                           @else
-                            <p>There is no Other Fee yet</p>
+                            <p>There is no other Fee yet</p>
                           @endif
                         </td>
                       </tr>
@@ -206,7 +218,7 @@
                           @if($TransactionDiscount)
                             @foreach ($TransactionDiscount as $item)
                                 <div class="col-md-6">{{$item->discount_type}}</div>
-                                <div class="col-md-6" align="right"  style="padding-right: 0">₱ {{$item->discount_amt}}</div>
+                                <div class="col-md-6" align="right"  style="padding-right: 0">₱ {{number_format($item->discount_amt,2)}}</div>
                             @endforeach
                             <span id="disc_amt">
                             </span>
@@ -220,7 +232,7 @@
                      <tr>
                         <td style="width:120px">Total Fees</td>
                         <td align="right" id="total_fee">
-                          ₱ {{$Tuition ? $PaymentCategory->tuition->tuition_amt + $PaymentCategory->misc_fee->misc_amt - $TransactionDiscountTotal : ''}}
+                          ₱ {{$Tuition ? number_format($sum_total_item,2) : ''}}
                         </td>
                       </tr>
                       @endif

@@ -45,16 +45,21 @@ class EnrollmentController extends Controller
 
                 $AlreadyEnrolled = TransactionMonthPaid::where('student_id', $StudentInformation->id)
                     ->where('school_year_id', $SchoolYear->id)
-                    ->where('isSuccess', 1)->where('approval', 'Approved')->orderBy('id', 'Desc')->first();
+                    ->where('isSuccess', 1)
+                    // ->where('approval', 'Approved')
+                    ->orderBy('id', 'Desc')
+                    ->first();
 
                 $Tuition = PaymentCategory::where('grade_level_id', $IncomingStudentCount->grade_level_id)->first();
 
                 $PaymentCategory = PaymentCategory::with('misc_fee','tuition')
                     ->where('grade_level_id',  $IncomingStudentCount->grade_level_id)->first();
 
-                $hasOtherfee = PaymentCategory::where('grade_level_id',  $IncomingStudentCount->grade_level_id)->first();
+                if($Tuition){
+                    $hasOtherfee = PaymentCategory::where('grade_level_id',  $IncomingStudentCount->grade_level_id)->first();
+                }                
 
-                $Downpayment = DownpaymentFee::where('current', 1)->where('grade_level_id', $IncomingStudentCount->grade_level_id)->first();
+                $Downpayment = DownpaymentFee::where('status', 1)->where('grade_level_id', $IncomingStudentCount->grade_level_id)->get();
 
                 $Profile = StudentInformation::where('user_id', $User->id)->first();
 
@@ -69,6 +74,7 @@ class EnrollmentController extends Controller
                 if($Tuition){
                     $tuition_fee = $PaymentCategory->tuition->tuition_amt;
                     $misc_fee = $PaymentCategory->misc_fee->misc_amt;
+
                     if($hasOtherfee->other_fee_id != NULL){
                         $other_fee = $PaymentCategory->other_fee->other_fee_amt;
                     }
@@ -116,10 +122,12 @@ class EnrollmentController extends Controller
                     $PaymentCategory = PaymentCategory::with('misc_fee','tuition')
                                     ->where('grade_level_id', $grade_level_id)->first();
 
-                    $hasOtherfee = PaymentCategory::where('grade_level_id',  $IncomingStudentCount->grade_level_id)->first();
+                    if($Tuition){
+                        $hasOtherfee = PaymentCategory::where('grade_level_id',  $IncomingStudentCount->grade_level_id)->first();
+                    } 
 
                                     
-                    $Downpayment = DownpaymentFee::where('current', 1)->first();
+                    $Downpayment = DownpaymentFee::where('status', 1)->where('grade_level_id', $IncomingStudentCount->grade_level_id)->get();
 
                     $Profile = StudentInformation::where('user_id', $User->id)->first();
 
@@ -133,10 +141,10 @@ class EnrollmentController extends Controller
                     if($Tuition){                    
                         $tuition_fee = $PaymentCategory->tuition->tuition_amt;
                         $misc_fee = $PaymentCategory->misc_fee->misc_amt;
+
                         if($hasOtherfee->other_fee_id != NULL){
                             $other_fee = $PaymentCategory->other_fee->other_fee_amt;
-                        }
-                        else{
+                        }else{
                             $other_fee = 0;
                         }        
                         $discount_fee = $TransactionDiscountTotal;
@@ -175,7 +183,7 @@ class EnrollmentController extends Controller
         $rules = [
             'bank_tution_amt' => 'required',
             'bank_phone' => 'required',
-            'bank_email' => 'required',
+            'bank_email' => 'email|required',
             'bank'=>'required',
             'bank_transaction_id'=>'required',
             'bank_pay_fee' => 'required',
@@ -239,6 +247,7 @@ class EnrollmentController extends Controller
                     $DiscountFeeSave->discount_type = $DiscountFee->disc_type;        
                     $DiscountFeeSave->transaction_month_paid_id = $Enrollment->id;                
                     $DiscountFeeSave->school_year_id = $SchoolYear->id;
+                    $DiscountFeeSave->isSuccess = 1;
                     $DiscountFeeSave->save();
                 }    
             }                 
@@ -248,7 +257,10 @@ class EnrollmentController extends Controller
             $EnrollmentTransaction = new Transaction();
             $EnrollmentTransaction->payment_category_id = $request->bank_tution_amt;
             $EnrollmentTransaction->student_id = $StudentInformation->id;
-            $EnrollmentTransaction->school_year_id = $SchoolYear->id;                                
+            $EnrollmentTransaction->school_year_id = $SchoolYear->id; 
+            foreach($request->downpayment as $get_data){
+                $EnrollmentTransaction->downpayment_id = $get_data;  
+            }         
             $EnrollmentTransaction->save();
 
             $Enrollment = new TransactionMonthPaid();
@@ -291,19 +303,24 @@ class EnrollmentController extends Controller
                     $DiscountFeeSave->discount_type = $DiscountFee->disc_type;        
                     $DiscountFeeSave->transaction_month_paid_id = $Enrollment->id;                
                     $DiscountFeeSave->school_year_id = $SchoolYear->id;
+                    $DiscountFeeSave->isSuccess = 1;
                     $DiscountFeeSave->save();
                 }    
             }                   
             
-            $Other = new TransactionOtherFee();
-            $Other->transaction_id = $EnrollmentTransaction->id;
-            $Other->student_id = $StudentInformation->id;
-            $Other->others_fee_id = $request->other_id;
-            $Other->school_year_id = $SchoolYear->id;
-            $Other->item_qty = 1;
-            $Other->item_price = $request->other_price;
-            $Other->other_name = $request->other_name;
-            $Other->save();
+            if($request->other_id){
+                $Other = new TransactionOtherFee();
+                $Other->transaction_id = $EnrollmentTransaction->id;
+                $Other->student_id = $StudentInformation->id;
+                $Other->others_fee_id = $request->other_id;
+                $Other->school_year_id = $SchoolYear->id;
+                $Other->item_qty = 1;
+                $Other->item_price = $request->other_price;
+                $Other->other_name = $request->other_name;
+                $Other->isSuccess = 1;
+                $Other->save();
+            }
+            
         }       
         
             $payment = Transaction::find($Enrollment->transaction_id);
@@ -325,7 +342,7 @@ class EnrollmentController extends Controller
         $rules = [
             'gcash_tution_amt' => 'required',
             'gcash_phone' => 'required',
-            'gcash_email' => 'required',
+            'gcash_email' => 'email|required',
             'Gcash'=>'required',
             'gcash_transaction_id'=>'required',
             'gcash_pay_fee' => 'required',
@@ -399,7 +416,10 @@ class EnrollmentController extends Controller
             $EnrollmentTransaction = new Transaction();
             $EnrollmentTransaction->payment_category_id = $request->gcash_tution_amt;
             $EnrollmentTransaction->student_id = $StudentInformation->id;
-            $EnrollmentTransaction->school_year_id = $SchoolYear->id;                                
+            $EnrollmentTransaction->school_year_id = $SchoolYear->id;    
+            foreach($request->downpayment as $get_data){
+                $EnrollmentTransaction->downpayment_id = $get_data;  
+            }                          
             $EnrollmentTransaction->save();
 
             $Enrollment = new TransactionMonthPaid();
@@ -435,15 +455,19 @@ class EnrollmentController extends Controller
                 }    
             }                   
             
-            $Other = new TransactionOtherFee();
-            $Other->transaction_id = $EnrollmentTransaction->id;
-            $Other->student_id = $StudentInformation->id;
-            $Other->others_fee_id = $request->other_id;
-            $Other->school_year_id = $SchoolYear->id;
-            $Other->item_qty = 1;
-            $Other->item_price = $request->other_price;
-            $Other->other_name = $request->other_name;
-            $Other->save();
+            if($request->other_id){
+                $Other = new TransactionOtherFee();
+                $Other->transaction_id = $EnrollmentTransaction->id;
+                $Other->student_id = $StudentInformation->id;
+                $Other->others_fee_id = $request->other_id;
+                $Other->school_year_id = $SchoolYear->id;
+                $Other->item_qty = 1;
+                $Other->item_price = $request->other_price;
+                $Other->other_name = $request->other_name;
+                $Other->isSuccess = 1;
+                $Other->save();
+            }
+            
         }   
 
         $payment = Transaction::find($Enrollment->transaction_id);
@@ -465,11 +489,11 @@ class EnrollmentController extends Controller
             ->first();
 
         $Discount = TransactionDiscount::where('student_id', $request->id)
-            ->where('school_year_id', $request->school_year_id)
+            ->where('school_year_id', $request->school_year_id)->where('isSuccess', 1)
             ->sum('discount_amt');
 
         $Discount_amt = TransactionDiscount::where('student_id', $request->id)
-            ->where('school_year_id', $request->school_year_id)
+            ->where('school_year_id', $request->school_year_id)->where('isSuccess', 1)
             ->get();
 
         $Transaction_history = NULL;
@@ -490,11 +514,13 @@ class EnrollmentController extends Controller
                 
                 $OtherFee = TransactionOtherFee::where('student_id', $request->id)
                     ->where('school_year_id', $request->school_year_id)->where('transaction_id', $Transaction_history[0]->id)
+                    ->where('isSuccess', 1)
                     ->get();
 
                 
                 $Other_price = TransactionOtherFee::where('student_id', $request->id)
                     ->where('school_year_id', $request->school_year_id)->where('transaction_id', $Transaction_history[0]->id)
+                    ->where('isSuccess', 1)
                     ->sum('item_price');
 
                 if($Discount){
