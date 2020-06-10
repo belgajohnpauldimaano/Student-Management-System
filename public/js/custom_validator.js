@@ -295,7 +295,7 @@
                 }
             }else{
                 // alert('false')
-                if(payment != ''){
+                // if(payment != ''){
                     if($('.hasDownpayment').val() != 0){
                         if(downpayment == 0){
                             $('.bank-downpayment').addClass('has-error').css('color', 'red');
@@ -315,16 +315,16 @@
                             $('#js-bank_downpayment').text('You are good to go!').css('color', '#00a65a');;
                         }
                     }else{
-                        $('.input-bank_pay_fee').addClass('has-success');
-                        $('.input-bank_pay_fee').removeClass('has-error');
-                        $('#js-bank_pay_fee').text('You are good to go!');
+                        // $('.input-bank_pay_fee').addClass('has-success');
+                        // $('.input-bank_pay_fee').removeClass('has-error');
+                        // $('#js-bank_pay_fee').text('You are good to go!');
                     }                      
                     
-                }else if(payment<downpayment){
-                    $('.bank-downpayment').addClass('has-error');
-                    $('.bank-downpayment').removeClass('has-success');
-                    $('#js-bank_pay_fee').text('You have to enter the amount of downpayment or above amount.');
-                }
+                // }else if(payment<downpayment){
+                //     $('.bank-downpayment').addClass('has-error');
+                //     $('.bank-downpayment').removeClass('has-success');
+                //     $('#js-bank_pay_fee').text('You have to enter the amount of downpayment or above amount.');
+                // }
             }  
             
             

@@ -105,8 +105,8 @@ class PaymentController extends Controller
             ->setDescription($request->description_name);      
         
         $redirect_urls = new RedirectUrls();
-        $redirect_urls->setReturnUrl(route('confirm-payment'))
-            ->setCancelUrl(route('student.create-payment.paypal'));
+        $redirect_urls->setReturnUrl('https://sja-bataan.com/enrollment/student/enrollment/')
+            ->setCancelUrl('https://sja-bataan.com/enrollment/student/enrollment/');
         
         $inputFields = new InputFields();
         $inputFields->setNoShipping(1);
@@ -291,8 +291,10 @@ class PaymentController extends Controller
             if($IsReceived->save()){
 
                 $discountReceived = TransactionDiscount::where('transaction_month_paid_id', $IsReceived->id)->first();
-                $discountReceived->isSuccess = 1;
-                $discountReceived->save();
+                if($discountReceived ){
+                    $discountReceived->isSuccess = 1;
+                    $discountReceived->save();
+                }                
 
                 $otherReceived = TransactionOtherFee::where('transaction_id', $IsReceived->transaction_id)->first();
                 if($otherReceived){
@@ -300,7 +302,6 @@ class PaymentController extends Controller
                     $otherReceived->save();
                 }
                 
-
                 $payment = \App\Transaction::find($IsReceived->transaction_id);
                     \Mail::to($IsReceived->email)->send(new SendMail($payment));
                     \Mail::to('info@sja-bataan.com')->send(new NotifyAdminMail($payment));
