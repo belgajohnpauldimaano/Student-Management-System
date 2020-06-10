@@ -105,8 +105,8 @@ class PaymentController extends Controller
             ->setDescription($request->description_name);      
         
         $redirect_urls = new RedirectUrls();
-        $redirect_urls->setReturnUrl('https://sja-bataan.com/enrollment/student/enrollment/')
-            ->setCancelUrl('https://sja-bataan.com/enrollment/student/enrollment/');
+        $redirect_urls->setReturnUrl(route('confirm-payment'))
+            ->setCancelUrl('https://sja-bataan.com/enrollment/student/enrollment');
         
         $inputFields = new InputFields();
         $inputFields->setNoShipping(1);
