@@ -200,7 +200,7 @@
                 result_bal = parseFloat(total_tuition) - parseFloat(payment) - disc_total;                
             }
             
-            result_online_charge =  (parseFloat(payment) * 0.035) + 16.5;
+            result_online_charge =  (parseFloat(payment) * 0.039) + 15;
 
             total_payment_charge = parseFloat(payment) + parseFloat(result_online_charge);
 

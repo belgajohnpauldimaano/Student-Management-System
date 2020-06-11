@@ -277,6 +277,11 @@
                               ₱ <span id="current_balance">0</span>
                           </td>
                       </tr>
+                      <tr>
+                        <td colspan="2">
+                          <i style="color: red">Note: flexible bank charges may be applied accordingly ex. total amount * 3.9% + 15</i>
+                        </td>
+                      </tr>
                                              
                   </tr>
               </tbody>

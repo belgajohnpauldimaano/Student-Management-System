@@ -24,13 +24,17 @@ class OnlineAppointmentController extends Controller
         if ($request->ajax())
         {
             $OnlineAppointment = OnlineAppointment::where('status', 1)
-                ->where('date', 'like', '%'.$request->search.'%')->orderBY('date', 'ASC')
+                ->where('date', 'like', '%'.$request->search.'%')
+                ->orderBY('date', 'ASC')
+                ->orderBY('time', 'ASC')
                 ->paginate(10);
 
             return view('control_panel_finance.maintenance.online_appointment.partials.data_list', compact('OnlineAppointment'))->render();
         }
         
-        $OnlineAppointment = OnlineAppointment::where('status', 1)->orderBY('date', 'ASC')
+        $OnlineAppointment = OnlineAppointment::where('status', 1)
+            ->orderBY('date', 'ASC')
+            ->orderBY('time', 'ASC')
             ->paginate(10);
 
         return view('control_panel_finance.maintenance.online_appointment.index', compact('OnlineAppointment'));
@@ -54,7 +58,8 @@ class OnlineAppointmentController extends Controller
         $rules = [
             'date' => 'required',
             'time' => 'required',
-            'appointee' => 'required'     
+            'appointee' => 'required',    
+            'grade_lvl' => 'required' 
         ];
 
         $Validator = \Validator($request->all(), $rules);
@@ -306,6 +311,8 @@ class OnlineAppointmentController extends Controller
         //     ->first();      
 
         $date_time = OnlineAppointment::where('status', 1)
+            ->orderBY('date', 'ASC')
+            ->orderBY('time', 'ASC')
             ->get();
 
         return view('control_panel_finance.online_appointment.index', compact('date_time'))->render();

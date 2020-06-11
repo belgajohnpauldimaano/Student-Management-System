@@ -73,7 +73,7 @@
                                 interval: 60,
                                 minTime: '8',
                                 maxTime: '6:00pm',
-                                defaultTime: '11',
+                                // defaultTime: '11',
                                 startTime: '8:00',
                                 dynamic: false,
                                 dropdown: true,
