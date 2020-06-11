@@ -1,0 +1,118 @@
+<?php echo $__env->make('control_panel.layouts.header', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+
+
+<body class="hold-transition skin-black sidebar-mini fixed skin-red-light">
+<div class="wrapper">
+
+  <header class="main-header">
+
+    <!-- Logo -->
+    <a href="#" class="logo">
+      <!-- mini logo for sidebar mini 50x50 pixels -->
+      <span class="logo-mini"><img src="<?php echo e(asset('/img/sja-logo.png')); ?>" style="height: 35px;"></span>
+      <!-- logo for regular state and mobile devices -->
+      <span class="logo-lg">
+      
+      <b>St. John's</b> Academy Inc.</span>
+    </a>
+
+    <!-- Header Navbar: style can be found in header.less -->
+    <nav class="navbar navbar-static-top">
+      <!-- Sidebar toggle button-->
+      <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
+        <span class="sr-only">Toggle navigation</span>
+      </a>
+      <!-- Navbar Right Menu -->
+      <div class="navbar-custom-menu">
+          <ul class="nav navbar-nav">
+              <li class="dropdown user user-menu">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                    
+                    <span class="hidden-xs"><?php echo e(\Auth::user()->get_user_data()->first_name . ' ' . \Auth::user()->get_user_data()->last_name); ?></span>
+                </a>
+                <ul class="dropdown-menu">
+                    <!-- User image -->
+                    <li class="user-header">
+                        <img src="<?php echo e(\Auth::user()->get_user_data()->photo ? \File::exists(public_path('/img/account/photo/'. \Auth::user()->get_user_data()->photo)) ? asset('/img/account/photo/'. \Auth::user()->get_user_data()->photo) : asset('/img/account/photo/blank-user.gif') : asset('/img/account/photo/blank-user.gif')); ?>" class="img-circle" alt="User Image">
+                        <p>
+                          <small><?php echo e(\Auth::user()->get_user_role_display()); ?></small>
+                        </p>
+                    </li>
+                    <!-- Menu Footer-->
+                    <li class="user-footer">
+                        
+                        <div class="pull-right">
+                            
+                            <a href="<?php echo e(route('logout')); ?>"
+                                onclick="event.preventDefault();
+                                          document.getElementById('logout-form').submit();"
+                                class="btn btn-default btn-flat">
+                                Logout
+                            </a>
+
+                            <form id="logout-form" action="<?php echo e(route('logout')); ?>" method="POST" style="display: none;">
+                                <?php echo e(csrf_field()); ?>
+
+                            </form>
+                        </div>
+                    </li>
+                </ul>
+              </li>
+          </ul>
+      </div>
+
+    </nav>
+  </header>
+  <!-- Left side column. contains the logo and sidebar -->
+  <aside class="main-sidebar">
+    <!-- sidebar: style can be found in sidebar.less -->
+    <section class="sidebar">
+      
+      <!-- sidebar menu: : style can be found in sidebar.less -->
+      <ul class="sidebar-menu" data-widget="tree">
+        <li class="header">STUDENT NAVIGATION</li>
+          <li><a href="<?php echo e(route('student.dashboard')); ?>"><i class="fa fa-home fa-fw fa-lg"></i>&nbsp;&nbsp; <span>Home</span></a></li>
+          <li><a href="<?php echo e(route('student.enrollment.index')); ?>"><i class="fas fa-file fa-lg"></i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span>Online Enrollment</span></a></li> 
+          <li><a href="<?php echo e(route('student.student_appointment')); ?>"><i class="far fa-calendar-check fa-lg"></i></i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span>Appointment for Walk in</span></a></li> 
+          <li><a href="<?php echo e(route('student.class_schedule.index')); ?>"><i class="fa fa-calendar fa-lg"></i>&nbsp;&nbsp;&nbsp; <span>Class Schedule</span></a></li>
+          <li><a href="<?php echo e(route('student.grade_sheet.index')); ?>"><i class="fa fa-file-text-o fa-lg"></i>&nbsp;&nbsp;&nbsp; <span>Grade Sheet</span></a></li>
+          <li><a href="<?php echo e(route('student.my_account.index')); ?>"><i class="fa fa-user fa-lg"></i>&nbsp;&nbsp;&nbsp;  <span>My Profile</span></a></li>
+      </ul>
+    </section>
+    <!-- /.sidebar -->
+  </aside>
+
+  <!-- Content Wrapper. Contains page content -->
+  <div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+      <h1>
+        <?php echo $__env->yieldContent('content_title'); ?>
+      </h1>
+      <!--<ol class="breadcrumb">
+        <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+        <li class="active">Dashboard</li>
+      </ol>-->
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+      <!-- Info boxes -->
+      <div class="row">
+          <div class="col-sm-12">
+          <div class="row">
+              <div class="col-sm-12">
+                  <div class="js-messages_holder" style="display:none"></div>
+              </div>
+          </div>
+            <?php echo $__env->yieldContent('content'); ?>
+          </div>
+      </div>
+      <!-- /.row -->
+    </section>
+    <!-- /.content -->
+  </div>
+  <!-- /.content-wrapper -->
+
+
+<?php echo $__env->make('control_panel.layouts.footer', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
