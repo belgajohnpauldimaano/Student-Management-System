@@ -45,6 +45,7 @@
   <link rel="stylesheet" href="{{ asset('cms/plugins/alertifyjs/css/themes/bootstrap.min.css') }}">
   <link rel="stylesheet" href="{{ asset('cms/plugins/datepicker/datepicker3.css') }}">
   <link rel="stylesheet" href="{{ asset('cms/plugins/timepicker/jquery.timepicker.css') }}" />
+  <link rel="stylesheet" href="{{ asset('cms/plugins/datetimepicker/datetimepicker.css') }}">
 
   
   @yield('styles')

@@ -19,7 +19,7 @@
         <p style="text-align: right;">Date: {{ $hasAppointment ? date_format(date_create($hasAppointment->created_at), 'F d, Y h:i A') : '' }}</p>
 
         
-        <p>Dear: {{$hasAppointment->student->last_name.', '.$hasAppointment->student->first_name}},</p>
+        <p>Dear {{$hasAppointment->student->last_name.', '.$hasAppointment->student->first_name}},</p>
 
         <p>You have set an appointment, Please see details below:</p>
         
@@ -41,6 +41,10 @@
         </table>
         <br/>
         <p>This is auto generated. Thank you!</p>
+        <br>
+        <p>
+            DISCLAIMER : The message (including the attachments) contains Confidential Information and is intended for the named recipient only. Unless you are the intended recipient (or authorized to receive for the intended recipient), you may not read, print, retain, use, copy, distribute nor disclose to anyone this message or any information contained herein. If you have received the message in error, please advise the sender immediately by reply e-mail, and destroy all copies of the original message (including the attachments).
+        </p>
     </div>
     </body>
 </html>

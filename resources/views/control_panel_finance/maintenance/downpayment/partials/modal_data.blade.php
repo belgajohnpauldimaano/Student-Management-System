@@ -19,13 +19,28 @@
                         <div class="help-block text-red text-center" id="js-downpayment_fee">
                         </div>
                     </div>
+                    
                     <div class="form-group">
-                        <label for="">Set as Current Downpayment Fee</label>
-                        <select name="current_sy" id="current_sy" class="form-control">
-                            <option value="1" {{ $DownpaymentFee ? ($DownpaymentFee->current == 0 ? 'selected' : '')  : 'selected' }}>Yes</option>
-                            <option value="0" {{ $DownpaymentFee ? ($DownpaymentFee->current == 0 ? 'selected' : '')  : '' }}>No</option>
+                        <label for="">Grade lvl</label>
+                        <select name="gradelvl" id="gradelvl" class="form-control">
+                            <option value="">Select Grade level</option>
+                            @if($Gradelvl)
+                                @foreach($Gradelvl as $grade_lvl)
+                                    <option value="{{$grade_lvl->id}}" {{ $DownpaymentFee ? $DownpaymentFee->grade_level_id == $grade_lvl->id ? 'selected' : '' : '' }}> Grade {{ $grade_lvl->grade }}</option>                    
+                                @endforeach
+                            @endif
                         </select>
-                        <div class="help-block text-red text-center" id="js-current_sy">
+                        <div class="help-block text-red text-center" id="js-gradelvl">
+                        </div>                        
+                    </div>
+
+                    <div class="form-group">
+                        <label for="">Set as Modified</label>
+                        <select name="modified" id="modified" class="form-control">
+                            <option value="1" {{ $DownpaymentFee ? ($DownpaymentFee->modified == 1 ? 'selected' : '')  : 'selected' }}>Yes</option>
+                            <option value="0" {{ $DownpaymentFee ? ($DownpaymentFee->modified == 0 ? 'selected' : '')  : '' }}>No</option>
+                        </select>
+                        <div class="help-block text-red text-center" id="js-modified">
                         </div>
                     </div>
                 </div>

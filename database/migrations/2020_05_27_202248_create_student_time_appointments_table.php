@@ -18,8 +18,10 @@ class CreateStudentTimeAppointmentsTable extends Migration
             $table->integer('school_year_id');
             $table->bigInteger('online_appointment_id');
             $table->bigInteger('student_id');
+            $table->bigInteger('grade_lvl');
             $table->bigInteger('queueing_number');
-            $table->tinyInteger('current')->default('1');
+            $table->string('email');
+            $table->tinyInteger('approval')->nullable();
             $table->tinyInteger('status')->default('1');
             $table->timestamps();
         });

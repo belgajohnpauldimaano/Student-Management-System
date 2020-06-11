@@ -11,7 +11,6 @@ Route::group(['prefix' => 'registrar', 'middleware' => ['auth', 'userroles'], 'r
         Route::post('change-my-photo', 'Registrar\UserProfileController@change_my_photo')->name('registrar.my_account.change_my_photo');
         Route::post('change-my-password', 'Registrar\UserProfileController@change_my_password')->name('registrar.my_account.change_my_password');
     });
-
     
     Route::group(['prefix' => 'student-grade-sheet'], function() {
         Route::get('', 'Registrar\GradeSheetController@index')->name('registrar.student_grade_sheet');
@@ -79,7 +78,7 @@ Route::group(['prefix' => 'registrar/student-enrollment/{id}', 'middleware' => [
     Route::get('print-enrolled-students', 'Registrar\StudentEnrollmentController@print_enrolled_students')->name('registrar.student_enrollment.print_enrolled_students');
 });
 
-Route::group(['prefix' => 'admin/student-information', 'middleware' => ['auth', 'userroles'], 'roles' => ['admin', 'root', 'registrar']], function() {
+Route::group(['prefix' => 'admin/student-information', 'middleware' => ['auth', 'userroles'], 'roles' => ['admin', 'root', 'registrar', 'admission']], function() {
     Route::get('', 'Control_Panel\StudentController@index')->name('admin.student.information');
     Route::post('', 'Control_Panel\StudentController@index')->name('admin.student.information');
     Route::post('modal-data', 'Control_Panel\StudentController@modal_data')->name('admin.student.information.modal_data');

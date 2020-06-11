@@ -77,6 +77,7 @@
         @if (Auth::user()->role == 1 || Auth::user()->role == 0)
           <li><a href="{{ route('admin.dashboard') }}"><i class="fa  fa-home fa-fw fa-lg"></i>&nbsp;&nbsp;&nbsp; <span>Dashboard</span></a></li>
           <li><a href="{{ route('shared.faculty_class_schedules.index') }}"><i class="fa  fa-file-text-o fa-lg"></i>&nbsp;&nbsp;&nbsp; <span>Faculty Class Schedule</span></a></li>
+          <li><a href="{{ route('admin.admission_information') }}"><i class="fa fa-info-circle fa-lg"></i>&nbsp;&nbsp;&nbsp; <span>Admission Information</span></a></li>
           <li><a href="{{ route('admin.faculty_information') }}"><i class="fa fa-info-circle fa-lg"></i>&nbsp;&nbsp;&nbsp; <span>Faculty Information</span></a></li>
           <li><a href="{{ route('admin.registrar_information') }}"><i class="fa fa-info-circle fa-lg"></i>&nbsp;&nbsp;&nbsp; <span>Registrar Information</span></a></li>
           <li><a href="{{ route('admin.finance_information') }}"><i class="fa fa-info-circle fa-lg"></i>&nbsp;&nbsp;&nbsp; <span>Finance Information</span></a></li>
@@ -150,7 +151,13 @@
             
           </li>
         @endif
-{{--  
+
+        @if (Auth::user()->role == 7)
+          <li><a href="{{ route('admission.dashboard') }}"><i class="fa fa-home fa-fw fa-lg"></i> &nbsp;&nbsp;&nbsp;Dashboard</a></li>
+          <li><a href="{{ route('registrar.incoming_student') }}"><i class="fas fa-users fa-lg"></i>&nbsp;&nbsp;&nbsp; <span>Incoming Student</span></a></li>
+          <li><a href="{{ route('admin.student.information') }}"><i class="fa fa-info-circle fa-lg"></i>&nbsp;&nbsp;&nbsp; <span>Student Information</span></a></li>    
+        @endif
+        {{--  
         @if (Auth::user()->role == 3)
         @endif               --}}
           {{--  Registrar Menu End  --}}
@@ -199,7 +206,7 @@
             <ul class="treeview-menu menu-open" style="display: block">
                 <li><a href="{{ route('finance.maintenance.tuition_fee') }}"><i class="fa fa-circle-o"></i>&nbsp;&nbsp;&nbsp; <span>Tuition Fee</span></a></li>
                 <li><a href="{{ route('finance.maintenance.downpayment') }}"><i class="fa fa-circle-o"></i>&nbsp;&nbsp;&nbsp; <span>Downpayment Fee</span></a></li>
-                <li><a href="{{ route('finance.maintenance.misc_fee') }}"><i class="fa fa-circle-o"></i>&nbsp;&nbsp;&nbsp; <span>Miscelleneous Fee</span></a></li>                
+                <li><a href="{{ route('finance.maintenance.misc_fee') }}"><i class="fa fa-circle-o"></i>&nbsp;&nbsp;&nbsp; <span>Miscellaneous Fee</span></a></li>                
                 <li><a href="{{ route('finance.maintenance.disc_fee') }}"><i class="fa fa-circle-o"></i>&nbsp;&nbsp;&nbsp; <span>Discount</span></a></li>
                 <li><a href="{{ route('finance.maintenance.payment_category') }}"><i class="fa fa-circle-o"></i>&nbsp;&nbsp;&nbsp; <span>Payment Category</span></a></li>
                 <li><a href="{{ route('finance.maintenance.other_fee') }}"><i class="fa fa-circle-o"></i>&nbsp;&nbsp;&nbsp; <span>Other Fee</span></a></li>
@@ -212,6 +219,10 @@
             <a href="{{ route('registrar.my_account.index') }}"><i class="fa fa-user fa-lg"></i>&nbsp;&nbsp;&nbsp; <span>My Account</span></a></li>
           @elseif (Auth::user()->role == 4)
             <a href="{{ route('faculty.my_account.index') }}"><i class="fa fa-user fa-lg"></i>&nbsp;&nbsp;&nbsp; <span>My Account</span></a></li>
+          @elseif (Auth::user()->role == 6)
+            <a href="{{ route('finance.my_account.index') }}"><i class="fa fa-user fa-lg"></i>&nbsp;&nbsp;&nbsp; <span>My Account</span></a></li>
+          @elseif (Auth::user()->role == 7)
+            <a href="{{ route('admission.my_account.index') }}"><i class="fa fa-user fa-lg"></i>&nbsp;&nbsp;&nbsp; <span>My Account</span></a></li>
           @elseif (Auth::user()->role == 0 || Auth::user()->role == 1)
             <a href="{{ route('my_account.index') }}"><i class="fa fa-user fa-lg"></i>&nbsp;&nbsp;&nbsp; <span>My Account</span></a></li>
           @endif
@@ -228,10 +239,6 @@
       <h1>
         @yield('content_title')
       </h1>
-      <!--<ol class="breadcrumb">
-        <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
-        <li class="active">Dashboard</li>
-      </ol>-->
     </section>
 
     <!-- Main content -->

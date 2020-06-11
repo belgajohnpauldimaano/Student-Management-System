@@ -30,11 +30,8 @@
                 <div class="box-body">
                     <img class="profile-user-img img-responsive img-circle" id="img--user_photo" src="{{ $Profile->photo ? \File::exists(public_path('/img/account/photo/'.$Profile->photo)) ? asset('/img/account/photo/'.$Profile->photo) : asset('/img/account/photo/blank-user.gif') : asset('/img/account/photo/blank-user.gif') }}" alt="User profile picture">
                     <h3 class="profile-username text-center" id="display__full_name">{{ $Profile->first_name . ' ' . $Profile->middle_name . ' ' .  $Profile->last_name }}</h3>
-                    <p class="text-muted text-center">Registrar</p>
-                    {{--  <div class="form-group">
-                        <label for="">Department</label>
-                        <div class="form-control">{{ collect(\App\FacultyInformation::DEPARTMENTS)->firstWhere('id', $Profile->department_id)['department_name'] }}</div>
-                    </div>  --}}
+                    <p class="text-muted text-center">Finance</p>
+                    
                     <div class="form-group">
                         <label for="">Contact Number</label>
                         <div class="form-control" id="display__contact_number">{{ $Profile->contact_number }}</div>
@@ -47,10 +44,7 @@
                         <label for="">Address</label>
                         <div class="form-control" id="display__address">{{ $Profile->address }}</div>
                     </div>
-                    {{--  <div class="form-group">
-                        <label for="">Birthday</label>
-                        <div class="form-control" id="display__birthday">{{ $Profile->birthday }}</div>
-                    </div>  --}}
+                    
                 </div>
             </div>
         </div>
@@ -183,7 +177,7 @@
             formData.append('page', page);
             loader_overlay();
             $.ajax({
-                url : "{{ route('admin.registrar_information') }}",
+                url : "{{ route('admin.finance_information') }}",
                 type : 'POST',
                 data : formData,
                 processData : false,
@@ -204,7 +198,7 @@
                 e.preventDefault();
                 var formData = new FormData($(this)[0]);
                 $.ajax({
-                    url : "{{ route('registrar.my_account.change_my_password') }}",
+                    url : "{{ route('finance.my_account.change_my_password') }}",
                     type : 'POST',
                     data : formData,
                     processData : false,
@@ -227,7 +221,7 @@
             $('body').on('click', '.btn--update-profile', function (e) {
                 e.preventDefault();
                 $.ajax({
-                    url : "{{ route('registrar.my_account.fetch_profile') }}",
+                    url : "{{ route('finance.my_account.fetch_profile') }}",
                     type : 'POST',
                     data        : {_token: '{{ csrf_token() }}'},
                     success     : function (res) {
@@ -248,7 +242,7 @@
                 e.preventDefault();
                 var formData = new FormData($(this)[0]);
                 $.ajax({
-                    url : "{{ route('registrar.my_account.update_profile') }}",
+                    url : "{{ route('finance.my_account.update_profile') }}",
                     type : 'POST',
                     data        : formData,
                     processData : false,
@@ -265,7 +259,7 @@
                         else
                         {
                             $.ajax({
-                                url : "{{ route('registrar.my_account.fetch_profile') }}",
+                                url : "{{ route('finance.my_account.fetch_profile') }}",
                                 type : 'POST',
                                 dataType : 'JSON',
                                 data        : {_token: '{{ csrf_token() }}'},
@@ -295,7 +289,7 @@
                 e.preventDefault();
                 var formData = new FormData($(this)[0]);
                 $.ajax({
-                    url         : "{{ route('admin.registrar_information.save_data') }}",
+                    url         : "{{ route('admin.finance_information.save_data') }}",
                     type        : 'POST',
                     data        : formData,
                     processData : false,
@@ -345,7 +339,7 @@
                         formData.append('_token', '{{ csrf_token() }}');
                         console.log(formData)
                         $.ajax({
-                            url : "{{ route('registrar.my_account.change_my_photo') }}",
+                            url : "{{ route('finance.my_account.change_my_photo') }}",
                             type : 'POST',
                             data : formData,
                             processData : false,

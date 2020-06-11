@@ -21,33 +21,40 @@
                             <table class="table table-striped">
                                 <tbody>
                                     <tr>
-                                        <th style="width: 10px">#</th>
-                                        <th>Description</th>
-                                        <th>Amount</th>
+                                        <th width="50%">Description</th>
+                                        <th width="50%">Amount</th>
                                     </tr>
                                     <tr>
-                                        <td>1.</td>
                                         <td>Tuition Fee</td>
                                         <td>
                                             ₱ {{ number_format($Transaction_history[0]->payment_cat->tuition->tuition_amt, 2)}}
                                         </td>                                        
                                     </tr>
                                     <tr>
-                                        <td>2.</td>
-                                        <td>Miscelleneous Fee</td>
+                                        <td>Miscellaneous Fee</td>
                                         <td>
                                             ₱ {{ number_format($Transaction_history[0]->payment_cat->misc_fee->misc_amt, 2)}}
                                         </td>                                        
                                     </tr>
+                                    @foreach ($OtherFee as $item)
                                     <tr>
-                                        <td>3.</td>
-                                        <td>{{$Discount ? $Discount->discount_type : ''}} Discount Fee</td>
+                                        <td>Other(s) Fee {{$item->other_name ? '-' : ''}} {{$item->other_name}}</td>
                                         <td>
-                                            ₱   {{$Discount ? number_format($Discount->discount_amt,2) : '--NA--'}} 
-                                        </td>                                        
+                                            ₱ {{  number_format($item->item_price, 2) }} 
+                                        </td>
                                     </tr>
+                                    @endforeach
+                                    
+                                    @foreach ($Discount_amt as $item)
+                                        <tr>
+                                            <td>{{$item ? $item->discount_type : ''}} Discount Fee</td>
+                                            <td>
+                                                ₱   {{$item ? number_format($item->discount_amt,2) : '--NA--'}} 
+                                            </td>                                        
+                                        </tr> 
+                                    @endforeach
+                                   
                                     <tr>
-                                        <td>4.</td>
                                         <td>Total Fees</td>
                                         <td>
                                             @if($Discount)
@@ -58,7 +65,6 @@
                                         </td>                                        
                                     </tr>
                                     <tr>
-                                        <td>5.</td>
                                         <td>Payment Status</td>
                                         <td>
                                             <span class="label label-{{ $Transaction_history[0]->status=='1' ? 'danger': 'success'}}">
@@ -87,26 +93,22 @@
                                 <table class="table table-striped">
                                     <tbody>
                                         <tr>
-                                            <th style="width: 10px">#</th>
-                                            <th>Description</th>
-                                            <th>Amount</th>
+                                            <th width="50%">Description</th>
+                                            <th width="50%">Amount</th>
                                         </tr>
                                         <tr>
-                                            <td>1.</td>
                                             <td>Payment</td>
                                             <td>
                                                 ₱ {{ number_format($transaction->payment, 2)}}
                                             </td>                                        
                                         </tr>
                                         <tr>
-                                            <td>2.</td>
                                             <td>Balance</td>
                                             <td>
                                                 ₱ {{ number_format($transaction->balance, 2)}}
                                             </td>                                        
                                         </tr>
                                         <tr>
-                                            <td>3.</td>
                                             <td>Status</td>
                                             <td>
                                                 <span class="label label-{{ $transaction->approval=='Approved' ? 'success': 'danger'}}">{{ $transaction->approval}}</span>
@@ -142,9 +144,11 @@
                 @else
                     <p style="font-weight: bold"><i class="fas fa-ban"></i> No Transaction yet</p>
                 @endif       
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default btn-flat" data-dismiss="modal">Close</button>
-            </div>
-        </div><!-- /.modal-content -->
+           
+        </div>
+        <!-- /.modal-content -->
+        <div class="modal-footer" style="background-color: #fff;">
+            <button type="button" class="btn btn-default btn-flat" data-dismiss="modal">Close</button>
+        </div>
     </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->

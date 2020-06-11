@@ -18,6 +18,14 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'userroles'], 'roles
         Route::post('save-data', 'Control_Panel\FinanceController@save_data')->name('admin.finance_information.save_data');
         Route::post('deactivate-data', 'Control_Panel\FinanceController@deactivate_data')->name('admin.finance_information.deactivate_data');
      });
+
+    Route::group(['prefix' => 'admission-information'], function() {
+       Route::get('', 'Control_Panel\AdmissionController@index')->name('admin.admission_information');
+       Route::post('', 'Control_Panel\AdmissionController@index')->name('admin.admission_information');
+       Route::post('modal-data', 'Control_Panel\AdmissionController@modal_data')->name('admin.admission_information.modal_data');
+       Route::post('save-data', 'Control_Panel\AdmissionController@save_data')->name('admin.admission_information.save_data');
+       Route::post('deactivate-data', 'Control_Panel\AdmissionController@deactivate_data')->name('admin.admission_information.deactivate_data');
+    });
     
     Route::group(['prefix' => 'transcript-of-record-archieve'], function() {
         Route::get('', 'Control_Panel\TranscriptArchiveController@index')->name('admin.transcript_archieve');

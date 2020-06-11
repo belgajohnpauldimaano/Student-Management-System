@@ -118,8 +118,9 @@ class DemographicProfileController extends Controller
             $Student_info->save();
 
             return response()->json(['res_code' => 0, 'res_msg' => 'Demographic successfully saved.',]);
-        }catch (Illuminate\Contracts\Encryption\DecryptException $e) {
-            return "Invalid parameter";
+
+        }catch (\Exception $e) {
+            return response()->json(['res_code' => 1, 'res_msg' => $e->getMessage()]);
         }
        
     }

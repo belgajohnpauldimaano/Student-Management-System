@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\ApproveStudentAccountMail;
+use App\Mail\NotifyDisapproveStudentMail;
 
 class IncomingStudentController extends Controller
 {
@@ -19,8 +20,7 @@ class IncomingStudentController extends Controller
             ->where('status', 1)
             ->first(); 
 
-        if($request->ajax()){
-            
+        if($request->ajax()){            
                 $IncomingStudent = StudentInformation::join('incoming_students','incoming_students.student_id', '=' ,'student_informations.id')    
                     ->join('users', 'users.id', '=', 'student_informations.user_id')                                   
                     ->selectRaw('
@@ -55,7 +55,23 @@ class IncomingStudentController extends Controller
                     ->where('users.status', 1)            
                     ->paginate(10, ['transaction_month_paids.id']);
 
-                return view('control_panel_registrar.incoming_student.partials.data_list', compact('IncomingStudent','IncomingStudentApproved','IncomingStudentCount'));
+                $Disapproved = StudentInformation::join('incoming_students','incoming_students.student_id', '=' ,'student_informations.id')    
+                    ->join('users', 'users.id', '=', 'student_informations.user_id')                                   
+                    ->selectRaw('
+                        CONCAT(student_informations.last_name, ", ", student_informations.first_name, " " ,  student_informations.middle_name) AS student_name,
+                        student_informations.id as student_id,
+                        incoming_students.grade_level_id, 
+                        incoming_students.student_type, 
+                        incoming_students.approval,
+                        users.username, 
+                        users.status as user_status
+                    ')
+                    ->where('incoming_students.approval', 'Disapproved')
+                    ->where('incoming_students.school_year_id', $SchoolYear->id)            
+                    ->where('users.status', 0)            
+                    ->paginate(10, ['transaction_month_paids.id']);
+
+                return view('control_panel_registrar.incoming_student.partials.data_list', compact('IncomingStudent','IncomingStudentApproved','IncomingStudentCount','Disapproved'));
         }
         
 
@@ -93,7 +109,23 @@ class IncomingStudentController extends Controller
             ->where('users.status', 1)            
             ->paginate(10, ['transaction_month_paids.id']);
 
-        return view('control_panel_registrar.incoming_student.index', compact('IncomingStudent','IncomingStudentApproved','IncomingStudentCount'));
+        $Disapproved = StudentInformation::join('incoming_students','incoming_students.student_id', '=' ,'student_informations.id')    
+            ->join('users', 'users.id', '=', 'student_informations.user_id')                                   
+            ->selectRaw('
+                CONCAT(student_informations.last_name, ", ", student_informations.first_name, " " ,  student_informations.middle_name) AS student_name,
+                student_informations.id as student_id,
+                incoming_students.grade_level_id, 
+                incoming_students.student_type, 
+                incoming_students.approval,
+                users.username, 
+                users.status as user_status
+            ')
+            ->where('incoming_students.approval', 'Disapproved')
+            ->where('incoming_students.school_year_id', $SchoolYear->id)            
+            ->where('users.status', 0)            
+            ->paginate(10, ['transaction_month_paids.id']);
+
+        return view('control_panel_registrar.incoming_student.index', compact('IncomingStudent','IncomingStudentApproved','IncomingStudentCount','Disapproved'));
     }
 
     public function modal_data(Request $request)
@@ -185,7 +217,11 @@ class IncomingStudentController extends Controller
         $StudentInformation = StudentInformation::where('status', 1)
              ->where('id', $request->id)->first();   
 
-        $name = $StudentInformation->first_name.' '.$StudentInformation->last_name;     
+        $name = $StudentInformation->first_name.' '.$StudentInformation->last_name;  
+        
+        // $incoming_student = IncomingStudent::where('student_id', $request->id)->first();
+        // $incoming_student->approval = 'Disapproved';
+        // $incoming_student->saved();
 
         $Disapproved = IncomingStudent::where('student_id', $request->id)
             ->where('school_year_id', $SchoolYear->id)
@@ -193,7 +229,7 @@ class IncomingStudentController extends Controller
 
         if($Disapproved)
         {
-            $Disapproved->approval = 'Not yet Approved';
+            $Disapproved->approval = 'Disapproved';
 
             $User = User::where('id', $StudentInformation->user_id)->first();
 
@@ -202,6 +238,9 @@ class IncomingStudentController extends Controller
                 $User->status = 0;
                 if($Disapproved->save() && $User->save())
                 {
+                    $student = StudentInformation::find($request->id);
+                        Mail::to($StudentInformation->email)->send(new NotifyDisapproveStudentMail($student));
+                   
                     return response()->json(['res_code' => 0, 'res_msg' => 'Student '.$name.' status successfully Disapproved!.']);
                 }else{
                     return response()->json(['res_code' => 1, 'res_msg' => 'Sorry approval has error.']);

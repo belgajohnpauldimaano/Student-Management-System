@@ -9,13 +9,13 @@
     <div class="box">
                     <div class="overlay hidden" id="js-loader-overlay"><i class="fa fa-refresh fa-spin"></i></div>
                     <div class="box-body">
-                        @if($ClassSubjectDetail)                        
+                        {{-- @if($ClassSubjectDetail)                        
                             <h4><b>Year and Section: <i style="color: red">Grade:{{ $ClassSubjectDetail->grade_level }} - {{ $ClassSubjectDetail->section }}</i></b></h4>     
                         @else
                             <h4><b>Year and Section: <i style="color: red">Not Available</i></b></h4>     
-                        @endif
+                        @endif --}}
                         <div class="js-data-container1">
-                                <button class="btn btn-flat btn-danger pull-right" id="js-btn_print" data-id=""><i class="fa fa-file-pdf"></i> Print</button>
+                                {{-- <button class="btn btn-flat btn-danger pull-right" id="js-btn_print" data-id=""><i class="fa fa-file-pdf"></i> Print</button> --}}
                                 
                                 
                                         <table class="table no-margin table-striped table-bordered">
@@ -45,7 +45,7 @@
         
                                                     @foreach ($EnrollmentMale as $key => $data) 
                                                         {{-- <form action="{{ route('faculty.save-class-demographic') }}" method="POST" novalidate="novalidate"> --}}
-                                                        <form id="js_demographic">
+                                                        <form class="js_demographic">
                                                                 {{ csrf_field() }}
                                                             <tr>
                                                                 <td>{{ $key + 1 }}.</td>
@@ -92,7 +92,7 @@
                                                                 {{-- <td>{{ $data->mother_name }}</td> --}}
                                                                 <td>
                                                                     <center>
-                                                                    <button type="submit" class="btn btn-sm btn-primary save">save</button>
+                                                                        <button type="submit" class="btn btn-sm btn-primary save">save</button>
                                                                     </center>
                                                                 </td>
                                                                 
@@ -110,7 +110,7 @@
                                                     
                                                     @foreach ($EnrollmentFemale as $key => $data) 
                                                     {{-- <form action="{{ route('faculty.save-class-demographic') }}" method="POST" novalidate="novalidate"> --}}
-                                                        <form id="js_demographic">
+                                                        <form class="js_demographic">
                                                                 {{ csrf_field() }}
                                                             <tr>
                                                                 <td>{{ $key + 1 }}.</td>
@@ -180,16 +180,21 @@
 @endsection
 
 @section ('scripts')
-    <script src="{{ asset('cms/plugins/datepicker1/bootstrap-datepicker1.js') }}"></script>
+    {{-- <script src="{{ asset('cms/plugins/datepicker1/bootstrap-datepicker1.js') }}"></script> --}}
+    <script src="{{ asset('cms/plugins/datepicker/bootstrap-datepicker.js') }}"></script>
     <script>
     
     $('.datepicker').each(function () {
            $(this).removeClass('hasDatepicker').datepicker();
     });
 
+    // $('.datepicker').datepicker({
+    //         autoclose: true
+    //     })  
+
 
     // $( "#datepicker" ).datepicker();
-    $('body').on('submit', '#js_demographic', function (e) {
+    $('body').on('submit', '.js_demographic', function (e) {
                 e.preventDefault();
                 var formData = new FormData($(this)[0]);
                 $.ajax({
@@ -217,10 +222,10 @@
                             });                        
                 
                             // fetch_data ();
-                            loader_overlay();
-                            setTimeout(function() {
-                                location.reload();
-                                }, 15);
+                            // loader_overlay();
+                            // setTimeout(function() {
+                            //     location.reload();
+                            //     }, 15);
                         }
                     }
                 });

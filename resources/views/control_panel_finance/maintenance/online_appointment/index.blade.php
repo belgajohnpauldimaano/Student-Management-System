@@ -27,8 +27,9 @@
 @endsection
 
 @section ('scripts')
-    <script src="{{ asset('cms/plugins/datepicker/bootstrap-datepicker.js')}}"></script>
-    <script src="{{ asset('cms/plugins/timepicker/jquery.timepicker.js')}}"></script>
+    {{-- <script src="{{ asset('cms/plugins/datepicker/bootstrap-datepicker.js')}}"></script> --}}
+    {{-- <script src="{{ asset('cms/plugins/timepicker/jquery.timepicker.js')}}"></script> --}}
+    <script src="{{ asset('cms/plugins/datetimepicker/datetimepicker.js') }}"></script>
     <script>
         
         var page = 1;
@@ -64,21 +65,22 @@
                         $('.js-modal_holder .modal').modal({ backdrop : 'static' });
                         $('.js-modal_holder .modal').on('shown.bs.modal', function () {
                             //Date picker
-                            $('#date').datepicker({
-                                autoclose: true
-                            })  
+                            $('#datetimepicker').datetimepicker({
+                                autoclose: true,
+                                format: 'yyyy-mm-dd hh:ii'
+                            })
 
-                            $('.timepicker').timepicker({
-                                timeFormat: 'h:mm p',
-                                interval: 60,
-                                minTime: '8',
-                                maxTime: '6:00pm',
-                                defaultTime: '11',
-                                startTime: '8:00',
-                                dynamic: false,
-                                dropdown: true,
-                                scrollbar: true
-                            });
+                            // $('.timepicker').timepicker({
+                            //     timeFormat: 'h:mm p',
+                            //     interval: 60,
+                            //     minTime: '8',
+                            //     maxTime: '6:00pm',
+                            //     // defaultTime: '11',
+                            //     startTime: '8:00',
+                            //     dynamic: false,
+                            //     dropdown: true,
+                            //     scrollbar: true
+                            // });
                         });
                     }
                 });

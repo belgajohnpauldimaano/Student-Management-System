@@ -193,6 +193,7 @@
     <script src="{{ asset('cms/plugins/datepicker/bootstrap-datepicker.js') }}"></script>
     <script src="{{ asset('js/custom_validator.js') }}"></script>
     <script>
+        $('.select2').select2();
         $('#btn-success-alert').trigger('click');
         var page = 1;
         function fetch_data () {
@@ -241,209 +242,503 @@
         //  
         $('body').on('submit', '.js-bank-form', function (e) {
             e.preventDefault();
+            var downpayment_0 = $('.hasDownpayment').val();
+            var payment = $('#bank_pay_fee').val();
+            var downpayment = downpayment_bank_fee;
+            set_downpayment = 0;
             
-            var formData = new FormData($(this)[0]);
-            alertify.defaults.transition = "slide";
-            alertify.defaults.theme.ok = "btn btn-primary btn-flat";
-            alertify.defaults.theme.cancel = "btn btn-danger btn-flat";
-            alertify.confirm('Confirmation', 'Are you sure you want to submit? Please double check your information. Thank you', function(){  
-                $.ajax({
-                    url         : "{{ route('student.enrollment.save_data') }}",
-                    type        : 'POST',
-                    data        : formData,
-                    processData : false,
-                    contentType : false,
-                    beforeSend: function() {                    
-                        if(
-                            $('#bank_email').val() != '' && 
-                            $('#bank_phone').val() != '' && 
-                            $('#bank').val() != '' && 
-                            $('#bank_pay_fee').val() != '' && 
-                            $('#bank_transaction_id').val() != '' && 
-                            $('#bank_image').val() != ""
-                        )
-                        {  
-                            $('#preloader').show();
-                        }
-                        else{
-                            $('.help-block').html('');
-                            bank_pay_fee();
-                            check_bank_phone();
-                            check_bank_email();
-                            bank_transaction();
-                            check_b_image();
-                            check_bank();
-                        }
-                    },
-                    success     : function (res) {
-                        $('.help-block').html('');                    
-                        $('#preloader').hide();                      
+            if(downpayment_0 != null){
+                set_downpayment = 1;
+
+                var formData = new FormData($(this)[0]);
+                        alertify.defaults.transition = "slide";
+                        alertify.defaults.theme.ok = "btn btn-primary btn-flat";
+                        alertify.defaults.theme.cancel = "btn btn-danger btn-flat";
+                        alertify.confirm('Confirmation', 'Are you sure you want to submit? Please double check your information. Thank you', function(){  
+                            $.ajax({
+                                url         : "{{ route('student.enrollment.save_data') }}",
+                                type        : 'POST',
+                                data        : formData,
+                                processData : false,
+                                contentType : false,
+                                beforeSend: function() {                    
+                                    if(
+                                        $('#bank_email').val() != '' && 
+                                        $('#bank_phone').val() != '' && 
+                                        $('#bank').val() != '' && 
+                                        $('#bank_pay_fee').val() != '' && 
+                                        $('#bank_transaction_id').val() != '' && 
+                                        $('#bank_image').val() != ""
+                                        && set_downpayment != 0
+                                    )
+                                    {  
+                                        $('#preloader').show();
+                                    }
+                                    else{
+                                        $('.help-block').html('');
+                                        bank_pay_fee();
+                                        check_bank_phone();
+                                        check_bank_email();
+                                        bank_transaction();
+                                        check_b_image();
+                                        check_bank();
+                                    }
+                                },
+                                success     : function (res) {
+                                    $('.help-block').html('');                    
+                                    $('#preloader').hide();                      
+                                    
+                                    if (res.res_code == 1){
+                                        for (var err in res.res_error_msg)
+                                        {
+                                            $('#js-' + err).html('<code> '+ res.res_error_msg[err] +' </code>');
+                                        }
+                                    }else{   
+                                        if(
+                                            $('#bank_email').val() != '' && 
+                                            $('#bank_phone').val() != '' && 
+                                            $('#bank').val() != '' && 
+                                            $('#bank_pay_fee').val() != '' && 
+                                            $('#bank_transaction_id').val() != '' && 
+                                            $('#bank_image').val() != ""
+                                            && set_downpayment != 0
+                                        )
+                                        {  
+                                            $('#preloader').hide();
+                                            alertify.defaults.theme.ok = "btn btn-primary btn-flat";
+                                            alertify
+                                            .alert('Confirmation', res.res_msg, function(){
+                                                alertify.message('OK');
+                                                location.reload();
+                                            });
+                                        }
+                                        else{
+                                            $('.help-block').html('');
+                                            bank_pay_fee();
+                                            check_bank_phone();
+                                            check_bank_email();
+                                            bank_transaction();
+                                            check_b_image();
+                                            check_bank();
+                                        }
+                                    }
+                                    
+                                }
+                            });   
+                        }, function(){  
+                        }); 
+            }else{
+                if(downpayment != 0){
+                    if(payment < downpayment){
+                        // alert('payment is smaller than the selected downpayment')
+                        alertify.alert('<i style="color: red" class="fas fa-exclamation-circle"></i> Error',"Please fill the payment fee bigger amount than the selected downpayment! Thank you", function(){   
+                        });
+                    }else if(payment >= downpayment){
+                        // alert('good') 
+                        set_downpayment = downpayment_0;   
                         
-                        if (res.res_code == 1){
-                            for (var err in res.res_error_msg)
-                            {
-                                $('#js-' + err).html('<code> '+ res.res_error_msg[err] +' </code>');
-                            }
-                        }else{   
-                            if(
-                                $('#bank_email').val() != '' && 
-                                $('#bank_phone').val() != '' && 
-                                $('#bank').val() != '' && 
-                                $('#bank_pay_fee').val() != '' && 
-                                $('#bank_transaction_id').val() != '' && 
-                                $('#bank_image').val() != ""
-                            )
-                            {  
-                                $('#preloader').hide();
-                                alertify.defaults.theme.ok = "btn btn-primary btn-flat";
-                                alertify
-                                .alert('Confirmation', res.res_msg, function(){
-                                    alertify.message('OK');
-                                    location.reload();
-                                });
-                            }
-                            else{
-                                $('.help-block').html('');
-                                bank_pay_fee();
-                                check_bank_phone();
-                                check_bank_email();
-                                bank_transaction();
-                                check_b_image();
-                                check_bank();
-                            }
-                        }
-                        
+                        var formData = new FormData($(this)[0]);
+                        alertify.defaults.transition = "slide";
+                        alertify.defaults.theme.ok = "btn btn-primary btn-flat";
+                        alertify.defaults.theme.cancel = "btn btn-danger btn-flat";
+                        alertify.confirm('Confirmation', 'Are you sure you want to submit? Please double check your information. Thank you', function(){  
+                            $.ajax({
+                                url         : "{{ route('student.enrollment.save_data') }}",
+                                type        : 'POST',
+                                data        : formData,
+                                processData : false,
+                                contentType : false,
+                                beforeSend: function() {                    
+                                    if(
+                                        $('#bank_email').val() != '' && 
+                                        $('#bank_phone').val() != '' && 
+                                        $('#bank').val() != '' && 
+                                        $('#bank_pay_fee').val() != '' && 
+                                        $('#bank_transaction_id').val() != '' && 
+                                        $('#bank_image').val() != ""
+                                        && set_downpayment != 0
+                                    )
+                                    {  
+                                        $('#preloader').show();
+                                    }
+                                    else{
+                                        $('.help-block').html('');
+                                        bank_pay_fee();
+                                        check_bank_phone();
+                                        check_bank_email();
+                                        bank_transaction();
+                                        check_b_image();
+                                        check_bank();
+                                    }
+                                },
+                                success     : function (res) {
+                                    $('.help-block').html('');                    
+                                    $('#preloader').hide();                      
+                                    
+                                    if (res.res_code == 1){
+                                        for (var err in res.res_error_msg)
+                                        {
+                                            $('#js-' + err).html('<code> '+ res.res_error_msg[err] +' </code>');
+                                        }
+                                    }else{   
+                                        if(
+                                            $('#bank_email').val() != '' && 
+                                            $('#bank_phone').val() != '' && 
+                                            $('#bank').val() != '' && 
+                                            $('#bank_pay_fee').val() != '' && 
+                                            $('#bank_transaction_id').val() != '' && 
+                                            $('#bank_image').val() != ""
+                                            && set_downpayment != 0
+                                        )
+                                        {  
+                                            $('#preloader').hide();
+                                            alertify.defaults.theme.ok = "btn btn-primary btn-flat";
+                                            alertify
+                                            .alert('Confirmation', res.res_msg, function(){
+                                                alertify.message('OK');
+                                                location.reload();
+                                            });
+                                        }
+                                        else{
+                                            $('.help-block').html('');
+                                            bank_pay_fee();
+                                            check_bank_phone();
+                                            check_bank_email();
+                                            bank_transaction();
+                                            check_b_image();
+                                            check_bank();
+                                        }
+                                    }
+                                    
+                                }
+                            });   
+                        }, function(){  
+                        }); 
                     }
-                });   
-            }, function(){  
-            });    
+                }
+                else{
+                    alertify.alert('<i style="color: red" class="fas fa-exclamation-circle"></i> Error',"Please select the preferred downpayment fee! Thank you", function(){   
+                    });
+                }
+               
+            }
+               
             
         });
 
         $('body').on('submit', '#js-gcash-form', function (e) {
             e.preventDefault();
-            var formData = new FormData($(this)[0]);
+            var downpayment_0 = $('.hasDownpayment').val();
+            var payment = $('#gcash_pay_fee').val();
+            var downpayment = downpayment_g_fee;
+            set_downpayment = 0;
             
-            alertify.defaults.transition = "slide";
-            alertify.defaults.theme.ok = "btn btn-primary btn-flat";
-            alertify.defaults.theme.cancel = "btn btn-danger btn-flat";
-            alertify.confirm('Confirmation', 'Are you sure you want to submit? Please double check your information. Thank you', function(){  
-                $.ajax({
-                    url         : "{{ route('student.enrollment.save') }}",
-                    type        : 'POST',
-                    data        : formData,
-                    processData : false,
-                    contentType : false,
-                    beforeSend: function() {                    
-                        if(
-                            $('#gcash_email').val() != '' && 
-                            $('#gcash_phone').val() != '' && 
-                            $('#gcash_pay_fee').val() != '' && 
-                            $('#gcash_transaction_id').val() != '' && 
-                            $('#gcash_image').val() != ""
-                        )
-                        {  
-                            $('#preloader').show();
-                        }
-                        else{
-                            $('.help-block').html('');
-                            gcash_pay_fee();
-                            check_gcash_phone();
-                            check_gcash_email();
-                            gcash_transaction();
-                            check_g_image();                        
-                        }
-                    },
-                    success     : function (res) {
-                        $('.help-block').html('');                    
-                        $('#preloader').hide();                      
-                        
-                        if (res.res_code == 1){
-                            for (var err in res.res_error_msg)
-                            {
-                                $('#js-' + err).html('<code> '+ res.res_error_msg[err] +' </code>');
-                            }
-                        }else{   
-                            if(
-                                $('#gcash_email').val() != '' && 
-                                $('#gcash_phone').val() != '' && 
-                                $('#gcash_pay_fee').val() != '' && 
-                                $('#gcash_transaction_id').val() != '' && 
-                                $('#gcash_image').val() != ""
-                            )
-                            {  
-                                $('#preloader').hide();
+            if(downpayment_0 != null){
+                set_downpayment = 1;
 
-                                alertify.defaults.theme.ok = "btn btn-primary btn-flat";
-                                alertify
-                                .alert('Confirmation', res.res_msg, function(){
-                                    alertify.message('OK');
-                                    location.reload();
-                                });
-                            }
-                            else{
-                                $('.help-block').html('');
-                                gcash_pay_fee();
-                                check_gcash_phone();
-                                check_gcash_email();
-                                gcash_transaction();
-                                check_g_image();
-                            }
-                        }
+                var formData = new FormData($(this)[0]);            
+                        alertify.defaults.transition = "slide";
+                        alertify.defaults.theme.ok = "btn btn-primary btn-flat";
+                        alertify.defaults.theme.cancel = "btn btn-danger btn-flat";
+                        alertify.confirm('Confirmation', 'Are you sure you want to submit? Please double check your information. Thank you', function(){  
+                            $.ajax({
+                                url         : "{{ route('student.enrollment.save') }}",
+                                type        : 'POST',
+                                data        : formData,
+                                processData : false,
+                                contentType : false,
+                                beforeSend: function() {                    
+                                    if(
+                                        $('#gcash_email').val() != '' && 
+                                        $('#gcash_phone').val() != '' && 
+                                        $('#gcash_pay_fee').val() != '' && 
+                                        $('#gcash_transaction_id').val() != '' && 
+                                        $('#gcash_image').val() != ""
+                                        && set_downpayment != 0
+                                    )
+                                    {  
+                                        $('#preloader').show();
+                                    }
+                                    else{
+                                        $('.help-block').html('');
+                                        gcash_pay_fee();
+                                        check_gcash_phone();
+                                        check_gcash_email();
+                                        gcash_transaction();
+                                        check_g_image();                        
+                                    }
+                                },
+                                success     : function (res) {
+                                    $('.help-block').html('');                    
+                                    $('#preloader').hide();                      
+                                    
+                                    if (res.res_code == 1){
+                                        for (var err in res.res_error_msg)
+                                        {
+                                            $('#js-' + err).html('<code> '+ res.res_error_msg[err] +' </code>');
+                                        }
+                                    }else{   
+                                        if(
+                                            $('#gcash_email').val() != '' && 
+                                            $('#gcash_phone').val() != '' && 
+                                            $('#gcash_pay_fee').val() != '' && 
+                                            $('#gcash_transaction_id').val() != '' && 
+                                            $('#gcash_image').val() != ""
+                                            && set_downpayment != 0
+                                        )
+                                        {  
+                                            $('#preloader').hide();
+
+                                            alertify.defaults.theme.ok = "btn btn-primary btn-flat";
+                                            alertify
+                                            .alert('Confirmation', res.res_msg, function(){
+                                                alertify.message('OK');
+                                                location.reload();
+                                            });
+                                        }
+                                        else{
+                                            $('.help-block').html('');
+                                            gcash_pay_fee();
+                                            check_gcash_phone();
+                                            check_gcash_email();
+                                            gcash_transaction();
+                                            check_g_image();
+                                        }
+                                    }
+                                    
+                                }
+                            });           
+                        }, function(){  
+                        });
+
+    
+            }else{
+                if(downpayment != 0){
+                    if(payment < downpayment){
+                        // alert('payment is smaller than the selected downpayment')
+                        alertify.alert('<i style="color: red" class="fas fa-exclamation-circle"></i> Error',"Please fill the payment fee bigger amount than the selected downpayment! Thank you", function(){   
+                        });
+                    }else if(payment >= downpayment){
+                        // alert('good') 
+                        set_downpayment = downpayment_0;     
                         
+                        var formData = new FormData($(this)[0]);            
+                        alertify.defaults.transition = "slide";
+                        alertify.defaults.theme.ok = "btn btn-primary btn-flat";
+                        alertify.defaults.theme.cancel = "btn btn-danger btn-flat";
+                        alertify.confirm('Confirmation', 'Are you sure you want to submit? Please double check your information. Thank you', function(){  
+                            $.ajax({
+                                url         : "{{ route('student.enrollment.save') }}",
+                                type        : 'POST',
+                                data        : formData,
+                                processData : false,
+                                contentType : false,
+                                beforeSend: function() {                    
+                                    if(
+                                        $('#gcash_email').val() != '' && 
+                                        $('#gcash_phone').val() != '' && 
+                                        $('#gcash_pay_fee').val() != '' && 
+                                        $('#gcash_transaction_id').val() != '' && 
+                                        $('#gcash_image').val() != ""
+                                        && set_downpayment != 0
+                                    )
+                                    {  
+                                        $('#preloader').show();
+                                    }
+                                    else{
+                                        $('.help-block').html('');
+                                        gcash_pay_fee();
+                                        check_gcash_phone();
+                                        check_gcash_email();
+                                        gcash_transaction();
+                                        check_g_image();                        
+                                    }
+                                },
+                                success     : function (res) {
+                                    $('.help-block').html('');                    
+                                    $('#preloader').hide();                      
+                                    
+                                    if (res.res_code == 1){
+                                        for (var err in res.res_error_msg)
+                                        {
+                                            $('#js-' + err).html('<code> '+ res.res_error_msg[err] +' </code>');
+                                        }
+                                    }else{   
+                                        if(
+                                            $('#gcash_email').val() != '' && 
+                                            $('#gcash_phone').val() != '' && 
+                                            $('#gcash_pay_fee').val() != '' && 
+                                            $('#gcash_transaction_id').val() != '' && 
+                                            $('#gcash_image').val() != ""
+                                            && set_downpayment != 0
+                                        )
+                                        {  
+                                            $('#preloader').hide();
+
+                                            alertify.defaults.theme.ok = "btn btn-primary btn-flat";
+                                            alertify
+                                            .alert('Confirmation', res.res_msg, function(){
+                                                alertify.message('OK');
+                                                location.reload();
+                                            });
+                                        }
+                                        else{
+                                            $('.help-block').html('');
+                                            gcash_pay_fee();
+                                            check_gcash_phone();
+                                            check_gcash_email();
+                                            gcash_transaction();
+                                            check_g_image();
+                                        }
+                                    }
+                                    
+                                }
+                            });           
+                        }, function(){  
+                        });
                     }
-                });           
-            }, function(){  
-            });  
+                }
+                else{
+                    alertify.alert('<i style="color: red" class="fas fa-exclamation-circle"></i> Error',"Please select the preferred downpayment fee! Thank you", function(){   
+                    });
+                }
+               
+            }
+
+              
         });
         // $('.btnpaypal').click(function(){
         //     loader_overlay();
         // })
-        
+        alertify.defaults.theme.ok = "btn btn-primary btn-flat";
         $('body').on('submit', '#js-checkout-form', function (e) {
             e.preventDefault();    
-            var formData = new FormData($(this)[0]);
-            alertify.defaults.transition = "slide";
-            alertify.defaults.theme.ok = "btn btn-primary btn-flat";
-            alertify.defaults.theme.cancel = "btn btn-danger btn-flat";
-            alertify.confirm('Confirmation', 'Are you sure you want to submit? Please double check your information. Thank you', function(){  
-                $.ajax({
-                    url         : "{{ route('student.create-payment.paypal') }}",
-                    type        : 'POST',
-                    data        : formData,
-                    processData : false,
-                    contentType : false,   
-                    beforeSend: function() {
-                        if($('#pay_fee').val() != '' && $('#phone').val() != '' && $('#email').val() != ''){ 
-                            $('#preloader').show();
-                        }
-                        else{
-                            $('.help-block').html('');
-                            check_payfee();
-                            check_phone();
-                            check_email();   
-                        }
-                        // loader_overlay();
-                    },                 
-                    success     : function (res) {                            
-                        if (res.res_code == 1)
-                        {
-                            for (var err in res.res_error_msg)
-                            {
-                                $('#js-' + err).html('<code> '+ res.res_error_msg[err] +' </code>');
+            var downpayment_0 = $('.hasDownpayment').val();
+            var payment = $('#pay_fee').val();
+            var downpayment = downpayment_fee;
+            set_downpayment = 0;
+            
+            if(downpayment_0 != null){
+                set_downpayment = 1;
+                // alert('none')
+                var formData = new FormData($(this)[0]);
+                alertify.defaults.transition = "slide";
+                alertify.defaults.theme.ok = "btn btn-primary btn-flat";
+                alertify.defaults.theme.cancel = "btn btn-danger btn-flat";
+                alertify.confirm('Confirmation', 'Are you sure you want to submit? Please double check your information. Thank you', function(){  
+                    $.ajax({
+                        url         : "{{ route('student.create-payment.paypal') }}",
+                        type        : 'POST',
+                        data        : formData,
+                        processData : false,
+                        contentType : false,   
+                        beforeSend: function() {
+
+                            if($('#pay_fee').val() != '' && $('#phone').val() != '' && $('#email').val() != ''){ 
+                                $('#preloader').show();
                             }
+                            else{
+                                $('.help-block').html('');
+                                check_payfee();
+                                check_phone();
+                                check_email();   
+                            }
+                            // loader_overlay();
+                        },                 
+                        success     : function (res) {                            
+                            if (res.res_code == 1)
+                            {
+                                for (var err in res.res_error_msg)
+                                {
+                                    $('#js-' + err).html('<code> '+ res.res_error_msg[err] +' </code>');
+                                }
+                            }
+                            else
+                            {
+                                if($('#pay_fee').val() != '' && $('#phone').val() != '' && $('#email').val() != ''){ 
+                                // $('#preloader').show();
+                                    window.location.href = res;
+                                }else{
+                                    $('.help-block').html('');
+                                    check_payfee();
+                                    check_phone();
+                                    check_email();   
+                                }
+                                
+                            }   
                         }
-                        else
-                        {
-                            window.location.href = res;
-                        }   
+                    }); 
+                }, function(){  
+                });   
+                        
+            }else{
+                if(downpayment != 0){
+                    if(payment < downpayment){
+                        // alert('payment is smaller than the selected downpayment')                        
+                        alertify.alert('<i style="color: red" class="fas fa-exclamation-circle"></i> Error',"Please fill the payment fee bigger amount than the selected downpayment! Thank you", function(){   
+                        });
+
+                    }else if(payment >= downpayment){
+                    //    alert('good') 
+                        set_downpayment = downpayment_0;
+
+                        var formData = new FormData($(this)[0]);
+                        alertify.defaults.transition = "slide";
+                        alertify.defaults.theme.ok = "btn btn-primary btn-flat";
+                        alertify.defaults.theme.cancel = "btn btn-danger btn-flat";
+                        alertify.confirm('Confirmation', 'Are you sure you want to submit? Please double check your information. Thank you', function(){  
+                            $.ajax({
+                                url         : "{{ route('student.create-payment.paypal') }}",
+                                type        : 'POST',
+                                data        : formData,
+                                processData : false,
+                                contentType : false,   
+                                beforeSend: function() {
+
+                                    if($('#pay_fee').val() != '' && $('#phone').val() != '' && $('#email').val() != '' && set_downpayment != 0){ 
+                                        $('#preloader').show();
+                                    }
+                                    else{
+                                        $('.help-block').html('');
+                                        check_payfee();
+                                        check_phone();
+                                        check_email();   
+                                    }
+                                    // loader_overlay();
+                                },                 
+                                success     : function (res) {                            
+                                    if (res.res_code == 1)
+                                    {
+                                        for (var err in res.res_error_msg)
+                                        {
+                                            $('#js-' + err).html('<code> '+ res.res_error_msg[err] +' </code>');
+                                        }
+                                    }
+                                    else
+                                    {
+                                        if($('#pay_fee').val() != '' && $('#phone').val() != '' && $('#email').val() != '' && set_downpayment != 0){ 
+                                        // $('#preloader').show();
+                                            window.location.href = res;
+                                        }else{
+                                            $('.help-block').html('');
+                                            check_payfee();
+                                            check_phone();
+                                            check_email();   
+                                        }
+                                        
+                                    }   
+                                }
+                            }); 
+                        }, function(){  
+                        });   
                     }
-                }); 
-            }, function(){  
-            });        
-            
-            
-            
+                }
+                else{
+                    alertify.alert('<i style="color: red" class="fas fa-exclamation-circle"></i> Error',"Please select the preferred downpayment fee! Thank you", function(){   
+                    });
+                }
+               
+            }
         });
 
         $('body').on('click', '.btn-transaction-history', function (e) {
@@ -552,6 +847,70 @@
                 }
             });
 
+            $('body').on('submit', '#form--update-profile', function (e) {
+            e.preventDefault();
+            var formData = new FormData($(this)[0]);
+            $.ajax({
+                url : "{{ route('student.my_account.update_profile') }}",
+                type : 'POST',
+                data        : formData,
+                processData : false,
+                contentType : false,
+                success     : function (res) {
+                    $('.help-block').html('');
+
+                    validateProfile();
+                    
+                    if (res.res_code == 1)
+                    {
+                        for (var err in res.res_error_msg)
+                        {
+                            $('#js-' + err).html('<code> '+ res.res_error_msg[err] +' </code>');
+                        }
+                    }
+                    else
+                    {
+                        $.ajax({
+                            url : "{{ route('student.my_account.fetch_profile') }}",
+                            type : 'POST',
+                            dataType : 'JSON',
+                            data        : {_token: '{{ csrf_token() }}'},
+                            success     : function (res) {
+                                console.log(res)
+                                let bday = ''
+                                if (res.Profile.birthdate) {
+                                    bday = new Date(res.Profile.birthdate)
+                                }
+                                $('#display__full_name').text((res.Profile.first_name != null ? res.Profile.first_name : '') + ' ' + (res.Profile.middle_name != null ? res.Profile.middle_name : '') + ' '  + (res.Profile.last_name != null ? res.Profile.last_name : ''));
+                                $('#display__contact_number').text((res.Profile.contact_number != null ? res.Profile.contact_number : '+639'));
+                                $('#display__email').text((res.Profile.email != null ? res.Profile.email : ''));
+                                $('#display__address').text((res.Profile.address != null ? res.Profile.address : ''));
+                                $('#display__birthday').text((res.Profile.birthdate != null ?  bday.getDate() + ' ' + bday.toLocaleString('en-US', {month: "long"}) + ' ' + bday.getFullYear()  : ''));
+                                // {{--  $('#display__age').text((res.Profile.age != null ? res.Profile.age : ''));  --}}
+                                $('#display__current_address').text((res.Profile.c_address != null ? res.Profile.c_address : ''));
+                                $('#display__permanent_address').text((res.Profile.p_address != null ? res.Profile.p_address : ''));
+                                $('#display__father_name').text((res.Profile.father_name != null ? res.Profile.father_name : ''));
+                                $('#display__mother_name').text((res.Profile.mother_name != null ? res.Profile.mother_name : ''));
+                                $('#display__gender').text((res.Profile.gender == 1 ? 'Male' : 'Female'));
+                                $('#display__esc').text((res.Profile.isEsc));
+                            }
+                        })
+                        $('.modal-update-profile').modal('hide');
+                    }
+                    
+                    show_toast_alert({
+                        heading : res.res_code == 1 ? 'Error' : 'Success',
+                        message : res.res_msg,
+                        type    : res.res_code == 1 ? 'error' : 'success'
+                    });
+                }
+            });
+
+            
+            
+    })
+
+    
         
     </script>
     

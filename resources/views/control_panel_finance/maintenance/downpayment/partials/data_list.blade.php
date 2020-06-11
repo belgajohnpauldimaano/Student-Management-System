@@ -4,9 +4,10 @@
 <table class="table no-margin">
     <thead>
         <tr>
-            <th>Tuition Fee Amount</th>
-            {{-- <th>Student Category</th> --}}
-            <th>Current</th>
+            <th>Downpayment Fee</th>
+            <th>Student Category</th>
+            <th>Modified</th>
+            {{-- <th>Current</th> --}}
             <th>Status</th>
             <th>Actions</th>
         </tr>
@@ -16,8 +17,9 @@
             @foreach ($DownpaymentFee as $data)
                 <tr>
                     <td>{{ number_format($data->downpayment_amt, 2) }}</td>
-                    {{-- <td>{{$data->student_category->student_category}}</td> --}}
-                    <td>{{ $data->current == 1 ? 'Yes' : 'No' }}</td>
+                    <td>{{  $data->grade_level_id ? 'Grade' : ''}} {{$data->grade_level_id == 0 ? '' : $data->grade_level_id }}</td>
+                    <td>{{ $data->modified == 1 ? 'Yes' : 'No' }}</td>
+                    {{-- <td>{{ $data->current == 1 ? 'Yes' : 'No' }}</td> --}}
                     <td>{{ $data->status == 1 ? 'Active' : 'Inactive' }}</td>
                     <td>
                         <div class="input-group-btn pull-left text-left">
@@ -26,7 +28,8 @@
                             <ul class="dropdown-menu">
                                 <li><a href="#" class="js-btn_update_sy" data-id="{{ $data->id }}">Edit</a></li>
                                 <li><a href="#" class="js-btn_deactivate" data-id="{{ $data->id }}">Deactivate</a></li>
-                                <li><a href="#" class="js-btn_toggle_current" data-id="{{ $data->id }}" data-toggle_title="{{ ( $data->current ? 'Remove from current active' : 'Add to current active' ) }}">{{ ( $data->current ? 'Remove from current Active' : 'Add to current Active' ) }}</a></li>
+                                <li><a href="#" class="js-modify" data-id="{{ $data->id }}" data-modify_title="{{ ( $data->modified ? 'Remove from modify active' : 'Add to modify active' ) }}">{{ ( $data->modified ? 'Remove from modify Active' : 'Add to modify Active' ) }}</a></li>
+                                {{-- <li><a href="#" class="js-btn_toggle_current" data-id="{{ $data->id }}" data-toggle_title="{{ ( $data->current ? 'Remove from current active' : 'Add to current active' ) }}">{{ ( $data->current ? 'Remove from current Active' : 'Add to current Active' ) }}</a></li> --}}
                             </ul>>
                         </div>
                     </td>

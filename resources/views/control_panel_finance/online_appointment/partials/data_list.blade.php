@@ -10,9 +10,10 @@
         <thead>
             <th width="4%">No.</th>
             <th>Name</th>
+            <th>Grade level</th>
             <th>Queue number</th>
             <th>Status</th>
-            <th width="7%">Action</th>
+            <th width="20%">Action</th>
         </thead>
         <tbody>
          @if($OnlineAppointment)   
@@ -22,18 +23,26 @@
             @if($hasAppointment)      
                 @foreach ($appointment as $key => $item)
                     <tr>
-                        <td>{{$key + 1}}.</td>
-                        <td>{{$item->student_name}}</td>
+                        <td>{{ $key + 1}}.</td>
+                        <td>{{ $item->student_name }}</td>
+                        <td>{{ $item->grade_lvl }}</td>
                         <td>{{ $item->queueing_number }}</td>
-                        <td><span class="label label-{{ $item->status == 1 ? 'success' : 'danger' }}">{{ $item->status == 1 ? 'Active' : 'Deactivated' }}</span></td>
+                        <td>
+                            <span class="label label-{{ $item->status == 1 ? 'success' : 'danger' }}">
+                                {{ $item->status == 1 ? 'Queue' : 'Done' }}
+                            </span>
+                        </td>
                         <td >
-                            <button class="btn btn-primary btn_done" data-id="{{$item->student_time_appointment_id}}"><i class="far fa-check-circle"></i> Done</button>
+                            <button {{ $item->status == 1 ? '' : 'disabled' }} class="btn btn-primary btn_done" data-id="{{$item->student_time_appointment_id}}">
+                                <i class="far fa-check-circle"></i> {{ $item->status == 1 ? 'Done' : 'Already Done' }}
+                            </button>
+                            {{-- <button class="btn btn-danger btn_disapprove" data-id="{{$item->student_time_appointment_id}}"><i class="far fa-times-circle"></i> Disapprove</button> --}}
                         </td>
                     </tr>
                 @endforeach             
             @else
                 <tr>
-                    <td colspan="5">There is no active appointment</td>
+                    <td colspan="6">There is no active appointment</td>
                 </tr>
             @endif          
         @endif

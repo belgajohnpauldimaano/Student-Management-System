@@ -1,7 +1,7 @@
 <div class="modal fade" tabindex="-1" role="dialog">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
-                <div class="box-body">
+            <div class="box-body">
                 <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                         
@@ -10,7 +10,7 @@
                         </h4>
 
                         <div style="margin-top: 3em; margin-bottom: 3em" class="col-md-10 col-md-offset-1">
-                                <center>
+                            <center>
                                 @if ($Profile)
                                     <img class="profile-user-img img-responsive img-circle" id="img--user_photo" src="{{ $Profile->photo ? \File::exists(public_path('/img/account/photo/'.$Profile->photo)) ? asset('/img/account/photo/'.$Profile->photo) : asset('/img/account/photo/blank-user.gif') : asset('/img/account/photo/blank-user.gif') }}" style="width:150px; height:150px;  border-radius:50%;">
                                 @else
@@ -18,26 +18,19 @@
                                 @endif    
                                 <h2>{{ $Profile ? $Profile->first_name : 'User' }}'s Profile</h2>
                                 <div class="box-body">
-                                    {{-- <img class="profile-user-img img-responsive" id="img--user_photo" src="{{ $Profile->photo ? \File::exists(public_path('/img/account/photo/'.$Profile->photo)) ? asset('/img/account/photo/'.$Profile->photo) : asset('/img/account/photo/blank-user.gif') : asset('/img/account/photo/blank-user.gif') }}" alt="User profile picture">
-                                    <h3 class="profile-username text-center" id="display__full_name">{{ $Profile->first_name . ' ' . $Profile->middle_name . ' ' .  $Profile->last_name }}</h3> --}}
-                    
-                                    
-                                        <button type="button" class="btn btn-flat btn-success btn--update-photo" title="Change photo">
-                                            browse
-                                        </button>
-                                    </center>
-                                        <form class="hidden" id="form_user_photo_uploader">
-                                            <input type="file" id="user--photo" name="user_photo">
-                                            <input type="hidden" name="id" value="{{ $StudentInformation ? $StudentInformation->id : '' }}">
-                                            <button type="submit">fsdfasd</button>
-                                        </form>
+                                    <button type="button" class="btn btn-flat btn-success btn--update-photo" title="Change photo">
+                                        browse
+                                    </button>
+                            </center>
+                                    <form class="hidden" id="form_user_photo_uploader">
+                                        <input type="file" id="user--photo" name="user_photo">
+                                        <input type="hidden" name="id" value="{{ $StudentInformation ? $StudentInformation->id : '' }}">
+                                        <button type="submit">fsdfasd</button>
+                                    </form>
                                 </div>
                         </div>
                 </div>
 
-           
-                
-           
             <form id="js-form_subject_details">
                 {{ csrf_field() }}
                                 
@@ -45,11 +38,8 @@
                     <input type="hidden" name="id" value="{{ $StudentInformation->id }}">
                 @endif
                 
-                <div class="modal-body">
-                       
-                        
-                        
-                            
+                <div class="modal-body">                        
+                    {{ $StudentInformation->email }}
                     <div class="form-group">
                         <label for="">Username</label>
                         <input type="text" class="form-control" name="username" value="{{ $StudentInformation ? $StudentInformation->user->username : '' }}">
@@ -126,7 +116,7 @@
                         @if ($StudentInformation->id)
                             <div class="form-group">
                                 <label for="">Email address</label>
-                                <input type="text" class="form-control" name="email" value="{{ $StudentInformation ? $StudentInformation->user->email : '' }}">
+                                <input type="text" class="form-control" name="email" value="{{ $StudentInformation ? $StudentInformation->email : '' }}">
                                 <div class="help-block text-red text-center" id="js-email">
                                 </div>
                             </div>

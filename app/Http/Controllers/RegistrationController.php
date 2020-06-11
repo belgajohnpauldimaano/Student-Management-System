@@ -25,7 +25,7 @@ class RegistrationController extends Controller
             'p_address' => 'required',
             'birthdate' => 'required',
             'gender'    => 'required',
-            'email' => 'required',
+            'email' => 'email|required',
             'phone' => 'required',
             'mother_name' => 'required',
             'father_name' => 'required',
@@ -46,6 +46,13 @@ class RegistrationController extends Controller
                 ->where('status', 1)
                 ->orderBY('id', 'DESC')
                 ->first();
+
+            $User = User::find($request->lrn);
+            $User = \App\User::where('username', $request->lrn)->first();
+            if ($User) 
+            {
+                return response()->json(['res_code' => 1,'res_msg' => 'LRN already used. Please contact the administrator to confirm it. Thank you']);
+            }           
 
             $User = new User();
             $User->username = $request->lrn;
@@ -70,7 +77,8 @@ class RegistrationController extends Controller
             $StudentInformation->contact_number = $request->phone;
             $imageName = time().'.'.$request->student_img->getClientOriginalExtension();
             $request->student_img->move(public_path('img/account/photo/'), $imageName);
-            $StudentInformation->photo = $imageName;    
+            $StudentInformation->photo = $imageName;   
+            // $StudentInformation->status = 0;    
             $StudentInformation->save();
 
             $Incoming_student = new IncomingStudent();
