@@ -152,7 +152,7 @@ class OnlineAppointmentController extends Controller
 
                 $OnlineAppointment = OnlineAppointment::where('status', 1)
                     ->where('grade_lvl_id', $IncomingStudentCount->grade_level_id)
-                    ->orderBY('date', 'ASC')->orderBY('time', 'ASC')
+                    ->orderBY('date', 'ASC')->orderBY('time', 'DESC')
                     ->get();
 
                 $hasAppointment =  StudentTimeAppointment::with('appointment')
@@ -178,7 +178,7 @@ class OnlineAppointmentController extends Controller
             
             $OnlineAppointment = OnlineAppointment::where('status', 1)
                 ->where('grade_lvl_id', $IncomingStudentCount->grade_level_id)
-                ->orderBY('date', 'ASC')->orderBY('time', 'ASC')
+                ->orderBY('date', 'ASC')->orderBY('time', 'DESC')
                 ->get();
 
             $hasAppointment =  StudentTimeAppointment::with('appointment')
@@ -215,7 +215,7 @@ class OnlineAppointmentController extends Controller
 
                 $OnlineAppointment = OnlineAppointment::where('status', 1)
                     ->where('grade_lvl_id', $incoming_gradelevel)
-                    ->orderBY('date', 'ASC')->orderBY('time', 'ASC')
+                    ->orderBY('date', 'ASC')->orderBY('time', 'DESC')
                     ->get();
 
                 $hasAppointment =  StudentTimeAppointment::with('appointment')
@@ -241,7 +241,7 @@ class OnlineAppointmentController extends Controller
             
             $OnlineAppointment = OnlineAppointment::where('status', 1)
                 ->where('grade_lvl_id', $incoming_gradelevel)
-                ->orderBY('date', 'ASC')->orderBY('time', 'ASC')
+                ->orderBY('date', 'ASC')->orderBY('time', 'DESC')
                 ->get();
 
             $hasAppointment =  StudentTimeAppointment::with('appointment')
