@@ -11,6 +11,7 @@ use App\OnlineAppointment;
 use App\StudentInformation;
 use Illuminate\Http\Request;
 use App\StudentTimeAppointment;
+use Illuminate\Support\Facades\DB;
 use App\Mail\OnlineAppointmentMail;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
@@ -25,16 +26,14 @@ class OnlineAppointmentController extends Controller
         {
             $OnlineAppointment = OnlineAppointment::where('status', 1)
                 ->where('date', 'like', '%'.$request->search.'%')
-                ->orderBY('date', 'ASC')
-                ->orderBY('time', 'ASC')
+                ->orderBY('date', 'ASC')->orderBY('time', 'ASC')
                 ->paginate(10);
 
             return view('control_panel_finance.maintenance.online_appointment.partials.data_list', compact('OnlineAppointment'))->render();
         }
         
         $OnlineAppointment = OnlineAppointment::where('status', 1)
-            ->orderBY('date', 'ASC')
-            ->orderBY('time', 'ASC')
+            ->orderBY('date', 'ASC')->orderBY('time', 'ASC')
             ->paginate(10);
 
         return view('control_panel_finance.maintenance.online_appointment.index', compact('OnlineAppointment'));
@@ -136,8 +135,10 @@ class OnlineAppointmentController extends Controller
         $SchoolYear = SchoolYear::where('current', 1)
             ->where('status', 1)
             ->first();
+
         $IncomingStudentCount = IncomingStudent::where('student_id', $StudentInformation->id)
-            ->where('school_year_id', $SchoolYear->id)->first();
+            ->where('school_year_id', $SchoolYear->id)
+            ->first();
 
         if($IncomingStudentCount)
         {
@@ -151,6 +152,7 @@ class OnlineAppointmentController extends Controller
 
                 $OnlineAppointment = OnlineAppointment::where('status', 1)
                     ->where('grade_lvl_id', $IncomingStudentCount->grade_level_id)
+                    ->orderBY('date', 'ASC')->orderBY('time', 'ASC')
                     ->get();
 
                 $hasAppointment =  StudentTimeAppointment::with('appointment')
@@ -176,6 +178,7 @@ class OnlineAppointmentController extends Controller
             
             $OnlineAppointment = OnlineAppointment::where('status', 1)
                 ->where('grade_lvl_id', $IncomingStudentCount->grade_level_id)
+                ->orderBY('date', 'ASC')->orderBY('time', 'ASC')
                 ->get();
 
             $hasAppointment =  StudentTimeAppointment::with('appointment')
@@ -212,6 +215,7 @@ class OnlineAppointmentController extends Controller
 
                 $OnlineAppointment = OnlineAppointment::where('status', 1)
                     ->where('grade_lvl_id', $incoming_gradelevel)
+                    ->orderBY('date', 'ASC')->orderBY('time', 'ASC')
                     ->get();
 
                 $hasAppointment =  StudentTimeAppointment::with('appointment')
@@ -237,6 +241,7 @@ class OnlineAppointmentController extends Controller
             
             $OnlineAppointment = OnlineAppointment::where('status', 1)
                 ->where('grade_lvl_id', $incoming_gradelevel)
+                ->orderBY('date', 'ASC')->orderBY('time', 'ASC')
                 ->get();
 
             $hasAppointment =  StudentTimeAppointment::with('appointment')
@@ -311,8 +316,7 @@ class OnlineAppointmentController extends Controller
         //     ->first();      
 
         $date_time = OnlineAppointment::where('status', 1)
-            ->orderBY('date', 'ASC')
-            ->orderBY('time', 'ASC')
+            ->orderBY('date', 'ASC')->orderBY('time', 'ASC')
             ->get();
 
         return view('control_panel_finance.online_appointment.index', compact('date_time'))->render();
