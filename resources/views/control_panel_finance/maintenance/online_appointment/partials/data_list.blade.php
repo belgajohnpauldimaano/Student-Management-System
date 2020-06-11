@@ -6,7 +6,7 @@
                         <table class="table no-margin">
                             <thead>
                                 <tr>
-                                    <th width="15%">Date</th>
+                                    <th width="15%">Date and Time</th>
                                     <th width="15%">Time</th>
                                     <th width="15%">Grade level</th>
                                     <th width="15%">No. of Appointee</th>
@@ -19,7 +19,7 @@
                                 @if ($OnlineAppointment)
                                     @foreach ($OnlineAppointment as $data)
                                         <tr>
-                                            <td>{{ $data ? date_format(date_create($data->date), 'F d, Y') : '' }}</td>
+                                            <td>{{ $data ? date_format(date_create($data->date), 'F d, Y h:i A') : '' }}</td>
                                             <td>{{ $data->time}}</td>
                                             <td>Grade level {{ $data->grade_lvl_id == 0 ? 'Not yet set' : $data->grade_lvl_id}}</td>
                                             <td>{{ $data->available_students}}</td>

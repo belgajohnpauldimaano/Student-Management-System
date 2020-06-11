@@ -26,14 +26,16 @@ class OnlineAppointmentController extends Controller
         {
             $OnlineAppointment = OnlineAppointment::where('status', 1)
                 ->where('date', 'like', '%'.$request->search.'%')
-                ->orderBY('date', 'ASC')->orderBY('time', 'ASC')
+                ->orderBY('date', 'ASC')
+                // ->orderBY('time', 'ASC')
                 ->paginate(10);
 
             return view('control_panel_finance.maintenance.online_appointment.partials.data_list', compact('OnlineAppointment'))->render();
         }
         
         $OnlineAppointment = OnlineAppointment::where('status', 1)
-            ->orderBY('date', 'ASC')->orderBY('time', 'ASC')
+            ->orderBY('date', 'ASC')
+            // ->orderBY('time', 'ASC')
             ->paginate(10);
 
         return view('control_panel_finance.maintenance.online_appointment.index', compact('OnlineAppointment'));
@@ -56,7 +58,7 @@ class OnlineAppointmentController extends Controller
     {
         $rules = [
             'date' => 'required',
-            'time' => 'required',
+            // 'time' => 'required',
             'appointee' => 'required',    
             'grade_lvl' => 'required' 
         ];
@@ -77,7 +79,7 @@ class OnlineAppointmentController extends Controller
             $OnlineAppointment = OnlineAppointment::where('id', $request->id)->first();
             // $OnlineAppointment->school_year_id = $SchoolYear->id;
             $OnlineAppointment->date = $request->date;
-            $OnlineAppointment->time = $request->time;
+            // $OnlineAppointment->time = $request->time;
             $OnlineAppointment->available_students = $request->appointee;
             $OnlineAppointment->grade_lvl_id = $request->grade_lvl;
             $OnlineAppointment->save();
@@ -87,7 +89,7 @@ class OnlineAppointmentController extends Controller
         $OnlineAppointment = new OnlineAppointment();
         // $OnlineAppointment->school_year_id = $SchoolYear->id;
         $OnlineAppointment->date = $request->date;
-        $OnlineAppointment->time = $request->time;
+        // $OnlineAppointment->time = $request->time;
         $OnlineAppointment->available_students = $request->appointee;
         $OnlineAppointment->grade_lvl_id = $request->grade_lvl;
         $OnlineAppointment->save();
@@ -152,7 +154,7 @@ class OnlineAppointmentController extends Controller
 
                 $OnlineAppointment = OnlineAppointment::where('status', 1)
                     ->where('grade_lvl_id', $IncomingStudentCount->grade_level_id)
-                    ->orderBY('date', 'ASC')->orderBY('time', 'DESC')
+                    ->orderBY('date', 'ASC')->orderBY('time', 'ASC')
                     ->get();
 
                 $hasAppointment =  StudentTimeAppointment::with('appointment')
@@ -178,7 +180,7 @@ class OnlineAppointmentController extends Controller
             
             $OnlineAppointment = OnlineAppointment::where('status', 1)
                 ->where('grade_lvl_id', $IncomingStudentCount->grade_level_id)
-                ->orderBY('date', 'ASC')->orderBY('time', 'DESC')
+                ->orderBY('date', 'ASC')->orderBY('time', 'ASC')
                 ->get();
 
             $hasAppointment =  StudentTimeAppointment::with('appointment')
@@ -215,7 +217,7 @@ class OnlineAppointmentController extends Controller
 
                 $OnlineAppointment = OnlineAppointment::where('status', 1)
                     ->where('grade_lvl_id', $incoming_gradelevel)
-                    ->orderBY('date', 'ASC')->orderBY('time', 'DESC')
+                    ->orderBY('date', 'ASC')->orderBY('time', 'ASC')
                     ->get();
 
                 $hasAppointment =  StudentTimeAppointment::with('appointment')
@@ -241,7 +243,7 @@ class OnlineAppointmentController extends Controller
             
             $OnlineAppointment = OnlineAppointment::where('status', 1)
                 ->where('grade_lvl_id', $incoming_gradelevel)
-                ->orderBY('date', 'ASC')->orderBY('time', 'DESC')
+                ->orderBY('date', 'ASC')->orderBY('time', 'ASC')
                 ->get();
 
             $hasAppointment =  StudentTimeAppointment::with('appointment')

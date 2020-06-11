@@ -15,7 +15,15 @@
                 <div class="modal-body">
                     <div class="form-group">
                         <label for="">Date</label>
-                        <input type="text" class="form-control" id="date" name="date" data-date-format="yyyy/m/d" placeholder="yyyy/m/d" value="{{ $OnlineAppointment ? $OnlineAppointment->date : '' }}">
+                        <div class="input-group date">
+                            <div class="input-group-addon">
+                                <i class="fa fa-calendar"></i>
+                            </div>
+                            <input type="text" name="date" class="form-control pull-right" 
+                            data-date-format="yyyy-mm-dd hh:ii" id="datetimepicker" 
+                            value="{{ $OnlineAppointment ? $OnlineAppointment->date : '' }}">
+                        </div>
+                        {{-- <input type="text" class="form-control" id="datetimepicker" name="date" data-date-format="yyyy/m/d" placeholder="yyyy/m/d" value="{{ $OnlineAppointment ? date_format(date_create($OnlineAppointment->date), 'F d, Y h:i A') : '' }}"> --}}
                         <div class="help-block text-red text-center" id="js-date">
                         </div>
                     </div>
