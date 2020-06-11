@@ -28,12 +28,12 @@
                         </div>
                     </div>
 
-                    <div class="form-group">
+                    {{-- <div class="form-group">
                         <label for="">Time</label>
                         <input type="text" class="form-control timepicker" name="time" value="{{ $OnlineAppointment ? $OnlineAppointment->time : '' }}">
                         <div class="help-block text-red text-center" id="js-time">
                         </div>
-                    </div>
+                    </div> --}}
 
                     <div class="form-group">
                         <label for="">Grade level</label>
