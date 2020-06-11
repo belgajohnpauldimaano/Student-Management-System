@@ -72,7 +72,7 @@
                     </div>
                     <div class="form-group">
                         <label for="">Email address</label>
-                        <input type="text" class="form-control" name="email" value="{{ $FacultyInformation ? $FacultyInformation->user->email : '' }}">
+                        <input type="text" class="form-control" name="email" value="{{ $FacultyInformation ? $FacultyInformation->email : '' }}">
                         <div class="help-block text-red text-center" id="js-email">
                         </div>
                     </div>

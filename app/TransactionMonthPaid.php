@@ -38,6 +38,6 @@ class TransactionMonthPaid extends Model
     
     public function disc_transaction_fee()
     {        
-        return $this->hasOne(TransactionDiscount::class, 'transaction_id', 'id' );
+        return $this->hasOne(TransactionDiscount::class, 'transaction_month_paid_id', 'id' );
     }
 }

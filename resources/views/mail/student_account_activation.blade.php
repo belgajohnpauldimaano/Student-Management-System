@@ -15,7 +15,7 @@
 
         <p>Dear {{$student->last_name.', '.$student->first_name.' '.$student->middle_name}}</p>
         <p>
-            Your account in St. John Academy Inc is now activated. Below is your account credentials, you can now enroll online using this account to our website https://www&#46;sja-bataan&#46;com.          
+            Your account in St. John Academy Inc. is now activated. Below is your account credentials, you can now enroll online using this account to our website https://www&#46;sja-bataan&#46;com.          
         </p>
         <ul>
             <li>username: {{$student->user->username}}</li>
@@ -26,6 +26,10 @@
         <p>Regards,</p>
         <br>
         SJAI Registrar
+        <br>
+        <p>
+            DISCLAIMER : The message (including the attachments) contains Confidential Information and is intended for the named recipient only. Unless you are the intended recipient (or authorized to receive for the intended recipient), you may not read, print, retain, use, copy, distribute nor disclose to anyone this message or any information contained herein. If you have received the message in error, please advise the sender immediately by reply e-mail, and destroy all copies of the original message (including the attachments).
+        </p>
         
     </div>
     </body>

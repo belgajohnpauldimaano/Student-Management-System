@@ -6,6 +6,7 @@
                                 <tr>
                                     <th>Discount Name</th>
                                     <th>Discount Fee Amount</th>
+                                    <th>Apply to</th>
                                     <th>Current</th>
                                     <th>Status</th>
                                     <th>Actions</th>
@@ -17,6 +18,7 @@
                                         <tr>
                                             <td>{{ $data->disc_type }}</td>
                                             <td>{{ number_format($data->disc_amt ,2) }}</td>
+                                            <td>{{ $data->apply_to== 1 ? 'Student|Finance' : 'Finance' }}</td>
                                             <td>{{ $data->current == 1 ? 'Yes' : 'No' }}</td>
                                             <td>{{ $data->status == 1 ? 'Active' : 'Inactive' }}</td>
                                             <td>

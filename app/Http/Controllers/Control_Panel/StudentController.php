@@ -23,7 +23,9 @@ class StudentController extends Controller
             // return json_encode(['student_info' => $StudentInformation]);
             return view('control_panel.student_information.partials.data_list', compact('StudentInformation'))->render();
         }
-        $StudentInformation = \App\StudentInformation::with(['user', 'enrolled_class'])->where('status', 1)->orderBY('last_name', 'ASC')->paginate(10);
+        
+        $StudentInformation = \App\StudentInformation::with(['user', 'enrolled_class'])
+            ->where('status', 1)->orderBY('last_name', 'ASC')->paginate(10);
         // return json_encode(['student_info' => $StudentInformation]);
         return view('control_panel.student_information.index', compact('StudentInformation'));
     }
@@ -132,6 +134,7 @@ class StudentController extends Controller
             $StudentInformation->birthdate      = $request->birthdate ? date('Y-m-d', strtotime($request->birthdate)) : NULL;
             $StudentInformation->gender         = $request->gender;
             $StudentInformation->guardian       = $request->guardian;
+            $StudentInformation->email          = $request->email;
             $StudentInformation->save();
             return response()->json(['res_code' => 0, 'res_msg' => 'Data successfully saved.']);
         }
@@ -158,6 +161,7 @@ class StudentController extends Controller
         $StudentInformation->birthdate      = date('Y-m-d', strtotime($request->birthdate));
         $StudentInformation->gender         = $request->gender;
         $StudentInformation->guardian       = $request->guardian;
+        $StudentInformation->email          = $request->email;
         $StudentInformation->user_id        = $User->id;
         $StudentInformation->save();
         

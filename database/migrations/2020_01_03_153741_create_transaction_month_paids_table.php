@@ -20,7 +20,8 @@ class CreateTransactionMonthPaidsTable extends Migration
             $table->integer('student_id');
             $table->double('payment');
             $table->integer('school_year_id');
-            $table->float('balance')->nullable()->default(10.2);
+            $table->float('balance')->nullable();
+            $table->float('online_charges')->nullable();
             $table->string('email', 191);
             $table->string('number', 191);
             $table->string('receipt_img', 191)->nullable();

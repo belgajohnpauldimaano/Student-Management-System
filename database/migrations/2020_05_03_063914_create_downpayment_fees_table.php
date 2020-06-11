@@ -16,6 +16,8 @@ class CreateDownpaymentFeesTable extends Migration
         Schema::create('downpayment_fees', function (Blueprint $table) {
             $table->increments('id');
             $table->double('downpayment_amt', 191);
+            $table->integer('grade_level_id');
+            $table->tinyInteger('modified')->default('0');
             $table->tinyInteger('current')->default('1');
             $table->tinyInteger('status')->default('1');
             $table->timestamps();

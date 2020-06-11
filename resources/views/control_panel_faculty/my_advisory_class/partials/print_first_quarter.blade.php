@@ -121,7 +121,7 @@
    
   @if($quarter == "Fourth")
 
-        @if($ClassSubjectDetail->grade_level == 7 || $ClassSubjectDetail->grade_level == 8)
+        @if($ClassSubjectDetail->grade_level == 7 || $ClassSubjectDetail->grade_level == 8 || $ClassSubjectDetail->grade_level == 9)
 
         {{-- <table class="table no-margin table-striped table-bordered"> --}}
             <table class="table no-margin table-striped table-bordered" style="font-size: 10px; width: 100%">
@@ -235,7 +235,7 @@
                                 }
                             ?>
                         </td>
-                        <td><center>{{ $sub ? round($sub->ap) > 0 ? round($sub->ap) : '' : ''  }}/center></td>
+                        <td><center>{{ $sub ? round($sub->ap) > 0 ? round($sub->ap) : '' : ''  }}</center></td>
                         <td>
                             <?php                                                    
                                 $fir_g = round(\App\Grade_sheet_first::where('enrollment_id', $sub->enrollment_id)->first()->ap);                                                                                                        
@@ -418,7 +418,7 @@
                                 }
                             ?>
                         </td>
-                        <td><center>{{ $sub ? round($sub->ap) > 0 ? round($sub->ap) : '' : ''  }}/center></td>
+                        <td><center>{{ $sub ? round($sub->ap) > 0 ? round($sub->ap) : '' : ''  }}</center></td>
                         <td>
                             <?php                                                    
                                 $fir_g = round(\App\Grade_sheet_first::where('enrollment_id', $sub->enrollment_id)->first()->ap);                                                                                                        
@@ -543,7 +543,7 @@
                     
                 </tbody>
             </table>
-
+            
         @else
 
             <table class="table no-margin table-striped table-bordered" style="font-size: 11px; width: 100%;">

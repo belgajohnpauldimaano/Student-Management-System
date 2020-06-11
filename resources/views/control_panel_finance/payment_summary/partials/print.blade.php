@@ -98,7 +98,7 @@
     </style>
 </head>
 <body>
-    <h2 class="heading2 heading2-title">Saint John Academy Inc</h2>
+    <h2 class="heading2 heading2-title">St. John's Academy Inc.</h2>
     <p class="heading2 heading2-subtitle">Dinalupihan, Bataan</p>
     <h3 class="heading2 ">Payment Summary</h3>
     <img style="margin-right: 3em; margin-top: {{  asset('img/sja-logo.png') }}" width="115" />

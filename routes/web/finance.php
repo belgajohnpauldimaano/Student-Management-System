@@ -5,6 +5,14 @@
 Route::group(['prefix' => 'finance', 'middleware' => ['auth', 'userroles'], 'roles' => ['finance']], function () {
     
     Route::get('dashboard', 'Finance\FinanceDashboardController@index')->name('finance.dashboard');
+
+    Route::group(['prefix' => 'my-account', 'middleware' => ['auth']], function() {
+        Route::get('', 'Finance\UserProfileController@view_my_profile')->name('finance.my_account.index');
+        Route::post('update-profile', 'Finance\UserProfileController@update_profile')->name('finance.my_account.update_profile');
+        Route::post('fetch-profile', 'Finance\UserProfileController@fetch_profile')->name('finance.my_account.fetch_profile');
+        Route::post('change-my-photo', 'Finance\UserProfileController@change_my_photo')->name('finance.my_account.change_my_photo');
+        Route::post('change-my-password', 'Finance\UserProfileController@change_my_password')->name('finance.my_account.change_my_password');
+    });
     
     Route::group(['prefix' => 'student-information'], function (){
         Route::get('', 'Finance\StudentController@index')->name('finance.student_account');
@@ -37,6 +45,7 @@ Route::group(['prefix' => 'finance', 'middleware' => ['auth', 'userroles'], 'rol
         Route::post('', 'Finance\Maintenance\OnlineAppointmentController@date_time')->name('finance.online_appointment.date_time');
         Route::post('appointment', 'Finance\Maintenance\OnlineAppointmentController@show')->name('finance.online_appointment.show');
         Route::post('done', 'Finance\Maintenance\OnlineAppointmentController@done')->name('finance.online_appointment.done');
+        Route::post('disapprove', 'Finance\Maintenance\OnlineAppointmentController@disapprove')->name('finance.online_appointment.disapprove');
         Route::post('deactivate', 'Finance\Maintenance\OnlineAppointmentController@deactivate_date')->name('finance.online_appointment.deactivate_date');
     });
 
@@ -74,6 +83,7 @@ Route::group(['prefix' => 'finance', 'middleware' => ['auth', 'userroles'], 'rol
             Route::post('modal-data', 'Finance\Maintenance\DownpaymentController@modal_data')->name('finance.maintenance.downpayment.modal_data');
             Route::post('save-data', 'Finance\Maintenance\DownpaymentController@save_data')->name('finance.maintenance.downpayment.save_data');
             Route::post('deactivate-data', 'Finance\Maintenance\DownpaymentController@deactivate_data')->name('finance.maintenance.downpayment.deactivate_data');
+            Route::post('modify', 'Finance\Maintenance\DownpaymentController@modify')->name('finance.maintenance.downpayment.modify');
             Route::post('toggle-current-sy', 'Finance\Maintenance\DownpaymentController@toggle_current_sy')->name('finance.maintenance.downpayment.toggle_current_sy');
         });
 

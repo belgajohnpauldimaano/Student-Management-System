@@ -35,7 +35,7 @@ class FinanceSummaryController extends Controller
                     ->join('student_categories', 'student_categories.id', '=', 'payment_categories.student_category_id')
                     ->join('tuition_fees', 'tuition_fees.id', '=', 'payment_categories.tuition_fee_id')
                     ->join('misc_fees', 'misc_fees.id', '=', 'payment_categories.misc_fee_id')   
-                    ->leftJoin('transaction_discounts', 'transaction_discounts.transaction_id', 'transactions.id')
+                    ->leftJoin('transaction_discounts', 'transaction_discounts.transaction_month_paid_id', 'transaction_month_paids.id')
                     ->selectRaw('
                         CONCAT(student_informations.last_name, " ", student_informations.first_name, ", " ,  student_informations.middle_name) AS student_name,
                         CONCAT(payment_categories.grade_level_id," - ", student_categories.student_category) AS student_level,
@@ -81,7 +81,7 @@ class FinanceSummaryController extends Controller
             ->join('student_categories', 'student_categories.id', '=', 'payment_categories.student_category_id')
             ->join('tuition_fees', 'tuition_fees.id', '=', 'payment_categories.tuition_fee_id')
             ->join('misc_fees', 'misc_fees.id', '=', 'payment_categories.misc_fee_id')   
-            ->leftJoin('transaction_discounts', 'transaction_discounts.transaction_id', 'transactions.id')
+            ->leftJoin('transaction_discounts', 'transaction_discounts.transaction_month_paid_id', 'transaction_month_paids.id')
             ->selectRaw('
                 CONCAT(student_informations.last_name, " ", student_informations.first_name, ", " ,  student_informations.middle_name) AS student_name,
                 CONCAT(payment_categories.grade_level_id," - ", student_categories.student_category) AS student_level,

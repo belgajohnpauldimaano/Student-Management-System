@@ -20,12 +20,12 @@
                     <select name="js_date" id="js_date" class="form-control js_date">
                         <option value="">Select Date and time</option>
                         @foreach ($date_time as $data)
-                            <option value="{{ $data->id }}"> {{ $data ? date_format(date_create($data->date), 'F d, Y') : '' }} | {{$data->time}}</option>
+                            <option value="{{ $data->id }}"> {{ $data ? date_format(date_create($data->date), 'F d, Y h:i A') : '' }}</option>
                         @endforeach
                     </select>
                 </div> 
                 &nbsp;
-                <button type="submit" class="btn btn-flat btn-success">Search</button>
+                <button type="submit" class="btn btn-flat btn-success"><i class="fas fa-search"></i> Search</button>
             </form>
         </div>
         <div class="overlay hidden" id="js-loader-overlay"><i class="fa fa-refresh fa-spin"></i></div>
@@ -97,6 +97,59 @@
                             }
                             else
                             {
+                                self.closest('tr').find('td').eq(4).replaceWith('<td><span class="label label-danger">Done</span></td>');
+                                self.closest('tr').find('td').eq(5).replaceWith('<td><button disabled class="btn btn-primary btn_done"><i class="far fa-check-circle"></i> Already Done</button></td>');
+                               
+                                // $('tr').find('td').eq(3).text('changeMe');
+
+                                if(rows == 0){
+                                    var total_output = '';
+                                    total_output +='<tr>';
+                                    total_output +='<td colspan="5">There is no active appointment</td>';
+                                    total_output +='</tr>';
+                                    $('#myTable tbody').html(total_output);
+                                }
+
+                                show_toast_alert({
+                                    heading : 'Success',
+                                    message : res.res_msg,
+                                    type    : 'success'
+                                });
+                                
+                            }
+                        }
+                    });
+                }, function(){  
+
+                });
+            });
+
+            $('body').on('click', '.btn_disapprove', function (e) {
+                e.preventDefault();
+                var id = $(this).data('id');
+                var self = $(this);
+                var rows= $('#myTable tbody tr').length;
+
+                alertify.defaults.transition = "slide";
+                alertify.defaults.theme.ok = "btn btn-primary btn-flat";
+                alertify.defaults.theme.cancel = "btn btn-danger btn-flat";
+                alertify.confirm('Confirmation', 'Are you sure you want it to disapprove?', function(){  
+                    $.ajax({
+                        url         : "{{ route('finance.online_appointment.disapprove') }}",
+                        type        : 'POST',
+                        data        : { _token : '{{ csrf_token() }}', id : id },
+                        success     : function (res) {
+                            $('.help-block').html('');
+                            if (res.res_code == 1)
+                            {
+                                show_toast_alert({
+                                    heading : 'Error',
+                                    message : res.res_msg,
+                                    type    : 'error'
+                                });
+                            }
+                            else
+                            {
                                 self.closest('tr').remove();
 
                                 if(rows == 0){
@@ -128,7 +181,7 @@
                 alertify.defaults.transition = "slide";
                 alertify.defaults.theme.ok = "btn btn-primary btn-flat";
                 alertify.defaults.theme.cancel = "btn btn-danger btn-flat";
-                alertify.confirm('Confirmation', 'Are you sure you want the entire schedule deactivated?', function(){  
+                alertify.confirm('Confirmation', 'Are you sure you want the entire schedule deactivated? This schedule will not appear to the student online appointment panel.', function(){  
                     $.ajax({
                         url         : "{{ route('finance.online_appointment.deactivate_date') }}",
                         type        : 'POST',

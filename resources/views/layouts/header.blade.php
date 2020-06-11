@@ -81,8 +81,8 @@
 
                     <li class="menu-has-children"><a href="#">FAQs</a>
                         <ul>
-                            <li><a href="{{route('pages.faqs')}}">Frequently Ask Questions</a></li>
-                            <li><a href="{{ route('pages.faqs_on_distance_learning') }}">Frequency Asked Questions on Distance Learning</a></li>
+                            <li><a href="{{route('pages.faqs')}}">Frequently Asked Questions</a></li>
+                            <li><a href="{{ route('pages.faqs_on_distance_learning') }}">Frequently Asked Questions on Distance Learning</a></li>
                         </ul>
                     </li>
                     <li class="menu">
@@ -92,22 +92,8 @@
                     <li class="menu">
                         <a class="btn-login" href="{{ route('login') }}"><i class="fas fa-sign-in-alt"></i> Login</a>
                     </li>
-                    
-                    {{-- <li class="menu-has-children"><a href="">Links</a>
-                        <ul>
-                            <li><a href="#">Administration</a></li>
-                            <li><a href="#">Faculty</a></li>
-                            <li><a href="#">Student</a></li>
-                        </ul>
-                    </li> --}}
-                    {{-- <li class="menu-has-children"><a href="">Drop Down</a>
-                        <ul>
-                            <li><a href="#">Drop Down 1</a></li>
-                            <li><a href="#">Drop Down 3</a></li>
-                            <li><a href="#">Drop Down 4</a></li>
-                            <li><a href="#">Drop Down 5</a></li>
-                        </ul>
-                    </li> --}}
+                   
+                   
                 </ul>
             </nav>
             <!-- #nav-menu-container -->

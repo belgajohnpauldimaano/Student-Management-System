@@ -1,5 +1,5 @@
                         <div class="pull-right">
-                            {{-- {{ $FinanceInformation ? $FinanceInformation->links() : '' }} --}}
+                            {{ $FinanceInformation ? $FinanceInformation->links() : '' }}
                         </div>
                         <table class="table no-margin">
                             <thead>

@@ -8,21 +8,31 @@
 @endsection
 
 @section ('content')
-    <div class="box">
-        <div class="box-header with-border">
-            <h4><i class="far fa-calendar-check"></i> Available Schedule of Appointment for paying tuition</h4>
-            
-            <form id="js-form_search">
-                {{ csrf_field() }}
-            </form>
+    <div class="row">
+        {{-- <div class="col-md-8"> --}}
+            {{-- <div class="box">
+                <div class="box-header with-border"> --}}
+                                        
+                    <form id="js-form_search">
+                        {{ csrf_field() }}
+                    </form>
+                {{-- </div>
+            </div> --}}
+            <div class="col-sm-12">
+                <div class="overlay hidden" id="js-loader-overlay"><i class="fa fa-refresh fa-spin"></i></div>
+                {{-- <div class="box-body"> --}}
+                    <div class="js-data-container">
+                        @include('control_panel_student.online_appointment.partials.data_list')     
+                    </div>
+                </div>
+                {{-- </div>    --}}
+            {{-- </div> --}}
         </div>
-        <div class="overlay hidden" id="js-loader-overlay"><i class="fa fa-refresh fa-spin"></i></div>
-        <div class="box-body">
-            <div class="js-data-container">
-                @include('control_panel_student.online_appointment.partials.data_list')     
-            </div>
-        </div>   
+        {{-- <div class="col-md-4 js-data-container">
+            @include('control_panel_student.online_appointment.partials.data_appointment')
+        </div> --}}
     </div>
+    
 @endsection
 
 @section ('scripts')
@@ -82,7 +92,8 @@
                 var id = $(this).data('id');
                 var date = $(this).data('date');
                 var time = $(this).data('time');
-                var email = $('#email').val()
+                var email = $('#email').val();
+                var grade_lvl = $('.js-grade').val();
 
                 alertify.defaults.transition = "slide";
                 alertify.defaults.theme.ok = "btn btn-primary btn-flat";
@@ -97,7 +108,7 @@
                         $.ajax({
                             url         : "{{ route('student.student_appointment.reserve') }}",
                             type        : 'POST',
-                            data        : { _token : '{{ csrf_token() }}', id : id , email: email},
+                            data        : { _token : '{{ csrf_token() }}', id : id , email : email, grade_lvl : grade_lvl},
                             success     : function (res) {
                                 $('.help-block').html('');
                                 if (res.res_code == 1)

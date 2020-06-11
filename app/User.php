@@ -33,6 +33,7 @@ class User extends Authenticatable
         'faculty'   => [ 'id' => 4, 'display' => 'Faculty'],
         'student'   => [ 'id' => 5, 'display' => 'Student'],
         'finance'   => [ 'id' => 6, 'display' => 'Finance'],
+        'admission'   => [ 'id' => 7, 'display' => 'Admission'],
     ];
     public function get_user_role ($roles) 
     {
@@ -83,6 +84,10 @@ class User extends Authenticatable
         else if ($this->role == 6)
         {
             $UserInformation = \App\FinanceInformation::where('user_id', $this->id)->where('status', 1)->first();
+        }
+        else if ($this->role == 7)
+        {
+            $UserInformation = \App\AdmissionInformation::where('user_id', $this->id)->where('status', 1)->first();
         }
         return $UserInformation;
     }

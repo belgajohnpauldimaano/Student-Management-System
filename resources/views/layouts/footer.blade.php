@@ -101,61 +101,63 @@
                     if(
                         $('#lrn').val() != '' && $('#reg_type').val() != '' && $('#grade_lvl').val() != '' &&
                         $('#first_name').val() != '' && $('#middle_name').val() != '' && $('#last_name').val() != '' && 
-                        $("#student_email").val() != '' && $('#phone').val() != '' && $('#guardian').val() != '' &&
+                        $("#student_email").val() != '' && $('#phone').val().length == 13 && $('#guardian').val() != '' &&
                         $('#address').val() != '' && $('#birthday').val() != '' && $('#gender').val() != '' && $('#student_img').val() != '' &&
                         $('#mother_name').val() != '' && $('#father_name').val() != '' && $('#p_address').val() != ''
                     )
                     {
-                        $.ajax({
-                            url         : "{{ route('registration.store') }}",
-                            type        : 'POST',
-                            data        : formData,
-                            processData : false,
-                            contentType : false,
-                            success     : function (res) {
-                                $('.help-block').html('');
-                                if (res.res_code == 1)
-                                {
-                                    for (var err in res.res_error_msg)
+                            $.ajax({
+                                url         : "{{ route('registration.store') }}",
+                                type        : 'POST',
+                                data        : formData,
+                                processData : false,
+                                contentType : false,
+                                success     : function (res) {
+                                    $('.help-block').html('');
+                                    if (res.res_code == 1)
                                     {
-                                        $('#js-' + err).html('<code> '+ res.res_error_msg[err] +' </code>');
+                                        alertify.alert('<i style="color: red" class="fas fa-exclamation-triangle fa-lg"></i> Reminder',
+                                            ''+res.res_msg+'', function(){
+                                                $('.input-lrn').addClass('has-error');
+                                                $('.input-lrn').removeClass('has-success');
+                                                $('#js-lrn').css('color', 'red').text('You must enter your LRN.');
+                                        });                                    
+                                    }
+                                    else
+                                    {
+                                        alertify.alert('<i style="color: green" class="fas fa-check-circle fa-lg"></i> Confirmation',
+                                        "Your information successfully submited. Please wait the confirmation from Admission Department. Thank you!", function(){
+                                            $('#js-form_subject_details')[0].reset();                                    
+                                            var source = $("#default-img").val();
+                                            $('#img--user_photo').attr('src', source);
+                                            $('#js-registration').modal('hide');
+                                        });
                                     }
                                 }
-                                else
-                                {
-                                    alertify.alert('<i style="color: green" class="fas fa-check-circle"></i> Confirmation',
-                                    "Your information successfully submited. Please wait the confirmation from Admission Department. Thank you!", function(){
-                                        $('#js-form_subject_details')[0].reset();                                    
-                                        var source = $("#default-img").val();
-                                        $('#img--user_photo').attr('src', source);
-                                        $('#js-registration').modal('hide');
-                                    });
-                                }
-                            }
-                        });
+                            });
 
                     }else{
-                       
-                        alertify.alert('<i style="color: red" class="fas fa-exclamation-circle"></i> Error',"Please fill out all fields! Thank you", function(){   
-                            check_lrn();  
-                            check_regtype();  
-                            check_grade_lvl();     
-                            check_first_name();  
-                            check_middle_name();
-                            check_last_name();
-                            check_email();
-                            check_phone();
-                            check_guardian();
-                            check_gender();
-                            check_birthday();
-                            check_address();
-                            check_image();
-                            check_p_address();
-                            check_father_name();
-                            check_mother_name();
-                        });
+                        
+                            alertify.alert('<i style="color: red" class="fas fa-exclamation-circle"></i> Error',"Please fill out all fields! Thank you", function(){   
+                                check_lrn();  
+                                check_regtype();  
+                                check_grade_lvl();     
+                                check_first_name();  
+                                check_middle_name();
+                                check_last_name();
+                                check_email();
+                                check_phone();
+                                check_guardian();
+                                check_gender();
+                                check_birthday();
+                                check_address();
+                                check_image();
+                                check_p_address();
+                                check_father_name();
+                                check_mother_name();
+                            });
                     }
-                    
+
                 }, function(){  
                     check_lrn();  
                     check_regtype();  
@@ -321,7 +323,7 @@
                     }else{
                         $('.input-lrn').addClass('has-error');
                         $('.input-lrn').removeClass('has-success');
-                        $('#js-lrn').css('color', 'red').text('You must be enter your LRN.');
+                        $('#js-lrn').css('color', 'red').text('You must enter your LRN.');
                     }
                 }
 
@@ -335,7 +337,7 @@
                     }else{
                         $('.input-reg_type').addClass('has-error');
                         $('.input-reg_type').removeClass('has-success');
-                        $('#js-reg_type').css('color', 'red').text('You must be select your registration type.');
+                        $('#js-reg_type').css('color', 'red').text('You must select your registration type.');
                     }
                 }
 
@@ -349,7 +351,7 @@
                     }else{
                         $('.input-grade_lvl').addClass('has-error');
                         $('.input-grade_lvl').removeClass('has-success');
-                        $('#js-grade_lvl').css('color', 'red').text('You must be select your Grave level.');
+                        $('#js-grade_lvl').css('color', 'red').text('You must select your Grave level.');
                     }
                 }
             
@@ -364,7 +366,7 @@
                     }else{
                         $('.input-first_name').addClass('has-error');
                         $('.input-first_name').removeClass('has-success');
-                        $('#js-first_name').css('color', 'red').text('You must be enter your first name.');
+                        $('#js-first_name').css('color', 'red').text('You must enter your first name.');
                     }
                 }
 
@@ -378,7 +380,7 @@
                     }else{
                         $('.input-middle_name').addClass('has-error');
                         $('.input-middle_name').removeClass('has-success');
-                        $('#js-middle_name').css('color', 'red').text('You must be enter your middle name.');
+                        $('#js-middle_name').css('color', 'red').text('You must enter your middle name.');
                     }
                 }
 
@@ -392,7 +394,7 @@
                     }else{
                         $('.input-last_name').addClass('has-error');
                         $('.input-last_name').removeClass('has-success');
-                        $('#js-last_name').css('color', 'red').text('You must be enter your last name.');
+                        $('#js-last_name').css('color', 'red').text('You must enter your last name.');
                     }
                 }
                 
@@ -414,7 +416,7 @@
                 } else {
                     $('.input-student_email').addClass('has-error');
                     $('.input-student_email').removeClass('has-success');
-                    $('#js-student_email').css('color', 'red').text('You must be enter your email address.');       
+                    $('#js-student_email').css('color', 'red').text('You must enter your email address.');       
                 }
             }
 
@@ -433,7 +435,7 @@
                 }else{
                     $('.input-phone').addClass('has-error');
                     $('.input-phone').removeClass('has-success');
-                    $('#js-phone').css('color', 'red').text('You must be enter your phone number.');
+                    $('#js-phone').css('color', 'red').text('You must enter your phone number.');
                 }
             }
 
@@ -448,7 +450,7 @@
                 }else{
                     $('.input-guardian').addClass('has-error');
                     $('.input-guardian').removeClass('has-success');
-                    $('#js-guardian').css('color', 'red').text('You must be enter your guardian name.');
+                    $('#js-guardian').css('color', 'red').text('You must enter your guardian name.');
                 }
             }
 
@@ -462,7 +464,7 @@
                 }else{
                     $('.input-father_name').addClass('has-error');
                     $('.input-father_name').removeClass('has-success');
-                    $('#js-father_name').css('color', 'red').text('You must be enter your father name.');
+                    $('#js-father_name').css('color', 'red').text('You must enter your father name.');
                 }
             }
 
@@ -476,7 +478,7 @@
                 }else{
                     $('.input-mother_name').addClass('has-error');
                     $('.input-mother_name').removeClass('has-success');
-                    $('#js-mother_name').css('color', 'red').text('You must be enter your mother name.');
+                    $('#js-mother_name').css('color', 'red').text('You must enter your mother name.');
                 }
             }
 
@@ -490,7 +492,7 @@
                 }else{
                     $('.input-address').addClass('has-error');
                     $('.input-address').removeClass('has-success');
-                    $('#js-address').css('color', 'red').text('You must be enter your current address.');
+                    $('#js-address').css('color', 'red').text('You must enter your current address.');
                 }
             }
 
@@ -505,7 +507,7 @@
                 }else{
                     $('.input-p_address').addClass('has-error');
                     $('.input-p_address').removeClass('has-success');
-                    $('#js-p_address').css('color', 'red').text('You must be enter your permanent address.');
+                    $('#js-p_address').css('color', 'red').text('You must enter your permanent address.');
                 }
             }
 
@@ -519,7 +521,7 @@
                 }else{
                     $('.input-birthday').addClass('has-error');
                     $('.input-birthday').removeClass('has-success');
-                    $('#js-birthdate').css('color', 'red').text('You must be select your birthdate.');
+                    $('#js-birthdate').css('color', 'red').text('You must select your birthdate.');
                 }
             }
 
@@ -533,7 +535,7 @@
                     }else{
                         $('.input-gender').addClass('has-error');
                         $('.input-gender').removeClass('has-success');
-                        $('#js-gender').css('color', 'red').text('You must be select your Grave level.');
+                        $('#js-gender').css('color', 'red').text('You must select your Grave level.');
                     }
                 }
 
