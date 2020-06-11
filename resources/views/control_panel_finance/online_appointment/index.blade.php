@@ -20,7 +20,7 @@
                     <select name="js_date" id="js_date" class="form-control js_date">
                         <option value="">Select Date and time</option>
                         @foreach ($date_time as $data)
-                            <option value="{{ $data->id }}"> {{ $data ? date_format(date_create($data->date), 'F d, Y') : '' }} | {{$data->time}}</option>
+                            <option value="{{ $data->id }}"> {{ $data ? date_format(date_create($data->date), 'F d, Y h:i A') : '' }}</option>
                         @endforeach
                     </select>
                 </div> 

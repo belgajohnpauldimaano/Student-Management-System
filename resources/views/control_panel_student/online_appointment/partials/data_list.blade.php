@@ -44,7 +44,7 @@
                                 @foreach ($OnlineAppointment as $item)
                                     <tr>
                                         <td>{{ $item ? date_format(date_create($item->date), 'F d, Y') : '' }}</td>
-                                        <td>{{$item->time}}</td>
+                                        <td>{{ $item ? date_format(date_create($item->date), 'h:i A') : '' }}</td>
                                         <td>{{$item->available_students == 0 ? 'The maximum number are reached to this schedule' : $item->available_students}}</td>
                                         <td>{{$item->status}}</td>
                                         <td> 

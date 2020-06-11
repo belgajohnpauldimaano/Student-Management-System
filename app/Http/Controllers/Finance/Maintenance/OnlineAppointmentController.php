@@ -318,7 +318,7 @@ class OnlineAppointmentController extends Controller
         //     ->first();      
 
         $date_time = OnlineAppointment::where('status', 1)
-            ->orderBY('date', 'ASC')->orderBY('time', 'ASC')
+            ->orderBY('date', 'ASC')
             ->get();
 
         return view('control_panel_finance.online_appointment.index', compact('date_time'))->render();
