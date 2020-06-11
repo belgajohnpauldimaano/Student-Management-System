@@ -26,13 +26,11 @@ class DashboardController extends Controller
         {
             $Appointed = StudentTimeAppointment::with('appointment')
                 ->where('student_id', $StudentInformation->id)
-                // ->where('school_year_id', $SchoolYear->id)
                 ->where('status', 1)
                 ->get();
 
             $AppointedCount = StudentTimeAppointment::with('appointment')
                 ->where('student_id', $StudentInformation->id)
-                // ->where('school_year_id', $SchoolYear->id)
                 ->where('status', 1)
                 ->count();
 
@@ -41,7 +39,6 @@ class DashboardController extends Controller
 
             $hasAppointment =  StudentTimeAppointment::with('appointment')
                 ->where('student_id', $StudentInformation->id)
-                // ->where('school_year_id', $SchoolYear->id)
                 ->where('status', 1)
                 ->first();
 
@@ -52,13 +49,11 @@ class DashboardController extends Controller
 
         $AppointedCount = StudentTimeAppointment::with('appointment')
                 ->where('student_id', $StudentInformation->id)
-                // ->where('school_year_id', $SchoolYear->id)
                 ->where('status', 1)
                 ->count();
 
         $Appointed = StudentTimeAppointment::with('appointment')
             ->where('student_id', $StudentInformation->id)
-            // ->where('school_year_id', $SchoolYear->id)
             ->where('status', 1)
             ->get();
         
@@ -67,7 +62,6 @@ class DashboardController extends Controller
 
         $hasAppointment =  StudentTimeAppointment::with('appointment')
             ->where('student_id', $StudentInformation->id)
-            // ->where('school_year_id', $SchoolYear->id)
             ->where('status', 1)
             ->first();
 

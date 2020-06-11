@@ -8,6 +8,7 @@
                                 <tr>
                                     <th width="15%">Date</th>
                                     <th width="15%">Time</th>
+                                    <th width="15%">Grade level</th>
                                     <th width="15%">No. of Appointee</th>
                                     {{-- <th width="15%">Current</th> --}}
                                     <th width="10%">Status</th>
@@ -20,6 +21,7 @@
                                         <tr>
                                             <td>{{ $data ? date_format(date_create($data->date), 'F d, Y') : '' }}</td>
                                             <td>{{ $data->time}}</td>
+                                            <td>Grade level {{ $data->grade_lvl_id == 0 ? 'Not yet set' : $data->grade_lvl_id}}</td>
                                             <td>{{ $data->available_students}}</td>
                                             {{-- <td>{{ $data->current == 1 ? 'Yes' : 'No' }}</td> --}}
                                             <td>{{ $data->status == 1 ? 'Active' : 'Inactive' }}</td>

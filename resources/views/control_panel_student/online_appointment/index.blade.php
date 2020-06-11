@@ -9,25 +9,28 @@
 
 @section ('content')
     <div class="row">
-        <div class="col-md-8">
-            <div class="box">
-                <div class="box-header with-border">
-                    <h4><i class="far fa-calendar-check"></i> Available Schedule of Appointment for paying tuition</h4>                    
+        {{-- <div class="col-md-8"> --}}
+            {{-- <div class="box">
+                <div class="box-header with-border"> --}}
+                                        
                     <form id="js-form_search">
                         {{ csrf_field() }}
                     </form>
-                </div>
+                {{-- </div>
+            </div> --}}
+            <div class="col-sm-12">
                 <div class="overlay hidden" id="js-loader-overlay"><i class="fa fa-refresh fa-spin"></i></div>
-                <div class="box-body">
+                {{-- <div class="box-body"> --}}
                     <div class="js-data-container">
                         @include('control_panel_student.online_appointment.partials.data_list')     
                     </div>
-                </div>   
-            </div>
+                </div>
+                {{-- </div>    --}}
+            {{-- </div> --}}
         </div>
-        <div class="col-md-4">
+        {{-- <div class="col-md-4 js-data-container">
             @include('control_panel_student.online_appointment.partials.data_appointment')
-        </div>
+        </div> --}}
     </div>
     
 @endsection

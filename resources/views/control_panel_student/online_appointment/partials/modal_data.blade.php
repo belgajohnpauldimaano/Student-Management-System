@@ -14,30 +14,6 @@
                 </div>
                 <div class="modal-body">                    
                     
-                    {{--  <div class="form-group">
-                        <label for="">Faculty</label>
-                        <select name="faculty" id="faculty" class="form-control">
-                            <option value="">Select faculty</option>
-                            @foreach ($FacultyInformation as $faculty) 
-                                <option value="{{ $faculty->id }}">{{ $faculty->first_name . ' ' . $faculty->last_name }}</option>
-                            @endforeach
-                        </select>
-                        <div class="help-block text-red text-center" id="js-faculty">
-                        </div>
-                    </div>  --}}
-                    
-                    {{--  <div class="form-group">
-                        <label for="">Subject</label>
-                        <select name="subject" id="subject" class="form-control">
-                            <option value="">Select subject</option>
-                            @foreach ($SubjectDetail as $data) 
-                                <option value="{{ $data->id }}">{{ $data->subject_code . ' ' . $data->subject }}</option>
-                            @endforeach
-                        </select>
-                        <div class="help-block text-red text-center" id="js-subject">
-                        </div>
-                    </div>  --}}
-                                        
                     <div class="form-group">
                         <label for="">Section</label>
                         <select name="section" id="section" class="form-control">

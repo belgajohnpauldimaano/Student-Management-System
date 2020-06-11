@@ -255,18 +255,31 @@
                           <td align="right">
                               ₱ <span id="dp_enrollment">0</span>
                           </td>
-                      </tr>                    
+                      </tr>
+                      <tr>
+                        <td style="width:200px">Online Payment Charge</td>
+                        <td align="right">
+                          <input type="hidden" id="result_payment_charge" name="payment_charge">
+                            ₱ <span id="payment_charge">0</span>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td style="width:200px">Total Payment Charge</td>
+                        <td align="right">
+                          <input type="hidden" id="result_total_payment_charge" name="total_payment_charge">
+                            ₱ <span id="total_payment_charge">0</span>
+                        </td>
+                      </tr>                 
                       <tr>
                           <td style="width:120px">Current Balance</td>
                           <td align="right">
                             <input type="hidden" id="result_current_bal" name="result_current_bal">
                               ₱ <span id="current_balance">0</span>
                           </td>
-                      </tr>                      
+                      </tr>
+                                             
                   </tr>
               </tbody>
-             
-
             </table>
 
             

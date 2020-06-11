@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\finance\Maintenance;
 
 use App\Enrollment;
+use App\GradeLevel;
 use App\SchoolYear;
 use App\ClassDetail;
 use App\IncomingStudent;
@@ -43,8 +44,9 @@ class OnlineAppointmentController extends Controller
             $OnlineAppointment = OnlineAppointment::where('id', $request->id)
                 ->first();
         }
+        $Gradelvl = GradeLevel::where('current', 1)->where('status', 1)->get();
 
-        return view('control_panel_finance.maintenance.online_appointment.partials.modal_data', compact('OnlineAppointment'))->render();
+        return view('control_panel_finance.maintenance.online_appointment.partials.modal_data', compact('OnlineAppointment','Gradelvl'))->render();
     }
 
     public function save_data (Request $request) 
@@ -73,6 +75,7 @@ class OnlineAppointmentController extends Controller
             $OnlineAppointment->date = $request->date;
             $OnlineAppointment->time = $request->time;
             $OnlineAppointment->available_students = $request->appointee;
+            $OnlineAppointment->grade_lvl_id = $request->grade_lvl;
             $OnlineAppointment->save();
             return response()->json(['res_code' => 0, 'res_msg' => 'Data successfully saved.']);
         }
@@ -82,6 +85,7 @@ class OnlineAppointmentController extends Controller
         $OnlineAppointment->date = $request->date;
         $OnlineAppointment->time = $request->time;
         $OnlineAppointment->available_students = $request->appointee;
+        $OnlineAppointment->grade_lvl_id = $request->grade_lvl;
         $OnlineAppointment->save();
         return response()->json(['res_code' => 0, 'res_msg' => 'Data successfully saved.']);
     }
@@ -127,7 +131,8 @@ class OnlineAppointmentController extends Controller
         $SchoolYear = SchoolYear::where('current', 1)
             ->where('status', 1)
             ->first();
-        $IncomingStudentCount = IncomingStudent::where('student_id', $StudentInformation->id)->where('school_year_id', $SchoolYear->id)->first();
+        $IncomingStudentCount = IncomingStudent::where('student_id', $StudentInformation->id)
+            ->where('school_year_id', $SchoolYear->id)->first();
 
         if($IncomingStudentCount)
         {
@@ -136,22 +141,20 @@ class OnlineAppointmentController extends Controller
             {
                 $Appointed = StudentTimeAppointment::with('appointment')
                     ->where('student_id', $StudentInformation->id)
-                    // ->where('school_year_id', $SchoolYear->id)
                     ->where('status', 1)
                     ->get();
 
                 $OnlineAppointment = OnlineAppointment::where('status', 1)
+                    ->where('grade_lvl_id', $IncomingStudentCount->grade_level_id)
                     ->get();
 
                 $hasAppointment =  StudentTimeAppointment::with('appointment')
                     ->where('student_id', $StudentInformation->id)
-                    // ->where('school_year_id', $SchoolYear->id)
                     ->where('status', 1)
                     ->first();
 
                 $AppointedCount = StudentTimeAppointment::with('appointment')
                     ->where('student_id', $StudentInformation->id)
-                    // ->where('school_year_id', $SchoolYear->id)
                     ->where('status', 1)
                     ->count();
 
@@ -163,29 +166,27 @@ class OnlineAppointmentController extends Controller
 
             $Appointed = StudentTimeAppointment::with('appointment')
                 ->where('student_id', $StudentInformation->id)
-                // ->where('school_year_id', $SchoolYear->id)
                 ->where('status', 1)
                 ->get();
             
             $OnlineAppointment = OnlineAppointment::where('status', 1)
+                ->where('grade_lvl_id', $IncomingStudentCount->grade_level_id)
                 ->get();
 
             $hasAppointment =  StudentTimeAppointment::with('appointment')
                 ->where('student_id', $StudentInformation->id)
-                // ->where('school_year_id', $SchoolYear->id)
                 ->where('status', 1)
                 ->first();
             
             $AppointedCount = StudentTimeAppointment::with('appointment')
                 ->where('student_id', $StudentInformation->id)
-                // ->where('school_year_id', $SchoolYear->id)
                 ->where('status', 1)
                 ->count();            
             
             return view('control_panel_student.online_appointment.index', 
                 compact('AppointedCount','OnlineAppointment', 'Appointed','StudentInformation','SchoolYear', 'hasAppointment','IncomingStudentCount'))->render();
         }else{
-
+            // it has an existing account in class_details 
             $Enrollment = Enrollment::where('student_information_id', $StudentInformation->id)
                 ->where('status', 1)
                 ->where('current', 1)
@@ -195,26 +196,26 @@ class OnlineAppointmentController extends Controller
             $ClassDetail = ClassDetail::where('id', $Enrollment->class_details_id)
                 ->where('status', 1)->where('current', 1)->orderBY('grade_level', 'DESC')->first();
 
+            $incoming_gradelevel = ($ClassDetail->grade_level + 1);
+
             if ($request->ajax())
             {
                 $Appointed = StudentTimeAppointment::with('appointment')
                     ->where('student_id', $StudentInformation->id)
-                    // ->where('school_year_id', $SchoolYear->id)
                     ->where('status', 1)
                     ->get();
 
                 $OnlineAppointment = OnlineAppointment::where('status', 1)
+                    ->where('grade_lvl_id', $incoming_gradelevel)
                     ->get();
 
                 $hasAppointment =  StudentTimeAppointment::with('appointment')
                     ->where('student_id', $StudentInformation->id)
-                    // ->where('school_year_id', $SchoolYear->id)
                     ->where('status', 1)
                     ->first();
 
                 $AppointedCount = StudentTimeAppointment::with('appointment')
                     ->where('student_id', $StudentInformation->id)
-                    // ->where('school_year_id', $SchoolYear->id)
                     ->where('status', 1)
                     ->count();
 
@@ -226,22 +227,20 @@ class OnlineAppointmentController extends Controller
 
             $Appointed = StudentTimeAppointment::with('appointment')
                 ->where('student_id', $StudentInformation->id)
-                // ->where('school_year_id', $SchoolYear->id)
                 ->where('status', 1)
                 ->get();
             
             $OnlineAppointment = OnlineAppointment::where('status', 1)
+                ->where('grade_lvl_id', $incoming_gradelevel)
                 ->get();
 
             $hasAppointment =  StudentTimeAppointment::with('appointment')
                 ->where('student_id', $StudentInformation->id)
-                // ->where('school_year_id', $SchoolYear->id)
                 ->where('status', 1)
                 ->first();
 
             $AppointedCount = StudentTimeAppointment::with('appointment')
                 ->where('student_id', $StudentInformation->id)
-                // ->where('school_year_id', $SchoolYear->id)
                 ->where('status', 1)
                 ->count();
             
@@ -329,8 +328,8 @@ class OnlineAppointmentController extends Controller
                     student_time_appointments.grade_lvl
 
                 "))
-                ->where('student_time_appointments.status', 1)
-                ->where('online_appointments.status', 1)
+                // ->where('student_time_appointments.status', 1)
+                // ->where('online_appointments.status', 1)
                 ->where('online_appointments.id', $request->js_date)
                 // ->where('online_appointments.school_year_id', $SchoolYear->id)
                 ->orderBy('student_time_appointments.id', 'ASC')
@@ -341,7 +340,7 @@ class OnlineAppointmentController extends Controller
                 ->select(\DB::raw("
                     student_time_appointments.id as student_appointment_id
                 "))
-                ->where('student_time_appointments.status', 1)
+                // ->where('student_time_appointments.status', 1)
                 // ->where('online_appointments.school_year_id', $SchoolYear->id)
                 ->where('online_appointments.id', $request->js_date)
                 ->first();
@@ -354,7 +353,9 @@ class OnlineAppointmentController extends Controller
             echo 'invalid';
         }       
 
-        return view('control_panel_finance.online_appointment.partials.data_list', compact('appointment', 'hasAppointment', 'OnlineAppointment'))->render();
+        return view('control_panel_finance.online_appointment.partials.data_list', 
+            compact('appointment', 'hasAppointment', 'OnlineAppointment'))
+            ->render();
     }
 
     public function done (Request $request) 

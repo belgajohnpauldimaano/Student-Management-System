@@ -77,7 +77,8 @@ class PaymentController extends Controller
 
         // Amount received as request is validated here.
         // $request->validate(['amount' => 'required|numeric']);
-        $pay_amount = $request->pay_fee;
+        // $sub_total_amt = ($request->pay_fee + $request->result_payment_charge);
+        $pay_amount = $request->total_payment_charge;
 
         // We create the payer and set payment method, could be any of "credit_card", "bank", "paypal", "pay_upon_invoice", "carrier", "alternate_payment". 
         $payer = new Payer();
@@ -93,24 +94,28 @@ class PaymentController extends Controller
         // Create item list and set array of items for the item list.
         $itemList = new ItemList();
         $itemList->setItems(array($item));
+
+        $inputFields = new InputFields();
+        $inputFields->setNoShipping(1);
         
         // Create and setup the total amount.
         $amount = new Amount();
-        $amount->setCurrency('PHP')->setTotal($pay_amount);
+        $amount->setCurrency('PHP')
+                ->setTotal($pay_amount);
+        
 
         // Create a transaction and amount and description.
         $transaction = new Transaction();
         $transaction->setAmount($amount)
             ->setItemList($itemList)
-            ->setDescription($request->description_name);      
+            ->setDescription($request->description_name)
+            ->setInvoiceNumber(uniqid());;      
         
         $redirect_urls = new RedirectUrls();
         $redirect_urls->setReturnUrl(route('confirm-payment'))
             ->setCancelUrl('https://sja-bataan.com/enrollment/student/enrollment');
         
-        $inputFields = new InputFields();
-        $inputFields->setNoShipping(1);
-
+     
         // We set up the payment with the payer, urls and transactions.
         // Note: you can have different itemLists, then different transactions for it.
         $payment = new Payment();
@@ -160,6 +165,7 @@ class PaymentController extends Controller
                 $Enrollment->payment = $request->pay_fee;
                 $Enrollment->school_year_id = $SchoolYear->id;
                 $Enrollment->balance = $request->result_current_bal;
+                $Enrollment->online_charges = $request->payment_charge;
                 $Enrollment->email = $request->email;
                 $Enrollment->number = $request->phone;
                 $Enrollment->payment_option = 'Credit Card/Debit Card';
@@ -200,6 +206,7 @@ class PaymentController extends Controller
                 $Enrollment->payment = $request->pay_fee;
                 $Enrollment->school_year_id = $SchoolYear->id;
                 $Enrollment->balance = $request->result_current_bal;
+                $Enrollment->online_charges = $request->payment_charge;
                 $Enrollment->email = $request->email;
                 $Enrollment->number = $request->phone;
                 $Enrollment->payment_option = 'Credit Card/Debit Card';
@@ -286,7 +293,7 @@ class PaymentController extends Controller
 
             $IsReceived = TransactionMonthPaid::where('student_id', $StudentInformation->id)
                 ->where('school_year_id', $SchoolYear->id)->orderBy('id', 'Desc')->first();
-            // $IsReceived->or_number =  $payment->paymentId;
+            // $IsReceived->or_number =  $payment->invoice_number;
             $IsReceived->isSuccess = 1;
             if($IsReceived->save()){
 

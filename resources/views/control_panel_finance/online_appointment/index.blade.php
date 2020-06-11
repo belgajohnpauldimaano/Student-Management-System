@@ -97,7 +97,10 @@
                             }
                             else
                             {
-                                self.closest('tr').remove();
+                                self.closest('tr').find('td').eq(4).replaceWith('<td><span class="label label-danger">Done</span></td>');
+                                self.closest('tr').find('td').eq(5).replaceWith('<td><button disabled class="btn btn-primary btn_done"><i class="far fa-check-circle"></i> Already Done</button></td>');
+                               
+                                // $('tr').find('td').eq(3).text('changeMe');
 
                                 if(rows == 0){
                                     var total_output = '';
@@ -178,7 +181,7 @@
                 alertify.defaults.transition = "slide";
                 alertify.defaults.theme.ok = "btn btn-primary btn-flat";
                 alertify.defaults.theme.cancel = "btn btn-danger btn-flat";
-                alertify.confirm('Confirmation', 'Are you sure you want the entire schedule deactivated?', function(){  
+                alertify.confirm('Confirmation', 'Are you sure you want the entire schedule deactivated? This schedule will not appear to the student online appointment panel.', function(){  
                     $.ajax({
                         url         : "{{ route('finance.online_appointment.deactivate_date') }}",
                         type        : 'POST',

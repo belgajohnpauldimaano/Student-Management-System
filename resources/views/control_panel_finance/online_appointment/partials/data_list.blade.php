@@ -27,16 +27,22 @@
                         <td>{{ $item->student_name }}</td>
                         <td>{{ $item->grade_lvl }}</td>
                         <td>{{ $item->queueing_number }}</td>
-                        <td><span class="label label-{{ $item->status == 1 ? 'success' : 'danger' }}">{{ $item->status == 1 ? 'Active' : 'Deactivated' }}</span></td>
+                        <td>
+                            <span class="label label-{{ $item->status == 1 ? 'success' : 'danger' }}">
+                                {{ $item->status == 1 ? 'Queue' : 'Done' }}
+                            </span>
+                        </td>
                         <td >
-                            <button class="btn btn-primary btn_done" data-id="{{$item->student_time_appointment_id}}"><i class="far fa-check-circle"></i> Done</button>
-                            <button class="btn btn-danger btn_disapprove" data-id="{{$item->student_time_appointment_id}}"><i class="far fa-times-circle"></i> Disapprove</button>
+                            <button {{ $item->status == 1 ? '' : 'disabled' }} class="btn btn-primary btn_done" data-id="{{$item->student_time_appointment_id}}">
+                                <i class="far fa-check-circle"></i> {{ $item->status == 1 ? 'Done' : 'Already Done' }}
+                            </button>
+                            {{-- <button class="btn btn-danger btn_disapprove" data-id="{{$item->student_time_appointment_id}}"><i class="far fa-times-circle"></i> Disapprove</button> --}}
                         </td>
                     </tr>
                 @endforeach             
             @else
                 <tr>
-                    <td colspan="5">There is no active appointment</td>
+                    <td colspan="6">There is no active appointment</td>
                 </tr>
             @endif          
         @endif

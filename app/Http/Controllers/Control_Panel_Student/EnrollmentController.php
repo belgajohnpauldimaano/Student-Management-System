@@ -68,9 +68,9 @@ class EnrollmentController extends Controller
                 // discount
                 $Discount = DiscountFee::where('status', 1)->where('current', 1)->where('apply_to', 1)->get();
                 
-                $TransactionDiscount = TransactionDiscount::where('student_id', $StudentInformation->id)->where('school_year_id', $SchoolYear->id)->get();
+                $TransactionDiscount = TransactionDiscount::where('student_id', $StudentInformation->id)->where('school_year_id', $SchoolYear->id)->where('isSuccess', 1)->get();
                                   
-                $TransactionDiscountTotal = TransactionDiscount::where('student_id', $StudentInformation->id)->where('school_year_id', $SchoolYear->id)->sum('discount_amt');
+                $TransactionDiscountTotal = TransactionDiscount::where('student_id', $StudentInformation->id)->where('school_year_id', $SchoolYear->id)->where('isSuccess', 1)->sum('discount_amt');
 
                 
                 if($Tuition){
@@ -136,9 +136,9 @@ class EnrollmentController extends Controller
                     // discount
                     $Discount =  DiscountFee::where('status', 1)->where('current', 1)->where('apply_to', 1)->get();        
 
-                    $TransactionDiscount = TransactionDiscount::where('student_id', $StudentInformation->id)->where('school_year_id', $SchoolYear->id)->get();
+                    $TransactionDiscount = TransactionDiscount::where('student_id', $StudentInformation->id)->where('school_year_id', $SchoolYear->id)->where('isSuccess', 1)->get();
 
-                    $TransactionDiscountTotal = TransactionDiscount::where('student_id', $StudentInformation->id)->where('school_year_id', $SchoolYear->id)->sum('discount_amt');
+                    $TransactionDiscountTotal = TransactionDiscount::where('student_id', $StudentInformation->id)->where('school_year_id', $SchoolYear->id)->where('isSuccess', 1)->sum('discount_amt');
 
                     if($Tuition){                    
                         $tuition_fee = $PaymentCategory->tuition->tuition_amt;

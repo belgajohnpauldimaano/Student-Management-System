@@ -200,15 +200,26 @@
                 result_bal = parseFloat(total_tuition) - parseFloat(payment) - disc_total;                
             }
             
-            
+            result_online_charge =  (parseFloat(payment) * 0.035) + 16.5;
+
+            total_payment_charge = parseFloat(payment) + parseFloat(result_online_charge);
+
             if(payment == 0){
-                document.getElementById('result_current_bal').value = (0);                       
+                document.getElementById('result_current_bal').value = (0);   
+                document.getElementById('result_payment_charge').value = (0); 
+                document.getElementById('result_total_payment_charge').value = (0);                                           
                 $('#current_balance').text(currencyFormat(0));
+                $('#payment_charge').text(currencyFormat(0));
                 $('#dp_enrollment').text(currencyFormat(parseFloat(0)));
+                $('#total_payment_charge').text(currencyFormat(parseFloat(0)));  
             }else{
+                document.getElementById('result_current_bal').value = (result_bal);
+                document.getElementById('result_payment_charge').value = (result_online_charge);  
+                document.getElementById('result_total_payment_charge').value = (total_payment_charge); 
                 $('#dp_enrollment').text(currencyFormat(parseFloat(payment)));
-                document.getElementById('result_current_bal').value = (result_bal);                       
-                $('#current_balance').text(currencyFormat(result_bal));    
+                $('#current_balance').text(currencyFormat(result_bal)); 
+                $('#payment_charge').text(currencyFormat(result_online_charge));   
+                $('#total_payment_charge').text(currencyFormat(parseFloat(total_payment_charge)));                  
             }
             
             total_fees();           

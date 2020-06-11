@@ -17,9 +17,9 @@
                 <h4>Appointment Schedule</h4>
                 <p>Date and Time: {{ $item ? date_format(date_create($item->appointment->date), 'F d, Y') : '' }} {{$item->appointment->time}}</p>
                 <p>Queue number: {{$item->queueing_number}}</p>
-                {{-- <div>
-                    <button class="btn btn-primary">Done</button> &nbsp; <button class="btn btn-danger">Cancel</button>
-                </div> --}}
+                <div>
+                    {{-- <button class="btn btn-primary">Done</button> &nbsp; <button class="btn btn-danger">Cancel</button> --}}
+                </div>
             </div>
             @endforeach
         @else
