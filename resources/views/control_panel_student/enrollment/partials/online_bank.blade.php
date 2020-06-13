@@ -122,7 +122,8 @@
                   <input type="hidden" class="form-control" value="{{$AlreadyEnrolled->balance}}" id="previous_balance" name="previous_balance">
                   <p>₱ {{number_format($AlreadyEnrolled->balance,2)}}</p> 
                 @else
-                  @if($Tuition)                  
+                  @if($Tuition)
+                    <input type="hidden" class="form-control" value="{{$sum_total_item}}" id="previous_balance" name="previous_balance">               
                     <p>₱ {{number_format($Tuition ? $sum_total_item : '', 2)}}</p> 
                   @endif      
                 @endif               

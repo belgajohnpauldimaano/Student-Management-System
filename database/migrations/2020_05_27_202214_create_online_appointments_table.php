@@ -17,7 +17,7 @@ class CreateOnlineAppointmentsTable extends Migration
             $table->increments('id');
             $table->integer('school_year_id');
             $table->date('date');
-            $table->string('time');
+            // $table->string('time');
             $table->integer('grade_lvl_id')->default('0');
             $table->integer('available_students');
             $table->tinyInteger('current')->default('1');

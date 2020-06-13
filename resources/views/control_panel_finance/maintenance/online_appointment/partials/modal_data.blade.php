@@ -39,6 +39,7 @@
                         <label for="">Grade level</label>
                         <select name="grade_lvl" id="grade_lvl" class="form-control">
                             <option value="">Select Grade level</option>
+                            <option value="0">All levels</option>
                             @if($Gradelvl)
                                 @foreach($Gradelvl as $grade_lvl)
                                     <option value="{{$grade_lvl->id}}" {{ $OnlineAppointment ? $OnlineAppointment->grade_lvl_id == $grade_lvl->id ? 'selected' : '' : '' }}> Grade {{ $grade_lvl->grade }}</option>                    

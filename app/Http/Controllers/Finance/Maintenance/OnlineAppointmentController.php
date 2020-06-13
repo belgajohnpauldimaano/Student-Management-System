@@ -27,7 +27,7 @@ class OnlineAppointmentController extends Controller
             $OnlineAppointment = OnlineAppointment::where('status', 1)
                 ->where('date', 'like', '%'.$request->search.'%')
                 ->orderBY('date', 'ASC')
-                // ->orderBY('time', 'ASC')
+                // 
                 ->paginate(10);
 
             return view('control_panel_finance.maintenance.online_appointment.partials.data_list', compact('OnlineAppointment'))->render();
@@ -35,7 +35,7 @@ class OnlineAppointmentController extends Controller
         
         $OnlineAppointment = OnlineAppointment::where('status', 1)
             ->orderBY('date', 'ASC')
-            // ->orderBY('time', 'ASC')
+            // 
             ->paginate(10);
 
         return view('control_panel_finance.maintenance.online_appointment.index', compact('OnlineAppointment'));
@@ -153,8 +153,8 @@ class OnlineAppointmentController extends Controller
                     ->get();
 
                 $OnlineAppointment = OnlineAppointment::where('status', 1)
-                    ->where('grade_lvl_id', $IncomingStudentCount->grade_level_id)
-                    ->orderBY('date', 'ASC')->orderBY('time', 'ASC')
+                    ->whereIn('grade_lvl_id', [$IncomingStudentCount->grade_level_id, 0])
+                    ->orderBY('date', 'ASC')
                     ->get();
 
                 $hasAppointment =  StudentTimeAppointment::with('appointment')
@@ -179,8 +179,8 @@ class OnlineAppointmentController extends Controller
                 ->get();
             
             $OnlineAppointment = OnlineAppointment::where('status', 1)
-                ->where('grade_lvl_id', $IncomingStudentCount->grade_level_id)
-                ->orderBY('date', 'ASC')->orderBY('time', 'ASC')
+                ->whereIn('grade_lvl_id', [$IncomingStudentCount->grade_level_id, 0])
+                ->orderBY('date', 'ASC')
                 ->get();
 
             $hasAppointment =  StudentTimeAppointment::with('appointment')
@@ -216,8 +216,8 @@ class OnlineAppointmentController extends Controller
                     ->get();
 
                 $OnlineAppointment = OnlineAppointment::where('status', 1)
-                    ->where('grade_lvl_id', $incoming_gradelevel)
-                    ->orderBY('date', 'ASC')->orderBY('time', 'ASC')
+                    ->whereIn('grade_lvl_id', [$IncomingStudentCount->grade_level_id, 0])
+                    ->orderBY('date', 'ASC')
                     ->get();
 
                 $hasAppointment =  StudentTimeAppointment::with('appointment')
@@ -242,8 +242,8 @@ class OnlineAppointmentController extends Controller
                 ->get();
             
             $OnlineAppointment = OnlineAppointment::where('status', 1)
-                ->where('grade_lvl_id', $incoming_gradelevel)
-                ->orderBY('date', 'ASC')->orderBY('time', 'ASC')
+                ->whereIn('grade_lvl_id', [$IncomingStudentCount->grade_level_id, 0])
+                ->orderBY('date', 'ASC')
                 ->get();
 
             $hasAppointment =  StudentTimeAppointment::with('appointment')
@@ -341,7 +341,7 @@ class OnlineAppointmentController extends Controller
                     student_time_appointments.grade_lvl
 
                 "))
-                // ->where('student_time_appointments.status', 1)
+                ->where('student_time_appointments.status', $request->js_status)
                 // ->where('online_appointments.status', 1)
                 ->where('online_appointments.id', $request->js_date)
                 // ->where('online_appointments.school_year_id', $SchoolYear->id)
@@ -353,7 +353,7 @@ class OnlineAppointmentController extends Controller
                 ->select(\DB::raw("
                     student_time_appointments.id as student_appointment_id
                 "))
-                // ->where('student_time_appointments.status', 1)
+                ->where('student_time_appointments.status', $request->js_status)
                 // ->where('online_appointments.school_year_id', $SchoolYear->id)
                 ->where('online_appointments.id', $request->js_date)
                 ->first();

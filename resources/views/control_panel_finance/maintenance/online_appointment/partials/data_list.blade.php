@@ -21,7 +21,7 @@
                                         <tr>
                                             <td>{{ $data ? date_format(date_create($data->date), 'F d, Y h:i A') : '' }}</td>
                                             {{-- <td>{{ $data->time}}</td> --}}
-                                            <td>Grade level {{ $data->grade_lvl_id == 0 ? 'Not yet set' : $data->grade_lvl_id}}</td>
+                                            <td>Grade level - {{ $data->grade_lvl_id == 0 ? 'All' : $data->grade_lvl_id}}</td>
                                             <td>{{ $data->available_students}}</td>
                                             {{-- <td>{{ $data->current == 1 ? 'Yes' : 'No' }}</td> --}}
                                             <td>{{ $data->status == 1 ? 'Active' : 'Inactive' }}</td>

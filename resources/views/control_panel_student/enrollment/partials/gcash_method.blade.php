@@ -113,6 +113,7 @@
                             <p>₱ {{number_format($AlreadyEnrolled->balance,2)}}</p> 
                         @else
                             @if($Tuition)
+                                <input type="hidden" class="form-control" value="{{$sum_total_item}}" id="gcash_previous_balance" name="gcash_previous_balance">  
                                 <p>₱ {{number_format($Tuition ? $sum_total_item : '', 2)}}</p> 
                             @endif      
                         @endif            
