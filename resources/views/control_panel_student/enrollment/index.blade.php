@@ -250,11 +250,9 @@
             var current_bal = $('#bank_previous_balance').val();
             
             if(payment > current_bal){
-                alertify.alert('<i style="color: red" class="fas fa-exclamation-circle"></i> Error',"Please Pay only the exact amount! Thank you", function(){   
+                alertify.alert('<i style="color: red" class="fas fa-exclamation-circle"></i> Error',"Please, Do not enter higher amount than your current balance fee. Thank you", function(){   
                 });
-            }
-
-            if(payment <= current_bal){
+            }else if(payment <= current_bal){
                 if(downpayment_0 != null){
                     set_downpayment = 1;
 
@@ -443,10 +441,9 @@
             var current_bal = $('#gcash_previous_balance').val();
             
             if(payment > current_bal){
-                alertify.alert('<i style="color: red" class="fas fa-exclamation-circle"></i> Error',"Please Pay only the exact amount! Thank you", function(){   
+                alertify.alert('<i style="color: red" class="fas fa-exclamation-circle"></i> Error',"Please, Do not enter higher amount than your current balance fee. Thank you", function(){   
                 });
-            }
-            if(payment <= current_bal){            
+            }else if(payment <= current_bal){            
                 if(downpayment_0 != null){
                     set_downpayment = 1;
 
@@ -635,10 +632,9 @@
             var current_bal = $('#previous_balance').val();
             
             if(payment > current_bal){
-                alertify.alert('<i style="color: red" class="fas fa-exclamation-circle"></i> Error',"Please Pay only the exact amount! Thank you", function(){   
+                alertify.alert('<i style="color: red" class="fas fa-exclamation-circle"></i> Error',"Please, Do not enter higher amount than your current balance fee. Thank you", function(){   
                 });
-            }
-            if(payment <= current_bal){
+            }else if(payment <= current_bal){
                 
                 if(downpayment_0 != null){
                     set_downpayment = 1;
@@ -1131,8 +1127,31 @@
             }else{                
                 result_bal = parseFloat(total_tuition) - parseFloat(payment) - disc_total;                
             }
+            result_online_charge = 0;
+            if(payment>=1000 && payment<=10000){
+                result_online_charge =  (parseFloat(payment) * 0.035) + 17;
+            }else if(payment>=11000 && payment<=12000){
+                result_online_charge =  (parseFloat(payment) * 0.035) + 18;
+            }else if(payment>=13000 && payment<=17000){
+                result_online_charge =  (parseFloat(payment) * 0.035) + 19;
+            }else if(payment>=18000 && payment<=22000){
+                result_online_charge =  (parseFloat(payment) * 0.035) + 20;
+            }else if(payment>=23000 && payment<=27000){
+                result_online_charge =  (parseFloat(payment) * 0.035) + 21;
+            }else if(payment>=28000 && payment<=32000){
+                result_online_charge =  (parseFloat(payment) * 0.035) + 22;
+            }else if(payment>=33000 && payment<=38000){
+                result_online_charge =  (parseFloat(payment) * 0.035) + 23;
+            }else if(payment>=39000 && payment<=43000){
+                result_online_charge =  (parseFloat(payment) * 0.035) + 24;
+            }else if(payment>=44000 && payment<=48000){
+                result_online_charge =  (parseFloat(payment) * 0.035) + 25;
+            }else if(payment>=49000 && payment<=55000){
+                result_online_charge =  (parseFloat(payment) * 0.035) + 26;
+            }
             
-            result_online_charge =  (parseFloat(payment) * 0.039) + 15;
+            
+            
 
             total_payment_charge = parseFloat(payment) + parseFloat(result_online_charge);
 
