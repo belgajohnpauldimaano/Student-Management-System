@@ -194,6 +194,18 @@
     {{-- <script src="{{ asset('js/custom_validator.js') }}"></script> --}}
     <script>
         $('.select2').select2();
+
+        $('#btn-success-alert').click(function(e){
+            e.preventDefault();
+            var value = $(this).data('value');
+            alertify.defaults.theme.ok = "btn btn-primary btn-flat";
+            alertify
+            .alert('Confirmation', value, function(){
+                // alertify.message('OK');
+                // location.reload();
+            });
+        });
+        
         $('#btn-success-alert').trigger('click');
         var page = 1;
         function fetch_data () {
@@ -2176,16 +2188,7 @@
 
     
 
-    $('#btn-success-alert').click(function(e){
-        e.preventDefault();
-        var value = $(this).data('value');
-        alertify.defaults.theme.ok = "btn btn-primary btn-flat";
-        alertify
-        .alert('Confirmation', value, function(){
-            alertify.message('OK');
-            location.reload();
-        });
-    });
+    
         
     </script>
     
