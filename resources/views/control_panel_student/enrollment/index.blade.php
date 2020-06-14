@@ -247,12 +247,17 @@
             var downpayment = downpayment_bank_fee;
             set_downpayment = 0;
 
-            var current_bal = $('#bank_previous_balance').val();
+            var balance = $('#bank_previous_balance').val();
             
-            if(payment > current_bal){
-                alertify.alert('<i style="color: red" class="fas fa-exclamation-circle"></i> Error',"Please, Do not enter higher amount than your current balance fee. Thank you", function(){   
-                });
-            }else if(payment <= current_bal){
+            if(parseFloat(payment) > parseFloat(balance)){
+                if(parseFloat(balance) == 0){
+                    alertify.alert('<i style="color: red" class="fas fa-exclamation-circle"></i> Error',"You're current balance is 0 and if you're status not yet paid please contact our finance department. Thank you", function(){   
+                    });
+                }else{
+                    alertify.alert('<i style="color: red" class="fas fa-exclamation-circle"></i> Error',"Please, Do not enter higher amount than your current balance fee. Thank you", function(){   
+                    });
+                }  
+            }else if(parseFloat(payment) <= parseFloat(balance)){
                 if(downpayment_0 != null){
                     set_downpayment = 1;
 
@@ -438,12 +443,17 @@
             var downpayment = downpayment_g_fee;
             set_downpayment = 0;
 
-            var current_bal = $('#gcash_previous_balance').val();
+            var balance = $('#gcash_previous_balance').val();
             
-            if(payment > current_bal){
-                alertify.alert('<i style="color: red" class="fas fa-exclamation-circle"></i> Error',"Please, Do not enter higher amount than your current balance fee. Thank you", function(){   
-                });
-            }else if(payment <= current_bal){            
+            if(parseFloat(payment) > parseFloat(balance)){
+                if(parseFloat(balance) == 0){
+                    alertify.alert('<i style="color: red" class="fas fa-exclamation-circle"></i> Error',"You're current balance is 0 and if you're status not yet paid please contact our finance department. Thank you", function(){   
+                    });
+                }else{
+                    alertify.alert('<i style="color: red" class="fas fa-exclamation-circle"></i> Error',"Please, Do not enter higher amount than your current balance fee. Thank you", function(){   
+                    });
+                }  
+            }else if(parseFloat(payment) <= parseFloat(balance)){            
                 if(downpayment_0 != null){
                     set_downpayment = 1;
 
@@ -625,17 +635,23 @@
         alertify.defaults.theme.ok = "btn btn-primary btn-flat";
         $('body').on('submit', '#js-checkout-form', function (e) {
             e.preventDefault();    
+
             var downpayment_0 = $('.hasDownpayment').val();
             var payment = $('#pay_fee').val();
             var downpayment = downpayment_fee;
-            set_downpayment = 0;
-            var current_bal = $('#previous_balance').val();
+            var balance = $('#previous_balance').val();
             
-            if(payment > current_bal){
-                alertify.alert('<i style="color: red" class="fas fa-exclamation-circle"></i> Error',"Please, Do not enter higher amount than your current balance fee. Thank you", function(){   
-                });
-            }else if(payment <= current_bal){
-                
+            set_downpayment = 0;
+           
+            if(parseFloat(payment) > parseFloat(balance)){
+                if(parseFloat(balance) == 0){
+                    alertify.alert('<i style="color: red" class="fas fa-exclamation-circle"></i> Error',"You're current balance is 0 and if you're status not yet paid please contact our finance department. Thank you", function(){   
+                    });
+                }else{
+                    alertify.alert('<i style="color: red" class="fas fa-exclamation-circle"></i> Error',"Please, Do not enter higher amount than your current balance fee. Thank you", function(){   
+                    });
+                }                
+            }else if(parseFloat(balance) >= parseFloat(payment)){
                 if(downpayment_0 != null){
                     set_downpayment = 1;
                     // alert('none')
@@ -691,6 +707,7 @@
                             
                 }else{
                     if(downpayment != 0){
+                        
                         if(payment < downpayment){
                             // alert('payment is smaller than the selected downpayment')                        
                             alertify.alert('<i style="color: red" class="fas fa-exclamation-circle"></i> Error',"Please fill the payment fee bigger amount than the selected downpayment! Thank you", function(){   
@@ -750,12 +767,11 @@
                             }, function(){  
                             });   
                         }
-                    }
-                    else{
+                    }else{
                         alertify.alert('<i style="color: red" class="fas fa-exclamation-circle"></i> Error',"Please select the preferred downpayment fee! Thank you", function(){   
                         });
                     }                
-                }
+                }           
             }
         });
 
@@ -1128,9 +1144,9 @@
                 result_bal = parseFloat(total_tuition) - parseFloat(payment) - disc_total;                
             }
             result_online_charge = 0;
-            if(payment>=1000 && payment<=10000){
+            if(payment>=1000 && payment<=9000){
                 result_online_charge =  (parseFloat(payment) * 0.035) + 17;
-            }else if(payment>=11000 && payment<=12000){
+            }else if(payment>=10000 && payment<=12000){
                 result_online_charge =  (parseFloat(payment) * 0.035) + 18;
             }else if(payment>=13000 && payment<=17000){
                 result_online_charge =  (parseFloat(payment) * 0.035) + 19;

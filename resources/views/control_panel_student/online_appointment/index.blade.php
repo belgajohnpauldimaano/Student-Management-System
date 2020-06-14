@@ -149,7 +149,7 @@
                 alertify.defaults.theme.ok = "btn btn-primary btn-flat";
                 alertify
                 .alert('<i style="color: red !important" class="icon fa fa-warning"></i> Reminder, Please read',"You can only reserve once in every available schedule.Please do not reserve it when you don't need it. Thank you!.", function(){
-                    alertify.message('OK');
+                    // alertify.message('OK');
                 });
             }
 

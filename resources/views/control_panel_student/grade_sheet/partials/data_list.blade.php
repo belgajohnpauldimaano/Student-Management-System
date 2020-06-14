@@ -16,6 +16,6 @@
             @include('control_panel_student.grade_sheet.partials.grade_panel.junior.data_list')       
         @endif
     @else
-        <h4>Not yet enrolled for this year</h4>
+        <h4>Gradesheet not available this time.</h4>
     @endif
 </div>
