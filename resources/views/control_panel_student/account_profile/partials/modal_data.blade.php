@@ -47,7 +47,7 @@
                         </h4>
                     </div>
                     <div class="modal-body">   
-                        <div class="form-group gender">
+                        {{-- <div class="form-group gender">
                             <label for="">Are you ESC?</label>
                             <select name="isEsc" id="isEsc" class="form-control">
                                 <option value="0" {{ $Profile ? $Profile->isEsc == 0 ? 'selected' : '' : 'selected' }}>--Select--</option>
@@ -55,7 +55,7 @@
                                 <option value="2" {{ $Profile ? $Profile->isEsc == 2 ? 'selected' : '' : '' }}>No</option>
                             </select>
                             <div class="help-block text-left" id="js-isEsc"></div>
-                        </div>        
+                        </div>         --}}
                         <div class="form-group">
                             <label for="">First name</label>
                             <input type="text" class="form-control" name="first_name" id="first_name">

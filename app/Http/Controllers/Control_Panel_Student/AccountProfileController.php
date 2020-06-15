@@ -39,7 +39,7 @@ class AccountProfileController extends Controller
             'father_name'=> 'required',
             'mother_name'=> 'required',
             'birthday'=> 'required',
-            'isEsc'=> 'required',
+            // 'isEsc'=> 'required',
             'gender' => 'required',
 
         ];
@@ -64,7 +64,7 @@ class AccountProfileController extends Controller
         $Profile->father_name = $request->father_name;
         $Profile->mother_name = $request->mother_name;
         $Profile->gender = $request->gender;
-        $Profile->isEsc = $request->isEsc;
+        // $Profile->isEsc = $request->isEsc;
 
         if ($request->birthday) {
             $Profile->birthdate = date('Y-m-d', strtotime($request->birthday));

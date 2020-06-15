@@ -22,6 +22,7 @@ use App\Mail\NotifyAdminMail;
 use App\TransactionMonthPaid;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 
 class EnrollmentController extends Controller
 {
@@ -66,7 +67,7 @@ class EnrollmentController extends Controller
                 $Downpayment = DownpaymentFee::where('status', 1)->where('grade_level_id', $IncomingStudentCount->grade_level_id)->get();
 
                 $Profile = StudentInformation::where('user_id', $User->id)->first();
-
+                
                 // discount
                 $Discount = DiscountFee::where('status', 1)->where('current', 1)->where('apply_to', 1)->get();
                 
@@ -176,6 +177,15 @@ class EnrollmentController extends Controller
         }
     }
 
+
+    public function fetch_profile (Request $request)
+    {
+        $User = Auth::user();
+        $Profile = StudentInformation::where('user_id', $User->id)->first();
+        // return json_encode($Profile);
+        //  date('Y-m-d', strtotime($request->birthdate));
+        return response()->json(['res_code' => 0, 'res_msg' => '', 'Profile' => $Profile]);
+    }
     public function save(Request $request){
         $User = \Auth::user();
         $StudentInformation = StudentInformation::where('user_id', $User->id)->first();

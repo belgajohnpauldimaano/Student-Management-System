@@ -830,7 +830,7 @@
 
         function getProfiledata(){
             $.ajax({
-                    url : "{{ route('student.my_account.fetch_profile') }}",
+                    url : "{{ route('student.transaction_history.fetch_profile') }}",
                     type : 'POST',
                     data        : {_token: '{{ csrf_token() }}'},
                     success     : function (res) {
@@ -853,7 +853,13 @@
                             $('#mother_name').val(res.Profile.mother_name);    
                             $('#gender').val(res.Profile.gender);
                             $('#isEsc').val(res.Profile.isEsc);
-                                               
+
+                            // if(res.Profile.photo != ''){
+                            //     var profile_src = '{{ asset("/img/account/photo/'+ res.Profile.photo +'") }}';
+                            //     $('#img--user_photo').attr('src', profile_src);
+                            // }else{
+
+                            // }
                         }
                         else
                         {
