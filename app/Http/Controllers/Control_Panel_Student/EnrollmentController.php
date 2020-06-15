@@ -38,7 +38,7 @@ class EnrollmentController extends Controller
         $findSchoolYear = ClassDetail::where('school_year_id' , $SchoolYear->id)->first();
        
         
-        if($findSchoolYear){  
+        // if($findSchoolYear){  
             $IncomingStudentCount = IncomingStudent::where('student_id', $StudentInformation->id)
                 ->where('school_year_id', $SchoolYear->id)
                 ->first();
@@ -169,11 +169,11 @@ class EnrollmentController extends Controller
                 }
             }      
             
-        }
-        else{
-            $GradeSheet = 0;
-            return view('control_panel_student.enrollment.index', compact('GradeSheet'));
-        }
+        // }
+        // else{
+        //     $GradeSheet = 0;
+        //     return view('control_panel_student.enrollment.index', compact('GradeSheet'));
+        // }
     }
 
 
