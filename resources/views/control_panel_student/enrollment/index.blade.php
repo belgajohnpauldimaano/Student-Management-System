@@ -853,7 +853,8 @@
                             $('#mother_name').val(res.Profile.mother_name);    
                             $('#gender').val(res.Profile.gender);
                             $('#isEsc').val(res.Profile.isEsc);
-
+                            $('#student_id').val(res.Profile.id);
+                            
                             if(res.Profile.photo != ''){
                                 var profile_src =  res.Profile.photo;
                                 $('#img--user_photo').attr('src', 'https://127.0.0.1:8000/img/account/photo/'+profile_src);

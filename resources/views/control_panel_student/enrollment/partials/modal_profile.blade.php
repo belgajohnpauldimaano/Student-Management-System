@@ -24,7 +24,7 @@
                         </button>
 
                         <form id="form_user_photo_uploader" >
-                            <input type="hidden" name="id" value="{{ $StudentInformation ? $StudentInformation->id : '' }}">
+                            <input type="hidden" name="id" id="student_id">
                             <input type="file" id="user--photo" name="user_photo">                            
                             <button style="display: none" type="submit">save</button>
                         </form>   
