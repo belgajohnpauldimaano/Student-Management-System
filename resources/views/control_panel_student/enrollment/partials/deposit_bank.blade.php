@@ -40,7 +40,7 @@
     <!-- /.box-body -->
 </div>
 <div class="box box-primary">
-    <h2 class="{{$isPaid ? $isPaid ? 'overlay-paid' : '' : ''}}">{{$isPaid ? $isPaid ? 'PAID' : '' : ''}}</h2>
+    {{-- <h2 class="{{$isPaid ? $isPaid ? 'overlay-paid' : '' : ''}}">{{$isPaid ? $isPaid ? 'PAID' : '' : ''}}</h2> --}}
     <div class="box-body">
         <form id="#js-bank-form" class="js-bank-form" enctype="multipart/form-data">
             {{ csrf_field() }}
