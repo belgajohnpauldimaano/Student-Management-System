@@ -9,6 +9,7 @@ use App\ClassDetail;
 use App\Transaction;
 use App\Grade_sheet_first;
 use App\Grade_sheet_third;
+use App\Grade_sheet_fourth;
 use App\Grade_sheet_second;
 use App\StudentInformation;
 use Illuminate\Http\Request;
@@ -457,17 +458,17 @@ class StudentAdmissionController extends Controller
                         // $StudentEnrolledSubject->student_information_id = $StudentInformation->id;
                         $StudentEnrolledSubject->save();
                         
-                        $SaveSecondSem2 = new Grade_sheet_firstsem();
-                        $SaveSecondSem2->enrollment_id = $Enrollment->id;
-                        $SaveSecondSem2->school_year_id = $SchoolYear->id;
-                        $SaveSecondSem2->section_details_id = $ClassDetail1->section_id;
-                        $SaveSecondSem2->save();
+                        // $SaveSecondSem2 = new Grade_sheet_firstsem();
+                        // $SaveSecondSem2->enrollment_id = $Enrollment->id;
+                        // $SaveSecondSem2->school_year_id = $SchoolYear->id;
+                        // $SaveSecondSem2->section_details_id = $ClassDetail1->section_id;
+                        // $SaveSecondSem2->save();
     
-                        $SaveSecondSem2 = new Grade_sheet_firstsemsecond();
-                        $SaveSecondSem2->school_year_id = $SchoolYear->id;
-                        $SaveSecondSem2->enrollment_id = $Enrollment->id;
-                        $SaveSecondSem2->section_details_id = $ClassDetail1->section_id;
-                        $SaveSecondSem2->save();  
+                        // $SaveSecondSem2 = new Grade_sheet_firstsemsecond();
+                        // $SaveSecondSem2->school_year_id = $SchoolYear->id;
+                        // $SaveSecondSem2->enrollment_id = $Enrollment->id;
+                        // $SaveSecondSem2->section_details_id = $ClassDetail1->section_id;
+                        // $SaveSecondSem2->save();  
                     }
                     else
                     {
@@ -478,29 +479,29 @@ class StudentAdmissionController extends Controller
                         // $StudentEnrolledSubject->student_information_id = $StudentInformation->id;
                         $StudentEnrolledSubject->save();
 
-                        $SaveToGradeSheet1 = new Grade_sheet_first();
-                        $SaveToGradeSheet1->enrollment_id = $Enrollment->id;
-                        $SaveToGradeSheet1->school_year_id = $SchoolYear->id;
-                        $SaveToGradeSheet1->section_details_id = $ClassDetail1->section_id;
-                        $SaveToGradeSheet1->save();
+                        // $SaveToGradeSheet1 = new Grade_sheet_first();
+                        // $SaveToGradeSheet1->enrollment_id = $Enrollment->id;
+                        // $SaveToGradeSheet1->school_year_id = $SchoolYear->id;
+                        // $SaveToGradeSheet1->section_details_id = $ClassDetail1->section_id;
+                        // $SaveToGradeSheet1->save();
 
-                        $SaveToGradeSheet2 = new Grade_sheet_second();
-                        $SaveToGradeSheet2->enrollment_id = $Enrollment->id;
-                        $SaveToGradeSheet2->school_year_id = $SchoolYear->id;
-                        $SaveToGradeSheet2->section_details_id = $ClassDetail1->section_id;
-                        $SaveToGradeSheet2->save();
+                        // $SaveToGradeSheet2 = new Grade_sheet_second();
+                        // $SaveToGradeSheet2->enrollment_id = $Enrollment->id;
+                        // $SaveToGradeSheet2->school_year_id = $SchoolYear->id;
+                        // $SaveToGradeSheet2->section_details_id = $ClassDetail1->section_id;
+                        // $SaveToGradeSheet2->save();
 
-                        $SaveToGradeSheet3 = new Grade_sheet_third();
-                        $SaveToGradeSheet3->enrollment_id = $Enrollment->id;
-                        $SaveToGradeSheet3->school_year_id = $SchoolYear->id;
-                        $SaveToGradeSheet3->section_details_id = $ClassDetail1->section_id;
-                        $SaveToGradeSheet3->save();
+                        // $SaveToGradeSheet3 = new Grade_sheet_third();
+                        // $SaveToGradeSheet3->enrollment_id = $Enrollment->id;
+                        // $SaveToGradeSheet3->school_year_id = $SchoolYear->id;
+                        // $SaveToGradeSheet3->section_details_id = $ClassDetail1->section_id;
+                        // $SaveToGradeSheet3->save();
 
-                        $SaveToGradeSheet4 = new Grade_sheet_fourth();
-                        $SaveToGradeSheet4->enrollment_id = $Enrollment->id;
-                        $SaveToGradeSheet4->school_year_id = $SchoolYear->id;
-                        $SaveToGradeSheet4->section_details_id = $ClassDetail1->section_id;
-                        $SaveToGradeSheet4->save();
+                        // $SaveToGradeSheet4 = new Grade_sheet_fourth();
+                        // $SaveToGradeSheet4->enrollment_id = $Enrollment->id;
+                        // $SaveToGradeSheet4->school_year_id = $SchoolYear->id;
+                        // $SaveToGradeSheet4->section_details_id = $ClassDetail1->section_id;
+                        // $SaveToGradeSheet4->save();
                     }                                   
 
                     

@@ -13,33 +13,34 @@
     <div class="box-body" style="">
         <p>Bank transaction</p>
         <p>
-            Step 1. Choose one (1) of the following bank that is nearest to you to proceed with the deposit transaction. 
-            Saint John’s Academy Incorporated bank accounts are as follows:
+            <b>Step 1.</b> Choose one (1) of the following bank that is nearest to you to proceed with the DEPOSIT TRANSACTION. For FUND TRANSFER, use mobile banking and proceed with the transaction. 
         </p>
+        <p>St. John’s Academy Incorporated bank accounts are as follows:</p>
         <ul>
             <li>
-                PNB Dinalupihan Branch<br/>
-                Account Name: ST. John Academy<br/>
+                <b>PNB Dinalupihan Branch</b><br/>
+                Account Name: ST. JOHN ACADEMY<br/>
                 Account Number: 205370002058
             </li>
             <li>
-                Chinabank Dinalupihan Branch<br/>
-                Account Name: Saint John’s Academy Inc.<br/>
+                <b>Chinabank Dinalupihan Branch</b><br/>
+                Account Name: ST. JOHN’S ACADEMY<br/>
                 Account Number: 167600000464
             </li>
             
         </ul>
         <p>
-            Step 2. After the successful deposit transaction, fill out all the necessary information below. Take a photo of the deposit slip and upload it on the icon below (upload file)
+            <b>Step 2.</b> After the successful deposit transaction/fund transfer, fill out all the necessary information below. Take a photo of the deposit slip/screenshot and upload it on the icon below (upload file)
         </p>
         <p>
-            Step 3. You will receive a text message and email confirmation once the transaction has been successfully done.
+            <b>Step 3.</b> You will receive an email confirmation once the transaction has been successfully done. 
         </p> 
 
     </div>
     <!-- /.box-body -->
 </div>
 <div class="box box-primary">
+    <h2 class="{{$isPaid ? $isPaid ? 'overlay-paid' : '' : ''}}">{{$isPaid ? $isPaid ? 'PAID' : '' : ''}}</h2>
     <div class="box-body">
         <form id="#js-bank-form" class="js-bank-form" enctype="multipart/form-data">
             {{ csrf_field() }}

@@ -43,7 +43,9 @@ class EnrollmentController extends Controller
                 ->where('school_year_id', $SchoolYear->id)
                 ->first();
 
-            if($IncomingStudentCount){                
+            if($IncomingStudentCount){       
+                
+                $isPaid = Transaction::where('student_id' , $StudentInformation->id)->where('status', 0)->first();
 
                 $AlreadyEnrolled = TransactionMonthPaid::where('student_id', $StudentInformation->id)
                     ->where('school_year_id', $SchoolYear->id)
@@ -93,14 +95,15 @@ class EnrollmentController extends Controller
                 return view('control_panel_student.enrollment.index', 
                     compact('AlreadyEnrolled','grade_level', 'ClassDetail','PaymentCategory','Downpayment','sum_total_item', 'hasOtherfee',
                     'Profile','StudentInformation','Tuition','Enrollment','User','SchoolYear','Discount', 'IncomingStudentCount',
-                    'TransactionDiscount','TransactionDiscountTotal'));
+                    'TransactionDiscount','TransactionDiscountTotal','isPaid'));
                 return json_encode(['GradeSheetData' => $GradeSheetData,]);
 
             }else{
 
                 if ($StudentInformation) 
                 {
-                    
+                    $isPaid = Transaction::where('student_id' , $StudentInformation->id)->where('status', 0)->first();
+
                     $Enrollment = Enrollment::where('student_information_id', $StudentInformation->id)
                         ->where('status', 1)
                         ->where('current', 1)
@@ -157,7 +160,7 @@ class EnrollmentController extends Controller
                     }
                     
                     return view('control_panel_student.enrollment.index', 
-                        compact('AlreadyEnrolled','grade_level', 'ClassDetail','PaymentCategory','Downpayment','sum_total_item','hasOtherfee',
+                        compact('AlreadyEnrolled','grade_level', 'ClassDetail','PaymentCategory','Downpayment','sum_total_item','hasOtherfee','isPaid',
                         'Profile','StudentInformation','Tuition','Enrollment','User','SchoolYear','Discount', 'IncomingStudentCount','TransactionDiscount','TransactionDiscountTotal'));
                     return json_encode(['GradeSheetData' => $GradeSheetData,]);
                         
