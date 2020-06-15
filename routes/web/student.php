@@ -6,6 +6,7 @@ Route::group(['prefix' => 'student', 'middleware' => ['auth', 'userroles'], 'rol
 
     Route::group(['prefix' => 'enrollment'], function () {
         Route::get('', 'Control_Panel_Student\EnrollmentController@index')->name('student.enrollment.index');
+        Route::post('', 'Control_Panel_Student\EnrollmentController@index')->name('student.enrollment.index');
         Route::post('save-data', 'Control_Panel_Student\EnrollmentController@save')->name('student.enrollment.save_data');
         Route::post('save', 'Control_Panel_Student\EnrollmentController@save_data')->name('student.enrollment.save');
         Route::post('modal-account', 'Control_Panel_Student\EnrollmentController@modal_data')->name('student.transaction_history.modal_account');

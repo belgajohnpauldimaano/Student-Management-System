@@ -61,11 +61,11 @@
                         </div>
                         <div class="form-group gender">
                             <label for="">Gender</label>
-                            {{-- <select name="gender" id="gender" class="form-control">
+                            <select name="gender" id="gender" class="form-control">
                                 <option value="">Select a gender</option>
                                 <option value="1" {{ $StudentInformation ? $StudentInformation->gender == 1 ? 'selected' : '' : '' }}>Male</option>
                                 <option value="2" {{ $StudentInformation ? $StudentInformation->gender == 2 ? 'selected' : '' : '' }}>Female</option>
-                            </select> --}}
+                            </select>
                             <div class="help-block text-left" id="js-gender"></div>
                         </div>
                         <div class="form-group phone">
