@@ -44,7 +44,7 @@
   </div>
 </div>
 
-  {{-- @include('control_panel_student.enrollment.partials.modal_profile')
+  @include('control_panel_student.enrollment.partials.modal_profile')
 
   <div class="row" id="online" style="display: none;">
       @include('control_panel_student.enrollment.partials.online_bank')
@@ -56,7 +56,7 @@
 
   <div class="row" id="gcash" style="display: none; padding:0 16px 0 16px">    
     @include('control_panel_student.enrollment.partials.gcash_method')
-  </div> --}}
+  </div>
 
 
 
