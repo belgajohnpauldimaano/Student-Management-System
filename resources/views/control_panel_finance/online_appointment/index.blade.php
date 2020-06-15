@@ -16,13 +16,13 @@
             </div>
             <form id="js-form_search">
                 {{ csrf_field() }}    
-                <div class="form-group col-sm-12 col-md-3" style="padding-right:0">
+                {{-- <div class="form-group col-sm-12 col-md-3" style="padding-right:0">
                     <select name="js_status" id="js_status" class="form-control js_status">
                         <option value="">--Select Status--</option>
                         <option value="1"> Active</option>
                         <option value="0"> Inactive</option>
                     </select>
-                </div>             
+                </div>              --}}
                 <div class="form-group col-sm-12 col-md-3" style="padding-right:0">
                     <select name="js_date" id="js_date" class="form-control js_date">
                         <option value="">Select Date and time</option>

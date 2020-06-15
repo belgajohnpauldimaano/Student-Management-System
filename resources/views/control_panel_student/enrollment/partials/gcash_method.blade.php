@@ -13,23 +13,31 @@
     <div class="box-body" style="">
         <p>GCash Transaction</p>
 
-        <p>Step 1. Using your mobile phone, go to GCash App (if you don’t have the app yet, download it from Playstore for Android and Appstore for iOs). Enter the desired payment in the Saint John’s Academy Incorporated GCash Account:</p>
+        <p><b>Step 1.</b> Using your mobile phone, go to GCash App (if you don’t have the app yet, download it from Playstore for Android and Appstore for iOs). Enter the desired payment in the Saint John’s Academy Incorporated GCash Account:</p>
         <ul>
             <li>
-                GCash Account: 	<br>
-                St. John’s Academy Inc C/O Anrea Pangilinan – 0945-836-4135
+                <b>
+                    GCash Account: 	<br/>
+                    St. John’s Academy Inc. / Anrea Pangilinan<br/>
+                    09458364135
+                </b>
             </li>
         </ul>
         
 
-        <p>Step 2. After the successful Gcash transaction, fill out all the necessary information below. Take a screenshot of the transaction and upload it on the icon below (upload file)</p>
+        <p>
+            <b>Step 2.</b> After the successful GCash transaction, fill out all the necessary information below. Take a screenshot of the transaction and upload it on the icon below (upload file).
+        </p>
 
-        <p>Step 3. You will receive a text message and email confirmation once the transaction has been successfully done. </p>
+        <p>
+            <b>Step 3.</b> You will receive an email confirmation once the transaction has been successfully done. 
+        </p>
 
     </div>
     <!-- /.box-body -->
 </div>
 <div class="box box-primary">
+    <h2 class="{{$isPaid ? $isPaid ? 'overlay-paid' : '' : ''}}">{{$isPaid ? $isPaid ? 'PAID' : '' : ''}}</h2>
     <div class="box-body">
         <form id="js-gcash-form">  
             {{ csrf_field() }} 

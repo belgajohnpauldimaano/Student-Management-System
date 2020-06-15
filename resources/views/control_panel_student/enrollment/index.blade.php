@@ -156,6 +156,21 @@
        
     }
 
+    .overlay-paid {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+        z-index: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: aliceblue;
+        font-weight: 600;
+        font-size: 50px;
+        background-color: rgba(0, 0, 0, 0.5);
+        }
     </style>
 @endsection
 
@@ -815,7 +830,7 @@
 
         function getProfiledata(){
             $.ajax({
-                    url : "{{ route('student.my_account.fetch_profile') }}",
+                    url : "{{ route('student.transaction_history.fetch_profile') }}",
                     type : 'POST',
                     data        : {_token: '{{ csrf_token() }}'},
                     success     : function (res) {
@@ -838,7 +853,13 @@
                             $('#mother_name').val(res.Profile.mother_name);    
                             $('#gender').val(res.Profile.gender);
                             $('#isEsc').val(res.Profile.isEsc);
-                                               
+
+                            // if(res.Profile.photo != ''){
+                            //     var profile_src = '{{ asset("/img/account/photo/'+ res.Profile.photo +'") }}';
+                            //     $('#img--user_photo').attr('src', profile_src);
+                            // }else{
+
+                            // }
                         }
                         else
                         {

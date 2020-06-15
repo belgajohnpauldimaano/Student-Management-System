@@ -91,7 +91,7 @@
               <span class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span>
             </a>
             {{-- <a href="{{ route('registrar.student_admission') }}"><i class="fas fa-users fa-lg"></i>&nbsp;&nbsp;&nbsp; <span>Student Admission</span></a> --}}
-              <ul class="treeview-menu">
+              <ul class="treeview-menu menu-open">
                 {{--  Admin Menu  --}}
                   <li><a href="{{ route('registrar.student_admission.grade7')}}"><i class="fa fa-circle-o"></i>&nbsp;&nbsp;&nbsp; <span>Grade 7</span></a></li>
                   <li><a href="{{ route('registrar.student_admission.grade8')}}"><i class="fa fa-circle-o"></i>&nbsp;&nbsp;&nbsp; <span>Grade 8</span></a></li>
@@ -119,7 +119,7 @@
               <span class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span>
             </a>
             {{-- <a href="{{ route('registrar.student_admission') }}"><i class="fas fa-users fa-lg"></i>&nbsp;&nbsp;&nbsp; <span>Student Admission</span></a> --}}
-              <ul class="treeview-menu">
+              <ul class="treeview-menu menu-open" style="display: block">
                 {{--  Admin Menu  --}}
                   <li><a href="{{ route('registrar.student_admission.grade7')}}"><i class="fa fa-circle-o"></i>&nbsp;&nbsp;&nbsp; <span>Grade 7</span></a></li>
                   <li><a href="{{ route('registrar.student_admission.grade8')}}"><i class="fa fa-circle-o"></i>&nbsp;&nbsp;&nbsp; <span>Grade 8</span></a></li>
@@ -168,7 +168,7 @@
                 <span>Maintenance</span>
                 <span class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span>
               </a>
-              <ul class="treeview-menu">
+              <ul class="treeview-menu" style="display: block">
                   {{--  Admin Menu  --}}
                   <li><a href="{{ route('admin.maintenance.school_year') }}"><i class="fa fa-circle-o"></i>&nbsp;&nbsp;&nbsp; <span>School Year</span></a></li>
                   <li><a href="{{ route('admin.maintenance.semester') }}"><i class="fa fa-circle-o"></i>&nbsp;&nbsp;&nbsp; <span>Semester</span></a></li>

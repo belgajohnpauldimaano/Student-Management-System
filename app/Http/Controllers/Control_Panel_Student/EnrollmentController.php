@@ -22,6 +22,7 @@ use App\Mail\NotifyAdminMail;
 use App\TransactionMonthPaid;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 
 class EnrollmentController extends Controller
 {
@@ -176,6 +177,15 @@ class EnrollmentController extends Controller
         }
     }
 
+
+    public function fetch_profile (Request $request)
+    {
+        $User = Auth::user();
+        $Profile = StudentInformation::where('user_id', $User->id)->first();
+        // return json_encode($Profile);
+        //  date('Y-m-d', strtotime($request->birthdate));
+        return response()->json(['res_code' => 0, 'res_msg' => '', 'Profile' => $Profile]);
+    }
     public function save(Request $request){
         $User = \Auth::user();
         $StudentInformation = StudentInformation::where('user_id', $User->id)->first();

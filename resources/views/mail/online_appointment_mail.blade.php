@@ -34,7 +34,7 @@
             <tbody>
                 <tr>
                     <td>{{ $hasAppointment ? date_format(date_create($hasAppointment->appointment->date), 'F d, Y') : '' }}</td>
-                    <td>{{$hasAppointment->appointment->time}}</td>
+                    <td>{{ $hasAppointment ? date_format(date_create($hasAppointment->date), 'h:i A') : '' }}</td>
                     <td>{{$hasAppointment->queueing_number}}</td>
                 </tr>
             </tbody>

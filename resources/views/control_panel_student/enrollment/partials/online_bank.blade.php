@@ -1,4 +1,5 @@
 <div style="padding:0 16px 0 16px">
+  <h2 class="{{$isPaid ? $isPaid ? 'overlay-paid' : '' : ''}}">{{$isPaid ? $isPaid ? 'PAID' : '' : ''}}</h2>
   <div class="box box-info box-solid collapsed-box">
     <div class="box-header with-border ">
       <h3 class="box-title">Instructions</h3>

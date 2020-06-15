@@ -20,6 +20,7 @@ class CreateTransactionsTable extends Migration
             $table->integer('student_id');
             $table->integer('school_year_id');
             $table->integer('downpayment_id');
+            $table->tinyInteger('isEnrolled')->default('0');
             $table->tinyInteger('status')->default('1');
             $table->timestamps();
         });
