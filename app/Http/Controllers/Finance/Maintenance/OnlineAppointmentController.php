@@ -144,6 +144,7 @@ class OnlineAppointmentController extends Controller
 
         if($IncomingStudentCount)
         {
+            $GradeSheet = 1;
 
             if ($request->ajax())
             {
@@ -168,10 +169,11 @@ class OnlineAppointmentController extends Controller
                     ->count();
 
                 return view('control_panel_student.online_appointment.partials.data_list', 
-                    compact('AppointedCount','OnlineAppointment', 'Appointed','StudentInformation','SchoolYear','hasAppointment','IncomingStudentCount'))
+                    compact('AppointedCount','OnlineAppointment', 'Appointed','StudentInformation','SchoolYear','hasAppointment','IncomingStudentCount','GradeSheet'))
                     ->render();
             }
 
+            
 
             $Appointed = StudentTimeAppointment::with('appointment')
                 ->where('student_id', $StudentInformation->id)
@@ -194,7 +196,7 @@ class OnlineAppointmentController extends Controller
                 ->count();            
             
             return view('control_panel_student.online_appointment.index', 
-                compact('AppointedCount','OnlineAppointment', 'Appointed','StudentInformation','SchoolYear', 'hasAppointment','IncomingStudentCount'))->render();
+                compact('AppointedCount','OnlineAppointment', 'Appointed','StudentInformation','SchoolYear', 'hasAppointment','IncomingStudentCount','GradeSheet'))->render();
         }else{
             // it has an existing account in class_details 
             $Enrollment = Enrollment::where('student_information_id', $StudentInformation->id)
