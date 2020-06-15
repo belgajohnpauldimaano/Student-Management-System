@@ -2,6 +2,24 @@
     
         
 <div class="row">
+    @if($GradeSheet==0)
+    <div class="col-md-12">
+        <div class="box box-danger">
+            <div class="box-header with-border">
+              <h3 class="box-title">Appointment</h3>
+            </div>
+            <div class="box-body">
+              <div class="col-md-12">
+                <h4>This account maybe not updated. Please contact the administrator. Thank you</h4>
+              </div>
+              <br><br><br><br>
+            </div>
+            <!-- /.box-body -->
+        </div>
+    </div>
+    
+        
+    @else    
     <div class="col-md-8">
         <div class="box box-primary direct-chat direct-chat-primary">
             <div class="box-header with-border">
@@ -13,7 +31,7 @@
             </div>               
             <div class="box-body">                  
                 <div class="table-responsive">
-                    <div class="form-group col-lg-6 input-email">
+                    <div class="form-group col-lg-6 input-email">                        
                         <label for="exampleInputEmail1">You are incoming Grade-level 
                             <i style="color:red">
                             @if($IncomingStudentCount)
@@ -106,6 +124,8 @@
     <div class="col-md-4">
         @include('control_panel_student.online_appointment.partials.data_appointment')
     </div>
+
+    @endif
 </div>            
 
             

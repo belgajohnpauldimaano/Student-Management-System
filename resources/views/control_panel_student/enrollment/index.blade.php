@@ -197,7 +197,11 @@
     </div>
     <div class="overlay hidden" id="js-loader-overlay"><i class="fa fa-refresh fa-spin"></i></div>
     <div class="js-data-container" style="margin-top: 10px;">
-        @include('control_panel_student.enrollment.partials.data_list')
+        @if($GradeSheet == 0)
+            @include('control_panel_student.enrollment.partials.data_list_error')
+        @else
+            @include('control_panel_student.enrollment.partials.data_list')
+        @endif
     </div>
     
     

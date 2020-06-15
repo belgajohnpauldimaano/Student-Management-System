@@ -202,9 +202,15 @@ class OnlineAppointmentController extends Controller
                 ->where('current', 1)
                 ->orderBy('id', 'DESC')
                 ->first();
-                        
-            $ClassDetail = ClassDetail::where('id', $Enrollment->class_details_id)
-                ->where('status', 1)->where('current', 1)->orderBY('grade_level', 'DESC')->first();
+            if($Enrollment){
+                $ClassDetail = ClassDetail::where('id', $Enrollment->class_details_id)
+                    ->where('status', 1)->where('current', 1)->orderBY('grade_level', 'DESC')->first();
+            }else{
+                $GradeSheet = 0;
+                return view('control_panel_student.online_appointment.index', 
+                compact('GradeSheet'))->render();
+            }      
+            
 
             $incoming_gradelevel = ($ClassDetail->grade_level + 1);
 

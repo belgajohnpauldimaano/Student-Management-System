@@ -109,9 +109,14 @@ class EnrollmentController extends Controller
                         ->where('current', 1)
                         ->orderBy('id', 'DESC')
                         ->first();
-                                    
-                    $ClassDetail = ClassDetail::where('id', $Enrollment->class_details_id)
-                            ->where('status', 1)->where('current', 1)->orderBY('grade_level', 'DESC')->first();
+                    
+                    if($Enrollment){
+                        $ClassDetail = ClassDetail::where('id', $Enrollment->class_details_id)
+                        ->where('status', 1)->where('current', 1)->orderBY('grade_level', 'DESC')->first();
+                    }else{
+                        $GradeSheet = 0;
+                        return view('control_panel_student.enrollment.index', compact('GradeSheet'));
+                    }                 
 
                     // $SchoolYear1 = SchoolYear::where('current', 1)
                     //     ->where('status', 1)->orderBy('id', 'Desc')->first();
