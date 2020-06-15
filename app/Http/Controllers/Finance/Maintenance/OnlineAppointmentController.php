@@ -216,7 +216,7 @@ class OnlineAppointmentController extends Controller
                     ->get();
 
                 $OnlineAppointment = OnlineAppointment::where('status', 1)
-                    ->whereIn('grade_lvl_id', [$IncomingStudentCount->grade_level_id, 0])
+                    ->whereIn('grade_lvl_id', [$incoming_gradelevel, 0])
                     ->orderBY('date', 'ASC')
                     ->get();
 
@@ -242,7 +242,7 @@ class OnlineAppointmentController extends Controller
                 ->get();
             
             $OnlineAppointment = OnlineAppointment::where('status', 1)
-                ->whereIn('grade_lvl_id', [$IncomingStudentCount->grade_level_id, 0])
+                ->whereIn('grade_lvl_id', [$incoming_gradelevel, 0])
                 ->orderBY('date', 'ASC')
                 ->get();
 
