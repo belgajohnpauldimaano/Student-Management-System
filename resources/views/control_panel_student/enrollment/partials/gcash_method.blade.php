@@ -37,7 +37,7 @@
     <!-- /.box-body -->
 </div>
 <div class="box box-primary">
-    {{-- <h2 class="{{$isPaid ? $isPaid ? 'overlay-paid' : '' : ''}}">{{$isPaid ? $isPaid ? 'PAID' : '' : ''}}</h2> --}}
+    <h2 class="{{$isPaid ? $isPaid ? 'overlay-paid' : '' : ''}}">{{$isPaid ? $isPaid ? 'PAID' : '' : ''}}</h2>
     <div class="box-body">
         <form id="js-gcash-form">  
             {{ csrf_field() }} 

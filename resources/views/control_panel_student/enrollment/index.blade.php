@@ -200,7 +200,7 @@
         @include('control_panel_student.enrollment.partials.data_list')
     </div>
     
-    @include('control_panel_student.enrollment.partials.modal_profile')
+    
 @endsection
 
 @section ('scripts')
