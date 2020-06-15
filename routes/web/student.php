@@ -9,7 +9,7 @@ Route::group(['prefix' => 'student', 'middleware' => ['auth', 'userroles'], 'rol
         Route::post('save-data', 'Control_Panel_Student\EnrollmentController@save')->name('student.enrollment.save_data');
         Route::post('save', 'Control_Panel_Student\EnrollmentController@save_data')->name('student.enrollment.save');
         Route::post('modal-account', 'Control_Panel_Student\EnrollmentController@modal_data')->name('student.transaction_history.modal_account');
-        Route::post('fetch-profile', 'Control_Panel_Student\EnrollmentController@fetch_profile')->name('student.transaction_history.fetch_profile');
+        
         // checkout
         Route::post('/check-out', 'Control_Panel_Student\PaymentController@createPayment')->name('student.create-payment.paypal');
         Route::get('confirm', 'Control_Panel_Student\PaymentController@confirmPayment')->name('confirm-payment');

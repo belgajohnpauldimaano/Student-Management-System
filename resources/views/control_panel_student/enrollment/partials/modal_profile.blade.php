@@ -13,10 +13,10 @@
                         
                         <img class="profile-user-img img-responsive img-circle" 
                             id="img--user_photo" 
-                            src="{{ $Profile->photo ? \File::exists(public_path('/img/account/photo/'.$Profile->photo)) ? 
+                            {{-- src="{{ $Profile->photo ? \File::exists(public_path('/img/account/photo/'.$Profile->photo)) ? 
                             asset('/img/account/photo/'.$Profile->photo) : asset('/img/account/photo/blank-user.gif') : 
                             asset('/img/account/photo/blank-user.gif') }}" 
-                            alt="User profile picture"
+                            alt="User profile picture" --}}
                         />
                         
                         <button type="button" style="margin-top: 5px" class="btn btn-flat btn-success btn--update-photo" title="Change photo">
