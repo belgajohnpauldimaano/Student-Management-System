@@ -202,7 +202,10 @@ class OnlineAppointmentController extends Controller
                 ->where('current', 1)
                 ->orderBy('id', 'DESC')
                 ->first();
+            $GradeSheet = 0;
+
             if($Enrollment){
+                $GradeSheet = 1;
                 $ClassDetail = ClassDetail::where('id', $Enrollment->class_details_id)
                     ->where('status', 1)->where('current', 1)->orderBY('grade_level', 'DESC')->first();
             }else{
@@ -237,10 +240,21 @@ class OnlineAppointmentController extends Controller
                     ->count();
 
                 return view('control_panel_student.online_appointment.partials.data_list', 
-                    compact('AppointedCount','OnlineAppointment', 'Appointed','StudentInformation','SchoolYear','hasAppointment','IncomingStudentCount','ClassDetail'))
+                    compact('AppointedCount','GradeSheet','OnlineAppointment', 'Appointed','StudentInformation','SchoolYear','hasAppointment','IncomingStudentCount','ClassDetail'))
                     ->render();
             }
 
+            $GradeSheet = 0;
+            
+            if($Enrollment){
+                $GradeSheet = 1;
+                $ClassDetail = ClassDetail::where('id', $Enrollment->class_details_id)
+                    ->where('status', 1)->where('current', 1)->orderBY('grade_level', 'DESC')->first();
+            }else{
+                $GradeSheet = 0;
+                return view('control_panel_student.online_appointment.index', 
+                compact('GradeSheet'))->render();
+            }      
 
             $Appointed = StudentTimeAppointment::with('appointment')
                 ->where('student_id', $StudentInformation->id)
@@ -263,7 +277,7 @@ class OnlineAppointmentController extends Controller
                 ->count();
             
             return view('control_panel_student.online_appointment.index', 
-                compact('AppointedCount','OnlineAppointment', 'Appointed','StudentInformation','SchoolYear', 'hasAppointment','IncomingStudentCount','ClassDetail'))->render();
+                compact('AppointedCount','OnlineAppointment', 'GradeSheet', 'Appointed','StudentInformation','SchoolYear', 'hasAppointment','IncomingStudentCount','ClassDetail'))->render();
         }
     }
 
