@@ -240,6 +240,7 @@ class EnrollmentController extends Controller
             $Enrollment->email = $request->bank_email;
             $Enrollment->number = $request->bank_phone;
             $Enrollment->payment_option = $request->bank;
+            $Enrollment->online_charges = 0.00;
             $Enrollment->isSuccess = 1;
             $Enrollment->transaction_id = $TransactionAccount->id;            
             // image
@@ -400,6 +401,7 @@ class EnrollmentController extends Controller
             $Enrollment->email = $request->gcash_email;
             $Enrollment->number = $request->gcash_phone;
             $Enrollment->payment_option = $request->Gcash;
+            $Enrollment->online_charges = 0.00;
             $Enrollment->isSuccess = 1;
             $Enrollment->transaction_id = $TransactionAccount->id;            
             // image
