@@ -88,7 +88,7 @@
                 $('.btn-upload-photo').click();
             })
            
-            $('body').on('submit', '#js-form_subject_details', function (e) {
+            $('body').on('submit', '#js-registration_form', function (e) {
                 e.preventDefault();
                 validate_form();    
                 var formData = new FormData($(this)[0]);
@@ -96,7 +96,7 @@
                 alertify.defaults.theme.ok = "btn btn-primary btn-flat";
                 alertify.defaults.theme.cancel = "btn btn-danger btn-flat";
                 alertify.confirm('<i style="color: #0069d9" class="fas fa-question-circle"></i> Confirmation', 
-                'Are you sure you want to register? Please make sure your input are all correct. Thank you', function(){ 
+                'Are you sure you want to register now? Please make sure your input are all correct. Thank you', function(){ 
                     
                     if(
                         $('#lrn').val() != '' && $('#reg_type').val() != '' && $('#grade_lvl').val() != '' &&
@@ -120,14 +120,14 @@
                                             ''+res.res_msg+'', function(){
                                                 $('.input-lrn').addClass('has-error');
                                                 $('.input-lrn').removeClass('has-success');
-                                                $('#js-lrn').css('color', 'red').text('LRN already used. Please contact the administrator to confirm it. Thank you.');
+                                                $('#js-lrn').css('color', 'red').text('You must enter your LRN.');
                                         });                                    
                                     }
                                     else
                                     {
                                         alertify.alert('<i style="color: green" class="fas fa-check-circle fa-lg"></i> Confirmation',
                                         "Your information successfully submitted. Please wait the confirmation from Admission Office. Thank you!", function(){
-                                            $('#js-form_subject_details')[0].reset();                                    
+                                            $('#js-registration_form')[0].reset();                                    
                                             var source = $("#default-img").val();
                                             $('#img--user_photo').attr('src', source);
                                             $('#js-registration').modal('hide');
@@ -316,7 +316,7 @@
                 function check_lrn(){
                     var x = $('#lrn').val();
 
-                    if(x != ''){
+                    if(x.length >= 12){
                         $('.input-lrn').addClass('has-success');
                         $('.input-lrn').removeClass('has-error');
                         $('#js-lrn').text('Double check your LRN and You are good to go!').css('color', 'green');               
@@ -351,7 +351,7 @@
                     }else{
                         $('.input-grade_lvl').addClass('has-error');
                         $('.input-grade_lvl').removeClass('has-success');
-                        $('#js-grade_lvl').css('color', 'red').text('You must select your Grave level.');
+                        $('#js-grade_lvl').css('color', 'red').text('You must select your incoming grade level.');
                     }
                 }
             

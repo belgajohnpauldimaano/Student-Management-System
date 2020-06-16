@@ -9,7 +9,7 @@
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
-        <form id="js-form_subject_details">
+        <form id="js-registration_form">
             {{ csrf_field() }}
             <div class="modal-body">
                 <div class="form-row mb-5" align="center">
