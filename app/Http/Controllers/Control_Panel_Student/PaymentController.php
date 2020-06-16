@@ -113,7 +113,7 @@ class PaymentController extends Controller
         
         $redirect_urls = new RedirectUrls();
         $redirect_urls->setReturnUrl(route('confirm-payment'))
-            ->setCancelUrl('https://sja-bataan.com/enrollment/student/enrollment');
+            ->setCancelUrl('https://sja-bataan.com/student/enrollment');
         
      
         // We set up the payment with the payer, urls and transactions.
