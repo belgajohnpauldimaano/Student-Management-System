@@ -126,7 +126,7 @@
                                     else
                                     {
                                         alertify.alert('<i style="color: green" class="fas fa-check-circle fa-lg"></i> Confirmation',
-                                        "Your information successfully submited. Please wait the confirmation from Admission Department. Thank you!", function(){
+                                        "Your information successfully submitted. Please wait the confirmation from Admission Office. Thank you!", function(){
                                             $('#js-form_subject_details')[0].reset();                                    
                                             var source = $("#default-img").val();
                                             $('#img--user_photo').attr('src', source);
