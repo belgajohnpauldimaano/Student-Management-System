@@ -120,7 +120,7 @@
                                             ''+res.res_msg+'', function(){
                                                 $('.input-lrn').addClass('has-error');
                                                 $('.input-lrn').removeClass('has-success');
-                                                $('#js-lrn').css('color', 'red').text('You must enter your LRN.');
+                                                $('#js-lrn').css('color', 'red').text('LRN already used. Please contact the administrator to confirm it. Thank you.');
                                         });                                    
                                     }
                                     else
@@ -316,7 +316,7 @@
                 function check_lrn(){
                     var x = $('#lrn').val();
 
-                    if(x.length >= 12){
+                    if(x != ''){
                         $('.input-lrn').addClass('has-success');
                         $('.input-lrn').removeClass('has-error');
                         $('#js-lrn').text('Double check your LRN and You are good to go!').css('color', 'green');               
