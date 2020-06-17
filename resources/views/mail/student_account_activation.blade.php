@@ -13,7 +13,7 @@
         
         <p style="text-align: right;">Date: {{ $student ? date_format(date_create($student->updated_at), 'F d, Y h:i A') : '' }}</p>
 
-        <p>Dear {{$student->last_name.', '.$student->first_name.' '.$student->middle_name}}</p>
+        <p>Dear {{$student->last_name.', '.$student->first_name.' '.$student->middle_name}},</p>
         <p>
             Your account in St. John Academy Inc. is now activated. Below is your account credentials, you can now enroll online using this account to our website https://www&#46;sja-bataan&#46;com.          
         </p>
