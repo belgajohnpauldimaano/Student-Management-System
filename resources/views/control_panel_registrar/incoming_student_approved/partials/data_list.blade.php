@@ -3,9 +3,7 @@
 <div class="pull-right">
     {{ $IncomingStudentApproved ? $IncomingStudentApproved->links() : '' }}
 </div>
-<button class="btn btn-sm btn-success btn-approve" data-id="{{$item->student_id}}">
-    Re-Approve All
-</button>
+
 <table class="table no-margin table-bordered table-striped">
     <thead>
         <tr>                                                
