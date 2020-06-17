@@ -363,8 +363,8 @@ class OnlineAppointmentController extends Controller
                     student_time_appointments.grade_lvl
 
                 "))
-                ->where('student_time_appointments.status', $request->js_status)
-                // ->where('online_appointments.status', 1)
+                ->where('student_time_appointments.status', 1)
+                ->where('online_appointments.status', 1)
                 ->where('online_appointments.id', $request->js_date)
                 // ->where('online_appointments.school_year_id', $SchoolYear->id)
                 ->orderBy('student_time_appointments.id', 'ASC')
@@ -375,7 +375,7 @@ class OnlineAppointmentController extends Controller
                 ->select(\DB::raw("
                     student_time_appointments.id as student_appointment_id
                 "))
-                ->where('student_time_appointments.status', $request->js_status)
+                ->where('student_time_appointments.status', 1)
                 // ->where('online_appointments.school_year_id', $SchoolYear->id)
                 ->where('online_appointments.id', $request->js_date)
                 ->first();
