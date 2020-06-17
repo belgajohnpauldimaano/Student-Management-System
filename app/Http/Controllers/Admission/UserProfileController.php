@@ -4,16 +4,20 @@ namespace App\Http\Controllers\Admission;
 
 use Illuminate\Http\Request;
 use App\AdmissionInformation;
+use App\Traits\hasIncomingStudents;
 use App\Http\Controllers\Controller;
 
 class UserProfileController extends Controller
 {
+    use hasIncomingStudents;
+    
     public function view_my_profile (Request $request)
     {
         $User = \Auth::user();
         $Profile = AdmissionInformation::where('user_id', $User->id)->first();
+        $IncomingStudentCount = $this->IncomingStudentCount();
         
-        return view('control_panel_admission.user_profile.index', compact('User', 'Profile'));
+        return view('control_panel_admission.user_profile.index', compact('User', 'Profile','IncomingStudentCount'));
     }
     public function fetch_profile (Request $request)
     {

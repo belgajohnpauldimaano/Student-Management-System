@@ -3,10 +3,13 @@
 namespace App\Http\Controllers\Control_Panel;
 
 use Illuminate\Http\Request;
+use App\Traits\hasIncomingStudents;
 use App\Http\Controllers\Controller;
 
 class StudentController extends Controller
 {
+    use hasIncomingStudents;
+    
     public function index (Request $request) 
     {
         if ($request->ajax())
@@ -23,11 +26,12 @@ class StudentController extends Controller
             // return json_encode(['student_info' => $StudentInformation]);
             return view('control_panel.student_information.partials.data_list', compact('StudentInformation'))->render();
         }
-        
+        $IncomingStudentCount = $this->IncomingStudentCount();
+
         $StudentInformation = \App\StudentInformation::with(['user', 'enrolled_class'])
             ->where('status', 1)->orderBY('last_name', 'ASC')->paginate(10);
         // return json_encode(['student_info' => $StudentInformation]);
-        return view('control_panel.student_information.index', compact('StudentInformation'));
+        return view('control_panel.student_information.index', compact('StudentInformation','IncomingStudentCount'));
     }
 
     public function modal_data (Request $request) 

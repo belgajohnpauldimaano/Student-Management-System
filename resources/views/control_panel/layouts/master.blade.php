@@ -153,8 +153,24 @@
         @endif
 
         @if (Auth::user()->role == 7)
-          <li><a href="{{ route('admission.dashboard') }}"><i class="fa fa-home fa-fw fa-lg"></i> &nbsp;&nbsp;&nbsp;Dashboard</a></li>
-          <li><a href="{{ route('registrar.incoming_student') }}"><i class="fas fa-users fa-lg"></i>&nbsp;&nbsp;&nbsp; <span>Incoming Student</span></a></li>
+          <li>
+            <a href="{{ route('admission.dashboard') }}">
+              <i class="fa fa-home fa-fw fa-lg"></i> &nbsp;&nbsp;&nbsp;Dashboard
+            </a>
+          </li>
+          <li>
+            <a href="#"><i class="fas fa-users fa-lg"></i>&nbsp;&nbsp;&nbsp; <span>Incoming Student</span>
+              <span class="{{$IncomingStudentCount == 0 ? '' : 'label label-danger'}} pull-right">
+                {{$IncomingStudentCount == 0 ? '' : $IncomingStudentCount}}
+              </span>
+            </a>
+            <ul class="treeview-menu menu-open" style="display: block">
+              {{--  Admin Menu  --}}
+                <li><a href="{{ route('registrar.incoming_student')}}"><i class="fa fa-circle-o"></i>&nbsp;&nbsp;&nbsp; <span>Not yet Approved</span></a></li>
+                <li><a href="{{ route('registrar.Approved')}}"><i class="fa fa-circle-o"></i>&nbsp;&nbsp;&nbsp; <span>Approved</span></a></li>
+                <li><a href="{{ route('registrar.Disapproved')}}"><i class="fa fa-circle-o"></i>&nbsp;&nbsp;&nbsp; <span>Disapproved</span></a></li>
+              </ul>
+          </li>
           <li><a href="{{ route('admin.student.information') }}"><i class="fa fa-info-circle fa-lg"></i>&nbsp;&nbsp;&nbsp; <span>Student Information</span></a></li>    
         @endif
         {{--  

@@ -3,12 +3,17 @@
 namespace App\Http\Controllers\Admission;
 
 use Illuminate\Http\Request;
+use App\Traits\hasIncomingStudents;
 use App\Http\Controllers\Controller;
 
 class AdmissionDashboardController extends Controller
 {
+    use hasIncomingStudents;
+
     public function index () 
     {
+        $IncomingStudentCount = $this->IncomingStudentCount();
+
         $StudentInformation_all = \DB::table('student_informations')
             ->select(\DB::raw('COUNT(id) as student_count'))
             ->where('status', 1)
@@ -29,7 +34,7 @@ class AdmissionDashboardController extends Controller
             compact(
                 'StudentInformation_all',
                 'StudentInformation_all_male',
-                'StudentInformation_all_female'
+                'StudentInformation_all_female','IncomingStudentCount'
                 )
         );
     }

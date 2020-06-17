@@ -5,7 +5,7 @@
 @endsection
 
 @section ('content_title')
-    Incoming Student (Not yet Approved)
+    Incoming Student (Disapproved)
 @endsection
 
 @section ('content')
@@ -24,7 +24,7 @@
         <div class="box-body">
             
             <div class="js-data-container">
-                @include('control_panel_registrar.incoming_student.partials.data_list')       
+                @include('control_panel_registrar.incoming_student_disapproved.partials.data_list')       
             </div>
             
         </div>        
@@ -41,7 +41,7 @@
             formData.append('page', page);
             loader_overlay();
             $.ajax({
-                url : "{{ route('registrar.incoming_student') }}",
+                url : "{{ route('registrar.Disapproved') }}",
                 type : 'POST',
                 data : formData,
                 processData : false,

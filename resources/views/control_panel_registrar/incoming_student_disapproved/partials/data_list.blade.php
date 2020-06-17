@@ -1,12 +1,12 @@
-                        
-                             
-<div class="active tab-pane" id="js-notyetapproved">     
+ 
+
+<div class="tab-pane" id="js-disapproved">
     <div class="pull-right">
-        {{ $IncomingStudent ? $IncomingStudent->links() : '' }}
-    </div>                             
+        {{ $Disapproved ? $Disapproved->links() : '' }}
+    </div>
     <table class="table no-margin table-bordered table-striped">
         <thead>
-            <tr>
+            <tr>                                                
                 <th>Name</th>
                 <th>Student type</th>
                 <th>Student level</th>
@@ -15,7 +15,7 @@
             </tr>
         </thead>
         <tbody>
-            @foreach ($IncomingStudent as $item)
+            @foreach ($Disapproved as $item)
                 <tr>
                     <td>{{$item->student_name}}</td>
                     <td>{{$item->student_type == '1' ? 'Transferee' : 'Freshman'}}</td>
@@ -30,19 +30,10 @@
                         <button class="btn btn-sm btn-success btn-approve" data-id="{{$item->student_id}}">
                             Approve
                         </button>
-                        <button class="btn btn-sm btn-danger btn-disapprove" data-id="{{$item->student_id}}">
-                            Disapprove
-                        </button>
                     </td>
                 </tr>
-            @endforeach                                            
+            @endforeach   
         </tbody>
-    </table>
-</div>                                 
-                        
-                                
-                        
-                        
-                        
-                        
+    </table> 
+</div>  
                         
