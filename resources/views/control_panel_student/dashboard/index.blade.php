@@ -41,7 +41,7 @@
                             @foreach ($Appointed as $item)
                             <div style="padding: 5px 10px;background:;border: 1px solid #d2d6de;margin: 5px 5px 0 5px;color: rgb(2, 2, 2);" class="success">
                                 <h4>Appointment Schedule</h4>
-                                <p>Date and Time: {{ $item ? date_format(date_create($item->appointment->date), 'F d, Y') : '' }} {{$item->appointment->time}}</p>
+                                <p>Date and Time: {{ $item ? date_format(date_create($item->appointment->date),  'F d, Y h:i A') : '' }} {{$item->appointment->time}}</p>
                                 <p>Queue number: {{$item->queueing_number}}</p>
                                 {{-- <div>
                                     <button class="btn btn-primary">Done</button> &nbsp; <button class="btn btn-danger">Cancel</button>
