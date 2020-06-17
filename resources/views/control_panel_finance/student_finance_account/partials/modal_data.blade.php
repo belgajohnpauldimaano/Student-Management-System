@@ -46,77 +46,13 @@
                         </div>
                     </div>
                                         
-                    <div class="box">
-                        <div class="box-header ">
-                            <p class="box-title">
-                                Student Account
-                            </p>
-                        </div>
-                        
-                        <div class="box-body no-padding">
-                            <table class="table table-bordered table-striped table-hover">
-                                <tbody>
-                                    <tr>
-                                        <th style="width: 50%">Description</th>
-                                        <th>Amount</th>
-                                        {{-- <th style="width: 40px">Label</th> --}}
-                                    </tr>
-                                    <tr>
-                                        <td>Tuition Fee</td>
-                                        <td>
-                                            ₱ {{ number_format($Modal_data->payment_cat->tuition->tuition_amt, 2)}}
-                                        </td>                                
-                                    </tr>
-                                    <tr>
-                                        <td>Misc Fee</td>
-                                        <td>
-                                            ₱ {{ number_format($Modal_data->payment_cat->misc_fee->misc_amt, 2)}}
-                                        </td>                                
-                                    </tr>
-                                    <tr>
-                                        <td>Other Fee - {{ $other_fee ? $other_fee->other_name : 'NA'}}</td>
-                                        <td>
-                                            ₱ {{ number_format($other, 2)}}
-                                        </td>
-                                    </tr>
-                                    @foreach ($Discount_amt as $item)
-                                    <tr>
-                                        <td>Discount Fee ({{$item->discount_type}})</td>
-                                        <td>
-                                            ₱ {{ number_format($item->discount_amt,2) }}
-                                        </td>
-                                    </tr>
-                                    @endforeach
-                                    
-                                    <tr>
-                                        <td>Total Fees</td>
-                                        <td>  ₱
-                                            @if($Discount)
-                                                 {{ number_format($total, 2)}}
-                                            @else
-                                                {{ number_format($total, 2)}}
-                                            @endif                                                
-                                        </td>                                
-                                    </tr>
-                                    </tbody>
-                            </table>
-                        </div>
-                    </div>
-                     
-                    {{-- TRANSACTION HISTORY --}}
-                    <h4>Transaction History</h4>
-                    <div class="box">
-                        @foreach ($Mo_history as $data)                        
+                        <div class="box">
                             <div class="box-header ">
                                 <p class="box-title">
-                                    Date and Time: {{ $data ? date_format(date_create($data->created_at), 'F d, Y h:i A') : '' }}
+                                    Student Account
                                 </p>
-                                <br>Status: 
-                                <span class="label {{ $data->approval ? $data->approval == 'Approved' ? 'label-success' : 'label-danger' : 'label-danger'}}">
-                                    {{ $data->approval ? $data->approval == 'Approved' ? 'Approved' : 'Not yet Approved' : 'Not yet Approved'}}
-                                </span>
                             </div>
-                                
+                            
                             <div class="box-body no-padding">
                                 <table class="table table-bordered table-striped table-hover">
                                     <tbody>
@@ -126,59 +62,124 @@
                                             {{-- <th style="width: 40px">Label</th> --}}
                                         </tr>
                                         <tr>
-                                            <td>Payment Option</td>
-                                            <td>
-                                                {{ $data->payment_option}}
-                                            </td>                                
-                                        </tr>
                                             <td>Tuition Fee</td>
                                             <td>
-                                                ₱ {{ number_format($data->payment, 2)}}
+                                                ₱ {{ number_format($Modal_data->payment_cat->tuition->tuition_amt, 2)}}
                                             </td>                                
                                         </tr>
                                         <tr>
                                             <td>Misc Fee</td>
                                             <td>
-                                                ₱ {{ number_format($data->balance, 2)}}
+                                                ₱ {{ number_format($Modal_data->payment_cat->misc_fee->misc_amt, 2)}}
                                             </td>                                
                                         </tr>
+                                        <tr>
+                                            <td>Other Fee - {{ $other_fee ? $other_fee->other_name : 'NA'}}</td>
+                                            <td>
+                                                ₱ {{ number_format($other, 2)}}
+                                            </td>
                                         </tr>
-                                    </tbody>
+                                        @foreach ($Discount_amt as $item)
+                                        <tr>
+                                            <td>Discount Fee ({{$item->discount_type}})</td>
+                                            <td>
+                                                ₱ {{ number_format($item->discount_amt,2) }}
+                                            </td>
+                                        </tr>
+                                        @endforeach
+                                        
+                                        <tr>
+                                            <td>Total Fees</td>
+                                            <td>  ₱
+                                                @if($Discount)
+                                                    {{ number_format($total, 2)}}
+                                                @else
+                                                    {{ number_format($total, 2)}}
+                                                @endif                                                
+                                            </td>                                
+                                        </tr>
+                                        </tbody>
                                 </table>
                             </div>
-                            <div class="lightbox-target" id="img_receipt{{$data->receipt_img}}">
-                                <img src="{{ $data->receipt_img ? \File::exists(public_path('/img/receipt/'.$data->receipt_img)) ?
-                                    asset('/img/receipt/'.$data->receipt_img) : 
-                                    asset('/img/receipt/blank-user.gif') :
-                                    asset('/img/receipt/blank-user.gif') }}"/>
-                                <a class="lightbox-close" href="#"></a>
-                            </div>
-                        
-                            @if($data->payment_option != 'Credit Card/Debit Card')
-                                <div class="form-group" style="margin-top: 10px">
-                                    <label for="">Image Receipt <small>(Click to zoom)</small></label>
-                                    <a class="lightbox" href="#img_receipt{{$data->receipt_img}}">
-                                        <img class="img-responsive" 
-                                        id="img-receipt"
-                                        src="{{ $data->receipt_img ? \File::exists(public_path('/img/receipt/'.$data->receipt_img)) ?
+                        </div>
+                     
+                    {{-- TRANSACTION HISTORY --}}
+                        <h4>Transaction History</h4>
+                        <div class="box">
+                            @foreach ($Mo_history as $data)                        
+                                <div class="box-header ">
+                                    <p class="box-title">
+                                        Date and Time: {{ $data ? date_format(date_create($data->created_at), 'F d, Y h:i A') : '' }}
+                                    </p>
+                                    <br>Status: 
+                                    <span class="label {{ $data->approval ? $data->approval == 'Approved' ? 'label-success' : 'label-danger' : 'label-danger'}}">
+                                        {{ $data->approval ? $data->approval == 'Approved' ? 'Approved' : 'Not yet Approved' : 'Not yet Approved'}}
+                                    </span>
+                                </div>
+                                    
+                                <div class="box-body no-padding">
+                                    <table class="table table-bordered table-striped table-hover">
+                                        <tbody>
+                                            <tr>
+                                                <th style="width: 50%">Description</th>
+                                                <th>Amount</th>
+                                                {{-- <th style="width: 40px">Label</th> --}}
+                                            </tr>
+                                            <tr>
+                                                <td>Payment Option</td>
+                                                <td>
+                                                    {{ $data->payment_option}}
+                                                </td>                                
+                                            </tr>
+                                                <td>Tuition Fee</td>
+                                                <td>
+                                                    ₱ {{ number_format($data->payment, 2)}}
+                                                </td>                                
+                                            </tr>
+                                            <tr>
+                                                <td>Misc Fee</td>
+                                                <td>
+                                                    ₱ {{ number_format($data->balance, 2)}}
+                                                </td>                                
+                                            </tr>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="lightbox-target" id="img_receipt{{$data->receipt_img}}">
+                                    <img src="{{ $data->receipt_img ? \File::exists(public_path('/img/receipt/'.$data->receipt_img)) ?
                                         asset('/img/receipt/'.$data->receipt_img) : 
                                         asset('/img/receipt/blank-user.gif') :
-                                        asset('/img/receipt/blank-user.gif') }}" 
-                                        alt="User profile picture">
-                                    </a>
-                                </div> 
-                            @endif
-                                                    
-                        @endforeach
-                    </div>
-                        <div class="modal-footer">
-                        <button class="btn btn-flat  btn-{{ $Modal_data->status ? $Modal_data->status == 0 ? 'danger btn-unpaid' : 'success btn-paid' : 'danger btn-unpaid'}} pull-right" data-id="{{$Modal_data->id}}">
-                                {{ $Modal_data->status ? $Modal_data->status == 0 ? 'Unpaid' : 'Paid' : 'Unpaid'}}
-                            </button>
-                        </div> 
+                                        asset('/img/receipt/blank-user.gif') }}"/>
+                                    <a class="lightbox-close" href="#"></a>
+                                </div>
+                            
+                                @if($data->payment_option != 'Credit Card/Debit Card')
+                                    <div class="form-group" style="margin-top: 10px">
+                                        <label for="">Image Receipt <small>(Click to zoom)</small></label>
+                                        <a class="lightbox" href="#img_receipt{{$data->receipt_img}}">
+                                            <img class="img-responsive" 
+                                            id="img-receipt"
+                                            src="{{ $data->receipt_img ? \File::exists(public_path('/img/receipt/'.$data->receipt_img)) ?
+                                            asset('/img/receipt/'.$data->receipt_img) : 
+                                            asset('/img/receipt/blank-user.gif') :
+                                            asset('/img/receipt/blank-user.gif') }}" 
+                                            alt="User profile picture">
+                                        </a>
+                                    </div> 
+                                @endif
+                                                        
+                            @endforeach
+                        </div>
+                        
                     </div> 
                                        
                 </div>
+                <div class="modal-footer">
+                    <button class="btn btn-flat  btn-{{ $Modal_data->status ? $Modal_data->status == 0 ? 'danger btn-unpaid' : 'success btn-paid' : 'danger btn-unpaid'}} pull-right" data-id="{{$Modal_data->id}}">
+                        {{ $Modal_data->status ? $Modal_data->status == 0 ? 'Unpaid' : 'Paid' : 'Unpaid'}}
+                    </button>
+                </div> 
                 
             </div>   
         </div><!-- /.modal-content -->

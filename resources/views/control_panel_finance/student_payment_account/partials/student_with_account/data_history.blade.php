@@ -4,20 +4,24 @@
     <table class="table table-bordered table-hover table-striped" style="margin-top: 20px">
         <thead class="thead-dark">
             <tr>
-                <th  style="width: 20%">OR Number</th>
-                <th  style="width: 20%">For the Month</th>
-                <th  style="width: 20%">Payment Fee</th>
-                <th  style="width: 20%">Remarks</th>
-                <th  style="width: 20%">Date</th>
+                <th style="width: 15%">Payment Option</th>
+                <th  style="width: 15%">OR Number</th>
+                <th  style="width: 15%">Payment Fee</th>
+                <th  style="width: 15%">Balance</th>
+                <th  style="width: 15%">Remarks</th>
+                <th  style="width: 15%">Date</th>
             </tr>
         </thead>
         @if($Account)
             @foreach ($TransactionMonthPaid as $key => $item)
                 <tr>
+                    <td>{{ $item->payment_option }}</td>
                     <td>{{ $item->or_no }}</td>
-                    <td>{{ $item->month_paid }}</td>
                     <td>{{ number_format($item->payment, 2)}}</td>
-                    <td><span class="label label-success">Paid</span></td>
+                    <td>{{ number_format($item->balance, 2) }}</td>
+                    <td>
+                        <span class="label label-{{ $item->approval == "Approved" ? 'success' : 'danger' }}">{{$item->approval}}</span>
+                    </td>
                     <td>{{ date_format(date_create($item->created_at), 'F d, Y H:i:s') }}</td>
                 </tr>
             @endforeach
@@ -26,30 +30,34 @@
         @endif
     </table>
 
-    <h3>Enrollment Payment</h3>
+    {{-- <h3>Enrollment Payment</h3>
     <table class="table table-bordered table-hover table-striped" style="margin-top: 20px">
         <thead>
             <tr>
-                <th  style="width: 20%">OR Number</th>
-                <th  style="width: 20%">Discount</th>
-                <th  style="width: 20%">Downpayment</th>
-                <th  style="width: 20%">Remarks</th>
-                <th  style="width: 20%">Date</th>
+                <th style="width: 15%">Payment Option</th>
+                <th  style="width: 15%">OR Number</th>
+                <th  style="width: 15%">Discount</th>
+                <th  style="width: 15%">Downpayment</th>
+                <th  style="width: 15%">Remarks</th>
+                <th  style="width: 15%">Date</th>
             </tr>
         </thead>        
         <tr>
+            <td>{{ $TransactionMonthPaid[0]->payment_option }}</td>
             <td>{{ $Transaction->or_number }}</td>
             <td>
                 @if($Transaction_disc)
                     @foreach($Transaction_disc as $data)
-                        {{$data->discountFee->disc_type}} {{number_format($data->discountFee->disc_amt,2)}}<br/>
+                        {{$data->discount_type}} {{number_format($data->discount_amt,2)}}<br/>
                     @endforeach
                 @endif
             </td>
-            <td>{{ number_format($Transaction->downpayment, 2)}}</td>
-            <td><span class="label label-success">Paid</span></td>
+            <td>{{ number_format($TransactionMonthPaid[0]->payment, 2)}}</td>
+            <td>
+                <span class="label label-{{ $TransactionMonthPaid[0]->approval == "Approved" ? 'success' : 'danger' }}">{{$TransactionMonthPaid[0]->approval}}</span>
+            </td>
             <td>{{ date_format(date_create($Transaction->created_at), 'F d, Y H:i:s') }}</td>
         </tr>       
-    </table>
+    </table> --}}
 
 </div>   

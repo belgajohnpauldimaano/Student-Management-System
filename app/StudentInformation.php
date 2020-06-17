@@ -18,7 +18,7 @@ class StudentInformation extends Model
 
     public function transactions ()
     {
-        return $this->hasMany(Transaction::class, 'id', 'student_id');
+        return $this->hasOne(Transaction::class, 'id', 'student_id');
     }
 
     

@@ -90,8 +90,11 @@ class StudentAccountController extends Controller
         $PaymentCategory = PaymentCategory::with('stud_category','tuition','misc_fee')
             ->where('status', 1)->where('current', 1)->get();
 
-        $Transaction = Transaction::with('payment_cat')->where('student_id', $stud_id)
-            ->where('status', 1)->where('school_year_id', $SchoolYear->id)->first();
+        $Transaction = Transaction::with('payment_cat')
+            ->where('student_id', $stud_id)
+            ->where('status', 1)
+            ->where('school_year_id', $SchoolYear->id)->first();
+
         $StudentInformation = StudentInformation::with(['user','transactions'])
             ->where('id', $stud_id)
             ->first();
@@ -104,7 +107,9 @@ class StudentAccountController extends Controller
             $Stud_cat_payment =  StudentCategory::where('id', $Payment->student_category_id)->first();
 
             $TransactionMonthPaid = TransactionMonthPaid::where('student_id', $stud_id)
-                                    ->where('school_year_id', $SchoolYear->id)->orderBY('id', 'DESC')->get();
+                                    ->where('school_year_id', $SchoolYear->id)
+                                    ->where('isSuccess', 1)
+                                    ->orderBY('id', 'DESC')->get();
 
             $AccountOthers = TransactionOtherFee::where('student_id', $stud_id)
                 ->where('school_year_id', $SchoolYear->id)->first();                                       
@@ -130,8 +135,7 @@ class StudentAccountController extends Controller
         return view('control_panel_finance.student_payment_account.index', 
             compact('StudentInformation','Profile','Gradelvl','Discount','OtherFee','SchoolYear','StudentCategory','PaymentCategory','Transaction'
                     ,'Stud_cat_payment','Payment','MiscFee_payment','Tuitionfee_payment','School_year_id','Transaction_disc','TransactionMonthPaid'
-                    ,'Account','TransactionOR','AccountOthers'
-                    ));
+                    ,'Account','TransactionOR','AccountOthers'));
     }
 
 

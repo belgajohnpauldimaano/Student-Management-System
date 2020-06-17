@@ -10,7 +10,7 @@
                 <input type="hidden" name="no_months_paid" value="{{$Transaction->no_month_paid}}" />
             @endif
             
-            <div class="modal-body">
+            
                 @include('control_panel_finance.student_payment_account.partials.data_student')    
             <hr>
                 @include('control_panel_finance.student_payment_account.partials.student_with_account.data_account') 
@@ -21,7 +21,7 @@
                 <input type="hidden" name="stud_status" value="0">
             @endif
             
-            <div class="modal-body">
+            
                 @include('control_panel_finance.student_payment_account.partials.data_student')         
             <hr>               
                 @include('control_panel_finance.student_payment_account.partials.student_enroll.data_enroll')
