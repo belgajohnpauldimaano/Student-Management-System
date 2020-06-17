@@ -30,7 +30,7 @@
                             <img src="{{ asset('img/faculty/Yao-Gemma-R.jpg') }}" class="img-fluid" alt="">
                             <div class="member-info">
                                 <div class="member-info-content">
-                                    <h4>Gemma Yao</h4>
+                                    <h4>Gemma R. Yao, PhD</h4>
                                     <span>Principal</span>
                                 </div>
                             </div>
@@ -42,7 +42,7 @@
                             <div class="member-info">
                                 <div class="member-info-content">
                                     <h4>Jennielyn Gallardo</h4>
-                                    <span>Guidance Councilor</span>
+                                    <span>Guidance Counselor</span>
                                 </div>
                             </div>
                         </div>
@@ -52,8 +52,8 @@
                             <img src="{{ asset('img/faculty/Garcia-Nelma-Katrina-O.jpg') }}" class="img-fluid" alt="">
                             <div class="member-info">
                                 <div class="member-info-content">
-                                    <h4>Katrina Nelma Garcia</h4>
-                                    <span>Student Services Coordinator</span>
+                                    <h4>Nelma Katrina Garcia</h4>
+                                    <span>Student Welfare Coordinator</span>
                                 </div>
                             </div>
                         </div>
