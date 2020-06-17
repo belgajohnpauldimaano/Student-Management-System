@@ -8,6 +8,9 @@ use App\IncomingStudent;
 use App\StudentInformation;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\NotifyNewRegisterStudentMail;
+use App\Mail\NotifyNewRegisterStudentAdminMail;
 
 class RegistrationController extends Controller
 {
@@ -87,6 +90,10 @@ class RegistrationController extends Controller
             $Incoming_student->grade_level_id = $request->grade_lvl;
             $Incoming_student->student_type = $request->reg_type;
             $Incoming_student->save();
+
+            $NewStudent = IncomingStudent::find($Incoming_student->id);
+                Mail::to($request->email)->send(new NotifyNewRegisterStudentMail($NewStudent));
+                Mail::to('admission@sja-bataan.com')->send(new NotifyNewRegisterStudentAdminMail($NewStudent));
 
             // dd($request->all());
             return response()->json(['res_code' => 0, 'res_msg' => 'You have successfuly tested!']);
