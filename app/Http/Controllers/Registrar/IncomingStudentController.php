@@ -131,6 +131,8 @@ class IncomingStudentController extends Controller
         return view('control_panel_registrar.incoming_student_approved.index', compact('IncomingStudentApproved','IncomingStudentCount'));
     }
 
+    
+
     public function Disapproved(Request $request)
     {
         $SchoolYear = SchoolYear::where('current', 1)

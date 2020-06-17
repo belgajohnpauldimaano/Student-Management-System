@@ -3,6 +3,9 @@
 <div class="pull-right">
     {{ $IncomingStudentApproved ? $IncomingStudentApproved->links() : '' }}
 </div>
+<button class="btn btn-sm btn-success btn-approve" data-id="{{$item->student_id}}">
+    Re-Approve All
+</button>
 <table class="table no-margin table-bordered table-striped">
     <thead>
         <tr>                                                
@@ -26,6 +29,9 @@
                 </td>
                 <td>
                     <button class="btn btn-sm btn-primary btn-view-modal" data-id="{{$item->student_id}}">View</button>
+                    <button class="btn btn-sm btn-success btn-approve" data-id="{{$item->student_id}}">
+                        Re-Approve
+                    </button>
                     <button class="btn btn-sm btn-danger btn-disapprove" data-id="{{$item->student_id}}">
                         Disapprove
                     </button>
