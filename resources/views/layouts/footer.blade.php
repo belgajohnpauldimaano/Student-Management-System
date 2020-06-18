@@ -316,7 +316,7 @@
                 function check_lrn(){
                     var x = $('#lrn').val();
 
-                    if(x.length >= 12){
+                    if(x != ''){
                         $('.input-lrn').addClass('has-success');
                         $('.input-lrn').removeClass('has-error');
                         $('#js-lrn').text('Double check your LRN and You are good to go!').css('color', 'green');               
