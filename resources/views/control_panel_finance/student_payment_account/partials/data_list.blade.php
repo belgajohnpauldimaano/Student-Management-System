@@ -8,8 +8,7 @@
                 <input type="hidden" name="id" value="{{ $StudentInformation->id }}">
                 <input type="hidden" name="stud_status" value="1">
                 <input type="hidden" name="no_months_paid" value="{{$Transaction->no_month_paid}}" />
-            @endif
-            
+            @endif            
             
                 @include('control_panel_finance.student_payment_account.partials.data_student')    
             <hr>
