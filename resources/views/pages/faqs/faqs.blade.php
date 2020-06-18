@@ -15,7 +15,7 @@
 		</div>
 	</div>
     <main id="main">
-		<div class="container">
+		<div class="container" style="overflow: hidden">
 			<div class="row">
 				<div class="col-md-12">
 					

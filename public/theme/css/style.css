@@ -1687,3 +1687,7 @@ Center vertical */
   font-size: 50px;
   background-color: rgba(0, 0, 0, 0.5);
 }
+
+.accordion .btn-link{
+  white-space: normal !important; 
+}   
