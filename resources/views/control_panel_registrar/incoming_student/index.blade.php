@@ -48,6 +48,7 @@
                 contentType : false,
                 success     : function (res) {
                     loader_overlay();
+                    
                     $('.js-data-container').html(res);
                 }
             });
@@ -81,7 +82,10 @@
                                     type    : 'success'
                                 });
                                 $('.js-modal_holder .modal').modal('hide');
-                                fetch_data();
+                                setTimeout(function() 
+                                {
+                                    location.reload();  //Refresh page
+                                }, 1000);
                             }
                         }
                     });
@@ -118,7 +122,10 @@
                                     type    : 'success'
                                 });
                                 $('.js-modal_holder .modal').modal('hide');
-                                fetch_data();
+                                setTimeout(function() 
+                                {
+                                    location.reload();  //Refresh page
+                                }, 1000);
                             }
                         }
                     });

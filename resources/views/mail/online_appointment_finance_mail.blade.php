@@ -20,7 +20,7 @@
 
         <p>Dear Finance,</p>
         
-        <p>You have new appointment from MR. {{$hasAppointment->student->last_name.', '.$hasAppointment->student->first_name}}, Please see details below:</p>
+        <p>You have new appointment from {{$hasAppointment->student->last_name.', '.$hasAppointment->student->first_name}}, Please see details below:</p>
         
         <table border="1" style="border-color: #666;border-collapse: collapse;width:100%; " cellpadding="5">
             <thead>
@@ -34,7 +34,7 @@
                 <tr>
                     <td>{{ $hasAppointment ? date_format(date_create($hasAppointment->appointment->date), 'F d, Y') : '' }}</td>
                     <td>{{ $hasAppointment ? date_format(date_create($hasAppointment->appointment->date), 'h:i A') : '' }}</td>
-                    <td>{{$hasAppointment->queueing_number}}</td>
+                    <td>{{  $hasAppointment->queueing_number}}</td>
                 </tr>
             </tbody>
         </table>
