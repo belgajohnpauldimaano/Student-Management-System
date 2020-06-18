@@ -3,10 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\User;
+use App\Email;
 use App\SchoolYear;
 use App\IncomingStudent;
 use App\StudentInformation;
 use Illuminate\Http\Request;
+use App\Mail\InformationEmail;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\NotifyNewRegisterStudentMail;
@@ -96,7 +98,7 @@ class RegistrationController extends Controller
                 Mail::to('admission@sja-bataan.com')->send(new NotifyNewRegisterStudentAdminMail($NewStudent));
 
             // dd($request->all());
-            return response()->json(['res_code' => 0, 'res_msg' => 'You have successfuly tested!']);
+            return response()->json(['res_code' => 0, 'res_msg' => 'You have successfuly registered!']);
         }
         catch(\Exception $e){
             // do task when error
@@ -104,5 +106,47 @@ class RegistrationController extends Controller
             \Log::error($e->getMessage());
             return response()->json(['res_code' => 1, 'res_msg' => $e->getMessage()]);
         }
-    }    
+    }   
+    
+    public function send_email(Request $request)
+    {
+        $rules = [
+            'name' => 'required',
+            'subject' => 'required',
+            'email' => 'email|required',
+            'message' => 'required'
+        ];        
+        
+        $Validator = \Validator($request->all(), $rules);
+
+        if ($Validator->fails())
+        {
+            return response()->json(['res_code' => 1, 'res_msg' => 'Please fill all required fields.', 'res_error_msg' => $Validator->getMessageBag()]);
+        }
+
+        try
+        {  
+            $email = new Email();
+            $email->name = $request->name;
+            $email->email = $request->email;
+            $email->subject = $request->subject;
+            $email->message = $request->message;   
+                     
+            try{
+                $email->save();
+
+                $email = Email::find($email->id);
+                    Mail::to('info@sja-bataan.com')->send(new InformationEmail($email));
+                return response()->json(['res_code' => 0, 'res_msg' => 'You have successfuly send your email! Thank you']);
+
+            }catch(\Exception $e){
+                \Log::error($e->getMessage());
+                return response()->json(['res_code' => 1, 'res_msg' => $e->getMessage()]);
+            }
+
+        }catch(\Exception $e){
+            \Log::error($e->getMessage());
+            return response()->json(['res_code' => 1, 'res_msg' => $e->getMessage()]);
+        }
+    }
 }
