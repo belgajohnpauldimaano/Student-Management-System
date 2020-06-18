@@ -21,11 +21,12 @@ class StudentFinanceAccountController extends Controller
             ->where('status', 1)
             ->first();
 
-            $Unpaid = StudentInformation::join('transactions','transactions.student_id', '=' ,'student_informations.id')                           
+            $Unpaid = StudentInformation::join('transactions','transactions.student_id', '=' ,'student_informations.id')  
+                ->join('transaction_month_paids', 'transaction_month_paids.transaction_id', '=' ,'transactions.id')                            
                 ->join('payment_categories', 'payment_categories.id', '=', 'transactions.payment_category_id')
                 ->join('student_categories', 'student_categories.id', '=', 'payment_categories.student_category_id')
                 ->selectRaw('
-                    CONCAT(student_informations.last_name, " ", student_informations.first_name, ", " ,  student_informations.middle_name) AS student_name,
+                    CONCAT(student_informations.last_name, ", ", student_informations.first_name, " " ,  student_informations.middle_name) AS student_name,
                     CONCAT(payment_categories.grade_level_id," - ", student_categories.student_category) AS student_level,
                     transactions.student_id,
                     student_informations.id,
@@ -39,13 +40,15 @@ class StudentFinanceAccountController extends Controller
                 ->where('student_informations.status', 1)
                 ->where('transactions.status', 1)
                 ->orderBy('student_name', 'ASC')
-                ->paginate(10); 
+                ->distinct()
+                ->paginate(10, ['transactions.id']);
 
-            $Paid = StudentInformation::join('transactions','transactions.student_id', '=' ,'student_informations.id')                           
+            $Paid = StudentInformation::join('transactions','transactions.student_id', '=' ,'student_informations.id') 
+                ->join('transaction_month_paids', 'transaction_month_paids.transaction_id', '=' ,'transactions.id')                             
                 ->join('payment_categories', 'payment_categories.id', '=', 'transactions.payment_category_id')
                 ->join('student_categories', 'student_categories.id', '=', 'payment_categories.student_category_id')
                 ->selectRaw('
-                    CONCAT(student_informations.last_name, " ", student_informations.first_name, ", " ,  student_informations.middle_name) AS student_name,
+                    CONCAT(student_informations.last_name, ", ", student_informations.first_name, " " ,  student_informations.middle_name) AS student_name,
                     CONCAT(payment_categories.grade_level_id," - ", student_categories.student_category) AS student_level,
                     transactions.student_id,
                     student_informations.id,
@@ -59,7 +62,8 @@ class StudentFinanceAccountController extends Controller
                 ->where('student_informations.status', 1)
                 ->where('transactions.status', 0)
                 ->orderBy('student_name', 'ASC')
-                ->paginate(10); 
+                ->distinct()
+                ->paginate(10, ['transactions.id']);
 
 
             return view('control_panel_finance.student_finance_account.partials.data_list', compact('Unpaid','Paid'));
@@ -69,11 +73,12 @@ class StudentFinanceAccountController extends Controller
             ->where('status', 1)
             ->first();  
 
-        $Unpaid = StudentInformation::join('transactions','transactions.student_id', '=' ,'student_informations.id')                           
+        $Unpaid = StudentInformation::join('transactions','transactions.student_id', '=' ,'student_informations.id')  
+            ->join('transaction_month_paids', 'transaction_month_paids.transaction_id', '=' ,'transactions.id')                           
             ->join('payment_categories', 'payment_categories.id', '=', 'transactions.payment_category_id')
             ->join('student_categories', 'student_categories.id', '=', 'payment_categories.student_category_id')
             ->selectRaw('
-                CONCAT(student_informations.last_name, " ", student_informations.first_name, ", " ,  student_informations.middle_name) AS student_name,
+                CONCAT(student_informations.last_name, ", ", student_informations.first_name, " " ,  student_informations.middle_name) AS student_name,
                 CONCAT(payment_categories.grade_level_id," - ", student_categories.student_category) AS student_level,
                 transactions.student_id,
                 student_informations.id,
@@ -81,14 +86,17 @@ class StudentFinanceAccountController extends Controller
             ')
             ->where('transactions.status', 1)
             ->where('student_informations.status', 1)
+            ->where('transaction_month_paids.isSuccess', 1)
             ->orderBy('student_name', 'ASC')
-            ->paginate(10);
+            ->distinct()
+            ->paginate(10, ['transactions.id']);
         
-        $Paid = StudentInformation::join('transactions','transactions.student_id', '=' ,'student_informations.id')                           
+        $Paid = StudentInformation::join('transactions','transactions.student_id', '=' ,'student_informations.id') 
+            ->join('transaction_month_paids', 'transaction_month_paids.transaction_id', '=' ,'transactions.id')                          
             ->join('payment_categories', 'payment_categories.id', '=', 'transactions.payment_category_id')
             ->join('student_categories', 'student_categories.id', '=', 'payment_categories.student_category_id')
             ->selectRaw('
-                CONCAT(student_informations.last_name, " ", student_informations.first_name, ", " ,  student_informations.middle_name) AS student_name,
+                CONCAT(student_informations.last_name, ", ", student_informations.first_name, " " ,  student_informations.middle_name) AS student_name,
                 CONCAT(payment_categories.grade_level_id," - ", student_categories.student_category) AS student_level,
                 transactions.student_id,
                 student_informations.id,
@@ -96,8 +104,10 @@ class StudentFinanceAccountController extends Controller
             ')
             ->where('student_informations.status', 1)
             ->where('transactions.status', 0)
+            ->where('transaction_month_paids.isSuccess', 1)
             ->orderBy('student_name', 'ASC')
-            ->paginate(10); 
+            ->distinct()
+            ->paginate(10, ['transactions.id']);
         
         return view('control_panel_finance.student_finance_account.index', compact('Unpaid','Paid'));
     }

@@ -30,7 +30,7 @@ class StudentPaymentController extends Controller
                 ->join('tuition_fees', 'tuition_fees.id', '=', 'payment_categories.tuition_fee_id')
                 ->join('misc_fees', 'misc_fees.id', '=', 'payment_categories.misc_fee_id')   
                 ->selectRaw('
-                    CONCAT(student_informations.last_name, " ", student_informations.first_name, ", " ,  student_informations.middle_name) AS student_name,
+                    CONCAT(student_informations.last_name, ", ", student_informations.first_name, " " ,  student_informations.middle_name) AS student_name,
                     CONCAT(payment_categories.grade_level_id," - ", student_categories.student_category) AS student_level,
                     tuition_fees.tuition_amt,
                     misc_fees.misc_amt,
@@ -62,7 +62,7 @@ class StudentPaymentController extends Controller
                 ->join('tuition_fees', 'tuition_fees.id', '=', 'payment_categories.tuition_fee_id')
                 ->join('misc_fees', 'misc_fees.id', '=', 'payment_categories.misc_fee_id')   
                 ->selectRaw('
-                    CONCAT(student_informations.last_name, " ", student_informations.first_name, ", " ,  student_informations.middle_name) AS student_name,
+                    CONCAT(student_informations.last_name, ", ", student_informations.first_name, " " ,  student_informations.middle_name) AS student_name,
                     CONCAT(payment_categories.grade_level_id," - ", student_categories.student_category) AS student_level,
                     tuition_fees.tuition_amt,
                     misc_fees.misc_amt,
@@ -94,7 +94,7 @@ class StudentPaymentController extends Controller
                 ->join('tuition_fees', 'tuition_fees.id', '=', 'payment_categories.tuition_fee_id')
                 ->join('misc_fees', 'misc_fees.id', '=', 'payment_categories.misc_fee_id')   
                 ->selectRaw('
-                    CONCAT(student_informations.last_name, " ", student_informations.first_name, ", " ,  student_informations.middle_name) AS student_name,
+                    CONCAT(student_informations.last_name, ", ", student_informations.first_name, " " ,  student_informations.middle_name) AS student_name,
                     CONCAT(payment_categories.grade_level_id," - ", student_categories.student_category) AS student_level,
                     tuition_fees.tuition_amt,
                     misc_fees.misc_amt,
@@ -129,7 +129,7 @@ class StudentPaymentController extends Controller
             ->join('tuition_fees', 'tuition_fees.id', '=', 'payment_categories.tuition_fee_id')
             ->join('misc_fees', 'misc_fees.id', '=', 'payment_categories.misc_fee_id')   
             ->selectRaw('
-                CONCAT(student_informations.last_name, " ", student_informations.first_name, ", " ,  student_informations.middle_name) AS student_name,
+                CONCAT(student_informations.last_name, ", ", student_informations.first_name, " " ,  student_informations.middle_name) AS student_name,
                 CONCAT(payment_categories.grade_level_id," - ", student_categories.student_category) AS student_level,
                 tuition_fees.tuition_amt,
                 misc_fees.misc_amt,
@@ -156,7 +156,7 @@ class StudentPaymentController extends Controller
             ->join('tuition_fees', 'tuition_fees.id', '=', 'payment_categories.tuition_fee_id')
             ->join('misc_fees', 'misc_fees.id', '=', 'payment_categories.misc_fee_id')   
             ->selectRaw('
-                CONCAT(student_informations.last_name, " ", student_informations.first_name, ", " ,  student_informations.middle_name) AS student_name,
+                CONCAT(student_informations.last_name, ", ", student_informations.first_name, " " ,  student_informations.middle_name) AS student_name,
                 CONCAT(payment_categories.grade_level_id," - ", student_categories.student_category) AS student_level,
                 tuition_fees.tuition_amt,
                 misc_fees.misc_amt,
@@ -187,7 +187,7 @@ class StudentPaymentController extends Controller
             ->join('tuition_fees', 'tuition_fees.id', '=', 'payment_categories.tuition_fee_id')
             ->join('misc_fees', 'misc_fees.id', '=', 'payment_categories.misc_fee_id')               
             ->selectRaw('
-                CONCAT(student_informations.last_name, " ", student_informations.first_name, ", " ,  student_informations.middle_name) AS student_name,
+                CONCAT(student_informations.last_name, ", ", student_informations.first_name, " " ,  student_informations.middle_name) AS student_name,
                 CONCAT(payment_categories.grade_level_id," - ", student_categories.student_category) AS student_level,
                 tuition_fees.tuition_amt,
                 misc_fees.misc_amt,
