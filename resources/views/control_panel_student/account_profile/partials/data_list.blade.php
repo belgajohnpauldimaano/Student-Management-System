@@ -84,9 +84,9 @@
         <div class="box-header">
             <h3 class="box-title">User Account</h3>
             <div class="box-tools pull-right">
-                {{-- <button type="button" class="btn btn-flat btn-box-tool btn-change-password" title="change password">
+                <button type="button" class="btn btn-flat btn-box-tool btn-change-password" title="change password">
                     <i class="fa fa-wrench"></i>
-                </button> --}}
+                </button>
             </div>
         </div>
         
