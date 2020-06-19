@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\User;
 use App\Email;
 use App\SchoolYear;
+use Dotenv\Validator;
 use App\IncomingStudent;
 use App\StudentInformation;
 use Illuminate\Http\Request;
@@ -25,25 +26,25 @@ class RegistrationController extends Controller
             'first_name' => 'required',
             'middle_name' => 'required',
             'last_name' => 'required',
+            'email' => 'email|required',
+            'phone' => 'required',            
             'guardian' => 'required',
             'address'   => 'required',
             'p_address' => 'required',
             'birthdate' => 'required',
-            'gender'    => 'required',
-            'email' => 'email|required',
-            'phone' => 'required',
+            'gender'    => 'required',            
             'mother_name' => 'required',
             'father_name' => 'required',
-            'student_img' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'student_img' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048'
         ];
         
         
-        $Validator = \Validator($request->all(), $rules);
+        // $Validator = \Validator($request->all(), $rules);
 
-        if ($Validator->fails())
-        {
-            return response()->json(['res_code' => 1, 'res_msg' => 'Please fill all required fields.', 'res_error_msg' => $Validator->getMessageBag()]);
-        }
+        // if ($Validator->fails())
+        // {
+        //     return response()->json(['res_code' => 1, 'res_msg' => 'Please fill all required fields.', 'res_error_msg' => $Validator->getMessageBag()]);
+        // }
 
         try{
 
@@ -52,11 +53,11 @@ class RegistrationController extends Controller
                 ->orderBY('id', 'DESC')
                 ->first();
 
-            // $checkUser = User::where('username', $request->lrn)->first();
-            // if ($checkUser) 
-            // {
-            //     return response()->json(['res_code' => 1,'res_msg' => 'LRN already used. Please contact the administrator to confirm it. Thank you']);
-            // }
+            $checkUser = User::where('username', $request->lrn)->first();
+            if ($checkUser) 
+            {
+                return response()->json(['res_code' => 1,'res_msg' => 'LRN already used. Please contact the administrator to confirm it. Thank you']);
+            }
             
             $User = new User();
             $User->username = $request->lrn;
