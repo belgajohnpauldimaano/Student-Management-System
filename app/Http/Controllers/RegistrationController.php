@@ -52,18 +52,18 @@ class RegistrationController extends Controller
                 ->orderBY('id', 'DESC')
                 ->first();
 
-            $checkUser = User::where('username', $request->lrn)->first();
-            if ($checkUser) 
-            {
-                return response()->json(['res_code' => 1,'res_msg' => 'LRN already used. Please contact the administrator to confirm it. Thank you']);
-            }else{
-                $User = new User();
-                $User->username = $request->lrn;
-                $User->password = bcrypt($request->first_name . '.' . $request->last_name);
-                $User->role     = 5;
-                $User->status = 0;
-                $User->save();
-            }                  
+            // $checkUser = User::where('username', $request->lrn)->first();
+            // if ($checkUser) 
+            // {
+            //     return response()->json(['res_code' => 1,'res_msg' => 'LRN already used. Please contact the administrator to confirm it. Thank you']);
+            // }
+            
+            $User = new User();
+            $User->username = $request->lrn;
+            $User->password = bcrypt($request->first_name . '.' . $request->last_name);
+            $User->role     = 5;
+            $User->status = 0;
+            $User->save();
 
             $StudentInformation                 = new StudentInformation();
             $StudentInformation->first_name     = $request->first_name;
