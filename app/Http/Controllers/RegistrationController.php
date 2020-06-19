@@ -52,7 +52,6 @@ class RegistrationController extends Controller
                 ->orderBY('id', 'DESC')
                 ->first();
 
-            $User = User::find($request->lrn);
             $User = User::where('username', $request->lrn)->first();
             if ($User) 
             {
