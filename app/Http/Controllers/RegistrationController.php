@@ -95,7 +95,7 @@ class RegistrationController extends Controller
 
             $NewStudent = IncomingStudent::find($Incoming_student->id);
                 Mail::to($request->email)->send(new NotifyNewRegisterStudentMail($NewStudent));
-                Mail::to('admission@sja-bataan.com')->send(new NotifyNewRegisterStudentAdminMail($NewStudent));
+                Mail::to('admission@sja-bataan.com')->cc('info@sja-bataan.com')->send(new NotifyNewRegisterStudentAdminMail($NewStudent));
 
             // dd($request->all());
             return response()->json(['res_code' => 0, 'res_msg' => 'You have successfuly registered!']);

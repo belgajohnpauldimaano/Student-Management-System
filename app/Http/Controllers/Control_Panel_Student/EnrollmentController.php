@@ -339,13 +339,18 @@ class EnrollmentController extends Controller
         }       
         
             $payment = Transaction::find($Enrollment->transaction_id);
-            \Mail::to($request->bank_email)->send(new SendMail($payment));
-            \Mail::to('info@sja-bataan.com')->send(new NotifyAdminMail($payment));
-
+            try{
+                \Mail::to($request->bank_email)->send(new SendMail($payment));
+                \Mail::to('info@sja-bataan.com')->cc('finance@sja-bataan.com')->send(new NotifyAdminMail($payment));
+            }catch(\Exception $e){
+                \Log::error($e->getMessage());
+            }
+            
         return response()->json(['res_code' => 0, 'res_msg' => 'You have successfully accomplished the form. Check your email for review of Finance Dept. Thank you!']);
     }
 
-    public function save_data(Request $request){
+    public function save_data(Request $request)
+    {
         $User = \Auth::user();
         $StudentInformation = StudentInformation::where('user_id', $User->id)->first();
         $mytime = Carbon::now();
@@ -488,9 +493,14 @@ class EnrollmentController extends Controller
         }   
 
         $payment = Transaction::find($Enrollment->transaction_id);
-            \Mail::to($request->gcash_email)->send(new SendMail($payment));
-            \Mail::to('info@sja-bataan.com')->send(new NotifyAdminMail($payment));
 
+            try{
+                \Mail::to($request->gcash_email)->send(new SendMail($payment));
+                \Mail::to('info@sja-bataan.com')->cc('finance@sja-bataan.com')->send(new NotifyAdminMail($payment));
+            }catch(\Exception $e){
+                \Log::error($e->getMessage());
+            }
+            
         return response()->json(['res_code' => 0,
          'res_msg' =>
           'You have successfully accomplished the form. Check your email for review of Finance Dept. Thank you!']);        

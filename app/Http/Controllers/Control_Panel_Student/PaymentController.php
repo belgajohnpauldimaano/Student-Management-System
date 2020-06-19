@@ -310,8 +310,13 @@ class PaymentController extends Controller
                 }
                 
                 $payment = \App\Transaction::find($IsReceived->transaction_id);
-                    \Mail::to($IsReceived->email)->send(new SendMail($payment));
-                    \Mail::to('info@sja-bataan.com')->send(new NotifyAdminMail($payment));
+                    try{
+                        \Mail::to($IsReceived->email)->send(new SendMail($payment));
+                        \Mail::to('info@sja-bataan.com')->cc('finance@sja-bataan.com')->send(new NotifyAdminMail($payment));
+                    }catch(\Exception $e){
+                        \Log::error($e->getMessage());
+                    }
+                    
 
                 return redirect()->route('student.enrollment.index')
                     ->withSuccess('You have successfully accomplished the form. Check your email for review of Finance Dept. Thank you!');
