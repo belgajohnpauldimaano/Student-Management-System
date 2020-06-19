@@ -131,13 +131,13 @@
                                                 {{ $data->payment_option}}
                                             </td>                                
                                         </tr>
-                                            <td>Tuition Fee</td>
+                                            <td>Paid Fee</td>
                                             <td>
                                                 ₱ {{ number_format($data->payment, 2)}}
                                             </td>                                
                                         </tr>
                                         <tr>
-                                            <td>Misc Fee</td>
+                                            <td>Balance Fee</td>
                                             <td>
                                                 ₱ {{ number_format($data->balance, 2)}}
                                             </td>                                

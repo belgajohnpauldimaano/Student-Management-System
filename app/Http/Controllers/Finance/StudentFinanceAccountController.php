@@ -120,8 +120,10 @@ class StudentFinanceAccountController extends Controller
         if ($request->id)
         {
             $Modal_data = Transaction::where('id', $request->id)->first();
+            
             $Discount = TransactionDiscount::where('student_id', $Modal_data->student_id)
                 ->where('school_year_id', $Modal_data->school_year_id)
+                ->where('isSuccess', 1)
                 ->sum('discount_amt');
 
             $Discount_amt = TransactionDiscount::where('student_id', $Modal_data->student_id)
@@ -155,7 +157,8 @@ class StudentFinanceAccountController extends Controller
 
             $total = ($Modal_data->payment_cat->tuition->tuition_amt + $Modal_data->payment_cat->misc_fee->misc_amt + $other) - $Discount;
         }
-        return view('control_panel_finance.student_finance_account.partials.modal_data', compact('Modal_data','Mo_history','other_fee','Discount','Discount_amt','total','other'))->render();
+        return view('control_panel_finance.student_finance_account.partials.modal_data',
+             compact('Modal_data','Mo_history','other_fee','Discount','Discount_amt','total','other'))->render();
     }
 
     public function paid(Request $request)
