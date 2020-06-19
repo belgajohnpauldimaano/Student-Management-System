@@ -22,7 +22,7 @@
                         <div class="card">
                           <div class="card-header" id="headingOne">
                             <h2 class="mb-0">
-                              <button class="btn btn-link btn-block text-left btn-faq" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                              <button class="btn btn-link btn-block text-left" style="white-space: normal" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
                                 1. What is Distance Learning or home-based learning?
                               </button>
                             </h2>
@@ -37,7 +37,7 @@
                         <div class="card">
                           <div class="card-header" id="headingTwo">
                             <h2 class="mb-0">
-                              <button class="btn btn-link btn-block text-left collapsed" type="button" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                              <button class="btn btn-link btn-block text-left collapsed" style="white-space: normal" type="button" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
                                 2. What is blended learning? 
                               </button>
                             </h2>
@@ -51,7 +51,7 @@
                         <div class="card">
                           <div class="card-header" id="headingThree">
                             <h2 class="mb-0">
-                              <button class="btn btn-link btn-block text-left collapsed" type="button" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                              <button class="btn btn-link btn-block text-left collapsed" style="white-space: normal" type="button" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
                                 3. What is synchronous learning?
                               </button>
                             </h2>
@@ -66,7 +66,7 @@
                         <div class="card">
                             <div class="card-header" id="headingFour">
                               <h2 class="mb-0">
-                                <button class="btn btn-link btn-block text-left collapsed" type="button" data-toggle="collapse" data-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
+                                <button class="btn btn-link btn-block text-left collapsed" style="white-space: normal" type="button" data-toggle="collapse" data-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
                                   4. What is asynchronous learning?
                                 </button>
                               </h2>
@@ -81,7 +81,7 @@
                         <div class="card">
                             <div class="card-header" id="headingFive">
                               <h2 class="mb-0">
-                                <button class="btn btn-link btn-block text-left collapsed" type="button" data-toggle="collapse" data-target="#collapseFive" aria-expanded="false" aria-controls="collapseFive">
+                                <button class="btn btn-link btn-block text-left collapsed" style="white-space: normal" type="button" data-toggle="collapse" data-target="#collapseFive" aria-expanded="false" aria-controls="collapseFive">
                                   5. What are needed in distance learning/home-based learning?
                                 </button>
                               </h2>
@@ -96,7 +96,7 @@
                         <div class="card">
                             <div class="card-header" id="headingSix">
                               <h2 class="mb-0">
-                                <button class="btn btn-link btn-block text-left collapsed" type="button" data-toggle="collapse" data-target="#collapseSix" aria-expanded="false" aria-controls="collapseSix">
+                                <button class="btn btn-link btn-block text-left collapsed" style="white-space: normal" type="button" data-toggle="collapse" data-target="#collapseSix" aria-expanded="false" aria-controls="collapseSix">
                                   6. Why is laptop or desktop more convenient to use than smartphone?
                                 </button>
                               </h2>
@@ -111,7 +111,7 @@
                         <div class="card">
                             <div class="card-header" id="headingSeven">
                               <h2 class="mb-0">
-                                <button class="btn btn-link btn-block text-left collapsed" type="button" data-toggle="collapse" data-target="#collapseSeven" aria-expanded="false" aria-controls="collapseSeven">
+                                <button class="btn btn-link btn-block text-left collapsed" style="white-space: normal" type="button" data-toggle="collapse" data-target="#collapseSeven" aria-expanded="false" aria-controls="collapseSeven">
                                   7. How many gadgets do students need at home if everyone is in online learning?
                                 </button>
                               </h2>
@@ -126,7 +126,7 @@
                         <div class="card">
                             <div class="card-header" id="headingEight">
                               <h2 class="mb-0">
-                                <button class="btn btn-link btn-block text-left collapsed" type="button" data-toggle="collapse" data-target="#collapseEight" aria-expanded="false" aria-controls="collapseEight">
+                                <button class="btn btn-link btn-block text-left collapsed" style="white-space: normal" type="button" data-toggle="collapse" data-target="#collapseEight" aria-expanded="false" aria-controls="collapseEight">
                                   8. Are textbooks still needed in home-based learning?
                                 </button>
                               </h2>
@@ -141,7 +141,7 @@
                         <div class="card">
                             <div class="card-header" id="headingNine">
                               <h2 class="mb-0">
-                                <button class="btn btn-link btn-block text-left collapsed" type="button" data-toggle="collapse" data-target="#collapseNine" aria-expanded="false" aria-controls="collapseNine">
+                                <button class="btn btn-link btn-block text-left collapsed" style="white-space: normal" type="button" data-toggle="collapse" data-target="#collapseNine" aria-expanded="false" aria-controls="collapseNine">
                                   9. What if our location has weak signal?
                                 </button>
                               </h2>
@@ -156,7 +156,7 @@
                         <div class="card">
                           <div class="card-header" id="headingNine">
                             <h2 class="mb-0">
-                              <button class="btn btn-link btn-block text-left collapsed" type="button" data-toggle="collapse" data-target="#collapseEleven" aria-expanded="false" aria-controls="collapseEleven">
+                              <button class="btn btn-link btn-block text-left collapsed" style="white-space: normal" type="button" data-toggle="collapse" data-target="#collapseEleven" aria-expanded="false" aria-controls="collapseEleven">
                                 10. What would be the role of the parents in home-based learning?
                               </button>
                             </h2>
@@ -171,7 +171,7 @@
                         <div class="card">
                           <div class="card-header" id="headingNine">
                             <h2 class="mb-0">
-                              <button class="btn btn-link btn-block text-left collapsed" type="button" data-toggle="collapse" data-target="#collapseTen" aria-expanded="false" aria-controls="collapseTen">
+                              <button class="btn btn-link btn-block text-left collapsed" style="white-space: normal" type="button" data-toggle="collapse" data-target="#collapseTen" aria-expanded="false" aria-controls="collapseTen">
                                 11. In case of power interruption, will there be classes?
                               </button>
                             </h2>
@@ -187,7 +187,7 @@
                         <div class="card">
                           <div class="card-header" id="headingNine">
                             <h2 class="mb-0">
-                              <button class="btn btn-link btn-block text-left collapsed" type="button" data-toggle="collapse" data-target="#collapse13" aria-expanded="false" aria-controls="collapse13">
+                              <button class="btn btn-link btn-block text-left collapsed" style="white-space: normal" type="button" data-toggle="collapse" data-target="#collapse13" aria-expanded="false" aria-controls="collapse13">
                                 12. What if only in our location there is power interruption, will I be excused from the on-line classes?
                               </button>
                             </h2>
@@ -202,7 +202,7 @@
                         <div class="card">
                           <div class="card-header" id="headingNine">
                             <h2 class="mb-0">
-                              <button class="btn btn-link btn-block text-left collapsed" type="button" data-toggle="collapse" data-target="#collapse14" aria-expanded="false" aria-controls="collapse14">
+                              <button class="btn btn-link btn-block text-left collapsed" style="white-space: normal" type="button" data-toggle="collapse" data-target="#collapse14" aria-expanded="false" aria-controls="collapse14">
                                 13. What if the LGU announces suspension of classes due to inclement weather, are we included?
                               </button>
                             </h2>
@@ -219,7 +219,7 @@
                         <div class="card">
                           <div class="card-header" id="headingNine">
                             <h2 class="mb-0">
-                              <button class="btn btn-link btn-block text-left collapsed" type="button" data-toggle="collapse" data-target="#collapse15" aria-expanded="false" aria-controls="collapse15">
+                              <button class="btn btn-link btn-block text-left collapsed" style="white-space: normal" type="button" data-toggle="collapse" data-target="#collapse15" aria-expanded="false" aria-controls="collapse15">
                                 14. Will there be collaboration in doing our performance tasks in home-based learning?
                               </button>
                             </h2>
@@ -236,7 +236,7 @@
                         <div class="card">
                           <div class="card-header" id="headingNine">
                             <h2 class="mb-0">
-                              <button class="btn btn-link btn-block text-left collapsed" type="button" data-toggle="collapse" data-target="#collapse16" aria-expanded="false" aria-controls="collapse16">
+                              <button class="btn btn-link btn-block text-left collapsed" style="white-space: normal" type="button" data-toggle="collapse" data-target="#collapse16" aria-expanded="false" aria-controls="collapse16">
                                 15. How would the teacher protect the integrity of summative assessments?
                               </button>
                             </h2>
@@ -251,7 +251,7 @@
                         <div class="card">
                           <div class="card-header" id="headingNine">
                             <h2 class="mb-0">
-                              <button class="btn btn-link btn-block text-left collapsed" type="button" data-toggle="collapse" data-target="#collapse17" aria-expanded="false" aria-controls="collapse17">
+                              <button class="btn btn-link btn-block text-left collapsed" style="white-space: normal" type="button" data-toggle="collapse" data-target="#collapse17" aria-expanded="false" aria-controls="collapse17">
                                 16. What time will the class start?
                               </button>
                             </h2>

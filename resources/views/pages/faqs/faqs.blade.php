@@ -23,7 +23,7 @@
                         <div class="card">
                           <div class="card-header" id="headingOne">
                             <h2 class="mb-0">
-                              <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                              <button class="btn btn-link btn-block text-left" style="white-space: normal" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
                                 What are the benefits of paying online?
                               </button>
                             </h2>
@@ -38,7 +38,7 @@
                         <div class="card">
                           <div class="card-header" id="headingTwo">
                             <h2 class="mb-0">
-                              <button class="btn btn-link btn-block text-left collapsed" type="button" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                              <button class="btn btn-link btn-block text-left collapsed" style="white-space: normal" type="button" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
                                 What forms of payment can I use?
                               </button>
                             </h2>
@@ -52,7 +52,7 @@
                         <div class="card">
                           <div class="card-header" id="headingThree">
                             <h2 class="mb-0">
-                              <button class="btn btn-link btn-block text-left collapsed" type="button" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                              <button class="btn btn-link btn-block text-left collapsed" style="white-space: normal" type="button" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
                                 How should I enter my credit card information?
                               </button>
                             </h2>
@@ -67,7 +67,7 @@
                         <div class="card">
                             <div class="card-header" id="headingFour">
                               <h2 class="mb-0">
-                                <button class="btn btn-link btn-block text-left collapsed" type="button" data-toggle="collapse" data-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
+                                <button class="btn btn-link btn-block text-left collapsed" style="white-space: normal" type="button" data-toggle="collapse" data-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
                                     How will I know that my payment has been accepted?
                                 </button>
                               </h2>
@@ -82,7 +82,7 @@
                         <div class="card">
                             <div class="card-header" id="headingFive">
                               <h2 class="mb-0">
-                                <button class="btn btn-link btn-block text-left collapsed" type="button" data-toggle="collapse" data-target="#collapseFive" aria-expanded="false" aria-controls="collapseFive">
+                                <button class="btn btn-link btn-block text-left collapsed" style="white-space: normal" type="button" data-toggle="collapse" data-target="#collapseFive" aria-expanded="false" aria-controls="collapseFive">
                                     How long does it take for a credit card transaction to process if I pay online?
                                 </button>
                               </h2>
@@ -97,7 +97,7 @@
                         <div class="card">
                             <div class="card-header" id="headingSix">
                               <h2 class="mb-0">
-                                <button class="btn btn-link btn-block text-left collapsed" type="button" data-toggle="collapse" data-target="#collapseSix" aria-expanded="false" aria-controls="collapseSix">
+                                <button class="btn btn-link btn-block text-left collapsed" style="white-space: normal" type="button" data-toggle="collapse" data-target="#collapseSix" aria-expanded="false" aria-controls="collapseSix">
                                     Can I use a debit card to pay?
                                 </button>
                               </h2>
@@ -112,7 +112,7 @@
                         <div class="card">
                             <div class="card-header" id="headingSeven">
                               <h2 class="mb-0">
-                                <button class="btn btn-link btn-block text-left collapsed" type="button" data-toggle="collapse" data-target="#collapseSeven" aria-expanded="false" aria-controls="collapseSeven">
+                                <button class="btn btn-link btn-block text-left collapsed" style="white-space: normal" type="button" data-toggle="collapse" data-target="#collapseSeven" aria-expanded="false" aria-controls="collapseSeven">
                                     Who do I contact with questions about my payment and fee?
                                 </button>
                               </h2>
@@ -127,7 +127,7 @@
                         <div class="card">
                             <div class="card-header" id="headingEight">
                               <h2 class="mb-0">
-                                <button class="btn btn-link btn-block text-left collapsed" type="button" data-toggle="collapse" data-target="#collapseEight" aria-expanded="false" aria-controls="collapseEight">
+                                <button class="btn btn-link btn-block text-left collapsed" style="white-space: normal" type="button" data-toggle="collapse" data-target="#collapseEight" aria-expanded="false" aria-controls="collapseEight">
                                     What are transaction fees and why do I need to pay them?
                                 </button>
                               </h2>
@@ -142,7 +142,7 @@
                         <div class="card">
                             <div class="card-header" id="headingNine">
                               <h2 class="mb-0">
-                                <button class="btn btn-link btn-block text-left collapsed" type="button" data-toggle="collapse" data-target="#collapseNine" aria-expanded="false" aria-controls="collapseNine">
+                                <button class="btn btn-link btn-block text-left collapsed" style="white-space: normal" type="button" data-toggle="collapse" data-target="#collapseNine" aria-expanded="false" aria-controls="collapseNine">
                                   How do I register?
                                 </button>
                               </h2>
@@ -167,7 +167,7 @@
                         <div class="card">
                           <div class="card-header" id="headingNine">
                             <h2 class="mb-0">
-                              <button class="btn btn-link btn-block text-left collapsed" type="button" data-toggle="collapse" data-target="#collapseEleven" aria-expanded="false" aria-controls="collapseEleven">
+                              <button class="btn btn-link btn-block text-left collapsed" style="white-space: normal" type="button" data-toggle="collapse" data-target="#collapseEleven" aria-expanded="false" aria-controls="collapseEleven">
                                 For incoming students (Grade 7 and transferees)
                               </button>
                             </h2>
@@ -188,7 +188,7 @@
                         <div class="card">
                           <div class="card-header" id="headingNine">
                             <h2 class="mb-0">
-                              <button class="btn btn-link btn-block text-left collapsed" type="button" data-toggle="collapse" data-target="#collapseTen" aria-expanded="false" aria-controls="collapseTen">
+                              <button class="btn btn-link btn-block text-left collapsed" style="white-space: normal" type="button" data-toggle="collapse" data-target="#collapseTen" aria-expanded="false" aria-controls="collapseTen">
                                 How does the system work?
                               </button>
                             </h2>
@@ -204,7 +204,7 @@
                         <div class="card">
                           <div class="card-header" id="headingNine">
                             <h2 class="mb-0">
-                              <button class="btn btn-link btn-block text-left collapsed" type="button" data-toggle="collapse" data-target="#collapse13" aria-expanded="false" aria-controls="collapse13">
+                              <button class="btn btn-link btn-block text-left collapsed" style="white-space: normal" type="button" data-toggle="collapse" data-target="#collapse13" aria-expanded="false" aria-controls="collapse13">
                                 How do I change my account information?
                               </button>
                             </h2>
@@ -233,7 +233,7 @@
                         <div class="card">
                           <div class="card-header" id="headingNine">
                             <h2 class="mb-0">
-                              <button class="btn btn-link btn-block text-left collapsed" type="button" data-toggle="collapse" data-target="#collapse14" aria-expanded="false" aria-controls="collapse14">
+                              <button class="btn btn-link btn-block text-left collapsed" style="white-space: normal" type="button" data-toggle="collapse" data-target="#collapse14" aria-expanded="false" aria-controls="collapse14">
                                 Is my credit card or debit card information safe when I pay online?
                               </button>
                             </h2>
@@ -250,7 +250,7 @@
                         <div class="card">
                           <div class="card-header" id="headingNine">
                             <h2 class="mb-0">
-                              <button class="btn btn-link btn-block text-left collapsed" type="button" data-toggle="collapse" data-target="#collapse15" aria-expanded="false" aria-controls="collapse15">
+                              <button class="btn btn-link btn-block text-left collapsed" style="white-space: normal" type="button" data-toggle="collapse" data-target="#collapse15" aria-expanded="false" aria-controls="collapse15">
                                 Is my information secure?
                               </button>
                             </h2>
@@ -267,7 +267,7 @@
                         <div class="card">
                           <div class="card-header" id="headingNine">
                             <h2 class="mb-0">
-                              <button class="btn btn-link btn-block text-left collapsed" type="button" data-toggle="collapse" data-target="#collapse16" aria-expanded="false" aria-controls="collapse16">
+                              <button class="btn btn-link btn-block text-left collapsed" style="white-space: normal" type="button" data-toggle="collapse" data-target="#collapse16" aria-expanded="false" aria-controls="collapse16">
                                 What will happen if I accidentally deleted my current email notification, what should I do?
                               </button>
                             </h2>
@@ -286,7 +286,7 @@
                         <div class="card">
                           <div class="card-header" id="headingNine">
                             <h2 class="mb-0">
-                              <button class="btn btn-link btn-block text-left collapsed" type="button" data-toggle="collapse" data-target="#collapse17" aria-expanded="false" aria-controls="collapse17">
+                              <button class="btn btn-link btn-block text-left collapsed" style="white-space: normal" type="button" data-toggle="collapse" data-target="#collapse17" aria-expanded="false" aria-controls="collapse17">
                                 Can I use more than one payment method per transaction?
                               </button>
                             </h2>
@@ -301,7 +301,7 @@
                         <div class="card">
                           <div class="card-header" id="headingNine">
                             <h2 class="mb-0">
-                              <button class="btn btn-link btn-block text-left collapsed" type="button" data-toggle="collapse" data-target="#collapse18" aria-expanded="false" aria-controls="collapse18">
+                              <button class="btn btn-link btn-block text-left collapsed" style="white-space: normal" type="button" data-toggle="collapse" data-target="#collapse18" aria-expanded="false" aria-controls="collapse18">
                                 It is possible for more  than one person to enrol online for the same account?
                               </button>
                             </h2>
@@ -316,7 +316,7 @@
                         <div class="card">
                           <div class="card-header" id="headingNine">
                             <h2 class="mb-0">
-                              <button class="btn btn-link btn-block text-left collapsed" type="button" data-toggle="collapse" data-target="#collapse19" aria-expanded="false" aria-controls="collapse19">
+                              <button class="btn btn-link btn-block text-left collapsed" style="white-space: normal" type="button" data-toggle="collapse" data-target="#collapse19" aria-expanded="false" aria-controls="collapse19">
                                 What if  I forgot my password, how do I retrieve it?
                               </button>
                             </h2>
@@ -331,7 +331,7 @@
                         <div class="card">
                           <div class="card-header" id="headingNine">
                             <h2 class="mb-0">
-                              <button class="btn btn-link btn-block text-left collapsed" type="button" data-toggle="collapse" data-target="#collapse20" aria-expanded="false" aria-controls="collapse20">
+                              <button class="btn btn-link btn-block text-left collapsed" style="white-space: normal" type="button" data-toggle="collapse" data-target="#collapse20" aria-expanded="false" aria-controls="collapse20">
                                 Will other persons have online access to my own account?
                               </button>
                             </h2>
@@ -346,7 +346,7 @@
                         <div class="card">
                           <div class="card-header" id="headingNine">
                             <h2 class="mb-0">
-                              <button class="btn btn-link btn-block text-left collapsed" type="button" data-toggle="collapse" data-target="#collapse21" aria-expanded="false" aria-controls="collapse21">
+                              <button class="btn btn-link btn-block text-left collapsed" style="white-space: normal" type="button" data-toggle="collapse" data-target="#collapse21" aria-expanded="false" aria-controls="collapse21">
                                 How long my payment history would be maintained?
                               </button>
                             </h2>
@@ -361,7 +361,7 @@
                         <div class="card">
                           <div class="card-header" id="headingNine">
                             <h2 class="mb-0">
-                              <button class="btn btn-link btn-block text-left collapsed" type="button" data-toggle="collapse" data-target="#collapse22" aria-expanded="false" aria-controls="collapse22">
+                              <button class="btn btn-link btn-block text-left collapsed" style="white-space: normal" type="button" data-toggle="collapse" data-target="#collapse22" aria-expanded="false" aria-controls="collapse22">
                                 	When is the schedule of entrance test for incoming grade 7 (3rd batch), and transferees?
                               </button>
                             </h2>
@@ -380,7 +380,7 @@
                         <div class="card">
                           <div class="card-header" id="headingNine">
                             <h2 class="mb-0">
-                              <button class="btn btn-link btn-block text-left collapsed" type="button" data-toggle="collapse" data-target="#collapse23" aria-expanded="false" aria-controls="collapse23">
+                              <button class="btn btn-link btn-block text-left collapsed" style="white-space: normal" type="button" data-toggle="collapse" data-target="#collapse23" aria-expanded="false" aria-controls="collapse23">
                                 	What are the requirements for the new application procedures?
                               </button>
                             </h2>
