@@ -45,7 +45,7 @@ class RegistrationController extends Controller
             return response()->json(['res_code' => 1, 'res_msg' => 'Please fill all required fields.', 'res_error_msg' => $Validator->getMessageBag()]);
         }
 
-        try{
+        // try{
 
             $SchoolYear = SchoolYear::where('current', 1)
                 ->where('status', 1)
@@ -98,13 +98,13 @@ class RegistrationController extends Controller
 
             // dd($request->all());
             return response()->json(['res_code' => 0, 'res_msg' => 'You have successfuly registered!']);
-        }
-        catch(\Exception $e){
-            // do task when error
-               // insert query
-            \Log::error($e->getMessage());
-            return response()->json(['res_code' => 1, 'res_msg' => $e->getMessage()]);
-        }
+        // }
+        // catch(\Exception $e){
+        //     // do task when error
+        //        // insert query
+        //     \Log::error($e->getMessage());
+        //     return response()->json(['res_code' => 1, 'res_msg' => $e->getMessage()]);
+        // }
     }   
     
     public function send_email(Request $request)

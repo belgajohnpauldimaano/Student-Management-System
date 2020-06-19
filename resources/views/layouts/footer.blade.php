@@ -82,6 +82,7 @@
             autoclose: true
         })
     </script>
+    @yield('scripts')
     <script>
         $(function () {
             $('.btn--update-photo').click(function(){
@@ -567,7 +568,7 @@
                     };
                     reader.readAsDataURL(input.files[0]);
                 }
-            }
+        }
         
         $(window).on('load',function(){            
 			$('#js_reservation').modal({
@@ -656,39 +657,8 @@
                 $('#waiting_feb2020 tbody').append(passer_table);
         });
 
-        $('body').on('submit', '#js-contactForm', function (e) {
-        e.preventDefault();
-        // alert('hello')
-        alertify.defaults.theme.ok = "btn btn-primary btn-flat";
-        var formData = new FormData($(this)[0]);
-            $.ajax({     
-            url: "{{ route('inquiry.email') }}",
-            type: "POST",
-            data        : formData,
-            processData : false,
-            contentType : false,
-            success: function(res) {
-                $('.help-block').html('');
-                if (res.res_code == 1)
-                {
-                    alertify.alert('<i style="color: red" class="fas fa-exclamation-triangle fa-lg"></i> Reminder',
-                        ''+res.res_msg+'', function(){
-                            
-                    });                                    
-                }
-                else
-                {
-                    alertify.alert('<i style="color: green" class="fas fa-check-circle fa-lg"></i> Confirmation',
-                    "Your email successfully submitted. Thank you!", function(){
-                        $('#js-contactForm')[0].reset();                                 
-                    });
-                }
-
-            }
-        });
-
-    });
-
+        
+    
 
     </script>
 </body>
