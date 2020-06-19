@@ -1,7 +1,8 @@
-                        <div class="pull-right">                            
-                            {{ $PaymentCategory ? $PaymentCategory->links() : '' }}                                    
-                        </div>
-                        <table class="table no-margin">
+<div class="table-responsive">
+    <div class="pull-right">                            
+        {{ $PaymentCategory ? $PaymentCategory->links() : '' }}                                    
+    </div>
+    <table class="table no-margin">
                             <thead>
                                 <tr>
                                     <th width="15%">Student Category</th>
@@ -53,4 +54,5 @@
                                     @endforeach
                                 @endif
                             </tbody>
-                        </table>
+    </table>
+</div>

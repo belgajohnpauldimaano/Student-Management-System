@@ -1,7 +1,8 @@
-                        <div class="pull-right">
+<div class="table-responsive">
+    <div class="pull-right">
                             {{ $OtherFee ? $OtherFee->links() : '' }}                  
-                        </div>
-                        <table class="table no-margin">
+    </div>
+    <table class="table no-margin">
                             <thead>
                                 <tr>
                                     <th>Other Fee</th>
@@ -34,4 +35,5 @@
                                     @endforeach
                                 @endif
                             </tbody>
-                        </table>
+    </table>
+</div>

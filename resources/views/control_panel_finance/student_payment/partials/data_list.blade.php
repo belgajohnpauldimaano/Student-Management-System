@@ -1,5 +1,5 @@
                                                 
-                    {{-- <div class="table-responsive">                           --}}
+                    <div class="table-responsive">                          
                         <div class="nav-tabs-custom">
                             <ul class="nav nav-tabs">
                                 <li class="active">
@@ -214,6 +214,6 @@
                                 
                             </div>                  
                         </div> 
-                    {{-- </div> --}}
+                    </div>
                         
                         

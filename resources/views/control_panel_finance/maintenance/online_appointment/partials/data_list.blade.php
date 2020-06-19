@@ -1,9 +1,10 @@
-                        <div class="pull-right">
+<div class="table-responsive">
+    <div class="pull-right">
                             <div class="pull-right">
                                 {{ $OnlineAppointment ? $OnlineAppointment->links() : '' }}
                             </div>          
-                        </div>
-                        <table class="table no-margin">
+    </div>
+    <table class="table no-margin">
                             <thead>
                                 <tr>
                                     <th width="15%">Date and Time</th>
@@ -40,4 +41,5 @@
                                     @endforeach
                                 @endif
                             </tbody>
-                        </table>
+    </table>
+</div>
