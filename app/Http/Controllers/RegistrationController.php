@@ -45,25 +45,25 @@ class RegistrationController extends Controller
             return response()->json(['res_code' => 1, 'res_msg' => 'Please fill all required fields.', 'res_error_msg' => $Validator->getMessageBag()]);
         }
 
-        // try{
+        try{
 
             $SchoolYear = SchoolYear::where('current', 1)
                 ->where('status', 1)
                 ->orderBY('id', 'DESC')
                 ->first();
 
-            $User = User::where('username', $request->lrn)->first();
-            if ($User) 
+            $checkUser = User::where('username', $request->lrn)->first();
+            if ($checkUser) 
             {
                 return response()->json(['res_code' => 1,'res_msg' => 'LRN already used. Please contact the administrator to confirm it. Thank you']);
-            }           
-
-            $User = new User();
-            $User->username = $request->lrn;
-            $User->password = bcrypt($request->first_name . '.' . $request->last_name);
-            $User->role     = 5;
-            $User->status = 0;
-            $User->save();
+            }else{
+                $User = new User();
+                $User->username = $request->lrn;
+                $User->password = bcrypt($request->first_name . '.' . $request->last_name);
+                $User->role     = 5;
+                $User->status = 0;
+                $User->save();
+            }                  
 
             $StudentInformation                 = new StudentInformation();
             $StudentInformation->first_name     = $request->first_name;
@@ -98,13 +98,13 @@ class RegistrationController extends Controller
 
             // dd($request->all());
             return response()->json(['res_code' => 0, 'res_msg' => 'You have successfuly registered!']);
-        // }
-        // catch(\Exception $e){
-        //     // do task when error
-        //        // insert query
-        //     \Log::error($e->getMessage());
-        //     return response()->json(['res_code' => 1, 'res_msg' => $e->getMessage()]);
-        // }
+        }
+        catch(\Exception $e){
+            // do task when error
+               // insert query
+            \Log::error($e->getMessage());
+            return response()->json(['res_code' => 1, 'res_msg' => $e->getMessage()]);
+        }
     }   
     
     public function send_email(Request $request)
