@@ -40,6 +40,7 @@ class StudentFinanceAccountController extends Controller
                 ->where('student_informations.status', 1)
                 ->where('transactions.status', 1)
                 ->orderBy('student_name', 'ASC')
+                ->where('transaction_month_paids.isSuccess', 1)
                 ->distinct()
                 ->paginate(10, ['transactions.id']);
 
@@ -60,6 +61,7 @@ class StudentFinanceAccountController extends Controller
                     $query->orWhere('student_informations.last_name', 'like', '%'.$request->search.'%');
                 })
                 ->where('student_informations.status', 1)
+                ->where('transaction_month_paids.isSuccess', 1)
                 ->where('transactions.status', 0)
                 ->orderBy('student_name', 'ASC')
                 ->distinct()

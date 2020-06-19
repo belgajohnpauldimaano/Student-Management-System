@@ -175,7 +175,7 @@
                 alertify.defaults.transition = "slide";
                 alertify.defaults.theme.ok = "btn btn-primary btn-flat";
                 alertify.defaults.theme.cancel = "btn btn-danger btn-flat";
-                alertify.confirm('Confirmation', 'Are you sure you want the status paid?', function(){  
+                alertify.confirm('Confirmation', 'Are you sure you want the status paid? <i style="color: red">Note: The account of student will be paid in the whole year</i>.', function(){  
                     $.ajax({
                         url         : "{{ route('finance.student_acct.paid') }}",
                         type        : 'POST',

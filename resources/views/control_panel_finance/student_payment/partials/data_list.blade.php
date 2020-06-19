@@ -47,7 +47,13 @@
                                                     <td>{{number_format($data->tuition_amt,2)}}</td>
                                                     <td>{{number_format($data->misc_amt,2)}}</td>
                                                     <td>
-                                                        {{-- {{number_format($data->discount_amt, 2)}} --}}
+                                                        <?php 
+                                                            $discount = \App\TransactionDiscount::where('student_id', $data->student_id)
+                                                                ->where('school_year_id', $data->school_year_id)
+                                                                ->where('isSuccess', 1)
+                                                                ->sum('discount_amt');
+                                                            echo number_format($discount, 2);
+                                                        ?>
                                                     </td>
                                                     <td>
                                                         {{number_format(($data->tuition_amt + $data->misc_amt), 2)}}
@@ -106,7 +112,10 @@
                                                     <td>{{number_format($data->misc_amt,2)}}</td>
                                                     <td>
                                                         <?php 
-                                                            $discount = \App\TransactionDiscount::where('student_id', $data->student_id)->where('school_year_id', $data->school_year_id)->sum('discount_amt');
+                                                            $discount = \App\TransactionDiscount::where('student_id', $data->student_id)
+                                                                ->where('school_year_id', $data->school_year_id)
+                                                                ->where('isSuccess', 1)
+                                                                ->sum('discount_amt');
                                                             echo number_format($discount, 2);
                                                         ?>
                                                         {{-- {{number_format($data->discount_amt, 2)}} --}}
@@ -167,7 +176,13 @@
                                                     <td>{{number_format($data->tuition_amt,2)}}</td>
                                                     <td>{{number_format($data->misc_amt,2)}}</td>
                                                     <td>
-                                                        {{-- {{number_format($data->discount_amt, 2)}} --}}
+                                                        <?php 
+                                                            $discount = \App\TransactionDiscount::where('student_id', $data->student_id)
+                                                                ->where('school_year_id', $data->school_year_id)
+                                                                ->where('isSuccess', 1)
+                                                                ->sum('discount_amt');
+                                                            echo number_format($discount, 2);
+                                                        ?>
                                                     </td>
                                                     <td>
                                                         {{number_format(($data->tuition_amt + $data->misc_amt), 2)}}
