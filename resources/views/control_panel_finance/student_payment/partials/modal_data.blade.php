@@ -139,7 +139,8 @@
                                                             ->take(1)
                                                             ->first();
 
-                                                        echo $current_bal->balance + $others_fee;
+                                                        $t_bal_other = $current_bal->balance + $others_fee;
+                                                        echo number_format($t_bal_other, 2);
                                                     ?>
                                                     {{-- {{$Monthly_history->balance}} --}}
                                                     {{-- @if($Modal_data->disc_transaction_fee)
