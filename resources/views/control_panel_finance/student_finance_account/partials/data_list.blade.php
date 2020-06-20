@@ -47,10 +47,14 @@
                                     </span>
                                 </td>
                                 <td>
-                                    <button class="btn btn-sm btn-primary btn-disapprove-modal" data-id="{{$data->transactions_id}}">View</button>
+                                    <a class="btn btn-sm btn-primary btn-disapprove-modal" data-id="{{$data->transactions_id}}"  data-monthly_id="{{$data->transact_monthly_id}}"><i class="fas fa-eye"></i></a>
+                                    <a class="btn btn-sm btn-success btn-paid" data-id="{{$data->transact_monthly_id}}">Paid</a>
+                                    {{-- <a class="btn btn-sm btn-danger btn-disapprove" data-id="{{$data->transact_monthly_id}}"><i class="fas fa-thumbs-down"></i></a> --}}
+
+                                    {{-- <button class="btn btn-sm btn-primary btn-disapprove-modal" data-id="{{$data->transactions_id}}">View</button>
                                     <button class="btn btn-sm btn-success btn-paid" data-id="{{$data->transactions_id}}">
                                         Paid
-                                    </button>
+                                    </button> --}}
                                 </td>
                             </tr>
                         @endforeach
@@ -95,10 +99,13 @@
                                     </span>
                                 </td>
                                 <td>
-                                    <button class="btn btn-sm btn-primary btn-disapprove-modal" data-id="{{$data->transactions_id}}">View</button>
+                                    <a class="btn btn-sm btn-primary btn-disapprove-modal" data-id="{{$data->transactions_id}}"  data-monthly_id="{{$data->transact_monthly_id}}"><i class="fas fa-eye"></i></a>
+                                    <a class="btn btn-sm btn-success btn-unpaid" data-id="{{$data->transact_monthly_id}}">Unpaid</a>
+                                    {{-- <a class="btn btn-sm btn-danger btn-disapprove" data-id="{{$data->transact_monthly_id}}"><i class="fas fa-thumbs-down"></i></a> --}}
+                                    {{-- <button class="btn btn-sm btn-primary btn-disapprove-modal" data-id="{{$data->transactions_id}}">View</button>
                                     <button class="btn btn-sm btn-danger btn-unpaid" data-id="{{$data->transactions_id}}">
                                         Unpaid
-                                    </button>
+                                    </button> --}}
                                 </td>
                             </tr>
                         @endforeach

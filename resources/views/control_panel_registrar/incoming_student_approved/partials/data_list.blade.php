@@ -25,16 +25,19 @@
                             {{$item->approval}}
                         </span>
                     </td>
-                    <td width="20%">
-                        <div class="input-group-btn pull-left text-left">
+                    <td>
+                        <a class="btn btn-sm btn-primary btn-view-modal" data-id="{{$item->student_id}}"><i class="fas fa-eye"></i></a>
+                        <a class="btn btn-sm btn-success btn-approve" data-id="{{$item->student_id}}"><i class="fas fa-thumbs-up"></i></a>
+                        <a class="btn btn-sm btn-danger btn-disapprove" data-id="{{$item->student_id}}"><i class="fas fa-thumbs-down"></i></a>
+                        {{-- <div class="input-group-btn pull-left text-left">
                             <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="true">Action
                             <span class="fa fa-caret-down"></span></button>
                             <ul class="dropdown-menu">
-                                <li><a href="#" class="btn-view-modal" data-id="{{$item->student_id}}">View</a></li>
-                                <li><a href="#" class="btn-approve" data-id="{{$item->student_id}}">Re-Approve</a></li>
-                                <li><a href="#" class="btn-disapprove"  data-id="{{$item->student_id}}">Disapprove</a></li>
+                                <li><a href="#" class="btn-view-modal" data-id="{{$item->student_id}}"><i class="fas fa-eye"></i> View</a></li>
+                                <li><a href="#" class="btn-approve" data-id="{{$item->student_id}}"><i class="fas fa-thumbs-up"></i> Re-approve</a></li>
+                                <li><a href="#" class="btn-disapprove"  data-id="{{$item->student_id}}"><i class="fas fa-thumbs-down"></i> Disapprove</a></li>
                             </ul>
-                        </div>                                                        
+                        </div>                                                         --}}
                     </td>
                 </tr>
             @endforeach   
