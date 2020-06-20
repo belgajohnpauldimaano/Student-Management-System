@@ -30,6 +30,7 @@
                                                 <th>Student level</th>
                                                 <th>Tuition Fee</th>
                                                 <th>Misc Fee</th>
+                                                <th>Other Fee</th>
                                                 <th>Disc Fee</th>
                                                 <th>Total Fees</th>
                                                 <th>Payment</th>
@@ -46,6 +47,17 @@
                                                     <td>{{$data->student_level}}</td>
                                                     <td>{{number_format($data->tuition_amt,2)}}</td>
                                                     <td>{{number_format($data->misc_amt,2)}}</td>
+                                                    <td>
+                                                        <?php 
+                                                            $other = \App\TransactionOtherFee::where('student_id', $data->student_id)
+                                                                ->where('school_year_id', $data->school_year_id)
+                                                                ->where('transaction_id', $data->transaction_id)
+                                                                ->where('isSuccess', 1)
+                                                                ->sum('item_price');
+                                                                
+                                                            echo number_format($other, 2);
+                                                        ?>
+                                                    </td>
                                                     <td>
                                                         <?php 
                                                             $discount = \App\TransactionDiscount::where('student_id', $data->student_id)

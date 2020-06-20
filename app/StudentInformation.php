@@ -20,13 +20,11 @@ class StudentInformation extends Model
     {
         return $this->hasMany(Transaction::class, 'id', 'student_id');
     }
-
     
     public function payment_cat() 
     {
         return $this->hasOne(PaymentCategory::class, 'id', 'payment_category_id');
     }
-
     
     public function stud_category()
     {        
@@ -42,6 +40,7 @@ class StudentInformation extends Model
     {        
         return $this->hasOne(MiscFee::class, 'misc_fee_id', 'misc_fee_id' );
     }
+
     
     public function disc_transaction_fee()
     {        
