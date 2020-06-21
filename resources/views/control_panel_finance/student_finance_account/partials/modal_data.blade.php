@@ -171,15 +171,15 @@
                                                     
                         @endforeach
                     </div>
-                        <div class="modal-footer">
-                        <button class="btn btn-flat  btn-{{ $Modal_data->status ? $Modal_data->status == 0 ? 'danger btn-unpaid' : 'success btn-paid' : 'danger btn-unpaid'}} pull-right" data-id="{{$Modal_data->id}}">
-                                {{ $Modal_data->status ? $Modal_data->status == 0 ? 'Unpaid' : 'Paid' : 'Unpaid'}}
-                            </button>
-                        </div> 
-                    </div> 
-                                       
+                        
+                    </div>
+                                                         
                 </div>
-                
+                <div class="modal-footer">
+                    <button class="btn btn-flat  btn-{{ $Modal_data->status ? $Modal_data->status == 0 ? 'danger btn-unpaid' : 'success btn-paid' : 'danger btn-unpaid'}} pull-right" data-id="{{$Modal_data->id}}">
+                        {{ $Modal_data->status ? $Modal_data->status == 0 ? 'Unpaid' : 'Paid' : 'Unpaid'}}
+                    </button>
+                </div>    
             </div>   
         </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
