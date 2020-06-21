@@ -68,7 +68,7 @@
                                                         ?>
                                                     </td>
                                                     <td>
-                                                        {{number_format(($data->tuition_amt + $data->misc_amt), 2)}}
+                                                        {{number_format(($data->tuition_amt + $data->misc_amt + $other) - $discount, 2)}}
                                                     </td>
                                                     <td>{{number_format($data->payment,2)}}</td>
                                                     <td>{{number_format($data->balance,2)}}</td>
@@ -78,9 +78,9 @@
                                                         </span>
                                                     </td>
                                                     <td width="15%">
-                                                        <a class="btn btn-sm btn-primary btn-view-modal" data-id="{{$data->transaction_id}}"  data-monthly_id="{{$data->transact_monthly_id}}"><i class="fas fa-eye"></i></a>
-                                                        <a class="btn btn-sm btn-success btn-approve" data-id="{{$data->transact_monthly_id}}"><i class="fas fa-thumbs-up"></i></a>
-                                                        <a class="btn btn-sm btn-danger btn-disapprove" data-id="{{$data->transact_monthly_id}}"><i class="fas fa-thumbs-down"></i></a>
+                                                        <a class="btn btn-sm btn-primary btn-view-modal" title="View" data-id="{{$data->transaction_id}}"  data-monthly_id="{{$data->transact_monthly_id}}"><i class="fas fa-eye"></i></a>
+                                                        <a class="btn btn-sm btn-success btn-approve" title="Approve" data-id="{{$data->transact_monthly_id}}"><i class="fas fa-thumbs-up"></i></a>
+                                                        <a class="btn btn-sm btn-danger btn-disapprove" title="Disapprove" data-id="{{$data->transact_monthly_id}}"><i class="fas fa-thumbs-down"></i></a>
                                                         
                                                         {{-- <div class="input-group-btn pull-left text-left">
                                                             <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="true">Action
@@ -110,6 +110,7 @@
                                                 <th>Student level</th>
                                                 <th>Tuition Fee</th>
                                                 <th>Misc Fee</th>
+                                                <th>Other Fee</th>
                                                 <th>Disc Fee</th>
                                                 <th>Total Fees</th>
                                                 <th>Payment</th>
@@ -128,6 +129,17 @@
                                                     <td>{{number_format($data->misc_amt,2)}}</td>
                                                     <td>
                                                         <?php 
+                                                            $other = \App\TransactionOtherFee::where('student_id', $data->student_id)
+                                                                ->where('school_year_id', $data->school_year_id)
+                                                                ->where('transaction_id', $data->transaction_id)
+                                                                ->where('isSuccess', 1)
+                                                                ->sum('item_price');
+
+                                                            echo number_format($other, 2);
+                                                        ?>
+                                                    </td>
+                                                    <td>
+                                                        <?php 
                                                             $discount = \App\TransactionDiscount::where('student_id', $data->student_id)
                                                                 ->where('school_year_id', $data->school_year_id)
                                                                 ->where('isSuccess', 1)
@@ -137,7 +149,7 @@
                                                         {{-- {{number_format($data->discount_amt, 2)}} --}}
                                                     </td>
                                                     <td>
-                                                        {{number_format(($data->tuition_amt + $data->misc_amt) - $discount, 2)}}
+                                                        {{number_format(($data->tuition_amt + $data->misc_amt + $other) - $discount, 2)}}
                                                     </td>
                                                     <td>{{number_format($data->payment,2)}}</td>
                                                     <td>{{number_format($data->balance,2)}}</td>
@@ -147,10 +159,10 @@
                                                         </span>
                                                     </td>
                                                     <td>
-                                                        <a class="btn btn-sm btn-primary btn-view-modal" data-id="{{$data->transaction_id}}"  data-monthly_id="{{$data->transact_monthly_id}}"><i class="fas fa-eye"></i></a>
-                                                        {{-- <a class="btn btn-sm btn-success btn-approve" data-id="{{$data->transact_monthly_id}}"><i class="fas fa-thumbs-up"></i></a> --}}
-                                                        <a class="btn btn-sm btn-danger btn-disapprove" data-id="{{$data->transact_monthly_id}}"><i class="fas fa-thumbs-down"></i></a>
-
+                                                        <a class="btn btn-sm btn-primary btn-view-modal" title="View" data-id="{{$data->transaction_id}}"  data-monthly_id="{{$data->transact_monthly_id}}"><i class="fas fa-eye"></i></a>
+                                                        {{-- <a class="btn btn-sm btn-success btn-approve" title="Approve" data-id="{{$data->transact_monthly_id}}"><i class="fas fa-thumbs-up"></i></a> --}}
+                                                        <a class="btn btn-sm btn-danger btn-disapprove" title="Disapprove" data-id="{{$data->transact_monthly_id}}"><i class="fas fa-thumbs-down"></i></a>
+                                                        
                                                         {{-- <div class="input-group-btn pull-left text-left">
                                                             <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="true">Action
                                                                 <span class="fa fa-caret-down"></span></button>
@@ -179,6 +191,7 @@
                                                 <th>Student level</th>
                                                 <th>Tuition Fee</th>
                                                 <th>Misc Fee</th>
+                                                <th>Other Fee</th>
                                                 <th>Disc Fee</th>
                                                 <th>Total Fees</th>
                                                 <th>Payment</th>
@@ -197,6 +210,17 @@
                                                     <td>{{number_format($data->misc_amt,2)}}</td>
                                                     <td>
                                                         <?php 
+                                                            $other = \App\TransactionOtherFee::where('student_id', $data->student_id)
+                                                                ->where('school_year_id', $data->school_year_id)
+                                                                ->where('transaction_id', $data->transaction_id)
+                                                                ->where('isSuccess', 1)
+                                                                ->sum('item_price');
+
+                                                            echo number_format($other, 2);
+                                                        ?>
+                                                    </td>
+                                                    <td>
+                                                        <?php 
                                                             $discount = \App\TransactionDiscount::where('student_id', $data->student_id)
                                                                 ->where('school_year_id', $data->school_year_id)
                                                                 ->where('isSuccess', 1)
@@ -205,7 +229,7 @@
                                                         ?>
                                                     </td>
                                                     <td>
-                                                        {{number_format(($data->tuition_amt + $data->misc_amt), 2)}}
+                                                        {{number_format(($data->tuition_amt + $data->misc_amt + $other) - $discount, 2)}}
                                                     </td>
                                                     <td>{{number_format($data->payment,2)}}</td>
                                                     <td>{{number_format($data->balance,2)}}</td>
@@ -214,11 +238,10 @@
                                                             Disapproved
                                                         </span>
                                                     </td>
-                                                    <td width="15%">
-                                                        <a class="btn btn-sm btn-primary btn-view-modal" data-id="{{$data->transaction_id}}"  data-monthly_id="{{$data->transact_monthly_id}}"><i class="fas fa-eye"></i></a>
-                                                        <a class="btn btn-sm btn-success btn-approve" data-id="{{$data->transact_monthly_id}}"><i class="fas fa-thumbs-up"></i></a>
-                                                        {{-- <a class="btn btn-sm btn-danger btn-disapprove" data-id="{{$data->transact_monthly_id}}"><i class="fas fa-thumbs-down"></i></a> --}}
-
+                                                    <td>
+                                                        <a class="btn btn-sm btn-primary btn-view-modal" title="View" data-id="{{$data->transaction_id}}"  data-monthly_id="{{$data->transact_monthly_id}}"><i class="fas fa-eye"></i></a>
+                                                        <a class="btn btn-sm btn-success btn-approve" title="Approve" data-id="{{$data->transact_monthly_id}}"><i class="fas fa-thumbs-up"></i></a>
+                                                        
                                                         {{-- <div class="input-group-btn pull-left text-left">
                                                             <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="true">Action
                                                                 <span class="fa fa-caret-down"></span></button>
