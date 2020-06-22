@@ -50,7 +50,7 @@ class EnrollmentController extends Controller
                 $AlreadyEnrolled = TransactionMonthPaid::where('student_id', $StudentInformation->id)
                     ->where('school_year_id', $SchoolYear->id)
                     ->where('isSuccess', 1)
-                    // ->where('approval', 'Approved')
+                    ->where('approval', 'Approved')
                     ->orderBy('id', 'Desc')
                     ->first();
 
@@ -124,7 +124,9 @@ class EnrollmentController extends Controller
 
                     $AlreadyEnrolled = TransactionMonthPaid::where('student_id', $StudentInformation->id)
                         ->where('school_year_id', $SchoolYear->id)
-                        ->where('isSuccess', 1)->orderBy('id', 'Desc')->first();
+                        ->where('isSuccess', 1)
+                        ->where('approval', 'Approved')
+                        ->orderBy('id', 'Desc')->first();
 
                     $grade_level_id = ($ClassDetail->grade_level + 1);
 
@@ -225,11 +227,19 @@ class EnrollmentController extends Controller
             ->where('student_id', $StudentInformation->id)
             ->first();
 
+        
         if($checkAccount1){
 
             $TransactionAccount = Transaction::where('school_year_id', $SchoolYear->id)
                 ->where('student_id', $StudentInformation->id)
                 ->first();
+
+            if($TransactionAccount){
+                foreach($request->downpayment as $get_data){
+                    $TransactionAccount->downpayment_id = $get_data;  
+                }                 
+                $TransactionAccount->save();
+            }
 
             $Enrollment = new TransactionMonthPaid();
             $Enrollment->or_no = $request->bank_transaction_id;
@@ -249,6 +259,18 @@ class EnrollmentController extends Controller
             $Enrollment->receipt_img = $imageName;
             $Enrollment->save();
 
+            // existing other fee not successful
+            $transaction_paid = TransactionOtherFee::where('transaction_id', $TransactionAccount->id)
+                ->where('student_id', $StudentInformation->id)
+                ->where('isSuccess', '')
+                ->orderBY('id', 'DESC')
+                ->first();
+
+            if($transaction_paid){
+                $transaction_paid->isSuccess = 1;
+                $transaction_paid->save();
+            }
+
             if($request->discount_bank != 0){
                 foreach($request->discount_bank as $get_data){
                     $DiscountFee = DiscountFee::where('id', $get_data)
@@ -264,7 +286,8 @@ class EnrollmentController extends Controller
                     $DiscountFeeSave->isSuccess = 1;
                     $DiscountFeeSave->save();
                 }    
-            }                 
+            }   
+                      
 
         }else{
             
@@ -295,15 +318,7 @@ class EnrollmentController extends Controller
             $Enrollment->receipt_img = $imageName;            
             
             $Enrollment->save();          
-                // if($request->bank_discount!=0){
-                //     $Discount = new TransactionDiscount();
-                //     $Discount->student_id =  $StudentInformation->id;
-                //     $Discount->school_year_id = $SchoolYear->id;
-                //     $Discount->discount_type = $request->bank_discount_type;
-                //     $Discount->discount_amt = $request->bank_discount;
-                //     $Discount->transaction_id = $EnrollmentTransaction->id;
-                //     $Discount->save();
-                // }            
+                   
             
 
             if($request->discount_bank != 0){
@@ -321,8 +336,9 @@ class EnrollmentController extends Controller
                     $DiscountFeeSave->isSuccess = 1;
                     $DiscountFeeSave->save();
                 }    
-            }                   
-            
+            }     
+
+                      
             if($request->other_id){
                 $Other = new TransactionOtherFee();
                 $Other->transaction_id = $EnrollmentTransaction->id;
@@ -387,15 +403,21 @@ class EnrollmentController extends Controller
             ->where('student_id', $StudentInformation->id)
             ->first();
 
+        
         $checkAccount1 = Transaction::where('school_year_id', $SchoolYear->id)
             ->where('student_id', $StudentInformation->id)
             ->first();
-
 
         if($checkAccount1){
             $TransactionAccount = Transaction::where('school_year_id', $SchoolYear->id)
                 ->where('student_id', $StudentInformation->id)
                 ->first();
+            if($TransactionAccount){
+                foreach($request->downpayment as $get_data){
+                    $TransactionAccount->downpayment_id = $get_data;  
+                }                 
+                $TransactionAccount->save();
+            }
 
             $Enrollment = new TransactionMonthPaid();
             $Enrollment->or_no = $request->gcash_transaction_id;
@@ -430,7 +452,20 @@ class EnrollmentController extends Controller
                     $DiscountFeeSave->school_year_id = $SchoolYear->id;
                     $DiscountFeeSave->save();
                 }    
-            }      
+            }
+            
+            // existing other fee not successful
+            $transaction_paid = TransactionOtherFee::where('transaction_id', $TransactionAccount->id)
+                ->where('student_id', $StudentInformation->id)
+                ->where('isSuccess', '')
+                ->orderBY('id', 'DESC')
+                ->first();
+
+            if($transaction_paid){
+                $transaction_paid->isSuccess = 1;
+                $transaction_paid->save();
+            }
+            
 
         }else{
 
@@ -488,7 +523,7 @@ class EnrollmentController extends Controller
                 $Other->other_name = $request->other_name;
                 $Other->isSuccess = 1;
                 $Other->save();
-            }
+            }           
             
         }   
 

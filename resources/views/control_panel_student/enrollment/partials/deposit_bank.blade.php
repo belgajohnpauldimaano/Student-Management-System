@@ -46,7 +46,7 @@
             {{ csrf_field() }}
             <div class="col-md-6">    
                 <div class="box-header with-border">
-                    <h3 class="box-title">Enrollment Form </h3>
+                    <h3 class="box-title">{{$AlreadyEnrolled ? 'Payment' : 'Enrollment' }} Form </h3>
                 </div>      
                     <input type="hidden" name="payment-cat" value="over the counter - bank">
                     <div class="form-group col-lg-12" style="margin-top: 10px">

@@ -43,7 +43,7 @@
             {{ csrf_field() }} 
             <div class="col-md-6">    
                 <div class="box-header with-border">
-                    <h3 class="box-title col-lg-12">Enrollment Form </h3>
+                    <h3 class="box-title">{{$AlreadyEnrolled ? 'Payment' : 'Enrollment' }} Form </h3>
                 </div>
                     
                     <input type="hidden" name="payment-cat" value="Transfer - Gcash">

@@ -223,6 +223,8 @@ class StudentPaymentController extends Controller
             $Monthly_history = TransactionMonthPaid::where('id', $request->monthly_id)->first();
             $current_bal = TransactionMonthPaid::where('student_id', $Modal_data->student_id)
                 ->where('school_year_id', $Modal_data->school_year_id)
+                ->where('isSuccess', 1)
+                ->where('approval', 'Approved')
                 ->orderBY('id', 'desc')
                 ->skip(1)->take(1)->first();
         }

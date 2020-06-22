@@ -124,7 +124,7 @@
                                         <td>
                                             @if($current_bal)
                                                 @if($current_bal->balance==0)
-                                                    wala
+                                                    0.00
                                                     {{-- @if($Modal_data->disc_transaction_fee)
                                                         {{ number_format($Modal_data->payment_cat->tuition->tuition_amt + $Modal_data->payment_cat->misc_fee->misc_amt , 2)}}
                                                     @else
@@ -150,7 +150,7 @@
                                                     @endif --}}
                                                 @endif
                                             @else
-                                                {{ number_format($Modal_data->payment_cat->tuition->tuition_amt + $Modal_data->payment_cat->misc_fee->misc_amt + $others_fee, 2)}}
+                                                {{ number_format(($Modal_data->payment_cat->tuition->tuition_amt + $Modal_data->payment_cat->misc_fee->misc_amt + $others_fee) - $discount, 2)}}
                                             @endif                                                                                                
                                         </td>                                    
                                     </tr>

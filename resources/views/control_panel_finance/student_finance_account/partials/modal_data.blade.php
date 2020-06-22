@@ -3,7 +3,7 @@
         <div class="modal-content">
             <div class="box-body">
                 <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>                            
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>                            
                         <h4 style="margin-right: 5em;" class="modal-title">
                             Student Payment Account Information
                         </h4>

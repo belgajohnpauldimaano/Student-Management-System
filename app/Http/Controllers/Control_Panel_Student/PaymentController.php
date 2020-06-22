@@ -158,6 +158,13 @@ class PaymentController extends Controller
                 $TransactionAccount = \App\Transaction::where('school_year_id', $SchoolYear->id)
                     ->where('student_id', $StudentInformation->id)
                     ->first();
+                    
+                if($TransactionAccount){
+                    foreach($request->downpayment as $get_data){
+                        $TransactionAccount->downpayment_id = $get_data;  
+                    }                 
+                    $TransactionAccount->save();
+                }
 
                 $Enrollment = new TransactionMonthPaid();
                 $Enrollment->or_no = $StudentInformation->first_name.''.$mytime->toDateTimeString();

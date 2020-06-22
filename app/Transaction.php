@@ -12,7 +12,7 @@ class Transaction extends Model
     } 
 
     public function monthly(){
-        return $this->hasOne(TransactionMonthPaid::class, 'transaction_id', 'id')->orderBY('id', 'DESC');
+        return $this->hasOne(TransactionMonthPaid::class, 'transaction_id', 'id')->orderBY('id', 'DESC')->where('isSuccess', 1)->where('approval', 'Approved');
     }
 
     public function payment_cat() 
@@ -47,7 +47,7 @@ class Transaction extends Model
     
     public function disc_transaction_fee()
     {        
-        return $this->hasMany(TransactionDiscount::class, 'transaction_month_paid_id', 'id' );
+        return $this->hasMany(TransactionDiscount::class, 'transaction_month_paid_id', 'id' )->where('isSuccess', 1);
     }
 
 
