@@ -353,7 +353,7 @@
                             <img src="{{ asset('img/faculty/Miarflor-Marilou-M.jpg') }}" class="img-fluid" alt="">
                             <div class="member-info">
                                 <div class="member-info-content">
-                                    <h4>Marilou Miarflor</h4>
+                                    <h4>Marilou Miraflor</h4>
                                 </div>
                             </div>
                         </div>
