@@ -7,6 +7,7 @@ use App\GradeLevel;
 use App\SchoolYear;
 use App\ClassDetail;
 use App\IncomingStudent;
+use Barryvdh\DomPDF\PDF;
 use App\OnlineAppointment;
 use App\StudentInformation;
 use Illuminate\Http\Request;
@@ -391,6 +392,49 @@ class OnlineAppointmentController extends Controller
         return view('control_panel_finance.online_appointment.partials.data_list', 
             compact('appointment', 'hasAppointment', 'OnlineAppointment'))
             ->render();
+    }
+
+    public function print(Request $request) 
+    {
+        if($request->js_date){
+            
+            $appointment = OnlineAppointment::join('student_time_appointments', 'student_time_appointments.online_appointment_id','=','online_appointments.id')
+                ->join('student_informations', 'student_informations.id','=','student_time_appointments.student_id')
+                ->select(\DB::raw("
+                    student_time_appointments.id as student_time_appointment_id, 
+                    CONCAT(student_informations.last_name, ', ', student_informations.first_name, ' ', student_informations.middle_name) as student_name,
+                    student_time_appointments.queueing_number,
+                    student_time_appointments.status,
+                    student_time_appointments.grade_lvl
+
+                "))
+                ->where('student_time_appointments.status', 1)
+                ->where('online_appointments.status', 1)
+                ->where('online_appointments.id', $request->js_date)
+                ->orderBy('student_time_appointments.id', 'ASC')
+                ->get();
+                
+
+            $hasAppointment =  OnlineAppointment::join('student_time_appointments', 'student_time_appointments.online_appointment_id','=','online_appointments.id')
+                ->select(\DB::raw("
+                    student_time_appointments.id as student_appointment_id
+                "))
+                ->where('student_time_appointments.status', 1)
+                ->where('online_appointments.id', $request->js_date)
+                ->first();
+
+            $OnlineAppointment =  OnlineAppointment::where('id', $request->js_date)
+                ->where('current', 1)
+                ->first();
+
+        }else{
+            echo 'invalid';
+        }                 
+        
+        return view('control_panel_finance.online_appointment.partials.print', compact('appointment', 'hasAppointment', 'OnlineAppointment'))->render();
+        $pdf = \PDF::loadView('control_panel_finance.online_appointment.partials.print', compact('appointment', 'hasAppointment', 'OnlineAppointment'));
+        $pdf->setPaper('Letter', 'portrait');
+        return $pdf->stream();          
     }
 
     public function done (Request $request) 

@@ -6,6 +6,7 @@ use App\SchoolYear;
 use App\Transaction;
 use App\PaymentCategory;
 use App\StudentInformation;
+use App\TransactionDiscount;
 use Illuminate\Http\Request;
 use App\TransactionMonthPaid;
 use App\Http\Controllers\Controller;
@@ -176,6 +177,8 @@ class StudentPaymentController extends Controller
             ->orderBy('transaction_month_paids.id', 'DESC')
             ->paginate(10);
 
+            
+
         $NotyetApprovedCount = TransactionMonthPaid::where('approval', 'Not yet Approved')->where('isSuccess', 1)
             ->count();
 
@@ -243,6 +246,7 @@ class StudentPaymentController extends Controller
 
         if ($Approve)
         {
+            $Approve->balance = $request->incoming_bal;
             $Approve->approval = 'Approved';
             $Approve->save();
 
@@ -259,14 +263,21 @@ class StudentPaymentController extends Controller
     {
         $Student_id = TransactionMonthPaid::where('id', $request->id)->first();
         $StudentInformation = StudentInformation::where('status', 1)
-        ->where('id', $Student_id->student_id)->first();
+            ->where('id', $Student_id->student_id)->first();
 
         $name = $StudentInformation->first_name.' '.$StudentInformation->last_name;
-        $NotyetApproved = TransactionMonthPaid::where('id', $request->id)->first();
-        
+        $NotyetApproved = TransactionMonthPaid::where('id', $request->id)->first();        
         
         if ($NotyetApproved)
         {
+            $discount = TransactionDiscount::where('transaction_month_paid_id', $NotyetApproved->id)->get();
+
+            foreach($discount as $data){
+                $discount = TransactionDiscount::where('transaction_month_paid_id', $data->id)->first();
+                $discount->isSuccess = 0;
+                $discount->save();
+            }
+
             $NotyetApproved->approval = 'Disapproved';
             $NotyetApproved->save();
 

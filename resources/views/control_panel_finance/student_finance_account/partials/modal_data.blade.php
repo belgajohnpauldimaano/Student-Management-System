@@ -22,10 +22,7 @@
                                 <p>{{$Modal_data->payment_cat->stud_category->student_category.'-'.$Modal_data->payment_cat->grade_level_id}}</p>
                             </div>  
 
-                            <div class="form-group">
-                                <label for="">Email address</label>
-                                <p>{{$Modal_data->monthly->email}}</p>
-                            </div>  
+                            
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
@@ -115,6 +112,10 @@
                                 <span class="label {{ $data->approval ? $data->approval == 'Approved' ? 'label-success' : 'label-danger' : 'label-danger'}}">
                                     {{ $data->approval ? $data->approval == 'Approved' ? 'Approved' : 'Not yet Approved' : 'Not yet Approved'}}
                                 </span>
+                                <div class="form-group">
+                                    <label for="">Email address</label>
+                                    <p>{{$data->email}}</p>
+                                </div>  
                             </div>
                                 
                             <div class="box-body no-padding">
@@ -139,7 +140,7 @@
                                         <tr>
                                             <td>Balance Fee</td>
                                             <td>
-                                                ₱ {{ number_format($data->balance, 2)}}
+                                                ₱ {{ $data->approval == 'Approved' ? number_format($data->balance, 2) : $data->tuition_amt + $data->misc_amt}}
                                             </td>                                
                                         </tr>
                                         </tr>

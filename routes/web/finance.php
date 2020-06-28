@@ -47,6 +47,7 @@ Route::group(['prefix' => 'finance', 'middleware' => ['auth', 'userroles'], 'rol
         Route::post('done', 'Finance\Maintenance\OnlineAppointmentController@done')->name('finance.online_appointment.done');
         Route::post('disapprove', 'Finance\Maintenance\OnlineAppointmentController@disapprove')->name('finance.online_appointment.disapprove');
         Route::post('deactivate', 'Finance\Maintenance\OnlineAppointmentController@deactivate_date')->name('finance.online_appointment.deactivate_date');
+        Route::get('print', 'Finance\Maintenance\OnlineAppointmentController@print')->name('finance.online_appointment.print');
     });
 
     

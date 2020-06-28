@@ -25,12 +25,17 @@ class StudentFinanceAccountController extends Controller
                 ->join('transaction_month_paids', 'transaction_month_paids.transaction_id', '=' ,'transactions.id')                            
                 ->join('payment_categories', 'payment_categories.id', '=', 'transactions.payment_category_id')
                 ->join('student_categories', 'student_categories.id', '=', 'payment_categories.student_category_id')
+                ->join('tuition_fees', 'tuition_fees.id', '=', 'payment_categories.tuition_fee_id')
+                ->join('misc_fees', 'misc_fees.id', '=', 'payment_categories.misc_fee_id')  
                 ->selectRaw('
                     CONCAT(student_informations.last_name, ", ", student_informations.first_name, " " ,  student_informations.middle_name) AS student_name,
                     CONCAT(payment_categories.grade_level_id," - ", student_categories.student_category) AS student_level,
+                    payment_categories.other_fee_id,
                     transactions.student_id,
                     student_informations.id,
-                    transactions.id as transactions_id
+                    transactions.id as transactions_id,
+                    tuition_fees.tuition_amt,
+                    misc_fees.misc_amt
                 ')
                 ->where(function ($query) use ($request) {
                     $query->where('student_informations.first_name', 'like', '%'.$request->search.'%');
@@ -45,24 +50,24 @@ class StudentFinanceAccountController extends Controller
                 ->paginate(10, ['transactions.id']);
 
             $Paid = StudentInformation::join('transactions','transactions.student_id', '=' ,'student_informations.id') 
-                ->join('transaction_month_paids', 'transaction_month_paids.transaction_id', '=' ,'transactions.id')                             
+                ->join('transaction_month_paids', 'transaction_month_paids.transaction_id', '=' ,'transactions.id')                          
                 ->join('payment_categories', 'payment_categories.id', '=', 'transactions.payment_category_id')
                 ->join('student_categories', 'student_categories.id', '=', 'payment_categories.student_category_id')
+                ->join('tuition_fees', 'tuition_fees.id', '=', 'payment_categories.tuition_fee_id')
+                ->join('misc_fees', 'misc_fees.id', '=', 'payment_categories.misc_fee_id')
                 ->selectRaw('
                     CONCAT(student_informations.last_name, ", ", student_informations.first_name, " " ,  student_informations.middle_name) AS student_name,
                     CONCAT(payment_categories.grade_level_id," - ", student_categories.student_category) AS student_level,
                     transactions.student_id,
                     student_informations.id,
-                    transactions.id as transactions_id
+                    transactions.id as transactions_id,
+                    payment_categories.other_fee_id,
+                    tuition_fees.tuition_amt,
+                    misc_fees.misc_amt
                 ')
-                ->where(function ($query) use ($request) {
-                    $query->where('student_informations.first_name', 'like', '%'.$request->search.'%');
-                    $query->orWhere('student_informations.middle_name', 'like', '%'.$request->search.'%');
-                    $query->orWhere('student_informations.last_name', 'like', '%'.$request->search.'%');
-                })
                 ->where('student_informations.status', 1)
-                ->where('transaction_month_paids.isSuccess', 1)
                 ->where('transactions.status', 0)
+                ->where('transaction_month_paids.isSuccess', 1)
                 ->orderBy('student_name', 'ASC')
                 ->distinct()
                 ->paginate(10, ['transactions.id']);
@@ -79,12 +84,17 @@ class StudentFinanceAccountController extends Controller
             ->join('transaction_month_paids', 'transaction_month_paids.transaction_id', '=' ,'transactions.id')                           
             ->join('payment_categories', 'payment_categories.id', '=', 'transactions.payment_category_id')
             ->join('student_categories', 'student_categories.id', '=', 'payment_categories.student_category_id')
+            ->join('tuition_fees', 'tuition_fees.id', '=', 'payment_categories.tuition_fee_id')
+            ->join('misc_fees', 'misc_fees.id', '=', 'payment_categories.misc_fee_id')  
             ->selectRaw('
                 CONCAT(student_informations.last_name, ", ", student_informations.first_name, " " ,  student_informations.middle_name) AS student_name,
                 CONCAT(payment_categories.grade_level_id," - ", student_categories.student_category) AS student_level,
+                payment_categories.other_fee_id,
                 transactions.student_id,
                 student_informations.id,
-                transactions.id as transactions_id
+                transactions.id as transactions_id,
+                tuition_fees.tuition_amt,
+                misc_fees.misc_amt
             ')
             ->where('transactions.status', 1)
             ->where('student_informations.status', 1)
@@ -97,12 +107,17 @@ class StudentFinanceAccountController extends Controller
             ->join('transaction_month_paids', 'transaction_month_paids.transaction_id', '=' ,'transactions.id')                          
             ->join('payment_categories', 'payment_categories.id', '=', 'transactions.payment_category_id')
             ->join('student_categories', 'student_categories.id', '=', 'payment_categories.student_category_id')
+            ->join('tuition_fees', 'tuition_fees.id', '=', 'payment_categories.tuition_fee_id')
+            ->join('misc_fees', 'misc_fees.id', '=', 'payment_categories.misc_fee_id')
             ->selectRaw('
                 CONCAT(student_informations.last_name, ", ", student_informations.first_name, " " ,  student_informations.middle_name) AS student_name,
                 CONCAT(payment_categories.grade_level_id," - ", student_categories.student_category) AS student_level,
                 transactions.student_id,
                 student_informations.id,
-                transactions.id as transactions_id
+                transactions.id as transactions_id,
+                payment_categories.other_fee_id,
+                tuition_fees.tuition_amt,
+                misc_fees.misc_amt
             ')
             ->where('student_informations.status', 1)
             ->where('transactions.status', 0)

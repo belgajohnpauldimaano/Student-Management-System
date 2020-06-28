@@ -32,12 +32,24 @@
                                 <td>{{$data->student_name}}</td>
                                 <td>{{$data->student_level}}</td>
                                 <td>
+                                    
                                     <?php 
-                                        $bal = \App\TransactionMonthPaid::where('transaction_id', $data->transactions_id)->ORDERBY('id', 'DESC')->first();
+                                        $bal = \App\TransactionMonthPaid::where('transaction_id', $data->transactions_id)
+                                            ->where('approval', 'Approved')
+                                            ->ORDERBY('id', 'DESC')
+                                            ->first();
+
+                                        $other_fee_amt = \App\OtherFee::where('id', $data->other_fee_id)->first()->other_fee_amt;
+                                        
+                                        $Discount_amt = \App\TransactionDiscount::where('student_id', $data->student_id)
+                                            ->where('school_year_id', $data->school_year_id)
+                                            ->where('isSuccess', 1)
+                                            ->sum('discount_amt');                                        
+
                                         if($bal){
                                             echo number_format($bal->balance, 2);
                                         }else{
-                                            echo '0.00';
+                                            echo number_format(($data->tuition_amt + $data->misc_amt + $other_fee_amt) - ($Discount_amt),2);
                                         }                        
                                     ?>
                                 </td>
@@ -85,12 +97,23 @@
                                 <td>{{$data->student_level}}</td>
                                 <td>
                                     <?php 
-                                        $bal = \App\TransactionMonthPaid::where('transaction_id', $data->transactions_id)->ORDERBY('id', 'DESC')->first();
+                                        $bal = \App\TransactionMonthPaid::where('transaction_id', $data->transactions_id)
+                                            ->where('approval', 'Approved')
+                                            ->ORDERBY('id', 'DESC')
+                                            ->first();
+
+                                        $other_fee_amt = \App\OtherFee::where('id', $data->other_fee_id)->first()->other_fee_amt;
+                                        
+                                        $Discount_amt = \App\TransactionDiscount::where('student_id', $data->student_id)
+                                            ->where('school_year_id', $data->school_year_id)
+                                            ->where('isSuccess', 1)
+                                            ->sum('discount_amt');                                        
+
                                         if($bal){
                                             echo number_format($bal->balance, 2);
                                         }else{
-                                            echo '0.00';
-                                        }                        
+                                            echo number_format(($data->tuition_amt + $data->misc_amt + $other_fee_amt) - ($Discount_amt),2);
+                                        }                             
                                     ?>
                                 </td>
                                 <td>

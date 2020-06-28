@@ -72,7 +72,9 @@ class EnrollmentController extends Controller
                 
                 $TransactionDiscount = TransactionDiscount::where('student_id', $StudentInformation->id)->where('school_year_id', $SchoolYear->id)->where('isSuccess', 1)->get();
                                   
-                $TransactionDiscountTotal = TransactionDiscount::where('student_id', $StudentInformation->id)->where('school_year_id', $SchoolYear->id)->where('isSuccess', 1)->sum('discount_amt');
+                $TransactionDiscountTotal = TransactionDiscount::where('student_id', $StudentInformation->id)->where('school_year_id', $SchoolYear->id)
+                        ->where('isSuccess', 1)
+                        ->sum('discount_amt');
 
                 
                 if($Tuition){
@@ -234,11 +236,17 @@ class EnrollmentController extends Controller
                 ->where('student_id', $StudentInformation->id)
                 ->first();
 
-            if($TransactionAccount){
+            $transaction_paid = TransactionOtherFee::where('transaction_id', $TransactionAccount->id)
+                ->where('student_id', $StudentInformation->id)
+                ->where('isSuccess', '')
+                ->orderBY('id', 'DESC')
+                ->first();   
+
+            if($transaction_paid){
                 foreach($request->downpayment as $get_data){
-                    $TransactionAccount->downpayment_id = $get_data;  
+                    $transaction_paid->downpayment_id = $get_data;  
                 }                 
-                $TransactionAccount->save();
+                $transaction_paid->save();
             }
 
             $Enrollment = new TransactionMonthPaid();
@@ -412,11 +420,18 @@ class EnrollmentController extends Controller
             $TransactionAccount = Transaction::where('school_year_id', $SchoolYear->id)
                 ->where('student_id', $StudentInformation->id)
                 ->first();
-            if($TransactionAccount){
+
+            $transaction_paid = TransactionOtherFee::where('transaction_id', $TransactionAccount->id)
+                ->where('student_id', $StudentInformation->id)
+                ->where('isSuccess', '')
+                ->orderBY('id', 'DESC')
+                ->first();   
+
+            if($transaction_paid){
                 foreach($request->downpayment as $get_data){
-                    $TransactionAccount->downpayment_id = $get_data;  
+                    $transaction_paid->downpayment_id = $get_data;  
                 }                 
-                $TransactionAccount->save();
+                $transaction_paid->save();
             }
 
             $Enrollment = new TransactionMonthPaid();
@@ -427,7 +442,7 @@ class EnrollmentController extends Controller
             $Enrollment->balance = $Enrollment_total;
             $Enrollment->email = $request->gcash_email;
             $Enrollment->number = $request->gcash_phone;
-            $Enrollment->payment_option = $request->Gcash;
+            $Enrollment->payment_option = 'Gcash';
             $Enrollment->online_charges = 0.00;
             $Enrollment->isSuccess = 1;
             $Enrollment->transaction_id = $TransactionAccount->id;            
@@ -486,7 +501,7 @@ class EnrollmentController extends Controller
             $Enrollment->balance = $Enrollment_total;
             $Enrollment->email = $request->gcash_email;
             $Enrollment->number = $request->gcash_phone;
-            $Enrollment->payment_option = $request->Gcash;
+            $Enrollment->payment_option = 'Gcash';
             $Enrollment->online_charges = 0.00;
             $Enrollment->isSuccess = 1;
             $Enrollment->transaction_id = $EnrollmentTransaction->id;            
@@ -527,14 +542,13 @@ class EnrollmentController extends Controller
             
         }   
 
-        $payment = Transaction::find($Enrollment->transaction_id);
-
-            try{
-                \Mail::to($request->gcash_email)->send(new SendMail($payment));
-                \Mail::to('info@sja-bataan.com')->cc('finance@sja-bataan.com')->send(new NotifyAdminMail($payment));
-            }catch(\Exception $e){
-                \Log::error($e->getMessage());
-            }
+        try{
+            $payment = Transaction::find($Enrollment->transaction_id);
+            \Mail::to($request->gcash_email)->send(new SendMail($payment));
+            \Mail::to('info@sja-bataan.com')->cc('finance@sja-bataan.com')->send(new NotifyAdminMail($payment));
+        }catch(\Exception $e){
+            \Log::error($e->getMessage());
+        }
             
         return response()->json(['res_code' => 0,
          'res_msg' =>
@@ -543,16 +557,23 @@ class EnrollmentController extends Controller
     }
 
     public function modal_data(Request $request){
-
+        
+        
         $hasTransaction = TransactionMonthPaid::where('student_id', $request->id)
             ->where('school_year_id', $request->school_year_id)
             ->where('isSuccess', 1)
             ->orderBY('id', 'desc')
-            ->first();
+            ->first();        
 
         $Discount = TransactionDiscount::where('student_id', $request->id)
-            ->where('school_year_id', $request->school_year_id)->where('isSuccess', 1)
+            ->where('school_year_id', $request->school_year_id)
+            ->where('isSuccess', 1)
             ->sum('discount_amt');
+
+        $payment = TransactionMonthPaid::where('student_id', $request->id)
+            ->where('school_year_id', $request->school_year_id)
+            ->where('isSuccess', 1)
+            ->sum('payment');
 
         $Discount_amt = TransactionDiscount::where('student_id', $request->id)
             ->where('school_year_id', $request->school_year_id)->where('isSuccess', 1)
@@ -562,14 +583,15 @@ class EnrollmentController extends Controller
 
         if ($request->id && $request->school_year_id)
         {
+            
             $Transaction_history = Transaction::where('student_id', $request->id)
                 ->where('school_year_id', $request->school_year_id)
                 ->orderBY('id', 'desc')
                 ->get();
 
             $Transaction = TransactionMonthPaid::where('student_id', $request->id)
-               ->where('school_year_id', $request->school_year_id)->where('isSuccess', 1)
-               ->orderBY('id', 'desc')
+                ->where('school_year_id', $request->school_year_id)->where('isSuccess', 1)
+                ->orderBY('id', 'desc')
                 ->get();
             
             if($hasTransaction){
@@ -595,7 +617,7 @@ class EnrollmentController extends Controller
             
         }
         return view('control_panel_student.enrollment.partials.modal_data',
-            compact('Discount_amt','Transaction_history','Transaction','Discount','tuition_misc_fee','hasTransaction','OtherFee'))
+            compact('Discount_amt','Transaction_history','Transaction','Discount','tuition_misc_fee','hasTransaction','OtherFee','payment'))
             ->render();
     }
     

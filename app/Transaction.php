@@ -12,10 +12,15 @@ class Transaction extends Model
     } 
 
     public function monthly(){
-        return $this->hasOne(TransactionMonthPaid::class, 'transaction_id', 'id')->orderBY('id', 'DESC')->where('isSuccess', 1)->where('approval', 'Approved');
+        return $this->hasOne(TransactionMonthPaid::class, 'transaction_id', 'id')->orderBY('id', 'DESC')->where('isSuccess', 1)
+        ->where('approval', 'Approved');
     }
 
-    public function payment_cat() 
+    public function monthly_transaction(){
+        return $this->hasOne(TransactionMonthPaid::class, 'transaction_id', 'id')->orderBY('id', 'DESC')->where('isSuccess', 1);
+    }
+
+    public function payment_cat()
     {
         return $this->hasOne(PaymentCategory::class, 'id', 'payment_category_id');
     }

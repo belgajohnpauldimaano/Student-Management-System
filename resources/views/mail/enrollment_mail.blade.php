@@ -59,19 +59,23 @@
                         </td>
                     </tr>
                     <tr>
-                        <?php 
+                        <?php
+                           
                             $discount_transction = \App\Transaction::where('id', $payment->id)->first();
                         
                             $discount = \App\TransactionDiscount::where('student_id', $discount_transction->student_id)
-                                    ->where('school_year_id', $discount_transction->school_year_id)->where('isSuccess', 1)
+                                    ->where('school_year_id', $discount_transction->school_year_id)
+                                    ->where('isSuccess', 1)
                                     ->get();
                                     
                             $total_discount = \App\TransactionDiscount::where('student_id', $discount_transction->student_id)
-                                    ->where('school_year_id', $discount_transction->school_year_id)->where('isSuccess', 1)
+                                    ->where('school_year_id', $discount_transction->school_year_id)
+                                    ->where('isSuccess', 1)
                                     ->sum('discount_amt');
                                     
                             $hasDiscount = \App\TransactionDiscount::where('student_id', $discount_transction->student_id)
-                                    ->where('school_year_id', $discount_transction->school_year_id)->where('isSuccess', 1)
+                                    ->where('school_year_id', $discount_transction->school_year_id)
+                                    ->where('isSuccess', 1)
                                     ->first();   
                         ?>
                         
@@ -119,11 +123,11 @@
                             }
                             $tuitionMisc_fee = $payment->payment_cat->tuition->tuition_amt + $payment->payment_cat->misc_fee->misc_amt + $other_total;
                             if($discount){
-                                $totalDiscount =  number_format($tuitionMisc_fee  - $total_discount, 2);
+                                $totalDiscount =  $tuitionMisc_fee  - $total_discount;
                             }                            
                          ?>
                         @if($discount)
-                            <td>₱ {{$totalDiscount}}</td>
+                            <td>₱ {{number_format($totalDiscount, 2)}}</td>
                         @else
                             <td>₱ {{number_format($tuitionMisc_fee,2)}}</td>
                         @endif
@@ -137,8 +141,8 @@
                         </td>
                     </tr>
                     <tr>
-                        <td>{{$payment->monthly->payment_option}}</td>
-                        <td>₱ {{number_format($payment->monthly->payment, 2)}}</td>
+                        <td>{{$payment->monthly_transaction->payment_option}}</td>
+                        <td>₱ {{number_format($payment->monthly_transaction->payment, 2)}}</td>
                     </tr>
                     <tr style="margin-top: 10px">
                         <td>Previous Balance</td>
@@ -146,23 +150,30 @@
                             <?php 
                                 $current_bal = \App\TransactionMonthPaid::where('student_id', $payment->student_id)
                                     ->where('school_year_id', $payment->school_year_id)
-                                    ->orderBY('id', 'desc')
-                                    ->skip(1)
-                                    ->take(1)
-                                    ->first();
+                                    ->where('approval', 'Approved')
+                                    ->where('isSuccess', 1)
+                                    ->sum('payment');
+
                                 if($current_bal){
-                                    if($current_bal->balance==0){
+                                    if($current_bal==0){
                                         echo number_format($tuitionMisc_fee,2);
                                     }else{
-                                        echo number_format($current_bal->balance, 2);
+                                        // echo number_format($current_bal, 2);
+                                        if($discount){
+                                            echo number_format($totalDiscount - $current_bal, 2);
+                                        }
+                                        else
+                                        {
+                                            echo number_format($tuitionMisc_fee - $current_bal, 2);
+                                        }
                                     }                                    
                                 }else{
-                                ?>                                
+                                ?>                
                                     @if($discount)
-                                         {{$totalDiscount}}
+                                        {{ number_format($totalDiscount, 2)}}
                                     @else
-                                         {{number_format($tuitionMisc_fee,2)}}
-                                    @endif
+                                        {{ number_format($tuitionMisc_fee + $payment->monthly_transaction->payment,2)}}
+                                    @endif      
                                 <?php
                                 }
                             ?>
@@ -170,16 +181,16 @@
                     </tr>
                     
                     <tr style="margin-top: 10px">
-                        <td>Current Balance</td>
-                        <td>₱ {{number_format($payment->monthly->balance, 2)}}</td>
+                        <td>Incoming Balance</td>
+                        <td>₱ {{number_format($payment->monthly_transaction->balance, 2)}}</td>
                     </tr>
                     <tr style="margin-top: 10px">
                         <td>Date and Time:</td>
-                        <td>{{ $payment ? date_format(date_create($payment->monthly->created_at), 'F d, Y h:i A') : '' }}</td>
+                        <td>{{ $payment ? date_format(date_create($payment->monthly_transaction->created_at), 'F d, Y h:i A') : '' }}</td>
                     </tr>
                     <tr style="margin-top: 10px">
                         <td>Total Amount paid (to be confirmed by finance)</td>
-                        <td>₱ {{number_format($payment->monthly->payment, 2)}}</td>
+                        <td>₱ {{number_format($payment->monthly_transaction->payment, 2)}}</td>
                     </tr>
                     
                 </tbody>

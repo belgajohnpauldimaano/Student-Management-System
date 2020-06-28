@@ -1,6 +1,43 @@
 @extends('control_panel_student.layouts.master')
 
 @section ('styles') 
+<style>
+    .loader {
+            display: block;
+            margin: 20px auto 0;
+            vertical-align: middle;
+        }
+
+        #preloader {
+            width: 100%;
+            height: 100%;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            background: rgba(255, 255, 255, 0.63);
+            z-index: 11000;
+            position: fixed;
+            display: block;
+        }
+
+        .preloader {
+            position: absolute;
+            margin: 0 auto;
+            left: 1%;
+            right: 1%;
+            top: 47%;
+            width: 100px;
+            height: 100px;
+            background: center center no-repeat none;
+            background-size: 65px 65px;
+            -webkit-border-radius: 50%;
+            -moz-border-radius: 50%;
+            -ms-border-radius: 50%;
+            -o-border-radius: 50%;
+            border-radius: 50%;
+        }
+</style>
 @endsection
 
 @section ('content_title')
@@ -19,7 +56,10 @@
                 {{-- </div>
             </div> --}}
             <div class="col-sm-12">
-                <div class="overlay hidden" id="js-loader-overlay"><i class="fa fa-refresh fa-spin"></i></div>
+                {{-- <div class="overlay hidden" id="js-loader-overlay"><i class="fa fa-refresh fa-spin"></i></div> --}}
+                <div id="preloader" style="display: none">
+                    <img class="preloader" src="{{ asset('img/loader.gif')}}" alt="">
+                </div>
                 {{-- <div class="box-body"> --}}
                     <div class="js-data-container">
                         @include('control_panel_student.online_appointment.partials.data_list')     
@@ -88,59 +128,63 @@
         });
 
         $('body').on('click', '.btn-reserve', function (e) {
-                e.preventDefault();
-                var id = $(this).data('id');
-                var date = $(this).data('date');
-                var time = $(this).data('time');
-                var email = $('#email').val();
-                var grade_lvl = $('.js-grade').val();
+            e.preventDefault();
+            var id = $(this).data('id');
+            var date = $(this).data('date');
+            var time = $(this).data('time');
+            var email = $('#email').val();
+            var grade_lvl = $('.js-grade').val();
 
-                alertify.defaults.transition = "slide";
-                alertify.defaults.theme.ok = "btn btn-primary btn-flat";
-                alertify.defaults.theme.cancel = "btn btn-danger btn-flat";
-                alertify.confirm('<i style="color: red !important" class="icon fa fa-warning"></i> Confirmation', 'You reserve to Date: <b>'+date+'</b> Time <b>'+time+'</b>?', function(){  
-                    
-                    if($("#email").val() == ''){ 
-                        check_email();
-                        return;
-                    }
-                    if(isValidEmailAddress(email)){
-                        $.ajax({
-                            url         : "{{ route('student.student_appointment.reserve') }}",
-                            type        : 'POST',
-                            data        : { _token : '{{ csrf_token() }}', id : id , email : email, grade_lvl : grade_lvl},
-                            success     : function (res) {
-                                $('.help-block').html('');
-                                if (res.res_code == 1)
-                                {
-                                    show_toast_alert({
-                                        heading : 'Error',
-                                        message : res.res_msg,
-                                        type    : 'error'
-                                    });
-                                }
-                                else
-                                {
-                                    
-                                    show_toast_alert({
-                                        heading : 'Success',
-                                        message : res.res_msg,
-                                        type    : 'success'
-                                    });
-                                    // $('.js-modal_holder .modal').modal('hide');
-                                    fetch_data();
-                                }
+            alertify.defaults.transition = "slide";
+            alertify.defaults.theme.ok = "btn btn-primary btn-flat";
+            alertify.defaults.theme.cancel = "btn btn-danger btn-flat";
+            alertify.confirm('<i style="color: red !important" class="icon fa fa-warning"></i> Confirmation', 'You reserve to Date: <b>'+date+'</b> Time <b>'+time+'</b>?', function(){  
+                
+                if($("#email").val() == ''){ 
+                    check_email();
+                    return;
+                }
+                if(isValidEmailAddress(email)){
+                    $.ajax({
+                        url         : "{{ route('student.student_appointment.reserve') }}",
+                        type        : 'POST',
+                        data        : { _token : '{{ csrf_token() }}', id : id , email : email, grade_lvl : grade_lvl},
+                        beforeSend: function() {                    
+                            $('#preloader').show();
+                        },
+                        success     : function (res) {
+                            $('.help-block').html('');
+                            if (res.res_code == 1)
+                            {
+                                show_toast_alert({
+                                    heading : 'Error',
+                                    message : res.res_msg,
+                                    type    : 'error'
+                                });
                             }
-                        });
-                    }else{
-                        check_email();
-                    }
-                    
-                    
-                }, function(){  
+                            else
+                            {
+                               
+                                // $('.js-modal_holder .modal').modal('hide');
+                                $('#preloader').hide();
 
-                });
+                                alertify.alert('<i style="color: green" class="fas fa-check-circle fa-lg"></i> Confirmation',
+                                ""+res.res_msg+"", function(){
+                                    location.reload();
+                                });
+                                // fetch_data();
+                            }
+                        }
+                    });
+                }else{
+                    check_email();
+                }
+                
+                
+            }, function(){  
+
             });
+        });
 
             notify();
 

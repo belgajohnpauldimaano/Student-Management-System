@@ -35,6 +35,7 @@ class User extends Authenticatable
         'finance'   => [ 'id' => 6, 'display' => 'Finance'],
         'admission'   => [ 'id' => 7, 'display' => 'Admission'],
     ];
+    
     public function get_user_role ($roles) 
     {
         $rollls = [];
@@ -62,6 +63,7 @@ class User extends Authenticatable
         }
         return false;
     }
+
     public function get_user_data ()
     {
         $UserInformation = NULL;
@@ -91,6 +93,7 @@ class User extends Authenticatable
         }
         return $UserInformation;
     }
+
     public function get_user_role_display ()
     {
         $role_name = '';

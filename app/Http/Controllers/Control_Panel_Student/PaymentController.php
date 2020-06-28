@@ -158,12 +158,18 @@ class PaymentController extends Controller
                 $TransactionAccount = \App\Transaction::where('school_year_id', $SchoolYear->id)
                     ->where('student_id', $StudentInformation->id)
                     ->first();
+
+                $transaction_paid = TransactionOtherFee::where('transaction_id', $TransactionAccount->id)
+                    ->where('student_id', $StudentInformation->id)
+                    ->where('isSuccess', '')
+                    ->orderBY('id', 'DESC')
+                    ->first();
                     
-                if($TransactionAccount){
+                if($transaction_paid){
                     foreach($request->downpayment as $get_data){
-                        $TransactionAccount->downpayment_id = $get_data;  
+                        $transaction_paid->downpayment_id = $get_data;  
                     }                 
-                    $TransactionAccount->save();
+                    $transaction_paid->save();
                 }
 
                 $Enrollment = new TransactionMonthPaid();
@@ -315,14 +321,13 @@ class PaymentController extends Controller
                     $otherReceived->isSuccess = 1;
                     $otherReceived->save();
                 }
-                
-                $payment = \App\Transaction::find($IsReceived->transaction_id);
-                    try{
-                        \Mail::to($IsReceived->email)->send(new SendMail($payment));
-                        \Mail::to('info@sja-bataan.com')->cc('finance@sja-bataan.com')->send(new NotifyAdminMail($payment));
-                    }catch(\Exception $e){
-                        \Log::error($e->getMessage());
-                    }
+                try{
+                    $payment = \App\Transaction::find($IsReceived->transaction_id);
+                    \Mail::to($IsReceived->email)->send(new SendMail($payment));
+                    \Mail::to('info@sja-bataan.com')->cc('finance@sja-bataan.com')->send(new NotifyAdminMail($payment));
+                }catch(\Exception $e){
+                    \Log::error($e->getMessage());
+                }
                     
 
                 return redirect()->route('student.enrollment.index')

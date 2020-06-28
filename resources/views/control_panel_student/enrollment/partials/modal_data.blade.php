@@ -105,7 +105,7 @@
                                         <tr>
                                             <td>Balance</td>
                                             <td>
-                                                ₱ {{ number_format($transaction->balance, 2)}}
+                                                ₱ {{ $transaction->approval == 'Approved' ? number_format($transaction->balance, 2) : ''}}
                                             </td>                                        
                                         </tr>
                                         <tr>

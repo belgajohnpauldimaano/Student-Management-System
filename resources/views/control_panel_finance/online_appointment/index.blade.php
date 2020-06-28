@@ -77,6 +77,14 @@
             fetch_data();
         });
 
+        $('body').on('click', '#js-btn_print', function (e) {
+            e.preventDefault()
+            const js_date = $('#js_date').val();
+           
+            window.open("{{ route('finance.online_appointment.print') }}?js_date="+js_date, '', 'height=800,width=800')
+            // window.open("{{ route('faculty.MyAdvisoryClass.print_first_quarter') }}?search_sy="+search_sy, '', 'height=800,width=800')
+        })
+
 
         $('body').on('click', '.btn_done', function (e) {
                 e.preventDefault();

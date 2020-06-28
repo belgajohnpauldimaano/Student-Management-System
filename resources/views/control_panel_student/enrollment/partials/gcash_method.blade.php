@@ -86,10 +86,10 @@
                                         ->where('isSuccess', 1)
                                         ->first();
                                 ?>
-                                <input type="checkbox" {{$hasAlreadyDiscount ? 'disabled' : ''  }} class="discountGcashSelected" name="discount_bank[]" value="{{$item->id}}"
+                                <input type="checkbox" {{$AlreadyEnrolled ? $hasAlreadyDiscount ? 'disabled' : '' : '' }} class="discountGcashSelected" name="discount_bank[]" value="{{$item->id}}"
                                     data-type="{{$item->disc_type}}" 
                                     data-fee="{{$item->disc_amt}}">
-                                    <span style="{{$hasAlreadyDiscount ? 'text-decoration: line-through;color: red;' : ''  }}">{{$item->disc_type}} ({{number_format($item->disc_amt, 2)}}) <b> </span></b>
+                                    <span style="{{$AlreadyEnrolled ? $hasAlreadyDiscount ? 'text-decoration: line-through;color: red;' : '' : '' }}">{{$item->disc_type}} ({{number_format($item->disc_amt, 2)}}) <b> </span></b>
                                 </label> 
                                 &nbsp;&nbsp;               
                             @endforeach

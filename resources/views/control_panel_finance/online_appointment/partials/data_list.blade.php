@@ -5,7 +5,7 @@
         {{-- <div class="pull-right">
             {{ $appointment ? $appointment->links() : '' }}
         </div> --}}
-
+        
         <table class="table table-bordered" id="myTable">
             <thead>
                 <th width="4%">No.</th>
@@ -20,6 +20,10 @@
                 <button style="margin-bottom: 1em" class="btn btn-danger btn-deactivate pull-right" data-id="{{$OnlineAppointment->id}}">
                     <i class="fas fa-exclamation-circle"></i> Deactivate this entire Schedule
                 </button>   
+                <button id="js-btn_print" type="button" class="btn btn-success btn-flat">
+                        <i class="fas fa-file-pdf"></i> Print report
+                </button>
+                
                 @if($hasAppointment)      
                     @foreach ($appointment as $key => $item)
                         <tr>

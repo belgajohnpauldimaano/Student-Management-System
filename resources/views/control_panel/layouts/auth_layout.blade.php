@@ -18,6 +18,7 @@
   <link rel="stylesheet" href="{{ asset('cms/plugins/iCheck/square/blue.css') }}">
 
   <link href="{{ asset('img/sja-logo.png') }}" rel=icon>
+  @yield('styles')
 
   <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
   <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -45,14 +46,6 @@
 <script src="{{ asset('cms/bootstrap/js/bootstrap.min.js') }}"></script>
 <!-- iCheck -->
 <script src="{{ asset('cms/plugins/iCheck/icheck.min.js') }}"></script>
-<script>
-  $(function () {
-    $('input').iCheck({
-      checkboxClass: 'icheckbox_square-blue',
-      radioClass: 'iradio_square-blue',
-      increaseArea: '20%' // optional
-    });
-  });
-</script>
+@yield('scripts')
 </body>
 </html>
