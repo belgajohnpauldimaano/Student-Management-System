@@ -20,9 +20,10 @@
                                 data-gradelvl="{{$p_cat->grade_level_id}}" 
                                 data-tuition="{{ $p_cat->tuition->tuition_amt }}"
                                 data-misc="{{ $p_cat->misc_fee->misc_amt }}"
+                                data-other="{{$p_cat->other_fee->other_fee_amt}}"
                         >
                             {{$p_cat->stud_category->student_category}} {{$p_cat->grade_level_id}} - Tuition Fee: {{ number_format($p_cat->tuition->tuition_amt, 2) }} 
-                            | Miscelleneous Fee {{ number_format($p_cat->misc_fee->misc_amt, 2) }}
+                            | Miscelleneous Fee {{ number_format($p_cat->misc_fee->misc_amt, 2) }} | Other Fee {{ number_format($p_cat->other_fee->other_fee_amt, 2) }}
                         </option>                    
                     @endforeach
                 </select>
@@ -66,12 +67,6 @@
                             <td style="width:140px">OR Number</td>
                             <td align="right" id="or_num">00000000</td>
                         </tr>
-                        <tr>
-                            <td style="width:140px">Downpayment </td>
-                            <td align="right">
-                                ₱ <span id="dp_enrollment">0</span>
-                            </td>
-                        </tr>
                         
                         <tr>
                             <td style="width:140px">Tuition Fee</td>
@@ -81,11 +76,20 @@
                             <td style="width:140px">Misc Fee</td>
                             <td align="right" id="misc_fee"></td>
                         </tr>
+                        <tr>
+                            <td style="width:140px">Other Fee</td>
+                            <td align="right" id="other_fee"></td>
+                        </tr>
                         <tr >
                             <td style="width:140px">Discount</td>
                             <td id="disc_amt" align="right">0</td>
-                        </tr>                       
-                                            
+                        </tr>                      
+                        <tr>
+                            <td style="width:140px">Payment </td>
+                            <td align="right"><b>
+                                ₱ <span id="dp_enrollment">0</span></b>
+                            </td>
+                        </tr>                
                         <tr>
                             <td style="width:140px">Total Balance</td>
                             <td align="right">

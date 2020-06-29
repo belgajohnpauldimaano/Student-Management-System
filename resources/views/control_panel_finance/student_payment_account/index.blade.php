@@ -80,11 +80,13 @@
                 // const dataid = $("#payment_category option:selected").attr('data-gradelvl');
                 var tuition = $("#payment_category option:selected").attr('data-tuition');
                 var misc = $("#payment_category option:selected").attr('data-misc');
+                var other = $("#payment_category option:selected").attr('data-other');
                 // alert(dataid);
                 $('#tuition_fee').text(currencyFormat(parseFloat(tuition)));
                 $('#misc_fee').text(currencyFormat(parseFloat(misc)));
+                $('#other_fee').text(currencyFormat(parseFloat(other)));
 
-                tuition_total = parseFloat(tuition) + parseFloat(misc);
+                tuition_total = parseFloat(tuition) + parseFloat(misc) + + parseFloat(other);
                 total_fees();
                 // alert(total)
             });

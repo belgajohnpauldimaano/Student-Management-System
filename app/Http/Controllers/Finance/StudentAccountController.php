@@ -34,8 +34,11 @@ class StudentAccountController extends Controller
             $OtherFee = OtherFee::where('current', 1)->where('status', 1)->get();  
             $SchoolYear = SchoolYear::where('current', 1)->where('status', 1)->first();
             $StudentCategory = StudentCategory::where('status', 1)->get();        
-            $PaymentCategory = PaymentCategory::with('stud_category','tuition','misc_fee')
-                ->where('status', 1)->where('current', 1)->get();
+            $PaymentCategory = PaymentCategory::with('stud_category','tuition','misc_fee','other_fee')
+                ->where('status', 1)
+                ->where('current', 1)
+                ->orderBY('grade_level_id', 'ASC')
+                ->get();
             $Transaction = Transaction::with('payment_cat')->where('student_id', $stud_id)
                 ->where('status', 1)->where('school_year_id', $SchoolYear->id )->first();
             $StudentInformation = StudentInformation::with(['user','transactions'])
@@ -87,8 +90,11 @@ class StudentAccountController extends Controller
         $OtherFee = OtherFee::where('current', 1)->where('status', 1)->get();  
         $SchoolYear = SchoolYear::where('current', 1)->where('status', 1)->first();
         $StudentCategory = StudentCategory::where('status', 1)->get();        
-        $PaymentCategory = PaymentCategory::with('stud_category','tuition','misc_fee')
-            ->where('status', 1)->where('current', 1)->get();
+        $PaymentCategory = PaymentCategory::with('stud_category','tuition','misc_fee','other_fee')
+            ->where('status', 1)
+            ->where('current', 1)
+            ->orderBY('grade_level_id', 'ASC')
+            ->get();
 
         $Transaction = Transaction::with('payment_cat')
             ->where('student_id', $stud_id)
