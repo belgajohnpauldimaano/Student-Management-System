@@ -167,7 +167,7 @@ class PaymentController extends Controller
                     
                 if($transaction_paid){
                     foreach($request->downpayment as $get_data){
-                        $transaction_paid->downpayment_id = $get_data;  
+                        $transaction_paid->others_fee_id = $get_data;  
                     }                 
                     $transaction_paid->save();
                 }
