@@ -35,7 +35,7 @@ class RegistrationController extends Controller
             'gender'    => 'required',            
             'mother_name' => 'required',
             'father_name' => 'required',
-            'student_img' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048'
+            'student_img' => 'required|image|mimes:jpeg,png,jpg,gif,svg'//|max:2048'
         ];
         
         
@@ -56,7 +56,10 @@ class RegistrationController extends Controller
             $checkUser = User::where('username', $request->lrn)->first();
             if ($checkUser) 
             {
-                return response()->json(['res_code' => 1,'res_msg' => 'LRN already used. Please contact the administrator to confirm it. Thank you']);
+                return response()->json([
+                    'res_code' => 1,'res_msg' => 
+                    'LRN already used. Please contact the administrator to confirm it. Thank you'
+                    ]);
             }
             
             $User = new User();
