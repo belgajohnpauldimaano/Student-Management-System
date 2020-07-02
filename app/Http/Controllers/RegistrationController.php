@@ -35,7 +35,7 @@ class RegistrationController extends Controller
             'gender'    => 'required',            
             'mother_name' => 'required',
             'father_name' => 'required',
-            'student_img' => 'required|image|mimes:jpeg,png,jpg,gif,svg'//|max:2048'
+            'student_img' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048'
         ];
         
         

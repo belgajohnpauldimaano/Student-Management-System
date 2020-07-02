@@ -204,7 +204,7 @@ class EnrollmentController extends Controller
             'bank'=>'required',
             'bank_transaction_id'=>'required',
             'bank_pay_fee' => 'required',
-            'bank_image' => 'required|image|mimes:jpeg,png,jpg,gif,svg'//|max:2048',
+            'bank_image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:5120',
             // 'bank_image' => 'required'
         ];
         
@@ -390,7 +390,7 @@ class EnrollmentController extends Controller
             'Gcash'=>'required',
             'gcash_transaction_id'=>'required',
             'gcash_pay_fee' => 'required',
-            'gcash_image' => 'required|image|mimes:jpeg,png,jpg,gif,svg'//|max:2048',
+            'gcash_image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:5120',
             // 'bank_image' => 'required'
         ];
         
