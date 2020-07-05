@@ -1,4 +1,4 @@
-<div class="col-lg-8">                            
+<div class="col-lg-7">                            
     <div class="box box-danger box-solid" style="height: 30em;">
         <div class="box-header">
             <h3 class="box-title">Tuition Fee</h3>
@@ -12,7 +12,7 @@
             </div>            
             <div class="form-group">
                 <label for="">Student Category</label>
-            
+                
                 <select name="payment_category" id="payment_category" class="form-control">
                     <option value="">Select Student Category</option>                                    
                     @foreach($PaymentCategory as $p_cat)
@@ -21,6 +21,7 @@
                                 data-tuition="{{ $p_cat->tuition->tuition_amt }}"
                                 data-misc="{{ $p_cat->misc_fee->misc_amt }}"
                                 data-other="{{$p_cat->other_fee->other_fee_amt}}"
+                                {{ $p_cat ? ($p_cat->id == $student_payment_category->id ? 'selected' : '')  : 'selected' }}
                         >
                             {{$p_cat->stud_category->student_category}} {{$p_cat->grade_level_id}} - Tuition Fee: {{ number_format($p_cat->tuition->tuition_amt, 2) }} 
                             | Miscelleneous Fee {{ number_format($p_cat->misc_fee->misc_amt, 2) }} | Other Fee {{ number_format($p_cat->other_fee->other_fee_amt, 2) }}
@@ -30,6 +31,21 @@
                 <div class="help-block text-red text-left" id="js-payment_category">
                 </div>
             </div>
+           <div class="check-downpayment">                
+                <label for="">Downpayment Category</label>                   
+                <div class="radio check-downpayment" style="margin-top: -2.5px;">
+                    @foreach ($Downpayment as $item)                
+                    <label>                      
+                        <input type="radio" class="downpaymentSelected" name="downpayment1[]" value="{{$item->id}}"
+                        data-modified="{{$item->modified}}" 
+                        data-fee="{{$item->downpayment_amt}}">
+                        {{number_format($item->downpayment_amt, 2)}} {{$item->modified == 1 ? '- modified' : ''}}                           
+                    </label>                       
+                    &nbsp;&nbsp;               
+                    @endforeach
+                    <div class="help-block text-left js-downpayment" id="js-downpayment"></div>
+                </div>
+            </div>
             <div class="form-group">
                 <label for="">Downpayment </label>
                 <input placeholder="0.00" type="number" class="form-control" name="downpayment" id="downpayment" value="">
@@ -37,7 +53,7 @@
             </div>
             <div class="form-group">
                 <label for="">Discount: </label>
-                <select name="discount[]" id="discount" class="form-control select2 discountSelected" multiple="multiple" data-placeholder="Select Discount" style="width: 100%;">
+                {{-- <select name="discount[]" id="discount" class="form-control select2 discountSelected" multiple="multiple" data-placeholder="Select Discount" style="width: 100%;">
                     <option value="">Select Discount Fee</option>
                     @foreach($Discount as $disc_fee)
                         <option value="{{$disc_fee->id}}"
@@ -49,12 +65,31 @@
                     @endforeach
                 </select>
                 <div class="help-block text-red text-left" id="js-discount">
-                </div>
+                </div> --}}
+
+                <label for="e_discount">Discount Fee</label>
+                  <div class="checkbox" style="margin-top: -2.5px;">
+                    @foreach ($Discount as $item)                
+                      <label>                      
+                        <?php 
+                          $hasAlreadyDiscount = \App\TransactionDiscount::where('student_id', $StudentInformation->id)
+                            ->where('school_year_id', $SchoolYear->id)->where('discount_type', $item->disc_type)
+                            ->where('isSuccess', 1)
+                            ->first();
+                        ?>
+                        <input type="checkbox" {{$hasAlreadyDiscount ? 'disabled' : ''  }} class="discountSelected" name="discount[]" value="{{$item->id}}"
+                          data-type="{{$item->disc_type}}" 
+                          data-fee="{{$item->disc_amt}}">
+                          <span style="{{$hasAlreadyDiscount ? 'text-decoration: line-through;color: red;' : ''  }}">{{$item->disc_type}} ({{number_format($item->disc_amt, 2)}}) <b></span> </b>
+                      </label> 
+                      &nbsp;&nbsp;        
+                    @endforeach
+                  </div>
             </div>
         </div>
     </div>
 </div>
-<div class="col-lg-4">
+<div class="col-lg-5">
     <div class="box box-danger box-solid" style="height: 30em;">
         <div class="box-header">
         <h3 class="box-title">Summary Bill for Invoice</h3>

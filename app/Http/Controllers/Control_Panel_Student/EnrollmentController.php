@@ -50,7 +50,6 @@ class EnrollmentController extends Controller
                 $AlreadyEnrolled = TransactionMonthPaid::where('student_id', $StudentInformation->id)
                     ->where('school_year_id', $SchoolYear->id)
                     ->where('isSuccess', 1)
-                    // ->where('approval', 'Approved')
                     ->orderBy('id', 'Desc')
                     ->first();
 

@@ -1202,9 +1202,6 @@
             }else if(payment>=parseInt(49000) && payment<=parseInt(55000)){
                 result_online_charge =  (parseFloat(payment) * 0.035) + 26;
             }
-            
-            
-            
 
             total_payment_charge = parseFloat(payment) + parseFloat(result_online_charge);
 

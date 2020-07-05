@@ -2,48 +2,65 @@
 
 namespace App\Http\Controllers\Finance;
 
-use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
-use App\StudentInformation;
-use App\GradeLevel;
-use App\DiscountFee;
-use App\OtherFee;
-use App\SchoolYear;
-use App\StudentCategory;
-use App\PaymentCategory;
-use App\Transaction;
-use App\TransactionOtherFee;
-use App\TransactionMonthPaid;
-use App\TuitionFee;
 use App\MiscFee;
+use App\OtherFee;
+use App\GradeLevel;
+use App\SchoolYear;
+use App\TuitionFee;
+use App\DiscountFee;
+use App\Transaction;
+use App\DownpaymentFee;
+use App\IncomingStudent;
+use App\PaymentCategory;
+use App\StudentCategory;
+use App\StudentInformation;
 use App\TransactionDiscount;
+use App\TransactionOtherFee;
+use Illuminate\Http\Request;
+use App\TransactionMonthPaid;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Crypt;
 
 class StudentAccountController extends Controller
 {
     public function index(Request $request){
-        $stud_id = \Crypt::decrypt($request->c);
+        $stud_id = Crypt::decrypt($request->c);
         $Profile = StudentInformation::where('id', $stud_id)->first(); 
         $School_year_id = SchoolYear::where('status', 1)
-                ->where('current', 1)->first();
+                ->where('current', 1)->first();                
 
         $StudentInformation = NULL;
+
+        $IncomingStudentCount = IncomingStudent::where('student_id', $stud_id)
+                ->where('school_year_id', $School_year_id->id)
+                ->first();
+
         if($request->ajax()){
-            $stud_id = \Crypt::decrypt($request->c);
+            $stud_id = Crypt::decrypt($request->c);
             $Gradelvl = GradeLevel::where('current', 1)->where('status', 1)->get();
             $Discount = DiscountFee::where('current', 1)->where('status', 1)->get();
             $OtherFee = OtherFee::where('current', 1)->where('status', 1)->get();  
             $SchoolYear = SchoolYear::where('current', 1)->where('status', 1)->first();
-            $StudentCategory = StudentCategory::where('status', 1)->get();        
+            $StudentCategory = StudentCategory::where('status', 1)->get();      
+
             $PaymentCategory = PaymentCategory::with('stud_category','tuition','misc_fee','other_fee')
                 ->where('status', 1)
                 ->where('current', 1)
                 ->orderBY('grade_level_id', 'ASC')
                 ->get();
+
             $Transaction = Transaction::with('payment_cat')->where('student_id', $stud_id)
                 ->where('status', 1)->where('school_year_id', $SchoolYear->id )->first();
             $StudentInformation = StudentInformation::with(['user','transactions'])
                 ->where('id', $stud_id)
                 ->first();
+            
+            $Downpayment = DownpaymentFee::where('status', 1)
+                ->where('grade_level_id', $IncomingStudentCount->grade_level_id)
+                ->get();
+
+            $student_payment_category = PaymentCategory::with('misc_fee','tuition')
+                ->where('grade_level_id',  $IncomingStudentCount->grade_level_id)->first();
 
             if($Transaction){
             
@@ -53,7 +70,7 @@ class StudentAccountController extends Controller
                 $Stud_cat_payment =  StudentCategory::where('id', $Payment->student_category_id)->first();
 
                 $TransactionMonthPaid = TransactionMonthPaid::where('student_id', $stud_id)
-                                        ->where('school_year_id', $SchoolYear->id)->orderBY('id', 'DESC')->get();
+                    ->where('school_year_id', $SchoolYear->id)->orderBY('id', 'DESC')->get();
 
                 $TransactionOR = TransactionOtherFee::where('student_id', $stud_id)
                     ->where('school_year_id', $SchoolYear->id)->orderBY('id', 'DESC')
@@ -81,7 +98,7 @@ class StudentAccountController extends Controller
             return view('control_panel_finance.student_payment_account.partials.data_list', 
             compact('StudentInformation','Profile','Gradelvl','Discount','OtherFee','SchoolYear','StudentCategory','PaymentCategory','Transaction'
                     ,'Stud_cat_payment','Payment','MiscFee_payment','Tuitionfee_payment','School_year_id','Transaction_disc','TransactionMonthPaid'
-                    ,'Account','TransactionOR','AccountOthers'
+                    ,'Account','TransactionOR','AccountOthers','student_payment_category','Downpayment'
                     ));
         }
 
@@ -89,7 +106,8 @@ class StudentAccountController extends Controller
         $Discount = DiscountFee::where('current', 1)->where('status', 1)->get();
         $OtherFee = OtherFee::where('current', 1)->where('status', 1)->get();  
         $SchoolYear = SchoolYear::where('current', 1)->where('status', 1)->first();
-        $StudentCategory = StudentCategory::where('status', 1)->get();        
+        $StudentCategory = StudentCategory::where('status', 1)->get();  
+
         $PaymentCategory = PaymentCategory::with('stud_category','tuition','misc_fee','other_fee')
             ->where('status', 1)
             ->where('current', 1)
@@ -105,9 +123,17 @@ class StudentAccountController extends Controller
             ->where('id', $stud_id)
             ->first();
 
+        $Downpayment = DownpaymentFee::where('status', 1)
+            ->where('grade_level_id', $IncomingStudentCount->grade_level_id)
+            ->get();
+
+        $student_payment_category = PaymentCategory::with('misc_fee','tuition')
+            ->where('grade_level_id',  $IncomingStudentCount->grade_level_id)->first();
+
         if($Transaction){
         
             $Payment =  PaymentCategory::where('id', $Transaction->payment_category_id)->first();
+            
             $MiscFee_payment =  MiscFee::where('id', $Payment->misc_fee_id)->first();
             $Tuitionfee_payment =  TuitionFee::where('id', $Payment->tuition_fee_id)->first();
             $Stud_cat_payment =  StudentCategory::where('id', $Payment->student_category_id)->first();
@@ -141,7 +167,7 @@ class StudentAccountController extends Controller
         return view('control_panel_finance.student_payment_account.index', 
             compact('StudentInformation','Profile','Gradelvl','Discount','OtherFee','SchoolYear','StudentCategory','PaymentCategory','Transaction'
                     ,'Stud_cat_payment','Payment','MiscFee_payment','Tuitionfee_payment','School_year_id','Transaction_disc','TransactionMonthPaid'
-                    ,'Account','TransactionOR','AccountOthers'));
+                    ,'Account','TransactionOR','AccountOthers','Downpayment','student_payment_category'));
     }
 
 
