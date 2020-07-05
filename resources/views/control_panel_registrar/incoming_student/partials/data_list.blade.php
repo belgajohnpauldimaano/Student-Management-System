@@ -1,6 +1,6 @@
                         
 <div class="table-responsive">                            
-    <div class="active tab-pane" id="js-notyetapproved">     
+        
         <div class="pull-right">
             {{ $IncomingStudent ? $IncomingStudent->links() : '' }}
         </div>                             
@@ -43,7 +43,7 @@
                 @endforeach                                            
             </tbody>
         </table>
-    </div> 
+    
 </div>                                
                         
                                 

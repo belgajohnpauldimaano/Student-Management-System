@@ -17,6 +17,22 @@ Route::group(['prefix' => 'admission', 'middleware' => ['auth', 'userroles'], 'r
     //     Route::post('list-class-subject-details', 'Registrar\GradeSheetController@list_class_subject_details')->name('registrar.student_grade_sheet.list_class_subject_details');
     //     Route::post('list-students-by-class', 'Registrar\GradeSheetController@list_students_by_class')->name('registrar.student_grade_sheet.list_students_by_class');
     // });
+
+    Route::group(['prefix' => 'incoming-student', 'middleware' => 'auth', 'roles' => ['admin', 'root', 'admission']], function() {
+        Route::get('', 'Admission\NotYetApprovedController@index')->name('admission.incoming_student');
+        Route::post('', 'Admission\NotYetApprovedController@index')->name('admission.incoming_student');
+    
+        // Route::get('Approved', 'Registrar\IncomingStudentController@Approved')->name('registrar.Approved');
+        // Route::post('Approved', 'Registrar\IncomingStudentController@Approved')->name('registrar.Approved');
+    
+        // Route::get('Disapproved', 'Registrar\IncomingStudentController@Disapproved')->name('registrar.Disapproved');
+        // Route::post('Disapproved', 'Registrar\IncomingStudentController@Disapproved')->name('registrar.Disapproved');
+    
+        // Route::post('modal', 'Registrar\IncomingStudentController@modal_data')->name('registrar.incoming_student.modal');
+        // Route::post('approve', 'Registrar\IncomingStudentController@approve')->name('registrar.incoming_student.approve');
+        // Route::post('disapprove', 'Registrar\IncomingStudentController@disapprove')->name('registrar.incoming_student.disapprove');
+        // Route::post('enroll-student', 'Registrar\IncomingStudentController@enroll_student')->name('registrar.incoming_student.enroll_student');
+    });
     
 });
 

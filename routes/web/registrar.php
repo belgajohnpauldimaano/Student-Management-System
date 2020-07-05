@@ -48,14 +48,14 @@ Route::group(['prefix' => 'registrar/student-list', 'middleware' => 'auth', 'rol
 });
 
 Route::group(['prefix' => 'registrar/incoming-student', 'middleware' => 'auth', 'roles' => ['admin', 'root', 'registrar']], function() {
-    Route::get('', 'Registrar\IncomingStudentController@index')->name('registrar.incoming_student');
-    Route::post('', 'Registrar\IncomingStudentController@index')->name('registrar.incoming_student');
+    // Route::get('', 'Registrar\NotYetApprovedController@index')->name('registrar.incoming_student');
+    // Route::post('', 'Registrar\NotYetApprovedController@index')->name('registrar.incoming_student');
 
-    Route::get('Approved', 'Registrar\IncomingStudentController@Approved')->name('registrar.Approved');
-    Route::post('Approved', 'Registrar\IncomingStudentController@Approved')->name('registrar.Approved');
+    // Route::get('Approved', 'Registrar\IncomingStudentController@Approved')->name('registrar.Approved');
+    // Route::post('Approved', 'Registrar\IncomingStudentController@Approved')->name('registrar.Approved');
 
-    Route::get('Disapproved', 'Registrar\IncomingStudentController@Disapproved')->name('registrar.Disapproved');
-    Route::post('Disapproved', 'Registrar\IncomingStudentController@Disapproved')->name('registrar.Disapproved');
+    // Route::get('Disapproved', 'Registrar\IncomingStudentController@Disapproved')->name('registrar.Disapproved');
+    // Route::post('Disapproved', 'Registrar\IncomingStudentController@Disapproved')->name('registrar.Disapproved');
 
     Route::post('modal', 'Registrar\IncomingStudentController@modal_data')->name('registrar.incoming_student.modal');
     Route::post('approve', 'Registrar\IncomingStudentController@approve')->name('registrar.incoming_student.approve');

@@ -21,12 +21,10 @@
             </form>
         </div>
         <div class="overlay hidden" id="js-loader-overlay"><i class="fa fa-refresh fa-spin"></i></div>
-        <div class="box-body">
-            
+        <div class="box-body">            
             <div class="js-data-container">
                 @include('control_panel_registrar.incoming_student.partials.data_list')       
-            </div>
-            
+            </div>            
         </div>        
     </div>
 @endsection
@@ -41,7 +39,7 @@
             formData.append('page', page);
             loader_overlay();
             $.ajax({
-                url : "{{ route('registrar.incoming_student') }}",
+                url : "{{ route('admission.incoming_student') }}",
                 type : 'POST',
                 data : formData,
                 processData : false,

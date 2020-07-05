@@ -11,7 +11,10 @@ class TuitionFeeController extends Controller
     {
         if ($request->ajax())
         {
-            $TuitionFee = \App\TuitionFee::where('status', 1)->where('tuition_amt', 'like', '%'.$request->search.'%')->paginate(10);
+            $TuitionFee = \App\TuitionFee::where('status', 1)
+                ->where('tuition_amt', 'like', '%'.$request->search.'%')
+                ->paginate(10);
+                
             return view('control_panel_finance.maintenance.tuition_fee.partials.data_list', compact('TuitionFee'))->render();
         }
         

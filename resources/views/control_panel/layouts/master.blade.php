@@ -166,9 +166,9 @@
             </a>
             <ul class="treeview-menu menu-open" style="display: block">
               {{--  Admin Menu  --}}
-                <li><a href="{{ route('registrar.incoming_student')}}"><i class="fa fa-circle-o"></i>&nbsp;&nbsp;&nbsp; <span>Not yet Approved</span></a></li>
-                <li><a href="{{ route('registrar.Approved')}}"><i class="fa fa-circle-o"></i>&nbsp;&nbsp;&nbsp; <span>Approved</span></a></li>
-                <li><a href="{{ route('registrar.Disapproved')}}"><i class="fa fa-circle-o"></i>&nbsp;&nbsp;&nbsp; <span>Disapproved</span></a></li>
+                <li><a href="{{ route('admission.incoming_student') }}"><i class="fa fa-circle-o"></i>&nbsp;&nbsp;&nbsp; <span>Not yet Approved</span></a></li>
+                {{-- <li><a href="{{ route('registrar.Approved')}}"><i class="fa fa-circle-o"></i>&nbsp;&nbsp;&nbsp; <span>Approved</span></a></li>
+                <li><a href="{{ route('registrar.Disapproved')}}"><i class="fa fa-circle-o"></i>&nbsp;&nbsp;&nbsp; <span>Disapproved</span></a></li> --}}
               </ul>
           </li>
           <li><a href="{{ route('admin.student.information') }}"><i class="fa fa-info-circle fa-lg"></i>&nbsp;&nbsp;&nbsp; <span>Student Information</span></a></li>    

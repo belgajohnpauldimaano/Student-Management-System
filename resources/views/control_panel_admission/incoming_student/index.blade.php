@@ -24,7 +24,7 @@
         <div class="box-body">
             
             <div class="js-data-container">
-                @include('control_panel_registrar.incoming_student.partials.data_list')       
+                @include('control_panel_admission.incoming_student.partials.data_list')       
             </div>
             
         </div>        
@@ -41,7 +41,7 @@
             formData.append('page', page);
             loader_overlay();
             $.ajax({
-                url : "{{ route('registrar.incoming_student') }}",
+                url : "{{ route('admission.incoming_student') }}",
                 type : 'POST',
                 data : formData,
                 processData : false,

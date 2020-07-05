@@ -1,7 +1,5 @@
-                                                
-   
 <div class="pull-right">
-    {{ $IncomingStudent ? $IncomingStudent->links() : '' }}
+    {{ $StudentInformation ? $StudentInformation->links() : '' }}
 </div>                             
 <table class="table no-margin table-bordered table-striped">
     <thead>
@@ -14,7 +12,7 @@
         </tr>
     </thead>
     <tbody>
-        @foreach ($IncomingStudent as $item)
+        @foreach ($StudentInformation as $item)
             <tr>
                 <td>{{$item->student_name}}</td>
                 <td>{{$item->student_type == '1' ? 'Transferee' : 'Freshman'}}</td>
@@ -34,4 +32,3 @@
         @endforeach                                            
     </tbody>
 </table>
-        
