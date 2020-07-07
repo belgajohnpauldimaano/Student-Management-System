@@ -49,7 +49,7 @@ class IncomingStudentController extends Controller
                 
                 $IncomingStudentCount = $this->IncomingStudentCount();
                 
-                return view('control_panel_registrar.incoming_student.partials.data_list',
+                return view('control_panel_registrar.incoming_student_information.partials.data_list',
                     compact('IncomingStudent','IncomingStudentCount'))->render();
         }
         
@@ -72,7 +72,7 @@ class IncomingStudentController extends Controller
         $IncomingStudentCount = $this->IncomingStudentCount(); 
 
        
-        return view('control_panel_registrar.incoming_student.index', 
+        return view('control_panel_registrar.incoming_student_information.index', 
             compact('IncomingStudent','IncomingStudentCount'));
     }
 
@@ -107,7 +107,7 @@ class IncomingStudentController extends Controller
                     ->where('users.status', 1)            
                     ->paginate(10, ['transaction_month_paids.id']);
 
-                return view('control_panel_registrar.incoming_student_approved.partials.data_list', compact('IncomingStudentApproved','IncomingStudentCount'));
+                return view('control_panel_registrar.incoming_student_information_approved.partials.data_list', compact('IncomingStudentApproved','IncomingStudentCount'));
         }        
 
         $IncomingStudentCount = $this->IncomingStudentCount(); 
@@ -128,7 +128,7 @@ class IncomingStudentController extends Controller
             ->where('users.status', 1)            
             ->paginate(10, ['transaction_month_paids.id']);
 
-        return view('control_panel_registrar.incoming_student_approved.index', compact('IncomingStudentApproved','IncomingStudentCount'));
+        return view('control_panel_registrar.incoming_student_information_approved.index', compact('IncomingStudentApproved','IncomingStudentCount'));
     }
 
     
@@ -164,7 +164,7 @@ class IncomingStudentController extends Controller
                 ->where('users.status', 0)            
                 ->paginate(10, ['transaction_month_paids.id']);
 
-            return view('control_panel_registrar.incoming_student_disapproved.partials.data_list', compact('IncomingStudentCount','Disapproved'));
+            return view('control_panel_registrar.incoming_student_information_disapproved.partials.data_list', compact('IncomingStudentCount','Disapproved'));
         }
         
 
@@ -187,7 +187,7 @@ class IncomingStudentController extends Controller
             ->where('users.status', 0)            
             ->paginate(10, ['transaction_month_paids.id']);
 
-        return view('control_panel_registrar.incoming_student_disapproved.index', compact('IncomingStudentCount','Disapproved'));
+        return view('control_panel_registrar.incoming_student_information_disapproved.index', compact('IncomingStudentCount','Disapproved'));
     }
 
     public function modal_data(Request $request)
