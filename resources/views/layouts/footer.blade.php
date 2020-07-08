@@ -96,44 +96,41 @@
                 e.preventDefault();
                 
                 var formData = new FormData($(this)[0]);
-                alertify.defaults.transition = "slide";
-                alertify.defaults.theme.ok = "btn btn-primary btn-flat";
-                alertify.defaults.theme.cancel = "btn btn-danger btn-flat";
-                alertify.confirm('Confirmation', 'Are you sure you want the status paid?', function(){ 
-                    
-                    $.ajax({
-                        url         : "{{ route('registration.store') }}",
-                        type        : 'POST',
-                        data        : formData,
-                        processData : false,
-                        contentType : false,
-                        success     : function (res) {
-                            $('.help-block').html('');
-                            if (res.res_code == 1)
-                            {
-                                for (var err in res.res_error_msg)
-                                {
-                                    $('#js-' + err).html('<code> '+ res.res_error_msg[err] +' </code>');
-                                }
-                            }
-                            else
-                            {
-                                alertify.alert("Your information successfully submited. Please wait the confirmation from Admission Department. Thank you!", function(){
-                                    $('#js-form_subject_details')[0].reset();
-                                    $('#js-registration').modal('hide');
-                                });
-                            }
-                        }
-                    });
-                    
-                    // $('#js-registration').modal('hide');
-                }, function(){  
+                alertify.confirm('Confirm Message', function(){ alertify.success('Ok') }, function(){ alertify.error('Cancel')})
 
-                });
-                
-
-                
-            });
+            //     alertify.defaults.transition = "slide";
+            //     alertify.defaults.theme.ok = "btn btn-primary btn-flat";
+            //     alertify.defaults.theme.cancel = "btn btn-danger btn-flat";
+            //     alertify.confirm('Confirmation', 'Are you sure all your infomations are correct?', function(){ 
+                    
+            //         $.ajax({
+            //             url         : "{{ route('registration.store') }}",
+            //             type        : 'POST',
+            //             data        : formData,
+            //             processData : false,
+            //             contentType : false,
+            //             success     : function (res) {
+            //                 $('.help-block').html('');
+            //                 if (res.res_code == 1)
+            //                 {
+            //                     for (var err in res.res_error_msg)
+            //                     {
+            //                         $('#js-' + err).html('<code> '+ res.res_error_msg[err] +' </code>');
+            //                     }
+            //                 }
+            //                 else
+            //                 {
+            //                     alertify.alert("Your information successfully submited. Please wait the confirmation from Admission Department. Thank you!", function(){
+            //                         $('#js-form_subject_details')[0].reset();
+            //                         $('#js-registration').modal('hide');
+            //                     });
+            //                 }
+            //             }
+            //         });
+            //     }, function(){  
+                    
+            //     });
+            // });
             
         });
 
