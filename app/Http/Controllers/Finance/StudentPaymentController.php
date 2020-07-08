@@ -270,14 +270,18 @@ class StudentPaymentController extends Controller
         
         if ($NotyetApproved)
         {
-            $discount = TransactionDiscount::where('transaction_month_paid_id', $NotyetApproved->id)->get();
+            $check_discount = TransactionDiscount::where('transaction_month_paid_id', $NotyetApproved->id)->first();
 
-            foreach($discount as $data){
-                $discount = TransactionDiscount::where('transaction_month_paid_id', $data->id)->first();
-                $discount->isSuccess = 0;
-                $discount->save();
+            if(!$check_discount){
+                $discount = TransactionDiscount::where('transaction_month_paid_id', $NotyetApproved->id)->get();
+
+                foreach($discount as $data){
+                    $discount = TransactionDiscount::where('transaction_month_paid_id', $data->id)->first();
+                    $discount->isSuccess = 0;
+                    $discount->save();
+                }
             }
-
+            
             $NotyetApproved->approval = 'Disapproved';
             $NotyetApproved->save();
 

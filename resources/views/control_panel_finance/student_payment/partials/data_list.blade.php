@@ -1,6 +1,6 @@
                                                 
                     <div class="table-responsive">                          
-                        <div class="nav-tabs-custom">
+                        <div class="nav-tabs-custom" >
                             <ul class="nav nav-tabs">
                                 <li class="active">
                                     <a href="#js-notyetapproved" data-toggle="tab">Not yet Approved &nbsp;
@@ -42,7 +42,7 @@
                                         <tbody>
                                             @foreach($NotyetApproved as $key => $data)
                                                 <tr>
-                                                    <td>{{$key + 1}}</td>
+                                                    <td>{{$key + 1}} </td>
                                                     <td>{{$data->student_name}}</td>
                                                     <td>{{$data->student_level}}</td>
                                                     <td>{{number_format($data->tuition_amt,2)}}</td>
@@ -92,6 +92,7 @@
                                                         <a class="btn btn-sm btn-primary btn-view-modal" title="View" data-id="{{$data->transaction_id}}" data-monthly_id="{{$data->transact_monthly_id}}"><i class="fas fa-eye"></i></a>
                                                         <a class="btn btn-sm btn-success btn-approve" title="Approve" data-id="{{$data->transact_monthly_id}}" data-balance="{{$incoming_bal}}"><i class="fas fa-thumbs-up"></i></a>
                                                         <a class="btn btn-sm btn-danger btn-disapprove" title="Disapprove" data-id="{{$data->transact_monthly_id}}"><i class="fas fa-thumbs-down"></i></a>
+                                                        
                                                     </td>
                                                 </tr>
                                             @endforeach

@@ -331,10 +331,17 @@
                                         $('#preloader').hide();                      
                                         
                                         if (res.res_code == 1){
-                                            for (var err in res.res_error_msg)
-                                            {
-                                                $('#js-' + err).html('<code> '+ res.res_error_msg[err] +' </code>');
-                                            }
+                                            // for (var err in res.res_error_msg)
+                                            // {
+                                            //     $('#js-' + err).html('<code> '+ res.res_error_msg[err] +' </code>');
+                                            // }
+                                            alertify.alert(''+
+                                            '<i style="color: red" class="fas fa-exclamation-triangle fa-lg"></i> Reminder',
+                                            ''+res.res_msg+'', function(){
+                                                $('.input-bank_transaction_id').addClass('has-error');
+                                                $('.input-bank_transaction_id').removeClass('has-success');
+                                                $('#js-bank_transaction_id').css('color', 'red').text('the reference number/transaction ID is already used! Please contact the Finance. Thank you');
+                                            }); 
                                         }else{   
                                             if(
                                                 $('#bank_email').val() != '' && 
@@ -418,10 +425,17 @@
                                         $('#preloader').hide();                      
                                         
                                         if (res.res_code == 1){
-                                            for (var err in res.res_error_msg)
-                                            {
-                                                $('#js-' + err).html('<code> '+ res.res_error_msg[err] +' </code>');
-                                            }
+                                            // for (var err in res.res_error_msg)
+                                            // {
+                                            //     $('#js-' + err).html('<code> '+ res.res_error_msg[err] +' </code>');
+                                            // }
+                                            alertify.alert(''+
+                                            '<i style="color: red" class="fas fa-exclamation-triangle fa-lg"></i> Reminder',
+                                            ''+res.res_msg+'', function(){
+                                                $('.input-bank_transaction_id').addClass('has-error');
+                                                $('.input-bank_transaction_id').removeClass('has-success');
+                                                $('#js-bank_transaction_id').css('color', 'red').text('the reference number/transaction ID is already used! Please contact the Finance. Thank you');
+                                            }); 
                                         }else{   
                                             if(
                                                 $('#bank_email').val() != '' && 
@@ -525,10 +539,17 @@
                                         $('#preloader').hide();                      
                                         
                                         if (res.res_code == 1){
-                                            for (var err in res.res_error_msg)
-                                            {
-                                                $('#js-' + err).html('<code> '+ res.res_error_msg[err] +' </code>');
-                                            }
+                                            // for (var err in res.res_error_msg)
+                                            // {
+                                            //     $('#js-' + err).html('<code> '+ res.res_error_msg[err] +' </code>');
+                                            // }
+                                            alertify.alert(''+
+                                            '<i style="color: red" class="fas fa-exclamation-triangle fa-lg"></i> Reminder',
+                                            ''+res.res_msg+'', function(){
+                                                $('.input-gcash_transaction_id').addClass('has-error');
+                                                $('.input-gcash_transaction_id').removeClass('has-success');
+                                                $('#js-gcash_transaction_id').css('color', 'red').text('the reference number/transaction ID is already used! Please contact the Finance. Thank you');
+                                            });   
                                         }else{   
                                             if(
                                                 $('#gcash_email').val() != '' && 
@@ -611,10 +632,18 @@
                                         $('#preloader').hide();                      
                                         
                                         if (res.res_code == 1){
-                                            for (var err in res.res_error_msg)
-                                            {
-                                                $('#js-' + err).html('<code> '+ res.res_error_msg[err] +' </code>');
-                                            }
+                                            // for (var err in res.res_error_msg)
+                                            // {
+                                            //     $('#js-' + err).html('<code> '+ res.res_error_msg[err] +' </code>');
+                                            // }
+
+                                            alertify.alert(''+
+                                            '<i style="color: red" class="fas fa-exclamation-triangle fa-lg"></i> Reminder',
+                                            ''+res.res_msg+'', function(){
+                                                $('.input-gcash_transaction_id').addClass('has-error');
+                                                $('.input-gcash_transaction_id').removeClass('has-success');
+                                                $('#js-gcash_transaction_id').css('color', 'red').text('the reference number/transaction ID is already used! Please contact the Finance. Thank you');
+                                            });   
                                         }else{   
                                             if(
                                                 $('#gcash_email').val() != '' && 

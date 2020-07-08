@@ -155,6 +155,7 @@
         $('.datepicker').datepicker({
             autoclose: true
         }) 
+        
 
         var page = 1;
         function fetch_data () {
@@ -173,6 +174,8 @@
                 }
             });
         }
+
+        
 
         $('body').on('click', '.btn-approve', function (e) {
                 e.preventDefault();
@@ -282,5 +285,7 @@
                 });
             });
         });
+
+        
     </script>
 @endsection

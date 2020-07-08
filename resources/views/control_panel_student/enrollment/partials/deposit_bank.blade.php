@@ -154,7 +154,7 @@
             <div class="col-md-6">        
                     <div class="box-header with-border">
                         <h3 class="box-title">Upload with Bank</h3>
-                        <a style="margin-top: -10px" class="btn btn-sm btn-info pull-right btn-transaction-history" 
+                        <a style="margin-top: -10px" class="btn btn-sm btn-info pull-right btn-transaction-history d-lg-none " 
                             data-id="{{$StudentInformation->id}}"
                             data-school_year_id="{{$SchoolYear->id}}"
                             href="#">
