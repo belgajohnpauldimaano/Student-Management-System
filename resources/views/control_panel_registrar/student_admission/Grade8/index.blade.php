@@ -4,7 +4,7 @@
 @endsection
 
 @section ('content_title')
-    Student list
+    Student list: Grade 8
 @endsection
 
 @section ('content')
@@ -79,7 +79,10 @@
                                     type    : 'success'
                                 });
                                 $('.js-modal_holder .modal').modal('hide');
-                                fetch_data();
+                                setTimeout(function() 
+                                {
+                                    location.reload();  //Refresh page
+                                }, 1000);
                             }
                         }
                     });
@@ -117,7 +120,10 @@
                                     type    : 'success'
                                 });
                                 $('.js-modal_holder .modal').modal('hide');
-                                fetch_data();
+                                setTimeout(function() 
+                                {
+                                    location.reload();  //Refresh page
+                                }, 1000);
                             }
                         }
                     });
@@ -127,7 +133,18 @@
             });
         
        
-        $(function () {            
+        $(function () {       
+            $('body').on('submit', '#js-form_search', function (e) {
+                e.preventDefault();
+                fetch_data();
+            });
+
+            $('body').on('click', '.pagination a', function (e) {
+                e.preventDefault();
+                page = $(this).attr('href').split('=')[1];
+                fetch_data();
+            });
+                 
             $('body').on('click', '.btn-view-modal', function (e) {
                 e.preventDefault();
                  
@@ -181,7 +198,10 @@
                                     type    : 'success'
                                 });
                                 $('.js-modal_holder .modal').modal('hide');
-                                fetch_data();
+                                setTimeout(function() 
+                                {
+                                    location.reload();  //Refresh page
+                                }, 1000);
                                 fetch_data_enrolled();
                             }
                         }

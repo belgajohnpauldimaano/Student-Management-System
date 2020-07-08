@@ -20,4 +20,9 @@ class PaymentCategory extends Model
     {        
         return $this->hasOne(MiscFee::class, 'id', 'misc_fee_id' );
     }
+
+    public function other_fee()
+    {        
+        return $this->hasOne(OtherFee::class, 'id', 'other_fee_id' );
+    }
 }

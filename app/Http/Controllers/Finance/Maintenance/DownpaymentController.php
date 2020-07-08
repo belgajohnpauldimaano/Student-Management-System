@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Finance\Maintenance;
 
+use App\GradeLevel;
 use App\DownpaymentFee;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -12,11 +13,16 @@ class DownpaymentController extends Controller
     {
         if ($request->ajax())
         {
-            $DownpaymentFee = DownpaymentFee::where('status', 1)->where('downpayment_amt', 'like', '%'.$request->search.'%')->paginate(10);
+            $DownpaymentFee = DownpaymentFee::where('status', 1)->where('downpayment_amt', 'like', '%'.$request->search.'%')
+                ->orderBY('grade_level_id', 'ASC')
+                ->paginate(10);
             return view('control_panel_finance.maintenance.downpayment.partials.data_list', compact('DownpaymentFee'))->render();
         }
         
-        $DownpaymentFee = DownpaymentFee::where('status', 1)->paginate(10);
+        $DownpaymentFee = DownpaymentFee::where('status', 1)
+            ->orderBY('grade_level_id', 'ASC')
+            ->paginate(10);
+            
         return view('control_panel_finance.maintenance.downpayment.index', compact('DownpaymentFee'));
     }
 
@@ -27,7 +33,8 @@ class DownpaymentController extends Controller
         {
             $DownpaymentFee = DownpaymentFee::where('id', $request->id)->first();
         }
-        return view('control_panel_finance.maintenance.downpayment.partials.modal_data', compact('DownpaymentFee'))->render();
+        $Gradelvl = GradeLevel::where('current', 1)->where('status', 1)->get();
+        return view('control_panel_finance.maintenance.downpayment.partials.modal_data', compact('DownpaymentFee','Gradelvl'))->render();
     }
 
     public function save_data (Request $request) 
@@ -48,16 +55,38 @@ class DownpaymentController extends Controller
         {
             $DownpaymentFee = DownpaymentFee::where('id', $request->id)->first();
             $DownpaymentFee->downpayment_amt = $request->downpayment_fee;
-            $DownpaymentFee->current = $request->current_sy;
+            $DownpaymentFee->grade_level_id = $request->gradelvl;
+            $DownpaymentFee->modified = $request->modified;
             $DownpaymentFee->save();
             return response()->json(['res_code' => 0, 'res_msg' => 'Data successfully saved.']);
         }
         // save
         $DownpaymentFee = new DownpaymentFee();
         $DownpaymentFee->downpayment_amt = $request->downpayment_fee;
-        $DownpaymentFee->current = $request->current_sy;
+        $DownpaymentFee->grade_level_id = $request->gradelvl;
+        $DownpaymentFee->modified = $request->modified;
         $DownpaymentFee->save();
         return response()->json(['res_code' => 0, 'res_msg' => 'Data successfully saved.']);
+    }
+
+    public function modify (Request $request)
+    {
+        $DownpaymentFee = DownpaymentFee::where('id', $request->id)->first();
+        if ($DownpaymentFee) 
+        {
+            if ($DownpaymentFee->modified == 0) 
+            {
+                $DownpaymentFee->modified = 1; 
+                $DownpaymentFee->save(); 
+                return response()->json(['res_code' => 0, 'res_msg' => 'Data successfully added to modified.']);
+            }
+            else 
+            {
+                $DownpaymentFee->modified = 0; 
+                $DownpaymentFee->save(); 
+                return response()->json(['res_code' => 0, 'res_msg' => 'Data successfully removed from modified.']);
+            }
+        }
     }
 
     public function toggle_current_sy (Request $request)

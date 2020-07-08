@@ -16,11 +16,13 @@ class AccountProfileController extends Controller
         // $RegistrarInformation = collect(\App\RegistrarInformation::DEPARTMENTS); 
         return view('control_panel_student.account_profile.index', compact('User', 'Profile'));
     }
+
     public function fetch_profile (Request $request)
     {
         $User = Auth::user();
         $Profile = StudentInformation::where('user_id', $User->id)->first();
-        // return json_encode($Profile); date('Y-m-d', strtotime($request->birthdate));
+        // return json_encode($Profile);
+        //  date('Y-m-d', strtotime($request->birthdate));
         return response()->json(['res_code' => 0, 'res_msg' => '', 'Profile' => $Profile]);
     }
     
@@ -37,7 +39,7 @@ class AccountProfileController extends Controller
             'father_name'=> 'required',
             'mother_name'=> 'required',
             'birthday'=> 'required',
-            'isEsc'=> 'required',
+            // 'isEsc'=> 'required',
             'gender' => 'required',
 
         ];
@@ -62,7 +64,7 @@ class AccountProfileController extends Controller
         $Profile->father_name = $request->father_name;
         $Profile->mother_name = $request->mother_name;
         $Profile->gender = $request->gender;
-        $Profile->isEsc = $request->isEsc;
+        // $Profile->isEsc = $request->isEsc;
 
         if ($request->birthday) {
             $Profile->birthdate = date('Y-m-d', strtotime($request->birthday));

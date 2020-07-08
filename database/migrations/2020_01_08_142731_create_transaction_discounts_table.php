@@ -15,12 +15,13 @@ class CreateTransactionDiscountsTable extends Migration
     {
         Schema::create('transaction_discounts', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('or_no');
+            $table->string('or_no')->nullable();
             $table->integer('student_id');
             $table->string('discount_type');
             $table->float('discount_amt');
-            $table->integer('transaction_id');
-            $table->integer('school_year_id');            
+            $table->integer('transaction_month_paid_id');
+            $table->integer('school_year_id');
+            $table->tinyInteger('isSuccess')->default(0);          
             $table->timestamps();
         });
     }

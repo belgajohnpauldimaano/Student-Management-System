@@ -10,7 +10,7 @@
                 
                 <div class="modal-body">
                     <div class="form-group" align="center">
-
+                        
                         <img class="profile-user-img img-responsive img-circle" 
                             id="img--user_photo" 
                             src="{{ $Profile->photo ? \File::exists(public_path('/img/account/photo/'.$Profile->photo)) ? 
@@ -24,7 +24,7 @@
                         </button>
 
                         <form id="form_user_photo_uploader" >
-                            <input type="hidden" name="id" value="{{ $StudentInformation ? $StudentInformation->id : '' }}">
+                            <input type="hidden" name="id" id="student_id">
                             <input type="file" id="user--photo" name="user_photo">                            
                             <button style="display: none" type="submit">save</button>
                         </form>   
@@ -35,7 +35,7 @@
                         <div class="form-group" id="warning-modal">
                             <div class="help-block text-center" id="js-warning-modal"></div>
                         </div>  
-                        <div class="form-group gender">
+                        {{-- <div class="form-group gender">
                             <label for="">Are you ESC?</label>
                             <select name="isEsc" id="isEsc" class="form-control">
                                 <option value="0" {{ $StudentInformation ? $StudentInformation->isEsc == 0 ? 'selected' : '' : 'selected' }}>--Select--</option>
@@ -43,7 +43,7 @@
                                 <option value="2" {{ $StudentInformation ? $StudentInformation->isEsc == 2 ? 'selected' : '' : '' }}>No</option>
                             </select>
                             <div class="help-block text-left" id="js-isEsc"></div>
-                        </div>               
+                        </div>                --}}
                         <div class="form-group first">
                             <label for="">First name</label>
                             <input type="text" class="form-control" name="first_name" id="first_name">

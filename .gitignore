@@ -7,6 +7,8 @@
 /public/img/receipt
 /storage/*.key
 /vendor
+/enrollment
+/staging
 /.idea
 /.vscode
 /.vagrant
@@ -15,3 +17,5 @@ Homestead.yaml
 npm-debug.log
 yarn-error.log
 .env
+.env.sis3
+.env-with-enrollment

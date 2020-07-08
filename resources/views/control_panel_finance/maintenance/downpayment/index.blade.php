@@ -135,6 +135,8 @@
 
                 });
             });
+
+           
             
             $('body').on('click', '.js-btn_toggle_current', function (e) {
                 e.preventDefault();
@@ -146,6 +148,45 @@
                 alertify.confirm('Confirmation', 'Are you sure you want to '+toggle_title+' ?', function(){  
                     $.ajax({
                         url         : "{{ route('finance.maintenance.downpayment.toggle_current_sy') }}",
+                        type        : 'POST',
+                        data        : { _token : '{{ csrf_token() }}', id : id },
+                        success     : function (res) {
+                            $('.help-block').html('');
+                            if (res.res_code == 1)
+                            {
+                                show_toast_alert({
+                                    heading : 'Error',
+                                    message : res.res_msg,
+                                    type    : 'error'
+                                });
+                            }
+                            else
+                            {
+                                show_toast_alert({
+                                    heading : 'Success',
+                                    message : res.res_msg,
+                                    type    : 'success'
+                                });
+                                $('.js-modal_holder .modal').modal('hide');
+                                fetch_data();
+                            }
+                        }
+                    });
+                }, function(){  
+
+                });
+            });
+
+            $('body').on('click', '.js-modify', function (e) {
+                e.preventDefault();
+                var id = $(this).data('id');
+                var modify_title = $(this).data('toggle_title');
+                alertify.defaults.transition = "slide";
+                alertify.defaults.theme.ok = "btn btn-primary btn-flat";
+                alertify.defaults.theme.cancel = "btn btn-danger btn-flat";
+                alertify.confirm('Confirmation', 'Are you sure you want to '+modify_title+' ?', function(){  
+                    $.ajax({
+                        url         : "{{ route('finance.maintenance.downpayment.modify') }}",
                         type        : 'POST',
                         data        : { _token : '{{ csrf_token() }}', id : id },
                         success     : function (res) {

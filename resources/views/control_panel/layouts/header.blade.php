@@ -44,8 +44,19 @@
   <link rel="stylesheet" href="{{ asset('cms/plugins/alertifyjs/css/alertify.min.css') }}">
   <link rel="stylesheet" href="{{ asset('cms/plugins/alertifyjs/css/themes/bootstrap.min.css') }}">
   <link rel="stylesheet" href="{{ asset('cms/plugins/datepicker/datepicker3.css') }}">
-  <link rel="stylesheet" href="{{ asset('cms/plugins/timepicker/bootstrap-timepicker.min.css') }}" />
+  <link rel="stylesheet" href="{{ asset('cms/plugins/timepicker/jquery.timepicker.css') }}" />
+  <link rel="stylesheet" href="{{ asset('cms/plugins/datetimepicker/datetimepicker.css') }}">
 
-  
+  <style>
+    .profile-user-img {
+      margin: 0 auto;
+      padding: 3px;
+      border: 3px solid #d2d6de;
+      vertical-align: middle;
+      width: 100px !important;
+      height: 100px !important;
+      /* border-radius: 50%; */
+    }
+  </style>
   @yield('styles')
 </head>

@@ -1,10 +1,52 @@
 {{--  @extends('layouts.app')  --}}
 @extends('control_panel.layouts.auth_layout')
+@section('styles')
+<style>
+        .loader {
+            display: block;
+            margin: 20px auto 0;
+            vertical-align: middle;
+        }
+
+        #preloader {
+            width: 100%;
+            height: 100%;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            background: rgba(255, 255, 255, 0.63);
+            z-index: 11000;
+            position: fixed;
+            display: block;
+        }
+
+        .preloader {
+            position: absolute;
+            margin: 0 auto;
+            left: 1%;
+            right: 1%;
+            top: 47%;
+            width: 100px;
+            height: 100px;
+            background: center center no-repeat none;
+            background-size: 65px 65px;
+            -webkit-border-radius: 50%;
+            -moz-border-radius: 50%;
+            -ms-border-radius: 50%;
+            -o-border-radius: 50%;
+            border-radius: 50%;
+        }
+</style>    
+@endsection
 
 @section('content')
+<div id="preloader" style="display: none">
+    <img class="preloader" src="{{ asset('img/loader.gif')}}" alt="">
+</div>
 <p class="login-box-msg">Sign in to manage</p>
-    {{--  {{ bcrypt('123456') }}  --}}
-    <form action="{{ route('login') }}" method="post">
+    
+    <form id="js-login" action="{{ route('login') }}" method="post">
     {{ csrf_field() }}
       <div class="form-group has-feedback {{ $errors->has('username') ? ' has-error' : '' }}">
         <input type="text" name="username" class="form-control" placeholder="username" value="{{ old('username') }}" required autofocus>
@@ -28,92 +70,19 @@
         @endif
       </div>
       <div class="row">
-            <div class="col-xs-8">
-                    <div class="checkbox icheck">
-                      <label>
-                          {{-- <button onclick="showPass(event);" type="button">view</button> --}}
-                        {{-- <input type="checkbox" id="show_password" onclick="showPass(event);"/> View/Hide --}}
-                      </label>
-                    </div>  
-              </div>
-        {{--  <div class="col-xs-8">
-          <div class="checkbox icheck">
-            <label>
-              <input type="checkbox" name="remember_me"> Remember Me
-            </label>
-          </div>  --}}
-        {{--  </div>  --}}
-        <!-- /.col -->
         <div class="col-xs-4">
-          <button type="submit" class="btn btn-primary btn-block btn-flat">Sign In</button>
-        </div>
-        <!-- /.col -->
+          <button type="submit" class="btn btn-primary btn-block btn-flat btn-login">Sign In</button>
+        </div>        
       </div>
     </form>
-{{--  <div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card">
-                <div class="card-header">Login</div>
+@endsection
 
-                <div class="card-body">
-                    <form method="POST" action="{{ route('login') }}">
-                        @csrf
-
-                        <div class="form-group row">
-                            <label for="email" class="col-sm-4 col-form-label text-md-right">E-Mail Address</label>
-
-                            <div class="col-md-6">
-                                <input id="email" type="email" class="form-control{{ $errors->has('email') ? ' is-invalid' : '' }}" name="email" value="{{ old('email') }}" required autofocus>
-                                @if ($errors->has('email'))
-                                    <span class="invalid-feedback">
-                                        <strong>{{ $errors->first('email') }}</strong>
-                                    </span>
-                                @endif
-                            </div>
-                        </div>
-
-                        <div class="form-group row">
-                            <label for="password" class="col-md-4 col-form-label text-md-right">Password</label>
-
-                            <div class="col-md-6">
-                                <input id="password" type="password" class="form-control{{ $errors->has('password') ? ' is-invalid' : '' }}" name="password" required>
-
-                                @if ($errors->has('password'))
-                                    <span class="invalid-feedback">
-                                        <strong>{{ $errors->first('password') }}</strong>
-                                    </span>
-                                @endif
-                            </div>
-                        </div>
-
-                        <div class="form-group row">
-                            <div class="col-md-6 offset-md-4">
-                                <div class="checkbox">
-                                    <label>
-                                        <input type="checkbox" name="remember" {{ old('remember') ? 'checked' : '' }}> Remember Me
-                                    </label>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="form-group row mb-0">
-                            <div class="col-md-8 offset-md-4">
-                                <button type="submit" class="btn btn-primary">
-                                    Login
-                                </button>
-
-                                <a class="btn btn-link" href="{{ route('password.request') }}">
-                                    Forgot Your Password?
-                                </a>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>  --}}
+@section('scripts')
+    <script>      
+        $('.btn-login').on('click', function () {
+            $('#preloader').show();
+        });
+    </script>    
 @endsection
 
 

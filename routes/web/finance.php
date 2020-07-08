@@ -5,6 +5,14 @@
 Route::group(['prefix' => 'finance', 'middleware' => ['auth', 'userroles'], 'roles' => ['finance']], function () {
     
     Route::get('dashboard', 'Finance\FinanceDashboardController@index')->name('finance.dashboard');
+
+    Route::group(['prefix' => 'my-account', 'middleware' => ['auth']], function() {
+        Route::get('', 'Finance\UserProfileController@view_my_profile')->name('finance.my_account.index');
+        Route::post('update-profile', 'Finance\UserProfileController@update_profile')->name('finance.my_account.update_profile');
+        Route::post('fetch-profile', 'Finance\UserProfileController@fetch_profile')->name('finance.my_account.fetch_profile');
+        Route::post('change-my-photo', 'Finance\UserProfileController@change_my_photo')->name('finance.my_account.change_my_photo');
+        Route::post('change-my-password', 'Finance\UserProfileController@change_my_password')->name('finance.my_account.change_my_password');
+    });
     
     Route::group(['prefix' => 'student-information'], function (){
         Route::get('', 'Finance\StudentController@index')->name('finance.student_account');
@@ -22,8 +30,27 @@ Route::group(['prefix' => 'finance', 'middleware' => ['auth', 'userroles'], 'rol
         Route::post('approve', 'Finance\StudentPaymentController@approve')->name('finance.student_payment.approve');
         Route::post('disapprove', 'Finance\StudentPaymentController@disapprove')->name('finance.student_payment.disapprove');
         Route::post('modal-data', 'Finance\StudentPaymentController@modal_data')->name('finance.student_payment.modal');
+        
     });
 
+    Route::group(['prefix' => 'summary-payment'], function () {
+        Route::get('', 'Finance\FinanceSummaryController@index')->name('finance.summary');
+        Route::post('', 'Finance\FinanceSummaryController@index')->name('finance.summary');
+        Route::post('report-summary', 'Finance\FinanceSummaryController@fetch_record')->name('finance.summary.fetch_record');
+        Route::get('print', 'Finance\FinanceSummaryController@print')->name('finance.summary.print');
+    });
+
+    Route::group(['prefix' => 'online-appointment'], function () {        
+        Route::get('', 'Finance\Maintenance\OnlineAppointmentController@date_time')->name('finance.online_appointment.date_time');
+        Route::post('', 'Finance\Maintenance\OnlineAppointmentController@date_time')->name('finance.online_appointment.date_time');
+        Route::post('appointment', 'Finance\Maintenance\OnlineAppointmentController@show')->name('finance.online_appointment.show');
+        Route::post('done', 'Finance\Maintenance\OnlineAppointmentController@done')->name('finance.online_appointment.done');
+        Route::post('disapprove', 'Finance\Maintenance\OnlineAppointmentController@disapprove')->name('finance.online_appointment.disapprove');
+        Route::post('deactivate', 'Finance\Maintenance\OnlineAppointmentController@deactivate_date')->name('finance.online_appointment.deactivate_date');
+        Route::get('print', 'Finance\Maintenance\OnlineAppointmentController@print')->name('finance.online_appointment.print');
+    });
+
+    
     Route::group(['prefix' => 'student-finance-account'], function () {
         Route::get('', 'Finance\StudentFinanceAccountController@index')->name('finance.student_acct');
         Route::post('', 'Finance\StudentFinanceAccountController@index')->name('finance.student_acct');
@@ -57,6 +84,7 @@ Route::group(['prefix' => 'finance', 'middleware' => ['auth', 'userroles'], 'rol
             Route::post('modal-data', 'Finance\Maintenance\DownpaymentController@modal_data')->name('finance.maintenance.downpayment.modal_data');
             Route::post('save-data', 'Finance\Maintenance\DownpaymentController@save_data')->name('finance.maintenance.downpayment.save_data');
             Route::post('deactivate-data', 'Finance\Maintenance\DownpaymentController@deactivate_data')->name('finance.maintenance.downpayment.deactivate_data');
+            Route::post('modify', 'Finance\Maintenance\DownpaymentController@modify')->name('finance.maintenance.downpayment.modify');
             Route::post('toggle-current-sy', 'Finance\Maintenance\DownpaymentController@toggle_current_sy')->name('finance.maintenance.downpayment.toggle_current_sy');
         });
 
@@ -94,6 +122,16 @@ Route::group(['prefix' => 'finance', 'middleware' => ['auth', 'userroles'], 'rol
             Route::post('save-data', 'Finance\Maintenance\OtherFeeController@save_data')->name('finance.maintenance.other_fee.save_data');
             Route::post('deactivate-data', 'Finance\Maintenance\OtherFeeController@deactivate_data')->name('finance.maintenance.other_fee.deactivate_data');
             Route::post('toggle-current-sy', 'Finance\Maintenance\OtherFeeController@toggle_current_sy')->name('finance.maintenance.other_fee.toggle_current_sy');
+        
+        });
+
+        Route::group(['prefix' => 'setup-queue'], function () {
+            Route::get('', 'Finance\Maintenance\OnlineAppointmentController@index')->name('finance.maintenance.queue');
+            Route::post('', 'Finance\Maintenance\OnlineAppointmentController@index')->name('finance.maintenance.queue');
+            Route::post('modal-data', 'Finance\Maintenance\OnlineAppointmentController@modal_data')->name('finance.maintenance.queue.modal_data');
+            Route::post('save-data', 'Finance\Maintenance\OnlineAppointmentController@save_data')->name('finance.maintenance.queue.save_data');
+            Route::post('deactivate-data', 'Finance\Maintenance\OnlineAppointmentController@deactivate_data')->name('finance.maintenance.queue.deactivate_data');
+            Route::post('toggle-current-sy', 'Finance\Maintenance\OnlineAppointmentController@toggle_current_sy')->name('finance.maintenance.queue.toggle_current_sy');
         
         });
     });

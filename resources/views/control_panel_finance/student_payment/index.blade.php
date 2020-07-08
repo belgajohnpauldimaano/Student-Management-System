@@ -122,7 +122,7 @@
 @endsection
 
 @section ('content_title')
-    Student List
+    Student Payment
 @endsection
 
 @section ('content')
@@ -152,6 +152,10 @@
     <script src="{{ asset('cms/plugins/datepicker/bootstrap-datepicker.js') }}"></script>
     
     <script>
+        $('.datepicker').datepicker({
+            autoclose: true
+        }) 
+
         var page = 1;
         function fetch_data () {
             var formData = new FormData($('#js-form_search')[0]);
@@ -173,6 +177,8 @@
         $('body').on('click', '.btn-approve', function (e) {
                 e.preventDefault();
                 var id = $(this).data('id');
+                var incoming_bal = $(this).data('balance');
+
                 alertify.defaults.transition = "slide";
                 alertify.defaults.theme.ok = "btn btn-primary btn-flat";
                 alertify.defaults.theme.cancel = "btn btn-danger btn-flat";
@@ -180,7 +186,7 @@
                     $.ajax({
                         url         : "{{ route('finance.student_payment.approve') }}",
                         type        : 'POST',
-                        data        : { _token : '{{ csrf_token() }}', id : id },
+                        data        : { _token : '{{ csrf_token() }}', id : id , incoming_bal : incoming_bal},
                         success     : function (res) {
                             $('.help-block').html('');
                             if (res.res_code == 1)
@@ -242,12 +248,22 @@
                         }
                     });
                 }, function(){  
-
                 });
             });
         
        
-        $(function () {            
+        $(function () {  
+            $('body').on('submit', '#js-form_search', function (e) {
+                e.preventDefault();
+                fetch_data();
+            });
+
+            $('body').on('click', '.pagination a', function (e) {
+                e.preventDefault();
+                page = $(this).attr('href').split('=')[1];
+                fetch_data();
+            });
+                      
             $('body').on('click', '.btn-view-modal', function (e) {
                 e.preventDefault();
                  
@@ -261,18 +277,10 @@
                         $('.js-modal_holder').html(res);
                         $('.js-modal_holder .modal').modal({ backdrop : 'static' });
                         $('.js-modal_holder .modal').on('shown.bs.modal', function () {
-                                                             
-                            
                         });
                     }
                 });
             });
-
-            
         });
-
-       
-
-        
     </script>
 @endsection

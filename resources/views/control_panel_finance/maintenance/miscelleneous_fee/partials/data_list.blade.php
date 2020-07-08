@@ -1,10 +1,11 @@
-                        <div class="pull-right">
+<div class="table-responsive">
+    <div class="pull-right">
                             {{ $MiscFee ? $MiscFee->links() : '' }}
-                        </div>
-                        <table class="table no-margin">
+    </div>
+    <table class="table no-margin">
                             <thead>
                                 <tr>
-                                    <th>Miscelleneous Fee Amount</th>
+                                    <th>Miscellaneous Fee Amount</th>
                                     <th>Current</th>
                                     <th>Status</th>
                                     <th>Actions</th>
@@ -32,4 +33,5 @@
                                     @endforeach
                                 @endif
                             </tbody>
-                        </table>
+    </table>
+</div>

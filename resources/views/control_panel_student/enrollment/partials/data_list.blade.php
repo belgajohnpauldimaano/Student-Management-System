@@ -20,19 +20,20 @@
         @endif
         
           <div class="form-group col-lg-6 col-lg-offset-3" id="form_method">
-              <select name="payment_category" id="payment_category" class="form-control">            
+              <select name="payment_category" id="payment_category" class="form-control">    
                 <option value="0" selected>
-                  --Select Preferred Enrollment Method --
+                    --Select--
                 </option>
                 <option value="1">
                   Credit card/Debit card/PayMaya
                 </option>
                 <option value="2">
-                  Bank Deposit
+                  Bank Deposit/Fund Transfer/Mobile Banking
                 </option>
                 <option value="3">
                   Gcash
                 </option>    
+
               </select>
             <div class="help-block text-left" id="js-payment_category"></div>
             <button type="button" id="btn_method" class="btn btn-primary pull-right">Submit</button>
@@ -42,18 +43,20 @@
     </div>
   </div>
 </div>
-@include('control_panel_student.enrollment.partials.modal_profile')
 
-<div class="row" id="online" style="display: none">
-    @include('control_panel_student.enrollment.partials.online_bank')
-</div>
+  @include('control_panel_student.enrollment.partials.modal_profile')
 
-<div class="row" id="deposit" style="display: none; padding:0 16px 0 16px">    
-    @include('control_panel_student.enrollment.partials.deposit_bank')
-</div>
+  <div class="row" id="online" style="display: none;">
+      @include('control_panel_student.enrollment.partials.online_bank')
+  </div>
 
-<div class="row" id="gcash" style="display: none; padding:0 16px 0 16px">    
-  @include('control_panel_student.enrollment.partials.gcash_method')
-</div> 
+  <div class="row" id="deposit" style="display: none; padding:0 16px 0 16px">    
+      @include('control_panel_student.enrollment.partials.deposit_bank')
+  </div>
+
+  <div class="row" id="gcash" style="display: none; padding:0 16px 0 16px">    
+    @include('control_panel_student.enrollment.partials.gcash_method')
+  </div>
+
 
 

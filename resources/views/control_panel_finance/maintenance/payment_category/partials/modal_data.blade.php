@@ -70,8 +70,22 @@
                         </div>
                     </div>
 
-                    
                     <div class="form-group">
+                        <label for="">Other Fee</label>
+                        <select name="other_fee" id="other_fee" class="form-control">
+                            <option value="">Select Other Fee</option>
+                            @if($OtherFee)
+                                @foreach($OtherFee as $other)
+                                    <option value="{{$other->id}}" {{ $PaymentCategory ? $PaymentCategory->other_fee_id == $other->id ? 'selected' : '' : '' }}> {{ number_format($other->other_fee_amt, 2) }}</option>                    
+                                @endforeach
+                            @endif
+                        </select>
+                        <div class="help-block text-red text-center" id="js-other_fee">
+                        </div>
+                    </div>
+
+                    
+                    {{-- <div class="form-group">
                         <label for="">Total of Months</label>
                         <select name="total_months" id="total_months" class="form-control">
                             <option value="">Select total no. of months</option>
@@ -80,7 +94,7 @@
                         </select>
                         <div class="help-block text-red text-center" id="js-total_months">
                         </div>
-                    </div>                   
+                    </div>                    --}}
                     
                 </div>
                 <div class="modal-footer">

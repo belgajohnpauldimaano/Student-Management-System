@@ -23,7 +23,7 @@
             </div>
             <div class="col-lg-6">
                 <h5>
-                    <b>Monthly Fee:</b>
+                    <b>Downpayment Fee:</b>
                     <i style="color: red">
                         {{number_format($Transaction->monthly_fee,2)}}
                     </i>

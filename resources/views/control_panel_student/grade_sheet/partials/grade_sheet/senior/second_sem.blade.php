@@ -205,16 +205,31 @@
 
 <?php
     $student_attendance = [];
-    $table_header = [
-        ['key' => 'Nov',],
-            ['key' => 'Dec',],
-            ['key' => 'Jan',],
-            ['key' => 'Feb',],
-            ['key' => 'Mar*',],
-            ['key' => 'Apr*',],
-            
-            ['key' => 'total',],
-        ];
+    
+    if($SchoolYear->id == 9){
+        $table_header = [
+            ['key' => 'Nov',],
+                ['key' => 'Dec',],
+                ['key' => 'Jan',],
+                ['key' => 'Feb',],
+                ['key' => 'Mar*',],
+                ['key' => 'Apr*',],
+                
+                ['key' => 'total',],
+            ];
+    }else{
+        $table_header = [
+            ['key' => 'Nov',],
+                ['key' => 'Dec',],
+                ['key' => 'Jan',],
+                ['key' => 'Feb',],
+                ['key' => 'Mar',],
+                ['key' => 'Apr',],
+                
+                ['key' => 'total',],
+            ];
+    }
+
     
     $attendance_data = json_decode(json_encode([
         'days_of_school' => [

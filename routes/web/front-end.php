@@ -8,8 +8,11 @@ Route::get('/transcript-of-record', 'TranscriptOfRecordController@tor')->name('t
 
 Route::group(['middleware' => ['guest']], function () {
     Route::post('/save', 'RegistrationController@store')->name('registration.store');
+    Route::post('send-email', 'RegistrationController@send_email')->name('inquiry.email');
 });
 
+Route::get('faqs', 'FaqsController@faqs')->name('pages.faqs');
+Route::get('faqs-on-distance-learning', 'FaqsController@faqs_on_distance_learning')->name('pages.faqs_on_distance_learning');
 
 /*
 |About SJA Pages --------------------------------------------------------------------------

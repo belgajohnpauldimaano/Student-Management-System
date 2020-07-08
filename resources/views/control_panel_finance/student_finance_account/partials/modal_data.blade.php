@@ -3,7 +3,7 @@
         <div class="modal-content">
             <div class="box-body">
                 <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>                            
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>                            
                         <h4 style="margin-right: 5em;" class="modal-title">
                             Student Payment Account Information
                         </h4>
@@ -22,10 +22,7 @@
                                 <p>{{$Modal_data->payment_cat->stud_category->student_category.'-'.$Modal_data->payment_cat->grade_level_id}}</p>
                             </div>  
 
-                            <div class="form-group">
-                                <label for="">Email address</label>
-                                <p>{{$Modal_data->monthly->email}}</p>
-                            </div>  
+                            
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
@@ -54,44 +51,50 @@
                         </div>
                         
                         <div class="box-body no-padding">
-                            <table class="table table-bordered">
+                            <table class="table table-bordered table-striped table-hover">
                                 <tbody>
                                     <tr>
-                                        <th style="width: 10px">#</th>
                                         <th style="width: 50%">Description</th>
                                         <th>Amount</th>
                                         {{-- <th style="width: 40px">Label</th> --}}
                                     </tr>
                                     <tr>
-                                        <td>1.</td>
-                                            <td>Tuition Fee</td>
-                                            <td>
-                                                {{ number_format($Modal_data->payment_cat->tuition->tuition_amt, 2)}}
-                                            </td>                                
-                                        </tr>
-                                        <tr>
-                                            <td>2.</td>
-                                            <td>Misc Fee</td>
-                                            <td>
-                                                {{ number_format($Modal_data->payment_cat->misc_fee->misc_amt, 2)}}
-                                            </td>                                
-                                        </tr>
-                                        <tr>
-                                            <td>3.</td>
-                                            <td>Discount Fee</td>
-                                            <td>{{$Modal_data->disc_transaction_fee ? number_format($Modal_data->disc_transaction_fee->discount_amt,2) : '0.00'}}</td>
-                                        </tr>
-                                        <tr>
-                                            <td>4.</td>
-                                            <td>Total Fees</td>
-                                            <td>
-                                                @if($Modal_data->disc_transaction_fee)
-                                                    {{ number_format($Modal_data->payment_cat->tuition->tuition_amt + $Modal_data->payment_cat->misc_fee->misc_amt - $Modal_data->disc_transaction_fee->discount_amt, 2)}}
-                                                @else
-                                                    {{ number_format($Modal_data->payment_cat->tuition->tuition_amt + $Modal_data->payment_cat->misc_fee->misc_amt, 2)}}
-                                                @endif                                                
-                                            </td>                                
-                                        </tr>
+                                        <td>Tuition Fee</td>
+                                        <td>
+                                            ₱ {{ number_format($Modal_data->payment_cat->tuition->tuition_amt, 2)}}
+                                        </td>                                
+                                    </tr>
+                                    <tr>
+                                        <td>Misc Fee</td>
+                                        <td>
+                                            ₱ {{ number_format($Modal_data->payment_cat->misc_fee->misc_amt, 2)}}
+                                        </td>                                
+                                    </tr>
+                                    <tr>
+                                        <td>Other Fee - {{ $other_fee ? $other_fee->other_name : 'NA'}}</td>
+                                        <td>
+                                            ₱ {{ number_format($other, 2)}}
+                                        </td>
+                                    </tr>
+                                    @foreach ($Discount_amt as $item)
+                                    <tr>
+                                        <td>Discount Fee ({{$item->discount_type}})</td>
+                                        <td>
+                                            ₱ {{ number_format($item->discount_amt,2) }}
+                                        </td>
+                                    </tr>
+                                    @endforeach
+                                    
+                                    <tr>
+                                        <td>Total Fees</td>
+                                        <td>  ₱
+                                            @if($Discount)
+                                                 {{ number_format($total, 2)}}
+                                            @else
+                                                {{ number_format($total, 2)}}
+                                            @endif                                                
+                                        </td>                                
+                                    </tr>
                                     </tbody>
                             </table>
                         </div>
@@ -109,37 +112,37 @@
                                 <span class="label {{ $data->approval ? $data->approval == 'Approved' ? 'label-success' : 'label-danger' : 'label-danger'}}">
                                     {{ $data->approval ? $data->approval == 'Approved' ? 'Approved' : 'Not yet Approved' : 'Not yet Approved'}}
                                 </span>
+                                <div class="form-group">
+                                    <label for="">Email address</label>
+                                    <p>{{$data->email}}</p>
+                                </div>  
                             </div>
                                 
                             <div class="box-body no-padding">
-                                <table class="table table-bordered">
+                                <table class="table table-bordered table-striped table-hover">
                                     <tbody>
                                         <tr>
-                                            <th style="width: 10px">#</th>
                                             <th style="width: 50%">Description</th>
                                             <th>Amount</th>
                                             {{-- <th style="width: 40px">Label</th> --}}
                                         </tr>
                                         <tr>
-                                            <td>1.</td>
-                                                <td>Payment Option</td>
-                                                <td>
-                                                    {{ $data->payment_option}}
-                                                </td>                                
-                                            </tr>
-                                            <td>2.</td>
-                                                <td>Tuition Fee</td>
-                                                <td>
-                                                    {{ number_format($data->payment, 2)}}
-                                                </td>                                
-                                            </tr>
-                                            <tr>
-                                                <td>3.</td>
-                                                <td>Misc Fee</td>
-                                                <td>
-                                                    {{ number_format($data->balance, 2)}}
-                                                </td>                                
-                                            </tr>
+                                            <td>Payment Option</td>
+                                            <td>
+                                                {{ $data->payment_option}}
+                                            </td>                                
+                                        </tr>
+                                            <td>Paid Fee</td>
+                                            <td>
+                                                ₱ {{ number_format($data->payment, 2)}}
+                                            </td>                                
+                                        </tr>
+                                        <tr>
+                                            <td>Balance Fee</td>
+                                            <td>
+                                                ₱ {{ $data->approval == 'Approved' ? number_format($data->balance, 2) : $data->tuition_amt + $data->misc_amt}}
+                                            </td>                                
+                                        </tr>
                                         </tr>
                                     </tbody>
                                 </table>
@@ -169,15 +172,15 @@
                                                     
                         @endforeach
                     </div>
-                        <div class="modal-footer">
-                        <button class="btn btn-flat  btn-{{ $Modal_data->status ? $Modal_data->status == 0 ? 'danger btn-unpaid' : 'success btn-paid' : 'danger btn-unpaid'}} pull-right" data-id="{{$Modal_data->id}}">
-                                {{ $Modal_data->status ? $Modal_data->status == 0 ? 'Unpaid' : 'Paid' : 'Unpaid'}}
-                            </button>
-                        </div> 
-                    </div> 
-                                       
+                        
+                    </div>
+                                                         
                 </div>
-                
+                <div class="modal-footer">
+                    <button class="btn btn-flat  btn-{{ $Modal_data->status ? $Modal_data->status == 0 ? 'danger btn-unpaid' : 'success btn-paid' : 'danger btn-unpaid'}} pull-right" data-id="{{$Modal_data->id}}">
+                        {{ $Modal_data->status ? $Modal_data->status == 0 ? 'Unpaid' : 'Paid' : 'Unpaid'}}
+                    </button>
+                </div>    
             </div>   
         </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->

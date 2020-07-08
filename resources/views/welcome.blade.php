@@ -4,18 +4,16 @@
     <section id="intro">
         <div class="intro-container">
           <div id="introCarousel" class="carousel  slide carousel-fade" data-ride="carousel">
-
             <ol class="carousel-indicators"></ol>
-
             <div class="carousel-inner" role="listbox">
 
               <div class="carousel-item active" style="background-image: url('{{ asset('img/intro-banner/1.jpg') }}');">
                 <div class="carousel-container">
                   <div class="carousel-content">
-                    <h2>Saint John Academy Inc</h2>
-                    <p>Striving for Academic Excellence and Christian Formation</p>
+                    <h2>St. John's Academy Inc.</h2>
+                    <p>Striving for Academic Excellence, Innovation and Christian Formation</p>
                     {{-- <a href="#featured-services" class="btn-get-started scrollto">Get Started</a> --}}
-                    <a href="#" class="btn-get-started scrollto">About SJA</a>
+                    <a href="#" class="btn-get-started scrollto">About SJAI</a>
                   </div>
                 </div>
               </div>
@@ -90,12 +88,12 @@
 
         <section id="about">
             <div class="container">
-                <header class="section-header">
+                {{-- <header class="section-header">
                     <h3>About Us</h3>
                     <p>The establishment of Catholic schools in Bataan goes back to 1959 when the late Fr. Conrado Ma. Quiambao founded St. Catherine of Siena Academy of Samal.</p>
-                    {{-- <h3>Saint John Academy</h3>
-                    <p>Striving for Academic Excellence & Christian Formation</p> --}}
-                </header>
+                    <h3>Saint John Academy</h3>
+                    <p>Striving for Academic Excellence & Christian Formation</p>
+                </header> --}}
                 <div class="row about-cols">
                     <div class="col-md-4 wow fadeInUp">
                         <div class="about-col" style="height: 26.5em !important">
@@ -1365,7 +1363,7 @@
                         <div class="contact-phone">
                             <i class="ion-ios-telephone-outline"></i>
                             <h3>Phone Number</h3>
-                            <p><a href="tel:0474811762">(047) 481 1762</a></p>
+                            <p><a href="tel:0474811762">(047) 636 5560<br/>(047) 636 0088</a></p>
                         </div>
                     </div>
                     <div class="col-md-4">
@@ -1379,24 +1377,29 @@
                 <div class="form">
                     <div id="sendmessage">Your message has been sent. Thank you!</div>
                     <div id="errormessage"></div>
-                    <form action="" method="post" role="form" class="contactForm">
+                    <form id="js-contactForm">
+                        {{ csrf_field() }}
                         <div class="form-row">
                             <div class="form-group col-md-6">
                                 <input type="text" name="name" class="form-control" id="name" placeholder="Your Name" data-rule="minlen:4" data-msg="Please enter at least 4 chars" />
-                                <div class="validation"></div>
+                                <div class="help-block text-red text-left" id="js-name">
+                            </div>
                             </div>
                             <div class="form-group col-md-6">
                                 <input type="email" class="form-control" name="email" id="email" placeholder="Your Email" data-rule="email" data-msg="Please enter a valid email" />
-                                <div class="validation"></div>
+                                <div class="help-block text-red text-left" id="js-email">
+                            </div>
                             </div>
                         </div>
                         <div class="form-group">
                             <input type="text" class="form-control" name="subject" id="subject" placeholder="Subject" data-rule="minlen:4" data-msg="Please enter at least 8 chars of subject" />
-                            <div class="validation"></div>
+                            <div class="help-block text-red text-left" id="js-subject">
+                            </div>
                         </div>
                         <div class="form-group">
                             <textarea class="form-control" name="message" rows="5" data-rule="required" data-msg="Please write something for us" placeholder="Message"></textarea>
-                            <div class="validation"></div>
+                            <div class="help-block text-red text-left" id="js-message">
+                            </div>
                         </div>
                         <div class="text-center">
                             <button type="submit">Send Message</button>
@@ -1406,4 +1409,44 @@
             </div>
         </section>
     </main>
+    @include('pages.reservation')
 @endsection
+
+@section('scripts')
+<script>
+    $('body').on('submit', '#js-contactForm', function (e) {
+            e.preventDefault();
+            // alert('hello')
+            alertify.defaults.theme.ok = "btn btn-primary btn-flat";
+            var formData = new FormData($(this)[0]);
+                $.ajax({     
+                url: "{{ route('inquiry.email') }}",
+                type: "POST",
+                data        : formData,
+                processData : false,
+                contentType : false,
+                success: function(res) {
+                    $('.help-block').html('');
+                    if (res.res_code == 1)
+                    {
+                        alertify.alert('<i style="color: red" class="fas fa-exclamation-triangle fa-lg"></i> Reminder',
+                            ''+res.res_msg+'', function(){
+                                
+                        });                                    
+                    }
+                    else
+                    {
+                        alertify.alert('<i style="color: green" class="fas fa-check-circle fa-lg"></i> Confirmation',
+                        "Your email successfully submitted. Thank you!", function(){
+                            $('#js-contactForm')[0].reset();                                 
+                        });
+                    }
+
+                }
+            });
+
+        });
+</script>
+    
+@endsection
+

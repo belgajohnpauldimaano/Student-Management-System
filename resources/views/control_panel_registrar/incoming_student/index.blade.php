@@ -5,7 +5,7 @@
 @endsection
 
 @section ('content_title')
-    Incoming Student
+    Incoming Student (Not yet Approved)
 @endsection
 
 @section ('content')
@@ -48,6 +48,7 @@
                 contentType : false,
                 success     : function (res) {
                     loader_overlay();
+                    
                     $('.js-data-container').html(res);
                 }
             });
@@ -56,12 +57,11 @@
         $('body').on('click', '.btn-approve', function (e) {
                 e.preventDefault();
                 var id = $(this).data('id');
-                alertify.defaults.transition = "slide";
                 alertify.defaults.theme.ok = "btn btn-primary btn-flat";
                 alertify.defaults.theme.cancel = "btn btn-danger btn-flat";
                 alertify.confirm('Confirmation', 'Are you sure you want to approve?', function(){  
                     $.ajax({
-                        url         : "{{ route('finance.student_payment.approve') }}",
+                        url         : "{{ route('registrar.incoming_student.approve') }}",
                         type        : 'POST',
                         data        : { _token : '{{ csrf_token() }}', id : id },
                         success     : function (res) {
@@ -82,7 +82,10 @@
                                     type    : 'success'
                                 });
                                 $('.js-modal_holder .modal').modal('hide');
-                                fetch_data();
+                                setTimeout(function() 
+                                {
+                                    location.reload();  //Refresh page
+                                }, 1000);
                             }
                         }
                     });
@@ -94,12 +97,11 @@
             $('body').on('click', '.btn-disapprove', function (e) {
                 e.preventDefault();
                 var id = $(this).data('id');
-                alertify.defaults.transition = "slide";
                 alertify.defaults.theme.ok = "btn btn-primary btn-flat";
                 alertify.defaults.theme.cancel = "btn btn-danger btn-flat";
                 alertify.confirm('Confirmation', 'Are you sure you want to disapprove?', function(){  
                     $.ajax({
-                        url         : "{{ route('finance.student_payment.disapprove') }}",
+                        url         : "{{ route('registrar.incoming_student.disapprove') }}",
                         type        : 'POST',
                         data        : { _token : '{{ csrf_token() }}', id : id },
                         success     : function (res) {
@@ -120,7 +122,10 @@
                                     type    : 'success'
                                 });
                                 $('.js-modal_holder .modal').modal('hide');
-                                fetch_data();
+                                setTimeout(function() 
+                                {
+                                    location.reload();  //Refresh page
+                                }, 1000);
                             }
                         }
                     });
@@ -135,11 +140,11 @@
                 e.preventDefault();
                  
                 var id = $(this).data('id');
-                var monthly_id = $(this).data('monthly_id');
+                // var monthly_id = $(this).data('monthly_id');
                 $.ajax({
-                    url : "{{ route('finance.student_payment.modal') }}",
+                    url : "{{ route('registrar.incoming_student.modal') }}",
                     type : 'POST',
-                    data : { _token : '{{ csrf_token() }}', id : id , monthly_id : monthly_id},
+                    data : { _token : '{{ csrf_token() }}', id : id },
                     success : function (res) {
                         $('.js-modal_holder').html(res);
                         $('.js-modal_holder .modal').modal({ backdrop : 'static' });
@@ -149,9 +154,7 @@
                         });
                     }
                 });
-            });
-
-            
+            });            
         });
 
        

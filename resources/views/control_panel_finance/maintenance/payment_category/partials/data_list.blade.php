@@ -1,17 +1,18 @@
-                        <div class="pull-right">
-                            
-                        </div>
-                        <table class="table no-margin">
+<div class="table-responsive">
+    <div class="pull-right">                            
+        {{ $PaymentCategory ? $PaymentCategory->links() : '' }}                                    
+    </div>
+    <table class="table no-margin">
                             <thead>
                                 <tr>
-                                    <th>Student Category</th>
-                                    <th>Grade Lvl</th>
-                                    <th>Tuition Fee</th>
-                                    <th>Misc Fee</th>
-                                    <th>Total Months</th>
-                                    <th>Current</th>
-                                    <th>Status</th>
-                                    <th>Actions</th>
+                                    <th width="15%">Student Category</th>
+                                    <th width="7%">Grade Lvl</th>
+                                    <th width="7%">Tuition Fee</th>
+                                    <th width="7%">Misc Fee</th>
+                                    <th width="7%">Other Fee</th>
+                                    <th width="7%">Current</th>
+                                    <th width="7%">Status</th>
+                                    <th width="15%">Actions</th>
                                 </tr>
                             </thead>
                             <tbody> 
@@ -30,7 +31,12 @@
                                                     {{ number_format($data->misc_fee->misc_amt, 2) }}
                                                 @endif
                                             </td>
-                                            <td>{{ $data->months }}</td>
+                                            <td>
+                                                @if($data->other_fee)
+                                                    {{ number_format($data->other_fee->other_fee_amt, 2) }}
+                                                @endif
+                                            </td>
+                                            {{-- <td>{{ $data->months }}</td> --}}
                                             <td>{{ $data->current == 1 ? 'Yes' : 'No' }}</td> 
                                             <td>{{ $data->status == 1 ? 'Active' : 'Inactive' }}</td>
                                             <td>
@@ -48,4 +54,5 @@
                                     @endforeach
                                 @endif
                             </tbody>
-                        </table>
+    </table>
+</div>

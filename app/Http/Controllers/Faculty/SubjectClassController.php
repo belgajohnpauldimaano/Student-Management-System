@@ -11,7 +11,7 @@ class SubjectClassController extends Controller
     {
         // $FacultyInformation = \App\FacultyInformation::where('user_id', \Auth::user()->id)->first();
         // return json_encode(['FacultyInformation' => $FacultyInformation, 'Auth' => \Auth::user()]);
-        $SchoolYear         = \App\SchoolYear::where('status', 1)->orderBy('current', 'ASC')->orderBy('school_year', 'ASC')->get();
+        $SchoolYear = \App\SchoolYear::where('status', 1)->orderBy('current', 'ASC')->orderBy('school_year', 'ASC')->get();
         return view('control_panel_faculty.subject_class_details.index', compact('SchoolYear'));
     }
     public function list_students_by_class (Request $request) 

@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>St. John Academy Admin Panel | Log in</title>
+  <title>St. John's Academy Inc. Admin Panel | Log in</title>
   <!-- Tell the browser to be responsive to screen width -->
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
   <!-- Bootstrap 3.3.6 -->
@@ -18,6 +18,7 @@
   <link rel="stylesheet" href="{{ asset('cms/plugins/iCheck/square/blue.css') }}">
 
   <link href="{{ asset('img/sja-logo.png') }}" rel=icon>
+  @yield('styles')
 
   <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
   <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -29,7 +30,7 @@
 <body class="hold-transition login-page">
 <div class="login-box">
   <div class="login-logo">
-    <a href="{{ route('home_page') }}"><b>St. John </b>Academy</a>
+    <a href="{{ route('home_page') }}"><b>St. John's </b>Academy Inc.</a>
   </div>
   <!-- /.login-logo -->
   <div class="login-box-body">
@@ -45,14 +46,6 @@
 <script src="{{ asset('cms/bootstrap/js/bootstrap.min.js') }}"></script>
 <!-- iCheck -->
 <script src="{{ asset('cms/plugins/iCheck/icheck.min.js') }}"></script>
-<script>
-  $(function () {
-    $('input').iCheck({
-      checkboxClass: 'icheckbox_square-blue',
-      radioClass: 'iradio_square-blue',
-      increaseArea: '20%' // optional
-    });
-  });
-</script>
+@yield('scripts')
 </body>
 </html>

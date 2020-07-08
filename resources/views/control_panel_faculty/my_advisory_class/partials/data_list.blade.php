@@ -21,7 +21,8 @@
         @include('control_panel_faculty.my_advisory_class.partials.data_junior')            
     @endif
              
-@else               
+@else     
+          
     @if($ClassSubjectDetail->grade_level == 11 || $ClassSubjectDetail->grade_level == 12)
         <h4>Semester: <span class="text-red"><i>{{ $sem }}</i></span> Quarter: <span class="text-red"><i>{{ $quarter }}</i></span></h4>
         <h4>Grade &amp; Section: <span class="text-red"><i>{{ $ClassSubjectDetail->grade_level . ' ' .$ClassSubjectDetail->section }}</i></span></h4>

@@ -34,7 +34,8 @@ class DiscountFeeController extends Controller
     {
         $rules = [
             'disc_type' => 'required',
-            'disc_fee' => 'required'           
+            'disc_fee' => 'required',
+            'apply_to' => 'required'          
         ];
 
         $Validator = \Validator($request->all(), $rules);
@@ -49,7 +50,7 @@ class DiscountFeeController extends Controller
             $DiscountFee = DiscountFee::where('id', $request->id)->first();
             $DiscountFee->disc_type = $request->disc_type;
             $DiscountFee->disc_amt = $request->disc_fee;
-            // $DiscountFee->current = $request->current_sy;
+            $DiscountFee->apply_to = $request->apply_to;
             $DiscountFee->save();
             return response()->json(['res_code' => 0, 'res_msg' => 'Data successfully saved.']);
         }
@@ -57,7 +58,7 @@ class DiscountFeeController extends Controller
         $DiscountFee = new DiscountFee();
         $DiscountFee->disc_type = $request->disc_type;
         $DiscountFee->disc_amt = $request->disc_fee;
-        // $DiscountFee->current = $request->current_sy;
+        $DiscountFee->apply_to = $request->apply_to;
         $DiscountFee->save();
         return response()->json(['res_code' => 0, 'res_msg' => 'Data successfully saved.']);
     }

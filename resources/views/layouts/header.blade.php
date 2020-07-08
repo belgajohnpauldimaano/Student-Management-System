@@ -13,6 +13,7 @@
     {{-- <link href="{{ asset('theme/img/favicon.png') }}" rel="icon"> --}}
     {{-- <link href="{{ asset('theme/img/apple-touch-icon.png') }}" rel="apple-touch-icon"> --}}
     <!-- Google Fonts -->
+    
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,700,700i|Montserrat:300,400,500,700" rel="stylesheet">
     <!-- Bootstrap CSS File -->
     <link href="{{ asset('theme/lib/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
@@ -35,14 +36,14 @@
     <header id="header">
         <div class="container-fluid">
             <div id="logo" class="pull-left">
-                <h1><a href="{{ route('home_page') }}" class="scrollto">St. John</a></h1>
+                <h1><a href="{{ route('home_page') }}" class="scrollto">St. John's</a></h1>
                 <!-- Uncomment below if you prefer to use an image logo -->
                 <!-- <a href="#intro"><img src="img/logo.png" alt="" title="" /></a>-->
             </div>
             <nav id="nav-menu-container">
                 <ul class="nav-menu">
                     <li class="menu"><a href="{{ route('home_page') }}">Home</a></li>
-                    <li class="menu-has-children"><a href="#">About SJA</a>
+                    <li class="menu-has-children"><a href="#">About SJAI</a>
                         <ul>
                             <li><a href="{{ route('school_profile') }}">School Profile</a></li>
                             <li><a href="{{ route('vision_mission') }}">Vision  Mission</a></li>
@@ -77,28 +78,22 @@
                             {{-- <li><a href="#">Transport & Diploma</a></li> --}}
                         </ul>
                     </li>
+
+                    <li class="menu-has-children"><a href="#">FAQs</a>
+                        <ul>
+                            <li><a href="{{route('pages.faqs')}}">Frequently Asked Questions</a></li>
+                            <li><a href="{{ route('pages.faqs_on_distance_learning') }}">Frequently Asked Questions on Distance Learning</a></li>
+                        </ul>
+                    </li>
                     <li class="menu">
                         <a class="btn-enroll" data-toggle="modal" data-target="#js-registration"  href="#"><i class="fas fa-mouse-pointer"></i> Registration</a>
                     </li>
+
                     <li class="menu">
                         <a class="btn-login" href="{{ route('login') }}"><i class="fas fa-sign-in-alt"></i> Login</a>
                     </li>
-                    
-                    {{-- <li class="menu-has-children"><a href="">Links</a>
-                        <ul>
-                            <li><a href="#">Administration</a></li>
-                            <li><a href="#">Faculty</a></li>
-                            <li><a href="#">Student</a></li>
-                        </ul>
-                    </li> --}}
-                    {{-- <li class="menu-has-children"><a href="">Drop Down</a>
-                        <ul>
-                            <li><a href="#">Drop Down 1</a></li>
-                            <li><a href="#">Drop Down 3</a></li>
-                            <li><a href="#">Drop Down 4</a></li>
-                            <li><a href="#">Drop Down 5</a></li>
-                        </ul>
-                    </li> --}}
+                   
+                   
                 </ul>
             </nav>
             <!-- #nav-menu-container -->

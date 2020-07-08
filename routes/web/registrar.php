@@ -11,7 +11,6 @@ Route::group(['prefix' => 'registrar', 'middleware' => ['auth', 'userroles'], 'r
         Route::post('change-my-photo', 'Registrar\UserProfileController@change_my_photo')->name('registrar.my_account.change_my_photo');
         Route::post('change-my-password', 'Registrar\UserProfileController@change_my_password')->name('registrar.my_account.change_my_password');
     });
-
     
     Route::group(['prefix' => 'student-grade-sheet'], function() {
         Route::get('', 'Registrar\GradeSheetController@index')->name('registrar.student_grade_sheet');
@@ -48,9 +47,19 @@ Route::group(['prefix' => 'registrar/student-list', 'middleware' => 'auth', 'rol
     Route::post('enroll-student', 'Registrar\StudentAdmissionController@enroll_student')->name('registrar.student_admission.enroll_student');
 });
 
-Route::group(['prefix' => 'registrar/incoming-student', 'middleware' => 'auth', 'roles' => ['admin', 'root', 'registrar']], function() {
-    Route::get('', 'Registrar\IncomingStudentController@index')->name('registrar.incoming_student');
-    Route::post('', 'Registrar\IncomingStudentController@index')->name('registrar.incoming_student');
+Route::group(['prefix' => 'incoming-student', 'middleware' => 'auth', 'roles' => ['admin', 'root', 'registrar']], function() {
+    Route::get('', 'Registrar\IncomingStudentController@index')->name('admission.incoming_student');
+    Route::post('', 'Registrar\IncomingStudentController@index')->name('admission.incoming_student');
+
+    Route::get('Approved', 'Registrar\IncomingStudentController@Approved')->name('admission.Approved');
+    Route::post('Approved', 'Registrar\IncomingStudentController@Approved')->name('admission.Approved');
+
+    Route::get('Disapproved', 'Registrar\IncomingStudentController@Disapproved')->name('admission.Disapproved');
+    Route::post('Disapproved', 'Registrar\IncomingStudentController@Disapproved')->name('admission.Disapproved');
+
+    Route::post('modal', 'Registrar\IncomingStudentController@modal_data')->name('admission.incoming_student.modal');
+    Route::post('approve', 'Registrar\IncomingStudentController@approve')->name('admission.incoming_student.approve');
+    Route::post('disapprove', 'Registrar\IncomingStudentController@disapprove')->name('admission.incoming_student.disapprove');
     // Route::post('enroll-student', 'Registrar\IncomingStudentController@enroll_student')->name('registrar.incoming_student.enroll_student');
 });
 
@@ -76,7 +85,7 @@ Route::group(['prefix' => 'registrar/student-enrollment/{id}', 'middleware' => [
     Route::get('print-enrolled-students', 'Registrar\StudentEnrollmentController@print_enrolled_students')->name('registrar.student_enrollment.print_enrolled_students');
 });
 
-Route::group(['prefix' => 'admin/student-information', 'middleware' => ['auth', 'userroles'], 'roles' => ['admin', 'root', 'registrar']], function() {
+Route::group(['prefix' => 'admin/student-information', 'middleware' => ['auth', 'userroles'], 'roles' => ['admin', 'root', 'registrar', 'admission']], function() {
     Route::get('', 'Control_Panel\StudentController@index')->name('admin.student.information');
     Route::post('', 'Control_Panel\StudentController@index')->name('admin.student.information');
     Route::post('modal-data', 'Control_Panel\StudentController@modal_data')->name('admin.student.information.modal_data');

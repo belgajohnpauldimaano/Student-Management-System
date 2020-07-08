@@ -122,7 +122,7 @@
 @endsection
 
 @section ('content_title')
-    Student List
+    Student Account
 @endsection
 
 @section ('content')
@@ -138,8 +138,7 @@
             </form>
         </div>
         <div class="overlay hidden" id="js-loader-overlay"><i class="fa fa-refresh fa-spin"></i></div>
-        <div class="box-body">
-            
+        <div class="box-body">            
             <div class="js-data-container">
                 @include('control_panel_finance.student_finance_account.partials.data_list')       
             </div>
@@ -176,7 +175,7 @@
                 alertify.defaults.transition = "slide";
                 alertify.defaults.theme.ok = "btn btn-primary btn-flat";
                 alertify.defaults.theme.cancel = "btn btn-danger btn-flat";
-                alertify.confirm('Confirmation', 'Are you sure you want the status paid?', function(){  
+                alertify.confirm('Confirmation', 'Are you sure you want the status paid? <i style="color: red">Note: The account of student will be paid in the whole year</i>.', function(){  
                     $.ajax({
                         url         : "{{ route('finance.student_acct.paid') }}",
                         type        : 'POST',
@@ -247,7 +246,18 @@
             });
         
        
-        $(function () {            
+        $(function () {    
+            $('body').on('submit', '#js-form_search', function (e) {
+                e.preventDefault();
+                fetch_data();
+            });
+
+            $('body').on('click', '.pagination a', function (e) {
+                e.preventDefault();
+                page = $(this).attr('href').split('=')[1];
+                fetch_data();
+            });
+                    
             $('body').on('click', '.btn-disapprove-modal', function (e) {
                 e.preventDefault();
                  

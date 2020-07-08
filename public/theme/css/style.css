@@ -1597,3 +1597,97 @@ Center vertical */
 .articles-cols .title{
   font-size: 20px;
 }
+
+.form-group.has-success .form-control, .form-group.has-success .input-group-addon {
+  border-color: #00a65a;
+  box-shadow: none;
+}
+
+.form-group.has-error .form-control, .form-group.has-error .input-group-addon {
+  border-color: #dd4b39;
+  box-shadow: none;
+}
+
+@media (min-width: 1200px)
+{
+  .modal-xl {
+      max-width: 1140px;
+  }
+}
+
+.modal-xl {
+  max-width: 1140px;
+}
+
+.modal-body .nav-link:hover, .nav-link:active, .nav-link:focus { 
+    color: #fff;
+    background-color: #007bff;
+}
+
+.modal-body a {
+  color: #000;
+  transition: 0.5s;
+}
+
+
+/* .modal-body .tabs .nav-link.active {
+  color: #007bff !important;
+  transition: 0.5s;
+} */
+
+.modal-body .nav-tabs .nav-link.active {
+  color: #007bff;
+  background-color: #fff;
+  border-color: #dee2e6 #dee2e6 #fff;
+}
+
+.modal-title {
+  margin-bottom: 0;
+  line-height: 1.5;
+  color: rgb(20, 20, 20)
+}
+
+.card-header {
+  padding: .75rem 1.25rem;
+  margin-bottom: 0;
+  background-color: rgba(195, 195, 195, 0);
+  border-bottom: 1px solid rgba(0,0,0,.125);
+}
+
+.card {
+  position: relative;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  min-width: 0;
+  word-wrap: break-word;
+  background-color: #fff;
+  background-clip: border-box;
+  border: 1px solid rgba(0,0,0,.125);
+  border-radius: 0rem;
+}
+
+
+.overlay-paid {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: aliceblue;
+  font-weight: 600;
+  font-size: 50px;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.accordion .btn-link{
+  white-space: normal !important; 
+}   

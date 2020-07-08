@@ -6,15 +6,22 @@ Route::group(['prefix' => 'student', 'middleware' => ['auth', 'userroles'], 'rol
 
     Route::group(['prefix' => 'enrollment'], function () {
         Route::get('', 'Control_Panel_Student\EnrollmentController@index')->name('student.enrollment.index');
+        Route::post('', 'Control_Panel_Student\EnrollmentController@index')->name('student.enrollment.index');
         Route::post('save-data', 'Control_Panel_Student\EnrollmentController@save')->name('student.enrollment.save_data');
         Route::post('save', 'Control_Panel_Student\EnrollmentController@save_data')->name('student.enrollment.save');
         Route::post('modal-account', 'Control_Panel_Student\EnrollmentController@modal_data')->name('student.transaction_history.modal_account');
+        
         // checkout
         Route::post('/check-out', 'Control_Panel_Student\PaymentController@createPayment')->name('student.create-payment.paypal');
         Route::get('confirm', 'Control_Panel_Student\PaymentController@confirmPayment')->name('confirm-payment');
         Route::post('/notify-student', 'Control_Panel_Student\PaymentController@paypalPdt');        
     });
 
+    Route::group(['prefix' => 'online-appointment'], function(){
+        Route::get('', 'Finance\Maintenance\OnlineAppointmentController@appointment')->name('student.student_appointment');
+        Route::post('', 'Finance\Maintenance\OnlineAppointmentController@appointment')->name('student.student_appointment');
+        Route::post('reserve', 'Finance\Maintenance\OnlineAppointmentController@reserve')->name('student.student_appointment.reserve');
+    });
     // Route::post('paypal', 'Control_Panel_Student\PaymentController@payWithpaypal');
     // Route::get('status', 'PaymentController@getPaymentStatus');
 

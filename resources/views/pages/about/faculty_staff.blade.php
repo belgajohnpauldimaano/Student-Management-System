@@ -30,7 +30,7 @@
                             <img src="{{ asset('img/faculty/Yao-Gemma-R.jpg') }}" class="img-fluid" alt="">
                             <div class="member-info">
                                 <div class="member-info-content">
-                                    <h4>Gemma Yao</h4>
+                                    <h4>Gemma R. Yao, PhD</h4>
                                     <span>Principal</span>
                                 </div>
                             </div>
@@ -42,7 +42,7 @@
                             <div class="member-info">
                                 <div class="member-info-content">
                                     <h4>Jennielyn Gallardo</h4>
-                                    <span>Guidance Councilor</span>
+                                    <span>Guidance Counselor</span>
                                 </div>
                             </div>
                         </div>
@@ -52,8 +52,8 @@
                             <img src="{{ asset('img/faculty/Garcia-Nelma-Katrina-O.jpg') }}" class="img-fluid" alt="">
                             <div class="member-info">
                                 <div class="member-info-content">
-                                    <h4>Katrina Nelma Garcia</h4>
-                                    <span>Student Services Coordinator</span>
+                                    <h4>Nelma Katrina Garcia</h4>
+                                    <span>Student Welfare Coordinator</span>
                                 </div>
                             </div>
                         </div>
@@ -104,6 +104,17 @@
                     </div>
                     <div class="col-lg-3 col-md-6 wow fadeInUp" data-wow-delay="0.3s">
                         <div class="member">
+                            <img src="{{ asset('img/faculty/Tolentino-Jenelyn-E.jpg') }}" class="img-fluid" alt="">
+                            <div class="member-info">
+                                <div class="member-info-content">
+                                    <h4>Jenelyn Tolentino</h4>
+                                    <span>Librarian</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-6 wow fadeInUp" data-wow-delay="0.3s">
+                        <div class="member">
                             <img src="{{ asset('img/faculty/Silvestre-Christel-L.jpg') }}" class="img-fluid" alt="">
                             <div class="member-info">
                                 <div class="member-info-content">
@@ -113,6 +124,7 @@
                             </div>
                         </div>
                     </div>
+                    
                     <div class="col-lg-3 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
                         <div class="member">
                             <img src="{{ asset('img/faculty/Ancheta-Maria-Fatima-Nadine-G.jpg') }}" class="img-fluid" alt="">
@@ -225,7 +237,7 @@
                             </div>
                         </div>
                     </div> --}}
-                    <div class="col-lg-3 col-md-6 wow fadeInUp" data-wow-delay="0.3s">
+                    {{-- <div class="col-lg-3 col-md-6 wow fadeInUp" data-wow-delay="0.3s">
                         <div class="member">
                             <img src="{{ asset('img/faculty/Collado-Randolph.jpg') }}" class="img-fluid" alt="">
                             <div class="member-info">
@@ -234,7 +246,7 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </div> --}}
                     {{-- <div class="col-lg-3 col-md-6 wow fadeInUp" data-wow-delay="0.3s">
                         <div class="member">
                             <img src="{{ asset('img/faculty/De-Guzman-Marie-Estela-S.jpg') }}" class="img-fluid" alt="">
@@ -341,7 +353,7 @@
                             <img src="{{ asset('img/faculty/Miarflor-Marilou-M.jpg') }}" class="img-fluid" alt="">
                             <div class="member-info">
                                 <div class="member-info-content">
-                                    <h4>Marilou Miarflor</h4>
+                                    <h4>Marilou Miraflor</h4>
                                 </div>
                             </div>
                         </div>
@@ -436,7 +448,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-lg-3 col-md-6 wow fadeInUp" data-wow-delay="0.3s">
+                    {{-- <div class="col-lg-3 col-md-6 wow fadeInUp" data-wow-delay="0.3s">
                         <div class="member">
                             <img src="{{ asset('img/faculty/Soriano-Noli-A.jpg') }}" class="img-fluid" alt="">
                             <div class="member-info">
@@ -445,7 +457,7 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </div> --}}
                     <div class="col-lg-3 col-md-6 wow fadeInUp" data-wow-delay="0.3s">
                         <div class="member">
                             <img src="{{ asset('img/faculty/Tabjan-Ritchelle-Ann-P.jpg') }}" class="img-fluid" alt="">
@@ -456,17 +468,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-lg-3 col-md-6 wow fadeInUp" data-wow-delay="0.3s">
-                        <div class="member">
-                            <img src="{{ asset('img/faculty/Tolentino-Jenelyn-E.jpg') }}" class="img-fluid" alt="">
-                            <div class="member-info">
-                                <div class="member-info-content">
-                                    <h4>Jenelyn Tolentino</h4>
-                                    <span>Librarian</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    
                     <div class="col-lg-3 col-md-6 wow fadeInUp" data-wow-delay="0.3s">
                         <div class="member">
                             <img src="{{ asset('img/faculty/Tolentino-Maria-Angelica-D.jpg') }}" class="img-fluid" alt="">

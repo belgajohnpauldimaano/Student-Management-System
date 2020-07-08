@@ -9,11 +9,10 @@ use App\Grade_sheet_firstsem;
 use PDF;
 
 class GradeSheetController extends Controller
-{
-    
+{    
     public function index (Request $request) 
     {
-         $FacultyInformation = \App\FacultyInformation::where('user_id', \Auth::user()->id)->first();
+        $FacultyInformation = \App\FacultyInformation::where('user_id', \Auth::user()->id)->first();
         // return json_encode(['FacultyInformation' => $FacultyInformation, 'Auth' => \Auth::user()]);
         $SchoolYear = \App\SchoolYear::where('status', 1)->where('current', 1)->orderBy('current', 'ASC')->orderBy('school_year', 'ASC')->get();
         
@@ -164,17 +163,12 @@ class GradeSheetController extends Controller
         $EnrollmentMale = \App\Enrollment::join('class_subject_details', 'class_subject_details.class_details_id', '=', 'enrollments.class_details_id')
                     ->join('class_details', 'class_details.id', '=', 'class_subject_details.class_details_id')
                     ->join('student_informations', 'student_informations.id', '=', 'enrollments.student_information_id')
-                    // ->join('student_enrolled_subjects', 'student_enrolled_subjects.subject_id', '=', 'class_subject_details.subject_id')
-                    // ->join('student_enrolled_subjects', 'student_enrolled_subjects.subject_id', '=', 'class_subject_details.subject_id')
-                    // ->join('student_enrolled_subjects', 'student_enrolled_subjects.enrollments_id', '=', 'enrollments.id')
                     ->join('student_enrolled_subjects', function ($join) {
                         $join->on('student_enrolled_subjects.enrollments_id', '=', 'enrollments.id');
-                        // ->on('student_enrolled_subjects.subject_id', '=', 'class_subject_details.subject_id');
                     })
                     ->whereRaw('class_subject_details.faculty_id = '. $FacultyInformation->id)
                     ->whereRaw('class_subject_details.id = '. $request->search_class_subject)
                     ->whereRaw('student_enrolled_subjects.class_subject_details_id = '. $request->search_class_subject)
-                    // ->whereRaw('class_details.id = '. $search_class_subject[1])
                     ->whereRaw('class_details.current = 1')
                     ->whereRaw('class_details.status != 0')
                     ->whereRaw('student_informations.gender = 1')
@@ -969,6 +963,10 @@ class GradeSheetController extends Controller
                 {
                     $subject = 'esp';      
                 }
+                else if($SelectedSubject->subject == 'Edukasyon sa Pagpapakatao (EsP)')//esp
+                {
+                    $subject = 'esp';      
+                }
                 else if($SelectedSubject->subject == 'ICT/Bread and Pastry')//ict
                 {
                     $subject = 'ict';
@@ -1034,6 +1032,10 @@ class GradeSheetController extends Controller
                 {
                     $subject = 'esp';      
                 }
+                else if($SelectedSubject->subject == 'Edukasyon sa Pagpapakatao (EsP)')//esp
+                {
+                    $subject = 'esp';      
+                }
                 else if($SelectedSubject->subject == 'ICT/Bread and Pastry')//ict
                 {
                     $subject = 'ict';
@@ -1093,7 +1095,11 @@ class GradeSheetController extends Controller
                 {          
                     $subject = 'math';
                 }
-                else if($SelectedSubject->subject == 'ESP')//esp
+                else if($SelectedSubject->subject == 'ESP)')//esp
+                {
+                    $subject = 'esp';      
+                }
+                else if($SelectedSubject->subject == 'Edukasyon sa Pagpapakatao (EsP)')//esp
                 {
                     $subject = 'esp';      
                 }
@@ -1116,7 +1122,8 @@ class GradeSheetController extends Controller
                 else if($SelectedSubject->subject == 'Technology and Livelihood Education (TLE)')//ict
                 {
                     $subject = 'ict';
-                }        
+                }  
+                      
 
                 $GradesEncode = \App\Grade_sheet_third::where(['enrollment_id'=>$enrollment_id])
                 ->where('school_year_id', $SchoolYear->id)
@@ -1158,6 +1165,10 @@ class GradeSheetController extends Controller
                     $subject = 'math';
                 }
                 else if($SelectedSubject->subject == 'ESP')//esp
+                {
+                    $subject = 'esp';      
+                }
+                else if($SelectedSubject->subject == 'Edukasyon sa Pagpapakatao (EsP)')//esp
                 {
                     $subject = 'esp';      
                 }
@@ -1503,6 +1514,10 @@ class GradeSheetController extends Controller
                 {
                     $subject = 'esp';      
                 }
+                else if($SelectedSubject->subject == 'Edukasyon sa Pagpapakatao (EsP)')//esp
+                {
+                    $subject = 'esp';      
+                }
                 else if($SelectedSubject->subject == 'ICT/Bread and Pastry')//ict
                 {
                     $subject = 'ict';
@@ -1569,6 +1584,10 @@ class GradeSheetController extends Controller
                 {
                     $subject = 'esp';      
                 }
+                else if($SelectedSubject->subject == 'Edukasyon sa Pagpapakatao (EsP)')//esp
+                {
+                    $subject = 'esp';      
+                }
                 else if($SelectedSubject->subject == 'ICT/Bread and Pastry')//ict
                 {
                     $subject = 'ict';
@@ -1630,6 +1649,10 @@ class GradeSheetController extends Controller
                     $subject = 'math';
                 }
                 else if($SelectedSubject->subject == 'ESP')//esp
+                {
+                    $subject = 'esp';      
+                }
+                else if($SelectedSubject->subject == 'Edukasyon sa Pagpapakatao (EsP)')//esp
                 {
                     $subject = 'esp';      
                 }
@@ -1717,6 +1740,10 @@ class GradeSheetController extends Controller
                 {
                     $subject = 'ict';
                 }  
+                else if($SelectedSubject->subject == 'Edukasyon sa Pagpapakatao (EsP)')//esp
+                {
+                    $subject = 'esp';      
+                }
                     
                 $GradesEncode = \App\Grade_sheet_fourth::where(['enrollment_id'=>$enrollment_id])
                 ->where('school_year_id', $SchoolYear->id)

@@ -13,7 +13,7 @@
       <!-- logo for regular state and mobile devices -->
       <span class="logo-lg">
       {{--  <img src="{{ asset('/img/sja-logo.png') }}" style="height: 35px; margin: -5px 10px 0 -10px;">  --}}
-      <b>St. John</b> Academy</span>
+      <b>St. John's</b> Academy Inc.</span>
     </a>
 
     <!-- Header Navbar: style can be found in header.less -->
@@ -28,6 +28,7 @@
               <li class="dropdown user user-menu">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                     {{-- <img src="dist/img/user2-160x160.jpg" class="user-image" alt="User Image"> --}}
+                    <img src="{{ \Auth::user()->get_user_data()->photo ? \File::exists(public_path('/img/account/photo/'. \Auth::user()->get_user_data()->photo)) ? asset('/img/account/photo/'. \Auth::user()->get_user_data()->photo) : asset('/img/account/photo/blank-user.gif') : asset('/img/account/photo/blank-user.gif') }}" class="user-image" alt="User Image">
                     <span class="hidden-xs">{{ \Auth::user()->get_user_data()->first_name . ' ' . \Auth::user()->get_user_data()->last_name }}</span>
                 </a>
                 <ul class="dropdown-menu">
@@ -72,9 +73,10 @@
       <!-- sidebar menu: : style can be found in sidebar.less -->
       <ul class="sidebar-menu" data-widget="tree">
         <li class="header">STUDENT NAVIGATION</li>
-          <li><a href="{{ route('student.dashboard') }}"><i class="fa fa-home fa-fw fa-lg"></i>&nbsp;&nbsp;&nbsp; <span>Home</span></a></li>
-          <li><a href="{{ route('student.enrollment.index') }}"><i class="fas fa-file fa-lg"></i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span>Enrollment</span></a></li> 
-          <li><a href="{{ route('student.class_schedule.index') }}"><i class="fa fa-calendar fa-lgx"></i>&nbsp;&nbsp;&nbsp; <span>Class Schedule</span></a></li>
+          <li><a href="{{ route('student.dashboard') }}"><i class="fa fa-home fa-fw fa-lg"></i>&nbsp;&nbsp; <span>Home</span></a></li>
+          <li><a href="{{ route('student.enrollment.index') }}"><i class="fas fa-file fa-lg"></i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span>Online Enrollment</span></a></li> 
+          <li><a href="{{ route('student.student_appointment') }}"><i class="far fa-calendar-check fa-lg"></i></i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span>Appointment for Walk in</span></a></li> 
+          <li><a href="{{ route('student.class_schedule.index') }}"><i class="fa fa-calendar fa-lg"></i>&nbsp;&nbsp;&nbsp; <span>Class Schedule</span></a></li>
           <li><a href="{{ route('student.grade_sheet.index') }}"><i class="fa fa-file-text-o fa-lg"></i>&nbsp;&nbsp;&nbsp; <span>Grade Sheet</span></a></li>
           <li><a href="{{ route('student.my_account.index') }}"><i class="fa fa-user fa-lg"></i>&nbsp;&nbsp;&nbsp;  <span>My Profile</span></a></li>
       </ul>

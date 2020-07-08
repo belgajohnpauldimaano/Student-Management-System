@@ -336,12 +336,12 @@ class ClassSubjectsController extends Controller
         
 
         $ClassSubjectDetail = new \App\ClassSubjectDetail();
-        $ClassSubjectDetail->class_time_from		    = date('H:i', strtotime($request->subject_time_from));
-        $ClassSubjectDetail->class_time_to		    = date('H:i', strtotime($request->subject_time_to));
-        $ClassSubjectDetail->subject_id	        = $request->subject;
-        $ClassSubjectDetail->faculty_id		    = $request->faculty;
-        $ClassSubjectDetail->class_details_id   = $request->class_details_id;
-        $ClassSubjectDetail->class_subject_order   = $request->order;
+        $ClassSubjectDetail->class_time_from  = date('H:i', strtotime($request->subject_time_from));
+        $ClassSubjectDetail->class_time_to	= date('H:i', strtotime($request->subject_time_to));
+        $ClassSubjectDetail->subject_id	    = $request->subject;
+        $ClassSubjectDetail->faculty_id		= $request->faculty;
+        $ClassSubjectDetail->class_details_id  = $request->class_details_id;
+        $ClassSubjectDetail->class_subject_order  = $request->order;
         $ClassSubjectDetail->class_schedule   = $scheds;
         
         $Semester = \App\Semester::where('current', 1)->first();
