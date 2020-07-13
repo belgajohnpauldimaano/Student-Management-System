@@ -45,26 +45,23 @@
 
         $('.select2').select2();
         // var page = 1;
-        get_data();
-        function get_data(){
-            total = 0;
-            disc_total = 0;
+        // get_data();
+        // function get_data(){
+        //     total = 0;
+        //     disc_total = 0;
             tuition_total = 0;
             misc_total = 0;
-            downpayment_total=0;
-            less_total = 0;
+        //     downpayment_total=0;
+        //     less_total = 0;
+        //     disc = [];
+        //     var str = "";                
+        //     $('#disc_amt').html("");
             
-            function currencyFormat(num) {
-                return num.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')
-            }
+        //     function currencyFormat(num) {
+        //         return num.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')
+        //     }
             
-            $('#or_number').keyup(function() {
-                var or = $('#or_number').val();
-                $('#or_num').text(or);
-                $('.js-btn_print').data('or_num', or);
-                $('#js-btn-save').data('or_num', or);
-                // alert(or);
-            });
+            
 
             $('#downpayment').keyup(function() {
                 function currencyFormat(num) {
@@ -75,83 +72,173 @@
                 total_fees();
             });                           
             
-            $('#payment_category').on('change', function() {
-                var dataid = $("#payment_category option:selected").attr('value');
-                // const dataid = $("#payment_category option:selected").attr('data-gradelvl');
-                var tuition = $("#payment_category option:selected").attr('data-tuition');
-                var misc = $("#payment_category option:selected").attr('data-misc');
-                // alert(dataid);
-                $('#tuition_fee').text(currencyFormat(parseFloat(tuition)));
-                $('#misc_fee').text(currencyFormat(parseFloat(misc)));
+            
 
-                tuition_total = parseFloat(tuition) + parseFloat(misc);
-                total_fees();
-                // alert(total)
-            });
-
-            $(".discountSelected").change(function () {
-                var str = "";
-                disc = [];
-                $('#disc_amt').html("");
-                $( ".discountSelected option:selected" ).each(function() {
-                // str += $( this ).text() + " ";
-                    disc.push({
-                        type: $(this).data('type'),
-                        fee: $(this).data('fee')
-                    });
-                });
-                $.each(disc, function (index, value) {
-                    disc_total += parseFloat(value.fee);
-                    $item = ''
-                        + value.type +' '+ value.fee + '<br/>';
-                    $('#disc_amt').append($item);
-                });
+        //     $(".discountSelected").change(function () {
                 
-                total_fees();
-            })
-            .change();
+        //         $( ".discountSelected option:selected" ).each(function() {                
+        //             disc.push({
+        //                 type: $(this).data('type'),
+        //                 fee: $(this).data('fee')
+        //             });
+        //         });
+        //         $.each(disc, function (index, value) {
+        //             disc_total += parseFloat(value.fee);
+        //             $item = ''+ value.type +' '+ value.fee + '<br/>';
+        //             $('#disc_amt').append($item);
+        //         });
+                
+        //         total_fees();
 
-            function total_fees(){
-                less_total= disc_total + downpayment_total;
-                total = tuition_total + misc_total - less_total;
-                $('#total_balance').text(currencyFormat(total));           
-            }
+        //         less_total= disc_total + downpayment_total;
+        //         total = tuition_total + misc_total - less_total;
+        //         $('#total_balance').text(currencyFormat(total)); 
+        //     })
+        //     .change();
+
+        //     function total_fees(){
+        //         less_total= disc_total + downpayment_total;
+        //         total = tuition_total + misc_total - less_total;
+        //         $('#total_balance').text(currencyFormat(total));           
+        //     }
             
-            current_balance();
+        //     current_balance();
             
-            $('#or_number_payment').keyup(function() {
-                var or = $('#or_number_payment').val();
-                $('#js-or_num_payment').text(or);
+        //     $('#or_number_payment').keyup(function() {
+        //         var or = $('#or_number_payment').val();
+        //         $('#js-or_num_payment').text(or);
+        //         $('.js-btn_print').data('or_num', or);
+        //         $('#js-btn-save-monthly').data('or_num', or);
+
+        //         // alert(or);
+        //     }); 
+
+        //     $('#payment_bill').keyup(function() {
+        //         function currencyFormat(num) {
+        //             return num.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')
+        //         }
+        //         $('#js-monthly_fee_payment').text(currencyFormat(parseFloat($('#payment_bill').val())));
+        //         // $('#js-monthly_fee_payment').text($('#payment').val());
+        //         current_balance();
+        //     });
+
+        //     $('.monthly_select').on('change', function() {
+        //         var mo = $('.monthly_select').val();
+        //         $('#js-month_payment').text(mo);
+        //     });
+
+        //     function current_balance(){
+        //         var bal = $('#js-current_balance').val()
+        //         var mo = $('#payment').val();
+        //         // $('#js-month_others').text(mo);
+        //         current_bal = bal - mo;
+        //         $('#js-current_bal').text(currencyFormat(current_bal));     
+        //     } 
+
+        //     $('.select2').select2();
+        // }
+
+        total_fees();
+
+        function currencyFormat(num) {
+            return num.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')
+        } 
+
+        downpayment_total = 0;
+        all_in = 0;
+        function total_fees(){
+            disc_total = 0;            
+            less_total = 0;            
+            total = 0;  
+            grandTotal = 0;
+            disc = [];
+            $('#disc_amt').html("");            
+
+            $('#or_number').keyup(function() {
+                var or = $('#or_number').val();
+                $('#or_num').text(or);
                 $('.js-btn_print').data('or_num', or);
-                $('#js-btn-save-monthly').data('or_num', or);
-
+                $('#js-btn-save').data('or_num', or);
                 // alert(or);
+            });     
+
+            $('input[name="discount[]"]:checked').each(function () {                
+                disc.push({
+                    type: $(this).data('type'),
+                    fee: $(this).data('fee')
+                });
+            });
+            $.each(disc, function (index, value) {                
+                disc_total += parseFloat(value.fee);                
+                $item = ''+ value.type +' '+ currencyFormat(value.fee) + '<br/>';
+                $('#disc_amt').append($item);  
+            });       
+
+            if($('#downpayment').val() == ''){
+                // $('#downpayment').text(0);
+                document.getElementById('downpayment').value = (0);
+            }
+        }
+
+        setPayment();
+        function setPayment(){
+            var dataid = $("#payment_category option:selected").attr('value');
+            // const dataid = $("#payment_category option:selected").attr('data-gradelvl');
+            var tuition = $("#payment_category option:selected").attr('data-tuition');
+            var misc = $("#payment_category option:selected").attr('data-misc');
+            var other = $("#payment_category option:selected").attr('data-other');
+            // alert(dataid);
+            $('#tuition_fee').text(currencyFormat(parseFloat(tuition)));
+            $('#misc_fee').text(currencyFormat(parseFloat(misc)));
+            $('#other_fee').text(currencyFormat(parseFloat(other)));
+
+            all_in = parseFloat(tuition) + parseFloat(misc) + parseFloat(other);
+            grand_total();
+        }
+
+        $('#payment_category').on('change', function() {
+            setPayment();
+            // alert(total)
+        });
+
+        $(".downpaymentSelected").click(function (e) {
+            downpayment = [];
+            
+            $('input[name="downpayment1[]"]:checked').each(function () {                
+                downpayment.push({
+                    fee: $(this).data('fee')
+                });
+            });
+            $.each(downpayment, function (index, value) {                
+                downpayment_bank_fee = parseFloat(value.fee);
+                document.getElementById('payment').value = (downpayment_bank_fee);
+                $('#dp_enrollment').text(currencyFormat(parseFloat(downpayment_bank_fee)));
+                downpayment_total = downpayment_bank_fee; 
+                grand_total();
             }); 
 
-            $('#payment_bill').keyup(function() {
-                function currencyFormat(num) {
-                    return num.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')
-                }
-                $('#js-monthly_fee_payment').text(currencyFormat(parseFloat($('#payment_bill').val())));
-                // $('#js-monthly_fee_payment').text($('#payment').val());
-                current_balance();
-            });
+        });
 
-            $('.monthly_select').on('change', function() {
-                var mo = $('.monthly_select').val();
-                $('#js-month_payment').text(mo);
-            });
+        $('#payment').keyup(function() {
+            $('#dp_enrollment').text(currencyFormat(parseFloat($('#payment').val())));
+            downpayment_total = parseFloat($('#payment').val());            
+            grand_total();
+        });     
+        
+        $(".discountSelected").click(function (e) {
+            total_fees();    
+            grand_total();         
+        });
+        
 
-            function current_balance(){
-                var bal = $('#js-current_balance').val()
-                var mo = $('#payment').val();
-                // $('#js-month_others').text(mo);
-                current_bal = bal - mo;
-                $('#js-current_bal').text(currencyFormat(current_bal));     
-            } 
-
-            $('.select2').select2();
+        function grand_total(){
+            less_total= disc_total + downpayment_total;
+            total = all_in - less_total;
+            $('#total_balance').text(currencyFormat(total));  
         }
+
+       
+    
 
         getOthers();
 
@@ -399,6 +486,14 @@
                                 type    : 'success'
                             });
 
+                            $('.transaction-success').html(''+
+                                '<div class="alert alert-success alert-dismissible">'+
+                                    '<button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>'+
+                                    '<h4><i class="icon fa fa-check"></i> Alert!</h4>'+
+                                    'Success! You have successfully submit the transaction!'+
+                                '</div>'                            
+                            +'');
+                            
                             fetch_data();
                         }
                     }

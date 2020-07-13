@@ -28,6 +28,11 @@ class IncomingStudentController extends Controller
         if($request->ajax()){            
                 $IncomingStudent = StudentInformation::join('incoming_students','incoming_students.student_id', '=' ,'student_informations.id')    
                     ->join('users', 'users.id', '=', 'student_informations.user_id')                                   
+                    ->where(function ($query) use ($request) {
+                        $query->where('student_informations.first_name', 'like', '%'.$request->search.'%');
+                        $query->orWhere('student_informations.middle_name', 'like', '%'.$request->search.'%');
+                        $query->orWhere('student_informations.last_name', 'like', '%'.$request->search.'%');
+                    })
                     ->selectRaw('
                         CONCAT(student_informations.last_name, ", ", student_informations.first_name, " " ,  student_informations.middle_name) AS student_name,
                         student_informations.id as student_id,
@@ -37,11 +42,7 @@ class IncomingStudentController extends Controller
                         users.username, 
                         users.status as user_status
                     ')
-                    ->where(function ($query) use ($request) {
-                        $query->where('student_informations.first_name', 'like', '%'.$request->search.'%');
-                        $query->orWhere('student_informations.middle_name', 'like', '%'.$request->search.'%');
-                        $query->orWhere('student_informations.last_name', 'like', '%'.$request->search.'%');
-                    })
+                   
                     ->where('incoming_students.approval', 'Not yet Approved')
                     ->where('incoming_students.school_year_id', $SchoolYear->id)            
                     ->where('users.status', 0)            
@@ -78,12 +79,13 @@ class IncomingStudentController extends Controller
 
     public function Approved(Request $request)
     {
-        $SchoolYear = SchoolYear::where('current', 1)
-        ->where('status', 1)
-        ->first(); 
+        
 
         if($request->ajax()){            
 
+            $SchoolYear = SchoolYear::where('current', 1)
+                ->where('status', 1)
+                ->first(); 
                 $IncomingStudentCount = $this->IncomingStudentCount();
 
                 $IncomingStudentApproved = StudentInformation::join('incoming_students','incoming_students.student_id', '=' ,'student_informations.id')    
@@ -105,7 +107,7 @@ class IncomingStudentController extends Controller
                     ->where('incoming_students.approval', 'Approved')
                     ->where('incoming_students.school_year_id', $SchoolYear->id)            
                     ->where('users.status', 1)            
-                    ->paginate(10, ['transaction_month_paids.id']);
+                    ->paginate(10);
 
                 return view('control_panel_registrar.incoming_student_information_approved.partials.data_list', compact('IncomingStudentApproved','IncomingStudentCount'));
         }        

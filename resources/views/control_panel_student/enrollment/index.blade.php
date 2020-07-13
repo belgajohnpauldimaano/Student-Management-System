@@ -1210,32 +1210,30 @@
                 result_bal = parseFloat(total_tuition) - parseFloat(payment) - disc_total;                
             }
             result_online_charge = 0;
-            if(payment>=parseInt(1000) && payment<=parseInt(9000)){
+
+            if(payment>=parseInt(1000) && payment<=parseInt(9999)){
                 result_online_charge =  (parseFloat(payment) * parseFloat(0.035)) + 17;
-            }else if(payment>=parseInt(10000) && payment<=parseInt(12000)){
+            }else if(payment>=parseInt(10000) && payment<=parseInt(12999)){
                 result_online_charge =  (parseFloat(payment) * 0.035) + 18;
-            }else if(payment>=parseInt(13000) && payment<=parseInt(17000)){
+            }else if(payment>=parseInt(13000) && payment<=parseInt(17999)){
                 result_online_charge =  (parseFloat(payment) * 0.035) + 19;
-            }else if(payment>=parseInt(18000) && payment<=parseInt(22000)){
+            }else if(payment>=parseInt(18000) && payment<=parseInt(22999)){
                 result_online_charge =  (parseFloat(payment) * 0.035) + 20;
-            }else if(payment>=parseInt(23000) && payment<=parseInt(27000)){
+            }else if(payment>=parseInt(23000) && payment<=parseInt(27999)){
                 result_online_charge =  (parseFloat(payment) * 0.035) + 21;
-            }else if(payment>=parseInt(28000) && payment<=parseInt(32000)){
+            }else if(payment>=parseInt(28000) && payment<=parseInt(32999)){
                 result_online_charge =  (parseFloat(payment) * 0.035) + 22;
-            }else if(payment>=parseInt(33000) && payment<=parseInt(38000)){
+            }else if(payment>=parseInt(33000) && payment<=parseInt(38999)){
                 result_online_charge =  (parseFloat(payment) * 0.035) + 23;
-            }else if(payment>=parseInt(39000) && payment<=parseInt(43000)){
+            }else if(payment>=parseInt(39000) && payment<=parseInt(43999)){
                 result_online_charge =  (parseFloat(payment) * 0.035) + 24;
-            }else if(payment>=parseInt(44000) && payment<=parseInt(48000)){
+            }else if(payment>=parseInt(44000) && payment<=parseInt(48999)){
                 result_online_charge =  (parseFloat(payment) * 0.035) + 25;
-            }else if(payment>=parseInt(49000) && payment<=parseInt(55000)){
+            }else if(payment>=parseInt(49000) && payment<=parseInt(55999)){
                 result_online_charge =  (parseFloat(payment) * 0.035) + 26;
             }else if(payment>=parseInt(1) && payment<parseInt(1000)){
                 result_online_charge =  (parseFloat(payment) * 0.035) + 16;
             }
-            
-            
-            
 
             total_payment_charge = parseFloat(payment) + parseFloat(result_online_charge);
 

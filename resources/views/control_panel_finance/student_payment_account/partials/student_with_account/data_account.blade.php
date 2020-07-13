@@ -53,15 +53,19 @@
                                                             <th>Price</th>
                                                             <th style="width: 40px">Status</th>
                                                         </tr>
-                                                        @foreach ($TransactionOthers = App\TransactionOtherFee::where('or_no', $item->or_no)->orderBY('id', 'DESC')->distinct()->get() as $key => $data)
-                                                            <tr>
-                                                                <td>{{$key+1}}.)</td>
-                                                                <td>{{$data->other->other_fee_name}}</td>
-                                                                <td>{{$data->others_fee_qty}}</td>
-                                                                <td>{{number_format($data->others_fee_price, 2)}}</td>
-                                                                <td><span class="label bg-green">Paid</span></td>
-                                                            </tr>
-                                                        @endforeach
+                                                        @if($grade_level_id < 13)
+                                                            {{-- @foreach ($TransactionOthers = App\TransactionOtherFee::where('or_no', $item->or_no)->orderBY('id', 'DESC')->distinct()->get() as $key => $data)
+                                                                <tr>
+                                                                    <td>{{$key+1}}.)</td>
+                                                                    <td>{{$data->other->other_fee_name}}</td>
+                                                                    <td>{{$data->others_fee_qty}}</td>
+                                                                    <td>{{number_format($data->others_fee_price, 2)}}</td>
+                                                                    <td><span class="label bg-green">Paid</span></td>
+                                                                </tr>
+                                                            @endforeach --}}
+                                                        @else
+                                                            <option value="">The Grade level is over and not qualified.</option>
+                                                        @endif
                                                     </tbody>                                                
                                                 </table>
                                                 

@@ -8,17 +8,20 @@
         
         <label for="">Gender: </label>
         <p style="margin-top: -5px">{{ $StudentInformation ? $StudentInformation->gender == 1 ? 'Male' : 'Female' : ''}}</p>
+
+        {{-- <label for="">Phone Number: </label>
+        <p style="margin-top: -5px">{{ $StudentInformation ? $StudentInformation->contact_number == '' ? 'NA' : $StudentInformation->contact_number : ''}}</p> --}}
     </div>
     <!-- /.col -->
     <div class="col-sm-3 invoice-col">
         <label for="">Parent/Guardian: </label>
-        <p style="margin-top: -5px">{{ $StudentInformation ? $StudentInformation->guardian : '' }}</p>
+        <p style="margin-top: -5px">{{ $StudentInformation ? $StudentInformation->guardian == '' ? 'NA' : $StudentInformation->guardian : ''}}</p>
 
         <label for="">Date of Birth: </label>
         <p style="margin-top: -5px">{{ $StudentInformation ? date_format(date_create($StudentInformation->birthdate), 'm/d/Y') : '' }}</p>
 
         <label for="">Address: </label>
-        <p style="margin-top: -5px">{{ $StudentInformation ? $StudentInformation->c_address : '' }}</p>
+        <p style="margin-top: -5px">{{ $StudentInformation ? $StudentInformation->c_address == '' ? 'NA' :  $StudentInformation->c_address : ''}}</p>
     </div>
     <!-- /.col -->
     <div class="col-sm-3 invoice-col">
@@ -47,8 +50,9 @@
             
         </p>
         
-        {{-- <label for="">Address: </label>
-        <p style="margin-top: -5px">{{ $StudentInformation ? $StudentInformation->c_address : '' }}</p> --}}
+        <label for="">Incoming Grade-level: </label>
+        <p style="margin-top: -5px">{{ $grade_level_id ? $grade_level_id : 'none' }}</p>
+        
     </div>
     <!-- /.col -->
     <div align="center" class="col-sm-3 invoice-col ">

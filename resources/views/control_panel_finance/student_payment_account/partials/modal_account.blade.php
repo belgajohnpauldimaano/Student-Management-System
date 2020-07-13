@@ -48,13 +48,15 @@
                         <div class="col-sm-3 invoice-col">
                             <label for="">School Year: </label>
                             <p style="margin-top: -5px">{{ $SchoolYear->school_year }}</p>
-                            {{-- <input type="hidden" name="school_year_id" value="{{ $SchoolYear->school_year_id }}"> --}}
+                            
 
                             <label for="">Payment Status: </label>
                             <p style="margin-top: -5px; color: red">Paid/not yet paid</p>
                             
-                            {{-- <label for="">Address: </label>
-                            <p style="margin-top: -5px">{{ $StudentInformation ? $StudentInformation->c_address : '' }}</p> --}}
+                            <label for="">Incoming Grade-level: </label>
+                            <p style="margin-top: -5px">{{ $grade_level_id ? $grade_level_id : 'none' }}</p>
+
+
                         </div>
                         <!-- /.col -->
                         <div align="center" class="col-sm-3 invoice-col ">
