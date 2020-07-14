@@ -4,20 +4,26 @@ namespace App\Http\Controllers\Finance\Maintenance;
 
 use App\DiscountFee;
 use Illuminate\Http\Request;
+use App\Traits\hasNotYetApproved;
 use App\Http\Controllers\Controller;
 
 class DiscountFeeController extends Controller
 {
+    use hasNotYetApproved;
+    
     public function index(Request $request)
     {
         if ($request->ajax())
         {
+            $NotyetApprovedCount = $this->notYetApproved();
             $DiscountFee = DiscountFee::where('status', 1)->where('disc_type', 'like', '%'.$request->search.'%')->paginate(10);
-            return view('control_panel_finance.maintenance.discount_fee.partials.data_list', compact('DiscountFee'))->render();
+            return view('control_panel_finance.maintenance.discount_fee.partials.data_list', compact('DiscountFee','NotyetApprovedCount'))->render();
         }
+
+        $NotyetApprovedCount = $this->notYetApproved();
         
         $DiscountFee = DiscountFee::where('status', 1)->paginate(10);
-        return view('control_panel_finance.maintenance.discount_fee.index', compact('DiscountFee'));
+        return view('control_panel_finance.maintenance.discount_fee.index', compact('DiscountFee','NotyetApprovedCount'));
     }
 
     public function modal_data (Request $request) 

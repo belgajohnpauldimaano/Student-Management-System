@@ -2,24 +2,26 @@
 
 namespace App\Http\Controllers\Finance;
 
-use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
-use App\StudentInformation;
-use App\GradeLevel;
-use App\DiscountFee;
-use App\OtherFee;
-use App\SchoolYear;
-use App\StudentCategory;
-use App\PaymentCategory;
-use App\Transaction;
-use App\TransactionOtherFee;
-use App\TransactionMonthPaid;
-use App\TuitionFee;
 use App\MiscFee;
+use App\OtherFee;
+use App\GradeLevel;
+use App\SchoolYear;
+use App\TuitionFee;
+use App\DiscountFee;
+use App\Transaction;
+use App\PaymentCategory;
+use App\StudentCategory;
+use App\StudentInformation;
 use App\TransactionDiscount;
+use App\TransactionOtherFee;
+use Illuminate\Http\Request;
+use App\TransactionMonthPaid;
+use App\Traits\hasNotYetApproved;
+use App\Http\Controllers\Controller;
 
 class StudentAccountController extends Controller
 {
+    use hasNotYetApproved;
     public function index(Request $request){
         $stud_id = \Crypt::decrypt($request->c);
         $Profile = StudentInformation::where('id', $stud_id)->first(); 
@@ -75,10 +77,12 @@ class StudentAccountController extends Controller
             ->where('id', $stud_id)
             ->first();
 
+            $NotyetApprovedCount = $this->notYetApproved();
+
             return view('control_panel_finance.student_payment_account.partials.data_list', 
             compact('StudentInformation','Profile','Gradelvl','Discount','OtherFee','SchoolYear','StudentCategory','PaymentCategory','Transaction'
                     ,'Stud_cat_payment','Payment','MiscFee_payment','Tuitionfee_payment','School_year_id','Transaction_disc','TransactionMonthPaid'
-                    ,'Account','TransactionOR','AccountOthers'
+                    ,'Account','TransactionOR','AccountOthers','NotyetApprovedCount'
                     ));
         }
 
@@ -114,7 +118,7 @@ class StudentAccountController extends Controller
                 ->distinct()
                 ->get(['or_no']);    
                 
-            
+            $NotyetApprovedCount = $this->notYetApproved();
             
             $Account = TransactionMonthPaid::where('student_id', $stud_id)->first();   
 
@@ -130,7 +134,7 @@ class StudentAccountController extends Controller
         return view('control_panel_finance.student_payment_account.index', 
             compact('StudentInformation','Profile','Gradelvl','Discount','OtherFee','SchoolYear','StudentCategory','PaymentCategory','Transaction'
                     ,'Stud_cat_payment','Payment','MiscFee_payment','Tuitionfee_payment','School_year_id','Transaction_disc','TransactionMonthPaid'
-                    ,'Account','TransactionOR','AccountOthers'
+                    ,'Account','TransactionOR','AccountOthers','NotyetApprovedCount'
                     ));
     }
 

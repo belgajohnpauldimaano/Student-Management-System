@@ -3,10 +3,13 @@
 namespace App\Http\Controllers\Finance;
 
 use Illuminate\Http\Request;
+use App\Traits\hasNotYetApproved;
 use App\Http\Controllers\Controller;
 
 class FinanceDashboardController extends Controller
 {
+    use hasNotYetApproved;
+
     public function index () 
     {
         $StudentInformation_all = \DB::table('student_informations')
@@ -25,11 +28,14 @@ class FinanceDashboardController extends Controller
             ->where('status', 1)
             ->first();
 
+            $NotyetApprovedCount = $this->notYetApproved();
+
         return view('control_panel_finance.dashboard.index',
             compact(
                 'StudentInformation_all',
                 'StudentInformation_all_male',
-                'StudentInformation_all_female'
+                'StudentInformation_all_female',
+                'NotyetApprovedCount'
                 )
         );
     }

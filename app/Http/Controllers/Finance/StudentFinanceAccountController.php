@@ -9,10 +9,13 @@ use App\TransactionDiscount;
 use App\TransactionOtherFee;
 use Illuminate\Http\Request;
 use App\TransactionMonthPaid;
+use App\Traits\hasNotYetApproved;
 use App\Http\Controllers\Controller;
 
 class StudentFinanceAccountController extends Controller
 {
+    use hasNotYetApproved;
+    
     public function index(Request $request){
 
         if ($request->ajax())
@@ -72,8 +75,9 @@ class StudentFinanceAccountController extends Controller
                 ->distinct()
                 ->paginate(10, ['transactions.id']);
 
+                $NotyetApprovedCount = $this->notYetApproved();
 
-            return view('control_panel_finance.student_finance_account.partials.data_list', compact('Unpaid','Paid'));
+            return view('control_panel_finance.student_finance_account.partials.data_list', compact('Unpaid','Paid','NotyetApprovedCount'));
         } 
 
         $SchoolYear = SchoolYear::where('current', 1)
@@ -125,8 +129,10 @@ class StudentFinanceAccountController extends Controller
             ->orderBy('student_name', 'ASC')
             ->distinct()
             ->paginate(10, ['transactions.id']);
+
+            $NotyetApprovedCount = $this->notYetApproved();
         
-        return view('control_panel_finance.student_finance_account.index', compact('Unpaid','Paid'));
+        return view('control_panel_finance.student_finance_account.index', compact('Unpaid','Paid','NotyetApprovedCount'));
     }
 
     public function modal_data (Request $request) 

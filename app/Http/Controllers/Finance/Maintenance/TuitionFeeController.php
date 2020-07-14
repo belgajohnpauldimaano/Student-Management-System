@@ -3,20 +3,25 @@
 namespace App\Http\Controllers\Finance\Maintenance;
 
 use Illuminate\Http\Request;
+use App\Traits\hasNotYetApproved;
 use App\Http\Controllers\Controller;
 
 class TuitionFeeController extends Controller
 {
+    use hasNotYetApproved;
+    
     public function index(Request $request)
     {
         if ($request->ajax())
         {
+            $NotyetApprovedCount = $this->notYetApproved();
             $TuitionFee = \App\TuitionFee::where('status', 1)->where('tuition_amt', 'like', '%'.$request->search.'%')->paginate(10);
-            return view('control_panel_finance.maintenance.tuition_fee.partials.data_list', compact('TuitionFee'))->render();
+            return view('control_panel_finance.maintenance.tuition_fee.partials.data_list', compact('TuitionFee','NotyetApprovedCount'))->render();
         }
-        
+
+        $NotyetApprovedCount = $this->notYetApproved();
         $TuitionFee = \App\TuitionFee::where('status', 1)->paginate(10);
-        return view('control_panel_finance.maintenance.tuition_fee.index', compact('TuitionFee'));
+        return view('control_panel_finance.maintenance.tuition_fee.index', compact('TuitionFee','NotyetApprovedCount'));
     }
 
     public function modal_data (Request $request) 

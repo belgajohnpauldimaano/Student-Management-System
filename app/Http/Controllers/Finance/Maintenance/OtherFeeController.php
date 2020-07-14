@@ -2,22 +2,25 @@
 
 namespace App\Http\Controllers\Finance\Maintenance;
 
-use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
 use App\OtherFee;
+use Illuminate\Http\Request;
+use App\Traits\hasNotYetApproved;
+use App\Http\Controllers\Controller;
 
 class OtherFeeController extends Controller
 {
+    use hasNotYetApproved;
     public function index(Request $request)
     {
         if ($request->ajax())
         {
+            $NotyetApprovedCount = $this->notYetApproved();
             $OtherFee = OtherFee::where('status', 1)->where('other_fee_name', 'like', '%'.$request->search.'%')->paginate(10);
-            return view('control_panel_finance.maintenance.others_fee.partials.data_list', compact('OtherFee'))->render();
+            return view('control_panel_finance.maintenance.others_fee.partials.data_list', compact('OtherFee','NotyetApprovedCount'))->render();
         }
-        
+        $NotyetApprovedCount = $this->notYetApproved();
         $OtherFee = OtherFee::where('status', 1)->paginate(10);
-        return view('control_panel_finance.maintenance.others_fee.index', compact('OtherFee'));
+        return view('control_panel_finance.maintenance.others_fee.index', compact('OtherFee','NotyetApprovedCount'));
     }
 
     public function modal_data (Request $request) 

@@ -4,16 +4,20 @@ namespace App\Http\Controllers\Finance;
 
 use App\FinanceInformation;
 use Illuminate\Http\Request;
+use App\Traits\hasNotYetApproved;
 use App\Http\Controllers\Controller;
 
 class UserProfileController extends Controller
 {
+    use hasNotYetApproved;
+    
     public function view_my_profile (Request $request)
     {
         $User = \Auth::user();
         $Profile = FinanceInformation::where('user_id', $User->id)->first();
+        $NotyetApprovedCount = $this->notYetApproved();
         // $RegistrarInformation = collect(\AFinanceformation::DEPARTMENTS);
-        return view('control_panel_finance.user_profile.index', compact('User', 'Profile'));
+        return view('control_panel_finance.user_profile.index', compact('User', 'Profile','NotyetApprovedCount'));
     }
     public function fetch_profile (Request $request)
     {
