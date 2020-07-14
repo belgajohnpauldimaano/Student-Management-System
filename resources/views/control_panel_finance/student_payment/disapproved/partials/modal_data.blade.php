@@ -168,6 +168,7 @@
                                                     ->sum('payment');    
                                             ?>
                                             <b>{{ number_format((($sub_total - $discount) - $payment) - $Monthly_history->payment, 2)}}</b>
+                                            <b>{{ $current_bal }}</b>
                                         </td>                                    
                                     </tr>
                                        

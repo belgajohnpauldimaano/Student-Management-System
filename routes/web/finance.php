@@ -25,11 +25,16 @@ Route::group(['prefix' => 'finance', 'middleware' => ['auth', 'userroles'], 'rol
     });
 
     Route::group(['prefix' => 'student-payment'], function () {
-        Route::get('', 'Finance\StudentPaymentController@index')->name('finance.student_payment');
-        Route::post('', 'Finance\StudentPaymentController@index')->name('finance.student_payment');
+        Route::get('not-yet-approved', 'Finance\StudentPaymentController@index')->name('finance.student_payment.not_yet_approved');
+        Route::post('not-yet-approved', 'Finance\StudentPaymentController@index')->name('finance.student_payment.not_yet_approved');
+        Route::get('approved', 'Finance\StudentPaymentController@approved')->name('finance.student_payment.approved');
+        Route::post('approved', 'Finance\StudentPaymentController@approved')->name('finance.student_payment.approved');
+        Route::get('disapproved', 'Finance\StudentPaymentController@disapproved')->name('finance.student_payment.disapproved');
+        Route::post('disapproved', 'Finance\StudentPaymentController@disapproved')->name('finance.student_payment.disapproved');
         Route::post('approve', 'Finance\StudentPaymentController@approve')->name('finance.student_payment.approve');
         Route::post('disapprove', 'Finance\StudentPaymentController@disapprove')->name('finance.student_payment.disapprove');
         Route::post('modal-data', 'Finance\StudentPaymentController@modal_data')->name('finance.student_payment.modal');
+        Route::post('modal-data-approved', 'Finance\StudentPaymentController@modal_data_approved')->name('finance.student_payment.modal_approved');
         
     });
 

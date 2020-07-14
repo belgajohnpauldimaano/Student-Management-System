@@ -203,7 +203,25 @@
         @if (Auth::user()->role == 6)
           <li><a href="{{ route('finance.dashboard') }}"><i class="fa fa-home fa-fw fa-lg"></i>&nbsp;&nbsp;&nbsp; <span>Dashboard</span></a></li>
           {{-- <li><a href="{{ route('finance.student_account') }}"><i class="fas fa-pen-square fa-lg"></i>&nbsp;&nbsp;&nbsp; <span>Student Enrollment</span></a></li> --}}
-          <li><a href="{{ route('finance.student_payment') }}">&nbsp;<i class="fas fa-clipboard-list fa-lg"></i>&nbsp;&nbsp;&nbsp; <span>Student Payment </i>
+          {{-- <li><a href="{{ route('finance.student_payment') }}">&nbsp;<i class="fas fa-clipboard-list fa-lg"></i>&nbsp;&nbsp;&nbsp; <span>Student Payment </i> --}}
+          <li>
+            <a href="#"><i class="fas fa-clipboard-list fa-lg"></i>&nbsp;&nbsp;&nbsp; <span>Student Payment</span>
+              
+            </a>
+            <ul class="treeview-menu menu-open" style="display: block">
+              {{--  Admin Menu  --}}
+                <li>
+                  <a href="{{ route('finance.student_payment.not_yet_approved')}}">
+                    <i class="fa fa-circle-o"></i>&nbsp;&nbsp;&nbsp; <span>Not yet Approved</span>
+                    <span class="{{$NotyetApprovedCount == 0 ? '' : 'label label-danger'}} pull-right">
+                      {{$NotyetApprovedCount == 0 ? '' : $NotyetApprovedCount}}
+                    </span>
+                  </a>
+                </li>
+                <li><a href="{{ route('finance.student_payment.approved')}}"><i class="fa fa-circle-o"></i>&nbsp;&nbsp;&nbsp; <span>Approved</span></a></li>
+                <li><a href="{{ route('finance.student_payment.disapproved')}}"><i class="fa fa-circle-o"></i>&nbsp;&nbsp;&nbsp; <span>Disapproved</span></a></li>
+              </ul>
+          </li>
           {{-- <span class="label label-primary pull-right">{{$NotyetApprovedCount}}</span> --}}
           </span></a></li>
           <li><a href="{{ route('finance.student_acct') }}"> <i class="fa fa-info-circle fa-lg"></i>&nbsp;&nbsp;&nbsp; <span>Student Account</span></a></li>

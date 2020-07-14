@@ -22,7 +22,10 @@
                                 <p>{{$Modal_data->payment_cat->stud_category->student_category.'-'.$Modal_data->payment_cat->grade_level_id}}</p>
                             </div>  
 
-                            
+                            <div class="form-group">
+                                <label for="">Phone number</label>
+                                <p>{{$Modal_data->monthly->number}}</p>
+                            </div>  
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
@@ -36,10 +39,7 @@
                                 <label for="">Payment option</label>
                                 <p>{{$Modal_data->monthly->payment_option}}</p>
                             </div>  
-                            <div class="form-group">
-                                <label for="">Phone number</label>
-                                <p>{{$Modal_data->monthly->number}}</p>
-                            </div>  
+                            
                         </div>
                     </div>
                                         
@@ -106,7 +106,7 @@
                         @foreach ($Mo_history as $data)                        
                             <div class="box-header ">
                                 <p class="box-title">
-                                    Date and Time: {{ $data ? date_format(date_create($data->created_at), 'F d, Y h:i A') : '' }}
+                                    Date and Time: {{ $Modal_data ? date_format(date_create($Modal_data->created_at), 'F d, Y h:i A') : '' }}
                                 </p>
                                 <br>Status: 
                                 <span class="label {{ $data->approval ? $data->approval == 'Approved' ? 'label-success' : 'label-danger' : 'label-danger'}}">
