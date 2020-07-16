@@ -48,7 +48,14 @@
                     <div class="box">
                         <div class="box-header ">
                             <p class="box-title">
-                                Date and Time: {{ $Monthly_history ? date_format(date_create($Monthly_history->created_at), 'F d, Y h:i A') : '' }}
+                                Date and Time:  <?php 
+                                                    $date = \App\TransactionMonthPaid::where('id', $Monthly_history->id)
+                                                        ->first();
+
+                                                   
+                                                   
+                                                ?>
+                                                {{ $date ? date_format(date_create($date->created_at), 'F d, Y h:i A') : '' }}
                             </p>
                         </div>
                         

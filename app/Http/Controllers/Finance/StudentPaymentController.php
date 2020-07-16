@@ -300,7 +300,7 @@ class StudentPaymentController extends Controller
         $name = $StudentInformation->first_name.' '.$StudentInformation->last_name;
                 
         $Approve = TransactionMonthPaid::where('id', $request->id)->first();
-        if($request->incoming_bal)
+        if($request->incoming_bal != '')
         {
             if ($Approve)
             {
@@ -315,7 +315,7 @@ class StudentPaymentController extends Controller
                 return response()->json(['res_code' => 0, 'res_msg' => 'Student '.$name.' payment status successfully approved.']);
             }
         }
-        return response()->json(['res_code' => 1, 'res_msg' => 'Invalid request.']);
+        return response()->json(['res_code' => 1, 'res_msg' => 'Invalid request.'.$request->incoming_bal]);
     }
 
     public function disapprove(Request $request)
