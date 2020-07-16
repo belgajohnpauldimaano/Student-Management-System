@@ -165,10 +165,12 @@
                                                     ->where('school_year_id', $Modal_data->school_year_id)
                                                     ->where('isSuccess', 1)
                                                     ->where('approval', 'Approved')
-                                                    ->sum('payment');    
+                                                    ->sum('payment');  
+                                                    
+                                                $incoming_bal = (($sub_total - $discount) - $payment) - $Monthly_history->payment;
                                             ?>
-                                            <b>{{ number_format((($sub_total - $discount) - $payment) - $Monthly_history->payment, 2)}}</b>
-                                            <b>{{ $current_bal }}</b>
+                                            <b>{{ number_format($incoming_bal, 2)}}</b>
+                                            {{-- <b>{{ $current_bal }}</b> --}}
                                         </td>                                    
                                     </tr>
                                        
@@ -205,9 +207,10 @@
                         {{ $Monthly_history->approval ? $Monthly_history->approval =='Approved' ? 'Approved' : 'Not yet approved' : 'Not yet approved'}}
                     </span> --}}
                     <button class="btn btn-flat btn-{{ $Monthly_history->approval ? $Monthly_history->approval =='Approved' ? 'danger btn-disapprove' : 'success btn-approve' : 'danger btn-disapprove'}} pull-right"
-                         data-id="{{$Monthly_history->id}}">
+                         data-id="{{$Monthly_history->id}}" data-balance="{{$incoming_bal}}">
                         {{ $Monthly_history->approval ? $Monthly_history->approval =='Approved' ? 'Disapprove' : 'Approve' : 'Disapprove'}}
                     </button>
+                    
                 </div>     
             </div>    
             

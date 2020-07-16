@@ -62,9 +62,7 @@
 
                     $incoming_bal = (($data->tuition_amt + $data->misc_amt + $other) - $discount) - $payment - $data->payment;
                 ?>
-                <td>{{number_format($incoming_bal,2)}}
-                    
-                </td>
+                <td>{{number_format($incoming_bal,2)}}</td>
                 <td>
                     <span class="label {{ $data->approval ? $data->approval =='Approved' ? 'label-success' : 'label-danger' : 'label-danger'}}">
                     {{ $data->approval ? $data->approval =='Approved' ? 'Approved' : 'Not yet approved' : 'Not yet approved'}}

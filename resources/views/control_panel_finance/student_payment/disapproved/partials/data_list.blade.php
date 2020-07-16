@@ -51,7 +51,16 @@
                     {{number_format(($data->tuition_amt + $data->misc_amt + $other) - $discount, 2)}}
                 </td>
                 <td>{{number_format($data->payment,2)}}</td>
-                <td>{{number_format($data->balance,2)}}</td>
+                <?php 
+                    $payment = \App\TransactionMonthPaid::where('student_id', $data->student_id)
+                        ->where('school_year_id', $data->school_year_id)
+                        ->where('isSuccess', 1)
+                        ->where('approval', 'Approved')
+                        ->sum('payment');
+
+                    $incoming_bal = (($data->tuition_amt + $data->misc_amt + $other) - $discount) - $payment - $data->payment;
+                ?>
+                <td>{{number_format($incoming_bal,2)}}</td>
                 <td>
                     <span class="label label-danger">
                         Disapproved
