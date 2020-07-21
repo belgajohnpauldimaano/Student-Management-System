@@ -144,7 +144,7 @@
                             
                 <hr>
                 <div class="form-group" style="margin-top: 40px" align="right">                
-                    <button type="submit" id="js-btn-save" data-id='1' class="btn btn-primary btn-flat">
+                    <button type="submit" id="js-btn-save" data-id='1' class="js-btn-save btn btn-primary btn-flat">
                         <i class="fas fa-save"></i> Save
                     </button>
                     <button type="button" 

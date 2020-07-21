@@ -62,11 +62,13 @@
                 </div>
             </div>
             <div class="col-lg-5">
-                <div class="box box-danger box-solid" style="height: 20.2em">
+                <div class="box box-danger box-solid">
                     <div class="box-header">
                         <h3 class="box-title">Summary Bill for Invoice</h3>
                     </div>
                     <div class="box-body">
+                        <div class="transaction-success">
+                        </div>
                         <table class="table table-bordered table-invoice table-striped">
                             <tbody>
                                 <tr>                       
@@ -97,8 +99,8 @@
                             </tbody>                
                         </table>
                         
-                        <div class="form-group" align="right" style="margin-top: 20px">                
-                            <button type="submit" id="js-btn-save-monthly" data-id='1' class="btn btn-primary btn-flat">
+                        <div class="form-group" align="right">                
+                            <button type="submit" id="js-btn-save-monthly" data-id='1' class="js-btn-save btn btn-primary btn-flat">
                                 <i class="fas fa-save"></i> Save
                             </button>
                             <button type="button" 

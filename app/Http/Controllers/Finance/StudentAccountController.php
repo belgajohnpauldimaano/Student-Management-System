@@ -4,11 +4,15 @@ namespace App\Http\Controllers\Finance;
 
 use App\MiscFee;
 use App\OtherFee;
+use App\Enrollment;
 use App\GradeLevel;
 use App\SchoolYear;
 use App\TuitionFee;
+use App\ClassDetail;
 use App\DiscountFee;
 use App\Transaction;
+use App\DownpaymentFee;
+use App\IncomingStudent;
 use App\PaymentCategory;
 use App\StudentCategory;
 use App\StudentInformation;
@@ -18,6 +22,7 @@ use Illuminate\Http\Request;
 use App\TransactionMonthPaid;
 use App\Traits\hasNotYetApproved;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Crypt;
 
 class StudentAccountController extends Controller
 {
@@ -96,6 +101,11 @@ class StudentAccountController extends Controller
                     ->distinct()
                     ->get(['or_no']);
 
+                $HasTransactionDiscount = TransactionDiscount::where('student_id', $stud_id)
+                    ->where('school_year_id', $SchoolYear->id)
+                    ->where('isSuccess', 1)
+                    ->first();
+                
                 $TransactionDiscount = TransactionDiscount::where('student_id', $stud_id)
                     ->where('school_year_id', $SchoolYear->id)
                     ->where('isSuccess', 1)
@@ -113,6 +123,8 @@ class StudentAccountController extends Controller
                     ->where('isSuccess', 1)
                     ->get();
                 
+                $NotyetApprovedCount = $this->notYetApproved();
+                
                 if($Transaction){
                     $Transaction_disc = TransactionDiscount::with('discountFee')->where('or_no', $Transaction->or_number)
                     ->get(); 
@@ -126,12 +138,14 @@ class StudentAccountController extends Controller
                 ->first();
 
             $NotyetApprovedCount = $this->notYetApproved();
+            
 
             return view('control_panel_finance.student_payment_account.partials.data_list', 
             compact('StudentInformation','Profile','Gradelvl','Discount','OtherFee','SchoolYear','StudentCategory','PaymentCategory','Transaction'
                     ,'Stud_cat_payment','Payment','MiscFee_payment','Tuitionfee_payment','School_year_id','Transaction_disc','TransactionMonthPaid'
-                    ,'Account','TransactionOR','AccountOthers','NotyetApprovedCount'
-                    ));
+                    ,'Account','TransactionOR','AccountOthers','student_payment_category','Downpayment','grade_level_id', 'others','TransactionDiscount'
+                    ,'NotyetApprovedCount','HasTransactionDiscount'
+                ));
         }
 
         $Gradelvl = GradeLevel::where('current', 1)->where('status', 1)->get();
@@ -161,6 +175,8 @@ class StudentAccountController extends Controller
 
         $student_payment_category = PaymentCategory::with('misc_fee','tuition')
             ->where('grade_level_id',  $grade_level_id)->first();
+        
+            $NotyetApprovedCount = $this->notYetApproved();
 
         if($Transaction){
         
@@ -185,7 +201,22 @@ class StudentAccountController extends Controller
                 ->distinct()
                 ->get(['or_no']);    
                 
-            $NotyetApprovedCount = $this->notYetApproved();
+            $others = TransactionOtherFee::where('student_id', $stud_id)
+                ->where('transaction_id', $Transaction->id)
+                ->where('school_year_id', $SchoolYear->id)
+                ->where('isSuccess', 1)
+                ->get();
+
+            $HasTransactionDiscount = TransactionDiscount::where('student_id', $stud_id)
+                ->where('school_year_id', $SchoolYear->id)
+                ->where('isSuccess', 1)
+                ->first();
+
+            $TransactionDiscount = TransactionDiscount::where('student_id', $stud_id)
+                ->where('school_year_id', $SchoolYear->id)
+                ->where('isSuccess', 1)
+                ->get();
+
             
             $Account = TransactionMonthPaid::where('student_id', $stud_id)->first();   
 
@@ -201,8 +232,9 @@ class StudentAccountController extends Controller
         return view('control_panel_finance.student_payment_account.index', 
             compact('StudentInformation','Profile','Gradelvl','Discount','OtherFee','SchoolYear','StudentCategory','PaymentCategory','Transaction'
                     ,'Stud_cat_payment','Payment','MiscFee_payment','Tuitionfee_payment','School_year_id','Transaction_disc','TransactionMonthPaid'
-                    ,'Account','TransactionOR','AccountOthers','NotyetApprovedCount'
-                    ));
+                    ,'Account','TransactionOR','AccountOthers','Downpayment','student_payment_category','grade_level_id', 'others','TransactionDiscount'
+                    ,'NotyetApprovedCount','HasTransactionDiscount'
+                ));
     }
 
 
@@ -399,17 +431,21 @@ class StudentAccountController extends Controller
                 }
             }    
             
-            $total_balance = ($recent_balance->balance - $total_disc);
+            if($total_disc)
+            {
+                $total_balance = ($recent_balance->balance - $total_disc);
 
-            $Transaction_month_paid_balance = 
-                TransactionMonthPaid::where('id', $TransactionMonthsPaid->id)
-                ->first();
-
-            if($Transaction_month_paid_balance ){
-                $Transaction_month_paid_balance->balance = $total_balance;
-                $Transaction_month_paid_balance->isSuccess = 1;
-                $Transaction_month_paid_balance->save();
+                $Transaction_month_paid_balance = 
+                    TransactionMonthPaid::where('id', $TransactionMonthsPaid->id)
+                    ->first();
+    
+                if($Transaction_month_paid_balance ){
+                    $Transaction_month_paid_balance->balance = $total_balance;
+                    $Transaction_month_paid_balance->isSuccess = 1;
+                    $Transaction_month_paid_balance->save();
+                }
             }
+            
 
             if($request->email)
             {
@@ -524,6 +560,49 @@ class StudentAccountController extends Controller
     
         
                 // return view('profile', array('user' => Auth::user()) );        
+    }
+
+    public function modal_data_edit (Request $request) 
+    {
+        if ($request->id)
+        {
+            $School_year_id = SchoolYear::where('status', 1)
+                ->where('current', 1)->first();
+            
+            $TransactionMonthPaid = TransactionMonthPaid::where('id', $request->id)
+                ->first();
+
+        }
+         
+        return  view('control_panel_finance.student_payment_account.partials.student_with_account.modal_edit',
+             compact('TransactionMonthPaid'))->render(); 
+    }
+
+    public function update_data (Request $request) 
+    {
+        $rules = [
+            'balance' => 'required',
+            'payment' => 'required'           
+        ];
+
+        $Validator = \Validator($request->all(), $rules);
+
+        if ($Validator->fails())
+        {
+            return response()->json(['res_code' => 1, 'res_msg' => 'Please fill all required fields.', 'res_error_msg' => $Validator->getMessageBag()]);
+        }   
+        // update
+        if ($request->id)
+        {
+            $UpdateTransaction = TransactionMonthPaid::where('id', $request->id)->first();
+            $UpdateTransaction->balance = $request->balance;
+            $UpdateTransaction->payment = $request->payment;
+            $UpdateTransaction->save();
+
+            return response()->json(['res_code' => 0, 'res_msg' => 'Data successfully saved.']);
+        }
+        return response()->json(['res_code' => 1, 'res_msg' => 'Invalid request.']);
+        
     }
 
     // public function save_modal_account(Request $request){

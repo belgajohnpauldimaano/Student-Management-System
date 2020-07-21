@@ -4,13 +4,14 @@
     <table class="table table-bordered table-hover table-striped" style="margin-top: 20px">
         <thead class="thead-dark">
             <tr>
-                <th style="width: 15%">Transaction ID</th>
+                <th style="width: 10%">Transaction ID</th>
                 <th style="width: 15%">Payment Option</th>
                 <th style="width: 15%">OR Number</th>
                 <th style="width: 15%">Payment Fee</th>
                 <th style="width: 15%">Balance</th>
-                <th style="width: 15%">Remarks</th>
+                <th style="width: 10%">Remarks</th>
                 <th style="width: 15%">Date</th>
+                <th style="width: 15%">Action</th>
             </tr>
         </thead>
         @if($Account)
@@ -25,6 +26,11 @@
                         <span class="label label-{{ $item->approval == "Approved" ? 'success' : 'danger' }}">{{$item->approval}}</span>
                     </td>
                     <td>{{ date_format(date_create($item->created_at), 'F d, Y H:i:s') }}</td>
+                    <td>
+                        <a class="btn btn-sm btn-danger btn-transaction-edit" title="edit" data-id="{{ $item->id }}">
+                            <i class="far fa-edit"></i>
+                        </a>
+                    </td>
                 </tr>
             @endforeach
         @else

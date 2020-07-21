@@ -30,11 +30,11 @@
                         @if($AccountOthers)
                             @foreach ($TransactionOR  as $item)
                                 @foreach ($others as $key => $data)
-                                    <div class="col-md-12">
+                                    <div class="col-md-6">
                                         <div class="table table-bordered">
                                             <div class="box-header col-md-6">
                                                 <h3 class="box-title">
-                                                    Transaction id: <b>{{ $data->transaction_id }}</b>
+                                                    OR number: <b>{{ $data->or_no }}</b>
                                                 </h3>
                                                 <br>
                                                 <p>{{ date_format(date_create($item->created_at), 'F d, Y H:i:s') }}</p>
@@ -100,16 +100,22 @@
                                 <th  style="width: 15%">Discount Amount</th>
                                 <th  style="width: 15%">Date</th>
                             </tr>
-                        </thead>        
-                        @foreach ($TransactionDiscount as $item)
-                            <tr>
-                                <td>{{ $item->transaction_month_paid_id }}</td>
-                                <td></td>
-                                <td>{{ $item->discount_type }}</td>
-                                <td>{{ number_format($item->discount_amt, 2) }}</td>
-                                <td>{{ $item->created_at }}</td>
+                        </thead>       
+                        @if($HasTransactionDiscount) 
+                            @foreach ($TransactionDiscount as $item)
+                                <tr>
+                                    <td>{{ $item->transaction_month_paid_id }}</td>
+                                    <td></td>
+                                    <td>{{ $item->discount_type }}</td>
+                                    <td>{{ number_format($item->discount_amt, 2) }}</td>
+                                    <td>{{ $item->created_at }}</td>
+                                </tr>
+                            @endforeach
+                        @else
+                            <tr>                                
+                                <th colspan="5" style="text-align: center">No Discount History</td>
                             </tr>
-                        @endforeach
+                        @endif
                     </table>
                 </div>
                 
