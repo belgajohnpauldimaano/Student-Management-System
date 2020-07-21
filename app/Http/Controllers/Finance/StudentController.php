@@ -2,24 +2,27 @@
 
 namespace App\Http\Controllers\Finance;
 
-use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
-use App\StudentInformation;
-use App\GradeLevel;
-use App\DiscountFee;
-use App\OtherFee;
-use App\SchoolYear;
-use App\StudentCategory;
-use App\PaymentCategory;
-use App\Transaction;
-use App\TransactionOtherFee;
-use App\TransactionMonthPaid;
-use App\TuitionFee;
 use App\MiscFee;
+use App\OtherFee;
+use App\GradeLevel;
+use App\SchoolYear;
+use App\TuitionFee;
+use App\DiscountFee;
+use App\Transaction;
+use App\PaymentCategory;
+use App\StudentCategory;
+use App\StudentInformation;
 use App\TransactionDiscount;
+use App\TransactionOtherFee;
+use Illuminate\Http\Request;
+use App\TransactionMonthPaid;
+use App\Traits\hasNotYetApproved;
+use App\Http\Controllers\Controller;
 
 class StudentController extends Controller
 {
+    use hasNotYetApproved;
+    
     public function index (Request $request) 
     {
         $School_year_id = SchoolYear::where('status', 1)
@@ -43,9 +46,11 @@ class StudentController extends Controller
                 ->where('student_id', $request->id)
                 ->where('status', 1)->first();
             
+            $NotyetApprovedCount = $this->notYetApproved();
+
             // return json_encode(['student_info' => $StudentInformation]);
             return view('control_panel_finance.student_information.partials.data_list', 
-                compact('StudentInformation','Transaction','School_year_id'))->render();
+                compact('StudentInformation','Transaction','School_year_id','NotyetApprovedCount'))->render();
         }
         
         $StudentInformation = StudentInformation::with(['user', 'enrolled_class', 'transactions'])
@@ -58,9 +63,10 @@ class StudentController extends Controller
             ->where('student_id', $request->id)
             ->where('status', 1)->first();
 
+        $NotyetApprovedCount = $this->notYetApproved();
         // return json_encode(['student_info' => $StudentInformation]);
         return view('control_panel_finance.student_information.index', 
-            compact('StudentInformation','Transaction','School_year_id'));
+            compact('StudentInformation','Transaction','School_year_id','NotyetApprovedCount'));
     }
 
     public function modal_data (Request $request) 

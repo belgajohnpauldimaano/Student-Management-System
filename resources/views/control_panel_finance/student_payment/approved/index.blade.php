@@ -122,7 +122,7 @@
 @endsection
 
 @section ('content_title')
-    Student Payment
+    Student Payment/Approved
 @endsection
 
 @section ('content')
@@ -141,7 +141,7 @@
         <div class="box-body">
             
             <div class="js-data-container">
-                @include('control_panel_finance.student_payment.partials.data_list')       
+                @include('control_panel_finance.student_payment.approved.partials.data_list')       
             </div>
             
         </div>        
@@ -163,7 +163,7 @@
             formData.append('page', page);
             loader_overlay();
             $.ajax({
-                url : "{{ route('finance.student_payment') }}",
+                url : "{{ route('finance.student_payment.approved') }}",
                 type : 'POST',
                 data : formData,
                 processData : false,
@@ -273,7 +273,7 @@
                 var id = $(this).data('id');
                 var monthly_id = $(this).data('monthly_id');
                 $.ajax({
-                    url : "{{ route('finance.student_payment.modal') }}",
+                    url : "{{ route('finance.student_payment.modal_approved') }}",
                     type : 'POST',
                     data : { _token : '{{ csrf_token() }}', id : id , monthly_id : monthly_id},
                     success : function (res) {

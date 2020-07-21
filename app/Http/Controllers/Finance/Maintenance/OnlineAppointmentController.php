@@ -12,6 +12,7 @@ use App\OnlineAppointment;
 use App\StudentInformation;
 use Illuminate\Http\Request;
 use App\StudentTimeAppointment;
+use App\Traits\hasNotYetApproved;
 use Illuminate\Support\Facades\DB;
 use App\Mail\OnlineAppointmentMail;
 use App\Http\Controllers\Controller;
@@ -21,25 +22,28 @@ use App\Mail\NotifyDisapproveAppointmentMail;
 
 class OnlineAppointmentController extends Controller
 {
+    use hasNotYetApproved;
+    
     public function index(Request $request){
 
         if ($request->ajax())
         {
+            $NotyetApprovedCount = $this->notYetApproved();
             $OnlineAppointment = OnlineAppointment::where('status', 1)
                 ->where('date', 'like', '%'.$request->search.'%')
                 ->orderBY('date', 'ASC')
                 // 
                 ->paginate(10);
 
-            return view('control_panel_finance.maintenance.online_appointment.partials.data_list', compact('OnlineAppointment'))->render();
+            return view('control_panel_finance.maintenance.online_appointment.partials.data_list', compact('OnlineAppointment','NotyetApprovedCount'))->render();
         }
         
         $OnlineAppointment = OnlineAppointment::where('status', 1)
             ->orderBY('date', 'ASC')
             // 
             ->paginate(10);
-
-        return view('control_panel_finance.maintenance.online_appointment.index', compact('OnlineAppointment'));
+        $NotyetApprovedCount = $this->notYetApproved();
+        return view('control_panel_finance.maintenance.online_appointment.index', compact('OnlineAppointment','NotyetApprovedCount'));
     }
 
     public function modal_data (Request $request) 
@@ -339,12 +343,13 @@ class OnlineAppointmentController extends Controller
         // $SchoolYear = SchoolYear::where('current', 1)
         //     ->where('status', 1)
         //     ->first();      
+        $NotyetApprovedCount = $this->notYetApproved();
 
         $date_time = OnlineAppointment::where('status', 1)
             ->orderBY('date', 'ASC')
             ->get();
 
-        return view('control_panel_finance.online_appointment.index', compact('date_time'))->render();
+        return view('control_panel_finance.online_appointment.index', compact('date_time','NotyetApprovedCount'))->render();
     }
 
     public function show(Request $request){

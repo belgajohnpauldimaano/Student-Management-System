@@ -3,20 +3,24 @@
 namespace App\Http\Controllers\Finance\Maintenance;
 
 use Illuminate\Http\Request;
+use App\Traits\hasNotYetApproved;
 use App\Http\Controllers\Controller;
 
 class MiscelleneousFeeController extends Controller
 {
+    use hasNotYetApproved;
+
     public function index(Request $request)
     {
         if ($request->ajax())
         {
+            $NotyetApprovedCount = $this->notYetApproved();
             $MiscFee = \App\MiscFee::where('status', 1)->where('misc_amt', 'like', '%'.$request->search.'%')->paginate(10);
-            return view('control_panel_finance.maintenance.miscelleneous_fee.partials.data_list', compact('MiscFee'))->render();
+            return view('control_panel_finance.maintenance.miscelleneous_fee.partials.data_list', compact('MiscFee','NotyetApprovedCount'))->render();
         }
-        
+        $NotyetApprovedCount = $this->notYetApproved();
         $MiscFee = \App\MiscFee::where('status', 1)->paginate(10);
-        return view('control_panel_finance.maintenance.miscelleneous_fee.index', compact('MiscFee'));
+        return view('control_panel_finance.maintenance.miscelleneous_fee.index', compact('MiscFee','NotyetApprovedCount'));
     }
 
     public function modal_data (Request $request) 

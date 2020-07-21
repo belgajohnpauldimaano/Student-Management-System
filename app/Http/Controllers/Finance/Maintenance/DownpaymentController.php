@@ -5,25 +5,30 @@ namespace App\Http\Controllers\Finance\Maintenance;
 use App\GradeLevel;
 use App\DownpaymentFee;
 use Illuminate\Http\Request;
+use App\Traits\hasNotYetApproved;
 use App\Http\Controllers\Controller;
 
 class DownpaymentController extends Controller
 {
+    use hasNotYetApproved;
+    
     public function index(Request $request)
     {
         if ($request->ajax())
         {
+            $NotyetApprovedCount = $this->notYetApproved();
             $DownpaymentFee = DownpaymentFee::where('status', 1)->where('downpayment_amt', 'like', '%'.$request->search.'%')
                 ->orderBY('grade_level_id', 'ASC')
                 ->paginate(10);
-            return view('control_panel_finance.maintenance.downpayment.partials.data_list', compact('DownpaymentFee'))->render();
+            return view('control_panel_finance.maintenance.downpayment.partials.data_list', compact('DownpaymentFee','NotyetApprovedCount'))->render();
         }
         
+        $NotyetApprovedCount = $this->notYetApproved();
         $DownpaymentFee = DownpaymentFee::where('status', 1)
             ->orderBY('grade_level_id', 'ASC')
             ->paginate(10);
             
-        return view('control_panel_finance.maintenance.downpayment.index', compact('DownpaymentFee'));
+        return view('control_panel_finance.maintenance.downpayment.index', compact('DownpaymentFee','NotyetApprovedCount'));
     }
 
     public function modal_data (Request $request) 

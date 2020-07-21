@@ -8,13 +8,17 @@ use Barryvdh\DomPDF\PDF;
 use App\StudentInformation;
 use Illuminate\Http\Request;
 use App\TransactionMonthPaid;
+use App\Traits\hasNotYetApproved;
 use App\Http\Controllers\Controller;
 
 class FinanceSummaryController extends Controller
 {
+    use hasNotYetApproved;
+    
     public function index(Request $request)
     {
-       return view('control_panel_finance.payment_summary.index');
+        $NotyetApprovedCount = $this->notYetApproved();
+       return view('control_panel_finance.payment_summary.index', compact('NotyetApprovedCount'));
     }
     
     function fetch_record(Request $request)
