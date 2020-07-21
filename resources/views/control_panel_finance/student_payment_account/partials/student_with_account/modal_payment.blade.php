@@ -10,7 +10,7 @@
                 </div>
             </div>            
             
-            <div class="nav-tabs-custom"  style=" padding-left: 10px; padding-right: 10px">
+            <div class="nav-tabs-custom" style=" padding-left: 10px; padding-right: 10px">
                 <ul class="nav nav-tabs">
                     <li class="active">
                         <a href="#payment" data-toggle="tab">Payment</a>
@@ -21,9 +21,9 @@
                 </ul>
                 <div class="tab-content">
                     <div class="active tab-pane" id="payment">
-                        <div class="row">
-                            @include('control_panel_finance.student_payment_account.partials.student_with_account.data_payment')
-                        </div>
+                            <div class="row">
+                                @include('control_panel_finance.student_payment_account.partials.student_with_account.data_payment')
+                            </div>
                         </div>
                     </div>
                     
@@ -32,6 +32,7 @@
                     </div>
                 </div>
             </div>
+            
             
         </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->

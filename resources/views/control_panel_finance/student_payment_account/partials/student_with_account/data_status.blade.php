@@ -25,15 +25,16 @@
                 <h5>
                     <b>Downpayment Fee:</b>
                     <i style="color: red">
-                        {{number_format($Transaction->monthly_fee,2)}}
+                        {{number_format($Transaction->downpayment->downpayment_amt,2)}}
                     </i>
                 </h5>
                 <h5>
                     <b>Total Balance:</b>
                     <i style="color: red">
-                        {{number_format($Transaction->balance,2)}}
+                        {{number_format($TransactionMonthPaid[0]->balance,2)}}
                     </i>
-                    <input type="hidden" name="js_current_balance" id="js-current_balance" value="{{$Transaction->balance}}">
+                    <input type="hidden" name="js_current_balance" id="js-current_balance" 
+                        value="{{$TransactionMonthPaid[0]->balance}}">
                 </h5>
             </div>
         </div>                

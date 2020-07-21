@@ -3,16 +3,19 @@
     
     <div style="margin-botton: 100px">
         <button type="button" class="pull-right btn btn-flat btn-primary btn-md" data-id="{{ $StudentInformation->id }}" id="js-button-payment">
-            <i class="fas fa-money-bill-alt"></i> Payment
+            <i class="fas fa-plus"></i> Add Payment
         </button>
             
-        <div class="nav-tabs-custom"  style="box-shadow: 0 1px 1px 1px rgba(0,0,1,0.2); margin-top: 20px">
+        <div class="nav-tabs-custom"  style="; margin-top: 20px">
             <ul class="nav nav-tabs">
                 <li class="active">
-                    <a href="#history" data-toggle="tab">History</a>
+                    <a href="#history" data-toggle="tab">Transaction(s)</a>
                 </li>
                 <li>
-                    <a href="#others-history" data-toggle="tab">Others</a>
+                    <a href="#others-history" data-toggle="tab">Other(s)</a>
+                </li>
+                <li>
+                    <a href="#discount-history" data-toggle="tab">Discount(s)</a>
                 </li>
             </ul>
             <div class="tab-content">
@@ -26,12 +29,12 @@
                     <div class="row">
                         @if($AccountOthers)
                             @foreach ($TransactionOR  as $item)
-                                @foreach ($TransactionOthers = App\TransactionOtherFee::where('or_no', $item->or_no)->orderBY('id', 'DESC')->distinct()->get(['or_no']) as $key => $data)
+                                @foreach ($others as $key => $data)
                                     <div class="col-md-12">
-                                        <div class="box" style="box-shadow: 0 .5px .5px .5px rgba(0,0,1,0.2);">
+                                        <div class="table table-bordered">
                                             <div class="box-header col-md-6">
                                                 <h3 class="box-title">
-                                                    OR Number: <b>{{ $item->or_no }}</b>
+                                                    Transaction id: <b>{{ $data->transaction_id }}</b>
                                                 </h3>
                                                 <br>
                                                 <p>{{ date_format(date_create($item->created_at), 'F d, Y H:i:s') }}</p>
@@ -48,21 +51,23 @@
                                                     <tbody>
                                                         <tr>
                                                             <th style="width: 10px">#</th>
+                                                            <th>Transaction ID</th>
                                                             <th>Description</th>
                                                             <th>Qty</th>
                                                             <th>Price</th>
                                                             <th style="width: 40px">Status</th>
                                                         </tr>
                                                         @if($grade_level_id < 13)
-                                                            {{-- @foreach ($TransactionOthers = App\TransactionOtherFee::where('or_no', $item->or_no)->orderBY('id', 'DESC')->distinct()->get() as $key => $data)
+                                                            @foreach ($others as $key => $data)
                                                                 <tr>
                                                                     <td>{{$key+1}}.)</td>
+                                                                    <td>{{ $data->id }}</td>
                                                                     <td>{{$data->other->other_fee_name}}</td>
                                                                     <td>{{$data->others_fee_qty}}</td>
                                                                     <td>{{number_format($data->others_fee_price, 2)}}</td>
                                                                     <td><span class="label bg-green">Paid</span></td>
                                                                 </tr>
-                                                            @endforeach --}}
+                                                            @endforeach
                                                         @else
                                                             <option value="">The Grade level is over and not qualified.</option>
                                                         @endif
@@ -84,6 +89,29 @@
                     
                 </div>
 
+                <div class="tab-pane" id="discount-history">
+                    <h3>Discount History</h3>
+                    <table class="table table-bordered table-hover table-striped" style="margin-top: 20px">
+                        <thead>
+                            <tr>
+                                <th  style="width: 15%">Transaction ID</th>
+                                <th  style="width: 15%">OR Number</th>
+                                <th  style="width: 15%">Discount Type</th>
+                                <th  style="width: 15%">Discount Amount</th>
+                                <th  style="width: 15%">Date</th>
+                            </tr>
+                        </thead>        
+                        @foreach ($TransactionDiscount as $item)
+                            <tr>
+                                <td>{{ $item->transaction_month_paid_id }}</td>
+                                <td></td>
+                                <td>{{ $item->discount_type }}</td>
+                                <td>{{ number_format($item->discount_amt, 2) }}</td>
+                                <td>{{ $item->created_at }}</td>
+                            </tr>
+                        @endforeach
+                    </table>
+                </div>
                 
 
                 

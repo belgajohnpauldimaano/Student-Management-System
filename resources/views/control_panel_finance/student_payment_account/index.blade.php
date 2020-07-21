@@ -43,293 +43,250 @@
             });
         }
 
-        $('.select2').select2();
-        // var page = 1;
-        // get_data();
-        // function get_data(){
-        //     total = 0;
-        //     disc_total = 0;
-            tuition_total = 0;
-            misc_total = 0;
-        //     downpayment_total=0;
-        //     less_total = 0;
-        //     disc = [];
-        //     var str = "";                
-        //     $('#disc_amt').html("");
-            
-        //     function currencyFormat(num) {
-        //         return num.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')
-        //     }
-            
-            
+        $(function () {
+            total_fees();
 
-            $('#downpayment').keyup(function() {
-                function currencyFormat(num) {
-                    return num.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')
+            function currencyFormat(num) {
+                return num.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')
+            } 
+
+            downpayment_total = 0;
+            all_in = 0;
+            function total_fees(){
+                disc_total = 0;            
+                less_total = 0;            
+                total = 0;  
+                grandTotal = 0;
+                disc = [];
+                $('#disc_amt').html("");            
+
+                $('#or_number').keyup(function() {
+                    var or = $('#or_number').val();
+                    $('#or_num').text(or);
+                    $('.js-btn_print').data('or_num', or);
+                    $('#js-btn-save').data('or_num', or);
+                    // alert(or);
+                });     
+
+                $('input[name="discount[]"]:checked').each(function () {                
+                    disc.push({
+                        type: $(this).data('type'),
+                        fee: $(this).data('fee')
+                    });
+                });
+                $.each(disc, function (index, value) {                
+                    disc_total += parseFloat(value.fee);                
+                    $item = ''+ value.type +' '+ currencyFormat(value.fee) + '<br/>';
+                    $('#disc_amt').append($item);  
+                });       
+
+                if($('#downpayment').val() == ''){
+                    // $('#downpayment').text(0);
+                    document.getElementById('downpayment').value = (0);
                 }
-                $('#dp_enrollment').text(currencyFormat(parseFloat($('#downpayment').val())));
-                downpayment_total = parseFloat($('#downpayment').val());
-                total_fees();
-            });                           
-            
-            
-
-        //     $(".discountSelected").change(function () {
-                
-        //         $( ".discountSelected option:selected" ).each(function() {                
-        //             disc.push({
-        //                 type: $(this).data('type'),
-        //                 fee: $(this).data('fee')
-        //             });
-        //         });
-        //         $.each(disc, function (index, value) {
-        //             disc_total += parseFloat(value.fee);
-        //             $item = ''+ value.type +' '+ value.fee + '<br/>';
-        //             $('#disc_amt').append($item);
-        //         });
-                
-        //         total_fees();
-
-        //         less_total= disc_total + downpayment_total;
-        //         total = tuition_total + misc_total - less_total;
-        //         $('#total_balance').text(currencyFormat(total)); 
-        //     })
-        //     .change();
-
-        //     function total_fees(){
-        //         less_total= disc_total + downpayment_total;
-        //         total = tuition_total + misc_total - less_total;
-        //         $('#total_balance').text(currencyFormat(total));           
-        //     }
-            
-        //     current_balance();
-            
-        //     $('#or_number_payment').keyup(function() {
-        //         var or = $('#or_number_payment').val();
-        //         $('#js-or_num_payment').text(or);
-        //         $('.js-btn_print').data('or_num', or);
-        //         $('#js-btn-save-monthly').data('or_num', or);
-
-        //         // alert(or);
-        //     }); 
-
-        //     $('#payment_bill').keyup(function() {
-        //         function currencyFormat(num) {
-        //             return num.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')
-        //         }
-        //         $('#js-monthly_fee_payment').text(currencyFormat(parseFloat($('#payment_bill').val())));
-        //         // $('#js-monthly_fee_payment').text($('#payment').val());
-        //         current_balance();
-        //     });
-
-        //     $('.monthly_select').on('change', function() {
-        //         var mo = $('.monthly_select').val();
-        //         $('#js-month_payment').text(mo);
-        //     });
-
-        //     function current_balance(){
-        //         var bal = $('#js-current_balance').val()
-        //         var mo = $('#payment').val();
-        //         // $('#js-month_others').text(mo);
-        //         current_bal = bal - mo;
-        //         $('#js-current_bal').text(currencyFormat(current_bal));     
-        //     } 
-
-        //     $('.select2').select2();
-        // }
-
-        total_fees();
-
-        function currencyFormat(num) {
-            return num.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')
-        } 
-
-        downpayment_total = 0;
-        all_in = 0;
-        function total_fees(){
-            disc_total = 0;            
-            less_total = 0;            
-            total = 0;  
-            grandTotal = 0;
-            disc = [];
-            $('#disc_amt').html("");            
-
-            $('#or_number').keyup(function() {
-                var or = $('#or_number').val();
-                $('#or_num').text(or);
-                $('.js-btn_print').data('or_num', or);
-                $('#js-btn-save').data('or_num', or);
-                // alert(or);
-            });     
-
-            $('input[name="discount[]"]:checked').each(function () {                
-                disc.push({
-                    type: $(this).data('type'),
-                    fee: $(this).data('fee')
-                });
-            });
-            $.each(disc, function (index, value) {                
-                disc_total += parseFloat(value.fee);                
-                $item = ''+ value.type +' '+ currencyFormat(value.fee) + '<br/>';
-                $('#disc_amt').append($item);  
-            });       
-
-            if($('#downpayment').val() == ''){
-                // $('#downpayment').text(0);
-                document.getElementById('downpayment').value = (0);
             }
-        }
 
-        setPayment();
-        function setPayment(){
-            var dataid = $("#payment_category option:selected").attr('value');
-            // const dataid = $("#payment_category option:selected").attr('data-gradelvl');
-            var tuition = $("#payment_category option:selected").attr('data-tuition');
-            var misc = $("#payment_category option:selected").attr('data-misc');
-            var other = $("#payment_category option:selected").attr('data-other');
-            // alert(dataid);
-            $('#tuition_fee').text(currencyFormat(parseFloat(tuition)));
-            $('#misc_fee').text(currencyFormat(parseFloat(misc)));
-            $('#other_fee').text(currencyFormat(parseFloat(other)));
-
-            all_in = parseFloat(tuition) + parseFloat(misc) + parseFloat(other);
-            grand_total();
-        }
-
-        $('#payment_category').on('change', function() {
             setPayment();
-            // alert(total)
-        });
+            function setPayment(){
+                var dataid = $("#payment_category option:selected").attr('value');
+                // const dataid = $("#payment_category option:selected").attr('data-gradelvl');
+                var tuition = $("#payment_category option:selected").attr('data-tuition');
+                var misc = $("#payment_category option:selected").attr('data-misc');
+                var other = $("#payment_category option:selected").attr('data-other');
+                // alert(dataid);
+                $('#tuition_fee').text(currencyFormat(parseFloat(tuition)));
+                $('#misc_fee').text(currencyFormat(parseFloat(misc)));
+                $('#other_fee').text(currencyFormat(parseFloat(other)));
 
-        $(".downpaymentSelected").click(function (e) {
-            downpayment = [];
-            
-            $('input[name="downpayment1[]"]:checked').each(function () {                
-                downpayment.push({
-                    fee: $(this).data('fee')
-                });
-            });
-            $.each(downpayment, function (index, value) {                
-                downpayment_bank_fee = parseFloat(value.fee);
-                document.getElementById('payment').value = (downpayment_bank_fee);
-                $('#dp_enrollment').text(currencyFormat(parseFloat(downpayment_bank_fee)));
-                downpayment_total = downpayment_bank_fee; 
+                all_in = parseFloat(tuition) + parseFloat(misc) + parseFloat(other);
                 grand_total();
-            }); 
+            }
 
-        });
-
-        $('#payment').keyup(function() {
-            $('#dp_enrollment').text(currencyFormat(parseFloat($('#payment').val())));
-            downpayment_total = parseFloat($('#payment').val());            
-            grand_total();
-        });     
-        
-        $(".discountSelected").click(function (e) {
-            total_fees();    
-            grand_total();         
-        });
-        
-
-        function grand_total(){
-            less_total= disc_total + downpayment_total;
-            total = all_in - less_total;
-            $('#total_balance').text(currencyFormat(total));  
-        }
-
-       
-    
-
-        getOthers();
-
-        function getOthers()
-        {
-            // $('#item-qty-input').keyup(function() {
-            //     $('.item-qty').text($('#item-qty-input').val());
-            // });
-            $('.js-btnRemove').on('click', function(e){
-                e.preventDefault();
-                alert('remove');
+            $('#payment_category').on('change', function() {
+                setPayment();
+                // alert(total)
             });
 
-            $('#or_number_others').keyup(function() {
-                var or = $('#or_number_others').val();
-                $('#js-or_num_others').text(or);
-                $('.js-btn_print').data('or_num', or);
-                $('#js-btn-save').data('or_num', or);
-                // alert(or);
-            });
-
-            $('.js-btnAdd').on('click', function(){
+            $(".downpaymentSelected").click(function (e) {
+                downpayment = [];
                 
-                if($(this).closest('tr').find('.item-qty').val() == '' || $(this).closest('tr').find('.item-qty').val() < 0){
-                    alert('empty');
-                }else{
+                $('input[name="downpayment1[]"]:checked').each(function () {                
+                    downpayment.push({
+                        fee: $(this).data('fee')
+                    });
+                });
+                $.each(downpayment, function (index, value) {                
+                    downpayment_bank_fee = parseFloat(value.fee);
+                    document.getElementById('payment').value = (downpayment_bank_fee);
+                    $('#dp_enrollment').text(currencyFormat(parseFloat(downpayment_bank_fee)));
+                    downpayment_total = downpayment_bank_fee; 
+                    grand_total();
+                }); 
+
+            });
+
+            $('#payment').keyup(function() {
+                $('#dp_enrollment').text(currencyFormat(parseFloat($('#payment').val())));
+                downpayment_total = parseFloat($('#payment').val());            
+                grand_total();
+            });     
+            
+            $(".discountSelected").click(function (e) {
+                total_fees();    
+                grand_total();         
+            });
+            
+
+            function grand_total(){
+                less_total= disc_total + downpayment_total;
+                total = all_in - less_total;
+                $('#total_balance').text(currencyFormat(total));  
+            }
+
+
+            get_payment_monthly();
+            balance = 0;
+            function get_payment_monthly(){           
+                disc_total2 = 0;           
+                disc2 = [];
+
+                $('#js-discount_fee_payment').html("");           
+                
+                $('#or_number_payment').keyup(function() {
+                    var or = $('#or_number_payment').val();
+                    $('#js-or_num_payment').text(or);
+                    // $('.js-btn_print').data('or_num', or);
+                    // $('#js-btn-save-monthly').data('or_num', or);
+
+                    // alert(or);
+                }); 
+
+                $('.js-discount:checked').each(function () {                
+                    disc2.push({
+                        type: $(this).data('type'),
+                        fee: $(this).data('fee')
+                    });
+                });
+                $.each(disc2, function (index, value) {                
+                    disc_total2 += parseFloat(value.fee);                
+                    $item = ''+ value.type +' '+ currencyFormat(value.fee) + '<br/>';
+                    // alert($item)
+                    $('#js-discount_fee_payment').append($item);  
+                });  
+                
+
+                $('#payment_bill').keyup(function() {
+                    $('#js-monthly_fee_payment').text(currencyFormat(parseFloat($('#payment_bill').val())));
+                                    
+                    var current_bal = $('#js-current_balance').val();
+                    var payment_fee = $('#payment_bill').val();
                     
-                    function currencyFormat(num) {
-                        return num.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')
-                    }
+                    balance = (current_bal - parseFloat(payment_fee));
+                
+                    $('#js-current_bal').text(currencyFormat(balance));
+                    grand_total_2();
+                    // document.getElementById('total_bal').value = balance;
+                });       
+
+            }
+
+            function grand_total_2(){
+                less_total= balance - disc_total2;                
+                $('#js-current_bal').text(currencyFormat(less_total));  
+            }
+
+              
+
+           
+            getOthers();
+
+            function getOthers()
+            {
+                // $('#item-qty-input').keyup(function() {
+                //     $('.item-qty').text($('#item-qty-input').val());
+                // });
+                $('.js-btnRemove').on('click', function(e){
+                    e.preventDefault();
+                    alert('remove');
+                });
+
+                $('#or_number_others').keyup(function() {
                     var or = $('#or_number_others').val();
-                    var currentRow=$(this).closest("tr");
-                    var col1 = currentRow.find(".item-description").html();
-                    var col2 = $(this).closest('tr').find('.item-qty').val();
+                    $('#js-or_num_others').text(or);
+                    $('.js-btn_print').data('or_num', or);
+                    $('#js-btn-save').data('or_num', or);
+                    // alert(or);
+                });
 
-                    var price = currentRow.find(".item-price").html();
-                    var item_id = currentRow.find(".item-id").html();
+                $('.js-btnAdd').on('click', function(){
+                    
+                    if($(this).closest('tr').find('.item-qty').val() == '' || $(this).closest('tr').find('.item-qty').val() < 0){
+                        alert('empty');
+                    }else{
+                        
+                        function currencyFormat(num) {
+                            return num.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')
+                        }
+                        var or = $('#or_number_others').val();
+                        var currentRow=$(this).closest("tr");
+                        var col1 = currentRow.find(".item-description").html();
+                        var col2 = $(this).closest('tr').find('.item-qty').val();
 
-                    var total = (col2 * price);
+                        var price = currentRow.find(".item-price").html();
+                        var item_id = currentRow.find(".item-id").html();
 
-                    var id_qty = item_id+'.'+col2+'.'+price+'.'+total;
-                   
-                    var action = '<button id="btnremove" class="btn btn-sm btn-flat btn-danger js-btnRemove"><i class="far fa-trash-alt"></i></button>';                   
-                    var input_description = '<input type="hidden" name="id_qty[]" class="selected_description" value='+id_qty+'>';                    
-                    var row = $(this).closest("tr").html();
-                    $("#others_result tbody").append("<tr><td>" + col1 + "</td><td class='quantity' style='text-align: center'> " + col2 + "</td><td class='inputed_price' style='text-align: right'><span class='total_price' style='display:none'>" +total+ "</span>" + currencyFormat(total) + "</td><td  style='text-align: center'>"+action+" " +input_description+"</td></tr>");
+                        var total = (col2 * price);
+
+                        var id_qty = item_id+'.'+col2+'.'+price+'.'+col1;
+                    
+                        var action = '<button id="btnremove" class="btn btn-sm btn-flat btn-danger js-btnRemove"><i class="far fa-trash-alt"></i></button>';                   
+                        var input_description = '<input type="hidden" name="id_qty[]" class="selected_description" value='+id_qty+'>';                    
+                        var row = $(this).closest("tr").html();
+                        $("#others_result tbody").append("<tr><td>" + col1 + "</td><td class='quantity' style='text-align: center'> " + col2 + "</td><td class='inputed_price' style='text-align: right'><span class='total_price' style='display:none'>" +total+ "</span>" + currencyFormat(total) + "</td><td  style='text-align: center'>"+action+" " +input_description+"</td></tr>");
+                        
+                        $('table thead th').each(function(i) {
+                            calculateColumn(i);
+                        });
+                    }
+                    
+                });
+
+                
+                $('#others_result tbody').on('click', '#btnremove', function(e){                    
+                    
+                    $(this).closest('tr').remove()
                     
                     $('table thead th').each(function(i) {
                         calculateColumn(i);
                     });
-                }
-                
-            });
-
-            $('#others_result tbody').on('click', '#btnremove', function(e){
-                alertify.confirm('a callback will be invoked on cancel.').set('oncancel', function(closeEvent){ alertify.error('Cancel');} );
-                $(this).closest('tr').remove()
-                // alert('hello');
-                $('table thead th').each(function(i) {
-                    calculateColumn(i);
+                    
                 });
-            });
 
-            $("#others_item tr td").on("click", function() {
-                var row = $(this).closest("tr").html();
-                $("#table2").append("<tr>" + row + "</tr>");
-            });
+                $("#others_item tr td").on("click", function() {
+                    var row = $(this).closest("tr").html();
+                    $("#table2").append("<tr>" + row + "</tr>");
+                });
 
-            // $('.js-btnRemove').on("click", "#others_result tr td", function() {
-            //     $(this).parent().remove();
-            // });
-            
-        }
+                // $('.js-btnRemove').on("click", "#others_result tr td", function() {
+                //     $(this).parent().remove();
+                // });
+                
+            }
 
-        function calculateColumn(index) {
-             var total = 0;
-             $('table tr').each(function() {
-                 var value = parseInt($('.total_price', this).eq(index).text());
-                 if (!isNaN(value)) {
-                     total += value;
-                 }
-             });
-             function currencyFormat(num) {
-                 return num.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')
-             }
-             $('table tfoot #total').eq(index).text(currencyFormat(total));
-         }
-    
-
+            function calculateColumn(index) {
+                var total = 0;
+                $('table tr').each(function() {
+                    var value = parseInt($('.total_price', this).eq(index).text());
+                    if (!isNaN(value)) {
+                        total += value;
+                    }
+                });
+                function currencyFormat(num) {
+                    return num.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')
+                }
+                $('table tfoot #total').eq(index).text(currencyFormat(total));
+            }        
         
-        $(function () {
             $('body').on('click', '#js-button-payment', function (e) {
                 e.preventDefault();
                 var id = $(this).data('id');
@@ -344,8 +301,15 @@
                             //Date picker
                             $('#datepicker').datepicker({
                                 autoclose: true
-                            })  
-                            get_data();
+                            }); 
+
+                            get_payment_monthly();
+                            $(".js-discount").on("click", function () {
+                                get_payment_monthly();
+                                grand_total_2();
+                                // alert('herqer');
+                            }); 
+                            
                             getOthers();
                             
                             $(document).ready(function() {
@@ -626,9 +590,5 @@
                 }
             }
         });
-
-        
-
-        
     </script>
 @endsection

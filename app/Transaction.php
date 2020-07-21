@@ -56,7 +56,9 @@ class Transaction extends Model
     }
 
 
-    
+    public function downpayment(){
+        return $this->hasOne(DownpaymentFee::class, 'id','downpayment_id');
+    }
 }
 
 
