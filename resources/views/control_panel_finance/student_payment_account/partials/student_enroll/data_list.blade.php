@@ -8,6 +8,7 @@
             
             <div class="box-body">
                 
+                <input type="hidden" name="id" value="{{ $StudentInformation->id }}">
                 <div class="form-group">
                     <label for="">Email Address </label>
                     <input type="text" placeholder="email@address.com" class="form-control" name="email" id="email" value="{{ $StudentInformation ? $StudentInformation->email : ''}}">
