@@ -20,7 +20,7 @@
                                 <div class="form-group">
                                     <label for="">Payment Option</label>
                                     <input type="text" disabled class="form-control"  value="{{ $TransactionMonthPaid->payment_option }}">
-                                    <div class="help-block text-red text-center" id="js-or_number"></div>
+                                    <div class="help-block text-red text-center" id="js-payment_option"></div>
                                 </div>
                             </div>
 

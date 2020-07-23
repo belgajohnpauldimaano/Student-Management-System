@@ -287,7 +287,7 @@ class StudentAccountController extends Controller
             }
            
             $Enrollment->number = 'na';
-            $Enrollment->payment_option = 'Appointment';
+            $Enrollment->payment_option = 'Walk-in';
             $Enrollment->transaction_id = $Transaction->id;
             $Enrollment->approval = 'Approved';    
             $Enrollment->isSuccess = 0;    
@@ -403,7 +403,7 @@ class StudentAccountController extends Controller
             $TransactionMonthsPaid->email = $request->email ? $request->email : '';
             $TransactionMonthsPaid->balance = $total_bal;
             $TransactionMonthsPaid->number = 'NA';
-            $TransactionMonthsPaid->payment_option = 'Appointment';
+            $TransactionMonthsPaid->payment_option = 'Walk-in';
             $TransactionMonthsPaid->approval = 'Approved';
             $TransactionMonthsPaid->isSuccess = 1;
             $TransactionMonthsPaid->save();
@@ -631,24 +631,25 @@ class StudentAccountController extends Controller
                 $Transaction = Transaction::join('student_informations', 'student_informations.id', '=' ,'transactions.student_id')
                         ->join('school_years', 'school_years.id', '=' ,'transactions.school_year_id')
                         ->join('payment_categories', 'payment_categories.id', 'transactions.payment_category_id')
+                        ->join('transaction_month_paids', 'transaction_month_paids.transaction_id', 'transactions.id')
                         ->select(\DB::raw("
                             CONCAT(student_informations.last_name, ', ', student_informations.first_name, ' ', student_informations.middle_name) as student_name,
                             school_years.school_year,
-                            transactions.or_number,
-                            transactions.downpayment,
-                            transactions.monthly_fee,
-                            transactions.balance,
+                            transaction_month_paids.or_no,
+                            transaction_month_paids.id as transaction_month_paid_id,
+                            transaction_month_paids.payment,
                             transactions.payment_category_id,
-                            transactions.created_at
+                            transaction_month_paids.updated_at,
+                            transactions.id as transaction_id
                         "))
                         ->where('school_years.id', $request->syid)
                         ->where('student_informations.id', $request->studid)
-                        ->where('transactions.or_number', $request->or_num)
-                        ->where('transactions.status', 1)
+                        ->where('transaction_month_paids.or_no', $request->or_num)
+                        ->where('transaction_month_paids.isSuccess', 1)
                         ->first();
                     
                 if($Transaction){
-                    $Transaction_disc = TransactionDiscount::with('discountFee')->where('or_no', $Transaction->or_number)
+                    $Transaction_disc = TransactionDiscount::with('discountFee')->where('transaction_month_paid_id', $Transaction->transaction_month_paid_id)
                     ->get(); 
                 }     
                 else{
@@ -702,13 +703,13 @@ class StudentAccountController extends Controller
             }
         }
 
-        return view('control_panel_finance.student_information.partials.print_enrollment_bill',
+        return view('control_panel_finance.student_payment_account.partials.print_transaction',
                     compact('Transaction','PaymentCategory','Transaction_disc', 'stud_stats','TransactionMonthPaid','balance'));
 
-            $pdf = \PDF::loadView('control_panel_finance.student_information.partials.print_enrollment_bill', 
-                    compact('Transaction','PaymentCategory','Transaction_disc', 'stud_stats','TransactionMonthPaid','balance'));
-            $pdf->setPaper('Letter', 'portrait');
-            return $pdf->stream();
+        $pdf = \PDF::loadView('control_panel_finance.student_payment_account.partials.print_transaction', 
+                compact('Transaction','PaymentCategory','Transaction_disc', 'stud_stats','TransactionMonthPaid','balance'));
+        $pdf->setPaper('Letter', 'portrait');
+        return $pdf->stream();
     }
      
     public function history(){

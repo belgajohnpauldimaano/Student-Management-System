@@ -159,10 +159,12 @@
             autoclose: true
         }) 
 
-        var page = 1;
+        
         function currencyFormat(num) {
             return num.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')
         } 
+
+        
 
         function fetch_data (date_from = '', date_to = '') {
             $.ajax({
@@ -181,7 +183,13 @@
                     output += '<td style="width: 20%">' + data[count].created_at + '</td>';
                     output += '<td style="width: 30%">' + data[count].student_name + '</td>';
                     output += '<td style="width: 20%">' + data[count].student_level + '</td>';
-                    output += '<td style="width: 15%;text-align: right">' + currencyFormat(data[count].balance) + '</td>';
+                    
+                    if(data[count].balance == null){
+                        output += '<td style="width: 15%;text-align: right">' + data[count].balance + '</td>';
+                    }else{
+                        output += '<td style="width: 15%;text-align: right">' + currencyFormat(data[count].balance) + '</td>';
+                    }
+                    
                     output += '<td style="width: 15%;text-align: right">' + currencyFormat(data[count].payment) + '</td>';
                     output += '</tr>';
                     if (!isNaN(data[count].payment)) {

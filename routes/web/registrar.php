@@ -61,6 +61,8 @@ Route::group(['prefix' => 'incoming-student', 'middleware' => 'auth', 'roles' =>
     Route::post('approve', 'Registrar\IncomingStudentController@approve')->name('admission.incoming_student.approve');
     Route::post('disapprove', 'Registrar\IncomingStudentController@disapprove')->name('admission.incoming_student.disapprove');
     // Route::post('enroll-student', 'Registrar\IncomingStudentController@enroll_student')->name('registrar.incoming_student.enroll_student');
+
+    Route::get('/export_excel/excel', 'Registrar\IncomingStudentController@excel')->name('export_excel.excel.admission');
 });
 
 

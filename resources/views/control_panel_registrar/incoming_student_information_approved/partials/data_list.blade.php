@@ -1,4 +1,5 @@
 <div class="pull-right">
+    <a href="{{ route('export_excel.excel.admission') }}" class="btn btn-success"><i class="fas fa-file-excel"></i> Export to Excel</a>
     {{ $IncomingStudentApproved ? $IncomingStudentApproved->links() : '' }}
 </div>                             
 <table class="table no-margin table-bordered table-striped">

@@ -58,7 +58,7 @@
                 total = 0;  
                 grandTotal = 0;
                 disc = [];
-                $('#disc_amt').html("");            
+                $('#disc_amt').html("");           
 
                 $('#or_number').keyup(function() {
                     var or = $('#or_number').val();

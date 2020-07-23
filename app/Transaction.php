@@ -49,6 +49,11 @@ class Transaction extends Model
     {
         return $this->hasOne(TransactionOtherFee::class, 'transaction_id', 'id')->where('isSuccess', 1);
     }
+
+    public function otherfee() 
+    {
+        return $this->hasOne(TransactionOtherFee::class, 'other_fee_id', 'other_fee_id')->where('isSuccess', 1);
+    }
     
     public function disc_transaction_fee()
     {        

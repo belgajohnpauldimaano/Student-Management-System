@@ -1,4 +1,5 @@
 <div class="table-responsive">  
+    <a href="{{ route('export_excel.excel') }}" class="btn btn-success"><i class="fas fa-file-excel"></i> Export to Excel</a>
     <div class="pull-right">
         {{ $Approved ? $Approved->links() : '' }}
     </div>
