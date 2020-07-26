@@ -8,16 +8,16 @@
                 <th style="width: 15%">Payment Option</th>
                 <th style="width: 15%">OR Number</th>
                 <th style="width: 15%">Payment Fee</th>
-                <th style="width: 15%">Balance</th>
+                <th style="width: 10%">Balance</th>
                 <th style="width: 10%">Remarks</th>
                 <th style="width: 15%">Date</th>
-                <th style="width: 15%">Action</th>
+                <th style="width: 20%">Action</th>
             </tr>
         </thead>
         @if($Account)
             @foreach ($TransactionMonthPaid as $key => $item)
                 <tr>
-                    <td>{{ $item->id }}</td>
+                    <td>{{ $item->transaction_id }}</td>
                     <td>{{ $item->payment_option }}</td>
                     <td>{{ $item->or_no }}</td>
                     <td>{{ number_format($item->payment, 2)}}</td>
@@ -27,8 +27,15 @@
                     </td>
                     <td>{{ date_format(date_create($item->created_at), 'F d, Y H:i:s') }}</td>
                     <td>
-                        <a class="btn btn-sm btn-danger btn-transaction-edit" title="edit" data-id="{{ $item->id }}">
+                        <a class="btn btn-sm btn-primary btn-transaction-edit" title="edit" data-id="{{ $item->id }}">
                             <i class="far fa-edit"></i>
+                        </a>
+                        <a class="btn btn-sm btn-danger js-btn_print_transaction" title="print"
+                                data-syid="{{$item->school_year_id}}"
+                                data-studid="{{ $item->student_id }}"
+                                data-or_num="{{ $item->or_no }}
+                        ">
+                            <i class="fa fa-file-pdf"></i>
                         </a>
                     </td>
                 </tr>

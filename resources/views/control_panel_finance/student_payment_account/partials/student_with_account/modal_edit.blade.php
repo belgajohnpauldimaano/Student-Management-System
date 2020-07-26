@@ -27,7 +27,7 @@
                             <div class="col-md-12">
                                 <div class="form-group">
                                     <label for="">OR Number</label>
-                                    <input type="text" disabled placeholder="00000000000" class="form-control"  value="{{ $TransactionMonthPaid->or_no }}">
+                                    <input type="text" placeholder="00000000000" class="form-control" name="or_number" value="{{ $TransactionMonthPaid->or_no }}">
                                     <div class="help-block text-red text-center" id="js-or_number"></div>
                                 </div>
                             </div>

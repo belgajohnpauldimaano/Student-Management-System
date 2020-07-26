@@ -17,7 +17,7 @@
             width: 100%;
             border-spacing: 0;
             border-collapse: collapse;
-            font-size : 11px;
+            font-size : 12px;
         }
         .text-red {
             color : #dd4b39 !important;
@@ -98,6 +98,7 @@
         }
     </style>
 </head>
+
 <body>
     <h2 class="heading2 heading2-title">St. John's Academy Inc.</h2>
     <p class="heading2 heading2-subtitle">Dinalupihan, Bataan</p>
@@ -105,21 +106,22 @@
     <img style="margin-right: 3em; margin-top: {{  asset('img/sja-logo.png') }}" width="115" />
     <div>
 
+        
     <table class="table-student-info" style="margin-top: 15px; margin-bottom: 10px">
         <tr>
-            <td>Student name: <strong>{{ $Transaction->student_name }}</strong></td>
+            <td>Student name: <strong>{{ $TransactionOther[0]->student_name }}</strong></td>
             <td style="text-align: right">Date: {{  now()->toDateTimeString('Y-m-d') }}</td>
         </tr>
         <tr>
-            <td>School Year: <strong>{{ $Transaction->school_year }}</strong></td>
+            <td>School Year: <strong>{{ $TransactionOther[0]->school_year }}</strong></td>
             <td style="text-align: right">&nbsp;</td>
         </tr>
         <tr>
-            <td>Grade level: {{ $Transaction->payment_cat->grade_level_id }}</td>
+            <td>Grade level: {{ $TransactionOther[0]->transactions->payment_cat->grade_level_id }}</td>
             <td style="text-align: right">&nbsp;</td>
         </tr>
         <tr>
-            <td>OR Number: {{ $Transaction->or_no }}</td>
+            <td>OR Number: {{ $TransactionOther[0]->or_no }}</td>
             <td style="text-align: right">&nbsp;</td>
         </tr>
     </table>       
@@ -131,55 +133,30 @@
                 <thead>
                     <tr>
                         <th>Description</th>
+                        <th>Qty</th>
                         <th>Amount</th>
                     </tr>
                 </thead>
                 <tbody>  
+                    @foreach ($TransactionOther as $item)
                     <tr>
-                        <td>Date and Time:</td>
-                        <td style="text-align: right">{{  date_format(date_create($Transaction->updated_at), 'F d, Y h:i A') }}</td>                                 
+                        <td>{{ $item->other_name }}</td>
+                        <td style="text-align: center">{{ $item->item_qty }}</td>
+                        <td style="padding: 5px; text-align: right">{{ number_format($item->item_price, 2) }}</td>
                     </tr>
-                    <tr>
-                        <td>Tuition Fee</td>
-                        <td style="text-align: right">{{number_format($Transaction->payment_cat->tuition->tuition_amt, 2)}}</td>
-                    </tr>   
-                    <tr>
-                        <td>Misc Fee</td>
-                        <td style="text-align: right">{{number_format($Transaction->payment_cat->misc_fee->misc_amt, 2)}}</td>
-                    </tr>  
-                    <tr>
-                        <td>Other Fee</td>
-                        <td style="text-align: right">{{number_format($Transaction->payment_cat->other_fee->other_fee_amt, 2)}}</td>
-                    </tr> 
-                    @foreach ($Transaction_disc as $item)
-                    <tr>
-                        <td>Discount Type: {{ $item->discount_type }}</td>
-                        <td style="text-align: right"   >{{ number_format($item->discount_amt, 2) }}</td>
-                    </tr>
-                    @endforeach                    
-                    <tr>
-                        <td>Total Fees: </td>
-                        <td style="text-align: right"><b>{{ number_format($total , 2)}}</b></td> 
-                    </tr>
-                    <tr>
-                        <td>Payment: </td>
-                        <td style="text-align: right">{{ number_format($Transaction->payment , 2)}}</td> 
-                    </tr>
-                    <tr>
-                        <td>Balance: </td>
-                        <td style="text-align: right"><b>{{ number_format($Transaction->balance , 2)}}</b></td> 
-                    </tr>
-                    
-                                      
+                    @endforeach
+                                    
                 </tbody>
+                <tfoot>
+                    <tr style="text-align: right">
+                        <td colspan="3">Total: {{ number_format($total_price, 2) }}</td>
+                    </tr>    
+                </tfoot>
             </table>
             
         </div>
     </div>
-   
-<br>
-    {{-- {{ $PaymentCategory }} --}}
-    <br>
+
     
 </body>
 </html>

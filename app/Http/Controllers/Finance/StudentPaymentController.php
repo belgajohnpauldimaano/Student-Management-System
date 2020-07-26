@@ -400,28 +400,29 @@ class StudentPaymentController extends Controller
             foreach($Approved as $data)
             {
                 $approved_array[] = array(
-                    'Student Name'  => $data->student_name,
-                    'Student Level'   => $data->student_level,
-                    'Tuition Fee'    => number_format($data->tuition_amt,2),
-                    'Misc Fee'  => number_format($data->misc_amt,2),
-                    'Other Fee'  => number_format($other = TransactionOtherFee::where('student_id', $data->student_id)
-                        ->where('school_year_id', $data->school_year_id)
-                        ->where('transaction_id', $data->transaction_id)
-                        ->where('isSuccess', 1)
-                        ->sum('item_price'),2),
-                    'Disc Fee'  =>  number_format($discount = TransactionDiscount::where('student_id', $data->student_id)
-                        ->where('school_year_id', $data->school_year_id)
-                        ->where('isSuccess', 1)
-                        ->sum('discount_amt'),2),
-                    'Total Fee'  => number_format(($data->tuition_amt + $data->misc_amt + $other) - $discount, 2),
-                    'Payment'  => number_format($data->payment,2),
-                    'Balance'  => number_format($data->balance,2),
+                    'Student Name'      => $data->student_name,
+                    'Student Level'     => $data->student_level,
+                    'Tuition Fee'       => number_format($data->tuition_amt,2),
+                    'Misc Fee'          => number_format($data->misc_amt,2),
+                    'Other Fee'         => number_format($other = TransactionOtherFee::where('student_id', $data->student_id)
+                                                ->where('school_year_id', $data->school_year_id)
+                                                ->where('transaction_id', $data->transaction_id)
+                                                ->where('isSuccess', 1)
+                                                ->sum('item_price'),2),
+                    'Disc Fee'          =>  number_format($discount = TransactionDiscount::where('student_id', $data->student_id)
+                                                ->where('school_year_id', $data->school_year_id)
+                                                ->where('isSuccess', 1)
+                                                ->sum('discount_amt'),2),
+
+                    'Total Fee'         => number_format(($data->tuition_amt + $data->misc_amt + $other) - $discount, 2),
+                    'Payment'           => number_format($data->payment,2),
+                    'Balance'           => number_format($data->balance,2),
                 );
             }
             Excel::create('Student Data', function($excel) use ($approved_array){
                 $excel->setTitle('Student Data');
                 $excel->sheet('Student Data', function($sheet) use ($approved_array){
-                 $sheet->fromArray($approved_array, null, 'A1', false, false);
+                $sheet->fromArray($approved_array, null, 'A1', false, false);
                 });
                })->download('xlsx');
 

@@ -82,7 +82,20 @@
           <li><a href="{{ route('admin.registrar_information') }}"><i class="fa fa-info-circle fa-lg"></i>&nbsp;&nbsp;&nbsp; <span>Registrar Information</span></a></li>
           <li><a href="{{ route('admin.finance_information') }}"><i class="fa fa-info-circle fa-lg"></i>&nbsp;&nbsp;&nbsp; <span>Finance Information</span></a></li>
           <li><a href="{{ route('admin.student.information') }}"><i class="fa fa-info-circle fa-lg"></i>&nbsp;&nbsp;&nbsp; <span>Student Information</span></a></li>
-          <li><a href="{{ route('admission.incoming_student') }}"><i class="fas fa-users fa-lg"></i>&nbsp;&nbsp;&nbsp; <span>Incoming Student</span></a></li>
+          
+          <li>
+            <a href="#"><i class="fas fa-users fa-lg"></i>&nbsp;&nbsp;&nbsp; <span>Incoming Student</span>
+              <span class="{{$IncomingStudentCount == 0 ? '' : 'label label-danger'}} pull-right">
+                {{$IncomingStudentCount == 0 ? '' : $IncomingStudentCount}}
+              </span>
+            </a>
+            <ul class="treeview-menu menu-open" style="display: block">
+              {{--  Admin Menu  --}}
+                <li><a href="{{ route('admission.incoming_student')}}"><i class="fa fa-circle-o"></i>&nbsp;&nbsp;&nbsp; <span>Not yet Approved</span></a></li>
+                <li><a href="{{ route('admission.Approved')}}"><i class="fa fa-circle-o"></i>&nbsp;&nbsp;&nbsp; <span>Approved</span></a></li>
+                <li><a href="{{ route('admission.Disapproved')}}"><i class="fa fa-circle-o"></i>&nbsp;&nbsp;&nbsp; <span>Disapproved</span></a></li>
+              </ul>
+          </li>
           <li><a href="{{ route('registrar.class_details') }}"><i class="fa fa-list-alt  fa-lg"></i>&nbsp;&nbsp;&nbsp; <span>Class Lists</span></a></li>
           <li>
             <a href="#">
@@ -152,6 +165,7 @@
           </li>
         @endif
 
+        {{-- Admission --}}
         @if (Auth::user()->role == 7)
           <li>
             <a href="{{ route('admission.dashboard') }}">
@@ -200,11 +214,11 @@
         @endif
 
         {{-- Finance Menu --}}
-        @if (Auth::user()->role == 6)
+        @if (Auth::user()->role == 6 )
           <li><a href="{{ route('finance.dashboard') }}"><i class="fa fa-home fa-fw fa-lg"></i>&nbsp;&nbsp;&nbsp; <span>Dashboard</span></a></li>
-          <li><a href="{{ route('finance.student_account') }}"><i class="fas fa-pen-square fa-lg"></i>&nbsp;&nbsp;&nbsp; <span>Student Enrollment/Billing</span></a></li>
           {{-- <li><a href="{{ route('finance.student_account') }}"><i class="fas fa-pen-square fa-lg"></i>&nbsp;&nbsp;&nbsp; <span>Student Enrollment</span></a></li> --}}
           {{-- <li><a href="{{ route('finance.student_payment') }}">&nbsp;<i class="fas fa-clipboard-list fa-lg"></i>&nbsp;&nbsp;&nbsp; <span>Student Payment </i> --}}
+          <li><a href="{{ route('finance.student_account') }}"><i class="fas fa-pen-square fa-lg"></i>&nbsp;&nbsp;&nbsp; <span>Student Enrollment/Billing</span></a></li>
           <li>
             <a href="#"><i class="fas fa-clipboard-list fa-lg"></i>&nbsp;&nbsp;&nbsp; <span>Student Payment</span>
               
@@ -223,8 +237,7 @@
                 <li><a href="{{ route('finance.student_payment.disapproved')}}"><i class="fa fa-circle-o"></i>&nbsp;&nbsp;&nbsp; <span>Disapproved</span></a></li>
               </ul>
           </li>
-          {{-- <span class="label label-primary pull-right">{{$NotyetApprovedCount}}</span> --}}
-          </span></a></li>
+          {{-- </span></a></li> --}}
           <li><a href="{{ route('finance.student_acct') }}"> <i class="fa fa-info-circle fa-lg"></i>&nbsp;&nbsp;&nbsp; <span>Student Account</span></a></li>
           <li><a href="{{ route('finance.summary') }}"><i class="fa fa-info-circle fa-lg"></i>&nbsp;&nbsp;&nbsp; <span>Payment Summary</span></a></li>
           <li><a href="{{ route('finance.online_appointment.date_time') }}"><i class="far fa-calendar-check fa-lg"></i>&nbsp;&nbsp;&nbsp; <span>Online Appointment</span></a></li>

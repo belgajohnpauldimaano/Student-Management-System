@@ -28,58 +28,57 @@
                     
                     <div class="row">
                         @if($AccountOthers)
-                            @foreach ($TransactionOR  as $item)
-                                @foreach ($others as $key => $data)
-                                    <div class="col-md-6">
-                                        <div class="table table-bordered">
-                                            <div class="box-header col-md-6">
-                                                <h3 class="box-title">
-                                                    OR number: <b>{{ $data->or_no }}</b>
-                                                </h3>
-                                                <br>
-                                                <p>{{ date_format(date_create($item->created_at), 'F d, Y H:i:s') }}</p>
-                                                
-                                            </div>
-                                            <div class="col-md-6">
-                                                <button style="margin-top: 5px" type="button" class="btn btn-danger btn-flat js-btn_print pull-right" data-or="{{ $item->or_no }}">
-                                                    <i class="fa fa-file-pdf"></i> Print
-                                                </button>
-                                            </div>
-                                            <!-- /.box-header -->
-                                            <div class="box-body no-padding">
-                                                <table class="table table-striped">
-                                                    <tbody>
-                                                        <tr>
-                                                            <th style="width: 10px">#</th>
-                                                            <th>Transaction ID</th>
-                                                            <th>Description</th>
-                                                            <th>Qty</th>
-                                                            <th>Price</th>
-                                                            <th style="width: 40px">Status</th>
-                                                        </tr>
-                                                        @if($grade_level_id < 13)
-                                                            @foreach ($others as $key => $data)
-                                                                <tr>
-                                                                    <td>{{$key+1}}.)</td>
-                                                                    <td>{{ $data->id }}</td>
-                                                                    <td>{{$data->other->other_fee_name}}</td>
-                                                                    <td>{{$data->others_fee_qty}}</td>
-                                                                    <td>{{number_format($data->others_fee_price, 2)}}</td>
-                                                                    <td><span class="label bg-green">Paid</span></td>
-                                                                </tr>
-                                                            @endforeach
-                                                        @else
-                                                            <option value="">The Grade level is over and not qualified.</option>
-                                                        @endif
-                                                    </tbody>                                                
-                                                </table>
-                                                
-                                            </div>
-                                            <!-- /.box-body -->
-                                        </div>
-                                    </div>
-                                @endforeach                          
-                            @endforeach
+                            
+                            <!-- /.box-header -->
+                            <div class="box-body no-padding">
+                                <table class="table table-striped">
+                                    <tbody>
+                                        <tr>
+                                            <th style="width: 10px">#</th>
+                                            <th>Transaction ID</th>
+                                            <th>OR No.</th>
+                                            <th>Description</th>
+                                            <th>Qty</th>
+                                            <th>Price</th>
+                                            <th style="width: 40px">Status</th>
+                                            <th>Action</th>
+                                        </tr>
+                                        @if($grade_level_id < 13)
+                                            @foreach ($others as $key => $data)
+                                                <tr>
+                                                    <td>{{$key+1}}.)</td>
+                                                    <td>{{$data->transaction_id}}</td>
+                                                    <td>{{$data->or_no }}</td>
+                                                    <td>{{$data->other->other_fee_name}}</td>
+                                                    <td>{{$data->item_qty}}</td>
+                                                    <td>{{number_format($data->item_price, 2)}}</td>
+                                                    <td><span class="label bg-green">Paid</span></td>
+                                                    <td>
+                                                        <a class="btn btn-sm btn-danger js-btn_print_transaction pull-right" title="print"
+                                                            data-syid="{{ $data->school_year_id }}"
+                                                            data-studid="{{ $data->student_id }}"
+                                                            data-or_num="{{$data->or_no }}"
+                                                            data-id="{{ $data->id }}"
+                                                            style="margin-left: 5px"
+                                                        >
+                                                            <i class="fa fa-file-pdf"></i>
+                                                        </a>
+                                                       
+                                                        <a class="btn btn-sm btn-primary btn-other-edit pull-right" title="edit" data-id="{{ $data->id }}">
+                                                            <i class="far fa-edit"></i>
+                                                        </a>
+                                                    </td>
+                                                </tr>
+                                            @endforeach
+                                        @else
+                                            <option value="">The Grade level is over and not qualified.</option>
+                                        @endif
+                                    </tbody>                                                
+                                </table>
+                                
+                            </div>
+                            <!-- /.box-body -->
+                                        
                         @else
                         <div class="col-md-12">                            
                             <h5 style="text-align: center"><b>No payment history yet.</b></h5>                            
@@ -96,9 +95,10 @@
                             <tr>
                                 <th  style="width: 15%">Transaction ID</th>
                                 <th  style="width: 15%">OR Number</th>
-                                <th  style="width: 15%">Discount Type</th>
-                                <th  style="width: 15%">Discount Amount</th>
+                                <th  style="width: 13%">Discount Type</th>
+                                <th  style="width: 12%">Discount Amount</th>
                                 <th  style="width: 15%">Date</th>
+                                <th  style="width: 15%">Action</th>
                             </tr>
                         </thead>       
                         @if($HasTransactionDiscount) 
@@ -109,6 +109,18 @@
                                     <td>{{ $item->discount_type }}</td>
                                     <td>{{ number_format($item->discount_amt, 2) }}</td>
                                     <td>{{ $item->created_at }}</td>
+                                    <td>
+                                        <a class="btn btn-sm btn-primary btn-transaction-edit" title="edit" data-id="">
+                                            <i class="far fa-edit"></i>
+                                        </a>
+                                        <a class="btn btn-sm btn-danger js-btn_print_transaction" title="print"
+                                                data-syid=""
+                                                data-studid=""
+                                                data-or_num=""
+                                                >
+                                            <i class="fa fa-file-pdf"></i>
+                                        </a>
+                                    </td>
                                 </tr>
                             @endforeach
                         @else

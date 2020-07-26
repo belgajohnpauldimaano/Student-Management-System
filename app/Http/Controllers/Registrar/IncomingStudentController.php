@@ -360,19 +360,19 @@ class IncomingStudentController extends Controller
                 foreach($IncomingStudentApproved as $data)
                 {
                     $IncomingStudentApproved_array[] = array(
-                        'Student Name'  => $data->student_name,
-                        'Student type'   => $data->student_type == 1 ? 'Transferee' : 'Freshman',
-                        'Student Level'    =>$data->grade_level_id,
-                        'LRN' => $data->username,
-                        'Email address'  =>  $data->email,
-                        'Phone number'  =>  $data->contact_number,
-                        'Birthdate'  => date_format(date_create($data->birthdate), 'F d, Y'),
-                        'Current Address'  => $data->c_address,
-                        'Permanent Address'  => $data->p_address,
-                        'Gender'=> $data->gender == 1 ? 'Male':'Female',
-                        'Father name'=> $data->father_name,
-                        'Mother name'=> $data->mother_name,
-                        'Guardian'=> $data->guardian
+                        'Student Name'          => $data->student_name,
+                        'Student type'          => $data->student_type == 1 ? 'Transferee' : 'Freshman',
+                        'Student Level'         => $data->grade_level_id,
+                        'LRN'                   => $data->username,
+                        'Email address'         => $data->email,
+                        'Phone number'          => $data->contact_number,
+                        'Birthdate'             => date_format(date_create($data->birthdate), 'F d, Y'),
+                        'Current Address'       => $data->c_address,
+                        'Permanent Address'     => $data->p_address,
+                        'Gender'                => $data->gender == 1 ? 'Male':'Female',
+                        'Father name'           => $data->father_name,
+                        'Mother name'           => $data->mother_name,
+                        'Guardian'              => $data->guardian
                     );
                 }
                 Excel::create('Student Incoming List', function($excel) use ($IncomingStudentApproved_array){

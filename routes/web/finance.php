@@ -69,14 +69,20 @@ Route::group(['prefix' => 'finance', 'middleware' => ['auth', 'userroles'], 'rol
     Route::group(['prefix' => 'student-payment-account'], function (){
         Route::get('', 'Finance\StudentAccountController@index')->name('finance.student_payment_account');
         Route::post('', 'Finance\StudentAccountController@index')->name('finance.student_payment_account');
+
         Route::post('modal-data', 'Finance\StudentAccountController@modal_data')->name('finance.student_payment_account.modal');
         Route::post('modal-data-edit', 'Finance\StudentAccountController@modal_data_edit')->name('finance.student_payment_account.modal_edit');
+        Route::post('modal-data-others', 'Finance\StudentAccountController@modal_data_others')->name('finance.student_payment_account.modal_edit_others');
+
         Route::post('save-data', 'Finance\StudentAccountController@save_data')->name('finance.student_payment_account.save_data');
         Route::post('update-data', 'Finance\StudentAccountController@update_data')->name('finance.student_payment_account.update_data');
+        Route::post('update-other', 'Finance\StudentAccountController@update_data_other')->name('finance.student_payment_account.update_other');
+
         Route::post('save-data-others', 'Finance\StudentAccountController@save_others')->name('finance.student_payment_account.save_others');        
         Route::get('print-enrollment-bill', 'Finance\StudentAccountController@print_enrollment_bill')->name('finance.student_payment_account.print_enrollment_bill');
-    
         Route::get('print-enrollment-bill', 'Finance\StudentAccountController@print_enrollment_bill')->name('finance.print_enrollment_bill');
+
+        Route::get('print-other', 'Finance\StudentAccountController@print_other')->name('finance.student_payment_account.other');
     });
 
     Route::group(['prefix' => 'maintenance'], function () {

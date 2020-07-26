@@ -15,13 +15,7 @@
                         <input type="text" placeholder="00000000000" class="form-control" name="or_number_others" id="or_number_others" value="">
                         <div class="help-block text-red text-left" id="js-or_number_others"></div>
                     </div>
-        
-                    {{-- <label>Other(s)</label>
-                    <select class="form-control select2" name="others[]" multiple="multiple" data-placeholder="Select other(s)" style="width: 100%;">
-                        @foreach ($OtherFee as $otherfee)                                        
-                            <option value="{{ $otherfee->id }}">{{ $otherfee->other_fee_name }} {{ number_format($otherfee->other_fee_amt) }}</option>
-                        @endforeach
-                    </select> --}}
+
                     <table id="others_item" class="table table-striped table-bordered table-hover">
                         <thead>
                             <tr>
@@ -54,7 +48,9 @@
                 <div class="box-header">
                     <h3 class="box-title">Summary Bill for Invoice</h3>
                 </div>
-                <div class="box-body">      
+                <div class="box-body">   
+                        <div class="transaction-other-success">
+                        </div>   
                         <input type="hidden" name="id" value="{{ $StudentInformation->id }}">
                         <div>
                             <h5><b>OR Number:</b> <span id="js-or_num_others" style="text-align: right !important">00000000000000</span></h5>
@@ -83,7 +79,10 @@
                             <button type="submit" id="js-btn-others-save" data-id='1' class="btn btn-primary btn-flat">
                                 <i class="fas fa-save"></i> Save
                             </button>
-                            <button type="button" class="btn btn-danger btn-flat" id="js-btn_print" data-syid="{{$School_year_id->id}}" data-studid="{{ $StudentInformation->id }}">
+                            <button type="button" class="btn btn-danger btn-flat" id="js-btn_print_others"
+                                data-syid="{{$School_year_id->id}}"
+                                data-studid="{{ $StudentInformation->id }}"
+                            >
                                 <i class="fa fa-file-pdf"></i> Print
                             </button>
                         </div>  

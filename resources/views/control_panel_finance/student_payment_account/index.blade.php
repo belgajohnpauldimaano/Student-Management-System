@@ -44,6 +44,9 @@
         }
 
         $(function () {
+
+            
+            // not yet enroll
             total_fees();
 
             function currencyFormat(num) {
@@ -140,10 +143,11 @@
             function grand_total(){
                 less_total= disc_total + downpayment_total;
                 total = all_in - less_total;
-                $('#total_balance').text(currencyFormat(total));  
+                $('#total_balance').text(currencyFormat(total));
+                
             }
 
-
+            // with account
             get_payment_monthly();
             balance = 0;
             function get_payment_monthly(){           
@@ -155,6 +159,8 @@
                 $('#or_number_payment').keyup(function() {
                     var or = $('#or_number_payment').val();
                     $('#js-or_num_payment').text(or);
+                    $('.js-btn_print').data('or_num', or);
+                    $('.js-btn-save').data('or_num', or);
                     // $('.js-btn_print').data('or_num', or);
                     // $('#js-btn-save-monthly').data('or_num', or);
 
@@ -213,8 +219,8 @@
                 $('#or_number_others').keyup(function() {
                     var or = $('#or_number_others').val();
                     $('#js-or_num_others').text(or);
-                    $('.js-btn_print').data('or_num', or);
-                    $('#js-btn-save').data('or_num', or);
+                    // $('.js-btn_print').data('or_num', or);
+                    // $('#js-btn-save').data('or_num', or);
                     // alert(or);
                 });
 
@@ -273,6 +279,35 @@
                 
             }
 
+
+            $('body').on('click', '#js-btn_print_others', function (e) {
+                e.preventDefault();
+
+                var syid = $(this).data('syid');
+                var studid = $(this).data('studid');
+                var or_num = $('#or_number_others').val();
+
+                if(print_other == true){
+                    window.open("{{ route('finance.student_payment_account.other') }}?syid="+syid+"&studid="+studid+"&or_num="+or_num, '', 
+                                    'height=800,width=800'
+                                );
+                }else{
+                    error();
+                }
+            });
+
+            $('body').on('click', '.js-btn_print_transaction', function (e) {
+                e.preventDefault();
+
+                var id = $(this).data('id');
+
+                window.open("{{ route('finance.student_payment_account.other') }}?id="+id, '', 
+                                'height=800,width=800'
+                            );
+                
+            });
+            
+
             function calculateColumn(index) {
                 var total = 0;
                 $('table tr').each(function() {
@@ -311,6 +346,7 @@
                             }); 
 
                             btnSaveDisabled();
+                            displayDone();
                             
                             getOthers();
                             
@@ -332,6 +368,23 @@
                 var id = $(this).data('id');
                 $.ajax({
                     url : "{{ route('finance.student_payment_account.modal_edit') }}",
+                    type : 'POST',
+                    data : { _token : '{{ csrf_token() }}', id : id },
+                    success : function (res) {
+                        $('.js-modal_holder').html(res);
+                        $('.js-modal_holder .modal').modal({ backdrop : 'static' });
+                        $('.js-modal_holder .modal').on('shown.bs.modal', function () {
+                            
+                        });;
+                    }
+                });
+            });
+
+            $('body').on('click', '.btn-other-edit', function (e) {
+                e.preventDefault();
+                var id = $(this).data('id');
+                $.ajax({
+                    url : "{{ route('finance.student_payment_account.modal_edit_others') }}",
                     type : 'POST',
                     data : { _token : '{{ csrf_token() }}', id : id },
                     success : function (res) {
@@ -377,6 +430,39 @@
                 });
             });
 
+            $('body').on('submit', '#js-update_other', function (e) {
+                e.preventDefault();
+
+                var formData = new FormData($(this)[0]);
+                $.ajax({
+                    url         : "{{ route('finance.student_payment_account.update_other') }}",
+                    type        : 'POST',
+                    data        : formData,
+                    processData : false,
+                    contentType : false,
+                    success     : function (res) {
+                        $('.help-block').html('');
+                        if (res.res_code == 1)
+                        {
+                            for (var err in res.res_error_msg)
+                            {
+                                $('#js-' + err).html('<code> '+ res.res_error_msg[err] +' </code>');
+                            }
+                        }
+                        else
+                        {
+                            show_toast_alert({
+                                heading : 'Success',
+                                message : res.res_msg,
+                                type    : 'success'
+                            });
+
+                            fetch_data();
+                        }
+                    }
+                });
+            });
+
             $('body').on('click', '.btn-close', function (e) {
                 location.reload();
             })
@@ -404,11 +490,28 @@
             });
 
             function error(){
-                alertify.defaults.theme.ok = "btn btn-primary btn-flat";
-                alertify
-                .alert("Please save first before your print it.", function(){
-                    // alertify.message('OK');
+                alertify.defaults.theme.ok = "btn btn-primary btn-flat";                
+                alertify.defaults.theme.cancel = "btn btn-danger btn-flat";
+                alertify.confirm('<i style="color: red" class="fas fa-question-circle"></i> Warning', 
+                     'Please save first before your print it', function(){                     
+                         // location.reload();
+                     }, function(){  
                 });
+            }
+
+
+            $('body').on('click', '.js-btn_print_transaction', function (e) {
+                e.preventDefault();
+                var syid = $(this).data('syid');
+                var studid = $(this).data('studid');
+                var or_num = $(this).data('or_num');
+                var stud_status = 0;
+                print_transaction(syid, studid, or_num,stud_status);
+            });
+
+            function print_transaction(syid, studid, or_num,stud_status){
+                window.open("{{ route('finance.print_enrollment_bill') }}?syid="+syid+"&studid="+studid+"&or_num="+or_num+"&stud_status="+stud_status+"&balance="+balance, '', 
+                'height=800,width=800')
             }
 
             $('body').on('click', '.js-btn_print', function (e) {
@@ -432,7 +535,8 @@
                         error();
                     }
                     else{
-                        window.open("{{ route('finance.print_enrollment_bill') }}?syid="+syid+"&studid="+studid+"&or_num="+or_num+"&stud_status="+stud_status+"&balance="+balance, '', 'height=800,width=800')
+                        print_transaction(syid, studid, or_num,stud_status);
+                        // window.open("{{ route('finance.print_enrollment_bill') }}?syid="+syid+"&studid="+studid+"&or_num="+or_num+"&stud_status="+stud_status+"&balance="+balance, '', 'height=800,width=800')
                     }
                 }
                 else
@@ -479,59 +583,96 @@
             function btnSaveDisabled()
             {
                 if(disable==true){
-                    $('.js-btn-save').attr('disabled', true);   
+                    $('.js-btn-save').attr('disabled', true);
                 }                
             }
-            
+
+            function displayDone(){
+                if(disable==true){
+                    $('#js-btn-done').css('display', 'block');
+                    $('#js-btn-done').click(function(e){
+                        e.preventDefault();
+                        alertify.defaults.theme.ok = "btn btn-primary btn-flat";
+                        alertify.defaults.theme.cancel = "btn btn-danger btn-flat";
+                        alertify.confirm('<i style="color: #0069d9" class="fas fa-question-circle"></i> Confirmation', 
+                            'You can not print it if you click this done. Thank you', function(){                     
+                                location.reload();
+                            }, function(){  
+                        });
+                    })
+                }
+            }
+        
+
+            function totalNegativeError()
+            {
+                alertify.defaults.theme.ok = "btn btn-primary btn-flat";                
+                alertify.defaults.theme.cancel = "btn btn-danger btn-flat";
+                alertify.confirm('<i style="color: red" class="fas fa-exclamation-circle"></i> Warning', 
+                     'Please input the correct payment, please try again.', function(){                     
+                        
+                     }, function(){  
+                });
+            }
 
             $('body').on('submit', '#js-form_payment_transaction', function (e) {
                 e.preventDefault();
-                var formData = new FormData($(this)[0]);
-                $.ajax({
-                    url         : "{{ route('finance.student_payment_account.save_data') }}",
-                    type        : 'POST',
-                    data        : formData,
-                    processData : false,
-                    contentType : false,
-                    success     : function (res) {
-                        $('.help-block').html('');
-                        if (res.res_code == 1)
-                        {
-                            for (var err in res.res_error_msg)
+                if(total > 0 || less_total > 0)
+                {
+                    var formData = new FormData($(this)[0]);
+                    $.ajax({
+                        url         : "{{ route('finance.student_payment_account.save_data') }}",
+                        type        : 'POST',
+                        data        : formData,
+                        processData : false,
+                        contentType : false,
+                        success     : function (res) {
+                            $('.help-block').html('');
+                            
+                            if (res.res_code == 1)
                             {
-                                $('#js-' + err).html('<code> '+ res.res_error_msg[err] +' </code>');
+                                for (var err in res.res_error_msg)
+                                {
+                                    $('#js-' + err).html('<code> '+ res.res_error_msg[err] +' </code>');
+                                }
+                            }
+                            else
+                            {
+                                // $('.js-modal_holder .modal').modal('hide');
+                                show_toast_alert({
+                                    heading : 'Success',
+                                    message : res.res_msg,
+                                    type    : 'success'
+                                });
+
+                                $('.transaction-success').html(''+
+                                    '<div class="alert alert-success alert-dismissible">'+
+                                        '<button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>'+
+                                        '<h4><i class="icon fa fa-check"></i> Success!</h4>'+
+                                        'Transaction successfully submitted!'+
+                                    '</div>'                            
+                                +'');
+
+                                disable = true;
+                                btnSaveDisabled();
+                                displayDone();
+
+                                fetch_data();
                             }
                         }
-                        else
-                        {
-                            // $('.js-modal_holder .modal').modal('hide');
-                            show_toast_alert({
-                                heading : 'Success',
-                                message : res.res_msg,
-                                type    : 'success'
-                            });
-
-                            $('.transaction-success').html(''+
-                                '<div class="alert alert-success alert-dismissible">'+
-                                    '<button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>'+
-                                    '<h4><i class="icon fa fa-check"></i> Success!</h4>'+
-                                    'Transaction successfully submitted!'+
-                                '</div>'                            
-                            +'');
-
-                            disable = true;
-                            btnSaveDisabled();
-                           
-                            fetch_data();
-                        }
-                    }
-                });
+                    });
+                }
+                else
+                {
+                    totalNegativeError();
+                }
+                
             });
             
+            print_other = false;
 
             $('body').on('submit', '#js-others_item', function (e) {
-                e.preventDefault();
-                
+                e.preventDefault();                
                 
                 var formData = new FormData($(this)[0]);
                 $.ajax({
@@ -552,11 +693,21 @@
                         else
                         {
                             // $('.js-modal_holder .modal').modal('hide');
+                            print_other = true;
+
                             show_toast_alert({
                                 heading : 'Success',
                                 message : res.res_msg,
                                 type    : 'success'
                             });
+
+                            $('.transaction-other-success').html(''+
+                                    '<div class="alert alert-success alert-dismissible">'+
+                                        '<button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>'+
+                                        '<h4><i class="icon fa fa-check"></i> Success!</h4>'+
+                                        'Transaction successfully submitted!'+
+                                    '</div>'                            
+                                +'');
 
                             fetch_data();
                         }

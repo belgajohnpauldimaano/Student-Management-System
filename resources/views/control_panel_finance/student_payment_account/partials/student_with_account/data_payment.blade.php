@@ -98,19 +98,27 @@
                                 </tr>
                             </tbody>                
                         </table>
-                        
-                        <div class="form-group" align="right">                
-                            <button type="submit" id="js-btn-save-monthly" data-id='1' class="js-btn-save btn btn-primary btn-flat">
-                                <i class="fas fa-save"></i> Save
-                            </button>
-                            <button type="button" 
-                                    class="btn btn-danger btn-flat js-btn_print" 
-                                    data-syid="{{$School_year_id->id}}"
-                                    data-studid="{{ $StudentInformation->id }}"
-                            >
-                                <i class="fa fa-file-pdf"></i> Print
-                            </button>
-                        </div>                              
+                        <div class="form-group" style="margin-top: 40px" align="">   
+                            <div class="col-md-4" align="left"> 
+                                <button style="display: none" type="submit" id="js-btn-done" data-id='1' class="js-btn-done btn btn-success btn-flat">
+                                    <i class="fas fa-check"></i> Done
+                                </button> 
+                            </div> 
+                            
+                            <div  class="col-md-8" align="right">
+                                <button type="submit" id="js-btn-save-monthly" data-id='1' class="js-btn-save btn btn-primary btn-flat">
+                                    <i class="fas fa-save"></i> Save
+                                </button>
+                                <button type="button" 
+                                        class="btn btn-danger btn-flat js-btn_print" 
+                                        data-syid="{{$School_year_id->id}}"
+                                        data-studid="{{ $StudentInformation->id }}"
+                                >
+                                    <i class="fa fa-file-pdf"></i> Print
+                                </button>
+                            </div>  
+                        </div>
+                                   
                 </div>                        
             </div>
         </div>
