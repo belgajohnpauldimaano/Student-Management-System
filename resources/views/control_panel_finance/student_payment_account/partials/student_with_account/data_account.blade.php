@@ -54,7 +54,7 @@
                                                     <td>{{number_format($data->item_price, 2)}}</td>
                                                     <td><span class="label bg-green">Paid</span></td>
                                                     <td>
-                                                        <a class="btn btn-sm btn-danger js-btn_print_transaction pull-right" title="print"
+                                                        <a class="btn btn-sm btn-danger js-btn_print_other pull-right" title="print"
                                                             data-syid="{{ $data->school_year_id }}"
                                                             data-studid="{{ $data->student_id }}"
                                                             data-or_num="{{$data->or_no }}"

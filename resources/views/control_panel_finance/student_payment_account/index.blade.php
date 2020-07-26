@@ -296,7 +296,7 @@
                 }
             });
 
-            $('body').on('click', '.js-btn_print_transaction', function (e) {
+            $('body').on('click', '.js-btn_print_other', function (e) {
                 e.preventDefault();
 
                 var id = $(this).data('id');
