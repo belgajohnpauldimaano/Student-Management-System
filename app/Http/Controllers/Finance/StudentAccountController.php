@@ -71,7 +71,7 @@ class StudentAccountController extends Controller
                 ->get();
 
             $Transaction = Transaction::with('payment_cat')->where('student_id', $stud_id)
-                ->where('status', 1)->where('school_year_id', $SchoolYear->id )->first();
+                ->where('school_year_id', $SchoolYear->id )->first();
 
             $StudentInformation = StudentInformation::with(['user','transactions'])
                 ->where('id', $stud_id)
@@ -162,7 +162,6 @@ class StudentAccountController extends Controller
 
         $Transaction = Transaction::with('payment_cat')
             ->where('student_id', $stud_id)
-            ->where('status', 1)
             ->where('school_year_id', $SchoolYear->id)->first();
 
         $StudentInformation = StudentInformation::with(['user','transactions'])
@@ -482,27 +481,74 @@ class StudentAccountController extends Controller
         $Transaction = Transaction::where('school_year_id', $School_year_id)
             ->where('student_id', $stud_id)->first();
 
-        if(!empty($request->id_qty)){
+        
+            if(!empty($request->id_qty)){
             
-            foreach($request->id_qty as $get_data){
-                $data_description = explode(".", $get_data);      
-
-                $TransactionOtherFee = new TransactionOtherFee();               
-                $TransactionOtherFee->student_id = $stud_id;//ok
-                $TransactionOtherFee->transaction_id = $Transaction->id;
-                $TransactionOtherFee->or_no = $request->or_number_others;//ok
-                $TransactionOtherFee->others_fee_id = $data_description[0];//ok
-                $TransactionOtherFee->item_qty = $data_description[1];//ok
-                $TransactionOtherFee->item_price = $data_description[2];
-                $TransactionOtherFee->other_name = $data_description[3];//ok
-                $TransactionOtherFee->school_year_id = $School_year_id;
-                $TransactionOtherFee->isSuccess = 1;
-                $TransactionOtherFee->save();
+                foreach($request->id_qty as $get_data){
+                    $data_description = explode(".", $get_data);      
+    
+                    $TransactionOtherFee = new TransactionOtherFee();               
+                    $TransactionOtherFee->student_id = $stud_id;//ok
+                    $TransactionOtherFee->transaction_id = $Transaction->id;
+                    $TransactionOtherFee->or_no = $request->or_number_others;//ok
+                    $TransactionOtherFee->others_fee_id = $data_description[0];//ok
+                    $TransactionOtherFee->item_qty = $data_description[1];//ok
+                    $TransactionOtherFee->item_price = $data_description[2];
+                    $TransactionOtherFee->other_name = $data_description[3];//ok
+                    $TransactionOtherFee->school_year_id = $School_year_id;
+                    $TransactionOtherFee->isSuccess = 1;
+                    $TransactionOtherFee->save();
+                }
+    
+                return response()->json(['res_code' => 0, 'res_msg' => 'Data successfully saved.']);
             }
+        
 
-            return response()->json(['res_code' => 0, 'res_msg' => 'Data successfully saved.']);
-        }
+        
+    }
 
+    public function save_discount(Request $request)
+    {
+        $School_year_id = SchoolYear::where('status', 1)
+            ->where('current', 1)->first()->id;
+
+        $stud_id = $request->student_id;
+
+        $rules = [
+            'discount' => 'required'                 
+        ];
+
+        $Validator = \Validator($request->all(), $rules);
+
+        if ($Validator->fails())
+        {
+            return response()->json(['res_code' => 1, 'res_msg' 
+                => 'Please fill all required fields.', 'res_error_msg' 
+                => $Validator->getMessageBag()]);
+        }   
+
+        $Transaction = Transaction::where('school_year_id', $School_year_id)
+            ->where('student_id', $stud_id)->first();
+
+        if(!empty($request->discount)){
+            foreach($request->discount as $get_data){
+    
+                $DiscountFee = DiscountFee::where('id', $get_data)
+                    ->where('current', 1)
+                    ->where('status', 1)
+                    ->first();
+    
+                $DiscountFeeSave = new TransactionDiscount();
+                $DiscountFeeSave->student_id = $stud_id;
+                $DiscountFeeSave->discount_type = $DiscountFee->disc_type;
+                $DiscountFeeSave->discount_amt = $DiscountFee->disc_amt;
+                $DiscountFeeSave->transaction_month_paid_id = $request->transaction_month_paid_id;
+                $DiscountFeeSave->school_year_id = $School_year_id;
+                $DiscountFeeSave->isSuccess = 1;
+                $DiscountFeeSave->save();
+            }
+        }    
+        return response()->json(['res_code' => 0, 'res_msg' => 'Data successfully saved.']);
         
     }
 
@@ -534,6 +580,11 @@ class StudentAccountController extends Controller
                 ->where('school_year_id', $SchoolYear->id)
                 ->where('approval', 'Approved')
                 ->orderBY('id', 'DESC')->get();
+
+            $TransactionDiscount = TransactionDiscount::where('student_id', $request->id)
+                ->where('school_year_id', $SchoolYear->id)
+                ->where('isSuccess', 1)
+                ->first();
             
         }
 
@@ -556,7 +607,7 @@ class StudentAccountController extends Controller
             compact(
                 'StudentInformation','Profile','Gradelvl','Discount','OtherFee','SchoolYear','StudentCategory',
                 'PaymentCategory','Transaction','School_year_id','Payment','MiscFee_payment','Tuitionfee_payment',
-                'Stud_cat_payment','Transaction_disc','TransactionMonthPaid'
+                'Stud_cat_payment','Transaction_disc','TransactionMonthPaid','TransactionDiscount'
                 ))->render(); 
     
         
@@ -593,6 +644,60 @@ class StudentAccountController extends Controller
          
         return  view('control_panel_finance.student_payment_account.partials.student_with_account.modal_others',
              compact('TransactionOthers'))->render(); 
+    }
+    
+    public function modal_data_discount(Request $request)
+    {
+        if($request->id){
+
+            $SchoolYear = SchoolYear::where('status', 1)
+            ->where('current', 1)->first();
+        
+            $DiscountFee = DiscountFee::where('current', 1)->where('status', 1)->where('apply_to', 1)->get();
+
+            $TransactionDiscount = TransactionDiscount::where('id', $request->id)->first();
+
+        }
+
+        return  view('control_panel_finance.student_payment_account.partials.student_with_account.modal_discount', 
+                compact('TransactionDiscount','DiscountFee','SchoolYear'))->render();  
+    }
+
+    public function update_data_discount (Request $request) 
+    {
+        $rules = [
+            'discount' => 'required'
+        ];
+
+        $Validator = \Validator($request->all(), $rules);
+
+        if ($Validator->fails())
+        {
+            return response()->json(['res_code' => 1, 'res_msg' => 'Please fill all required fields.', 'res_error_msg' => $Validator->getMessageBag()]);
+        }   
+        // update
+        if ($request->id)
+        {
+            
+            if(!empty($request->discount)){
+                foreach($request->discount as $get_data){
+
+                    $DiscountFee = DiscountFee::where('id', $get_data)
+                        ->where('current', 1)
+                        ->where('status', 1)
+                        ->first();                    
+
+                    $DiscountFeeUpdate = TransactionDiscount::where('id', $request->id)->first();
+                    $DiscountFeeUpdate->discount_type = $DiscountFee->disc_type;
+                    $DiscountFeeUpdate->discount_amt = $DiscountFee->disc_amt;
+                    $DiscountFeeUpdate->save();
+                }
+            }    
+
+            return response()->json(['res_code' => 0, 'res_msg' => 'Data successfully saved.']);
+        }
+        return response()->json(['res_code' => 1, 'res_msg' => 'Invalid request.']);
+        
     }
 
     public function update_data_other (Request $request) 
@@ -654,6 +759,8 @@ class StudentAccountController extends Controller
         return response()->json(['res_code' => 1, 'res_msg' => 'Invalid request.']);
         
     }
+
+    
 
     // public function save_modal_account(Request $request){
     //     // return 'save';

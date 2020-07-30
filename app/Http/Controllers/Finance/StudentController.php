@@ -91,28 +91,42 @@ class StudentController extends Controller
 
             $Transaction = Transaction::with('payment_cat')->where('student_id', $request->id)
                 ->where('status', 1)->first();
+
+            $TransactionMonthPaid = TransactionMonthPaid::where('transaction_id', $Transaction->id)
+                ->where('student_id', $request->id)
+                ->where('school_year_id', $SchoolYear->id)
+                ->where('isSuccess', 1)
+                ->where('approval', 'Approved')
+                ->first();
+            
+            $TransactionDiscount = TransactionDiscount::where('student_id', $request->id)
+                ->where('school_year_id', $SchoolYear->id)
+                ->where('isSuccess', 1)
+                ->first();
             
         }
 
         if(!$Transaction){
             return view('control_panel_finance.student_information.partials.modal_data', 
-                compact('StudentInformation','Profile','Gradelvl','Discount','OtherFee','SchoolYear','StudentCategory','PaymentCategory','Transaction','School_year_id'))->render();  
+                compact('StudentInformation','Profile','Gradelvl','Discount','OtherFee','SchoolYear','StudentCategory',
+                'PaymentCategory','Transaction','School_year_id','TransactionDiscount', 'TransactionMonthPaid'))->render();  
         }else{
             // existing account
-            $Payment =  \App\PaymentCategory::where('id', $Transaction->payment_category_id)->first();
-            $MiscFee_payment =  \App\MiscFee::where('id', $Payment->misc_fee_id)->first();
-            $Tuitionfee_payment =  \App\TuitionFee::where('id', $Payment->tuition_fee_id)->first();
-            $Stud_cat_payment =  \App\StudentCategory::where('id', $Payment->student_category_id)->first();
+            $Payment =  PaymentCategory::where('id', $Transaction->payment_category_id)->first();
+            $MiscFee_payment =  MiscFee::where('id', $Payment->misc_fee_id)->first();
+            $Tuitionfee_payment =  TuitionFee::where('id', $Payment->tuition_fee_id)->first();
+            $Stud_cat_payment =  StudentCategory::where('id', $Payment->student_category_id)->first();
             if($Transaction){
                 $Transaction_disc = TransactionDiscount::with('discountFee')->where('or_no', $Transaction->or_number)
-                ->get(); 
+                    ->get(); 
             }     
             else{
                 return "Save the transaction first!";
             }  
             return view('control_panel_finance.student_information.partials.modal_account',
                 compact('StudentInformation','Profile','Gradelvl','Discount','OtherFee','SchoolYear','StudentCategory',
-                'PaymentCategory','Transaction','School_year_id','Payment','MiscFee_payment','Tuitionfee_payment','Stud_cat_payment','Transaction_disc'))->render(); 
+                'PaymentCategory','Transaction','School_year_id','Payment','MiscFee_payment','Tuitionfee_payment','Stud_cat_payment','Transaction_disc'
+                ,'TransactionDiscount','TransactionMonthPaid'))->render(); 
         }
         
                 // return view('profile', array('user' => Auth::user()) );        

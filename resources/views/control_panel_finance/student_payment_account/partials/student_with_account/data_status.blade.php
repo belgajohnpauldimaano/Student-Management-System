@@ -1,6 +1,16 @@
 <div class="row">   
-    <div class="col-lg-12">                
+    <div class="col-lg-12">  
+        @if($Transaction->status == 1)
+            <button type="button" class="pull-right btn btn-flat btn-success btn-md" data-id="{{ $Transaction->status }}" id="js-button-paid">
+                <i class="fas fa-check"></i> Paid
+            </button>
+        @else
+            <button type="button" class="pull-right btn btn-flat btn-danger btn-md" data-id="{{ $Transaction->status }}" id="js-button-paid">
+                <i class="fas fa-check"></i> Unpaid
+            </button>
+        @endif              
         <h3 style="margin-bottom: 0em">Payment Account:</h3>
+       
         <div class="row">
             <div class="col-lg-6">
                 <h5>

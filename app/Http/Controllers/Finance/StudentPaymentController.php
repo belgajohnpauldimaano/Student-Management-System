@@ -386,7 +386,8 @@ class StudentPaymentController extends Controller
                 transaction_month_paids.id as transact_monthly_id,
                 student_informations.id AS student_id,
                 transaction_month_paids.transaction_id,
-                transactions.school_year_id
+                transactions.school_year_id,
+                transaction_month_paids.number
             ')
             ->where('transaction_month_paids.school_year_id', $SchoolYear->id)
             ->where('student_informations.status', 1)
@@ -395,13 +396,14 @@ class StudentPaymentController extends Controller
             ->orderBy('transaction_month_paids.id', 'DESC')
             ->get();
 
-            $approved_array[] = array('Student Name', 'Student Level', 'Tuition Fee', 'Misc Fee', 'Other Fee', 'Disc Fee' ,'Total Fees', 'Payment', 'Balance');
+            $approved_array[] = array('Student Name', 'Student Level', 'Phone Number', 'Tuition Fee', 'Misc Fee', 'Other Fee', 'Disc Fee' ,'Total Fees', 'Payment', 'Balance');
 
             foreach($Approved as $data)
             {
                 $approved_array[] = array(
                     'Student Name'      => $data->student_name,
                     'Student Level'     => $data->student_level,
+                    'Phone Number'      => $data->number,
                     'Tuition Fee'       => number_format($data->tuition_amt,2),
                     'Misc Fee'          => number_format($data->misc_amt,2),
                     'Other Fee'         => number_format($other = TransactionOtherFee::where('student_id', $data->student_id)

@@ -31,9 +31,9 @@
                             <i class="far fa-edit"></i>
                         </a>
                         <a class="btn btn-sm btn-danger js-btn_print_transaction" title="print"
-                                data-syid="{{$item->school_year_id}}"
-                                data-studid="{{ $item->student_id }}"
-                                data-or_num="{{ $item->or_no }}
+                            data-syid="{{$item->school_year_id}}"
+                            data-studid="{{ $item->student_id }}"
+                            data-or_num="{{ $item->or_no }}
                         ">
                             <i class="fa fa-file-pdf"></i>
                         </a>

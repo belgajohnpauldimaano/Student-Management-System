@@ -105,15 +105,18 @@
                             @foreach ($TransactionDiscount as $item)
                                 <tr>
                                     <td>{{ $item->transaction_month_paid_id }}</td>
-                                    <td></td>
+                                    <td>{{ $item->transactionMonth->or_no }}</td>
                                     <td>{{ $item->discount_type }}</td>
                                     <td>{{ number_format($item->discount_amt, 2) }}</td>
                                     <td>{{ $item->created_at }}</td>
                                     <td>
-                                        <a class="btn btn-sm btn-primary btn-transaction-edit" title="edit" data-id="">
+                                        {{-- <a class="btn btn-sm btn-primary btn-discount-add" title="add discount" data-id="">
+                                            <i class="fas fa-plus"></i>
+                                        </a> --}}
+                                        <a class="btn btn-sm btn-primary btn-discount-edit" title="edit" data-id="{{ $item->id }}">
                                             <i class="far fa-edit"></i>
                                         </a>
-                                        <a class="btn btn-sm btn-danger js-btn_print_transaction" title="print"
+                                        <a class="btn btn-sm btn-danger js-btn_print_discount" title="print"
                                                 data-syid=""
                                                 data-studid=""
                                                 data-or_num=""
