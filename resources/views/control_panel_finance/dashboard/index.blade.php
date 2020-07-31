@@ -30,6 +30,7 @@
             </div>
         </div>
     </div>
+
     <div class="col-sm-12 col-md-4">
         <div class="info-box bg-yellow">
             <span class="info-box-icon">
@@ -41,4 +42,8 @@
             </div>
         </div>
     </div>
+
+
+    
+
 @endsection
