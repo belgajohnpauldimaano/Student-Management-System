@@ -82,10 +82,13 @@ Route::group(['prefix' => 'finance', 'middleware' => ['auth', 'userroles'], 'rol
 
         Route::post('save-data-others', 'Finance\StudentAccountController@save_others')->name('finance.student_payment_account.save_others');       
         Route::post('save-data-discount', 'Finance\StudentAccountController@save_discount')->name('finance.student_payment_account.save_discount');         
+        
         Route::get('print-enrollment-bill', 'Finance\StudentAccountController@print_enrollment_bill')->name('finance.student_payment_account.print_enrollment_bill');
         Route::get('print-enrollment-bill', 'Finance\StudentAccountController@print_enrollment_bill')->name('finance.print_enrollment_bill');
-
         Route::get('print-other', 'Finance\StudentAccountController@print_other')->name('finance.student_payment_account.other');
+        Route::get('print-all-transaction', 'Finance\StudentAccountController@print_all_transaction')->name('finance.print_all_transaction');
+
+        Route::post('delete-data', 'Finance\StudentAccountController@data_delete')->name('finance.data_delete');
     });
 
     Route::group(['prefix' => 'maintenance'], function () {

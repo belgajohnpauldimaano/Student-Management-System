@@ -20,10 +20,9 @@ class DashboardController extends Controller
         $StudentInformation = StudentInformation::where('user_id', $User->id)
             ->first();
 
-        $SchoolYear = SchoolYear::where('status', 1)
+        $SchoolYear = SchoolYear::where('current', 1)
             ->where('status', 1)
-            ->first();        
-
+            ->first();  
 
         $AppointedCount = StudentTimeAppointment::with('appointment')
                 ->where('student_id', $StudentInformation->id)
@@ -46,14 +45,14 @@ class DashboardController extends Controller
 
         $AlreadyEnrolled = TransactionMonthPaid::where('student_id', $StudentInformation->id)
                 ->where('school_year_id', $SchoolYear->id)
-                // ->where('isSuccess', 1)
+                ->where('isSuccess', 1)
                 ->where('approval', 'Approved')
                 ->orderBy('id', 'Desc')
                 ->first();
 
         
         return view('control_panel_student.dashboard.index',
-            compact('StudentInformation','OnlineAppointment', 'Appointed','StudentInformation', 
+            compact('StudentInformation','OnlineAppointment', 'Appointed','StudentInformation', 'SchoolYear',
             'hasAppointment','AppointedCount','AlreadyEnrolled'));
     }
 

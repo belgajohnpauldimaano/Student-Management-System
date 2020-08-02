@@ -55,7 +55,9 @@ class FinanceSummaryController extends Controller
                         transaction_month_paids.created_at,
                         transaction_discounts.discount_amt
                     ')
-                    ->whereBetween('transaction_month_paids.created_at', array($request->date_from, $request->date_to))
+                    // ->whereBetween('transaction_month_paids.created_at', array($request->date_from, ))
+                    ->whereDate('transaction_month_paids.created_at','>=',$request->date_from)
+                    ->whereDate('transaction_month_paids.created_at','<=',$request->date_to)
                     ->where('transaction_month_paids.school_year_id', $SchoolYear->id)
                     ->where('student_informations.status', 1)
                     ->where('transaction_month_paids.isSuccess', 1)
@@ -101,7 +103,8 @@ class FinanceSummaryController extends Controller
                 transaction_month_paids.created_at,
                 transaction_discounts.discount_amt
             ')
-            ->whereBetween('transaction_month_paids.created_at', array($request->date_from, $request->date_to))
+            ->whereDate('transaction_month_paids.created_at','>=',$request->date_from)
+            ->whereDate('transaction_month_paids.created_at','<=',$request->date_to)
             ->where('transaction_month_paids.school_year_id', $SchoolYear->id)
             ->where('student_informations.status', 1)
             ->where('transaction_month_paids.isSuccess', 1)

@@ -6,8 +6,8 @@
             <i class="fas fa-plus"></i> Add Payment
         </button>
             
-        <div class="nav-tabs-custom"  style="; margin-top: 20px">
-            <ul class="nav nav-tabs">
+        <div class="nav-tabs-custom" id="transaction-history"  style="; margin-top: 20px">
+            <ul class="nav nav-tabs transaction-history">
                 <li class="active">
                     <a href="#history" data-toggle="tab">Transaction(s)</a>
                 </li>
@@ -31,7 +31,7 @@
                             
                             <!-- /.box-header -->
                             <div class="box-body no-padding">
-                                <table class="table table-striped">
+                                <table class="table table-striped table-bordered">
                                     <tbody>
                                         <tr>
                                             <th style="width: 10px">#</th>
@@ -41,7 +41,7 @@
                                             <th>Qty</th>
                                             <th>Price</th>
                                             <th style="width: 40px">Status</th>
-                                            <th>Action</th>
+                                            <th style="width:15%">Action</th>
                                         </tr>
                                         @if($grade_level_id < 13)
                                             @foreach ($others as $key => $data)
@@ -54,18 +54,21 @@
                                                     <td>{{number_format($data->item_price, 2)}}</td>
                                                     <td><span class="label bg-green">Paid</span></td>
                                                     <td>
-                                                        <a class="btn btn-sm btn-danger js-btn_print_other pull-right" title="print"
+                                                        <a class="btn btn-sm btn-primary btn-other-edit " title="edit" data-id="{{ $data->id }}">
+                                                            <i class="far fa-edit"></i>
+                                                        </a>
+
+                                                        <a class="btn btn-sm btn-success js-btn_print_other " title="print"
                                                             data-syid="{{ $data->school_year_id }}"
                                                             data-studid="{{ $data->student_id }}"
                                                             data-or_num="{{$data->or_no }}"
                                                             data-id="{{ $data->id }}"
-                                                            style="margin-left: 5px"
                                                         >
                                                             <i class="fa fa-file-pdf"></i>
                                                         </a>
-                                                       
-                                                        <a class="btn btn-sm btn-primary btn-other-edit pull-right" title="edit" data-id="{{ $data->id }}">
-                                                            <i class="far fa-edit"></i>
+
+                                                        <a class="btn btn-sm btn-danger btn-delete " title="delete" data-id="{{ $data->id }}"  data-category="other">
+                                                            <i class="far fa-trash-alt"></i>
                                                         </a>
                                                     </td>
                                                 </tr>
@@ -98,7 +101,7 @@
                                 <th  style="width: 13%">Discount Type</th>
                                 <th  style="width: 12%">Discount Amount</th>
                                 <th  style="width: 15%">Date</th>
-                                <th  style="width: 15%">Action</th>
+                                <th  style="width: 10%">Action</th>
                             </tr>
                         </thead>       
                         @if($HasTransactionDiscount) 
@@ -110,18 +113,12 @@
                                     <td>{{ number_format($item->discount_amt, 2) }}</td>
                                     <td>{{ $item->created_at }}</td>
                                     <td>
-                                        {{-- <a class="btn btn-sm btn-primary btn-discount-add" title="add discount" data-id="">
-                                            <i class="fas fa-plus"></i>
-                                        </a> --}}
                                         <a class="btn btn-sm btn-primary btn-discount-edit" title="edit" data-id="{{ $item->id }}">
                                             <i class="far fa-edit"></i>
                                         </a>
-                                        <a class="btn btn-sm btn-danger js-btn_print_discount" title="print"
-                                                data-syid=""
-                                                data-studid=""
-                                                data-or_num=""
-                                                >
-                                            <i class="fa fa-file-pdf"></i>
+                                        
+                                        <a class="btn btn-sm btn-danger btn-delete " title="delete" data-id="{{ $item->id }}" data-category="discount">
+                                            <i class="far fa-trash-alt"></i>
                                         </a>
                                     </td>
                                 </tr>
@@ -133,8 +130,6 @@
                         @endif
                     </table>
                 </div>
-                
-
                 
             </div>
         </div>

@@ -64,6 +64,10 @@ class Transaction extends Model
     public function downpayment(){
         return $this->hasOne(DownpaymentFee::class, 'id','downpayment_id');
     }
+
+    public function schoolyear(){
+        return $this->belongsTo(SchoolYear::class, 'school_year_id', 'id');
+    }
 }
 
 

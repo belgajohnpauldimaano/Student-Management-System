@@ -514,6 +514,7 @@
 
             $('body').on('click', '.btn-close', function (e) {
                 location.reload();
+                print_other = false;
             })
 
             $('body').on('click', '.js-button-payment', function (e) {
@@ -817,6 +818,7 @@
                 page = $(this).attr('href').split('=')[1];
                 fetch_data();
             });
+            
             $('body').on('click', '.js-btn_deactivate', function (e) {
                 e.preventDefault();
                 var id = $(this).data('id');
@@ -898,6 +900,77 @@
                     $('#img--user_photo').attr('src', '/assets/no_preview.png');
                 }
             }
+
+            transactionHistoryTableStorage();
+
+            function transactionHistoryTableStorage()
+            {
+                $('a[data-toggle="tab"]').click(function (e) {
+                    e.preventDefault();
+                    $(this).tab('show');
+                });
+
+                $('a[data-toggle="tab"]').on("shown.bs.tab", function (e) {
+                    var id = $(e.target).attr("href");
+                    localStorage.setItem('selectedTab', id)
+                });
+
+                var selectedTab = localStorage.getItem('selectedTab');
+
+                if (selectedTab != null) {
+                    $('a[data-toggle="tab"][href="' + selectedTab + '"]').tab('show');
+                }
+            }
+
+            $('body').on('click', '.btn-delete', function (e) {
+                e.preventDefault();
+                var id = $(this).data('id');
+                var category = $(this).data('category');
+                alertify.defaults.transition = "slide";
+                alertify.defaults.theme.ok = "btn btn-primary btn-flat";
+                alertify.defaults.theme.cancel = "btn btn-danger btn-flat";
+                alertify.confirm('Confirmation', 'Are you sure you want to delete the data that you have selected?', function(){  
+                    $.ajax({
+                        url         : "{{ route('finance.data_delete') }}",
+                        type        : 'POST',
+                        data        : { _token : '{{ csrf_token() }}', id : id , category : category},
+                        success     : function (res) {
+                            $('.help-block').html('');
+                            if (res.res_code == 1)
+                            {
+                                show_toast_alert({
+                                    heading : 'Error',
+                                    message : res.res_msg,
+                                    type    : 'error'
+                                });
+                            }
+                            else
+                            {
+                                show_toast_alert({
+                                    heading : 'Success',
+                                    message : res.res_msg,
+                                    type    : 'success'
+                                });
+                                $('.js-modal_holder .modal').modal('hide');
+                                location.reload();
+                            }
+                        }
+                    });
+                }, function(){  
+                });
+            });
+
+            $('body').on('click', '.js-btn_print_all_transaction', function (e) {
+                e.preventDefault();
+
+                var id = $(this).data('id');
+
+                window.open("{{ route('finance.print_all_transaction') }}?id="+id, '', 
+                                'height=800,width=800'
+                            );
+                
+            });
+            
         });
     </script>
 @endsection

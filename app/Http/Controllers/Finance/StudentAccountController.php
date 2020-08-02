@@ -11,17 +11,24 @@ use App\TuitionFee;
 use App\ClassDetail;
 use App\DiscountFee;
 use App\Transaction;
+use App\Mail\SendMail;
 use App\DownpaymentFee;
 use App\IncomingStudent;
 use App\PaymentCategory;
 use App\StudentCategory;
+use App\FinanceInformation;
 use App\StudentInformation;
 use App\TransactionDiscount;
 use App\TransactionOtherFee;
 use Illuminate\Http\Request;
+use App\Mail\NotifyAdminMail;
 use App\TransactionMonthPaid;
 use App\Traits\hasNotYetApproved;
+use App\Mail\SendManualFinanceMail;
+use App\Mail\sendManualStudentMail;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Crypt;
 
 class StudentAccountController extends Controller
@@ -356,6 +363,16 @@ class StudentAccountController extends Controller
             if($request->email)
             {
                 // this transaction will send to the customer
+                $payment = Transaction::find($Transaction->id);
+                try{
+                    \Mail::to($request->email)->send(new sendManualStudentMail($payment));
+                    \Mail::to('info@sja-bataan.com')->cc('finance@sja-bataan.com')->send(new SendManualFinanceMail($payment));
+                    // echo 'send';
+                }catch(\Exception $e){
+                    \Log::error($e->getMessage());
+                    // echo 'error';
+                    return response()->json(['res_code' => 1, 'res_msg' => 'Error Email not sent.']);
+                }
             }
             
             return response()->json(['res_code' => 0, 'res_msg' => 'Data successfully saved.']);
@@ -448,7 +465,16 @@ class StudentAccountController extends Controller
 
             if($request->email)
             {
-                // if meron
+                $payment = Transaction::find($Transaction->id);
+                try{
+                    \Mail::to($request->email)->send(new sendManualStudentMail($payment));
+                    \Mail::to('info@sja-bataan.com')->cc('finance@sja-bataan.com')->send(new SendManualFinanceMail($payment));
+                    // echo 'send';
+                }catch(\Exception $e){
+                    \Log::error($e->getMessage());
+                    // echo 'error';
+                    return response()->json(['res_code' => 1, 'res_msg' => 'Error Email not sent.']);
+                }
             }
             
             return response()->json([
@@ -761,18 +787,6 @@ class StudentAccountController extends Controller
     }
 
     
-
-    // public function save_modal_account(Request $request){
-    //     // return 'save';
-    //     $rules = [
-    //         'months' => 'required',
-    //         'or_number' => 'required',
-    //         'payment' => 'required',     
-    //     ];
-
-    //     $Validator = \Validator($request->all(), $rules);
-    //     return response()->json(['res_code' => 0, 'res_msg' => 'Data successfully saved.']);
-    // }
     
     public function print_enrollment_bill(Request $request){
 
@@ -942,6 +956,97 @@ class StudentAccountController extends Controller
         $pdf = \PDF::loadView('control_panel_finance.student_payment_account.partials.print_other_fee', compact('TransactionOther','total_price'));
         $pdf->setPaper('Letter', 'portrait');
         return $pdf->stream(); 
+    }
+
+    public function print_all_transaction(Request $request)
+    {
+        if ($request->id)
+        {
+            
+            $PreparedBy = FinanceInformation::where('user_id', Auth::user()->id)->first();
+            $fullname = $PreparedBy->first_name.' '.$PreparedBy->last_name;
+
+            $Modal_data = Transaction::where('id', $request->id)->first();
+            
+            $Discount = TransactionDiscount::where('student_id', $Modal_data->student_id)
+                ->where('school_year_id', $Modal_data->school_year_id)
+                ->where('isSuccess', 1)
+                ->sum('discount_amt');
+
+            $Discount_amt = TransactionDiscount::where('student_id', $Modal_data->student_id)
+                ->where('school_year_id', $Modal_data->school_year_id)
+                ->where('isSuccess', 1)
+                ->get();
+
+            
+            $other_fee = Transaction::join('transaction_other_fees', 'transaction_other_fees.transaction_id','=', 'transactions.id')
+                ->selectRaw('
+                    transactions.student_id,
+                    transactions.id as transactions_id,
+                    transaction_other_fees.item_price, 
+                    transaction_other_fees.other_name
+                ')
+                ->where('transactions.id', $request->id)
+                ->where('transaction_other_fees.isSuccess', 1)
+                ->first();
+            
+            $OtherFee = TransactionOtherFee::where('student_id', $Modal_data->student_id)
+                ->where('school_year_id', $Modal_data->school_year_id)
+                ->where('isSuccess', 1)
+                ->get();
+
+            $ItemPrice = TransactionOtherFee::where('student_id', $Modal_data->student_id)
+                ->where('school_year_id', $Modal_data->school_year_id)
+                ->where('isSuccess', 1)
+                ->sum('item_price');
+                
+            $other = 0;
+            if($other_fee){
+                $other = $other_fee->item_price;
+            }
+
+            $Mo_history = TransactionMonthPaid::where('transaction_id', $request->id)->where('isSuccess', 1)->get();
+
+            $total = ($Modal_data->payment_cat->tuition->tuition_amt + $Modal_data->payment_cat->misc_fee->misc_amt + $ItemPrice) - $Discount;
+        }
+        else
+        {
+            return 'invalid data sorry :(';
+        }
+
+        return view('control_panel_finance.student_payment_account.partials.print_all_transaction', 
+                        compact('Modal_data','Mo_history','other_fee','Discount','Discount_amt','total','other','fullname','ItemPrice','OtherFee'));
+
+        $pdf = \PDF::loadView('control_panel_finance.student_payment_account.partials.print_all_transaction', 
+                        compact('Modal_data','Mo_history','other_fee','Discount','Discount_amt','total','other','fullname','ItemPrice','OtherFee'));
+
+        $pdf->setPaper('Letter', 'portrait');
+        return $pdf->stream(); 
+    }
+
+    public function data_delete(Request $request){
+
+        if($request->category=="other"){
+            if ($request->id)
+            {
+                $DeleteTransactionOtherFee = TransactionOtherFee::where('id', $request->id)->first();
+                $DeleteTransactionOtherFee->isSuccess = 0;
+                $DeleteTransactionOtherFee->save();
+    
+                return response()->json(['res_code' => 0, 'res_msg' => 'Data successfully deleted.']);
+            }
+        }else{
+            if ($request->id)
+            {
+                $TransactionDiscount = TransactionDiscount::where('id', $request->id)->first();
+                $TransactionDiscount->isSuccess = 0;
+                $TransactionDiscount->save();
+    
+                return response()->json(['res_code' => 0, 'res_msg' => 'Data successfully deleted.']);
+            }
+        }
+
+        return response()->json(['res_code' => 1, 'res_msg' => 'Invalid request.']);
     }
      
     public function history(){
