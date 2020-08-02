@@ -14,6 +14,14 @@ class StudentsController extends Controller
     {
     	return view('pages.students.students_services');
     }
+    public function students_services_development()
+    {
+    	return view('pages.students.student_services.student_development');
+    }
+    public function students_services_academic()
+    {
+    	return view('pages.students.student_services.academic_support');
+    }
     public function publication()
     {
     	return view('pages.students.publication');

@@ -15,8 +15,20 @@
 		</div>
 	</div>
     <main id="main">
-		<div class="container">
-			<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Tempora consequatur non atque, dolorem iste numquam assumenda inventore vitae quod. Nisi porro praesentium consequuntur ad provident minus, accusamus odit aspernatur error.</p>
+		<div class="row">
+			<div class="col-md-8">
+				<div class="row mt-2">
+					<div class="col-md-12">
+						<img src="{{ asset('img/website/chart.jpg') }}" alt="" class="img-fluid">
+					</div>												
+				</div>
+			</div>
+			
+				<div class="col-md-4">
+					@include('pages.students.partials.sidebar')
+				</div>
+			
 		</div>
+		
     </main>
 @endsection

@@ -16,7 +16,13 @@
 	</div>
     <main id="main">
 		<div class="container">
-			<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Tempora consequatur non atque, dolorem iste numquam assumenda inventore vitae quod. Nisi porro praesentium consequuntur ad provident minus, accusamus odit aspernatur error.</p>
+			<p>
+				The <b>STUDENT HANDBOOK</b> contains information of parents and students, alike.
+				  Study it very carefully so that your stay at <b>ST. JOHN’S ACADEMY INC.</b>  
+				be both pleasant and productive. These policies, rules and regulations were formulated not to create restrictions and regulate conduct; more importantly, 
+				they should serve to guide us all smoothly along the road to learning and maturity as Christians and as Filipinos.
+				  This STUDENT HANDBOOK will guide us all towards a better education.
+			</p>
 		</div>
     </main>
 @endsection

@@ -18,7 +18,9 @@
 		<div class="container">
 			<div class="row">
 				<div class="col-md-8">
-					<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Tempora consequatur non atque, dolorem iste numquam assumenda inventore vitae quod. Nisi porro praesentium consequuntur ad provident minus, accusamus odit aspernatur error.</p>
+					<p>SJAI hones morally upright and academic competent students.</p>
+
+					<p>“A Johannine everyday, a leader tomorrow.”</p>
 				</div>
 				<div class="col-md-4">					
 						@include('pages.about.partials.sidebar')					

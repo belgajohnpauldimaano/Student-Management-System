@@ -16,7 +16,11 @@
 	</div>
     <main id="main">
 		<div class="container">
-			<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Tempora consequatur non atque, dolorem iste numquam assumenda inventore vitae quod. Nisi porro praesentium consequuntur ad provident minus, accusamus odit aspernatur error.</p>
+			<div class="row mb-5 " align="center">
+				<div class="col-md-12">
+					<img src="{{ asset('img/website/publication.jpg') }}" alt="" class="img-fluid">
+				</div>
+			</div>
 		</div>
     </main>
 @endsection

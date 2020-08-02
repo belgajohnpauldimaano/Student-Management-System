@@ -40,6 +40,11 @@ Route::get('/senior-high', 'AcademicController@senior_high')->name('senior_high'
 
 Route::get('/students-organizations', 'StudentsController@students_organizations')->name('students_organizations');
 Route::get('/students-services', 'StudentsController@students_services')->name('students_services');
+Route::get('/students-services-development', 'StudentsController@students_services_development')->name('students_services_development');
+Route::get('/students-services-academic', 'StudentsController@students_services_academic')->name('students_services_academic');
 Route::get('/publication', 'StudentsController@publication')->name('publication');
 Route::get('/students-council', 'StudentsController@students_council')->name('students_council');
 Route::get('/students-handbook', 'StudentsController@students_handbook')->name('students_handbook');
+
+// facilities
+Route::get('/facilities', 'FacilitiesController@facilities')->name('facilities');

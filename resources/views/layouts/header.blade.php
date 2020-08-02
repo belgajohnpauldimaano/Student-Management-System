@@ -55,29 +55,36 @@
                             <li><a href="{{ route('faculty_staff') }}">Faculty and Staff</a></li>
                         </ul>
                     </li>
-                    <li class="menu-has-children"><a href="#">Academic</a>
+                    {{-- <li class="menu-has-children"><a href="#">Academic</a>
                         <ul>
                             <li><a href="{{ route('junior_high') }}">Junior High</a></li>
                             <li><a href="{{ route('senior_high') }}">Senior High</a></li>
                         </ul>
-                    </li>
+                    </li> --}}
                     <li class="menu-has-children"><a href="#">Students</a>
                         <ul>
                             <li><a href="{{ route('students_organizations') }}">Students Organizations</a></li>
-                            <li><a href="{{ route('students_services') }}">Students Services</a></li>
+                            <li><a href="{{ route('students_services_academic') }}">Students Services</a></li>
                             <li><a href="{{ route('publication') }}">Publication</a></li>
                             <li><a href="{{ route('students_council') }}">Students Council</a></li>
                             <li><a href="{{ route('students_handbook') }}">Students Handbook</a></li>
                         </ul>
                     </li>
-                    <li class="menu-has-children"><a href="#">Alumni</a>
+                    {{-- <li class="menu-has-children"><a href="#">Facilities</a>
                         <ul>
                             <li><a href="#">Alumni Association</a></li>
                             <li><a href="#">Alumni Achievers</a></li>
                             <li><a href="#">Stay Connected</a></li>
-                            {{-- <li><a href="#">Transport & Diploma</a></li> --}}
                         </ul>
-                    </li>
+                    </li> --}}
+                    <li class="menu"><a href="{{ route('facilities') }}">Facilities</a></li>
+                    {{-- <li class="menu-has-children"><a href="#">Alumni</a>
+                        <ul>
+                            <li><a href="#">Alumni Association</a></li>
+                            <li><a href="#">Alumni Achievers</a></li>
+                            <li><a href="#">Stay Connected</a></li>
+                        </ul>
+                    </li> --}}
 
                     <li class="menu-has-children"><a href="#">FAQs</a>
                         <ul>
