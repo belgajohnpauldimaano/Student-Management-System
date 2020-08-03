@@ -85,9 +85,9 @@
           
           <li>
             <a href="#"><i class="fas fa-users fa-lg"></i>&nbsp;&nbsp;&nbsp; <span>Incoming Student</span>
-              <span class="{{$IncomingStudentCount == 0 ? '' : 'label label-danger'}} pull-right">
+              {{-- <span class="{{$IncomingStudentCount == 0 ? '' : 'label label-danger'}} pull-right">
                 {{$IncomingStudentCount == 0 ? '' : $IncomingStudentCount}}
-              </span>
+              </span> --}}
             </a>
             <ul class="treeview-menu menu-open" style="display: block">
               {{--  Admin Menu  --}}

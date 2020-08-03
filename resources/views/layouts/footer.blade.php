@@ -570,12 +570,12 @@
                 }
         }
         
-        $(window).on('load',function(){            
-			$('#js_reservation').modal({
-					backdrop: 'static',
-					keyboard: false
-			}, 'show');
-        }); 
+        // $(window).on('load',function(){            
+		// 	$('#js_reservation').modal({
+		// 			backdrop: 'static',
+		// 			keyboard: false
+		// 	}, 'show');
+        // }); 
 
         $grade7_list = "{{ asset('json/grade7_list.json') }}";
         $.getJSON($grade7_list, function(data){
