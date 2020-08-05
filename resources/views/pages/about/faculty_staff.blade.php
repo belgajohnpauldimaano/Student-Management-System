@@ -41,7 +41,7 @@
                             <img src="{{ asset('img/faculty/Gallardo-Jennielyn-R.jpg') }}" class="img-fluid" alt="">
                             <div class="member-info">
                                 <div class="member-info-content">
-                                    <h4>Jennielyn Gallardo</h4>
+                                    <h4>Jennielyn Gallardo Pm, RGC </h4>
                                     <span>Guidance Counselor</span>
                                 </div>
                             </div>
@@ -96,7 +96,7 @@
                             <img src="{{ asset('img/faculty/Pangilinan-Bernadette-S.jpg') }}" class="img-fluid" alt="">
                             <div class="member-info">
                                 <div class="member-info-content">
-                                    <h4>Bernadette Pangilinan</h4>
+                                    <h4>Bernadette Pangilinan RN, MAN</h4>
                                     <span>School Nurse</span>
                                 </div>
                             </div>
@@ -107,7 +107,7 @@
                             <img src="{{ asset('img/faculty/Tolentino-Jenelyn-E.jpg') }}" class="img-fluid" alt="">
                             <div class="member-info">
                                 <div class="member-info-content">
-                                    <h4>Jenelyn Tolentino</h4>
+                                    <h4>Jenelyn Tolentino, RL</h4>
                                     <span>Librarian</span>
                                 </div>
                             </div>
@@ -353,7 +353,7 @@
                             <img src="{{ asset('img/faculty/Miarflor-Marilou-M.jpg') }}" class="img-fluid" alt="">
                             <div class="member-info">
                                 <div class="member-info-content">
-                                    <h4>Marilou Miraflor</h4>
+                                    <h4>Marilou Miraflor, MAEd Mngt.</h4>
                                 </div>
                             </div>
                         </div>
@@ -443,7 +443,7 @@
                             <img src="{{ asset('img/faculty/Sobrevilla-Maribel-J.jpg') }}" class="img-fluid" alt="">
                             <div class="member-info">
                                 <div class="member-info-content">
-                                    <h4>Maribel Sobrevilla</h4>
+                                    <h4>Maribel Sobrevilla, MAEd Mngt.</h4>
                                 </div>
                             </div>
                         </div>

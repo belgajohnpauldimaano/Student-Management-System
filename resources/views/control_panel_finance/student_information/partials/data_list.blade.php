@@ -30,10 +30,10 @@
                                                             Not-Paid
                                                         </span> 
                                                     @endif
-                                                @else
+                                                {{-- @else
                                                     <span class="label label-danger">
                                                        Not-Paid
-                                                    </span>
+                                                    </span> --}}
                                                 @endif
                                             </td>
                                             <td>
