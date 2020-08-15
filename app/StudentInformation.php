@@ -20,6 +20,14 @@ class StudentInformation extends Model
     {
         return $this->hasOne(Transaction::class, 'id', 'student_id');
     }
+
+    public function finance_transaction ()
+    {
+        $School_year_id = SchoolYear::where('status', 1)
+            ->where('current', 1)->first()->id;
+
+        return $this->hasOne(Transaction::class, 'student_id', 'id')->where('school_year_id', $School_year_id);
+    }
     
     public function payment_cat() 
     {

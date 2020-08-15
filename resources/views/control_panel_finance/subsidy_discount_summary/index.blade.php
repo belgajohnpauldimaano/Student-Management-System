@@ -118,19 +118,31 @@
         top: 0px;
        
     }
+    
 </style>
 @endsection
 
 @section ('content_title')
-    Payment Summary
+    Subsidy/Discount Summary
 @endsection
 
 @section ('content')
     <div class="box">
+        {{-- <div class="box-header with-border">
+            <h3 class="box-title">Search</h3>
+            <form id="js-form_search">
+                {{ csrf_field() }}
+                <div id="js-form_search" class="form-group col-sm-12 col-md-3" style="padding-left:0;padding-right:0">
+                    <input type="text" class="form-control" name="search">
+                </div>                
+                <button type="submit" class="btn btn-flat btn-success">Search</button>
+            </form>
+        </div> --}}
         <div class="overlay hidden" id="js-loader-overlay"><i class="fa fa-refresh fa-spin"></i></div>
-        <div class="box-body">            
+        <div class="box-body">
+            
             <div class="js-data-container">
-                @include('control_panel_finance.payment_summary.partials.data_list')       
+                @include('control_panel_finance.subsidy_discount_summary.partials.data_list')       
             </div>
             
         </div>        
@@ -153,22 +165,21 @@
             return num.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')
         } 
 
-        
         var total = 0;
-        
-        function fetch_data (school_year, date_from, date_to) {
+        function fetch_data (date_from, date_to, category_type, school_year)  {
             loader_overlay();
+
             $.ajax({
-            url:"{{ route('finance.summary.fetch_record') }}",
+            url:"{{ route('finance.subsidy_discount.fetch_record') }}",
             method:"POST",
-            data:{ _token : '{{ csrf_token() }}', school_year : school_year, date_from : date_from,  date_to : date_to},
+            data:{ _token : '{{ csrf_token() }}', category_type : category_type, school_year : school_year, date_from : date_from,  date_to : date_to},
             dataType:"json",
             success:function(data)
             {
                 loader_overlay();
+                
                 var output = '';                
                 // $('#total_records').text(data.length);
-                
                 for(var count = 0; count < data.length; count++)
                 {
                     output += '<tr>';
@@ -177,29 +188,32 @@
                     output += '<td style="width: 30%">' + data[count].student_name + '</td>';
                     output += '<td style="width: 20%">' + data[count].student_level + '</td>';
                     
-                    if(data[count].balance == null){
-                        output += '<td style="width: 15%;text-align: right">' + data[count].balance + '</td>';
-                    }else{
-                        output += '<td style="width: 15%;text-align: right">' + currencyFormat(data[count].balance) + '</td>';
-                    }
+                    // if(data[count].balance == null){
+                    //     output += '<td style="width: 15%;text-align: right">' + data[count].balance + '</td>';
+                    // }else{
+                    //     output += '<td style="width: 15%;text-align: right">' + currencyFormat(data[count].balance) + '</td>';
+                    // }
                     
-                    output += '<td style="width: 15%;text-align: right">' + currencyFormat(data[count].payment) + '</td>';
+                    output += '<td style="width: 15%;text-align: right">' + currencyFormat(data[count].discount_amt) + '</td>';
                     output += '</tr>';
-                    if (!isNaN(data[count].payment)) {
-                        total += data[count].payment;                        
+                    if (!isNaN(data[count].discount_amt)) {
+                        total += data[count].discount_amt;                        
                     }
                 }
+
+                $('tbody').html(output);
+                $('tfoot').html(total_output);
+                var total_output = '';
                 if(data.length == ''){
-                    var total_output = '';
+                    // var total_output = '';
                     total_output +='<tr>';
-                    total_output +='<td style="text-align: center" colspan="6"><b>SORRY THERE IS NO DATA AVAILABLE</b> </td>';
+                    total_output +='<td style="text-align: center" colspan="5"><b>SORRY THERE IS NO DATA AVAILABLE</b> </td>';
                     total_output +='</tr>';
                     total_output +='</tr>';
                 }else{                
-                    var total_output = '';
                     total_output +='<tr>';
-                    total_output +='<td style="text-align: right" colspan="5"><b>Total:</b> </td>';
-                    total_output +='<td colspan="2" style="text-align: right">'+currencyFormat(total)+'</td>';
+                    total_output +='<td style="text-align: right" colspan="4"><b>Total:</b> </td>';
+                    total_output +='<td colspan="2" style="text-align: right"><b>'+currencyFormat(total)+'</b></td>';
                     total_output +='</tr>';
                     total_output +='</tr>';
                 }
@@ -213,9 +227,10 @@
         
         $('body').on('click', '#js-btn_print', function (e) {
             e.preventDefault()
-            const school_year = $('#school_year').val();
             const date_from = $('#date_from').val();
             const date_to = $('#date_to').val()
+            const category_type = $('#category_type').val();
+            const school_year = $('#school_year').val();
             if(total == 0){
                 alertify.defaults.theme.ok = "btn btn-primary btn-flat";                
                 alertify.defaults.theme.cancel = "btn btn-danger btn-flat";
@@ -227,58 +242,60 @@
             }
             else
             {
-                window.open("{{ route('finance.summary.print') }}?school_year="+school_year+"&total="+total+"&date_from="+date_from+"&date_to="+date_to, '', 'height=800,width=800')
+                window.open("{{ route('finance.subsidy_discount.print') }}?category_type="+category_type+"&total="+total+"&school_year="+school_year+"&date_from="+date_from+"&date_to="+date_to, '', 'height=800,width=800')
             }
-            
         })
 
         $('.btn-fetch_record').click(function(){
+            var category_type = $('#category_type').val();
             var school_year = $('#school_year').val();
             var date_from = $('#date_from').val();
             var date_to = $('#date_to').val();
-            if(school_year != 0 && date_from != '' &&  date_to != '')
+            if(category_type != 2 && school_year != 0 && date_from != '' &&  date_to != '')
             {
-                fetch_data(school_year, date_from, date_to);
+                fetch_data(date_from, date_to, category_type, school_year);
             }
             else
             {
-                school_year_cat();
-                check_date_from();
-                check_date_to();
+                checkDateFrom();
+                checkDateTo();
+                categoryFee();
+                schoolYear();
             }
         });
 
-        $('#school_year').focusin(function(){
-            school_year_cat();
-        })
-
         $('#date_from').focusin(function(){
-            check_date_from();
+            checkDateFrom();
         })
 
         $('#date_to').focusin(function(){
-            check_date_to();
+            checkDateTo();
         })
 
-        $('#school_year').change(function(){
-            school_year_cat();
-            total = 0;
+        $('#date_to').focusin(function(){
+            checkDateTo();
         })
 
-        $('#date_from').change(function(){
-            check_date_from();
-            total = 0;
+        $('#school_year').focusin(function(){
+            schoolYear();
+        })
+
+        $('#category_type').change(function(){
+            categoryFee();
         })
 
         $('#date_to').change(function(){
-            check_date_to();
-            total = 0;
+            checkDateTo();
         })
 
-        function school_year_cat(){
+        $('#date_from').change(function(){
+            checkDateFrom();
+        })
+
+        function schoolYear(){
             var school_year = $('#school_year').val();
             
-            if(school_year != 0){
+            if(school_year != ''){
                 $('.input-school_year').addClass('has-success');
                 $('.input-school_year').removeClass('has-error');
                 $('#js-school_year').css('color', 'green').text('');               
@@ -289,7 +306,21 @@
             }
         }
 
-        function check_date_from(){
+        function categoryFee(){
+            var category_type = $('#category_type').val();
+            
+            if(category_type != 2){
+                $('.input-category_type').addClass('has-success');
+                $('.input-category_type').removeClass('has-error');
+                $('#js-category_type').css('color', 'green').text('');               
+            }else{
+                $('.input-category_type').addClass('has-error');
+                $('.input-category_type').removeClass('has-success');
+                $('#js-category_type').css('color', 'red').text('You must select category.');
+            }
+        }
+
+        function checkDateFrom(){
             var date_from = $('#date_from').val();
             
             if(date_from != ''){
@@ -299,11 +330,11 @@
             }else{
                 $('.input-date_from').addClass('has-error');
                 $('.input-date_from').removeClass('has-success');
-                $('#js-date_from').css('color', 'red').text('You must select your date from.');
+                $('#js-date_from').css('color', 'red').text('You must be select your date from.');
             }
         }
 
-        function check_date_to(){
+        function checkDateTo(){
             var date_to = $('#date_to').val();
             
             if(date_to != ''){
@@ -313,7 +344,7 @@
             }else{
                 $('.input-date_to').addClass('has-error');
                 $('.input-date_to').removeClass('has-success');
-                $('#js-date_to').css('color', 'red').text('You must select your date to.');
+                $('#js-date_to').css('color', 'red').text('You must be select your date to.');
             }
         }
 

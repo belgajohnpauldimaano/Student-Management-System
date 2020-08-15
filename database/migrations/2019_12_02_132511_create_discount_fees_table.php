@@ -18,6 +18,7 @@ class CreateDiscountFeesTable extends Migration
             $table->string('disc_type', 191);
             $table->double('disc_amt', 191);
             $table->tinyInteger('apply_to');
+            $table->tinyInteger('category')->nullable();
             $table->tinyInteger('current')->default('1');
             $table->tinyInteger('status')->default('1');
             $table->timestamps();

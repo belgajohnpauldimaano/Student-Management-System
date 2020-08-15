@@ -47,6 +47,13 @@ Route::group(['prefix' => 'finance', 'middleware' => ['auth', 'userroles'], 'rol
         Route::get('print', 'Finance\FinanceSummaryController@print')->name('finance.summary.print');
     });
 
+    Route::group(['prefix' => 'summary-subsidy-discount'], function () {
+        Route::get('', 'Finance\SubsidyDiscountController@index')->name('finance.summary.subsidy_discount');
+        Route::post('', 'Finance\SubsidyDiscountController@index')->name('finance.summary.subsidy_discount');
+        Route::post('report-subsidy-summary', 'Finance\SubsidyDiscountController@fetch_record')->name('finance.subsidy_discount.fetch_record');
+        Route::get('print', 'Finance\SubsidyDiscountController@print')->name('finance.subsidy_discount.print');
+    });
+
     Route::group(['prefix' => 'online-appointment'], function () {        
         Route::get('', 'Finance\Maintenance\OnlineAppointmentController@date_time')->name('finance.online_appointment.date_time');
         Route::post('', 'Finance\Maintenance\OnlineAppointmentController@date_time')->name('finance.online_appointment.date_time');
@@ -127,6 +134,15 @@ Route::group(['prefix' => 'finance', 'middleware' => ['auth', 'userroles'], 'rol
             Route::post('save-data', 'Finance\Maintenance\DiscountFeeController@save_data')->name('finance.maintenance.disc_fee.save_data');
             Route::post('deactivate-data', 'Finance\Maintenance\DiscountFeeController@deactivate_data')->name('finance.maintenance.disc_fee.deactivate_data');
             Route::post('toggle-current-sy', 'Finance\Maintenance\DiscountFeeController@toggle_current_sy')->name('finance.maintenance.disc_fee.toggle_current_sy');
+        });
+
+        Route::group(['prefix' => 'subsidy-fee'], function () {
+            Route::get('', 'Finance\Maintenance\SubsidyFeeController@index')->name('finance.maintenance.subsidy');
+            Route::post('', 'Finance\Maintenance\SubsidyFeeController@index')->name('finance.maintenance.subsidy');
+            Route::post('modal-data', 'Finance\Maintenance\SubsidyFeeController@modal_data')->name('finance.maintenance.subsidy.modal_data');
+            Route::post('save-data', 'Finance\Maintenance\SubsidyFeeController@save_data')->name('finance.maintenance.subsidy.save_data');
+            Route::post('deactivate-data', 'Finance\Maintenance\SubsidyFeeController@deactivate_data')->name('finance.maintenance.subsidy.deactivate_data');
+            Route::post('toggle-current-sy', 'Finance\Maintenance\SubsidyFeeController@toggle_current_sy')->name('finance.maintenance.subsidy.toggle_current_sy');
         });
 
         Route::group(['prefix' => 'payment-category'], function () {

@@ -5,11 +5,13 @@ namespace App\Http\Controllers\Finance;
 use Carbon\Carbon;
 use App\SchoolYear;
 use Barryvdh\DomPDF\PDF;
+use App\FinanceInformation;
 use App\StudentInformation;
 use Illuminate\Http\Request;
 use App\TransactionMonthPaid;
 use App\Traits\hasNotYetApproved;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 
 class FinanceSummaryController extends Controller
 {
@@ -18,21 +20,20 @@ class FinanceSummaryController extends Controller
     public function index(Request $request)
     {
         $NotyetApprovedCount = $this->notYetApproved();
-       return view('control_panel_finance.payment_summary.index', compact('NotyetApprovedCount'));
+        $School_years = SchoolYear::where('status', 1)->get();
+        return view('control_panel_finance.payment_summary.index', compact('NotyetApprovedCount','School_years'));
     }
     
     function fetch_record(Request $request)
     {
         if($request->ajax())
         {
-            $SchoolYear = SchoolYear::where('current', 1)
-                ->where('status', 1)
-                ->first();  
+            // $SchoolYear = SchoolYear::where('current', 1)
+            //     ->where('status', 1)
+            //     ->first();  
 
-            if($request->date_from != '' && $request->date_to != '')
-            {                
-               
-
+            if($request->date_from != '' && $request->date_to != '' && $request->school_year != 0)
+            {      
                 $data = StudentInformation::join('transactions','transactions.student_id', '=' ,'student_informations.id')    
                     ->join('transaction_month_paids', 'transaction_month_paids.student_id', '=', 'student_informations.id')                                   
                     ->join('payment_categories', 'payment_categories.id', '=', 'transactions.payment_category_id')
@@ -58,7 +59,7 @@ class FinanceSummaryController extends Controller
                     // ->whereBetween('transaction_month_paids.created_at', array($request->date_from, ))
                     ->whereDate('transaction_month_paids.created_at','>=',$request->date_from)
                     ->whereDate('transaction_month_paids.created_at','<=',$request->date_to)
-                    ->where('transaction_month_paids.school_year_id', $SchoolYear->id)
+                    ->where('transaction_month_paids.school_year_id', $request->school_year)
                     ->where('student_informations.status', 1)
                     ->where('transaction_month_paids.isSuccess', 1)
                     ->where('transaction_month_paids.approval', 'Approved')
@@ -67,20 +68,16 @@ class FinanceSummaryController extends Controller
             }
             else
             {
-                $data = TransactionMonthPaid::where('approval', 'Approved')
-                    ->where('isSuccess', 1)
-                    ->get();
+                $data = 'Incorrect data!';                
             }
             echo json_encode($data);
+           
         }
     }
 
     public function print(Request $request) 
     {
-        $SchoolYear = SchoolYear::where('current', 1)
-            ->where('status', 1)
-            ->first();  
-
+        
         $data = StudentInformation::join('transactions','transactions.student_id', '=' ,'student_informations.id')    
             ->join('transaction_month_paids', 'transaction_month_paids.student_id', '=', 'student_informations.id')                                   
             ->join('payment_categories', 'payment_categories.id', '=', 'transactions.payment_category_id')
@@ -105,7 +102,7 @@ class FinanceSummaryController extends Controller
             ')
             ->whereDate('transaction_month_paids.created_at','>=',$request->date_from)
             ->whereDate('transaction_month_paids.created_at','<=',$request->date_to)
-            ->where('transaction_month_paids.school_year_id', $SchoolYear->id)
+            ->where('transaction_month_paids.school_year_id', $request->school_year)
             ->where('student_informations.status', 1)
             ->where('transaction_month_paids.isSuccess', 1)
             ->where('transaction_month_paids.approval', 'Approved')
@@ -113,12 +110,14 @@ class FinanceSummaryController extends Controller
             ->get();
 
         
-        $dataSum = TransactionMonthPaid::where('approval', 'Approved')
-            ->whereBetween('created_at', array($request->date_from, $request->date_to))
-            ->where('isSuccess', 1)->sum('payment');
-            
+        $dataSum = $request->total;
+
+        $PreparedBy = FinanceInformation::where('user_id', Auth::user()->id)->first();
+        $fullname = $PreparedBy->first_name.' '.$PreparedBy->last_name;
+
+        $SchoolYear = SchoolYear::where('id', $request->school_year)->first();              
         
-        return view('control_panel_finance.payment_summary.partials.print', compact('data','SchoolYear','dataSum'))->render();
+        return view('control_panel_finance.payment_summary.partials.print', compact('data','SchoolYear','dataSum','fullname'))->render();
         $pdf = \PDF::loadView('control_panel_finance.payment_summary.partials.print', compact('data','SchoolYear','dataSum'));
         $pdf->setPaper('Legal', 'landscape');
         return $pdf->stream();          

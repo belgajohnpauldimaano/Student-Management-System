@@ -242,12 +242,12 @@
           <li><a href="{{ route('finance.summary') }}">
             <i class="fa fa-info-circle fa-lg"></i>&nbsp;&nbsp;&nbsp; <span>Payment Summary</span></a>
           </li>
-          {{-- <li><a href="{{ route('finance.summary') }}">
-            <i class="fa fa-info-circle fa-lg"></i>&nbsp;&nbsp;&nbsp; <span>Discount Summary</span></a>
-          </li> --}}
-          {{-- <li><a href="{{ route('finance.summary') }}">
+          <li><a href="{{ route('finance.summary.subsidy_discount') }}">
+            <i class="fa fa-info-circle fa-lg"></i>&nbsp;&nbsp;&nbsp; <span>Discount/Subsidy Summary</span></a>
+          </li>
+          <li><a href="{{ route('finance.summary') }}">
             <i class="fa fa-info-circle fa-lg"></i>&nbsp;&nbsp;&nbsp; <span>Section Summary</span></a>
-          </li> --}}
+          </li>
           <li><a href="{{ route('finance.online_appointment.date_time') }}">
             <i class="far fa-calendar-check fa-lg"></i>&nbsp;&nbsp;&nbsp; <span>Online Appointment</span></a>
           </li>
@@ -265,7 +265,8 @@
             <ul class="treeview-menu menu-open" style="display: block">
                 <li><a href="{{ route('finance.maintenance.tuition_fee') }}"><i class="fa fa-circle-o"></i>&nbsp;&nbsp;&nbsp; <span>Tuition Fee</span></a></li>
                 <li><a href="{{ route('finance.maintenance.downpayment') }}"><i class="fa fa-circle-o"></i>&nbsp;&nbsp;&nbsp; <span>Downpayment Fee</span></a></li>
-                <li><a href="{{ route('finance.maintenance.misc_fee') }}"><i class="fa fa-circle-o"></i>&nbsp;&nbsp;&nbsp; <span>Miscellaneous Fee</span></a></li>                
+                <li><a href="{{ route('finance.maintenance.misc_fee') }}"><i class="fa fa-circle-o"></i>&nbsp;&nbsp;&nbsp; <span>Miscellaneous Fee</span></a></li> 
+                <li><a href="{{ route('finance.maintenance.subsidy') }}"><i class="fa fa-circle-o"></i>&nbsp;&nbsp;&nbsp; <span>Subsidy</span></a></li>               
                 <li><a href="{{ route('finance.maintenance.disc_fee') }}"><i class="fa fa-circle-o"></i>&nbsp;&nbsp;&nbsp; <span>Discount</span></a></li>
                 <li><a href="{{ route('finance.maintenance.payment_category') }}"><i class="fa fa-circle-o"></i>&nbsp;&nbsp;&nbsp; <span>Payment Category</span></a></li>
                 <li><a href="{{ route('finance.maintenance.other_fee') }}"><i class="fa fa-circle-o"></i>&nbsp;&nbsp;&nbsp; <span>Other Fee</span></a></li>

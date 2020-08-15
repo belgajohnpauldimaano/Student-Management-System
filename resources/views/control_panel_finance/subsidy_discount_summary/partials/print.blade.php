@@ -100,7 +100,7 @@
 <body>
     <h2 class="heading2 heading2-title">St. John's Academy Inc.</h2>
     <p class="heading2 heading2-subtitle">Dinalupihan, Bataan</p>
-    <h3 class="heading2 ">Payment Summary</h3>
+    <h3 class="heading2 ">{{ $category == 0 ? 'Subsidy' : 'Discount' }} Summary</h3>
     <img style="margin-right: 3em; margin-top: {{  asset('img/sja-logo.png') }}" width="115" />
     <div>
 
@@ -119,41 +119,29 @@
                         <th>Date</th>
                         <th>Name</th>
                         <th>Student level</th>
-                        <th>Total Balance</th>
-                        <th>Payment</th>
+                        <th>Amount</th>
                     </tr>
                 </thead>
                 <tbody>        
                     @if ($data)
                         @foreach ($data as $key => $data)
                             <tr>
-                                <td>{{ $key+1 }}</td>
+                                <td>{{ $key + 1 }} {{ $data->id }}</td>
                                 <td>{{ $data->created_at }}</td>
                                 <td>{{ $data->student_name }}</td>
                                 <td>{{ $data->student_level }}</td>
-                                <td style="text-align:right">{{ number_format($data->balance, 2) }}</td>
-                                <td style="text-align:right">{{ number_format($data->payment, 2) }}</td>
+                                <td style="text-align:right">{{ number_format($data->discount_amt, 2) }}</td>
                             </tr>
                         @endforeach
                     @endif
                 </tbody>
                 <tfoot>
                     <tr>
-                        <td colspan="5" style="text-align:right">Total:</td>
+                        <td colspan="4" style="text-align:right">Total:</td>
                         <td style="text-align:right">{{number_format($dataSum,2)}}</td>
                     </tr>
                 </tfoot>
             </table>
-
-            <br/>
-            <br/>
-            <p>
-                Prepared By:<br/>                
-            </p>
-            <p>
-                {{ $fullname }}<br/>
-                <span style="text-align: center; font-size: 12px"><i>Finance Officer</i></span>
-            </p>
         </div>
     </div>
 </body>
