@@ -74,6 +74,7 @@ class StudentController extends Controller
                     // $query->orWhere('enrollments.class_details_id', 'like', '%'.$request->section_list.'%'$request->section_list);
                 })
                 ->where('enrollments.class_details_id', $request->section_list)
+                ->where('transactions.school_year_id', $request->school_year)
                 ->where('student_informations.status', 1)
                 ->orderBY('student_informations.last_name', 'ASC')
                 ->distinct()
