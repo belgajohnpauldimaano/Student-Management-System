@@ -301,6 +301,7 @@ class EnrollmentController extends Controller
                     $DiscountFeeSave->discount_type = $DiscountFee->disc_type;        
                     $DiscountFeeSave->transaction_month_paid_id = $Enrollment->id;                
                     $DiscountFeeSave->school_year_id = $SchoolYear->id;
+                    $DiscountFeeSave->category = $DiscountFee->category;
                     $DiscountFeeSave->isSuccess = 1;
                     $DiscountFeeSave->save();
                 }    
@@ -351,6 +352,7 @@ class EnrollmentController extends Controller
                     $DiscountFeeSave->discount_type = $DiscountFee->disc_type;        
                     $DiscountFeeSave->transaction_month_paid_id = $Enrollment->id;                
                     $DiscountFeeSave->school_year_id = $SchoolYear->id;
+                    $DiscountFeeSave->category = $DiscountFee->category;
                     $DiscountFeeSave->isSuccess = 1;
                     $DiscountFeeSave->save();
                 }    
@@ -484,6 +486,7 @@ class EnrollmentController extends Controller
                     $DiscountFeeSave->discount_type = $DiscountFee->disc_type;        
                     $DiscountFeeSave->transaction_month_paid_id = $Enrollment->id;                
                     $DiscountFeeSave->school_year_id = $SchoolYear->id;
+                    $DiscountFeeSave->category = $DiscountFee->category;
                     $DiscountFeeSave->save();
                 }    
             }
@@ -542,6 +545,7 @@ class EnrollmentController extends Controller
                     $DiscountFeeSave->discount_type = $DiscountFee->disc_type;        
                     $DiscountFeeSave->transaction_month_paid_id = $Enrollment->id;                
                     $DiscountFeeSave->school_year_id = $SchoolYear->id;
+                    $DiscountFeeSave->category = $DiscountFee->category;
                     $DiscountFeeSave->save();
                 }    
             }                   

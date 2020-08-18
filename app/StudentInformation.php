@@ -11,7 +11,7 @@ class StudentInformation extends Model
         return $this->hasOne(User::class, 'id', 'user_id');
     }
     
-    public function enrolled_class () 
+    public function enrolled_class ()
     {
         return $this->hasMany(Enrollment::class, 'student_information_id', 'id');
     }

@@ -7,17 +7,60 @@
 @section ('content')
     <div class="box">
         <div class="box-header with-border">
-            <h3 class="box-title">Search</h3>
-            <form id="js-form_search">
-                {{ csrf_field() }}
-                <div id="js-form_search" class="form-group col-sm-12 col-md-3" style="padding-left:0;padding-right:0">
-                    <input type="text" class="form-control" name="search">
-                </div>                
-                <button type="submit" class="btn btn-flat btn-success">Search</button>
-                {{-- <button type="button" class="pull-right btn btn-flat btn-danger btn-sm" id="js-button-add">
-                    <i class="fa fa-plus"></i> Add
-                </button> --}}
-            </form>
+            {{-- <h3 class="box-title">Search</h3> --}}
+            <div class="row">
+                
+                <form id="js-form_search">
+                    {{ csrf_field() }}
+                    <div class="col-md-3">
+                        <label class="control-label">- School year -</label>                                            
+                        <div class="input-group input-school_year">
+                            <select name="school_year" id="school_year" class="form-control ">                            
+                                <option value="0">
+                                    - Select School Year -
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                </option>
+                                @foreach ($School_years as $item)
+                                    <option value="{{ $item->id }}">{{ $item->school_year }}</option>
+                                @endforeach      
+                            </select>
+                        </div>
+                        <div class="help-block text-red text-left" id="js-school_year">
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <label class="control-label">- Section -</label> 
+                        <div class="form-group" style="padding-right:0">
+                            <select name="section_list" id="section_list" class="form-control section_list">
+                                <option value="">Select Section</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="control-label">Search</label>
+                        <div class="input-group input-school_year col-md-12">
+                            <div id="js-form_search" class="form-group " style="padding-left:0;padding-right:0">
+                                <input type="text" class="form-control" name="search">
+                            </div>                              
+                        </div>
+                     </div>  
+                     <div class="col-md-2">
+                        <label class="control-label">&nbsp;</label>
+                        <div class="input-group input-school_year">
+                            <button type="submit" class="btn btn-flat btn-success">Search</button>
+                            <button type="button" class="btn btn-flat btn-primary pull-right btn_clear" style="display: none">
+                                <i class="fa fa-refresh"></i> Clear
+                            </button>
+                        </div>
+                     </div>  
+                                           
+                    
+                    
+                    {{-- <button type="button" class="pull-right btn btn-flat btn-danger btn-sm" id="js-button-add">
+                        <i class="fa fa-plus"></i> Add
+                    </button> --}}
+                </form>
+            </div>
         </div>
         <div class="overlay hidden" id="js-loader-overlay"><i class="fa fa-refresh fa-spin"></i></div>
         <div class="box-body">
@@ -48,9 +91,27 @@
                 success     : function (res) {
                     loader_overlay();
                     $('.js-data-container').html(res);
+                    $('.btn_clear').css('display', 'block')
                 }
             });
         }
+
+
+        $('.btn_clear').click(function (){
+            location.reload();
+        });
+
+        $('body').on('change', '#school_year', function () {
+            $.ajax({
+                url : "{{ route('finance.list_section') }}",
+                type : 'POST',
+                data        : {_token: '{{ csrf_token() }}', school_year: $('#school_year').val()},
+                success     : function (res) {
+                    $('#section_list').html(res);                    
+                }
+            })
+            // alert('hello world')
+        })
         
         $(function () {            
             $('body').on('click', '.js-btn_account', function (e) {

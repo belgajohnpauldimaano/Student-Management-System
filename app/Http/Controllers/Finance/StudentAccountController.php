@@ -37,13 +37,22 @@ class StudentAccountController extends Controller
     public function index(Request $request){
         $stud_id = Crypt::decrypt($request->c);
         $Profile = StudentInformation::where('id', $stud_id)->first(); 
-        $School_year_id = SchoolYear::where('status', 1)
-                ->where('current', 1)->first();                
+        
+        if(!$request->school_year)
+        {
+            $School_year_id = SchoolYear::where('status', 1)
+                ->where('current', 1)->first()->id; 
+        }
+        else
+        {
+            $School_year_id = $request->school_year;
+        }
+                              
 
         $StudentInformation = NULL;
-
+        
         $IncomingStudentCount = IncomingStudent::where('student_id', $stud_id)
-                ->where('school_year_id', $School_year_id->id)
+                ->where('school_year_id', $School_year_id)
                 ->first();
 
         if($IncomingStudentCount){
@@ -51,14 +60,34 @@ class StudentAccountController extends Controller
         }
 
         if(!$IncomingStudentCount){
+            // if(!$request->class_details){
+            //     $class_details_id = Enrollment::where('student_information_id', $stud_id)
+            //         ->where('status', 1)
+            //         ->where('current', 1)
+            //         ->orderBy('id', 'DESC')
+            //         ->first();
+            // }else{
+            //     $class_details_id = $request->class_details;
+            // }
+            
+            // $ClassDetail = ClassDetail::where('id', $class_details_id)
+            //     ->where('status', 1)->where('current', 1)->orderBY('grade_level', 'DESC')->first();
+
             $Enrollment = Enrollment::where('student_information_id', $stud_id)
                 ->where('status', 1)
                 ->where('current', 1)
                 ->orderBy('id', 'DESC')
                 ->first();
             
-            $ClassDetail = ClassDetail::where('id', $Enrollment->class_details_id)
+            if(!$request->class_details){
+                $ClassDetail = ClassDetail::where('id', $Enrollment->class_details_id)
+                    ->where('status', 1)->where('current', 1)->orderBY('grade_level', 'DESC')->first();
+            }
+            else{
+                $ClassDetail = ClassDetail::where('id', $request->class_details)
                 ->where('status', 1)->where('current', 1)->orderBY('grade_level', 'DESC')->first();
+            }
+            
 
             $grade_level_id = ($ClassDetail->grade_level + 1);
         }
@@ -68,7 +97,7 @@ class StudentAccountController extends Controller
             $Gradelvl = GradeLevel::where('current', 1)->where('status', 1)->get();
             $Discount = DiscountFee::where('current', 1)->where('status', 1)->get();
             $OtherFee = OtherFee::where('current', 1)->where('status', 1)->get();  
-            $SchoolYear = SchoolYear::where('current', 1)->where('status', 1)->first();
+            $SchoolYear = $School_year_id;
             $StudentCategory = StudentCategory::where('status', 1)->get();      
 
             $PaymentCategory = PaymentCategory::with('stud_category','tuition','misc_fee','other_fee')
@@ -78,7 +107,7 @@ class StudentAccountController extends Controller
                 ->get();
 
             $Transaction = Transaction::with('payment_cat')->where('student_id', $stud_id)
-                ->where('school_year_id', $SchoolYear->id )->first();
+                ->where('school_year_id', $School_year_id )->first();
 
             $StudentInformation = StudentInformation::with(['user','transactions'])
                 ->where('id', $stud_id)
@@ -99,34 +128,34 @@ class StudentAccountController extends Controller
                 $Stud_cat_payment =  StudentCategory::where('id', $Payment->student_category_id)->first();
 
                 $TransactionMonthPaid = TransactionMonthPaid::where('student_id', $stud_id)
-                    ->where('school_year_id', $SchoolYear->id)
+                    ->where('school_year_id', $School_year_id)
                     ->where('approval', 'Approved')
                     ->orderBY('id', 'DESC')->get();
 
                 $TransactionOR = TransactionOtherFee::where('student_id', $stud_id)
-                    ->where('school_year_id', $SchoolYear->id)->orderBY('id', 'DESC')
+                    ->where('school_year_id', $School_year_id)->orderBY('id', 'DESC')
                     ->distinct()
                     ->get(['or_no']);
 
                 $HasTransactionDiscount = TransactionDiscount::where('student_id', $stud_id)
-                    ->where('school_year_id', $SchoolYear->id)
+                    ->where('school_year_id', $School_year_id)
                     ->where('isSuccess', 1)
                     ->first();
                 
                 $TransactionDiscount = TransactionDiscount::where('student_id', $stud_id)
-                    ->where('school_year_id', $SchoolYear->id)
+                    ->where('school_year_id', $School_year_id)
                     ->where('isSuccess', 1)
                     ->get();
 
                 $AccountOthers = TransactionOtherFee::where('student_id', $stud_id)
-                    ->where('school_year_id', $SchoolYear->id)->first();
+                    ->where('school_year_id', $School_year_id)->first();
 
                 $Account = TransactionMonthPaid::where('student_id', $stud_id)
-                    ->where('school_year_id', $SchoolYear->id)->first();
+                    ->where('school_year_id', $School_year_id)->first();
 
                 $others = TransactionOtherFee::where('student_id', $stud_id)
                     ->where('transaction_id', $Transaction->id)
-                    ->where('school_year_id', $SchoolYear->id)
+                    ->where('school_year_id', $School_year_id)
                     ->where('isSuccess', 1)
                     ->get();
                 
@@ -169,7 +198,7 @@ class StudentAccountController extends Controller
 
         $Transaction = Transaction::with('payment_cat')
             ->where('student_id', $stud_id)
-            ->where('school_year_id', $SchoolYear->id)->first();
+            ->where('school_year_id', $School_year_id)->first();
 
         $StudentInformation = StudentInformation::with(['user','transactions'])
             ->where('id', $stud_id)
@@ -193,33 +222,33 @@ class StudentAccountController extends Controller
             $Stud_cat_payment =  StudentCategory::where('id', $Payment->student_category_id)->first();
 
             $TransactionMonthPaid = TransactionMonthPaid::where('student_id', $stud_id)
-                                    ->where('school_year_id', $SchoolYear->id)
+                                    ->where('school_year_id', $School_year_id)
                                     ->where('isSuccess', 1)
                                     ->where('approval', 'Approved')
                                     ->orderBY('id', 'DESC')
                                     ->get();
 
             $AccountOthers = TransactionOtherFee::where('student_id', $stud_id)
-                ->where('school_year_id', $SchoolYear->id)->first();                                       
+                ->where('school_year_id', $School_year_id)->first();                                       
             
             $TransactionOR = TransactionOtherFee::where('student_id', $stud_id)
-                ->where('school_year_id', $SchoolYear->id)
+                ->where('school_year_id', $School_year_id)
                 ->distinct()
                 ->get(['or_no']);    
                 
             $others = TransactionOtherFee::where('student_id', $stud_id)
                 ->where('transaction_id', $Transaction->id)
-                ->where('school_year_id', $SchoolYear->id)
+                ->where('school_year_id', $School_year_id)
                 ->where('isSuccess', 1)
                 ->get();
 
             $HasTransactionDiscount = TransactionDiscount::where('student_id', $stud_id)
-                ->where('school_year_id', $SchoolYear->id)
+                ->where('school_year_id', $School_year_id)
                 ->where('isSuccess', 1)
                 ->first();
 
             $TransactionDiscount = TransactionDiscount::where('student_id', $stud_id)
-                ->where('school_year_id', $SchoolYear->id)
+                ->where('school_year_id', $School_year_id)
                 ->where('isSuccess', 1)
                 ->get();
 
@@ -317,6 +346,7 @@ class StudentAccountController extends Controller
                     $DiscountFeeSave->student_id = $request->id;
                     $DiscountFeeSave->discount_type = $DiscountFee->disc_type;
                     $DiscountFeeSave->discount_amt = $DiscountFee->disc_amt;
+                    $DiscountFeeSave->category = $DiscountFee->category;
                     $DiscountFeeSave->transaction_month_paid_id = $Enrollment->id;
                     $DiscountFeeSave->school_year_id = $School_year_id;
                     $DiscountFeeSave->isSuccess = 1;

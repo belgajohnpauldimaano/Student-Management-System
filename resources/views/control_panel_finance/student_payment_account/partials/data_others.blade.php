@@ -80,7 +80,7 @@
                                 <i class="fas fa-save"></i> Save
                             </button>
                             <button type="button" class="btn btn-danger btn-flat" id="js-btn_print_others"
-                                data-syid="{{$School_year_id->id}}"
+                                data-syid="{{$School_year_id}}"
                                 data-studid="{{ $StudentInformation->id }}"
                             >
                                 <i class="fa fa-file-pdf"></i> Print

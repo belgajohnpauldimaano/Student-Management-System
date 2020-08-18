@@ -158,7 +158,7 @@
                         </button>
                         <button type="button" 
                                 class="btn btn-danger btn-flat js-btn_print" 
-                                data-syid="{{$School_year_id->id}}"
+                                data-syid="{{$School_year_id}}"
                                 data-studid="{{ $StudentInformation->id }}"
                         >
                             <i class="fa fa-file-pdf"></i> Print

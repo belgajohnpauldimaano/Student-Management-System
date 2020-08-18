@@ -1,3 +1,4 @@
+                        
                         <div class="pull-right">
                             {{ $StudentInformation ? $StudentInformation->links() : '' }}
                         </div>
@@ -17,7 +18,7 @@
                                     @foreach ($StudentInformation as $data)
                                         <tr>
                                             <td>{{ $data->last_name . ' ' .$data->first_name . ' ' . $data->middle_name }}</td>
-                                            <td>{{ $data->user->username }}</td>
+                                            <td>{{ $hasUser == 1 ? $data->username : $data->user->username }}</td>
                                             <td>{{ ($data->gender == 1 ? 'Male' : 'Female') }}</td>
                                             <td style="color: red">
                                                 {{-- {{ $data->transactions}} --}}
@@ -45,7 +46,12 @@
                                             <td>
                                                 <div class="input-group-btn pull-left text-left">
                                                     @if(!$Transaction)                                                                 
-                                                        <a href="{{ route('finance.student_payment_account') }}?c={{ encrypt($data->id) }}" data-id="{{ encrypt($data->id) }}" class="btn btn-flat btn-primary btn-sm">
+                                                        <a href="{{ route('finance.student_payment_account') }}?c={{ encrypt($data->id) }}" 
+                                                            data-id="{{ encrypt($data->id) }}" 
+                                                            data-school_year="{{ $data->school_year_id }}" 
+                                                            data-class_details="{{ $data->class_details_id }}"
+                                                            class="btn btn-flat btn-primary btn-sm"
+                                                        >
                                                             Account
                                                         </a>   
                                                     @endif                                                    
