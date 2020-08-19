@@ -39,7 +39,7 @@
                 @endif
                 
                 <div class="modal-body">                        
-                    {{ $StudentInformation->email }}
+                    
                     <div class="form-group">
                         <label for="">Username</label>
                         <input type="text" class="form-control" name="username" value="{{ $StudentInformation ? $StudentInformation->user->username : '' }}">
