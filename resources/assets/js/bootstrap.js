@@ -9,6 +9,8 @@ window.Popper = require('popper.js').default;
  */
 
 try {
+    import $ from 'jquery';
+window.$ = window.jQuery = $;
     window.$ = window.jQuery = require('jquery');
 
     require('bootstrap');
