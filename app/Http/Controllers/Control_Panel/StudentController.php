@@ -2,9 +2,17 @@
 
 namespace App\Http\Controllers\Control_Panel;
 
+use App\User;
+use App\DateRemark;
+use App\Enrollment;
+use App\SchoolYear;
+use App\ClassDetail;
+use App\StudentInformation;
 use Illuminate\Http\Request;
+use App\StudentEnrolledSubject;
 use App\Traits\hasIncomingStudents;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 
 class StudentController extends Controller
 {
@@ -14,7 +22,7 @@ class StudentController extends Controller
     {
         if ($request->ajax())
         {
-            $StudentInformation = \App\StudentInformation::with(['user', 'enrolled_class'])->where('status', 1)
+            $StudentInformation = StudentInformation::with(['user', 'enrolled_class'])->where('status', 1)
             ->orderBY('last_name', 'ASC')
             ->where(function ($query) use ($request) {
                 $query->where('first_name', 'like', '%'.$request->search.'%');
@@ -28,7 +36,7 @@ class StudentController extends Controller
         }
         $IncomingStudentCount = $this->IncomingStudentCount();
 
-        $StudentInformation = \App\StudentInformation::with(['user', 'enrolled_class'])
+        $StudentInformation = StudentInformation::with(['user', 'enrolled_class'])
             ->where('status', 1)->orderBY('last_name', 'ASC')->paginate(10);
         // return json_encode(['student_info' => $StudentInformation]);
         return view('control_panel.student_information.index', compact('StudentInformation','IncomingStudentCount'));
@@ -37,11 +45,11 @@ class StudentController extends Controller
     public function modal_data (Request $request) 
     {
         $StudentInformation = NULL;
-        $Profile = \App\StudentInformation::where('id', $request->id)->first(); 
+        $Profile = StudentInformation::where('id', $request->id)->first(); 
         if ($request->id)
         {
-            $StudentInformation = \App\StudentInformation::with(['user'])->where('id', $request->id)->first();   
-            // $Profile = \App\StudentInformation::where('id', $request->id)->first();   
+            $StudentInformation = StudentInformation::with(['user'])->where('id', $request->id)->first();   
+            // $Profile = StudentInformation::where('id', $request->id)->first();   
             // return view('control_panel.student_information.partials.modal_data', compact('StudentInformation','Profile'))->render(); 
             // return view('control_panel.student_information.partials.modal_data', compact('StudentInformation'))->render()        
         }
@@ -65,7 +73,7 @@ class StudentController extends Controller
     //    / $User = \Auth::user();
         if($request->id)
         {
-            $Profile = \App\StudentInformation::where('id', $request->id)->first();
+            $Profile = StudentInformation::where('id', $request->id)->first();
 
             if ($Profile->photo) 
             {
@@ -99,12 +107,6 @@ class StudentController extends Controller
             'first_name' => 'required',
             'middle_name' => 'required',
             'last_name' => 'required',
-            // 'guardian' => 'required',
-            // 'age_june' => 'required',
-            // 'age_may' => 'required',
-            
-            // 'address'   => 'required',
-            // 'birthdate' => 'required',
             'gender'    => 'required',
         ];
         
@@ -118,14 +120,14 @@ class StudentController extends Controller
 
         if ($request->id)
         {
-            $StudentInformation = \App\StudentInformation::where('id', $request->id)->first();
+            $StudentInformation = StudentInformation::where('id', $request->id)->first();
             
-            $User = \App\User::where('username', $request->username)->where('id', '!=', $StudentInformation->user_id)->first();
+            $User = User::where('username', $request->username)->where('id', '!=', $StudentInformation->user_id)->first();
             if ($User) 
             {
                 return response()->json(['res_code' => 1,'res_msg' => 'Username already used.']);
             }
-            $User = \App\User::where('id', $StudentInformation->user_id)->first();
+            $User = User::where('id', $StudentInformation->user_id)->first();
             $User->username = $request->username;
             $User->save();
 
@@ -143,19 +145,19 @@ class StudentController extends Controller
             return response()->json(['res_code' => 0, 'res_msg' => 'Data successfully saved.']);
         }
 
-        $User = \App\User::where('username', $request->username)->first();
+        $User = User::where('username', $request->username)->first();
         if ($User) 
         {
             return response()->json(['res_code' => 1,'res_msg' => 'Username already used.']);
         }
         
-        $User = new \App\User();
+        $User = new User();
         $User->username = $request->username;
         $User->password = bcrypt($request->first_name . '.' . $request->last_name);
         $User->role     = 5;
         $User->save();
 
-        $StudentInformation                 = new \App\StudentInformation();
+        $StudentInformation                 = new StudentInformation();
         $StudentInformation->first_name     = $request->first_name;
         $StudentInformation->middle_name    = $request->middle_name;
         $StudentInformation->last_name      = $request->last_name;
@@ -173,14 +175,14 @@ class StudentController extends Controller
     }
     public function deactivate_data (Request $request) 
     {
-        $StudentInformation = \App\StudentInformation::where('id', $request->id)->first();
+        $StudentInformation = StudentInformation::where('id', $request->id)->first();
 
         if ($StudentInformation)
         {
             $StudentInformation->status = 0;
             $StudentInformation->save();
 
-            $User = \App\User::where('id', $StudentInformation->user_id)->first();
+            $User = User::where('id', $StudentInformation->user_id)->first();
             if ($User)
             {
                 $User->status = 0;
@@ -194,7 +196,7 @@ class StudentController extends Controller
     public function print_student_grade_modal (Request $request) 
     {
         
-        $Enrollment = \App\Enrollment::where('student_information_id', $request->id)
+        $Enrollment = Enrollment::where('student_information_id', $request->id)
             ->join('class_details','class_details.id', '=','enrollments.class_details_id')
             ->join('school_years','school_years.id', '=','class_details.school_year_id')
             ->selectRaw('
@@ -219,15 +221,15 @@ class StudentController extends Controller
             return "Invalid request";
         }
 
-        $StudentInformation = \App\StudentInformation::with(['user'])->where('id', $request->id)->first();
-        $DateRemarks = \App\DateRemark::where('school_year_id', $request->cid)->first();
-        // $StudentInformation = \App\StudentInformation::with('user')->where('id', $request->id)->first();
-        // $SchoolYear = \App\SchoolYear::where('current', $request->cid)->first();
+        $StudentInformation = StudentInformation::with(['user'])->where('id', $request->id)->first();
+        $DateRemarks = DateRemark::where('school_year_id', $request->cid)->first();
+        // $StudentInformation = StudentInformation::with('user')->where('id', $request->id)->first();
+        // $SchoolYear = SchoolYear::where('current', $request->cid)->first();
         // // return json_encode(['xx'=> $request->all(), 's' => $StudentInformation]);
 
         if ($StudentInformation) 
         {
-            $ClassDetail = \App\ClassDetail::join('section_details', 'section_details.id', '=' ,'class_details.section_id')
+            $ClassDetail = ClassDetail::join('section_details', 'section_details.id', '=' ,'class_details.section_id')
             ->join('rooms', 'rooms.id', '=' ,'class_details.room_id')
             ->join('school_years', 'school_years.id', '=' ,'class_details.school_year_id')
             ->join('faculty_informations', 'faculty_informations.id','=','class_details.adviser_id')
@@ -252,7 +254,7 @@ class StudentController extends Controller
             ->orderBY('school_years.id', 'ASC')
             ->first();
 
-            $Signatory = \App\Enrollment::join('class_details', 'class_details.id', '=', 'enrollments.class_details_id')
+            $Signatory = Enrollment::join('class_details', 'class_details.id', '=', 'enrollments.class_details_id')
             // ->join('student_enrolled_subjects', 'student_enrolled_subjects.enrollments_id', '=', 'enrollments.id')
             ->join('class_subject_details', 'class_subject_details.class_details_id', '=', 'class_details.id')
             ->join('rooms', 'rooms.id', '=', 'class_details.room_id')
@@ -286,7 +288,7 @@ class StudentController extends Controller
             ->orderBy('class_subject_details.class_subject_order', 'ASC')
             ->first();
             
-            $Enrollment = \App\Enrollment::join('class_details', 'class_details.id', '=', 'enrollments.class_details_id')
+            $Enrollment = Enrollment::join('class_details', 'class_details.id', '=', 'enrollments.class_details_id')
             // ->join('student_enrolled_subjects', 'student_enrolled_subjects.enrollments_id', '=', 'enrollments.id')
             ->join('class_subject_details', 'class_subject_details.class_details_id', '=', 'class_details.id')
             ->join('rooms', 'rooms.id', '=', 'class_details.room_id')
@@ -343,7 +345,7 @@ class StudentController extends Controller
             // return json_encode(['c' => count($Enrollment),'Enrollment' => $Enrollment,'StudentInformation' => $StudentInformation, ]);
             if ($StudentInformation && count($Enrollment)>0)
             {
-                $StudentEnrolledSubject = \App\StudentEnrolledSubject::where('enrollments_id', $Enrollment[0]->enrollment_id)
+                $StudentEnrolledSubject = StudentEnrolledSubject::where('enrollments_id', $Enrollment[0]->enrollment_id)
                 ->get();
                 $grade_level = $Enrollment[0]->grade_level;
                 if ($Enrollment[0]->attendance) {
@@ -427,7 +429,7 @@ class StudentController extends Controller
             }
             $GradeSheetData = json_decode(json_encode($GradeSheetData));
             
-            $SchoolYear = \App\SchoolYear::where('current', 1)
+            $SchoolYear = SchoolYear::where('current', 1)
                 ->where('status', 1)
                 ->first();
         

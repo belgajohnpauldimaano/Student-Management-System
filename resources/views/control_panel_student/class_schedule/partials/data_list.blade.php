@@ -14,7 +14,9 @@
                 <tbody>
                     @if ($Enrollment)
                         @if($findSchoolYear =='')
-                            <td colspan="5" style="text-align: center; font-weight: 600">You are not yet Enrolled this school year</td>
+                            <td colspan="5" style="text-align: center; font-weight: 600">
+                                <img src="https://cdn.iconscout.com/icon/free/png-256/data-not-found-1965034-1662569.png" alt="no data"/><br/>Sorry, there is no data found.
+                            </td>
                         @endif
                         @foreach ($Enrollment as $key => $data)
                         <?php

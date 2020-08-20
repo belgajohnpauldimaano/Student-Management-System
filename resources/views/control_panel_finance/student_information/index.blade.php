@@ -6,10 +6,8 @@
 
 @section ('content')
     <div class="box">
-        <div class="box-header with-border">
-            {{-- <h3 class="box-title">Search</h3> --}}
-            <div class="row">
-                
+        <div class="box-header with-border">            
+            <div class="row">                
                 <form id="js-form_search">
                     {{ csrf_field() }}
                     <div class="col-md-3">

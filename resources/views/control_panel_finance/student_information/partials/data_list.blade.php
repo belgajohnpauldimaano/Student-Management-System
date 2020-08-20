@@ -14,7 +14,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @if ($StudentInformation)
+                                @if ($hasUser ? $student_informations_count > 0 : $StudentInformation)
                                     @foreach ($StudentInformation as $data)
                                         <tr>
                                             <td>{{ $data->last_name . ' ' .$data->first_name . ' ' . $data->middle_name }}</td>
@@ -59,6 +59,8 @@
                                             </td>
                                         </tr>
                                     @endforeach
+                                @else
+                                    <div class="box-body"><div class="row"><table class="table"><tbody><tr><th style="text-align:center"><img src="https://cdn.iconscout.com/icon/free/png-256/data-not-found-1965034-1662569.png" alt="no data"/><br/>Sorry, there is no data found.</th></tr></tbody></table></div></div>
                                 @endif
                             </tbody>
                         </table>

@@ -29,6 +29,7 @@ Route::group(['prefix' => 'student', 'middleware' => ['auth', 'userroles'], 'rol
         Route::get('', 'Control_Panel_Student\ClassScheduleController@index')->name('student.class_schedule.index');
         Route::post('', 'Control_Panel_Student\ClassScheduleController@index')->name('student.class_schedule.index');
     });
+    
     Route::group(['prefix' => 'grade-sheet'], function() {
         Route::get('', 'Control_Panel_Student\GradeSheetController@index')->name('student.grade_sheet.index');
         Route::post('', 'Control_Panel_Student\GradeSheetController@index')->name('student.grade_sheet.index');

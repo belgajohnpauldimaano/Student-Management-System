@@ -48,46 +48,52 @@ class StudentController extends Controller
 
         if ($request->ajax())
         {
-            $Transaction = Transaction::with('payment_cat')
-                ->where('school_year_id', $request->school_year)
-                ->where('student_id', $request->id)
-                ->where('status', 1)->first();
+            try{
+                $Transaction = Transaction::with('payment_cat')
+                    ->where('school_year_id', $request->school_year)
+                    ->where('student_id', $request->id)
+                    ->where('status', 1)->first();
 
-            $StudentInformation = StudentInformation::join('transactions','transactions.student_id', '=' ,'student_informations.id')
-                ->join('enrollments', 'enrollments.student_information_id', '=','student_informations.id')
-                ->join('users', 'users.id', '=', 'student_informations.user_id') 
-                ->join('class_details', 'class_details.id', '=', 'enrollments.class_details_id')                
-                ->selectRaw('
-                    student_informations.last_name,
-                    student_informations.first_name,  
-                    student_informations.middle_name,
-                    student_informations.gender,
-                    student_informations.status,
-                    class_details.school_year_id,
-                    class_details.id as class_details_id,
-                    users.username
-                ')
-                ->where(function ($query) use ($request) {
-                    $query->where('first_name', 'like', '%'.$request->search.'%');
-                    $query->orWhere('middle_name', 'like', '%'.$request->search.'%');
-                    $query->orWhere('last_name', 'like', '%'.$request->search.'%');
-                    // $query->orWhere('enrollments.class_details_id', 'like', '%'.$request->section_list.'%'$request->section_list);
-                })
-                ->where('enrollments.class_details_id', $request->section_list)
-                ->where('transactions.school_year_id', $request->school_year)
-                ->where('student_informations.status', 1)
-                ->orderBY('student_informations.last_name', 'ASC')
-                ->distinct()
-                ->paginate(10, 'student_informations.id');
+                $StudentInformation = StudentInformation::join('transactions','transactions.student_id', '=' ,'student_informations.id')
+                    ->join('enrollments', 'enrollments.student_information_id', '=','student_informations.id')
+                    ->join('users', 'users.id', '=', 'student_informations.user_id') 
+                    ->join('class_details', 'class_details.id', '=', 'enrollments.class_details_id')                
+                    ->selectRaw('
+                        student_informations.last_name,
+                        student_informations.first_name,  
+                        student_informations.middle_name,
+                        student_informations.gender,
+                        student_informations.status,
+                        class_details.school_year_id,
+                        class_details.id as class_details_id,
+                        users.username
+                    ')
+                    ->where(function ($query) use ($request) {
+                        $query->where('first_name', 'like', '%'.$request->search.'%');
+                        $query->orWhere('middle_name', 'like', '%'.$request->search.'%');
+                        $query->orWhere('last_name', 'like', '%'.$request->search.'%');
+                        // $query->orWhere('enrollments.class_details_id', 'like', '%'.$request->section_list.'%'$request->section_list);
+                    })
+                    ->where('enrollments.class_details_id', $request->section_list)
+                    ->where('transactions.school_year_id', $request->school_year)
+                    ->where('student_informations.status', 1)
+                    ->orderBY('student_informations.last_name', 'ASC')
+                    ->distinct()
+                    ->paginate(10, 'student_informations.id');
 
-            $hasUser = '1';          
-            
-            $NotyetApprovedCount = $this->notYetApproved();
+                $student_informations_count = $StudentInformation->count();
 
-            // return json_encode(['student_info' => $StudentInformation]);
-            return view('control_panel_finance.student_information.partials.data_list', 
-                compact('StudentInformation','Transaction','School_year_id','hasUser',
-                        'NotyetApprovedCount','School_years'))->render();
+                $hasUser = '1';          
+                
+                $NotyetApprovedCount = $this->notYetApproved();
+
+                // return json_encode(['student_info' => $StudentInformation]);
+                return view('control_panel_finance.student_information.partials.data_list', 
+                    compact('StudentInformation','Transaction','School_year_id','hasUser',
+                            'NotyetApprovedCount','School_years','student_informations_count'))->render();
+            }catch(\Exception $e){                
+                return '<div class="box-body"><div class="row"><table class="table"><tbody><tr><th style="text-align:center"><img src="https://cdn.iconscout.com/icon/free/png-256/data-not-found-1965034-1662569.png" alt="no data"/><br/>Sorry, there is no data found.</th></tr></tbody></table></div></div>';
+            }
         }
         
         $StudentInformation = StudentInformation::with(['user', 'enrolled_class', 'transactions'])
