@@ -57,6 +57,7 @@ class DiscountFeeController extends Controller
             $DiscountFee->disc_type = $request->disc_type;
             $DiscountFee->disc_amt = $request->disc_fee;
             $DiscountFee->apply_to = $request->apply_to;
+            $DiscountFee->category = 1;
             $DiscountFee->save();
             return response()->json(['res_code' => 0, 'res_msg' => 'Data successfully saved.']);
         }

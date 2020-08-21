@@ -35,7 +35,7 @@ class SubsidyDiscountController extends Controller
                     ->join('transaction_month_paids', 'transaction_month_paids.student_id', '=', 'student_informations.id')                                   
                     ->join('payment_categories', 'payment_categories.id', '=', 'transactions.payment_category_id')
                     ->join('student_categories', 'student_categories.id', '=', 'payment_categories.student_category_id')
-                    ->join('transaction_discounts', 'transaction_discounts.student_id', '=' ,'transactions.id')   
+                    ->join('transaction_discounts', 'transaction_discounts.transaction_month_paid_id', '=' ,'transaction_month_paids.id')   
                     ->selectRaw('
                         CONCAT(student_informations.last_name, " ", student_informations.first_name, ", " ,  student_informations.middle_name) AS student_name,
                         CONCAT(payment_categories.grade_level_id," - ", student_categories.student_category) AS student_level,
@@ -52,7 +52,10 @@ class SubsidyDiscountController extends Controller
                     ->where('transaction_discounts.school_year_id', $request->school_year)
                     ->where('transaction_discounts.category', $request->category_type)
                     ->where('student_informations.status', 1)
+                    ->where('transaction_month_paids.status', 1)
                     ->where('transaction_discounts.isSuccess', 1)
+                    ->where('transaction_month_paids.isSuccess', 1)
+                    ->where('transaction_month_paids.approval', 'Approved')
                     ->orderBy('transaction_discounts.id', 'ASC')
                     ->distinct()
                     ->get(['transaction_discounts.id']);
@@ -74,7 +77,7 @@ class SubsidyDiscountController extends Controller
                     ->join('transaction_month_paids', 'transaction_month_paids.student_id', '=', 'student_informations.id')                                   
                     ->join('payment_categories', 'payment_categories.id', '=', 'transactions.payment_category_id')
                     ->join('student_categories', 'student_categories.id', '=', 'payment_categories.student_category_id')
-                    ->join('transaction_discounts', 'transaction_discounts.student_id', '=' ,'transactions.id')   
+                    ->join('transaction_discounts', 'transaction_discounts.transaction_month_paid_id', '=' ,'transaction_month_paids.id')  
                     ->selectRaw('
                         CONCAT(student_informations.last_name, " ", student_informations.first_name, ", " ,  student_informations.middle_name) AS student_name,
                         CONCAT(payment_categories.grade_level_id," - ", student_categories.student_category) AS student_level,

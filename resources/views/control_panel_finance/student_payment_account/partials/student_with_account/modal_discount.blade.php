@@ -7,7 +7,7 @@
                         <span aria-hidden="true">&times;</span>
                     </button>                            
                     <h4 style="margin-right: 5em;" class="modal-title">
-                        Edit Discount
+                        Edit Discount/Subsidy
                     </h4>
                 </div>
                 <form  id="js-update_discount">
@@ -15,7 +15,7 @@
                     <div class="modal-body">   
                         <input type="hidden" name="id" value="{{ $TransactionDiscount->id }}">
                         <div class="form-group">
-                            <label for="e_discount">Discount Fee</label>
+                            <label for="e_discount">Discount/Subsidy Fee</label>
                                 <div class="radio" style="margin-top: -2.5px;">
                                     @foreach ($DiscountFee as $item)         
                                         <label>                      

@@ -92,14 +92,15 @@
                 </div>
 
                 <div class="tab-pane" id="discount-history">
-                    <h3>Discount History</h3>
+                    <h3>Discount/Subsidy History</h3>
                     <table class="table table-bordered table-hover table-striped" style="margin-top: 20px">
                         <thead>
                             <tr>
                                 <th  style="width: 15%">Transaction ID</th>
                                 <th  style="width: 15%">OR Number</th>
-                                <th  style="width: 13%">Discount Type</th>
-                                <th  style="width: 12%">Discount Amount</th>
+                                <th  style="width: 15%">Name</th>
+                                <th  style="width: 13%">Type</th>
+                                <th  style="width: 12%">Amount</th>
                                 <th  style="width: 15%">Date</th>
                                 <th  style="width: 10%">Action</th>
                             </tr>
@@ -110,6 +111,7 @@
                                     <td>{{ $item->transaction_month_paid_id }}</td>
                                     <td>{{ $item->transactionMonth->or_no }}</td>
                                     <td>{{ $item->discount_type }}</td>
+                                    <td>{{ $item->category == 0 ? 'Subsidy' : 'Discount' }}</td>
                                     <td>{{ number_format($item->discount_amt, 2) }}</td>
                                     <td>{{ $item->created_at }}</td>
                                     <td>

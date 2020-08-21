@@ -44,7 +44,7 @@
                 </tr>
             @endforeach
                 <tr class="text-center">
-                    <td style="text-align: right; padding-right: 1em" colspan="{{ $grade_level <= 10 ? '5' : '3'}}"><b>General Average</b></td>
+                    <td style="text-align: right; padding-right: 1em" colspan="{{ $ClassDetail->school_year_id <= 10 ? '5' : '3'}}"><b>General Average</b></td>
                     <td>
                         <b>
                             @if($data->fir_g == 0 || $data->sec_g == 0 || $data->thi_g == 0 || $data->fou_g == 0)
@@ -138,12 +138,8 @@
             {{ $student_attendance['times_tardy_total'] }}
         </th>
     </tr>
-    <?php 
-        $SchoolYear = \App\SchoolYear::where('current', 1)
-        ->where('status', 1)
-        ->first();
-    ?>
-    @if($SchoolYear->id == 9)
+    
+    @if($ClassDetail->school_year_id == 9)
     <tr>
         <th><i>Days of class suspensions with ADM option.</i></th>
         <?php
@@ -202,44 +198,7 @@
         <td style="border: 0"></td>   
     </tr>
 
-    <?php 
-        $SchoolYear = \App\SchoolYear::where('current', 1)
-            ->where('status', 1)
-            ->first();
-        $Enrollment = \App\Enrollment::join('class_details', 'class_details.id', '=', 'enrollments.class_details_id')
-            // ->join('student_enrolled_subjects', 'student_enrolled_subjects.enrollments_id', '=', 'enrollments.id')
-            ->join('class_subject_details', 'class_subject_details.class_details_id', '=', 'class_details.id')
-            ->join('rooms', 'rooms.id', '=', 'class_details.room_id')
-            ->join('faculty_informations', 'faculty_informations.id', '=', 'class_subject_details.faculty_id')
-            ->join('section_details', 'section_details.id', '=', 'class_details.section_id')
-            ->join('subject_details', 'subject_details.id', '=', 'class_subject_details.subject_id')
-            ->where('student_information_id', $StudentInformation->id)
-            // ->where('class_subject_details.status', 1)
-            ->where('class_subject_details.status', '!=', 0)
-            ->where('enrollments.status', 1)
-            ->where('class_details.status', 1)
-            ->where('class_details.school_year_id', $SchoolYear->id)
-            ->select(\DB::raw("
-                enrollments.id as enrollment_id,
-                enrollments.class_details_id as cid,
-                enrollments.j_lacking_unit,
-                enrollments.eligible_transfer,
-                class_details.grade_level,
-                class_subject_details.id as class_subject_details_id,
-                class_subject_details.class_days,
-                class_subject_details.class_time_from,
-                class_subject_details.class_time_to,
-                class_subject_details.status as grade_status,
-                CONCAT(faculty_informations.last_name, ', ', faculty_informations.first_name, ' ', faculty_informations.middle_name) as faculty_name,
-                subject_details.id AS subject_id,
-                subject_details.subject_code,
-                subject_details.subject,
-                rooms.room_code,
-                section_details.section
-            "))
-            ->orderBy('class_subject_details.class_subject_order', 'ASC')
-            ->get();
-    ?>
+    
 
     <tr style="margin-top: .5em">
         <td colspan="3" style="border: 0">Eligible to transfer and admission to:               
@@ -292,13 +251,13 @@
 
                                 @if($ClassDetail->faculty_id == 26 || $ClassDetail->faculty_id == 28 || $ClassDetail->faculty_id == 66 || $ClassDetail->faculty_id == 10|| $ClassDetail->faculty_id == 11)
                                     <img class="profile-user-img img-responsive img-circle" id="img--user_photo" src="{{ asset('/img/signature/principal_signature.png') }}" 
-                                    style="width:170px; margin-top: 2em">
+                                        style="width:170px; margin-top: 2em">
                                 @elseif($ClassDetail->faculty_id == 23) 
                                     <img class="profile-user-img img-responsive img-circle" id="img--user_photo" src="{{ asset('/img/signature/principal_signature.png') }}" 
-                                    style="width:170px; margin-top: 2.5em">            
+                                        style="width:170px; margin-top: 2.5em">            
                                 @else
                                     <img class="profile-user-img img-responsive img-circle" id="img--user_photo" src="{{ asset('/img/signature/principal_signature.png') }}" 
-                                    style="width:170px; ">
+                                        style="width:170px; margin-bottom: -1em">
                                 @endif
                                 
                             </center>
@@ -318,7 +277,7 @@
               || $ClassDetail->faculty_id == 45 || $ClassDetail->faculty_id == 37 || $ClassDetail->faculty_id == 60  || $ClassDetail->faculty_id == 25 || $ClassDetail->faculty_id== 67)
                 <table border="0" style="width: 100%; margin-top: -80px; margin-bottom: 0em">                         
             @else
-                <table border="0" style="width: 100%; margin-top: -60px; margin-bottom: 0em">
+                <table border="0" style="width: 100%; margin-top: -80px; margin-bottom: 0em">
             @endif   
                 <tr>
                     <td style="border: 0; width: 50%; height: 100px">

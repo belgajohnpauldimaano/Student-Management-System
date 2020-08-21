@@ -17,7 +17,7 @@
                                 @if ($hasUser ? $student_informations_count > 0 : $StudentInformation)
                                     @foreach ($StudentInformation as $data)
                                         <tr>
-                                            <td>{{ $data->last_name . ' ' .$data->first_name . ' ' . $data->middle_name }}</td>
+                                            <td>{{ $data->last_name . ' ' .$data->first_name . ' ' . $data->middle_name }} </td>
                                             <td>{{ $hasUser == 1 ? $data->username : $data->user->username }}</td>
                                             <td>{{ ($data->gender == 1 ? 'Male' : 'Female') }}</td>
                                             <td style="color: red">
@@ -46,10 +46,7 @@
                                             <td>
                                                 <div class="input-group-btn pull-left text-left">
                                                     @if(!$Transaction)                                                                 
-                                                        <a href="{{ route('finance.student_payment_account') }}?c={{ encrypt($data->id) }}" 
-                                                            data-id="{{ encrypt($data->id) }}" 
-                                                            data-school_year="{{ $data->school_year_id }}" 
-                                                            data-class_details="{{ $data->class_details_id }}"
+                                                        <a href="{{ route('finance.student_payment_account') }}?c={{ encrypt($data->id) }}&school_year={{ $data->school_year_id }}&class_details={{ $data->class_details_id }}"
                                                             class="btn btn-flat btn-primary btn-sm"
                                                         >
                                                             Account
@@ -60,7 +57,20 @@
                                         </tr>
                                     @endforeach
                                 @else
-                                    <div class="box-body"><div class="row"><table class="table"><tbody><tr><th style="text-align:center"><img src="https://cdn.iconscout.com/icon/free/png-256/data-not-found-1965034-1662569.png" alt="no data"/><br/>Sorry, there is no data found.</th></tr></tbody></table></div></div>
+                                    <div class="box-body">
+                                        <div class="row">
+                                            <table class="table">
+                                                <tbody>
+                                                    <tr>
+                                                        <th style="text-align:center">
+                                                            <img src="https://cdn.iconscout.com/icon/free/png-256/data-not-found-1965034-1662569.png" alt="no data"/>
+                                                            <br/>Sorry, there is no data found.
+                                                        </th>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
                                 @endif
                             </tbody>
                         </table>

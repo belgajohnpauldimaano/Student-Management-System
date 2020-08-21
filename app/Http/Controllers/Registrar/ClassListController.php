@@ -2,6 +2,14 @@
 
 namespace App\Http\Controllers\Registrar;
 
+use App\Room;
+use App\Strand;
+use App\GradeLevel;
+use App\SchoolYear;
+use App\ClassDetail;
+use App\SectionDetail;
+use App\SubjectDetail;
+use App\FacultyInformation;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
@@ -9,9 +17,9 @@ class ClassListController extends Controller
 {
     public function index (Request $request) 
     {
-        $SchoolYear = \App\SchoolYear::where('status', 1)->where('current', 1)->first();
+        $SchoolYear = SchoolYear::where('status', 1)->where('current', 1)->first();
 
-        $ClassDetail = \App\ClassDetail::join('section_details', 'section_details.id', '=' ,'class_details.section_id')
+        $ClassDetail = ClassDetail::join('section_details', 'section_details.id', '=' ,'class_details.section_id')
             ->join('rooms', 'rooms.id', '=' ,'class_details.room_id')
             ->leftJoin('faculty_informations', 'faculty_informations.id', '=' ,'class_details.adviser_id')
             ->join('school_years', 'school_years.id', '=' ,'class_details.school_year_id')
@@ -33,7 +41,7 @@ class ClassListController extends Controller
             ->where('section_details.status', 1)
             ->where('class_details.current', 1)
             ->where('class_details.status', 1)
-            ->where('school_year_id', $SchoolYear->id)
+            ->where('school_year_id', $request->sy_search)
             ->where(function ($query) use($request) {
                 if ($request->sy_search) 
                 {
@@ -52,7 +60,7 @@ class ClassListController extends Controller
             return view('control_panel_registrar.class_details.partials.data_list', compact('ClassDetail'))->render();
         }
 
-        $SchoolYear = \App\SchoolYear::where('status', 1)->orderBy('school_year', 'DESC')->get();
+        $SchoolYear = SchoolYear::where('status', 1)->orderBy('school_year', 'DESC')->get();
 
         $ClassDetail = $ClassDetail->paginate(10);
         
@@ -62,28 +70,28 @@ class ClassListController extends Controller
     public function modal_data (Request $request) 
     {
         $ClassDetail = NULL;
-        $FacultyInformation = \App\FacultyInformation::where('status', 1)->get();
+        $FacultyInformation = FacultyInformation::where('status', 1)->get();
         if ($request->id)
         {
-            $ClassDetail = \App\ClassDetail::where('id', $request->id)->first();
+            $ClassDetail = ClassDetail::where('id', $request->id)->first();
         }
-        // $FacultyInformation = \App\FacultyInformation::where('status', 1)->get();
-        // $SubjectDetail = \App\SubjectDetail::where('status', 1)->get();
+        // $FacultyInformation = FacultyInformation::where('status', 1)->get();
+        // $SubjectDetail = SubjectDetail::where('status', 1)->get();
 
-        $SectionDetail = \App\SectionDetail::where('status', 1)->orderBy('grade_level')->get();
+        $SectionDetail = SectionDetail::where('status', 1)->orderBy('grade_level')->get();
         $SectionDetail_grade_levels = \DB::table('section_details')->select(\DB::raw('DISTINCT(grade_level) as grade_level'))->whereRaw('status = 1')->orderByRaw('grade_level ASC')->get();
         if ($ClassDetail) 
         {
-            $SectionDetail = \App\SectionDetail::where('status', 1)->where('grade_level', $ClassDetail->grade_level)->orderBy('grade_level')->get();
+            $SectionDetail = SectionDetail::where('status', 1)->where('grade_level', $ClassDetail->grade_level)->orderBy('grade_level')->get();
         }
-        $GradeLevel = \App\GradeLevel::where('status', 1)->get();
-        $Room = \App\Room::where('status', 1)->get();
-        $SchoolYear = \App\SchoolYear::where('status', 1)->where('current', 1)->get();
+        $GradeLevel = GradeLevel::where('status', 1)->get();
+        $Room = Room::where('status', 1)->get();
+        $SchoolYear = SchoolYear::where('status', 1)->where('current', 1)->get();
 
-        $Strand = \App\Strand::where('status', 1)->orderBy('strand')->get();
+        $Strand = Strand::where('status', 1)->orderBy('strand')->get();
         // if ($ClassDetail) 
         // {
-        //     $Strand = \App\Strand::where('status', 1)->where('strand', $ClassDetail->strand)->orderBy('strand')->get();
+        //     $Strand = Strand::where('status', 1)->where('strand', $ClassDetail->strand)->orderBy('strand')->get();
         // }
         return view('control_panel_registrar.class_details.partials.modal_data', compact('ClassDetail', 'SectionDetail', 'Room', 'SchoolYear', 'SectionDetail_grade_levels', 'GradeLevel', 'FacultyInformation','Strand'))->render();
     }
@@ -93,14 +101,14 @@ class ClassListController extends Controller
         $ClassDetail = NULL;
         if ($request->id)
         {
-            $ClassDetail = \App\ClassDetail::where('id', $request->id)->first();
+            $ClassDetail = ClassDetail::where('id', $request->id)->first();
         }
         // return json_encode($ClassDetail);
-        $FacultyInformation = \App\FacultyInformation::where('status', 1)->get();
-        $SubjectDetail = \App\SubjectDetail::where('status', 1)->get();
-        $SectionDetail = \App\SectionDetail::where('status', 1)->get();
-        $Room = \App\Room::where('status', 1)->get();
-        $SchoolYear = \App\SchoolYear::where('status', 1)->get();
+        $FacultyInformation = FacultyInformation::where('status', 1)->get();
+        $SubjectDetail = SubjectDetail::where('status', 1)->get();
+        $SectionDetail = SectionDetail::where('status', 1)->get();
+        $Room = Room::where('status', 1)->get();
+        $SchoolYear = SchoolYear::where('status', 1)->get();
         return view('control_panel_registrar.class_details.partials.modal_manage_subjects', compact('ClassDetail', 'FacultyInformation', 'SubjectDetail', 'SectionDetail', 'Room', 'SchoolYear'))->render();
     }
 
@@ -121,13 +129,13 @@ class ClassListController extends Controller
             return response()->json(['res_code' => 1, 'res_msg' => 'Please fill all required fields.', 'res_error_msg' => $Validator->getMessageBag()]);
         }
 
-        $sectionDetail = \App\SectionDetail::where('id', $request->section)->first();
+        $sectionDetail = SectionDetail::where('id', $request->section)->first();
 
         if($request->grade_level > 10)
         {
             if ($request->id)
             {
-                $ClassDetail = \App\ClassDetail::where('id', $request->id)->first();
+                $ClassDetail = ClassDetail::where('id', $request->id)->first();
                 $ClassDetail->section_id = $request->section;
                 $ClassDetail->room_id	 = $request->room;
                 $ClassDetail->school_year_id = $request->school_year;
@@ -138,7 +146,7 @@ class ClassListController extends Controller
                 return response()->json(['res_code' => 0, 'res_msg' => 'Data successfully saved.']);
             }
 
-            $ClassDetail = new \App\ClassDetail();
+            $ClassDetail = new ClassDetail();
             $ClassDetail->section_id	 = $request->section;
             $ClassDetail->room_id	 = $request->room;
             $ClassDetail->school_year_id = $request->school_year;
@@ -152,7 +160,7 @@ class ClassListController extends Controller
         {
             if ($request->id)
             {
-                $ClassDetail = \App\ClassDetail::where('id', $request->id)->first();
+                $ClassDetail = ClassDetail::where('id', $request->id)->first();
                 $ClassDetail->section_id = $request->section;
                 $ClassDetail->room_id	 = $request->room;
                 $ClassDetail->school_year_id = $request->school_year;
@@ -163,7 +171,7 @@ class ClassListController extends Controller
                 return response()->json(['res_code' => 0, 'res_msg' => 'Data successfully saved.']);
             }
 
-            $ClassDetail = new \App\ClassDetail();
+            $ClassDetail = new ClassDetail();
             $ClassDetail->section_id = $request->section;
             $ClassDetail->room_id = $request->room;
             $ClassDetail->school_year_id = $request->school_year;
@@ -177,7 +185,7 @@ class ClassListController extends Controller
 
     public function deactivate_data (Request $request) 
     {
-        $ClassDetail = \App\ClassDetail::where('id', $request->id)->first();
+        $ClassDetail = ClassDetail::where('id', $request->id)->first();
 
         if ($ClassDetail)
         {
@@ -189,7 +197,7 @@ class ClassListController extends Controller
     }
     public function delete_data (Request $request)
     {
-        $ClassDetail = \App\ClassDetail::where('id', $request->id)->first();
+        $ClassDetail = ClassDetail::where('id', $request->id)->first();
 
         if ($ClassDetail)
         {
@@ -202,7 +210,7 @@ class ClassListController extends Controller
 
     public function fetch_section_by_grade_level (Request $request)
     {
-        $SectionDetail = \App\SectionDetail::where('grade_level', $request->grade_level)->where('status', 1)->get();
+        $SectionDetail = SectionDetail::where('grade_level', $request->grade_level)->where('status', 1)->get();
         if ($request->type == 'json') 
         {
             return response()->json(compact('SectionDetail'));

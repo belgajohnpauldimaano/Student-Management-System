@@ -23,7 +23,7 @@
                 ->where('class_subject_details.sem', 2)
                 ->where('enrollments.status', 1)
                 ->where('class_details.status', 1)                            
-                ->where('class_details.school_year_id', $SchoolYear->id)
+                ->where('class_details.school_year_id', $ClassDetail->school_year_id)
                 ->select(\DB::raw("
                     enrollments.id as enrollment_id,
                     enrollments.class_details_id as cid,
@@ -206,7 +206,7 @@
 <?php
     $student_attendance = [];
     
-    if($SchoolYear->id == 9){
+    if($ClassDetail->school_year_id == 9){
         $table_header = [
             ['key' => 'Nov',],
                 ['key' => 'Dec',],
@@ -322,7 +322,7 @@
     ->where('status', 1)
     ->first();
 ?>
-@if($SchoolYear->id == 9)
+@if($ClassDetail->school_year_id == 9)
     <tr>
         <th><i>Days of class suspensions with ADM option.</i></th>
         <th>0</th>
@@ -454,7 +454,7 @@
             @elseif($ClassDetail->faculty_id == 76 || $ClassDetail->faculty_id == 73 || $ClassDetail->faculty_id == 36)
                 <table border="0" style="width: 100%; margin-top: -87px; margin-bottom: 0em">     
             @else
-                <table border="0" style="width: 100%; margin-top: -70px; margin-bottom: 0em">
+                <table border="0" style="width: 100%; margin-top: -85px; margin-bottom: 0em">
             @endif                              
                 <tr>
                     <td style="border: 0; width: 50%; height: 100px">

@@ -166,7 +166,8 @@
             success:function(data)
             {
                 loader_overlay();
-                var output = '';                
+                var output = '';    
+                total = 0;            
                 // $('#total_records').text(data.length);
                 
                 for(var count = 0; count < data.length; count++)
@@ -185,6 +186,7 @@
                     
                     output += '<td style="width: 15%;text-align: right">' + currencyFormat(data[count].payment) + '</td>';
                     output += '</tr>';
+                    
                     if (!isNaN(data[count].payment)) {
                         total += data[count].payment;                        
                     }
@@ -192,7 +194,7 @@
                 if(data.length == ''){
                     var total_output = '';
                     total_output +='<tr>';
-                    total_output +='<td style="text-align: center" colspan="6"><b>SORRY THERE IS NO DATA AVAILABLE</b> </td>';
+                    total_output +='<td style="text-align: center" colspan="6"><img src="https://cdn.iconscout.com/icon/free/png-256/data-not-found-1965034-1662569.png" alt="no data"/><br/><b>SORRY THERE IS NO DATA AVAILABLE</b> </td>';
                     total_output +='</tr>';
                     total_output +='</tr>';
                 }else{                

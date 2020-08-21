@@ -177,7 +177,7 @@
             success:function(data)
             {
                 loader_overlay();
-                
+                total = 0;
                 var output = '';                
                 // $('#total_records').text(data.length);
                 for(var count = 0; count < data.length; count++)
@@ -204,10 +204,11 @@
                 $('tbody').html(output);
                 $('tfoot').html(total_output);
                 var total_output = '';
+                
                 if(data.length == ''){
                     // var total_output = '';
                     total_output +='<tr>';
-                    total_output +='<td style="text-align: center" colspan="5"><b>SORRY THERE IS NO DATA AVAILABLE</b> </td>';
+                    total_output +='<td style="text-align: center" colspan="5"><img src="https://cdn.iconscout.com/icon/free/png-256/data-not-found-1965034-1662569.png" alt="no data"/><br/><b>SORRY THERE IS NO DATA AVAILABLE</b> </td>';
                     total_output +='</tr>';
                     total_output +='</tr>';
                 }else{                

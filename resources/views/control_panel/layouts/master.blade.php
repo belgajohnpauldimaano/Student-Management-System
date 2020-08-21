@@ -245,9 +245,9 @@
           <li><a href="{{ route('finance.summary.subsidy_discount') }}">
             <i class="fa fa-info-circle fa-lg"></i>&nbsp;&nbsp;&nbsp; <span>Discount/Subsidy Summary</span></a>
           </li>
-          <li><a href="{{ route('finance.summary') }}">
+          {{-- <li><a href="{{ route('finance.summary') }}">
             <i class="fa fa-info-circle fa-lg"></i>&nbsp;&nbsp;&nbsp; <span>Section Summary</span></a>
-          </li>
+          </li> --}}
           <li><a href="{{ route('finance.online_appointment.date_time') }}">
             <i class="far fa-calendar-check fa-lg"></i>&nbsp;&nbsp;&nbsp; <span>Online Appointment</span></a>
           </li>

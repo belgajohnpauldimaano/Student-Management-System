@@ -34,6 +34,7 @@ use Illuminate\Support\Facades\Crypt;
 class StudentAccountController extends Controller
 {
     use hasNotYetApproved;
+    
     public function index(Request $request){
         $stud_id = Crypt::decrypt($request->c);
         $Profile = StudentInformation::where('id', $stud_id)->first(); 
@@ -46,32 +47,19 @@ class StudentAccountController extends Controller
         else
         {
             $School_year_id = $request->school_year;
-        }
-                              
+        }                              
 
         $StudentInformation = NULL;
         
         $IncomingStudentCount = IncomingStudent::where('student_id', $stud_id)
-                ->where('school_year_id', $School_year_id)
-                ->first();
+            ->where('school_year_id', $School_year_id)
+            ->first();
 
         if($IncomingStudentCount){
             $grade_level_id = $IncomingStudentCount->grade_level_id;
         }
 
         if(!$IncomingStudentCount){
-            // if(!$request->class_details){
-            //     $class_details_id = Enrollment::where('student_information_id', $stud_id)
-            //         ->where('status', 1)
-            //         ->where('current', 1)
-            //         ->orderBy('id', 'DESC')
-            //         ->first();
-            // }else{
-            //     $class_details_id = $request->class_details;
-            // }
-            
-            // $ClassDetail = ClassDetail::where('id', $class_details_id)
-            //     ->where('status', 1)->where('current', 1)->orderBY('grade_level', 'DESC')->first();
 
             $Enrollment = Enrollment::where('student_information_id', $stud_id)
                 ->where('status', 1)
@@ -86,8 +74,7 @@ class StudentAccountController extends Controller
             else{
                 $ClassDetail = ClassDetail::where('id', $request->class_details)
                 ->where('status', 1)->where('current', 1)->orderBY('grade_level', 'DESC')->first();
-            }
-            
+            }            
 
             $grade_level_id = ($ClassDetail->grade_level + 1);
         }
@@ -97,7 +84,15 @@ class StudentAccountController extends Controller
             $Gradelvl = GradeLevel::where('current', 1)->where('status', 1)->get();
             $Discount = DiscountFee::where('current', 1)->where('status', 1)->get();
             $OtherFee = OtherFee::where('current', 1)->where('status', 1)->get();  
-            $SchoolYear = $School_year_id;
+            if(!$request->school_year)
+            {
+                $School_year_id = SchoolYear::where('status', 1)
+                    ->where('current', 1)->first()->id; 
+            }
+            else
+            {
+                $School_year_id = $request->school_year;
+            }         
             $StudentCategory = StudentCategory::where('status', 1)->get();      
 
             $PaymentCategory = PaymentCategory::with('stud_category','tuition','misc_fee','other_fee')
@@ -600,6 +595,7 @@ class StudentAccountController extends Controller
                 $DiscountFeeSave->discount_amt = $DiscountFee->disc_amt;
                 $DiscountFeeSave->transaction_month_paid_id = $request->transaction_month_paid_id;
                 $DiscountFeeSave->school_year_id = $School_year_id;
+                $DiscountFeeSave->category = $DiscountFee->category;
                 $DiscountFeeSave->isSuccess = 1;
                 $DiscountFeeSave->save();
             }

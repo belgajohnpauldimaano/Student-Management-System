@@ -176,9 +176,15 @@
             
         @endif
         
-    <?php 
-        $Semester = \App\Semester::where('current', 1)->first()->id; 
-    ?>
+        <?php 
+            try {
+                if($semester){
+                    $Semester = $semester;
+                }
+            } catch (\Throwable $th) {
+                $Semester = \App\Semester::where('current', 1)->first()->id;
+            }             
+        ?>
                 <p class="heading1">Republic of the Philippines</p>
                 <p class="heading1">Department of Education</p>
                 <p class="heading1">Region III</p>
@@ -263,9 +269,7 @@
     <br/>
     
     @if ($grade_level >= 11)         
-        <?php 
-            $Semester = \App\Semester::where('current', 1)->first()->id; 
-        ?>
+       
         @if($Semester == 1)
             @include('control_panel_student.grade_sheet.partials.grade_sheet.senior.first_sem')
         @else

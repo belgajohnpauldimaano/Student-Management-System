@@ -81,6 +81,7 @@
                                 $('.js-modal_holder .modal').modal('hide');
                                 setTimeout(function() 
                                 {
+                                    loader_overlay();
                                     location.reload();  //Refresh page
                                 }, 1000);
                             }
@@ -122,6 +123,7 @@
                                 $('.js-modal_holder .modal').modal('hide');
                                 setTimeout(function() 
                                 {
+                                    loader_overlay();
                                     location.reload();  //Refresh page
                                 }, 1000);
                             }
@@ -192,6 +194,7 @@
                             }
                             else
                             {
+                                loader_overlay();
                                 show_toast_alert({
                                     heading : 'Success',
                                     message : res.res_msg,

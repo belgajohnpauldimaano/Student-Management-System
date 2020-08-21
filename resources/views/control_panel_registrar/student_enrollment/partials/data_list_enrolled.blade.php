@@ -4,7 +4,7 @@
                            
                            @if($ClassDetail->grade_level == 11 || $ClassDetail->grade_level == 12)                   
                                 <div class="pull-right">
-                                    <button type="button" style="margin-right:2px" class="btn btn-danger js-btn_re_enroll_all_student" aria-expanded="true">
+                                    <button type="button" style="margin-right:2px" class="btn btn-flat btn-danger js-btn_re_enroll_all_student" aria-expanded="true">
                                         Re-Enroll All (2nd Semester)
                                     </button>
                                     {{ $Enrollment ? $Enrollment->links() : '' }}
@@ -13,6 +13,7 @@
                                 <table class="table no-margin">
                                     <thead>
                                         <tr>
+                                            <th>No.</th>
                                             <th>Student Number</th>
                                             <th>Student Name</th>
                                             <th>Actions</th>
@@ -60,7 +61,7 @@
 
                             @else
                                 <div class="pull-right">
-                                    <button type="button" style="margin-right:2px" class="btn btn-danger js-btn_re_enroll_all_student" aria-expanded="true">
+                                    <button type="button" style="margin-right:2px" class="btn btn-flat  btn-danger js-btn_re_enroll_all_student" aria-expanded="true">
                                         Re-Enroll All
                                     </button>
                                     {{ $Enrollment ? $Enrollment->links() : '' }}
@@ -69,6 +70,7 @@
                                 <table class="table no-margin">
                                     <thead>
                                         <tr>
+                                            <th>No.</th>
                                             <th>Student Number</th>
                                             <th>Student Name</th>
                                             <th>Actions</th>

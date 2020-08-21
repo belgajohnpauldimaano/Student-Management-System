@@ -192,6 +192,7 @@
                             }
                             else
                             {
+                                loader_overlay();
                                 show_toast_alert({
                                     heading : 'Success',
                                     message : res.res_msg,

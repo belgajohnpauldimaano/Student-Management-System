@@ -50,7 +50,7 @@
             ->where('enrollments.status', 1)
             ->where('class_details.status', 1)
             ->where('class_subject_details.sem', 1)
-            ->where('class_details.school_year_id', $SchoolYear->id)
+            ->where('class_details.school_year_id', $ClassDetail->school_year_id)
             ->orderBy('class_subject_details.class_subject_order', 'ASC')
             ->get();
             
@@ -412,7 +412,7 @@ $student_attendance = [
             @elseif($ClassDetail->faculty_id == 76 || $ClassDetail->faculty_id == 73 || $ClassDetail->faculty_id == 36)
                 <table border="0" style="width: 100%; margin-top: -87px; margin-bottom: 0em">     
             @else
-                <table border="0" style="width: 100%; margin-top: -70px; margin-bottom: 0em">
+                <table border="0" style="width: 100%; margin-top: -85px; margin-bottom: 0em">
             @endif                              
                 <tr>
                     <td style="border: 0; width: 50%; height: 100px">

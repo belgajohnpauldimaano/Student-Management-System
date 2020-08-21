@@ -67,6 +67,8 @@
                     }
                 });
             });
+
+            
             
             $('body').on('click', '.js-btn_print_grade', function (e) {
                 e.preventDefault();
@@ -80,10 +82,19 @@
                         $('.js-modal_holder').html(res);
                         $('.js-modal_holder .modal').modal({ backdrop : 'static' });
                         $('.js-modal_holder .modal').on('shown.bs.modal', function () {
-                            //Date picker
-                            $('#datepicker').datepicker({
-                                autoclose: true
-                            })  
+                            
+                            $('body').on('change', '#print_sy', function () {
+                                $.ajax({
+                                    url : "{{ route('admission.get_semester') }}",
+                                    type : 'POST',
+                                    data        : {_token: '{{ csrf_token() }}', print_sy : $('#print_sy').val()},
+                                    success     : function (res) {
+                                        $('.semester').css('display', 'block');  
+                                        $('.semester').html(res);                    
+                                    }
+                                })
+                                // alert('hello world')
+                            })
                         });
                     }
                 });
@@ -91,29 +102,31 @@
 
             $('body').on('click', '#js-btn_print_student_grade', function (e) {
                 e.preventDefault();
-                {{--  loader_overlay();  --}}
+                
                 var id = $('#print_student_id').val();
                 var print_sy = $('#print_sy').val();
+                var semester = $('#semester').val();
                 if (print_sy < 1) {
-                    alert('Please select school year')
+                    
+                    alertify.defaults.theme.ok = "btn btn-primary btn-flat";
+                    alertify
+                    .alert('<i style="color: red" class="fas fa-exclamation-triangle"></i> Warning',"Please select school year.", function(){
+                        // alertify.message('OK');
+                    });
                     return
                 }
-                window.open("{{ route('admin.student.information.print_student_grades') }}?id="+id+"&cid="+print_sy, '', 'height=800,width=800')
-                {{--  $.ajax({
-                    url : "{{ route('admin.student.information.print_student_grade_modal') }}",
-                    type : 'POST',
-                    data : { _token : '{{ csrf_token() }}', id : id },
-                    success : function (res) {
-                        $('.js-modal_holder').html(res);
-                        $('.js-modal_holder .modal').modal({ backdrop : 'static' });
-                        $('.js-modal_holder .modal').on('shown.bs.modal', function () {
-                            //Date picker
-                            $('#datepicker').datepicker({
-                                autoclose: true
-                            })
-                        });
-                    }
-                });  --}}
+                
+                if (semester < 1) {
+                    
+                    alertify.defaults.theme.ok = "btn btn-primary btn-flat";
+                    alertify
+                    .alert('<i style="color: red" class="fas fa-exclamation-triangle"></i> Warning',"Please select semester.", function(){
+                        // alertify.message('OK');
+                    });
+                    return
+                }
+                window.open("{{ route('admin.student.information.print_student_grades') }}?id="+id+"&cid="+print_sy+"&semester="+semester, '', 'height=800,width=800')
+                
             })
 
             $('body').on('submit', '#js-form_subject_details', function (e) {

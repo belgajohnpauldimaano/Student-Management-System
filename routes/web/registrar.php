@@ -83,7 +83,9 @@ Route::group(['prefix' => 'registrar/student-enrollment/{id}', 'middleware' => [
     Route::post('re-enroll-student', 'Registrar\StudentEnrollmentController@re_enroll_student')->name('registrar.student_enrollment.re_enroll_student');
     Route::post('re-enroll-student-all', 'Registrar\StudentEnrollmentController@re_enroll_student_all')->name('registrar.student_enrollment.re_enroll_student_all');
     Route::post('enrolled-student', 'Registrar\StudentEnrollmentController@fetch_enrolled_student')->name('registrar.student_enrollment.fetch_enrolled_student');
+    Route::get('enrolled-student', 'Registrar\StudentEnrollmentController@fetch_enrolled_student')->name('registrar.student_enrollment.fetch_enrolled_student');
     Route::post('cancel-enroll-student', 'Registrar\StudentEnrollmentController@cancel_enroll_student')->name('registrar.student_enrollment.cancel_enroll_student');
+    
     Route::get('print-enrolled-students', 'Registrar\StudentEnrollmentController@print_enrolled_students')->name('registrar.student_enrollment.print_enrolled_students');
 });
 
@@ -95,7 +97,7 @@ Route::group(['prefix' => 'admin/student-information', 'middleware' => ['auth', 
     Route::post('save-data', 'Control_Panel\StudentController@save_data')->name('admin.student.information.save_data');
     Route::post('deactivate-data', 'Control_Panel\StudentController@deactivate_data')->name('admin.student.information.deactivate_data');
     Route::post('print-student-grade-modal', 'Control_Panel\StudentController@print_student_grade_modal')->name('admin.student.information.print_student_grade_modal');
-    
+    Route::post('list-semester', 'Control_Panel\StudentController@getSemester')->name('admission.get_semester');
     Route::get('print-student-grades', 'Control_Panel\StudentController@print_student_grades')->name('admin.student.information.print_student_grades');
     Route::post('change-student-photo', 'Control_Panel\StudentController@change_my_photo')->name('admin.student.change_my_photo');
 });

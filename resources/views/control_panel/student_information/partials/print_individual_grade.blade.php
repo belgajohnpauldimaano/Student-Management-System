@@ -14,12 +14,15 @@
                         <input name="print_student_id" id="print_student_id" value="{{ $student_id }}" type="hidden" />
                         <div class="form-group">
                         <label>Select School Year</label>
-                            <select class="form-control" id="print_sy">
+                            <select class="form-control" id="print_sy" name="print_sy">
                                 <option value="0">Select School Year</option>
                                 @foreach ($Enrollment as $e)
                                     <option value="{{ $e->c_id}}">{{ $e->sy }}</option>
                                 @endforeach
                             </select>
+                        </div>
+
+                        <div class="form-group semester fadeIn" style="padding-right:0; display: none; " >                            
                         </div>
                     @else
                         <h3>No Class tagged</h3>

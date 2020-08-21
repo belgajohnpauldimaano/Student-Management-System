@@ -260,16 +260,14 @@ class GradeSheetController extends Controller
                             compact('GradeSheetData', 'grade_level', 'StudentInformation', 'ClassDetail',
                             'general_avg','Enrollment','Enrollment_first_sem','Enrollment_secondsem','findSchoolYear',
                             'GradeSheet','School_years'));
-                            return json_encode(['GradeSheetData' => $GradeSheetData,]);
+                        return json_encode(['GradeSheetData' => $GradeSheetData,]);
                     }catch(\Exception $e){                
                         return '<div class="box-body"><div class="row"><table class="table"><tbody><tr><th style="text-align:center"><img src="https://cdn.iconscout.com/icon/free/png-256/data-not-found-1965034-1662569.png" alt="no data"/><br/>Sorry, there is no data found.</th></tr></tbody></table></div></div>';
                     }
                 }else{
                     echo "Invalid request";
-                }
-                    
-            }
-            
+                }                    
+            }            
         }
         
         $GradeSheet = 0;
@@ -333,11 +331,13 @@ class GradeSheetController extends Controller
                     class_details.school_year_id,
                     class_details.grade_level,
                     class_details.current,
+                    class_details.strand_id,
                     section_details.section,
                     section_details.grade_level as section_grade_level,
                     school_years.school_year,
                     rooms.room_code,
-                    rooms.room_description
+                    rooms.room_description,
+                    faculty_informations.id as faculty_id
                 ')
                 ->where('section_details.status', 1)
                 // ->where('school_years.current', 1)

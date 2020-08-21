@@ -395,11 +395,11 @@
                 e.preventDefault();
                 fetch_data();
             });
-            $('body').on('click', '.pagination a', function (e) {
-                e.preventDefault();
-                page = $(this).attr('href').split('=')[1];
-                fetch_data();
-            });
+            // $('body').on('click', '.pagination a', function (e) {
+            //     e.preventDefault();
+            //     page = $(this).attr('href').split('=')[1];
+            //     fetch_data();
+            // });
             $('body').on('click', '.js-btn_deactivate', function (e) {
                 e.preventDefault();
                 var id = $(this).data('id');

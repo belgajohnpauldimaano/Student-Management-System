@@ -71,10 +71,14 @@
                                 <input type="text" class="form-control" name="search_ln" placeholder="Last name">
                             </div>
                             <div class="col-sm-12 col-md-2">
-                                <button type="submit" class="btn btn-block  btn-flat btn-success"><i class="fa fa-search"></i> Search</button>
+                                <button type="submit" class="btn btn-block  btn-flat btn-success">
+                                    <i class="fa fa-search"></i> Search
+                                </button>
                             </div>
                             <div class="col-sm-12 col-md-1">
-                                <button type="button" class="btn btn-block  btn-flat btn-primary" id="js-btn_print"><i class="fa fa-file-pdf"></i> Print</button>
+                                <button type="button" class="btn btn-block  btn-flat btn-primary"  title="Print" id="js-btn_print">
+                                    <i class="fa fa-file-pdf"></i>
+                                </button>
                             </div>
                             {{--  <div class="col-sm-12 col-md-1">
                                 <button type="button" class="btn btn-block btn-flat btn-danger btn-sm" id="js-button-add"><i class="fa fa-plus"></i> Add</button>
@@ -152,7 +156,10 @@
                                 <button type="submit" class="btn btn-block  btn-flat btn-success"><i class="fa fa-search"></i> Search</button>
                             </div>
                             <div class="col-sm-12 col-md-1">
-                                <button type="button" class="btn btn-block  btn-flat btn-primary" id="js-btn_print"><i class="fa fa-file-pdf"></i> Print</button>
+                                {{-- <button type="button" class="btn btn-block  btn-flat btn-primary" id="js-btn_print"><i class="fa fa-file-pdf"></i> Print</button> --}}
+                                <button type="button" class="btn btn-block  btn-flat btn-primary"  title="Print" id="js-btn_print">
+                                    <i class="fa fa-file-pdf"></i>
+                                </button>
                             </div>
                             {{--  <div class="col-sm-12 col-md-1">
                                 <button type="button" class="btn btn-block btn-flat btn-danger btn-sm" id="js-button-add"><i class="fa fa-plus"></i> Add</button>
@@ -193,7 +200,7 @@
                 }
             });
         }
-        function fetch_data_enrolled () {
+        function fetch_data_enrolled() {
             $('#js-loader-overlay-enrolled').removeClass('hidden')
             var formData = new FormData($('#js-form_search_enrolled')[0]);
             formData.append('page', page);
@@ -282,7 +289,7 @@
                                     type    : 'success'
                                 });
                                 $('.js-modal_holder .modal').modal('hide');
-                                fetch_data();
+                                // fetch_data();
                                 fetch_data_enrolled();
                             }
                         }
@@ -315,7 +322,7 @@
                                     type    : 'error'
                                 });
 
-                                location.reload();  
+                                // location.reload();  
                             }
                             else
                             {
@@ -327,7 +334,7 @@
                                 $('.js-modal_holder .modal').modal('hide');
                                 fetch_data();
                                 fetch_data_enrolled();
-                                location.reload();  
+                                // location.reload();  
                             }
                         }
                     });
