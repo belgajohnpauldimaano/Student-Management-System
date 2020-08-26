@@ -1,7 +1,7 @@
 <div class="modal fade" tabindex="-1" role="dialog">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
-            <form id="js-form_subject_details">
+            <form id="js-form_subject_details" enctype="multipart/form-data">
                 {{ csrf_field() }}
                 @if ($ClassSubjectDetail)
                     <input type="hidden" name="id" value="{{ $ClassSubjectDetail->id }}">
@@ -15,12 +15,11 @@
                         {{ $ClassSubjectDetail ? 'Edit Class Subject' : 'Add Class Subject' }}
                     </h4>
                 </div>
-                <div class="modal-body">                    
-                        
+                <div class="modal-body">        
                        
                     <input type="hidden" name="section_id" value="{{ $ClassDetail->section_id }}">
 
-                    <div class="form-group">
+                    {{-- <div class="form-group">
                         <label for="">Faculty</label>
                         <select name="faculty" id="faculty" class="form-control">
                             <option value="">Select faculty</option>
@@ -30,23 +29,49 @@
                         </select>
                         <div class="help-block text-red text-center" id="js-faculty">
                         </div>
-                    </div>
+                    </div> --}}
+
+                    <div class="form-group">
+                        <label>Faculty</label>
+                        <select class="form-control select2" name="faculties[]" id="faculties"  multiple="multiple" data-placeholder="Select faculty"
+                                style="width: 100%;">                           
+                            
+                            @if ($ClassSubjectDetail)
+                                <?php echo $faculties ?>
+                            @else
+                                @foreach ($FacultyInformation as $data) 
+                                    <option value="{{ $data->id }}" {{ $ClassSubjectDetail ? $ClassSubjectDetail->faculty_id == $data->id ? 'selected' : '' : '' }}>{{ $data->id }} {{ $data->first_name . ' ' . $data->last_name }}</option>
+                                @endforeach
+                            @endif
+                        </select>
+                        <div class="help-block text-red text-center" id="js-faculty">
+                        </div>
+                      </div>
                     
                     <div class="form-group">
                         <label for="">Subject</label>
                         <select name="subject" id="subject" class="form-control">
                             <option value="">Select subject</option>
                             @foreach ($SubjectDetail as $data) 
-                                <option value="{{ $data->id }}" {{ $ClassSubjectDetail ? $ClassSubjectDetail->subject_id == $data->id ? 'selected' : '' : '' }}>{{ $data->subject_code . ' ' . $data->subject }}</option>
+                                <option value="{{ $data->id }}" {{ $ClassSubjectDetail ? $ClassSubjectDetail->subject_id == $data->id ? 'selected' : '' : '' }}>{{ $data->id }} {{ $data->subject_code . ' ' . $data->subject }}</option>
                             @endforeach
                         </select>
                         <div class="help-block text-red text-center" id="js-subject">
                         </div>
                     </div>
-                    
+                    {{-- {{ $subject_order_available->id }} --}}
                     <div class="form-group">
                         <label for="">Order</label>
-                        <input name="order" id="order" class="form-control" value="{{ $ClassSubjectDetail ? $ClassSubjectDetail->class_subject_order : '' }}" />
+                        {{-- <input name="order" id="order" class="form-control" value="{{ $ClassSubjectDetail ? $ClassSubjectDetail->class_subject_order : '' }}" /> --}}
+                        <select name="order" id="order" class="form-control">
+                            {{-- <option value="">Select Order</option> --}}
+                            {{-- @foreach ($order_numbers as $data)
+                            <option value="1" {{ $ClassSubjectDetail ? $ClassSubjectDetail->class_subject_order == 1 ? 'selected' : '' : '' }}>1</option>
+                            <option value="1" {{ $ClassSubjectDetail ? $ClassSubjectDetail->class_subject_order == 1 ? 'selected' : '' : '' }}>1</option>
+                            @endforeach --}}
+                            {{-- {{ $order_numbers }} --}}
+                            <?php echo $order_numbers; ?>
+                        </select>
                         <div class="help-block text-red text-center" id="js-order">
                         </div>
                     </div>

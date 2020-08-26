@@ -86,7 +86,7 @@ class ClassListController extends Controller
         }
         $GradeLevel = GradeLevel::where('status', 1)->get();
         $Room = Room::where('status', 1)->get();
-        $SchoolYear = SchoolYear::where('status', 1)->where('current', 1)->get();
+        $SchoolYear = SchoolYear::where('status', 1)->get();
 
         $Strand = Strand::where('status', 1)->orderBy('strand')->get();
         // if ($ClassDetail) 

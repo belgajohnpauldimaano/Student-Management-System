@@ -2,6 +2,16 @@
 
 namespace App\Http\Controllers\Registrar;
 
+use App\Room;
+use App\Semester;
+use App\SchoolYear;
+use App\ClassDetail;
+use App\SectionDetail;
+use App\Subject_Title;
+use App\SubjectDetail;
+use App\TeacherSubject;
+use App\ClassSubjectDetail;
+use App\FacultyInformation;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
@@ -9,70 +19,74 @@ class ClassSubjectsController extends Controller
 {
     public function index (Request $request, $class_id) 
     {
-        $Semester = \App\Semester::where('current', 1)->first();
+        $Semester = Semester::where('current', 1)->first();
         
         $ClassDetail = NULL;
 
+        
         if($Semester->semester == '1st')
         {
-            $ClassSubjectDetail = \App\ClassSubjectDetail::join('subject_details', 'subject_details.id', '=' ,'class_subject_details.subject_id')
-            ->join('class_details', 'class_details.id', '=' ,'class_subject_details.class_details_id')
-            ->join('faculty_informations', 'faculty_informations.id', '=' ,'class_subject_details.faculty_id')
-            // ->join('rooms', 'rooms.id', '=' ,'class_subject_details.room_id')
+            $ClassSubjectDetail = ClassSubjectDetail::join('subject_details', 'subject_details.id', '=' ,'class_subject_details.subject_id')
+                ->join('class_details', 'class_details.id', '=' ,'class_subject_details.class_details_id')
+                ->join('faculty_informations', 'faculty_informations.id', '=' ,'class_subject_details.faculty_id')
+                // ->join('rooms', 'rooms.id', '=' ,'class_subject_details.room_id')
 
-            // class_details.room_id,
-                // rooms.room_code,
-                // rooms.room_description
-            ->selectRaw("
-                class_subject_details.id,
-                class_details.school_year_id,
-                class_details.grade_level,
-                CONCAT(faculty_informations.last_name, ' ', faculty_informations.first_name) as faculty_name,
-                subject_details.subject_code,
-                subject_details.subject,
-                class_subject_details.class_schedule,
-                class_subject_details.class_time_from,
-                class_subject_details.class_time_to,
-                class_subject_details.class_days,
-                class_subject_details.class_subject_order
-            ")
-            ->where('class_subject_details.class_details_id', $class_id)
-            ->where('class_subject_details.status', 1)
-            ->where('class_subject_details.sem', 1)
-            // ->orderBy('class_subject_details.class_time_from', 'ASC');
-            ->orderBy('class_subject_details.class_subject_order', 'ASC');
+                // class_details.room_id,
+                    // rooms.room_code,
+                    // rooms.room_description
+                ->selectRaw("
+                    class_subject_details.id,
+                    class_details.school_year_id,
+                    class_details.grade_level,
+                    CONCAT(faculty_informations.last_name, ' ', faculty_informations.first_name) as faculty_name,
+                    subject_details.subject_code,
+                    subject_details.subject,
+                    class_subject_details.class_schedule,
+                    class_subject_details.class_time_from,
+                    class_subject_details.class_time_to,
+                    class_subject_details.class_days,
+                    class_subject_details.class_subject_order
+                ")
+                ->where('class_subject_details.class_details_id', $class_id)
+                ->where('class_subject_details.status', 1)
+                ->where('class_subject_details.sem', 1)
+                // ->orderBy('class_subject_details.class_time_from', 'ASC');
+                ->orderBy('class_subject_details.class_subject_order', 'ASC');
         }
         else 
         {
-            $ClassSubjectDetail = \App\ClassSubjectDetail::join('subject_details', 'subject_details.id', '=' ,'class_subject_details.subject_id')
-            ->join('class_details', 'class_details.id', '=' ,'class_subject_details.class_details_id')
-            ->join('faculty_informations', 'faculty_informations.id', '=' ,'class_subject_details.faculty_id')
-            // ->join('rooms', 'rooms.id', '=' ,'class_subject_details.room_id')
+            $ClassSubjectDetail = ClassSubjectDetail::join('subject_details', 'subject_details.id', '=' ,'class_subject_details.subject_id')
+                ->join('class_details', 'class_details.id', '=' ,'class_subject_details.class_details_id')
+                ->join('faculty_informations', 'faculty_informations.id', '=' ,'class_subject_details.faculty_id')
+                // ->join('rooms', 'rooms.id', '=' ,'class_subject_details.room_id')
 
-            // class_details.room_id,
-                // rooms.room_code,
-                // rooms.room_description
-            ->selectRaw("
-                class_subject_details.id,
-                class_details.school_year_id,
-                class_details.grade_level,
-                CONCAT(faculty_informations.last_name, ' ', faculty_informations.first_name) as faculty_name,
-                subject_details.subject_code,
-                subject_details.subject,
-                class_subject_details.class_schedule,
-                class_subject_details.class_time_from,
-                class_subject_details.class_time_to,
-                class_subject_details.class_days,
-                class_subject_details.class_subject_order
-            ")
-            ->where('class_subject_details.class_details_id', $class_id)
-            ->where('class_subject_details.status', 1)
-            ->where('class_subject_details.sem', 2)
-            // ->orderBy('class_subject_details.class_time_from', 'ASC');
-            ->orderBy('class_subject_details.class_subject_order', 'ASC');
+                // class_details.room_id,
+                    // rooms.room_code,
+                    // rooms.room_description
+                ->selectRaw("
+                    class_subject_details.id,
+                    class_details.school_year_id,
+                    class_details.grade_level,
+                    CONCAT(faculty_informations.last_name, ' ', faculty_informations.first_name) as faculty_name,
+                    subject_details.subject_code,
+                    subject_details.subject,
+                    class_subject_details.class_schedule,
+                    class_subject_details.class_time_from,
+                    class_subject_details.class_time_to,
+                    class_subject_details.class_days,
+                    class_subject_details.class_subject_order
+                ")
+                ->where('class_subject_details.class_details_id', $class_id)
+                ->where('class_subject_details.status', 1)
+                ->where('class_subject_details.sem', 2)
+                // ->orderBy('class_subject_details.class_time_from', 'ASC');
+                ->orderBy('class_subject_details.class_subject_order', 'ASC');
         }
 
-        $ClassSubjectDetail1 = \App\ClassSubjectDetail::join('subject_details', 'subject_details.id', '=' ,'class_subject_details.subject_id')
+       
+        
+
+        $ClassSubjectDetail1 = ClassSubjectDetail::join('subject_details', 'subject_details.id', '=' ,'class_subject_details.subject_id')
             ->join('class_details', 'class_details.id', '=' ,'class_subject_details.class_details_id')
             ->join('faculty_informations', 'faculty_informations.id', '=' ,'class_subject_details.faculty_id')
             // ->join('rooms', 'rooms.id', '=' ,'class_subject_details.room_id')
@@ -105,7 +119,7 @@ class ClassSubjectsController extends Controller
             $ClassSubjectDetail = $ClassSubjectDetail->paginate(10);
             $ClassSubjectDetail1 = $ClassSubjectDetail1->paginate(10);
 
-            $ClassDetail = \App\ClassDetail::join('section_details', 'section_details.id', '=' ,'class_details.section_id')
+            $ClassDetail = ClassDetail::join('section_details', 'section_details.id', '=' ,'class_details.section_id')
             ->join('rooms', 'rooms.id', '=' ,'class_details.room_id')
             ->join('school_years', 'school_years.id', '=' ,'class_details.school_year_id')
             ->selectRaw('
@@ -129,7 +143,7 @@ class ClassSubjectsController extends Controller
         }
         else 
         {
-            $ClassDetail = \App\ClassDetail::join('section_details', 'section_details.id', '=' ,'class_details.section_id')
+            $ClassDetail = ClassDetail::join('section_details', 'section_details.id', '=' ,'class_details.section_id')
             ->join('rooms', 'rooms.id', '=' ,'class_details.room_id')
             ->join('school_years', 'school_years.id', '=' ,'class_details.school_year_id')
             ->selectRaw('
@@ -152,22 +166,28 @@ class ClassSubjectsController extends Controller
 
         $ClassSubjectDetail = $ClassSubjectDetail->paginate(10);
         $ClassSubjectDetail1 = $ClassSubjectDetail1->paginate(10);
-        return view('control_panel_registrar.class_subjects.index', compact('ClassSubjectDetail', 'class_id', 'ClassDetail','Semester','ClassSubjectDetail1'));
+        return view('control_panel_registrar.class_subjects.index', compact('ClassSubjectDetail', 'class_id', 'ClassDetail','Semester','ClassSubjectDetail1','order_numbers'));
     }
+
     public function modal_data (Request $request) 
     {
         $ClassSubjectDetail = NULL;
         if ($request->class_subject_details_id)
         {
-            $ClassSubjectDetail = \App\ClassSubjectDetail::where('id', $request->class_subject_details_id)->first();
+            $ClassSubjectDetail = ClassSubjectDetail::where('id', $request->class_subject_details_id)->first();
         }
         $class_details_id = $request->class_details_id;
-        $FacultyInformation = \App\FacultyInformation::where('status', 1)->get();
-        $SubjectDetail = \App\SubjectDetail::where('status', 1)->get();
+        
+        if (!$request->class_subject_details_id)
+        {
+            $FacultyInformation = FacultyInformation::where('status', 1)->get();
+        }
+        
+        $SubjectDetail = SubjectDetail::where('status', 1)->get();
         
         $ClassDetail = NULL;
 
-        $ClassDetail = \App\ClassDetail::join('section_details', 'section_details.id', '=' ,'class_details.section_id')
+        $ClassDetail = ClassDetail::join('section_details', 'section_details.id', '=' ,'class_details.section_id')
             ->join('rooms', 'rooms.id', '=' ,'class_details.room_id')
             ->join('school_years', 'school_years.id', '=' ,'class_details.school_year_id')
             ->selectRaw('
@@ -186,10 +206,102 @@ class ClassSubjectsController extends Controller
             ->where('class_details.id', $class_details_id)
             ->where('section_details.status', 1)
             ->first();
-        // $section_id = $ClassDetail->section;
+
+            $has_order = ClassSubjectDetail::where('class_details_id', $class_details_id)
+                        ->first();
+            
+            $order_numbers ="<option value='0'>Select Order</option>";
+            $faculties ="<option value='0'>Select Faculty</option>";
+            if ($request->class_subject_details_id)
+            {
+                $FacultyInformations = FacultyInformation::where('status', 1)
+                    ->get();
+                
+                foreach($FacultyInformations as $data)
+                {
+                    $faculty_ids =  TeacherSubject::where('class_subject_details_id', $request->class_subject_details_id)
+                        ->where('faculty_id', $data->id)
+                        ->first();
+
+                    if($faculty_ids)
+                    {
+                        try {
+                            if($faculty_ids->faculty_id == $data->id){
+                                $selected_item = 'selected="selected"';
+                            }
+                            $faculties .= '<option value="'.$data->id.'" '.$selected_item.'> '. $data->first_name . ' ' . $data->last_name .'</option>';
+                        } catch (\Throwable $th) {
+                            $faculties .= '<option value="'.$data->id.'" >'. $data->first_name . ' ' . $data->last_name .'</option>';
+                        }        
+                    }
+                    else
+                    {
+                        $faculties .= '<option value="'.$data->id.'" >'. $data->first_name . ' ' . $data->last_name .'</option>';
+                    }
+                }
+
+                for($x = 1; $x <= 10; $x++) {                
+                    $selected = ClassSubjectDetail::where('id', $request->class_subject_details_id)
+                        ->first();  
+                        
+                    $subject_order_available = ClassSubjectDetail::where('class_details_id', $class_details_id)
+                        ->where('class_subject_order', $x)
+                        ->first();     
+                        
+                    if($subject_order_available){
+                        try {
+                            if($selected->class_subject_order == $x  && $selected->class_subject_order == $x)
+                            {
+                                $item = 'selected style="color: red;"';
+                                $order_numbers .= '<option value="'.$x.'" '.$item.'>'.$x.'</option>';
+                            }
+
+                            else if($subject_order_available->class_subject_order == $x ){
+                                $item = 'disabled style="color: red;"';
+                                $order_numbers .= '<option value="'.$x.'" '.$item.'>'.$x.'</option>';
+                            }
+
+                        } catch (\Throwable $th) {
+                            $order_numbers .= '<option value="'.$x.'" >'.$x.'</option>';
+                        }                    
+                    }
+                    else
+                    {
+                        $order_numbers .= '<option value="'.$x.'" >'.$x.'</option>';
+                    }
+                }  
+            }
+            else
+            {
+                for($x = 1; $x <= 10; $x++) {                
+                    $subject_order_available = ClassSubjectDetail::where('class_details_id', $class_details_id)
+                        ->where('class_subject_order', $x)
+                        ->first();         
+                        
+                    if($subject_order_available){
+                        try {
+                            if($subject_order_available->class_subject_order == $x){
+                                $item = 'disabled style="color: red;"';
+                            }
+                            $order_numbers .= '<option value="'.$x.'" '.$item.'>'.$x.'</option>';
+                        } catch (\Throwable $th) {
+                            $order_numbers .= '<option value="'.$x.'" >'.$x.'</option>';
+                        }                    
+                    }
+                    else
+                    {
+                        $order_numbers .= '<option value="'.$x.'" >'.$x.'</option>';
+                    }
+                }
+            }
+            
+
+            // return json_encode($order_numbers);
         
         // return json_encode($ClassSubjectDetail);
-        return view('control_panel_registrar.class_subjects.partials.modal_data', compact('ClassSubjectDetail', 'FacultyInformation', 'SubjectDetail', 'class_details_id','ClassDetail'))->render();
+        return view('control_panel_registrar.class_subjects.partials.modal_data', 
+            compact('subject_order_available','ClassSubjectDetail', 'FacultyInformation', 'SubjectDetail', 'faculties',
+            'class_details_id','ClassDetail','order_numbers'))->render();
     }
 
     public function modal_manage_subjects (Request $request) 
@@ -197,14 +309,14 @@ class ClassSubjectsController extends Controller
         $ClassSubjectDetail = NULL;
         if ($request->class_subject_details_id)
         {
-            $ClassSubjectDetail = \App\ClassSubjectDetail::where('id', $request->class_subject_details_id)->first();
+            $ClassSubjectDetail = ClassSubjectDetail::where('id', $request->class_subject_details_id)->first();
         }
         
-        $FacultyInformation = \App\FacultyInformation::where('status', 1)->get();
-        $ClassSubjectDetail = \App\ClassSubjectDetail::where('status', 1)->get();
-        $SectionDetail = \App\SectionDetail::where('status', 1)->get();
-        $Room = \App\Room::where('status', 1)->get();
-        $SchoolYear = \App\SchoolYear::where('status', 1)->get();
+        $FacultyInformation = FacultyInformation::where('status', 1)->get();
+        $ClassSubjectDetail = ClassSubjectDetail::where('status', 1)->get();
+        $SectionDetail = SectionDetail::where('status', 1)->get();
+        $Room = Room::where('status', 1)->get();
+        $SchoolYear = SchoolYear::where('status', 1)->get();
         
 
         return view('control_panel_registrar.class_subjects.partials.modal_manage_subjects', compact('ClassSubjectDetail', 'FacultyInformation', 'ClassSubjectDetail', 'SectionDetail', 'Room', 'SchoolYear'))->render();
@@ -235,7 +347,7 @@ class ClassSubjectsController extends Controller
         }
         // return json_encode(['a' => $request->all(), 'scheds' => $scheds]);
         $rules = [
-            'faculty'           => 'required',
+            'faculties'           => 'required',
             'subject'           => 'required',
             // 'subject_time_from' => 'required',
             // 'subject_time_to'   => 'required'
@@ -250,19 +362,351 @@ class ClassSubjectsController extends Controller
         }
 
         // return json_encode($request->id);
-        // $sectionDetail = \App\sectionDetail::where('id', $request->section)->first();
+        // $sectionDetail = sectionDetail::where('id', $request->section)->first();
         
         if ($request->id)
         {
-            $ClassSubjectDetail = \App\ClassSubjectDetail::where('id', $request->id)->first();
-            $ClassSubjectDetail->class_time_from		    = date('H:i', strtotime($request->subject_time_from));
-            $ClassSubjectDetail->class_time_to		    = date('H:i', strtotime($request->subject_time_to));
-            $ClassSubjectDetail->subject_id	        = $request->subject;
-            $ClassSubjectDetail->faculty_id		    = $request->faculty;
-            $ClassSubjectDetail->class_details_id   = $request->class_details_id;
-            $ClassSubjectDetail->class_subject_order   = $request->order;
-            $ClassSubjectDetail->class_schedule   = $scheds;
+            foreach($request->faculty as $faculty_id)
+            {
 
+                $ClassSubjectDetail = ClassSubjectDetail::where('id', $request->id)->first();
+                $ClassSubjectDetail->class_time_from		    = date('H:i', strtotime($request->subject_time_from));
+                $ClassSubjectDetail->class_time_to		    = date('H:i', strtotime($request->subject_time_to));
+                $ClassSubjectDetail->subject_id	        = $request->subject;
+                $ClassSubjectDetail->faculty_id		    = $faculty_id;
+                $ClassSubjectDetail->class_details_id   = $request->class_details_id;
+                $ClassSubjectDetail->class_subject_order   = $request->order;
+                $ClassSubjectDetail->class_schedule   = $scheds;
+
+                // $class_days = '';
+                // $class_days .= $request->sched_mon ? 'm/' : '';
+                // $class_days .= $request->sched_tue ? 'tu/' : '';
+                // $class_days .= $request->sched_wed ? 'w/' : '';
+                // $class_days .= $request->sched_thu ? 'th/' : '';
+                // $class_days .= $request->sched_fri ? 'f' : '';
+                
+                // $class_days .= !$request->sched_mon && !$request->sched_tue && !$request->sched_wed && !$request->sched_thu && !$request->sched_fri ? 'm/tu/w/th/f' : '';
+
+                // $ClassSubjectDetail->class_days = $class_days;
+                if($request->order == 1)
+                {
+                    
+                    Subject_Title::where(['section_id'=> $request->section_id])->update(['subject_1'=>$request->subject]);                
+                    
+                        
+                }
+                else if($request->order == 2)
+                {
+                
+                    Subject_Title::where(['section_id'=> $request->section_id])->update(['subject_2'=>$request->subject]);                
+                    
+                }
+                else if($request->order == 3)
+                {
+                    
+                    Subject_Title::where(['section_id'=> $request->section_id])->update(['subject_3'=>$request->subject]);                
+                    
+                }
+                else if($request->order == 4)
+                {
+                
+                    Subject_Title::where(['section_id'=> $request->section_id])->update(['subject_4'=>$request->subject]);                
+                    
+                }
+                else if($request->order == 5)
+                {
+                    
+                    Subject_Title::where(['section_id'=> $request->section_id])->update(['subject_5'=>$request->subject]);                
+                    
+                }
+                else if($request->order == 6)
+                {
+                    
+                    Subject_Title::where(['section_id'=> $request->section_id])->update(['subject_6'=>$request->subject]);                
+                    
+                }
+                else if($request->order == 7)
+                {
+                    
+                    Subject_Title::where(['section_id'=> $request->section_id])->update(['subject_7'=>$request->subject]);                
+                    
+                }
+                else if($request->order == 8)
+                {
+                    
+                    Subject_Title::where(['section_id'=> $request->section_id])->update(['subject_8'=>$request->subject]);                
+                    
+                }
+                else if($request->order == 9)
+                {
+                    
+                    Subject_Title::where(['section_id'=> $request->section_id])->update(['subject_9'=>$request->subject]);                
+                    
+                }
+                
+
+                $ClassSubjectDetail->save();                
+            }
+            return response()->json(['res_code' => 0, 'res_msg' => 'Data successfully updated.', 'ClassSubjectDetail' => $ClassSubjectDetail]);
+        }
+        // $faculty_id = $request->faculty;
+        // $request->faculty = implode(',', $faculty_id);
+        // return $faculty_id;
+
+        // $faculties = $input["faculties"];
+        // $x = NULL;
+        $x = NULL;
+        foreach($request->faculties as $faculty_id)
+        {
+            $x = $faculty_id;
+        }
+        
+            $ClassSubjectDetail = new ClassSubjectDetail();
+            $ClassSubjectDetail->class_time_from  = date('H:i', strtotime($request->subject_time_from));
+            $ClassSubjectDetail->class_time_to	= date('H:i', strtotime($request->subject_time_to));
+            $ClassSubjectDetail->subject_id	    = $request->subject;
+            $ClassSubjectDetail->faculty_id		= $x;
+            $ClassSubjectDetail->class_details_id  = $request->class_details_id;
+            $ClassSubjectDetail->class_subject_order  = $request->order;
+            $ClassSubjectDetail->class_schedule   = $scheds;
+            
+            $Semester = Semester::where('current', 1)->first();
+
+            $sem;
+            if($Semester->semester == '1st')
+            {
+                $ClassSubjectDetail->sem = 1;
+                $sem = 1;
+            }
+            else 
+            {
+                $ClassSubjectDetail->sem = 2;
+                $sem = 2;
+            }
+
+            // saving for title of gradesheet
+            
+            
+            $count = Subject_Title::where('section_id', $request->section_id)->count();
+
+            if($request->order == 1)
+            {
+                if($count == 0)
+                {
+                    $Subject_Title = new Subject_Title();  
+                    $Subject_Title->section_id = $request->section_id;
+                    $Subject_Title->subject_1  = $request->subject;
+                    $Subject_Title->subject_2  = 0;
+                    $Subject_Title->subject_3  = 0;
+                    $Subject_Title->subject_4  = 0;
+                    $Subject_Title->subject_5  = 0;
+                    $Subject_Title->subject_6  = 0;
+                    $Subject_Title->subject_7  = 0;
+                    $Subject_Title->subject_8  = 0;
+                    $Subject_Title->subject_9  = 0;
+                    $Subject_Title->sem = $sem;
+                    $Subject_Title->save();                
+                }
+                else
+                {
+                    Subject_Title::where(['section_id'=> $request->section_id])->update(['subject_1'=>$request->subject]);                
+                }
+                    
+            }
+            else if($request->order == 2)
+            {
+            if($count == 0)
+                {
+                    $Subject_Title = new Subject_Title();  
+                    $Subject_Title->section_id = $request->section_id;
+                    $Subject_Title->subject_1  = 0;
+                    $Subject_Title->subject_2  = $request->subject;
+                    $Subject_Title->subject_3  = 0;
+                    $Subject_Title->subject_4  = 0;
+                    $Subject_Title->subject_5  = 0;
+                    $Subject_Title->subject_6  = 0;
+                    $Subject_Title->subject_7  = 0;
+                    $Subject_Title->subject_8  = 0;
+                    $Subject_Title->subject_9  = 0;
+                    $Subject_Title->sem = $sem;
+                    $Subject_Title->save();
+                    
+                }
+                else
+                {
+                    Subject_Title::where(['section_id'=> $request->section_id])->update(['subject_2'=>$request->subject]);                
+                }
+            }
+            else if($request->order == 3)
+            {
+                if($count == 0)
+                {
+                    $Subject_Title = new Subject_Title();  
+                    $Subject_Title->section_id = $request->section_id;
+                    $Subject_Title->subject_1  = 0;
+                    $Subject_Title->subject_2  = 0;
+                    $Subject_Title->subject_3  = $request->subject;
+                    $Subject_Title->subject_4  = 0;
+                    $Subject_Title->subject_5  = 0;
+                    $Subject_Title->subject_6  = 0;
+                    $Subject_Title->subject_7  = 0;
+                    $Subject_Title->subject_8  = 0;
+                    $Subject_Title->subject_9  = 0;
+                    $Subject_Title->sem = $sem;
+                    $Subject_Title->save();
+                    
+                }
+                else
+                {
+                    Subject_Title::where(['section_id'=> $request->section_id])->update(['subject_3'=>$request->subject]);                
+                }
+            }
+            else if($request->order == 4)
+            {
+                if($count == 0)
+                {
+                    $Subject_Title = new Subject_Title();  
+                    $Subject_Title->section_id = $request->section_id;
+                    $Subject_Title->subject_1  = 0;
+                    $Subject_Title->subject_2  = 0;
+                    $Subject_Title->subject_3  = 0;
+                    $Subject_Title->subject_4  = $request->subject;
+                    $Subject_Title->subject_5  = 0;
+                    $Subject_Title->subject_6  = 0;
+                    $Subject_Title->subject_7  = 0;
+                    $Subject_Title->subject_8  = 0;
+                    $Subject_Title->subject_9  = 0;
+                    $Subject_Title->sem = $sem;
+                    $Subject_Title->save();
+                    
+                }
+                else
+                {
+                    Subject_Title::where(['section_id'=> $request->section_id])->update(['subject_4'=>$request->subject]);                
+                }
+            }
+            else if($request->order == 5)
+            {
+                if($count == 0)
+                {
+                    $Subject_Title = new Subject_Title();  
+                    $Subject_Title->section_id = $request->section_id;
+                    $Subject_Title->subject_1  = 0;
+                    $Subject_Title->subject_2  = 0;
+                    $Subject_Title->subject_3  = 0;
+                    $Subject_Title->subject_4  = 0;
+                    $Subject_Title->subject_5  = $request->subject;
+                    $Subject_Title->subject_6  = 0;
+                    $Subject_Title->subject_7  = 0;
+                    $Subject_Title->subject_8  = 0;
+                    $Subject_Title->subject_9  = 0;
+                    $Subject_Title->sem = $sem;
+                    $Subject_Title->save();
+                    
+                }
+                else
+                {
+                    Subject_Title::where(['section_id'=> $request->section_id])->update(['subject_5'=>$request->subject]);                
+                }
+            }
+            else if($request->order == 6)
+            {
+                if($count == 0)
+                {
+                    $Subject_Title = new Subject_Title();  
+                    $Subject_Title->section_id = $request->section_id;
+                    $Subject_Title->subject_1  = 0;
+                    $Subject_Title->subject_2  = 0;
+                    $Subject_Title->subject_3  = 0;
+                    $Subject_Title->subject_4  = 0;
+                    $Subject_Title->subject_5  = 0;
+                    $Subject_Title->subject_6  = $request->subject;
+                    $Subject_Title->subject_7  = 0;
+                    $Subject_Title->subject_8  = 0;
+                    $Subject_Title->subject_9  = 0;
+                    $Subject_Title->sem = $sem;
+                    $Subject_Title->save();
+                    
+                }
+                else
+                {
+                    Subject_Title::where(['section_id'=> $request->section_id])->update(['subject_6'=>$request->subject]);                
+                }
+            }
+            else if($request->order == 7)
+            {
+                if($count == 0)
+                {
+                    $Subject_Title = new Subject_Title();  
+                    $Subject_Title->section_id = $request->section_id;
+                    $Subject_Title->subject_1  = 0;
+                    $Subject_Title->subject_2  = 0;
+                    $Subject_Title->subject_3  = 0;
+                    $Subject_Title->subject_4  = 0;
+                    $Subject_Title->subject_5  = 0;
+                    $Subject_Title->subject_6  = 0;
+                    $Subject_Title->subject_7  = $request->subject;
+                    $Subject_Title->subject_8  = 0;
+                    $Subject_Title->subject_9  = 0;
+                    $Subject_Title->sem = $sem;
+                    $Subject_Title->save();
+                    
+                }
+                else
+                {
+                    Subject_Title::where(['section_id'=> $request->section_id])->update(['subject_7'=>$request->subject]);                
+                }
+            }
+            else if($request->order == 8)
+            {
+                if($count == 0)
+                {
+                    $Subject_Title = new Subject_Title();  
+                    $Subject_Title->section_id = $request->section_id;
+                    $Subject_Title->subject_1  = 0;
+                    $Subject_Title->subject_2  = 0;
+                    $Subject_Title->subject_3  = 0;
+                    $Subject_Title->subject_4  = 0;
+                    $Subject_Title->subject_5  = 0;
+                    $Subject_Title->subject_6  = 0;
+                    $Subject_Title->subject_7  = 0;
+                    $Subject_Title->subject_8  = $request->subject;
+                    $Subject_Title->subject_9  = 0;
+                    $Subject_Title->sem = $sem;
+                    $Subject_Title->save();
+                    
+                }
+                else
+                {
+                    Subject_Title::where(['section_id'=> $request->section_id])->update(['subject_8'=>$request->subject]);                
+                }
+            }
+            else if($request->order == 9)
+            {
+                if($count == 0)
+                {
+                    $Subject_Title = new Subject_Title();  
+                    $Subject_Title->section_id = $request->section_id;
+                    $Subject_Title->subject_1  = 0;
+                    $Subject_Title->subject_2  = 0;
+                    $Subject_Title->subject_3  = 0;
+                    $Subject_Title->subject_4  = 0;
+                    $Subject_Title->subject_5  = 0;
+                    $Subject_Title->subject_6  = 0;
+                    $Subject_Title->subject_7  = 0;
+                    $Subject_Title->subject_8  = 0;
+                    $Subject_Title->subject_9  = $request->subject;
+                    $Subject_Title->sem = $sem;
+                    $Subject_Title->save();
+                    
+                }
+                else
+                {
+                    Subject_Title::where(['section_id'=> $request->section_id])->update(['subject_9'=>$request->subject]);                
+                }
+            }
+            
+                
             // $class_days = '';
             // $class_days .= $request->sched_mon ? 'm/' : '';
             // $class_days .= $request->sched_tue ? 'tu/' : '';
@@ -273,332 +717,23 @@ class ClassSubjectsController extends Controller
             // $class_days .= !$request->sched_mon && !$request->sched_tue && !$request->sched_wed && !$request->sched_thu && !$request->sched_fri ? 'm/tu/w/th/f' : '';
 
             // $ClassSubjectDetail->class_days = $class_days;
-            if($request->order == 1)
-            {
-                
-                \App\Subject_Title::where(['section_id'=> $request->section_id])->update(['subject_1'=>$request->subject]);                
-                
-                    
-            }
-            else if($request->order == 2)
-            {
-            
-                \App\Subject_Title::where(['section_id'=> $request->section_id])->update(['subject_2'=>$request->subject]);                
-                
-            }
-            else if($request->order == 3)
-            {
-                
-                \App\Subject_Title::where(['section_id'=> $request->section_id])->update(['subject_3'=>$request->subject]);                
-                
-            }
-            else if($request->order == 4)
-            {
-            
-                \App\Subject_Title::where(['section_id'=> $request->section_id])->update(['subject_4'=>$request->subject]);                
-                
-            }
-            else if($request->order == 5)
-            {
-                
-                \App\Subject_Title::where(['section_id'=> $request->section_id])->update(['subject_5'=>$request->subject]);                
-                
-            }
-            else if($request->order == 6)
-            {
-                
-                \App\Subject_Title::where(['section_id'=> $request->section_id])->update(['subject_6'=>$request->subject]);                
-                
-            }
-            else if($request->order == 7)
-            {
-                
-                \App\Subject_Title::where(['section_id'=> $request->section_id])->update(['subject_7'=>$request->subject]);                
-                
-            }
-            else if($request->order == 8)
-            {
-                
-                \App\Subject_Title::where(['section_id'=> $request->section_id])->update(['subject_8'=>$request->subject]);                
-                
-            }
-            else if($request->order == 9)
-            {
-                
-                \App\Subject_Title::where(['section_id'=> $request->section_id])->update(['subject_9'=>$request->subject]);                
-                
-            }
-            
-
             $ClassSubjectDetail->save();
-            return response()->json(['res_code' => 0, 'res_msg' => 'Data successfully updated.', 'ClassSubjectDetail' => $ClassSubjectDetail]);
-        }
-        
 
-        $ClassSubjectDetail = new \App\ClassSubjectDetail();
-        $ClassSubjectDetail->class_time_from  = date('H:i', strtotime($request->subject_time_from));
-        $ClassSubjectDetail->class_time_to	= date('H:i', strtotime($request->subject_time_to));
-        $ClassSubjectDetail->subject_id	    = $request->subject;
-        $ClassSubjectDetail->faculty_id		= $request->faculty;
-        $ClassSubjectDetail->class_details_id  = $request->class_details_id;
-        $ClassSubjectDetail->class_subject_order  = $request->order;
-        $ClassSubjectDetail->class_schedule   = $scheds;
-        
-        $Semester = \App\Semester::where('current', 1)->first();
-
-        $sem;
-        if($Semester->semester == '1st')
+        foreach($request->faculties as $faculty_id)
         {
-            $ClassSubjectDetail->sem = 1;
-            $sem = 1;
-        }
-        else 
-        {
-            $ClassSubjectDetail->sem = 2;
-            $sem = 2;
-        }
-
-        // saving for title of gradesheet
-        
-        
-        $count = \App\Subject_Title::where('section_id', $request->section_id)->count();
-
-        if($request->order == 1)
-        {
-            if($count == 0)
-            {
-                $Subject_Title = new \App\Subject_Title();  
-                $Subject_Title->section_id = $request->section_id;
-                $Subject_Title->subject_1  = $request->subject;
-                $Subject_Title->subject_2  = 0;
-                $Subject_Title->subject_3  = 0;
-                $Subject_Title->subject_4  = 0;
-                $Subject_Title->subject_5  = 0;
-                $Subject_Title->subject_6  = 0;
-                $Subject_Title->subject_7  = 0;
-                $Subject_Title->subject_8  = 0;
-                $Subject_Title->subject_9  = 0;
-                $Subject_Title->sem = $sem;
-                $Subject_Title->save();                
-            }
-            else
-            {
-                \App\Subject_Title::where(['section_id'=> $request->section_id])->update(['subject_1'=>$request->subject]);                
-            }
-                   
-        }
-        else if($request->order == 2)
-        {
-           if($count == 0)
-            {
-                $Subject_Title = new \App\Subject_Title();  
-                $Subject_Title->section_id = $request->section_id;
-                $Subject_Title->subject_1  = 0;
-                $Subject_Title->subject_2  = $request->subject;
-                $Subject_Title->subject_3  = 0;
-                $Subject_Title->subject_4  = 0;
-                $Subject_Title->subject_5  = 0;
-                $Subject_Title->subject_6  = 0;
-                $Subject_Title->subject_7  = 0;
-                $Subject_Title->subject_8  = 0;
-                $Subject_Title->subject_9  = 0;
-                $Subject_Title->sem = $sem;
-                $Subject_Title->save();
-                
-            }
-            else
-            {
-                \App\Subject_Title::where(['section_id'=> $request->section_id])->update(['subject_2'=>$request->subject]);                
-            }
-        }
-        else if($request->order == 3)
-        {
-            if($count == 0)
-            {
-                $Subject_Title = new \App\Subject_Title();  
-                $Subject_Title->section_id = $request->section_id;
-                $Subject_Title->subject_1  = 0;
-                $Subject_Title->subject_2  = 0;
-                $Subject_Title->subject_3  = $request->subject;
-                $Subject_Title->subject_4  = 0;
-                $Subject_Title->subject_5  = 0;
-                $Subject_Title->subject_6  = 0;
-                $Subject_Title->subject_7  = 0;
-                $Subject_Title->subject_8  = 0;
-                $Subject_Title->subject_9  = 0;
-                $Subject_Title->sem = $sem;
-                $Subject_Title->save();
-                
-            }
-            else
-            {
-                \App\Subject_Title::where(['section_id'=> $request->section_id])->update(['subject_3'=>$request->subject]);                
-            }
-        }
-        else if($request->order == 4)
-        {
-            if($count == 0)
-            {
-                $Subject_Title = new \App\Subject_Title();  
-                $Subject_Title->section_id = $request->section_id;
-                $Subject_Title->subject_1  = 0;
-                $Subject_Title->subject_2  = 0;
-                $Subject_Title->subject_3  = 0;
-                $Subject_Title->subject_4  = $request->subject;
-                $Subject_Title->subject_5  = 0;
-                $Subject_Title->subject_6  = 0;
-                $Subject_Title->subject_7  = 0;
-                $Subject_Title->subject_8  = 0;
-                $Subject_Title->subject_9  = 0;
-                $Subject_Title->sem = $sem;
-                $Subject_Title->save();
-                
-            }
-            else
-            {
-                \App\Subject_Title::where(['section_id'=> $request->section_id])->update(['subject_4'=>$request->subject]);                
-            }
-        }
-        else if($request->order == 5)
-        {
-            if($count == 0)
-            {
-                $Subject_Title = new \App\Subject_Title();  
-                $Subject_Title->section_id = $request->section_id;
-                $Subject_Title->subject_1  = 0;
-                $Subject_Title->subject_2  = 0;
-                $Subject_Title->subject_3  = 0;
-                $Subject_Title->subject_4  = 0;
-                $Subject_Title->subject_5  = $request->subject;
-                $Subject_Title->subject_6  = 0;
-                $Subject_Title->subject_7  = 0;
-                $Subject_Title->subject_8  = 0;
-                $Subject_Title->subject_9  = 0;
-                $Subject_Title->sem = $sem;
-                $Subject_Title->save();
-                
-            }
-            else
-            {
-                \App\Subject_Title::where(['section_id'=> $request->section_id])->update(['subject_5'=>$request->subject]);                
-            }
-        }
-        else if($request->order == 6)
-        {
-            if($count == 0)
-            {
-                $Subject_Title = new \App\Subject_Title();  
-                $Subject_Title->section_id = $request->section_id;
-                $Subject_Title->subject_1  = 0;
-                $Subject_Title->subject_2  = 0;
-                $Subject_Title->subject_3  = 0;
-                $Subject_Title->subject_4  = 0;
-                $Subject_Title->subject_5  = 0;
-                $Subject_Title->subject_6  = $request->subject;
-                $Subject_Title->subject_7  = 0;
-                $Subject_Title->subject_8  = 0;
-                $Subject_Title->subject_9  = 0;
-                $Subject_Title->sem = $sem;
-                $Subject_Title->save();
-                
-            }
-            else
-            {
-                \App\Subject_Title::where(['section_id'=> $request->section_id])->update(['subject_6'=>$request->subject]);                
-            }
-        }
-        else if($request->order == 7)
-        {
-            if($count == 0)
-            {
-                $Subject_Title = new \App\Subject_Title();  
-                $Subject_Title->section_id = $request->section_id;
-                $Subject_Title->subject_1  = 0;
-                $Subject_Title->subject_2  = 0;
-                $Subject_Title->subject_3  = 0;
-                $Subject_Title->subject_4  = 0;
-                $Subject_Title->subject_5  = 0;
-                $Subject_Title->subject_6  = 0;
-                $Subject_Title->subject_7  = $request->subject;
-                $Subject_Title->subject_8  = 0;
-                $Subject_Title->subject_9  = 0;
-                $Subject_Title->sem = $sem;
-                $Subject_Title->save();
-                
-            }
-            else
-            {
-                \App\Subject_Title::where(['section_id'=> $request->section_id])->update(['subject_7'=>$request->subject]);                
-            }
-        }
-        else if($request->order == 8)
-        {
-            if($count == 0)
-            {
-                $Subject_Title = new \App\Subject_Title();  
-                $Subject_Title->section_id = $request->section_id;
-                $Subject_Title->subject_1  = 0;
-                $Subject_Title->subject_2  = 0;
-                $Subject_Title->subject_3  = 0;
-                $Subject_Title->subject_4  = 0;
-                $Subject_Title->subject_5  = 0;
-                $Subject_Title->subject_6  = 0;
-                $Subject_Title->subject_7  = 0;
-                $Subject_Title->subject_8  = $request->subject;
-                $Subject_Title->subject_9  = 0;
-                $Subject_Title->sem = $sem;
-                $Subject_Title->save();
-                
-            }
-            else
-            {
-                \App\Subject_Title::where(['section_id'=> $request->section_id])->update(['subject_8'=>$request->subject]);                
-            }
-        }
-        else if($request->order == 9)
-        {
-            if($count == 0)
-            {
-                $Subject_Title = new \App\Subject_Title();  
-                $Subject_Title->section_id = $request->section_id;
-                $Subject_Title->subject_1  = 0;
-                $Subject_Title->subject_2  = 0;
-                $Subject_Title->subject_3  = 0;
-                $Subject_Title->subject_4  = 0;
-                $Subject_Title->subject_5  = 0;
-                $Subject_Title->subject_6  = 0;
-                $Subject_Title->subject_7  = 0;
-                $Subject_Title->subject_8  = 0;
-                $Subject_Title->subject_9  = $request->subject;
-                $Subject_Title->sem = $sem;
-                $Subject_Title->save();
-                
-            }
-            else
-            {
-                \App\Subject_Title::where(['section_id'=> $request->section_id])->update(['subject_9'=>$request->subject]);                
-            }
+            $TeacherSubject = new TeacherSubject();
+            $TeacherSubject->class_subject_details_id = $ClassSubjectDetail->id;
+            $TeacherSubject->faculty_id = $faculty_id;
+            $TeacherSubject->save();
+            // return response()->json(['res_code' => 0, 'res_msg' => 'Data successfully saved.', 'ClassSubjectDetail' => $ClassSubjectDetail]);
         }
         
-            
-        // $class_days = '';
-        // $class_days .= $request->sched_mon ? 'm/' : '';
-        // $class_days .= $request->sched_tue ? 'tu/' : '';
-        // $class_days .= $request->sched_wed ? 'w/' : '';
-        // $class_days .= $request->sched_thu ? 'th/' : '';
-        // $class_days .= $request->sched_fri ? 'f' : '';
-        
-        // $class_days .= !$request->sched_mon && !$request->sched_tue && !$request->sched_wed && !$request->sched_thu && !$request->sched_fri ? 'm/tu/w/th/f' : '';
-
-        // $ClassSubjectDetail->class_days = $class_days;
-        $ClassSubjectDetail->save();
-        
-        return response()->json(['res_code' => 0, 'res_msg' => 'Data successfully saved.', 'ClassSubjectDetail' => $ClassSubjectDetail]);
+       
     }
 
-    public function deactivate_data (Request $request) 
+    public function deactivate_data (Request $request)
     {
-        $ClassSubjectDetail = \App\ClassSubjectDetail::where('id', $request->id)->first();
+        $ClassSubjectDetail = ClassSubjectDetail::where('id', $request->id)->first();
 
         if ($ClassSubjectDetail)
         {

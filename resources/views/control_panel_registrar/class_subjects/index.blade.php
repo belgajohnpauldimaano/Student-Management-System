@@ -67,6 +67,7 @@
                             $('.timepicker').timepicker({
                             showInputs: false
                             })
+                            $('.select2').select2()
                         })
                     }
                 });
