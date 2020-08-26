@@ -242,14 +242,10 @@
                                 <td>
                                     <p class="p0 m0 student-info"><b>Track/Strand - Academic:</b> 
                                         <?php  
-                                        try {
-                                            //code...
-                                        } catch (\Throwable $th) {
-                                            //throw $th;
-                                        }
-                                                // $strand_name = \App\Strand::where('id', $ClassDetail->strand_id)
-                                                // ->first(); 
-                                                // echo $strand_name->strand;
+                                       
+                                                $strand_name = \App\Strand::where('id', $ClassDetail->strand_id)
+                                                ->first(); 
+                                                echo $strand_name->strand;
                                         ?>                                        
                                     </p>
                                     <p class="p0 m0 student-info"><b>Semester</b> : <i style="color: red">First</i></p>
