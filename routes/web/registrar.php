@@ -70,7 +70,10 @@ Route::group(['prefix' => 'registrar/class-subjects/{class_id}', 'middleware' =>
     Route::get('', 'Registrar\ClassSubjectsController@index')->name('registrar.class_subjects');
     Route::post('', 'Registrar\ClassSubjectsController@index')->name('registrar.class_subjects');
     Route::post('modal-data', 'Registrar\ClassSubjectsController@modal_data')->name('registrar.class_subjects.modal_data');
+    Route::post('modal-data-faculty', 'Registrar\ClassSubjectsController@modalDataFaculty')->name('registrar.class_subjects.modal_data_faculty');
     Route::post('save-data', 'Registrar\ClassSubjectsController@save_data')->name('registrar.class_subjects.save_data');
+    Route::post('save-faculty-data', 'Registrar\ClassSubjectsController@saveDataFaculty')->name('registrar.class_subjects.save_faculty_data');
+    Route::post('delete-data', 'Registrar\ClassSubjectsController@deleteDataFaculty')->name('registrar.faculty_id.delete_data');
     Route::post('deactivate-data', 'Registrar\ClassSubjectsController@deactivate_data')->name('registrar.class_subjects.deactivate_data');
 });
 

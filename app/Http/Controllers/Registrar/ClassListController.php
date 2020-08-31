@@ -36,12 +36,12 @@ class ClassListController extends Controller
                 school_years.id as schoolyearid,
                 rooms.room_code,
                 rooms.room_description,
-                CONCAT(faculty_informations.last_name, " ", faculty_informations.first_name, ", " ,  faculty_informations.middle_name) AS adviser_name
+                CONCAT(faculty_informations.last_name, ", ", faculty_informations.first_name, " " ,  faculty_informations.middle_name) AS adviser_name
             ')
             ->where('section_details.status', 1)
             ->where('class_details.current', 1)
             ->where('class_details.status', 1)
-            ->where('school_year_id', $request->sy_search)
+            ->where('school_year_id', $request->sy_search ? $request->sy_search : $SchoolYear->id)
             ->where(function ($query) use($request) {
                 if ($request->sy_search) 
                 {
@@ -93,7 +93,8 @@ class ClassListController extends Controller
         // {
         //     $Strand = Strand::where('status', 1)->where('strand', $ClassDetail->strand)->orderBy('strand')->get();
         // }
-        return view('control_panel_registrar.class_details.partials.modal_data', compact('ClassDetail', 'SectionDetail', 'Room', 'SchoolYear', 'SectionDetail_grade_levels', 'GradeLevel', 'FacultyInformation','Strand'))->render();
+        return view('control_panel_registrar.class_details.partials.modal_data', 
+            compact('ClassDetail', 'SectionDetail', 'Room', 'SchoolYear', 'SectionDetail_grade_levels', 'GradeLevel', 'FacultyInformation','Strand'))->render();
     }
 
     public function modal_manage_subjects (Request $request) 
@@ -109,7 +110,8 @@ class ClassListController extends Controller
         $SectionDetail = SectionDetail::where('status', 1)->get();
         $Room = Room::where('status', 1)->get();
         $SchoolYear = SchoolYear::where('status', 1)->get();
-        return view('control_panel_registrar.class_details.partials.modal_manage_subjects', compact('ClassDetail', 'FacultyInformation', 'SubjectDetail', 'SectionDetail', 'Room', 'SchoolYear'))->render();
+        return view('control_panel_registrar.class_details.partials.modal_manage_subjects', 
+            compact('ClassDetail', 'FacultyInformation', 'SubjectDetail', 'SectionDetail', 'Room', 'SchoolYear'))->render();
     }
 
     public function save_data (Request $request) 

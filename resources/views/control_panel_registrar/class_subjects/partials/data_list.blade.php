@@ -6,9 +6,9 @@
                                 <tr>
                                     <th>Subject Code</th>
                                     <th>Subject</th>
-                                    <th>Schedule</th>
-                                    <th>Faculty</th>
-                                    <th>Actions</th>
+                                    <th style="width: 30%">Schedule</th>
+                                    <th style="width: 30%">Faculty</th>
+                                    <th style="width: 15%">Actions</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -52,11 +52,25 @@
 
                                                 ?>
                                                 <tr>
-                                                    <td>{{ $data->subject_code }} {{ $data->id }}</td>
+                                                    <td>{{ $data->subject_code }}</td>
                                                     <td>{{ $data->subject }}</td>
                                                     {{--  <td>{{ $data->class_days }}</td>  --}}
-                                                    <td> {{ rtrim($daysDisplay, '/') }} </td>
-                                                    <td>{{ $data->faculty_name }}</td>
+                                                    <td>{{ rtrim($daysDisplay, '/') }}</td>
+                                                    <td>
+                                                        <?php 
+                                                            $teachers = \App\TeacherSubject::join('faculty_informations', 'faculty_informations.id','=','teacher_subjects.faculty_id')
+                                                                ->selectRaw('
+                                                                        CONCAT(faculty_informations.last_name, " ", faculty_informations.first_name, " " ,  faculty_informations.middle_name) AS adviser_name
+                                                                    ')
+                                                                    ->where('class_subject_details_id', $data->id)
+                                                                    ->where('teacher_subjects.status', 1)
+                                                                ->get();
+                                                            
+                                                            foreach ($teachers as $key => $value) {
+                                                                echo ''.$value->adviser_name.'</br>';
+                                                            }
+                                                        ?>
+                                                    </td>
                                                     <td>
                                                         <div class="input-group-btn pull-left text-left">
                                                             <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="true">Action
@@ -64,6 +78,7 @@
                                                             <ul class="dropdown-menu">
                                                                 {{-- <li><input name="subject_title" class="form-control" value="{{ $ClassDetail->section_id }}" /></li> --}}
                                                                 <li><a href="#" class="js-btn_update" data-id="{{ $data->id }}">Edit</a></li>
+                                                                <li><a href="#" class="js-btn_update_faculty" data-id="{{ $data->id }}">Edit Faculty</a></li>
                                                                 {{--  <li><a href="#" class="js-btn_manage_subjects" data-id="{{ $data->id }}">Manage Subjects</a></li>  --}}
                                                                 <li><a href="#" class="js-btn_deactivate" data-id="{{ $data->id }}">Deactivate</a></li>
                                                             </ul>
@@ -114,17 +129,48 @@
 
                                             ?>
                                             <tr>
-                                                <td>{{ $data->subject_code }} {{ $data->id }}</td>
+                                                <td>{{ $data->subject_code }} </td>
                                                 <td>{{ $data->subject }}</td>
                                                 {{--  <td>{{ $data->class_days }}</td>  --}}
                                                 <td> {{ rtrim($daysDisplay, '/') }} </td>
-                                                <td>{{ $data->faculty_name }}</td>
+                                                <td>
+                                                    <?php 
+                                                            $teachers = \App\TeacherSubject::join('faculty_informations', 'faculty_informations.id','=','teacher_subjects.faculty_id')
+                                                                ->selectRaw('
+                                                                        CONCAT(faculty_informations.last_name, " ", faculty_informations.first_name, " " ,  faculty_informations.middle_name) AS adviser_name
+                                                                    ')
+                                                                    ->where('class_subject_details_id', $data->id)
+                                                                    ->where('teacher_subjects.status', 1)
+                                                                ->get();
+
+                                                            $teachers_count = \App\TeacherSubject::join('faculty_informations', 'faculty_informations.id','=','teacher_subjects.faculty_id')
+                                                                ->selectRaw('
+                                                                        CONCAT(faculty_informations.last_name, " ", faculty_informations.first_name, " " ,  faculty_informations.middle_name) AS adviser_name
+                                                                    ')
+                                                                    ->where('class_subject_details_id', $data->id)
+                                                                    ->where('teacher_subjects.status', 1)
+                                                                ->count();
+                                                                
+                                                            if($teachers_count > 1)
+                                                            {
+                                                                foreach ($teachers as $key => $value) {
+                                                                    echo ''.$value->adviser_name.', ';
+                                                                }   
+                                                            }
+                                                            else
+                                                            {
+                                                               echo $data->faculty_name;
+                                                            }
+                                                                                                                     
+                                                    ?>
+                                                </td>
                                                 <td>
                                                     <div class="input-group-btn pull-left text-left">
                                                         <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="true">Action
                                                             <span class="fa fa-caret-down"></span></button>
                                                         <ul class="dropdown-menu">
                                                             <li><a href="#" class="js-btn_update" data-id="{{ $data->id }}">Edit</a></li>
+                                                            <li><a href="#" class="js-btn_update_faculty" data-id="{{ $data->id }}">Edit Faculty</a></li>
                                                             {{--  <li><a href="#" class="js-btn_manage_subjects" data-id="{{ $data->id }}">Manage Subjects</a></li>  --}}
                                                             <li><a href="#" class="js-btn_deactivate" data-id="{{ $data->id }}">Deactivate</a></li>
                                                         </ul>

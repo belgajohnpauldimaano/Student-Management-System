@@ -2,15 +2,20 @@
 
 namespace App\Http\Controllers\Faculty;
 
+use App\SchoolYear;
+use App\ClassSubjectDetail;
+use App\FacultyInformation;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 
 class FacultyDashboardController extends Controller
 {
     public function index () 
     {
-        $FacultyInformation = \App\FacultyInformation::where('user_id', \Auth::user()->id)->first();
-        $SchoolYear         = \App\SchoolYear::where('current', 1)->first();
+        $FacultyInformation = FacultyInformation::where('user_id', \Auth::user()->id)->first();
+        $SchoolYear         = SchoolYear::where('current', 1)->first();
 
         $StudentInformation_tagged_student = \DB::table('student_informations')
             ->select(\DB::raw('COUNT(student_informations.id) AS total_students'))
@@ -59,7 +64,7 @@ class FacultyDashboardController extends Controller
             ->where('student_informations.gender', 2)
             ->first();
 
-        $ClassSubjectDetail_count = \App\ClassSubjectDetail::join('class_details', 'class_details.id', '=', 'class_subject_details.class_details_id')
+        $ClassSubjectDetail_count = ClassSubjectDetail::join('class_details', 'class_details.id', '=', 'class_subject_details.class_details_id')
             ->where('faculty_id', $FacultyInformation->id)
             ->where('class_subject_details.status', 1)
             ->where('class_details.status', 1)

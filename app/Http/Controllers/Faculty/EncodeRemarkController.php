@@ -2,21 +2,29 @@
 
 namespace App\Http\Controllers\Faculty;
 
-use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
 use App\Semester;
+use App\DateRemark;
+use App\Enrollment;
+use App\SchoolYear;
+use App\ClassSubjectDetail;
+use App\FacultyInformation;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Crypt;
 
 class EncodeRemarkController extends Controller
 {
     public function index (Request $request)
     {
-        $FacultyInformation = \App\FacultyInformation::where('user_id', \Auth::user()->id)->first();
-        $SchoolYear = \App\SchoolYear::where('current', 1)->where('status', 1)->first();
-        $DateRemarks = \App\DateRemark::where('school_year_id', $SchoolYear->id)->first();
+        $FacultyInformation = FacultyInformation::where('user_id', \Auth::user()->id)->first();
+        $SchoolYear = SchoolYear::where('current', 1)->where('status', 1)->first();
+        $DateRemarks = DateRemark::where('school_year_id', $SchoolYear->id)->first();
         $Semester_id = Semester::where('current', 1)->first()->id;
 
 
-        $ClassSubjectDetail = \App\ClassSubjectDetail::join('class_details', 'class_details.id', '=', 'class_subject_details.class_details_id')
+        $ClassSubjectDetail = ClassSubjectDetail::join('class_details', 'class_details.id', '=', 'class_subject_details.class_details_id')
             ->join('rooms','rooms.id', '=', 'class_details.room_id')
             ->join('section_details', 'section_details.id', '=', 'class_details.section_id')
             ->join('school_years', 'school_years.id' ,'=', 'class_details.school_year_id')
@@ -41,7 +49,7 @@ class EncodeRemarkController extends Controller
             ->first();
 
             if($ClassSubjectDetail){            
-                $EnrollmentMale = \App\Enrollment::join('student_informations', 'student_informations.id', '=', 'enrollments.student_information_id')
+                $EnrollmentMale = Enrollment::join('student_informations', 'student_informations.id', '=', 'enrollments.student_information_id')
                     ->join('class_details', 'class_details.id', '=', 'enrollments.class_details_id')
                     ->join('school_years', 'school_years.id' ,'=', 'class_details.school_year_id')
                     ->join('users', 'users.id', '=', 'student_informations.user_id')
@@ -63,7 +71,7 @@ class EncodeRemarkController extends Controller
                     ->orderBY('student_name', 'ASC')
                     ->get();
 
-                $EnrollmentFemale = \App\Enrollment::join('student_informations', 'student_informations.id', '=', 'enrollments.student_information_id')
+                $EnrollmentFemale = Enrollment::join('student_informations', 'student_informations.id', '=', 'enrollments.student_information_id')
                     ->join('class_details', 'class_details.id', '=', 'enrollments.class_details_id')
                     ->join('school_years', 'school_years.id' ,'=', 'class_details.school_year_id')
                     ->join('users', 'users.id', '=', 'student_informations.user_id')
@@ -107,7 +115,7 @@ class EncodeRemarkController extends Controller
         
         try {
             
-            $Student_info = \App\Enrollment::where('student_information_id', $stud_id)
+            $Student_info = Enrollment::where('student_information_id', $stud_id)
                 ->where('id', $e_id)
                 ->where('class_details_id', $class_detail_id)->first();
                 

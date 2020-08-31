@@ -29,11 +29,6 @@ class ClassSubjectsController extends Controller
             $ClassSubjectDetail = ClassSubjectDetail::join('subject_details', 'subject_details.id', '=' ,'class_subject_details.subject_id')
                 ->join('class_details', 'class_details.id', '=' ,'class_subject_details.class_details_id')
                 ->join('faculty_informations', 'faculty_informations.id', '=' ,'class_subject_details.faculty_id')
-                // ->join('rooms', 'rooms.id', '=' ,'class_subject_details.room_id')
-
-                // class_details.room_id,
-                    // rooms.room_code,
-                    // rooms.room_description
                 ->selectRaw("
                     class_subject_details.id,
                     class_details.school_year_id,
@@ -50,7 +45,6 @@ class ClassSubjectsController extends Controller
                 ->where('class_subject_details.class_details_id', $class_id)
                 ->where('class_subject_details.status', 1)
                 ->where('class_subject_details.sem', 1)
-                // ->orderBy('class_subject_details.class_time_from', 'ASC');
                 ->orderBy('class_subject_details.class_subject_order', 'ASC');
         }
         else 
@@ -58,11 +52,6 @@ class ClassSubjectsController extends Controller
             $ClassSubjectDetail = ClassSubjectDetail::join('subject_details', 'subject_details.id', '=' ,'class_subject_details.subject_id')
                 ->join('class_details', 'class_details.id', '=' ,'class_subject_details.class_details_id')
                 ->join('faculty_informations', 'faculty_informations.id', '=' ,'class_subject_details.faculty_id')
-                // ->join('rooms', 'rooms.id', '=' ,'class_subject_details.room_id')
-
-                // class_details.room_id,
-                    // rooms.room_code,
-                    // rooms.room_description
                 ->selectRaw("
                     class_subject_details.id,
                     class_details.school_year_id,
@@ -79,21 +68,12 @@ class ClassSubjectsController extends Controller
                 ->where('class_subject_details.class_details_id', $class_id)
                 ->where('class_subject_details.status', 1)
                 ->where('class_subject_details.sem', 2)
-                // ->orderBy('class_subject_details.class_time_from', 'ASC');
                 ->orderBy('class_subject_details.class_subject_order', 'ASC');
         }
-
-       
-        
 
         $ClassSubjectDetail1 = ClassSubjectDetail::join('subject_details', 'subject_details.id', '=' ,'class_subject_details.subject_id')
             ->join('class_details', 'class_details.id', '=' ,'class_subject_details.class_details_id')
             ->join('faculty_informations', 'faculty_informations.id', '=' ,'class_subject_details.faculty_id')
-            // ->join('rooms', 'rooms.id', '=' ,'class_subject_details.room_id')
-
-            // class_details.room_id,
-                // rooms.room_code,
-                // rooms.room_description
             ->selectRaw("
                 class_subject_details.id,
                 class_details.school_year_id,
@@ -110,7 +90,6 @@ class ClassSubjectsController extends Controller
             ->where('class_subject_details.class_details_id', $class_id)
             ->where('class_subject_details.status', 1)
             ->where('class_subject_details.sem', 1)
-            // ->orderBy('class_subject_details.class_time_from', 'ASC');
             ->orderBy('class_subject_details.class_subject_order', 'ASC');
         
         
@@ -139,7 +118,8 @@ class ClassSubjectsController extends Controller
             ->where('section_details.status', 1)
             ->first();
 
-            return view('control_panel_registrar.class_subjects.partials.data_list', compact('ClassSubjectDetail','Semester','ClassSubjectDetail1','ClassDetail'))->render();
+            return view('control_panel_registrar.class_subjects.partials.data_list',
+                compact('ClassSubjectDetail','Semester','ClassSubjectDetail1','ClassDetail'))->render();
         }
         else 
         {
@@ -166,8 +146,11 @@ class ClassSubjectsController extends Controller
 
         $ClassSubjectDetail = $ClassSubjectDetail->paginate(10);
         $ClassSubjectDetail1 = $ClassSubjectDetail1->paginate(10);
-        return view('control_panel_registrar.class_subjects.index', compact('ClassSubjectDetail', 'class_id', 'ClassDetail','Semester','ClassSubjectDetail1','order_numbers'));
+        return view('control_panel_registrar.class_subjects.index', 
+            compact('ClassSubjectDetail', 'class_id', 'ClassDetail','Semester','ClassSubjectDetail1','order_numbers'));
     }
+
+    
 
     public function modal_data (Request $request) 
     {
@@ -220,7 +203,7 @@ class ClassSubjectsController extends Controller
                 foreach($FacultyInformations as $data)
                 {
                     $faculty_ids =  TeacherSubject::where('class_subject_details_id', $request->class_subject_details_id)
-                        ->where('faculty_id', $data->id)
+                        ->where('faculty_id', $data->id)->whereStatus(1)
                         ->first();
 
                     if($faculty_ids)
@@ -245,7 +228,7 @@ class ClassSubjectsController extends Controller
                         ->first();  
                         
                     $subject_order_available = ClassSubjectDetail::where('class_details_id', $class_details_id)
-                        ->where('class_subject_order', $x)
+                        ->where('class_subject_order', $x)->whereStatus(1)
                         ->first();     
                         
                     if($subject_order_available){
@@ -275,7 +258,7 @@ class ClassSubjectsController extends Controller
             {
                 for($x = 1; $x <= 10; $x++) {                
                     $subject_order_available = ClassSubjectDetail::where('class_details_id', $class_details_id)
-                        ->where('class_subject_order', $x)
+                        ->where('class_subject_order', $x)->whereStatus(1)
                         ->first();         
                         
                     if($subject_order_available){
@@ -304,6 +287,118 @@ class ClassSubjectsController extends Controller
             'class_details_id','ClassDetail','order_numbers'))->render();
     }
 
+    public function saveDataFaculty(Request $request)
+    {
+        $rules = [
+            'faculty' => 'required'
+        ];
+
+        $Validator = \Validator($request->all(), $rules);
+
+        if ($Validator->fails())
+        {
+            return response()->json(['res_code' => 1, 'res_msg' => 'Please fill all required fields.', 'res_error_msg' => $Validator->getMessageBag()]);
+        }
+
+        foreach($request->faculty as $faculty_id)
+        {
+            $TeacherSubject = new TeacherSubject();
+            $TeacherSubject->class_subject_details_id = $request->id;
+            $TeacherSubject->faculty_id = $faculty_id;
+            
+            $TeacherSubject->save();
+
+            return response()->json(['res_code' => 0, 'res_msg' => 'Data successfully saved.']);
+        }
+    }
+
+    public function deleteDataFaculty(Request $request)
+    {
+        $faculty_id = $request->faculty_id;
+        $class_subject_details_id = $request->subject_class_id;
+
+        try {
+            
+            if($faculty_id && $class_subject_details_id)
+            {
+                $Teacher_exists = ClassSubjectDetail::where('id', $class_subject_details_id)
+                    ->where('faculty_id', $faculty_id)->first();
+                
+                if($Teacher_exists)
+                {
+                    $Teacher_exists->faculty_id = 0;
+                    $Teacher_exists->save();
+                }
+
+                $TeacherSubject = TeacherSubject::where('faculty_id', $faculty_id)
+                    ->where('class_subject_details_id', $class_subject_details_id)
+                    ->first();
+
+                if($TeacherSubject)
+                {
+                    $TeacherSubject->status = 0;
+                    $TeacherSubject->save();
+                }
+                return response()->json(['res_code' => 0, 'res_msg' => 'Data successfully deleted.'.$faculty_id.' '.$class_subject_details_id]);
+            }
+        } catch (\Throwable $th) {
+            return response()->json(['res_code' => 1, 'res_msg' => 'Invalid request.']);
+        }
+
+        
+    }
+
+    public function modalDataFaculty(Request $request)
+    {
+        $ClassSubjectDetail = NULL;
+        $classSubjectDetailsId = $request->class_subject_details_id;
+
+        // return $classSubjectDetailsId;
+        if ($classSubjectDetailsId)
+        {
+                $TeacherSubjectCount = TeacherSubject::with('faculty')->where('class_subject_details_id', $classSubjectDetailsId)
+                        ->whereStatus(1)
+                        ->count();
+
+                $Adviser = ClassSubjectDetail::with('faculty')->where('id',$classSubjectDetailsId)->first();
+
+                $TeacherSubjects = TeacherSubject::with('faculty')->where('class_subject_details_id', $classSubjectDetailsId)
+                        ->whereStatus(1)
+                        ->get();
+
+                $FacultyInformations = FacultyInformation::where('status', 1)
+                    ->get();
+    
+                $faculties ="<option value='0'>Select Faculty</option>";
+                foreach($FacultyInformations as $data)
+                {
+                    $faculty_ids =  TeacherSubject::where('class_subject_details_id', $classSubjectDetailsId)
+                        ->where('faculty_id', $data->id)->whereStatus(1)
+                        ->first();
+
+                    if($faculty_ids)
+                    {
+                        try {
+                            if($faculty_ids->faculty_id == $data->id){
+                                $selected_item = 'style="display: none;';
+                            }
+                            $faculties .= '<option value="'.$data->id.'" data-id="'.$data->id.'" data-name="'. ucwords($data->fullname) .'" '.$selected_item.'> '. $data->first_name . ' ' . $data->last_name .'</option>';
+                        } catch (\Throwable $th) {
+                            $faculties .= '<option value="'.$data->id.'" >'. ucwords($data->fullname) . ' ' . $data->last_name .'</option>';
+                        }        
+                    }
+                    else
+                    {
+                        $faculties .= '<option value="'.$data->id.'" data-id="'.$data->id.'" data-name="'. $data->fullname.'">'. $data->first_name . ' ' . $data->last_name .'</option>';
+                    }
+                    
+                }
+        }
+
+        return view('control_panel_registrar.class_subjects.partials.modal_data_faculty', 
+            compact('TeacherSubjects','classSubjectDetailsId','faculties','TeacherSubjectCount','Adviser')); 
+    }
+
     public function modal_manage_subjects (Request $request) 
     {
         $ClassSubjectDetail = NULL;
@@ -316,10 +411,10 @@ class ClassSubjectsController extends Controller
         $ClassSubjectDetail = ClassSubjectDetail::where('status', 1)->get();
         $SectionDetail = SectionDetail::where('status', 1)->get();
         $Room = Room::where('status', 1)->get();
-        $SchoolYear = SchoolYear::where('status', 1)->get();
-        
+        $SchoolYear = SchoolYear::where('status', 1)->get();        
 
-        return view('control_panel_registrar.class_subjects.partials.modal_manage_subjects', compact('ClassSubjectDetail', 'FacultyInformation', 'ClassSubjectDetail', 'SectionDetail', 'Room', 'SchoolYear'))->render();
+        return view('control_panel_registrar.class_subjects.partials.modal_manage_subjects',
+            compact('ClassSubjectDetail', 'FacultyInformation', 'ClassSubjectDetail', 'SectionDetail', 'Room', 'SchoolYear'))->render();
     }
 
     public function save_data (Request $request) 
@@ -366,100 +461,82 @@ class ClassSubjectsController extends Controller
         
         if ($request->id)
         {
-            foreach($request->faculty as $faculty_id)
-            {
+                // $x = NULL;
+                // foreach($request->faculties as $faculty_id)
+                // {
+                //     $x = $faculty_id;
+                // }
 
                 $ClassSubjectDetail = ClassSubjectDetail::where('id', $request->id)->first();
-                $ClassSubjectDetail->class_time_from		    = date('H:i', strtotime($request->subject_time_from));
-                $ClassSubjectDetail->class_time_to		    = date('H:i', strtotime($request->subject_time_to));
+                $ClassSubjectDetail->class_time_from	= date('H:i', strtotime($request->subject_time_from));
+                $ClassSubjectDetail->class_time_to	    = date('H:i', strtotime($request->subject_time_to));
                 $ClassSubjectDetail->subject_id	        = $request->subject;
-                $ClassSubjectDetail->faculty_id		    = $faculty_id;
+                // $ClassSubjectDetail->faculty_id		    = $x;   
                 $ClassSubjectDetail->class_details_id   = $request->class_details_id;
                 $ClassSubjectDetail->class_subject_order   = $request->order;
-                $ClassSubjectDetail->class_schedule   = $scheds;
+                $ClassSubjectDetail->class_schedule     = $scheds;
 
-                // $class_days = '';
-                // $class_days .= $request->sched_mon ? 'm/' : '';
-                // $class_days .= $request->sched_tue ? 'tu/' : '';
-                // $class_days .= $request->sched_wed ? 'w/' : '';
-                // $class_days .= $request->sched_thu ? 'th/' : '';
-                // $class_days .= $request->sched_fri ? 'f' : '';
-                
-                // $class_days .= !$request->sched_mon && !$request->sched_tue && !$request->sched_wed && !$request->sched_thu && !$request->sched_fri ? 'm/tu/w/th/f' : '';
-
-                // $ClassSubjectDetail->class_days = $class_days;
+               
                 if($request->order == 1)
                 {
-                    
-                    Subject_Title::where(['section_id'=> $request->section_id])->update(['subject_1'=>$request->subject]);                
-                    
-                        
+                    Subject_Title::where(['section_id'=> $request->section_id])->update(['subject_1'=>$request->subject]);             
                 }
                 else if($request->order == 2)
                 {
-                
-                    Subject_Title::where(['section_id'=> $request->section_id])->update(['subject_2'=>$request->subject]);                
-                    
+                    Subject_Title::where(['section_id'=> $request->section_id])->update(['subject_2'=>$request->subject]);   
                 }
                 else if($request->order == 3)
                 {
-                    
                     Subject_Title::where(['section_id'=> $request->section_id])->update(['subject_3'=>$request->subject]);                
-                    
                 }
                 else if($request->order == 4)
                 {
-                
-                    Subject_Title::where(['section_id'=> $request->section_id])->update(['subject_4'=>$request->subject]);                
-                    
+                    Subject_Title::where(['section_id'=> $request->section_id])->update(['subject_4'=>$request->subject]); 
                 }
                 else if($request->order == 5)
                 {
-                    
-                    Subject_Title::where(['section_id'=> $request->section_id])->update(['subject_5'=>$request->subject]);                
-                    
+                    Subject_Title::where(['section_id'=> $request->section_id])->update(['subject_5'=>$request->subject]);  
                 }
                 else if($request->order == 6)
                 {
-                    
-                    Subject_Title::where(['section_id'=> $request->section_id])->update(['subject_6'=>$request->subject]);                
-                    
+                    Subject_Title::where(['section_id'=> $request->section_id])->update(['subject_6'=>$request->subject]);  
                 }
                 else if($request->order == 7)
                 {
-                    
-                    Subject_Title::where(['section_id'=> $request->section_id])->update(['subject_7'=>$request->subject]);                
-                    
+                    Subject_Title::where(['section_id'=> $request->section_id])->update(['subject_7'=>$request->subject]);     
                 }
                 else if($request->order == 8)
                 {
-                    
-                    Subject_Title::where(['section_id'=> $request->section_id])->update(['subject_8'=>$request->subject]);                
-                    
+                    Subject_Title::where(['section_id'=> $request->section_id])->update(['subject_8'=>$request->subject]); 
                 }
                 else if($request->order == 9)
                 {
-                    
                     Subject_Title::where(['section_id'=> $request->section_id])->update(['subject_9'=>$request->subject]);                
-                    
                 }
                 
 
-                $ClassSubjectDetail->save();                
+                $ClassSubjectDetail->save();         
+                
+                // foreach($request->faculties as $faculty_id)
+                // {                    
+                //     $TeacherSubject = TeacherSubject::where('class_subject_details_id', $request->id)
+                //         ->where('faculty_id', $faculty_id)->first();
+                //     // if($TeacherSubject)
+                //     // {
+                //         $TeacherSubject->status = 0;
+                //         $TeacherSubject->save();
+                //     // }
+                    
+                // }
+            
+            // return response()->json(['res_code' => 0, 'res_msg' => 'Data successfully updated.', 'ClassSubjectDetail' => $ClassSubjectDetail]);
+        }
+      
+            $x = NULL;
+            foreach($request->faculties as $faculty_id)
+            {
+                $x = $faculty_id;
             }
-            return response()->json(['res_code' => 0, 'res_msg' => 'Data successfully updated.', 'ClassSubjectDetail' => $ClassSubjectDetail]);
-        }
-        // $faculty_id = $request->faculty;
-        // $request->faculty = implode(',', $faculty_id);
-        // return $faculty_id;
-
-        // $faculties = $input["faculties"];
-        // $x = NULL;
-        $x = NULL;
-        foreach($request->faculties as $faculty_id)
-        {
-            $x = $faculty_id;
-        }
         
             $ClassSubjectDetail = new ClassSubjectDetail();
             $ClassSubjectDetail->class_time_from  = date('H:i', strtotime($request->subject_time_from));

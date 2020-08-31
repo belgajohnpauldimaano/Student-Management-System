@@ -18,5 +18,9 @@ class FacultyInformation extends Model
     {
         return $this->hasOne(User::class, 'id', 'user_id');
     }
+
+    public function getFullnameAttribute() {
+        return ucfirst($this->first_name) . ' ' . ucfirst($this->last_name);
+    }
 }
  

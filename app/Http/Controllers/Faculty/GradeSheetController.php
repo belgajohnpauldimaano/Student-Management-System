@@ -2,106 +2,128 @@
 
 namespace App\Http\Controllers\Faculty;
 
-use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
-use App\Grade_sheet_first;
-use App\Grade_sheet_firstsem;
 use PDF;
+use App\Enrollment;
+use App\SchoolYear;
+use App\ClassDetail;
+use App\SectionDetail;
+use App\SubjectDetail;
+use App\TeacherSubject;
+use App\Grade_sheet_first;
+use App\Grade_sheet_third;
+use App\ClassSubjectDetail;
+use App\FacultyInformation;
+use App\Grade11_Second_Sem;
+use App\Grade_sheet_fourth;
+use App\Grade_sheet_second;
+use Illuminate\Http\Request;
+use App\Grade_sheet_firstsem;
+use App\StudentEnrolledSubject;
+use Illuminate\Support\Facades\DB;
+use App\Grade_sheet_firstsemsecond;
+use App\Grade_sheet_secondsemsecond;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Validation\Validator;
 
 class GradeSheetController extends Controller
 {    
     public function index (Request $request) 
     {
-        $FacultyInformation = \App\FacultyInformation::where('user_id', \Auth::user()->id)->first();
+        $FacultyInformation = FacultyInformation::where('user_id', \Auth::user()->id)->first();
         // return json_encode(['FacultyInformation' => $FacultyInformation, 'Auth' => \Auth::user()]);
-        $SchoolYear = \App\SchoolYear::where('status', 1)->where('current', 1)->orderBy('current', 'ASC')->orderBy('school_year', 'ASC')->get();
+        $SchoolYear = SchoolYear::where('status', 1)->where('current', 1)->orderBy('current', 'ASC')->orderBy('school_year', 'ASC')->get();
         
-        $ClassSubjectDetail = \App\ClassSubjectDetail::join('class_details', 'class_details.id', '=', 'class_subject_details.class_details_id')
-        ->join('subject_details', 'subject_details.id', '=', 'class_subject_details.subject_id')
-        ->join('section_details', 'section_details.id', '=', 'class_details.section_id')
-        // ->whereRaw('class_subject_details.id = '. $request->search_class_subject)
-        // ->whereRaw('class_details.id = '. $search_class_subject[1])
-        ->where('faculty_id', $FacultyInformation->id)
-        // ->where('class_details.school_year_id', $SchoolYear->id)
-        ->where('class_subject_details.status', '!=', 0)
-        ->where('class_details.status', '!=', 0)
-        ->select(\DB::raw('
-            class_subject_details.id,
-            class_subject_details.class_schedule,
-            class_subject_details.class_time_from,
-            class_subject_details.class_time_to,
-            class_subject_details.class_days,
-            subject_details.subject_code,
-            subject_details.subject,
-            section_details.section,
-            class_details.grade_level,
-            class_subject_details.status as grading_status,
-            class_subject_details.sem
-        '))
-        ->first();
+        $ClassSubjectDetail = ClassSubjectDetail::join('class_details', 'class_details.id', '=', 'class_subject_details.class_details_id')
+            ->join('subject_details', 'subject_details.id', '=', 'class_subject_details.subject_id')
+            ->join('section_details', 'section_details.id', '=', 'class_details.section_id')
+            // ->join('teacher_subjects', 'teacher_subjects.id', '=', 'class_subject_details.class_subject')
+            // ->whereRaw('class_subject_details.id = '. $request->search_class_subject)
+            // ->whereRaw('class_details.id = '. $search_class_subject[1])
+            ->where('faculty_id', $FacultyInformation->id)
+            // ->where('class_details.school_year_id', $SchoolYear->id)
+            ->where('class_subject_details.status', '!=', 0)
+            ->where('class_details.status', '!=', 0)
+            ->select(\DB::raw('
+                class_subject_details.id,
+                class_subject_details.class_schedule,
+                class_subject_details.class_time_from,
+                class_subject_details.class_time_to,
+                class_subject_details.class_days,
+                subject_details.subject_code,
+                subject_details.subject,
+                section_details.section,
+                class_details.grade_level,
+                class_subject_details.status as grading_status,
+                class_subject_details.sem
+            '))
+            ->first();
         
         return view('control_panel_faculty.student_grade_sheet.index', compact('SchoolYear','ClassSubjectDetail'));
     }
 
     public function list_students_by_class (Request $request)
     {
-        $FacultyInformation = \App\FacultyInformation::where('user_id', \Auth::user()->id)->first();
+        $FacultyInformation = FacultyInformation::where('user_id', \Auth::user()->id)->first();
+
+        $faculty_id = TeacherSubject::where('faculty_id', $FacultyInformation->id)->first();
         
-        $EnrollmentMale = \App\Enrollment::join('class_subject_details', 'class_subject_details.class_details_id', '=', 'enrollments.class_details_id')
-                    ->join('class_details', 'class_details.id', '=', 'class_subject_details.class_details_id')
-                    ->join('student_informations', 'student_informations.id', '=', 'enrollments.student_information_id')
-                    // ->join('student_enrolled_subjects', 'student_enrolled_subjects.subject_id', '=', 'class_subject_details.subject_id')
-                    // ->join('student_enrolled_subjects', 'student_enrolled_subjects.subject_id', '=', 'class_subject_details.subject_id')
-                    // ->join('student_enrolled_subjects', 'student_enrolled_subjects.enrollments_id', '=', 'enrollments.id')
-                    ->join('student_enrolled_subjects', function ($join) {
-                        $join->on('student_enrolled_subjects.enrollments_id', '=', 'enrollments.id');
-                        // ->on('student_enrolled_subjects.subject_id', '=', 'class_subject_details.subject_id');
-                    })
-                    ->whereRaw('class_subject_details.faculty_id = '. $FacultyInformation->id)
-                    ->whereRaw('class_subject_details.id = '. $request->search_class_subject)
-                    ->whereRaw('student_enrolled_subjects.class_subject_details_id = '. $request->search_class_subject)
-                    // ->whereRaw('class_details.id = '. $search_class_subject[1])
-                    ->whereRaw('class_details.current = 1')
-                    ->whereRaw('class_details.status != 0')
-                    ->whereRaw('student_informations.gender = 1')
-                    ->select(\DB::raw("
-                        student_informations.id,
-                        class_details.id as class_details_id,
-                        CONCAT(student_informations.last_name, ', ', student_informations.first_name, ' ', student_informations.middle_name) as student_name,
-                        student_informations.gender,
-                        student_enrolled_subjects.id as student_enrolled_subject_id,
-                        enrollments.id as enrollment_id,
-                        student_enrolled_subjects.fir_g,
-                        student_enrolled_subjects.fir_g_status,
-                        student_enrolled_subjects.sec_g,
-                        student_enrolled_subjects.sec_g_status,
-                        student_enrolled_subjects.thi_g,
-                        student_enrolled_subjects.thi_g_status,
-                        student_enrolled_subjects.fou_g,
-                        student_enrolled_subjects.fou_g_status,
-                        student_enrolled_subjects.fin_g,
-                        student_enrolled_subjects.fin_g_status,
-                        class_subject_details.status as grading_status,
-                        class_subject_details.sem
-                    "))
-                    ->orderBy('student_name',  'ASC')
-                    ->paginate(100);
-                    
-                    
-        $EnrollmentFemale = \App\Enrollment::join('class_subject_details', 'class_subject_details.class_details_id', '=', 'enrollments.class_details_id')
+        if($faculty_id)
+        {
+            $faculty = 'teacher_subjects.faculty_id';
+        }
+        else
+        {
+            $faculty = 'faculty_id';
+        }
+        
+        $EnrollmentMale = Enrollment::join('class_subject_details', 'class_subject_details.class_details_id', '=', 'enrollments.class_details_id')
             ->join('class_details', 'class_details.id', '=', 'class_subject_details.class_details_id')
             ->join('student_informations', 'student_informations.id', '=', 'enrollments.student_information_id')
-            // ->join('student_enrolled_subjects', 'student_enrolled_subjects.subject_id', '=', 'class_subject_details.subject_id')
-            // ->join('student_enrolled_subjects', 'student_enrolled_subjects.subject_id', '=', 'class_subject_details.subject_id')
-            // ->join('student_enrolled_subjects', 'student_enrolled_subjects.enrollments_id', '=', 'enrollments.id')
+            ->join('teacher_subjects', 'teacher_subjects.class_subject_details_id', '=', 'class_subject_details.id')
             ->join('student_enrolled_subjects', function ($join) {
                 $join->on('student_enrolled_subjects.enrollments_id', '=', 'enrollments.id');
-                // ->on('student_enrolled_subjects.subject_id', '=', 'class_subject_details.subject_id');
             })
-            ->whereRaw('class_subject_details.faculty_id = '. $FacultyInformation->id)
+            ->whereRaw($faculty.' = '. $FacultyInformation->id)
             ->whereRaw('class_subject_details.id = '. $request->search_class_subject)
             ->whereRaw('student_enrolled_subjects.class_subject_details_id = '. $request->search_class_subject)
-            // ->whereRaw('class_details.id = '. $search_class_subject[1])
+            ->whereRaw('class_details.current = 1')
+            ->whereRaw('class_details.status != 0')
+            ->whereRaw('student_informations.gender = 1')
+            ->select(\DB::raw("
+                student_informations.id,
+                class_details.id as class_details_id,
+                CONCAT(student_informations.last_name, ', ', student_informations.first_name, ' ', student_informations.middle_name) as student_name,
+                student_informations.gender,
+                student_enrolled_subjects.id as student_enrolled_subject_id,
+                enrollments.id as enrollment_id,
+                student_enrolled_subjects.fir_g,
+                student_enrolled_subjects.fir_g_status,
+                student_enrolled_subjects.sec_g,
+                student_enrolled_subjects.sec_g_status,
+                student_enrolled_subjects.thi_g,
+                student_enrolled_subjects.thi_g_status,
+                student_enrolled_subjects.fou_g,
+                student_enrolled_subjects.fou_g_status,
+                student_enrolled_subjects.fin_g,
+                student_enrolled_subjects.fin_g_status,
+                class_subject_details.status as grading_status,
+                class_subject_details.sem
+            "))
+            ->orderBy('student_name',  'ASC')
+            ->paginate(100);
+                    
+                    
+        $EnrollmentFemale = Enrollment::join('class_subject_details', 'class_subject_details.class_details_id', '=', 'enrollments.class_details_id')
+            ->join('class_details', 'class_details.id', '=', 'class_subject_details.class_details_id')
+            ->join('student_informations', 'student_informations.id', '=', 'enrollments.student_information_id')
+            ->join('teacher_subjects', 'teacher_subjects.class_subject_details_id', '=', 'class_subject_details.id')
+            ->join('student_enrolled_subjects', function ($join) {
+                $join->on('student_enrolled_subjects.enrollments_id', '=', 'enrollments.id');
+            })
+            ->whereRaw($faculty.' = '. $FacultyInformation->id)
+            ->whereRaw('class_subject_details.id = '. $request->search_class_subject)
+            ->whereRaw('student_enrolled_subjects.class_subject_details_id = '. $request->search_class_subject)
             ->whereRaw('class_details.current = 1')
             ->whereRaw('class_details.status != 0')
             ->whereRaw('student_informations.gender = 2')
@@ -128,13 +150,13 @@ class GradeSheetController extends Controller
             ->orderBy('student_name', 'ASC')
             ->paginate(100);
         // return json_encode($Enrollment);
-        // $ClassSubjectDetail_status = \App\ClassSubjectDetail::where('id', $request->search_class_subject)->first();
-        $ClassSubjectDetail = \App\ClassSubjectDetail::join('class_details', 'class_details.id', '=', 'class_subject_details.class_details_id')
+        // $ClassSubjectDetail_status = ClassSubjectDetail::where('id', $request->search_class_subject)->first();
+        $ClassSubjectDetail = ClassSubjectDetail::join('class_details', 'class_details.id', '=', 'class_subject_details.class_details_id')
             ->join('subject_details', 'subject_details.id', '=', 'class_subject_details.subject_id')
             ->join('section_details', 'section_details.id', '=', 'class_details.section_id')
+            ->join('teacher_subjects', 'teacher_subjects.class_subject_details_id', '=', 'class_subject_details.id')
             ->whereRaw('class_subject_details.id = '. $request->search_class_subject)
-            // ->whereRaw('class_details.id = '. $search_class_subject[1])
-            ->where('faculty_id', $FacultyInformation->id)
+            ->where($faculty, $FacultyInformation->id)
             ->where('class_details.school_year_id', $request->search_sy)
             ->where('class_subject_details.status', '!=', 0)
             ->where('class_details.status', '!=', 0)
@@ -158,9 +180,9 @@ class GradeSheetController extends Controller
 
     public function list_students_by_class_print (Request $request) 
     {
-        $FacultyInformation = \App\FacultyInformation::where('user_id', \Auth::user()->id)->first();
+        $FacultyInformation = FacultyInformation::where('user_id', \Auth::user()->id)->first();
         // return json_encode(['FacultyInformation' => $FacultyInformation, 'req' => $request->all()]);
-        $EnrollmentMale = \App\Enrollment::join('class_subject_details', 'class_subject_details.class_details_id', '=', 'enrollments.class_details_id')
+        $EnrollmentMale = Enrollment::join('class_subject_details', 'class_subject_details.class_details_id', '=', 'enrollments.class_details_id')
                     ->join('class_details', 'class_details.id', '=', 'class_subject_details.class_details_id')
                     ->join('student_informations', 'student_informations.id', '=', 'enrollments.student_information_id')
                     ->join('student_enrolled_subjects', function ($join) {
@@ -194,7 +216,7 @@ class GradeSheetController extends Controller
                     ->orderBy('student_name', 'ASC')
                     ->get();
 
-        $EnrollmentFemale = \App\Enrollment::join('class_subject_details', 'class_subject_details.class_details_id', '=', 'enrollments.class_details_id')
+        $EnrollmentFemale = Enrollment::join('class_subject_details', 'class_subject_details.class_details_id', '=', 'enrollments.class_details_id')
                     ->join('class_details', 'class_details.id', '=', 'class_subject_details.class_details_id')
                     ->join('student_informations', 'student_informations.id', '=', 'enrollments.student_information_id')
                     // ->join('student_enrolled_subjects', 'student_enrolled_subjects.subject_id', '=', 'class_subject_details.subject_id')
@@ -233,7 +255,7 @@ class GradeSheetController extends Controller
                     ->orderBy('student_name', 'ASC')
                     ->get();
                     
-        $ClassSubjectDetail = \App\ClassSubjectDetail::join('class_details', 'class_details.id', '=', 'class_subject_details.class_details_id')
+        $ClassSubjectDetail = ClassSubjectDetail::join('class_details', 'class_details.id', '=', 'class_subject_details.class_details_id')
             ->join('subject_details', 'subject_details.id', '=', 'class_subject_details.subject_id')
             ->join('section_details', 'section_details.id', '=', 'class_details.section_id')
             ->join('school_years', 'school_years.id', '=' ,'class_details.school_year_id')
@@ -267,15 +289,15 @@ class GradeSheetController extends Controller
     }
     
 
-
-
     public function list_class_subject_details (Request $request) 
     {
-        $FacultyInformation = \App\FacultyInformation::where('user_id', \Auth::user()->id)->first();  
-        $ClassSubjectDetail = \App\ClassSubjectDetail::join('class_details', 'class_details.id', '=', 'class_subject_details.class_details_id')
+        $FacultyInformation = FacultyInformation::where('user_id', \Auth::user()->id)->first(); 
+
+        $ClassSubjectDetail = ClassSubjectDetail::join('class_details', 'class_details.id', '=', 'class_subject_details.class_details_id')
             ->join('subject_details', 'subject_details.id', '=', 'class_subject_details.subject_id')
             ->join('section_details', 'section_details.id', '=', 'class_details.section_id')
-            ->where('faculty_id', $FacultyInformation->id)
+            ->join('teacher_subjects', 'teacher_subjects.class_subject_details_id', '=', 'class_subject_details.id')
+            ->where('teacher_subjects.faculty_id', $FacultyInformation->id)
             ->where('class_details.school_year_id', $request->search_sy)
             ->where('class_subject_details.status', '!=', 0)
             ->where('class_details.status', '!=', 0)
@@ -318,13 +340,25 @@ class GradeSheetController extends Controller
 
     public function list_class_subject_details1 (Request $request) 
     {
+        $FacultyInformation = FacultyInformation::where('user_id', \Auth::user()->id)->first();  
+        $faculty_id = TeacherSubject::where('faculty_id', $FacultyInformation->id)->first();
+        
+        if($faculty_id)
+        {
+            $faculty = 'teacher_subjects.faculty_id';
+        }
+        else
+        {
+            $faculty = 'faculty_id';
+        }
+
         if($request->search_semester == '1st')
         {
-            $FacultyInformation = \App\FacultyInformation::where('user_id', \Auth::user()->id)->first();  
-            $ClassSubjectDetail = \App\ClassSubjectDetail::join('class_details', 'class_details.id', '=', 'class_subject_details.class_details_id')
+            
+            $ClassSubjectDetail = ClassSubjectDetail::join('class_details', 'class_details.id', '=', 'class_subject_details.class_details_id')
                 ->join('subject_details', 'subject_details.id', '=', 'class_subject_details.subject_id')
                 ->join('section_details', 'section_details.id', '=', 'class_details.section_id')
-                ->where('faculty_id', $FacultyInformation->id)
+                ->where($faculty, $FacultyInformation->id)
                 ->where('class_details.school_year_id', $request->search_sy1)
                 ->where('class_subject_details.status', '!=', 0)
                 ->where('class_details.status', '!=', 0)
@@ -345,7 +379,6 @@ class GradeSheetController extends Controller
                 ->get();
             
             
-            
                 $class_details_elements = '<option value="">Select Class Subject</option>';
                 if ($ClassSubjectDetail) 
                 {
@@ -362,11 +395,11 @@ class GradeSheetController extends Controller
         }
         else 
         {
-            $FacultyInformation = \App\FacultyInformation::where('user_id', \Auth::user()->id)->first();  
-            $ClassSubjectDetail = \App\ClassSubjectDetail::join('class_details', 'class_details.id', '=', 'class_subject_details.class_details_id')
+            
+            $ClassSubjectDetail = ClassSubjectDetail::join('class_details', 'class_details.id', '=', 'class_subject_details.class_details_id')
                 ->join('subject_details', 'subject_details.id', '=', 'class_subject_details.subject_id')
                 ->join('section_details', 'section_details.id', '=', 'class_details.section_id')
-                ->where('faculty_id', $FacultyInformation->id)
+                ->where($faculty, $FacultyInformation->id)
                 ->where('class_details.school_year_id', $request->search_sy1)
                 ->where('class_subject_details.status', '!=', 0)
                 ->where('class_details.status', '!=', 0)
@@ -385,7 +418,6 @@ class GradeSheetController extends Controller
                     class_details.grade_level
                 '))
                 ->get();
-            
             
             
                 $class_details_elements = '<option value="">Select Class Subject</option>';
@@ -407,22 +439,28 @@ class GradeSheetController extends Controller
 
     public function list_students_by_class1 (Request $request) 
     {
-        $FacultyInformation = \App\FacultyInformation::where('user_id', \Auth::user()->id)->first();
+        $FacultyInformation = FacultyInformation::where('user_id', \Auth::user()->id)->first();
+        $faculty_id = TeacherSubject::where('faculty_id', $FacultyInformation->id)->first();
         
-        $EnrollmentMale = \App\Enrollment::join('class_subject_details', 'class_subject_details.class_details_id', '=', 'enrollments.class_details_id')
+        if($faculty_id)
+        {
+            $faculty = 'teacher_subjects.faculty_id';
+        }
+        else
+        {
+            $faculty = 'faculty_id';
+        }
+
+        $EnrollmentMale = Enrollment::join('class_subject_details', 'class_subject_details.class_details_id', '=', 'enrollments.class_details_id')
                     ->join('class_details', 'class_details.id', '=', 'class_subject_details.class_details_id')
                     ->join('student_informations', 'student_informations.id', '=', 'enrollments.student_information_id')
-                    // ->join('student_enrolled_subjects', 'student_enrolled_subjects.subject_id', '=', 'class_subject_details.subject_id')
-                    // ->join('student_enrolled_subjects', 'student_enrolled_subjects.subject_id', '=', 'class_subject_details.subject_id')
-                    // ->join('student_enrolled_subjects', 'student_enrolled_subjects.enrollments_id', '=', 'enrollments.id')
+                    ->join('teacher_subjects', 'teacher_subjects.class_subject_details_id', '=', 'class_subject_details.id')
                     ->join('student_enrolled_subjects', function ($join) {
                         $join->on('student_enrolled_subjects.enrollments_id', '=', 'enrollments.id');
-                        // ->on('student_enrolled_subjects.subject_id', '=', 'class_subject_details.subject_id');
                     })
-                    ->whereRaw('class_subject_details.faculty_id = '. $FacultyInformation->id)
+                    ->whereRaw($faculty.' = '. $FacultyInformation->id)
                     ->whereRaw('class_subject_details.id = '. $request->search_class_subject_sem)
                     ->whereRaw('student_enrolled_subjects.class_subject_details_id = '. $request->search_class_subject_sem)
-                    // ->whereRaw('class_details.id = '. $search_class_subject[1])
                     ->whereRaw('class_details.current = 1')
                     ->whereRaw('class_details.status != 0')
                     ->whereRaw('student_informations.gender = 1')
@@ -450,20 +488,16 @@ class GradeSheetController extends Controller
                     ->paginate(100);
                     
                     
-        $EnrollmentFemale = \App\Enrollment::join('class_subject_details', 'class_subject_details.class_details_id', '=', 'enrollments.class_details_id')
+        $EnrollmentFemale = Enrollment::join('class_subject_details', 'class_subject_details.class_details_id', '=', 'enrollments.class_details_id')
             ->join('class_details', 'class_details.id', '=', 'class_subject_details.class_details_id')
             ->join('student_informations', 'student_informations.id', '=', 'enrollments.student_information_id')
-            // ->join('student_enrolled_subjects', 'student_enrolled_subjects.subject_id', '=', 'class_subject_details.subject_id')
-            // ->join('student_enrolled_subjects', 'student_enrolled_subjects.subject_id', '=', 'class_subject_details.subject_id')
-            // ->join('student_enrolled_subjects', 'student_enrolled_subjects.enrollments_id', '=', 'enrollments.id')
+            ->join('teacher_subjects', 'teacher_subjects.class_subject_details_id', '=', 'class_subject_details.id')
             ->join('student_enrolled_subjects', function ($join) {
                 $join->on('student_enrolled_subjects.enrollments_id', '=', 'enrollments.id');
-                // ->on('student_enrolled_subjects.subject_id', '=', 'class_subject_details.subject_id');
             })
-            ->whereRaw('class_subject_details.faculty_id = '. $FacultyInformation->id)
+            ->whereRaw($faculty.' = '. $FacultyInformation->id)
             ->whereRaw('class_subject_details.id = '. $request->search_class_subject_sem)
             ->whereRaw('student_enrolled_subjects.class_subject_details_id = '. $request->search_class_subject_sem)
-            // ->whereRaw('class_details.id = '. $search_class_subject[1])
             ->whereRaw('class_details.current = 1')
             ->whereRaw('class_details.status != 0')
             ->whereRaw('student_informations.gender = 2')
@@ -490,13 +524,13 @@ class GradeSheetController extends Controller
             ->orderBy('student_name', 'ASC')
             ->paginate(100);
         // return json_encode($Enrollment);
-        // $ClassSubjectDetail_status = \App\ClassSubjectDetail::where('id', $request->search_class_subject)->first();
-        $ClassSubjectDetail = \App\ClassSubjectDetail::join('class_details', 'class_details.id', '=', 'class_subject_details.class_details_id')
+        // $ClassSubjectDetail_status = ClassSubjectDetail::where('id', $request->search_class_subject)->first();
+        $ClassSubjectDetail = ClassSubjectDetail::join('class_details', 'class_details.id', '=', 'class_subject_details.class_details_id')
             ->join('subject_details', 'subject_details.id', '=', 'class_subject_details.subject_id')
             ->join('section_details', 'section_details.id', '=', 'class_details.section_id')
+            ->join('teacher_subjects', 'teacher_subjects.class_subject_details_id', '=', 'class_subject_details.id')
             ->whereRaw('class_subject_details.id = '. $request->search_class_subject_sem)
-            // ->whereRaw('class_details.id = '. $search_class_subject[1])
-            ->where('faculty_id', $FacultyInformation->id)
+            ->where($faculty, $FacultyInformation->id)
             ->where('class_details.school_year_id', $request->search_sy1)
             ->where('class_subject_details.status', '!=', 0)
             ->where('class_details.status', '!=', 0)
@@ -524,15 +558,16 @@ class GradeSheetController extends Controller
         {
             $semester = 2;
         }
-        return view('control_panel_faculty.student_grade_sheet.partials.data_list', compact('EnrollmentFemale', 'EnrollmentMale', 'ClassSubjectDetail','semester'))->render();
+        return view('control_panel_faculty.student_grade_sheet.partials.data_list', 
+            compact('EnrollmentFemale', 'EnrollmentMale', 'ClassSubjectDetail','semester'))->render();
     }
 
     public function list_students_by_class_print_senior (Request $request) 
     {
         
-        $FacultyInformation = \App\FacultyInformation::where('user_id', \Auth::user()->id)->first();
+        $FacultyInformation = FacultyInformation::where('user_id', \Auth::user()->id)->first();
         // return json_encode(['FacultyInformation' => $FacultyInformation, 'req' => $request->all()]);
-        $EnrollmentMale = \App\Enrollment::join('class_subject_details', 'class_subject_details.class_details_id', '=', 'enrollments.class_details_id')
+        $EnrollmentMale = Enrollment::join('class_subject_details', 'class_subject_details.class_details_id', '=', 'enrollments.class_details_id')
                     ->join('class_details', 'class_details.id', '=', 'class_subject_details.class_details_id')
                     ->join('student_informations', 'student_informations.id', '=', 'enrollments.student_information_id')
                     // ->join('student_enrolled_subjects', 'student_enrolled_subjects.subject_id', '=', 'class_subject_details.subject_id')
@@ -571,7 +606,7 @@ class GradeSheetController extends Controller
                     ->orderBy('student_name', 'ASC')
                     ->get();
 
-        $EnrollmentFemale = \App\Enrollment::join('class_subject_details', 'class_subject_details.class_details_id', '=', 'enrollments.class_details_id')
+        $EnrollmentFemale = Enrollment::join('class_subject_details', 'class_subject_details.class_details_id', '=', 'enrollments.class_details_id')
                     ->join('class_details', 'class_details.id', '=', 'class_subject_details.class_details_id')
                     ->join('student_informations', 'student_informations.id', '=', 'enrollments.student_information_id')
                     // ->join('student_enrolled_subjects', 'student_enrolled_subjects.subject_id', '=', 'class_subject_details.subject_id')
@@ -610,7 +645,7 @@ class GradeSheetController extends Controller
                     ->orderBy('student_name', 'ASC')
                     ->get();
                     
-        $ClassSubjectDetail = \App\ClassSubjectDetail::join('class_details', 'class_details.id', '=', 'class_subject_details.class_details_id')
+        $ClassSubjectDetail = ClassSubjectDetail::join('class_details', 'class_details.id', '=', 'class_subject_details.class_details_id')
             ->join('subject_details', 'subject_details.id', '=', 'class_subject_details.subject_id')
             ->join('section_details', 'section_details.id', '=', 'class_details.section_id')
             ->join('school_years', 'school_years.id', '=' ,'class_details.school_year_id')
@@ -651,7 +686,7 @@ class GradeSheetController extends Controller
 
     public function temporary_save_grade(Request $request)
     {
-        $SchoolYear = \App\SchoolYear::where('status', 1)->where('current', 1)->first();
+        $SchoolYear = SchoolYear::where('status', 1)->where('current', 1)->first();
 
         if (!$request->student_enrolled_subject_id || !$request->enrollment_id || !$request->grading || !$request->classSubjectDetailID ) 
         {
@@ -673,15 +708,15 @@ class GradeSheetController extends Controller
         $grading = base64_decode($request->grading);
         $grade = $request->grade;
 
-        $StudentEnrolledSubject = \App\StudentEnrolledSubject::where('id', $student_enrolled_subject_id)->where('enrollments_id', $enrollment_id)
+        $StudentEnrolledSubject = StudentEnrolledSubject::where('id', $student_enrolled_subject_id)->where('enrollments_id', $enrollment_id)
             ->where('class_subject_details_id', $request->classSubjectDetailID)->first();
 
-        $selectedsubjectid = \App\ClassSubjectDetail::where('id', $StudentEnrolledSubject->class_subject_details_id)->first();
+        $selectedsubjectid = ClassSubjectDetail::where('id', $StudentEnrolledSubject->class_subject_details_id)->first();
 
-        $SelectedSubject = \App\SubjectDetail::where('id', $selectedsubjectid->subject_id)
+        $SelectedSubject = SubjectDetail::where('id', $selectedsubjectid->subject_id)
                 ->first();
 
-                $ClassSubjectDetail = \App\ClassSubjectDetail::join('class_details', 'class_details.id', '=', 'class_subject_details.class_details_id')
+                $ClassSubjectDetail = ClassSubjectDetail::join('class_details', 'class_details.id', '=', 'class_subject_details.class_details_id')
                 ->join('rooms','rooms.id', '=', 'class_details.room_id')
                 ->join('section_details', 'section_details.id', '=', 'class_details.section_id')       
                 ->where('class_subject_details.id',  $StudentEnrolledSubject->class_subject_details_id)
@@ -754,7 +789,7 @@ class GradeSheetController extends Controller
                 }
                 
                 
-                $GradesEncode = \App\Grade_sheet_firstsem::where(['enrollment_id'=>$enrollment_id])
+                $GradesEncode = Grade_sheet_firstsem::where(['enrollment_id'=>$enrollment_id])
                 ->where('school_year_id', $SchoolYear->id)
                 ->update([$subject=>$grade]); 
 
@@ -806,7 +841,7 @@ class GradeSheetController extends Controller
                 }
                 
                 
-                $GradesEncode = \App\Grade_sheet_firstsemsecond::where(['enrollment_id'=>$enrollment_id])
+                $GradesEncode = Grade_sheet_firstsemsecond::where(['enrollment_id'=>$enrollment_id])
                 ->where('school_year_id', $SchoolYear->id)
                 ->update([$subject=>$grade]); 
 
@@ -858,7 +893,7 @@ class GradeSheetController extends Controller
                 }
                 
                 
-                $GradesEncode = \App\Grade11_Second_Sem::where(['enrollment_id'=>$enrollment_id])
+                $GradesEncode = Grade11_Second_Sem::where(['enrollment_id'=>$enrollment_id])
                 ->where('school_year_id', $SchoolYear->id)
                 ->update([$subject=>$grade]); 
 
@@ -910,7 +945,7 @@ class GradeSheetController extends Controller
                 }
                 
                 
-                $GradesEncode = \App\Grade_sheet_secondsemsecond::where(['enrollment_id'=>$enrollment_id])
+                $GradesEncode = Grade_sheet_secondsemsecond::where(['enrollment_id'=>$enrollment_id])
                 ->where('school_year_id', $SchoolYear->id)
                 ->update([$subject=>$grade]); 
 
@@ -988,7 +1023,7 @@ class GradeSheetController extends Controller
                     $subject = 'ict';
                 }           
 
-                $GradesEncode = \App\Grade_sheet_first::where(['enrollment_id'=>$enrollment_id])
+                $GradesEncode = Grade_sheet_first::where(['enrollment_id'=>$enrollment_id])
                 ->where('school_year_id', $SchoolYear->id)
                 ->update([$subject => $grade]);
             
@@ -1057,7 +1092,7 @@ class GradeSheetController extends Controller
                     $subject = 'ict';
                 }           
 
-                $GradesEncode = \App\Grade_sheet_second::where(['enrollment_id'=>$enrollment_id])
+                $GradesEncode = Grade_sheet_second::where(['enrollment_id'=>$enrollment_id])
                 ->where('school_year_id', $SchoolYear->id)
                 ->update([$subject => $grade]);
             }
@@ -1125,7 +1160,7 @@ class GradeSheetController extends Controller
                 }  
                       
 
-                $GradesEncode = \App\Grade_sheet_third::where(['enrollment_id'=>$enrollment_id])
+                $GradesEncode = Grade_sheet_third::where(['enrollment_id'=>$enrollment_id])
                 ->where('school_year_id', $SchoolYear->id)
                 ->update([$subject => $grade]);
             }
@@ -1193,7 +1228,7 @@ class GradeSheetController extends Controller
                     $subject = 'ict';
                 }          
 
-                $GradesEncode = \App\Grade_sheet_fourth::where(['enrollment_id'=>$enrollment_id])
+                $GradesEncode = Grade_sheet_fourth::where(['enrollment_id'=>$enrollment_id])
                 ->where('school_year_id', $SchoolYear->id)
                 ->update([$subject => $grade]);
             }
@@ -1225,16 +1260,16 @@ class GradeSheetController extends Controller
         $grading = base64_decode($request->grading);
         $grade = $request->grade;
         
-        $StudentEnrolledSubject = \App\StudentEnrolledSubject::where('id', $student_enrolled_subject_id)->where('enrollments_id', $enrollment_id)
+        $StudentEnrolledSubject = StudentEnrolledSubject::where('id', $student_enrolled_subject_id)->where('enrollments_id', $enrollment_id)
         ->where('class_subject_details_id', $request->classSubjectDetailID)->first();
 
-        $selectedsubjectid = \App\ClassSubjectDetail::where('id', $StudentEnrolledSubject->class_subject_details_id)->first();
+        $selectedsubjectid = ClassSubjectDetail::where('id', $StudentEnrolledSubject->class_subject_details_id)->first();
 
-        $SelectedSubject = \App\SubjectDetail::where('id', $selectedsubjectid->subject_id)
+        $SelectedSubject = SubjectDetail::where('id', $selectedsubjectid->subject_id)
                 ->first();
 
-        // $Grade_leve = \App\ClassSubjectDetail::join('class_details_id', 'class_details')
-        $ClassSubjectDetail = \App\ClassSubjectDetail::join('class_details', 'class_details.id', '=', 'class_subject_details.class_details_id')
+        // $Grade_leve = ClassSubjectDetail::join('class_details_id', 'class_details')
+        $ClassSubjectDetail = ClassSubjectDetail::join('class_details', 'class_details.id', '=', 'class_subject_details.class_details_id')
         ->join('rooms','rooms.id', '=', 'class_details.room_id')
         ->join('section_details', 'section_details.id', '=', 'class_details.section_id')       
         ->where('class_subject_details.id',  $StudentEnrolledSubject->class_subject_details_id)
@@ -1251,7 +1286,7 @@ class GradeSheetController extends Controller
         ->first();
 
 
-        $SchoolYear = \App\SchoolYear::where('current', 1)->where('status', 1)->first();   
+        $SchoolYear = SchoolYear::where('current', 1)->where('status', 1)->first();   
 
         if (!$StudentEnrolledSubject)
         {
@@ -1305,7 +1340,7 @@ class GradeSheetController extends Controller
                 }
                 
                 
-                $GradesEncode = \App\Grade_sheet_firstsem::where(['enrollment_id'=>$enrollment_id])
+                $GradesEncode = Grade_sheet_firstsem::where(['enrollment_id'=>$enrollment_id])
                 ->where('school_year_id', $SchoolYear->id)
                 ->update([$subject=>$grade]); 
 
@@ -1357,7 +1392,7 @@ class GradeSheetController extends Controller
                 }
                 
                 
-                $GradesEncode = \App\Grade_sheet_firstsemsecond::where(['enrollment_id'=>$enrollment_id])
+                $GradesEncode = Grade_sheet_firstsemsecond::where(['enrollment_id'=>$enrollment_id])
                 ->where('school_year_id', $SchoolYear->id)
                 ->update([$subject=>$grade]); 
 
@@ -1409,7 +1444,7 @@ class GradeSheetController extends Controller
                 }
                 
                 
-                $GradesEncode = \App\Grade11_Second_Sem::where(['enrollment_id'=>$enrollment_id])
+                $GradesEncode = Grade11_Second_Sem::where(['enrollment_id'=>$enrollment_id])
                 ->where('school_year_id', $SchoolYear->id)
                 ->update([$subject=>$grade]); 
 
@@ -1461,7 +1496,7 @@ class GradeSheetController extends Controller
                 }
                 
                 
-                $GradesEncode = \App\Grade_sheet_secondsemsecond::where(['enrollment_id'=>$enrollment_id])
+                $GradesEncode = Grade_sheet_secondsemsecond::where(['enrollment_id'=>$enrollment_id])
                 ->where('school_year_id', $SchoolYear->id)
                 ->update([$subject=>$grade]); 
 
@@ -1540,7 +1575,7 @@ class GradeSheetController extends Controller
                 }
                 
                 
-                $GradesEncode = \App\Grade_sheet_first::where(['enrollment_id'=>$enrollment_id])
+                $GradesEncode = Grade_sheet_first::where(['enrollment_id'=>$enrollment_id])
                 ->where('school_year_id', $SchoolYear->id)
                 ->update([$subject=>$grade]); 
             
@@ -1609,7 +1644,7 @@ class GradeSheetController extends Controller
                     $subject = 'ict';
                 }
                     
-                $GradesEncode = \App\Grade_sheet_second::where(['enrollment_id'=>$enrollment_id])
+                $GradesEncode = Grade_sheet_second::where(['enrollment_id'=>$enrollment_id])
                 ->where('school_year_id', $SchoolYear->id)
                 ->update([$subject=>$grade]);
             }
@@ -1677,7 +1712,7 @@ class GradeSheetController extends Controller
                     $subject = 'ict';
                 }
                     
-                $GradesEncode = \App\Grade_sheet_third::where(['enrollment_id'=>$enrollment_id])
+                $GradesEncode = Grade_sheet_third::where(['enrollment_id'=>$enrollment_id])
                 ->where('school_year_id', $SchoolYear->id)
                 ->update([$subject=>$grade]);
             }
@@ -1745,7 +1780,7 @@ class GradeSheetController extends Controller
                     $subject = 'esp';      
                 }
                     
-                $GradesEncode = \App\Grade_sheet_fourth::where(['enrollment_id'=>$enrollment_id])
+                $GradesEncode = Grade_sheet_fourth::where(['enrollment_id'=>$enrollment_id])
                 ->where('school_year_id', $SchoolYear->id)
                 ->update([$subject=>$grade]);
             }
@@ -1755,8 +1790,8 @@ class GradeSheetController extends Controller
     }
     public function finalize_grade (Request $request) 
     {
-        $FacultyInformation = \App\FacultyInformation::where('user_id', \Auth::user()->id)->first();
-        $ClassSubjectDetail = \App\ClassSubjectDetail::where('class_subject_details.id', $request->id)
+        $FacultyInformation = FacultyInformation::where('user_id', \Auth::user()->id)->first();
+        $ClassSubjectDetail = ClassSubjectDetail::where('class_subject_details.id', $request->id)
             ->where('faculty_id', $FacultyInformation->id)
             ->first();
         if ($ClassSubjectDetail) 
@@ -1773,20 +1808,20 @@ class GradeSheetController extends Controller
 
     public function view_student_data()
     {
-        $SchoolYear = \App\SectionDetail::get();
+        $SchoolYear = SectionDetail::get();
         return view('control_panel_faculty.student_data.index', compact('SchoolYear'));
     }
 
     public function list_class_section (Request $request) 
     {
-        // $FacultyInformation = \App\FacultyInformation::where('user_id', \Auth::user()->id)->first(); 
+        // $FacultyInformation = FacultyInformation::where('user_id', \Auth::user()->id)->first(); 
         $sectionID = $request->search_sy; 
         // $data = $request->all();
-        $SchoolYearID = \App\SchoolYear::where('current', 1)->where('status', 1)->first();
+        $SchoolYearID = SchoolYear::where('current', 1)->where('status', 1)->first();
 
-        $getIdClassDetails = \App\ClassDetail::where(['section_id'=> $sectionID])->where(['school_year_id'=>$SchoolYearID->id])->first();
+        $getIdClassDetails = ClassDetail::where(['section_id'=> $sectionID])->where(['school_year_id'=>$SchoolYearID->id])->first();
 
-        $EnrollmentID = \App\Enrollment::where(['class_details_id'=>$getIdClassDetails->id])->get();
+        $EnrollmentID = Enrollment::where(['class_details_id'=>$getIdClassDetails->id])->get();
 
         
 
@@ -1809,7 +1844,7 @@ class GradeSheetController extends Controller
             // $Grade_sheet_first->status = 1;
             // $Grade_sheet_first->save();
             
-            // $Grade_sheet_second = new \App\Grade_sheet_firstsemsecond();
+            // $Grade_sheet_second = new Grade_sheet_firstsemsecond();
             // $Grade_sheet_second->school_year_id =  $SchoolYearID->id;
             // $Grade_sheet_second->enrollment_id =  $dataID->id;
             // $Grade_sheet_second->section_details_id = $sectionID;
@@ -1826,7 +1861,7 @@ class GradeSheetController extends Controller
             // $Grade_sheet_second->status = 1;
             // $Grade_sheet_second->save();
 
-            // $Grade_sheet_third = new \App\Grade_sheet_secondsemsecond();
+            // $Grade_sheet_third = new Grade_sheet_secondsemsecond();
             // $Grade_sheet_third->school_year_id =  $SchoolYearID->id;
             // $Grade_sheet_third->enrollment_id =  $dataID->id;
             // $Grade_sheet_third->section_details_id = $sectionID;
@@ -1843,7 +1878,7 @@ class GradeSheetController extends Controller
             // $Grade_sheet_third->status = 1;
             // $Grade_sheet_third->save();
 
-            // $Grade_sheet_fourth = new \App\Grade11_Second_Sem();
+            // $Grade_sheet_fourth = new Grade11_Second_Sem();
             // $Grade_sheet_fourth->school_year_id =  $SchoolYearID->id;
             // $Grade_sheet_fourth->enrollment_id =  $dataID->id;
             // $Grade_sheet_fourth->section_details_id = $sectionID;
@@ -1877,7 +1912,7 @@ class GradeSheetController extends Controller
             $Grade_sheet_first->status = 1;
             $Grade_sheet_first->save();
             
-            $Grade_sheet_second = new \App\Grade_sheet_second();
+            $Grade_sheet_second = new Grade_sheet_second();
             $Grade_sheet_second->school_year_id =  $SchoolYearID->id;
             $Grade_sheet_second->enrollment_id =  $dataID->id;
             $Grade_sheet_second->section_details_id = $sectionID;
@@ -1894,7 +1929,7 @@ class GradeSheetController extends Controller
             $Grade_sheet_second->status = 1;
             $Grade_sheet_second->save();
 
-            $Grade_sheet_third = new \App\Grade_sheet_third();
+            $Grade_sheet_third = new Grade_sheet_third();
             $Grade_sheet_third->school_year_id =  $SchoolYearID->id;
             $Grade_sheet_third->enrollment_id =  $dataID->id;
             $Grade_sheet_third->section_details_id = $sectionID;
@@ -1911,7 +1946,7 @@ class GradeSheetController extends Controller
             $Grade_sheet_third->status = 1;
             $Grade_sheet_third->save();
 
-            $Grade_sheet_fourth = new \App\Grade_sheet_fourth();
+            $Grade_sheet_fourth = new Grade_sheet_fourth();
             $Grade_sheet_fourth->school_year_id =  $SchoolYearID->id;
             $Grade_sheet_fourth->enrollment_id =  $dataID->id;
             $Grade_sheet_fourth->section_details_id = $sectionID;

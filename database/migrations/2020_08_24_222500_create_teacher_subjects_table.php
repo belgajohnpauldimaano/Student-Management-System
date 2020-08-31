@@ -17,6 +17,8 @@ class CreateTeacherSubjectsTable extends Migration
             $table->increments('id');
             $table->bigInteger('class_subject_details_id');
             $table->bigInteger('faculty_id');
+            // $table->integer('school_year_id');
+            $table->tinyInteger('status')->default(1);
             $table->timestamps();
         });
     }

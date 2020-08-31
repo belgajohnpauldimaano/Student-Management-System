@@ -4,7 +4,7 @@
             <form id="js-form_subject_details" enctype="multipart/form-data">
                 {{ csrf_field() }}
                 @if ($ClassSubjectDetail)
-                    <input type="hidden" name="id" value="{{ $ClassSubjectDetail->id }}">
+                    <input type="hidden" name="id" id="id" value="{{ $ClassSubjectDetail->id }}">
                 @endif
                 
                 <input type="hidden" name="class_details_id" value="{{ $class_details_id }}">
@@ -15,135 +15,44 @@
                         {{ $ClassSubjectDetail ? 'Edit Class Subject' : 'Add Class Subject' }}
                     </h4>
                 </div>
-                <div class="modal-body">        
+                <div class="modal-body">       
                        
                     <input type="hidden" name="section_id" value="{{ $ClassDetail->section_id }}">
 
-                    {{-- <div class="form-group">
-                        <label for="">Faculty</label>
-                        <select name="faculty" id="faculty" class="form-control">
-                            <option value="">Select faculty</option>
-                            @foreach ($FacultyInformation as $data) 
-                                <option value="{{ $data->id }}" {{ $ClassSubjectDetail ? $ClassSubjectDetail->faculty_id == $data->id ? 'selected' : '' : '' }}>{{ $data->first_name . ' ' . $data->last_name }}</option>
-                            @endforeach
-                        </select>
-                        <div class="help-block text-red text-center" id="js-faculty">
+                    @if (!$ClassSubjectDetail) 
+                        <div class="form-group">
+                            <label>Faculty</label>
+                            <select class="form-control select2" name="faculties[]" id="faculties"  multiple="multiple" data-placeholder="Select faculty"
+                                    style="width: 100%;">                                      
+                                    @foreach ($FacultyInformation as $data) 
+                                        <option value="{{ $data->id }}" {{ $ClassSubjectDetail ? $ClassSubjectDetail->faculty_id == $data->id ? 'selected' : '' : '' }}>{{ $data->first_name . ' ' . $data->last_name }}</option>
+                                    @endforeach
+                            </select>
+                            <div class="help-block text-red text-center" id="js-faculty">
+                            </div>
                         </div>
-                    </div> --}}
-
-                    <div class="form-group">
-                        <label>Faculty</label>
-                        <select class="form-control select2" name="faculties[]" id="faculties"  multiple="multiple" data-placeholder="Select faculty"
-                                style="width: 100%;">                           
-                            
-                            @if ($ClassSubjectDetail)
-                                <?php echo $faculties ?>
-                            @else
-                                @foreach ($FacultyInformation as $data) 
-                                    <option value="{{ $data->id }}" {{ $ClassSubjectDetail ? $ClassSubjectDetail->faculty_id == $data->id ? 'selected' : '' : '' }}>{{ $data->id }} {{ $data->first_name . ' ' . $data->last_name }}</option>
-                                @endforeach
-                            @endif
-                        </select>
-                        <div class="help-block text-red text-center" id="js-faculty">
-                        </div>
-                      </div>
+                    @endif
                     
                     <div class="form-group">
                         <label for="">Subject</label>
                         <select name="subject" id="subject" class="form-control">
                             <option value="">Select subject</option>
                             @foreach ($SubjectDetail as $data) 
-                                <option value="{{ $data->id }}" {{ $ClassSubjectDetail ? $ClassSubjectDetail->subject_id == $data->id ? 'selected' : '' : '' }}>{{ $data->id }} {{ $data->subject_code . ' ' . $data->subject }}</option>
+                                <option value="{{ $data->id }}" {{ $ClassSubjectDetail ? $ClassSubjectDetail->subject_id == $data->id ? 'selected' : '' : '' }}>{{ $data->subject_code . ' ' . $data->subject }}</option>
                             @endforeach
                         </select>
                         <div class="help-block text-red text-center" id="js-subject">
                         </div>
                     </div>
-                    {{-- {{ $subject_order_available->id }} --}}
+                  
                     <div class="form-group">
                         <label for="">Order</label>
-                        {{-- <input name="order" id="order" class="form-control" value="{{ $ClassSubjectDetail ? $ClassSubjectDetail->class_subject_order : '' }}" /> --}}
                         <select name="order" id="order" class="form-control">
-                            {{-- <option value="">Select Order</option> --}}
-                            {{-- @foreach ($order_numbers as $data)
-                            <option value="1" {{ $ClassSubjectDetail ? $ClassSubjectDetail->class_subject_order == 1 ? 'selected' : '' : '' }}>1</option>
-                            <option value="1" {{ $ClassSubjectDetail ? $ClassSubjectDetail->class_subject_order == 1 ? 'selected' : '' : '' }}>1</option>
-                            @endforeach --}}
-                            {{-- {{ $order_numbers }} --}}
-                            <?php echo $order_numbers; ?>
+                           <?php echo $order_numbers; ?>
                         </select>
                         <div class="help-block text-red text-center" id="js-order">
                         </div>
-                    </div>
-                    {{--  <div class="row no-margin">
-                        <div class="col-md-6  no-padding">
-                            <div class="bootstrap-timepicker">
-                                <div class="form-group">
-                                <label>Class Time (<i>from</i>)</label>
-
-                                <div class="input-group">
-                                    <input type="text" class="form-control timepicker" name="subject_time_from" value="{{ $ClassSubjectDetail ? strftime('%r',strtotime($ClassSubjectDetail->class_time_from)) : '' }}">
-
-                                    <div class="input-group-addon">
-                                    <i class="fa fa-clock-o"></i>
-                                    </div>
-                                </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="bootstrap-timepicker">
-                                <div class="form-group">
-                                <label>Class Time (<i>to</i>)</label>
-
-                                <div class="input-group">
-                                    <input type="text" class="form-control timepicker" name="subject_time_to" value="{{ $ClassSubjectDetail ? strftime('%r',strtotime($ClassSubjectDetail->class_time_to)) : '' }}">
-
-                                    <div class="input-group-addon">
-                                    <i class="fa fa-clock-o"></i>
-                                    </div>
-                                </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>  --}}
-                    {{--  <div class="form-group">
-                        <label for="">Schedule</label>
-                    </div>
-                    <div class="checkbox">
-                        <label>
-                        <input id="check_all_days" type="checkbox" data-checked-all="true"> Check All days
-                        </label>
-                    </div>
-                    <div class="form-inline">
-                        <div class="checkbox">
-                            <label>
-                            <input name="sched_mon" id="sched_mon" class="sched_days" type="checkbox"> Monday
-                            </label>
-                        </div>
-                        <div class="checkbox">
-                            <label>
-                            <input name="sched_tue" id="sched_tue" class="sched_days" type="checkbox"> Tuesday
-                            </label>
-                        </div>
-                        <div class="checkbox">
-                            <label>
-                            <input name="sched_wed" id="sched_wed" class="sched_days" type="checkbox"> Wednesday
-                            </label>
-                        </div>
-                        <div class="checkbox">
-                            <label>
-                            <input name="sched_thu" id="sched_thu" class="sched_days" type="checkbox"> Thursday
-                            </label>
-                        </div>
-                        <div class="checkbox">
-                            <label>
-                            <input name="sched_fri" id="sched_fri" class="sched_days" type="checkbox"> Friday
-                            </label>
-                        </div>
-                    </div>  --}}
-
-                    
+                    </div>                    
 
                     <?php
                         $days = $ClassSubjectDetail ? $ClassSubjectDetail->class_schedule ? explode(';', rtrim($ClassSubjectDetail->class_schedule,";")) : [] : [];
@@ -200,8 +109,6 @@
                                 </div>
                             </td>
                         </tr>
-
-
                         <tr>
                             <td>
                                 <label for="sched_tue" role="button">

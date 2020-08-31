@@ -131,8 +131,7 @@
         <div class="box-body">            
             <div class="js-data-container">
                 @include('control_panel_finance.payment_summary.partials.data_list')       
-            </div>
-            
+            </div>            
         </div>        
     </div>
 @endsection

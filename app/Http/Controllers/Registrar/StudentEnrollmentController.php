@@ -31,9 +31,6 @@ class StudentEnrollmentController extends Controller
 
             $StudentInformation = StudentInformation::with(['user'])
             ->join('users', 'users.id', '=', 'student_informations.user_id')
-            // ->leftJoin('enrollments', 'enrollments.student_information_id', '=', 'student_informations.id')
-            // ->leftJoin('class_details', 'class_details.id', '=', 'enrollments.class_details_id')
-            // ->leftJoin('school_years', 'school_years.id', '=', 'class_details.school_year_id')
             ->selectRaw("
                 student_informations.id,
                 users.username,
@@ -219,7 +216,8 @@ class StudentEnrollmentController extends Controller
                 ->paginate(70); //
 
                 // return json_encode($StudentInformation);
-            return view('control_panel_registrar.student_enrollment.partials.data_list_enrolled', compact('Enrollment','ClassDetail'))->render();
+            return view('control_panel_registrar.student_enrollment.partials.data_list_enrolled', 
+                compact('Enrollment','ClassDetail'))->render();
             
         }
     }

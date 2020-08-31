@@ -2,23 +2,34 @@
 
 namespace App\Http\Controllers\Faculty;
 
+use App\Room;
+use App\Enrollment;
+use App\SchoolYear;
+use App\ClassDetail;
+use App\SectionDetail;
+use App\SubjectDetail;
+use Barryvdh\DomPDF\PDF;
+use App\ClassSubjectDetail;
+use App\FacultyInformation;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 
 class SubjectClassController extends Controller
 {
     public function index (Request $request) 
     {
-        // $FacultyInformation = \App\FacultyInformation::where('user_id', \Auth::user()->id)->first();
+        // $FacultyInformation = FacultyInformation::where('user_id', \Auth::user()->id)->first();
         // return json_encode(['FacultyInformation' => $FacultyInformation, 'Auth' => \Auth::user()]);
-        $SchoolYear = \App\SchoolYear::where('status', 1)->orderBy('current', 'ASC')->orderBy('school_year', 'ASC')->get();
+        $SchoolYear = SchoolYear::where('status', 1)->orderBy('current', 'ASC')->orderBy('school_year', 'ASC')->get();
         return view('control_panel_faculty.subject_class_details.index', compact('SchoolYear'));
     }
     public function list_students_by_class (Request $request) 
     {
-        $FacultyInformation = \App\FacultyInformation::where('user_id', \Auth::user()->id)->first();
+        $FacultyInformation = FacultyInformation::where('user_id', \Auth::user()->id)->first();
 
-        $EnrollmentMale = \App\Enrollment::join('class_subject_details', 'class_subject_details.class_details_id', '=', 'enrollments.class_details_id')
+        $EnrollmentMale = Enrollment::join('class_subject_details', 'class_subject_details.class_details_id', '=', 'enrollments.class_details_id')
                     ->join('class_details', 'class_details.id', '=', 'class_subject_details.class_details_id')
                     ->join('student_informations', 'student_informations.id', '=', 'enrollments.student_information_id')
                     ->join('users', 'users.id', '=', 'student_informations.user_id')
@@ -35,7 +46,7 @@ class SubjectClassController extends Controller
                     ->orderBY('student_name','ASC')
                     ->paginate(50);
 
-        $EnrollmentFemale = \App\Enrollment::join('class_subject_details', 'class_subject_details.class_details_id', '=', 'enrollments.class_details_id')
+        $EnrollmentFemale = Enrollment::join('class_subject_details', 'class_subject_details.class_details_id', '=', 'enrollments.class_details_id')
                     ->join('class_details', 'class_details.id', '=', 'class_subject_details.class_details_id')
                     ->join('student_informations', 'student_informations.id', '=', 'enrollments.student_information_id')
                     ->join('users', 'users.id', '=', 'student_informations.user_id')
@@ -52,7 +63,7 @@ class SubjectClassController extends Controller
                     ->orderBY('student_name','ASC')
                     ->paginate(50);
 
-        $ClassSubjectDetail = \App\ClassSubjectDetail::join('class_details', 'class_details.id', '=', 'class_subject_details.class_details_id')
+        $ClassSubjectDetail = ClassSubjectDetail::join('class_details', 'class_details.id', '=', 'class_subject_details.class_details_id')
             ->join('subject_details', 'subject_details.id', '=', 'class_subject_details.subject_id')
             ->join('section_details', 'section_details.id', '=', 'class_details.section_id')
             ->where('class_subject_details.id', $request->search_class_subject)
@@ -76,9 +87,9 @@ class SubjectClassController extends Controller
     }
     public function list_students_by_class_print (Request $request) 
     {
-        $FacultyInformation = \App\FacultyInformation::where('user_id', \Auth::user()->id)->first();
+        $FacultyInformation = FacultyInformation::where('user_id', \Auth::user()->id)->first();
 
-        // $Enrollment = \App\Enrollment::join('class_subject_details', 'class_subject_details.class_details_id', '=', 'enrollments.class_details_id')
+        // $Enrollment = Enrollment::join('class_subject_details', 'class_subject_details.class_details_id', '=', 'enrollments.class_details_id')
         //             ->join('class_details', 'class_details.id', '=', 'class_subject_details.class_details_id')
         //             ->join('student_informations', 'student_informations.id', '=', 'enrollments.student_information_id')
         //             ->join('users', 'users.id', '=', 'student_informations.user_id')
@@ -93,7 +104,7 @@ class SubjectClassController extends Controller
         //             "))
         //             ->paginate(50);
         
-        $EnrollmentMale = \App\Enrollment::join('class_subject_details', 'class_subject_details.class_details_id', '=', 'enrollments.class_details_id')
+        $EnrollmentMale = Enrollment::join('class_subject_details', 'class_subject_details.class_details_id', '=', 'enrollments.class_details_id')
                     ->join('class_details', 'class_details.id', '=', 'class_subject_details.class_details_id')
                     ->join('student_informations', 'student_informations.id', '=', 'enrollments.student_information_id')
                     ->join('users', 'users.id', '=', 'student_informations.user_id')
@@ -110,7 +121,7 @@ class SubjectClassController extends Controller
                     ->orderBY('student_name','ASC')
                     ->paginate(50);
 
-        $EnrollmentFemale = \App\Enrollment::join('class_subject_details', 'class_subject_details.class_details_id', '=', 'enrollments.class_details_id')
+        $EnrollmentFemale = Enrollment::join('class_subject_details', 'class_subject_details.class_details_id', '=', 'enrollments.class_details_id')
                     ->join('class_details', 'class_details.id', '=', 'class_subject_details.class_details_id')
                     ->join('student_informations', 'student_informations.id', '=', 'enrollments.student_information_id')
                     ->join('users', 'users.id', '=', 'student_informations.user_id')
@@ -127,7 +138,7 @@ class SubjectClassController extends Controller
                     ->orderBY('student_name','ASC')
                     ->paginate(50);
 
-        $ClassSubjectDetail = \App\ClassSubjectDetail::join('class_details', 'class_details.id', '=', 'class_subject_details.class_details_id')
+        $ClassSubjectDetail = ClassSubjectDetail::join('class_details', 'class_details.id', '=', 'class_subject_details.class_details_id')
             ->join('subject_details', 'subject_details.id', '=', 'class_subject_details.subject_id')
             ->join('section_details', 'section_details.id', '=', 'class_details.section_id')
             ->where('class_subject_details.id', $request->search_class_subject)
@@ -154,8 +165,8 @@ class SubjectClassController extends Controller
     }
     public function list_class_subject_details (Request $request) 
     {
-        $FacultyInformation = \App\FacultyInformation::where('user_id', \Auth::user()->id)->first();
-        $ClassSubjectDetail = \App\ClassSubjectDetail::join('class_details', 'class_details.id', '=', 'class_subject_details.class_details_id')
+        $FacultyInformation = FacultyInformation::where('user_id', \Auth::user()->id)->first();
+        $ClassSubjectDetail = ClassSubjectDetail::join('class_details', 'class_details.id', '=', 'class_subject_details.class_details_id')
             ->join('subject_details', 'subject_details.id', '=', 'class_subject_details.subject_id')
             ->join('section_details', 'section_details.id', '=', 'class_details.section_id')
             ->where('faculty_id', $FacultyInformation->id)
@@ -192,14 +203,14 @@ class SubjectClassController extends Controller
     //     $ClassDetail = NULL;
     //     if ($request->id)
     //     {
-    //         $ClassDetail = \App\ClassDetail::where('id', $request->id)->first();
+    //         $ClassDetail = ClassDetail::where('id', $request->id)->first();
     //     }
     //     // return json_encode($ClassDetail);
-    //     $FacultyInformation = \App\FacultyInformation::where('status', 1)->get();
-    //     $SubjectDetail = \App\SubjectDetail::where('status', 1)->get();
-    //     $SectionDetail = \App\SectionDetail::where('status', 1)->get();
-    //     $Room = \App\Room::where('status', 1)->get();
-    //     $SchoolYear = \App\SchoolYear::where('status', 1)->where('current', 1)->get();
+    //     $FacultyInformation = FacultyInformation::where('status', 1)->get();
+    //     $SubjectDetail = SubjectDetail::where('status', 1)->get();
+    //     $SectionDetail = SectionDetail::where('status', 1)->get();
+    //     $Room = Room::where('status', 1)->get();
+    //     $SchoolYear = SchoolYear::where('status', 1)->where('current', 1)->get();
     //     return view('control_panel_registrar.class_details.partials.modal_data', compact('ClassDetail', 'FacultyInformation', 'SubjectDetail', 'SectionDetail', 'Room', 'SchoolYear'))->render();
     // }
 
@@ -208,22 +219,22 @@ class SubjectClassController extends Controller
     //     $ClassDetail = NULL;
     //     if ($request->id)
     //     {
-    //         $ClassDetail = \App\ClassDetail::where('id', $request->id)->first();
+    //         $ClassDetail = ClassDetail::where('id', $request->id)->first();
     //     }
     //     // return json_encode($ClassDetail);
-    //     $FacultyInformation = \App\FacultyInformation::where('status', 1)->get();
-    //     $SubjectDetail = \App\SubjectDetail::where('status', 1)->get();
-    //     $SectionDetail = \App\SectionDetail::where('status', 1)->get();
-    //     $Room = \App\Room::where('status', 1)->get();
-    //     $SchoolYear = \App\SchoolYear::where('status', 1)->get();
+    //     $FacultyInformation = FacultyInformation::where('status', 1)->get();
+    //     $SubjectDetail = SubjectDetail::where('status', 1)->get();
+    //     $SectionDetail = SectionDetail::where('status', 1)->get();
+    //     $Room = Room::where('status', 1)->get();
+    //     $SchoolYear = SchoolYear::where('status', 1)->get();
     //     return view('control_panel_registrar.class_details.partials.modal_manage_subjects', compact('ClassDetail', 'FacultyInformation', 'SubjectDetail', 'SectionDetail', 'Room', 'SchoolYear'))->render();
     // }
 
     public function class_schedules (Request $request)
     {
-        $FacultyInformation = \App\FacultyInformation::where('user_id', \Auth::user()->id)->first();
-        $SchoolYear         = \App\SchoolYear::where('status', 1)->orderBy('current', 'ASC')->orderBy('school_year', 'ASC')->get();
-        $ClassSubjectDetail = \App\ClassSubjectDetail::where('faculty_id', $FacultyInformation->id)
+        $FacultyInformation = FacultyInformation::where('user_id', \Auth::user()->id)->first();
+        $SchoolYear         = SchoolYear::where('status', 1)->orderBy('current', 'ASC')->orderBy('school_year', 'ASC')->get();
+        $ClassSubjectDetail = ClassSubjectDetail::where('faculty_id', $FacultyInformation->id)
             ->join('class_details', 'class_details.id', '=', 'class_subject_details.class_details_id')
             ->join('school_years', 'school_years.id', '=', 'class_details.school_year_id')
             ->join('section_details', 'section_details.id', '=', 'class_details.section_id')
@@ -255,9 +266,9 @@ class SubjectClassController extends Controller
 
     public function class_schedules_print (Request $request)
     {
-        $FacultyInformation = \App\FacultyInformation::where('user_id', \Auth::user()->id)->first();
-        $SchoolYear         = \App\SchoolYear::where('status', 1)->orderBy('current', 'ASC')->orderBy('school_year', 'ASC')->get();
-        $ClassSubjectDetail = \App\ClassSubjectDetail::where('faculty_id', $FacultyInformation->id)
+        $FacultyInformation = FacultyInformation::where('user_id', \Auth::user()->id)->first();
+        $SchoolYear         = SchoolYear::where('status', 1)->orderBy('current', 'ASC')->orderBy('school_year', 'ASC')->get();
+        $ClassSubjectDetail = ClassSubjectDetail::where('faculty_id', $FacultyInformation->id)
             ->join('class_details', 'class_details.id', '=', 'class_subject_details.class_details_id')
             ->join('school_years', 'school_years.id', '=', 'class_details.school_year_id')
             ->join('section_details', 'section_details.id', '=', 'class_details.section_id')
@@ -293,9 +304,9 @@ class SubjectClassController extends Controller
     
     // public function class_schedules (Request $request)
     // {
-    //     $FacultyInformation = \App\FacultyInformation::where('user_id', \Auth::user()->id)->first();
-    //     $SchoolYear         = \App\SchoolYear::where('status', 1)->orderBy('current', 'ASC')->orderBy('school_year', 'ASC')->get();
-    //     $ClassSubjectDetail = \App\ClassSubjectDetail::where('faculty_id', $FacultyInformation->id)
+    //     $FacultyInformation = FacultyInformation::where('user_id', \Auth::user()->id)->first();
+    //     $SchoolYear         = SchoolYear::where('status', 1)->orderBy('current', 'ASC')->orderBy('school_year', 'ASC')->get();
+    //     $ClassSubjectDetail = ClassSubjectDetail::where('faculty_id', $FacultyInformation->id)
     //     ->join('subject_details', 'subject_details.id', '=', 'class_subject_details.subject_id')
     //     ->select(\DB::raw('
     //         class_subject_details.id,
