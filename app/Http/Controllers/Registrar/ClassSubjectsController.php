@@ -373,14 +373,14 @@ class ClassSubjectsController extends Controller
                 foreach($FacultyInformations as $data)
                 {
                     $faculty_ids =  TeacherSubject::where('class_subject_details_id', $classSubjectDetailsId)
-                        ->where('faculty_id', $data->id)->whereStatus(1)
+                        ->where('faculty_id', $data->id)->where('status', 1)
                         ->first();
 
                     if($faculty_ids)
                     {
                         try {
                             if($faculty_ids->faculty_id == $data->id){
-                                $selected_item = 'style="display: none;';
+                                $selected_item = 'style="display: none;"';
                             }
                             $faculties .= '<option value="'.$data->id.'" data-id="'.$data->id.'" data-name="'. ucwords($data->fullname) .'" '.$selected_item.'> '. ucwords($data->fullname) .'</option>';
                         } catch (\Throwable $th) {
@@ -389,7 +389,7 @@ class ClassSubjectsController extends Controller
                     }
                     else
                     {
-                        $faculties .= '<option value="'.$data->id.'" data-id="'.$data->id.'" data-name="'. $data->fullname.'">'. ucwords($data->fullname) .'</option>';
+                        $faculties .= '<option value="'.$data->id.'" data-id="'.$data->id.'" data-name="'. $data->fullname .'">'. ucwords($data->fullname) .'</option>';
                     }
                     
                 }
