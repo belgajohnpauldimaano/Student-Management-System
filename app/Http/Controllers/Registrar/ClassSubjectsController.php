@@ -363,7 +363,7 @@ class ClassSubjectsController extends Controller
                 $Adviser = ClassSubjectDetail::with('faculty')->where('id',$classSubjectDetailsId)->first();
 
                 $TeacherSubjects = TeacherSubject::with('faculty')->where('class_subject_details_id', $classSubjectDetailsId)
-                        ->whereStatus(1)
+                        ->where('status', 1)
                         ->get();
 
                 $FacultyInformations = FacultyInformation::where('status', 1)

@@ -40,9 +40,8 @@
                                 <th class="text-center">Action</th>
                             </tr>
                         </thead>
-                        <tbody>
-                        @if($TeacherSubjectCount != 0)
-                            @foreach ($TeacherSubjects as $key => $item)                       
+                        <tbody>                        
+                            @forelse ($TeacherSubjects as $key => $item)
                                 <tr>
                                     <td class="text-left">
                                         {{ $item->faculty->fullname }}
@@ -56,25 +55,23 @@
                                         </button>
                                     </td>
                                 </tr>
-                            @endforeach
-                        @else
-                            <td>{{ $Adviser->faculty->fullname }}</td>
-                            <td class="text-center">
-                                <button type="button" title="delete" 
-                                    data-id="{{ $Adviser->faculty_id }}" 
-                                    data-subject_class_id="{{ $classSubjectDetailsId }}" 
-                                    class="btn js-btn_delete btn-danger btn-sm">
-                                        <i class="fa fa-trash-o"></i>
-                                </button>
-                            </td>
-                        @endif
+                            @empty
+                                <td>{{ $Adviser->faculty->fullname }}</td>
+                                <td class="text-center">
+                                    <button type="button" title="delete" 
+                                        data-id="{{ $Adviser->faculty_id }}" 
+                                        data-subject_class_id="{{ $classSubjectDetailsId }}" 
+                                        class="btn js-btn_delete btn-danger btn-sm">
+                                            <i class="fa fa-trash-o"></i>
+                                    </button>
+                                </td>
+                            @endforelse                           
                         </tbody>
                         <tfoot></tfoot>
                     </table>    
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default btn-flat close-btn" data-dismiss="modal">Close</button>
-                    {{-- <button type="submit" class="btn btn-primary btn-flat">Save</button> --}}
                 </div>
             
         </div><!-- /.modal-content -->
