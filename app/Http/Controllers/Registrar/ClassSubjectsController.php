@@ -382,14 +382,14 @@ class ClassSubjectsController extends Controller
                             if($faculty_ids->faculty_id == $data->id){
                                 $selected_item = 'style="display: none;';
                             }
-                            $faculties .= '<option value="'.$data->id.'" data-id="'.$data->id.'" data-name="'. ucwords($data->fullname) .'" '.$selected_item.'> '. $data->first_name . ' ' . $data->last_name .'</option>';
+                            $faculties .= '<option value="'.$data->id.'" data-id="'.$data->id.'" data-name="'. ucwords($data->fullname) .'" '.$selected_item.'> '. ucwords($data->fullname) .'</option>';
                         } catch (\Throwable $th) {
-                            $faculties .= '<option value="'.$data->id.'" >'. ucwords($data->fullname) . ' ' . $data->last_name .'</option>';
+                            $faculties .= '<option value="'.$data->id.'" >'. ucwords($data->fullname) . '</option>';
                         }        
                     }
                     else
                     {
-                        $faculties .= '<option value="'.$data->id.'" data-id="'.$data->id.'" data-name="'. $data->fullname.'">'. $data->first_name . ' ' . $data->last_name .'</option>';
+                        $faculties .= '<option value="'.$data->id.'" data-id="'.$data->id.'" data-name="'. $data->fullname.'">'. ucwords($data->fullname) .'</option>';
                     }
                     
                 }
