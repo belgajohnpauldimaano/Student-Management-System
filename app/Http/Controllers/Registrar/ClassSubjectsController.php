@@ -193,8 +193,8 @@ class ClassSubjectsController extends Controller
             $has_order = ClassSubjectDetail::where('class_details_id', $class_details_id)
                         ->first();
             
-            $order_numbers ="<option value='0'>Select Order</option>";
-            $faculties ="<option value='0'>Select Faculty</option>";
+            $order_numbers ="<option value=''>Select Order</option>";
+            $faculties ="<option value=''>Select Faculty</option>";
             if ($request->class_subject_details_id)
             {
                 $FacultyInformations = FacultyInformation::where('status', 1)
@@ -441,26 +441,28 @@ class ClassSubjectsController extends Controller
             $scheds .= '5@'.date('H:i', strtotime($request->subject_time_from_fri)).'-'.date('H:i', strtotime($request->subject_time_to_fri)).';';
         }
         // return json_encode(['a' => $request->all(), 'scheds' => $scheds]);
-        $rules = [
-            'faculties'           => 'required',
-            'subject'           => 'required',
-            // 'subject_time_from' => 'required',
-            // 'subject_time_to'   => 'required'
-        ];
-        
-        
-        $Validator = \Validator($request->all(), $rules);
-
-        if ($Validator->fails())
-        {
-            return response()->json(['res_code' => 1, 'res_msg' => 'Please fill all required fields.', 'res_error_msg' => $Validator->getMessageBag()]);
-        }
+       
 
         // return json_encode($request->id);
         // $sectionDetail = sectionDetail::where('id', $request->section)->first();
         
         if ($request->id)
         {
+            $rules = [
+                'order'           => 'required',
+                // 'faculties'           => 'required',
+                'subject'           => 'required',
+                // 'subject_time_from' => 'required',
+                // 'subject_time_to'   => 'required'
+            ];
+            
+            
+            $Validator = \Validator($request->all(), $rules);
+    
+            if ($Validator->fails())
+            {
+                return response()->json(['res_code' => 1, 'res_msg' => 'Please fill all required fields.', 'res_error_msg' => $Validator->getMessageBag()]);
+            }
                 // $x = NULL;
                 // foreach($request->faculties as $faculty_id)
                 // {
@@ -531,6 +533,23 @@ class ClassSubjectsController extends Controller
             
             // return response()->json(['res_code' => 0, 'res_msg' => 'Data successfully updated.', 'ClassSubjectDetail' => $ClassSubjectDetail]);
         }
+        else{
+            $rules = [
+                'order'           => 'required',
+                'faculties'           => 'required',
+                'subject'           => 'required',
+                // 'subject_time_from' => 'required',
+                // 'subject_time_to'   => 'required'
+            ];
+            
+            
+            $Validator = \Validator($request->all(), $rules);
+    
+            if ($Validator->fails())
+            {
+                return response()->json(['res_code' => 1, 'res_msg' => 'Please fill all required fields.', 'res_error_msg' => $Validator->getMessageBag()]);
+            }
+        
       
             $x = NULL;
             foreach($request->faculties as $faculty_id)
@@ -796,15 +815,15 @@ class ClassSubjectsController extends Controller
             // $ClassSubjectDetail->class_days = $class_days;
             $ClassSubjectDetail->save();
 
-        foreach($request->faculties as $faculty_id)
-        {
-            $TeacherSubject = new TeacherSubject();
-            $TeacherSubject->class_subject_details_id = $ClassSubjectDetail->id;
-            $TeacherSubject->faculty_id = $faculty_id;
-            $TeacherSubject->save();
-            // return response()->json(['res_code' => 0, 'res_msg' => 'Data successfully saved.', 'ClassSubjectDetail' => $ClassSubjectDetail]);
+            foreach($request->faculties as $faculty_id)
+            {
+                $TeacherSubject = new TeacherSubject();
+                $TeacherSubject->class_subject_details_id = $ClassSubjectDetail->id;
+                $TeacherSubject->faculty_id = $faculty_id;
+                $TeacherSubject->save();
+                // return response()->json(['res_code' => 0, 'res_msg' => 'Data successfully saved.', 'ClassSubjectDetail' => $ClassSubjectDetail]);
+            }
         }
-        
        
     }
 
