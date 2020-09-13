@@ -167,8 +167,8 @@
                                                     ->where('approval', 'Approved')
                                                     ->sum('payment');    
                                             ?>
-                                            <b>{{ number_format((($sub_total - $discount) - $payment) , 2)}}</b>
-                                            <b>{{ $current_bal }}</b>
+                                            {{-- <b>{{ number_format((($sub_total - $discount) - $payment) , 2)}}</b> --}}
+                                            <b>{{ number_format($Monthly_history->balance ,2 )}}</b>
                                         </td>                                    
                                     </tr>
                                        

@@ -141,7 +141,8 @@ class StudentPaymentController extends Controller
                 ->where('transaction_month_paids.isSuccess', 1)
                 ->where('transaction_month_paids.approval', 'Approved')
                 ->orderBy('transaction_month_paids.id', 'DESC')
-                ->paginate(10);
+                ->distinct()
+                ->paginate(10, ['transaction_id']);
 
                 $NotyetApprovedCount = $this->notYetApproved();
             
@@ -173,7 +174,8 @@ class StudentPaymentController extends Controller
             ->where('transaction_month_paids.isSuccess', 1)
             ->where('transaction_month_paids.approval', 'Approved')
             ->orderBy('transaction_month_paids.id', 'DESC')
-            ->paginate(10);
+            ->distinct()
+            ->paginate(10, ['transaction_id']);
 
             $NotyetApprovedCount = $this->notYetApproved();
 
