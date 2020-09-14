@@ -55,20 +55,22 @@ class StudentController extends Controller
                         ->where('student_id', $request->id)
                         ->where('status', 1)->first();
     
-                    $query = StudentInformation::join('transactions','transactions.student_id', '=' ,'student_informations.id')
-                        ->join('enrollments', 'enrollments.student_information_id', '=','student_informations.id')
-                        ->join('users', 'users.id', '=', 'student_informations.user_id') 
-                        ->join('class_details', 'class_details.id', '=', 'enrollments.class_details_id')                
+                    $query = StudentInformation::with(['user', 'enrolled_class', 'finance_transaction']);
+                        
+                    $query_join = StudentInformation::join('enrollments', 'enrollments.student_information_id', '=','student_informations.id')
+                        ->join('class_details', 'class_details.id', '=', 'enrollments.class_details_id')      
+                        ->join('users', 'users.id', '=', 'student_informations.user_id')                         
+                        
                         ->selectRaw('
                             student_informations.last_name,
                             student_informations.first_name,  
                             student_informations.middle_name,
                             student_informations.gender,
                             student_informations.status,
+                            student_informations.id,
                             class_details.school_year_id,
                             class_details.id as class_details_id,
-                            users.username,
-                            student_informations.id
+                            users.username                       
                         ');
 
                         if($request->search)
@@ -79,24 +81,29 @@ class StudentController extends Controller
                                 $q->orWhere('last_name', 'like', '%'.$request->search.'%');
                                 // $query->orWhere('enrollments.class_details_id', 'like', '%'.$request->section_list.'%'$request->section_list);
                             });
+
+                            $StudentInformation = $query->where('status', 1)
+                                ->orderBY('last_name', 'ASC')
+                                ->paginate(10);
                         }
                         
-                        if($request->section_list)
+                        if($request->section_list || $request->school_year != 0)
                         {
-                            $query->where('enrollments.class_details_id', $request->section_list);
+                            $query_join->where(function ($q) use ($request) {
+                                $q->where('first_name', 'like', '%'.$request->search.'%');
+                                $q->orWhere('middle_name', 'like', '%'.$request->search.'%');
+                                $q->orWhere('last_name', 'like', '%'.$request->search.'%');
+                                // $query->orWhere('enrollments.class_details_id', 'like', '%'.$request->section_list.'%'$request->section_list);
+                            });
+                            $query_join->where('enrollments.class_details_id', $request->section_list);                        
+                            $query_join->where('class_details.school_year_id', $request->school_year);
+                            $StudentInformation = $query_join->where('student_informations.status', 1)
+                                ->orderBY('student_informations.last_name', 'ASC')
+                                ->distinct('student_informations.id')
+                                ->paginate(10);
                         }
 
-                        if($request->school_year != 0)
-                        {
-                            $query->where('transactions.school_year_id', $request->school_year);
-                        }
-
-                    $StudentInformation = $query->where('student_informations.status', 1)
-                                        ->orderBY('student_informations.last_name', 'ASC')
-                                        ->distinct()
-                                        ->paginate(10, 'student_informations.id');
-    
-                    $student_informations_count = $StudentInformation->count();
+                    
     
                     $hasUser = '1';          
                     
@@ -104,8 +111,7 @@ class StudentController extends Controller
     
                     // return json_encode(['student_info' => $StudentInformation]);
                     return view('control_panel_finance.student_information.partials.data_list', 
-                        compact('StudentInformation','Transaction','School_year_id','hasUser',
-                                'NotyetApprovedCount','School_years','student_informations_count'))->render();
+                        compact('StudentInformation','Transaction','School_year_id','hasUser', 'NotyetApprovedCount','School_years'))->render();
 
                 }catch(\Exception $e){                
                     return '<div class="box-body"><div class="row"><table class="table"><tbody><tr><th style="text-align:center"><img src="https://cdn.iconscout.com/icon/free/png-256/data-not-found-1965034-1662569.png" alt="no data"/><br/>Sorry, there is no data found.</th></tr></tbody></table></div></div>';

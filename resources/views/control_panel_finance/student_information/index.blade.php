@@ -26,7 +26,7 @@
                         <div class="help-block text-red text-left" id="js-school_year">
                         </div>
                     </div>
-                    <div class="col-md-4">
+                    <div class="col-md-3">
                         <label class="control-label">- Section -</label> 
                         <div class="form-group" style="padding-right:0">
                             <select name="section_list" id="section_list" class="form-control section_list">
@@ -42,7 +42,7 @@
                             </div>                              
                         </div>
                      </div>  
-                     <div class="col-md-2">
+                     <div class="col-md-3">
                         <label class="control-label">&nbsp;</label>
                         <div class="input-group input-school_year">
                             <button type="submit" class="btn btn-flat btn-success">Search</button>
@@ -76,6 +76,7 @@
     
     <script>
         var page = 1;
+               
         function fetch_data () {
             var formData = new FormData($('#js-form_search')[0]);
             formData.append('page', page);
@@ -395,11 +396,11 @@
                 e.preventDefault();
                 fetch_data();
             });
-            // $('body').on('click', '.pagination a', function (e) {
-            //     e.preventDefault();
-            //     page = $(this).attr('href').split('=')[1];
-            //     fetch_data();
-            // });
+            $('body').on('click', '.pagination a', function (e) {
+                e.preventDefault();
+                page = $(this).attr('href').split('=')[1];
+                fetch_data();
+            });
             $('body').on('click', '.js-btn_deactivate', function (e) {
                 e.preventDefault();
                 var id = $(this).data('id');

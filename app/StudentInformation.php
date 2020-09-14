@@ -2,6 +2,7 @@
 
 namespace App;
 
+use Illuminate\Http\Request;
 use Illuminate\Database\Eloquent\Model;
 
 class StudentInformation extends Model
@@ -12,8 +13,8 @@ class StudentInformation extends Model
     }
     
     public function enrolled_class ()
-    {
-        return $this->hasMany(Enrollment::class, 'student_information_id', 'id');
+    {        
+       return $this->hasMany(Enrollment::class, 'student_information_id', 'id');
     }
 
     public function transactions ()
@@ -27,6 +28,10 @@ class StudentInformation extends Model
             ->where('current', 1)->first()->id;
 
         return $this->hasOne(Transaction::class, 'student_id', 'id')->where('school_year_id', $School_year_id);
+    }
+
+    public function getFullNameAttribute() {
+        return ucfirst($this->last_name) . ', ' . ucfirst($this->first_name). ' ' . ucfirst($this->middle_name);
     }
     
     public function payment_cat() 
