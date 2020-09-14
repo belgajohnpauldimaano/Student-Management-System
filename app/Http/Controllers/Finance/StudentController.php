@@ -55,23 +55,8 @@ class StudentController extends Controller
                         ->where('student_id', $request->id)
                         ->where('status', 1)->first();
     
-                    $query = StudentInformation::with(['user', 'enrolled_class', 'finance_transaction']);
-                        
-                    $query_join = StudentInformation::join('enrollments', 'enrollments.student_information_id', '=','student_informations.id')
-                        ->join('class_details', 'class_details.id', '=', 'enrollments.class_details_id')      
-                        ->join('users', 'users.id', '=', 'student_informations.user_id')                         
-                        
-                        ->selectRaw('
-                            student_informations.last_name,
-                            student_informations.first_name,  
-                            student_informations.middle_name,
-                            student_informations.gender,
-                            student_informations.status,
-                            student_informations.id,
-                            class_details.school_year_id,
-                            class_details.id as class_details_id,
-                            users.username                       
-                        ');
+                    $query = StudentInformation::with(['user', 'enrolled_class', 'finance_transaction']);                        
+                   
 
                         if($request->search)
                         {
@@ -85,10 +70,30 @@ class StudentController extends Controller
                             $StudentInformation = $query->where('status', 1)
                                 ->orderBY('last_name', 'ASC')
                                 ->paginate(10);
+                        }else{
+                            $StudentInformation = $query->where('status', 1)
+                                ->orderBY('last_name', 'ASC')
+                                ->paginate(10);
                         }
                         
                         if($request->section_list || $request->school_year != 0)
                         {
+                            $query_join = StudentInformation::join('enrollments', 'enrollments.student_information_id', '=','student_informations.id')
+                            ->join('class_details', 'class_details.id', '=', 'enrollments.class_details_id')      
+                            ->join('users', 'users.id', '=', 'student_informations.user_id')                         
+                            
+                            ->selectRaw('
+                                student_informations.last_name,
+                                student_informations.first_name,  
+                                student_informations.middle_name,
+                                student_informations.gender,
+                                student_informations.status,
+                                student_informations.id,
+                                class_details.school_year_id,
+                                class_details.id as class_details_id,
+                                users.username                       
+                            ');
+
                             $query_join->where(function ($q) use ($request) {
                                 $q->where('first_name', 'like', '%'.$request->search.'%');
                                 $q->orWhere('middle_name', 'like', '%'.$request->search.'%');
