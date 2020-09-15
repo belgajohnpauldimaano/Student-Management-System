@@ -30,59 +30,35 @@ class StudentEnrollmentController extends Controller
             }
 
             $StudentInformation = StudentInformation::with(['user'])
-            ->join('users', 'users.id', '=', 'student_informations.user_id')
-            ->selectRaw("
-                student_informations.id,
-                users.username,
-                CONCAT(student_informations.last_name, ', ', student_informations.first_name, ' ', student_informations.middle_name) AS fullname
-            ")
-            ->where(function ($query) use ($request) {
-                if ($request->search_fn)
-                {
-                    $query->where('first_name', 'like', '%'.$request->search_fn.'%');
-                }
+                ->join('users', 'users.id', '=', 'student_informations.user_id')
+                ->selectRaw("
+                    student_informations.id,
+                    users.username,
+                    student_informations.last_name, student_informations.first_name, student_informations.middle_name
+                ")
+                ->where(function ($query) use ($request) {
+                    if ($request->search_fn)
+                    {
+                        $query->where('first_name', 'like', '%'.$request->search_fn.'%');
+                    }
 
-                if ($request->search_mn)
-                {
-                    $query->where('middle_name', 'like', '%'.$request->search_mn.'%');
-                }
+                    if ($request->search_mn)
+                    {
+                        $query->where('middle_name', 'like', '%'.$request->search_mn.'%');
+                    }
 
-                if ($request->search_ln)
-                {
-                    $query->where('last_name', 'like', '%'.$request->search_ln.'%');
-                }
+                    if ($request->search_ln)
+                    {
+                        $query->where('last_name', 'like', '%'.$request->search_ln.'%');
+                    }
 
-                if ($request->search_student_id)
-                {
-                    $query->where('users.username', 'like', '%'.$request->search_student_id.'%');
-                }
-            })
-            ->where(function ($query) use ($id) {
-                // $query->whereRaw('enrollments.class_details_id IS NULL OR enrollments.class_details_id != '.$id);
-                // $query->whereRaw('enrollments.class_details_id IS NULL AND enrollments.class_details_id != '.$id);
-            })
-            // ->where(function ($query) use ($id, $ClassDetail) {
-            //     $query->whereRaw('
-            //             enrollments.id IS NULL 
-            //         OR 
-            //             enrollments.class_details_id != '.$id
-            //     );
-            // })
-            // ->where(function ($query) use ($id, $ClassDetail) {
-            //     $query->whereRaw('
-            //             (SELECT 
-            //                 class_details_id 
-            //             FROM
-            //                 enrollments
-            //             WHERE 
-            //                 (
-            //                     enrollments.student_information_id = student_informations.id
-            //                 )
-            //             ) = '. $id
-            //     );
-            // })
-            ->orderByRaw('fullname')
-            ->paginate(10);
+                    if ($request->search_student_id)
+                    {
+                        $query->where('users.username', 'like', '%'.$request->search_student_id.'%');
+                    }
+                })
+                ->orderBy('student_informations.last_name')
+                ->paginate(10);
 
             // return json_encode(['s' => $StudentInformation, 'req' => $request->all(), 'ClassDetail' => $id]);
             return view('control_panel_registrar.student_enrollment.partials.data_list', compact('StudentInformation'))->render();
@@ -138,11 +114,11 @@ class StudentEnrollmentController extends Controller
             ->selectRaw("
                 student_informations.id AS student_information_id,
                 users.username,
-                CONCAT(student_informations.last_name, ', ', student_informations.first_name, ' ', student_informations.middle_name) AS fullname,
+                student_informations.last_name, student_informations.first_name, student_informations.middle_name,
                 enrollments.id AS enrollment_id
             ")
             ->where('class_details_id', $id)
-            ->orderByRaw('fullname')
+            ->orderByRaw('student_informations.last_name')
             ->paginate(70);
 
         $Enrollment_ids = '';
@@ -207,11 +183,11 @@ class StudentEnrollmentController extends Controller
                 ->selectRaw("
                     student_informations.id AS student_information_id,
                     users.username,
-                    CONCAT(student_informations.last_name, ' ', student_informations.first_name, ', ', student_informations.middle_name) AS fullname,
+                    student_informations.last_name, student_informations.first_name, student_informations.middle_name,
                     enrollments.id AS enrollment_id
                 ")
                 ->where('class_details_id', $id)
-                ->orderByRaw('fullname')
+                ->orderByRaw('student_informations.last_name')
                 // ->orWhere('first_name', 'like', '%'.$request->search.'%')
                 ->paginate(70); //
 
@@ -522,16 +498,5 @@ class StudentEnrollmentController extends Controller
              compact('EnrollmentMale', 'EnrollmentFemale', 'ClassDetail'));
         return $pdf->stream();
      
-
-
-
-        // return view('control_panel_finance.student_payment_account.partials.print_all_transaction', 
-        // compact('Modal_data','Mo_history','other_fee','Discount','Discount_amt','total','other','fullname','ItemPrice','OtherFee'));
-
-        // $pdf = \PDF::loadView('control_panel_finance.student_payment_account.partials.print_all_transaction', 
-        //         compact('Modal_data','Mo_history','other_fee','Discount','Discount_amt','total','other','fullname','ItemPrice','OtherFee'));
-
-        // $pdf->setPaper('Letter', 'portrait');
-        // return $pdf->stream(); 
-            }
+    }
 }

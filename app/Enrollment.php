@@ -10,4 +10,8 @@ class Enrollment extends Model
     // {
     //     return $this->belongsTo('App\Registration', 'regid', 'id');
     // }
+
+    public function getFullNameAttribute() {
+        return ucfirst($this->last_name) . ', ' . ucfirst($this->first_name). ' ' . ucfirst($this->middle_name);
+    }
 }

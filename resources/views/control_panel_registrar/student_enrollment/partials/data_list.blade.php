@@ -14,7 +14,7 @@
                                     @foreach ($StudentInformation as $data)
                                         <tr>
                                             <td>{{ $data->username }}</td>
-                                            <td>{{ $data->fullname }}</td>
+                                            <td>{{ $data->full_name }}</td>
                                             <td>
                                                 <div class="input-group-btn pull-left text-left">
                                                     <button type="button" class="btn btn-primary js-btn_enroll_student" data-id="{{ $data->id }}" aria-expanded="true">

@@ -25,7 +25,7 @@
                                                 <tr>
                                                     <td> {{ $key + 1 }}.</td>
                                                     <td>{{ $data->username }}</td>
-                                                    <td>{{ $data->fullname }}</td>
+                                                    <td>{{ ucwords(strtolower($data->full_name)) }}</td>
                                                     <td>
                                                         <div class="input-group-btn pull-left text-left">
                                                             @if($ClassDetail->grade_level == 11 || $ClassDetail->grade_level == 12)
@@ -82,7 +82,7 @@
                                                 <tr>
                                                     <td>{{ $key + 1 }}.</td>
                                                     <td>{{ $data->username }}</td>
-                                                    <td>{{ $data->fullname }}</td>
+                                                    <td>{{ $data->full_name }}</td>
                                                     <td>
                                                         <div class="input-group-btn pull-left text-left">
                                                             @if($ClassDetail->grade_level == 11 || $ClassDetail->grade_level == 12)
