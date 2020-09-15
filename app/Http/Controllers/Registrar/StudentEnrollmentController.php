@@ -118,6 +118,7 @@ class StudentEnrollmentController extends Controller
                 enrollments.id AS enrollment_id
             ")
             ->where('class_details_id', $id)
+            ->where('enrollments.status', 1)
             ->orderByRaw('student_informations.last_name')
             ->paginate(70);
 
@@ -130,8 +131,7 @@ class StudentEnrollmentController extends Controller
     }
 
     public function fetch_enrolled_student (Request $request, $id)
-    {
-        
+    {        
 
         if($request->ajax()){
             $ClassDetail = ClassDetail::join('section_details', 'section_details.id', '=' ,'class_details.section_id')
@@ -188,6 +188,7 @@ class StudentEnrollmentController extends Controller
                 ")
                 ->where('class_details_id', $id)
                 ->orderByRaw('student_informations.last_name')
+                ->where('enrollments.status', 1)
                 // ->orWhere('first_name', 'like', '%'.$request->search.'%')
                 ->paginate(70); //
 
