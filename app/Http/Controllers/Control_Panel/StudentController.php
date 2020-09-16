@@ -208,7 +208,7 @@ class StudentController extends Controller
                 ')
             ->get();
         $student_id = $request->id;        
-
+        
         return view('control_panel.student_information.partials.print_individual_grade', compact('Enrollment', 'student_id'));
     }
 
@@ -252,274 +252,278 @@ class StudentController extends Controller
         // $StudentInformation = StudentInformation::with('user')->where('id', $request->id)->first();
         // $SchoolYear = SchoolYear::where('current', $request->cid)->first();
         // // return json_encode(['xx'=> $request->all(), 's' => $StudentInformation]);
-
-        if ($StudentInformation) 
-        {
-            $ClassDetail = ClassDetail::join('section_details', 'section_details.id', '=' ,'class_details.section_id')
-                ->join('rooms', 'rooms.id', '=' ,'class_details.room_id')
-                ->join('school_years', 'school_years.id', '=' ,'class_details.school_year_id')
-                ->join('faculty_informations', 'faculty_informations.id','=','class_details.adviser_id')
-                ->selectRaw('
-                    class_details.id,
-                    class_details.section_id,
-                    class_details.room_id,
-                    class_details.school_year_id,
-                    class_details.grade_level,
-                    class_details.strand_id,
-                    class_details.current,
-                    section_details.section,
-                    section_details.grade_level as section_grade_level,
-                    school_years.school_year,
-                    rooms.room_code,
-                    rooms.room_description,
-                    faculty_informations.first_name, faculty_informations.middle_name ,  faculty_informations.last_name,
-                    faculty_informations.e_signature,
-                    faculty_informations.id as faculty_id
-                ')
-                ->where('section_details.status', 1)
-                // ->where('school_years.current', 1)
-                ->where('class_details.id', $request->cid)
-                ->orderBY('school_years.id', 'ASC')
-                ->first();
-
-            $DateRemarks = DateRemark::where('school_year_id', $ClassDetail->school_year_id)->first();
-
-            $Signatory = Enrollment::join('class_details', 'class_details.id', '=', 'enrollments.class_details_id')
-                // ->join('student_enrolled_subjects', 'student_enrolled_subjects.enrollments_id', '=', 'enrollments.id')
-                ->join('class_subject_details', 'class_subject_details.class_details_id', '=', 'class_details.id')
-                ->join('rooms', 'rooms.id', '=', 'class_details.room_id')
-                ->join('faculty_informations', 'faculty_informations.id', '=', 'class_subject_details.faculty_id')
-                ->join('section_details', 'section_details.id', '=', 'class_details.section_id')
-                ->join('subject_details', 'subject_details.id', '=', 'class_subject_details.subject_id')
-                ->where('student_information_id', $StudentInformation->id)
-                // ->where('class_subject_details.status', 1)
-                ->where('class_subject_details.status', '!=', 0)
-                ->where('enrollments.status', 1)
-                ->where('class_details.status', 1)
-                ->where('class_details.school_year_id', $ClassDetail->school_year_id)
-                ->select(\DB::raw("
-                    enrollments.id as enrollment_id,
-                    enrollments.attendance,
-                    class_details.grade_level,
-                    class_subject_details.id as class_subject_details_id,
-                    class_subject_details.class_days,
-                    class_subject_details.class_time_from,
-                    class_subject_details.class_time_to,
-                    class_subject_details.status as grade_status,
-                    faculty_informations.last_name,faculty_informations.first_name,faculty_informations.middle_name,
-                    faculty_informations.e_signature,
-                    subject_details.id AS subject_id,
-                    subject_details.subject_code,
-                    subject_details.subject,
-                    rooms.room_code,
-                    section_details.section,
-                    class_details.school_year_id as school_year_id
-                "))
-                ->orderBy('class_subject_details.class_subject_order', 'ASC')
-            ->first();
-            
-            $Enrollment = Enrollment::join('class_details', 'class_details.id', '=', 'enrollments.class_details_id')
-                // ->join('student_enrolled_subjects', 'student_enrolled_subjects.enrollments_id', '=', 'enrollments.id')
-                ->join('class_subject_details', 'class_subject_details.class_details_id', '=', 'class_details.id')
-                ->join('rooms', 'rooms.id', '=', 'class_details.room_id')
-                ->join('faculty_informations', 'faculty_informations.id', '=', 'class_subject_details.faculty_id')
-                ->join('section_details', 'section_details.id', '=', 'class_details.section_id')
-                ->join('subject_details', 'subject_details.id', '=', 'class_subject_details.subject_id')
-                ->where('student_information_id', $StudentInformation->id)
-                // ->where('class_subject_details.status', 1)
-                ->where('class_subject_details.status', '!=', 0)
-                ->where('enrollments.status', 1)
-                ->where('class_details.status', 1)
-                ->where('class_details.school_year_id', $ClassDetail->school_year_id)
-                ->select(\DB::raw("
-                    enrollments.id as enrollment_id,
-                    enrollments.j_lacking_unit,
-                    enrollments.s2_lacking_unit,
-                    enrollments.eligible_transfer,
-                    enrollments.attendance,
-                    class_details.grade_level,
-                    class_subject_details.id as class_subject_details_id,
-                    class_subject_details.class_days,
-                    class_subject_details.class_time_from,
-                    class_subject_details.class_time_to,
-                    class_subject_details.status as grade_status,
-                    CONCAT(faculty_informations.last_name, ', ', faculty_informations.first_name, ' ', faculty_informations.middle_name) as faculty_name,
-                    faculty_informations.e_signature,
-                    subject_details.id AS subject_id,
-                    subject_details.subject_code,
-                    subject_details.subject,
-                    rooms.room_code,
-                    section_details.section,
-                    class_details.school_year_id as school_year_id
-                "))
-                ->orderBy('class_subject_details.class_subject_order', 'ASC')
-                ->get();
-            $GradeSheetData = [];
-            $grade_level = 1;
-            $sub_total = 0;
-            $general_avg = 0;
-            $subj_count = 0;
-            $grade_status = $Enrollment[0]->grade_status;
-            $attendance_data = json_decode(json_encode([
-                'days_of_school' => [
-                    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
-                ],
-                'days_present' => [
-                    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
-                ],
-                'days_absent' => [
-                    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
-                ],
-                'times_tardy' => [
-                    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
-                ]
-            ]));
-
-            // return json_encode(['c' => count($Enrollment),'Enrollment' => $Enrollment,'StudentInformation' => $StudentInformation, ]);
-            if ($StudentInformation && count($Enrollment)>0)
+        try {
+            if ($StudentInformation) 
             {
-                $StudentEnrolledSubject = StudentEnrolledSubject::where('enrollments_id', $Enrollment[0]->enrollment_id)
-                ->get();
-                $grade_level = $Enrollment[0]->grade_level;
-                if ($Enrollment[0]->attendance) {
-                    $attendance_data = json_decode($Enrollment[0]->attendance);
-                }
-                // return json_encode(['a' => $StudentEnrolledSubject->count(), 'b' => $Enrollment->count(), 'StudentEnrolledSubject'=> $StudentEnrolledSubject, 'Enrollment' => $Enrollment]);
-                $GradeSheetData = $Enrollment->map(function ($item, $key) use ($StudentEnrolledSubject, $grade_level, $grade_status) {
-                    // $grade = $StudentEnrolledSubject->firstWhere('subject_id', $item->subject_id);
-                    $grade = $StudentEnrolledSubject->firstWhere('class_subject_details_id', $item->class_subject_details_id);
-                    $sum = 0;
-                    $first = $grade->fir_g > 0 ? $grade->fir_g : 0;
-                    $second = $grade->sec_g > 0 ? $grade->sec_g : 0;
-                    $third = $grade->thi_g > 0 ? $grade->thi_g : 0;
-                    $fourth = $grade->fou_g > 0 ? $grade->fou_g : 0;
-                    // $third = 0;
-                    // $fourth = 0;
-                    // if ($grade_level <= 11)
-                    // {
-                    //     $third = $grade->thi_g > 0 ? $grade->thi_g : 0;
-                    //     $fourth = $grade->fou_g > 0 ? $grade->fou_g : 0;
-                    // }
-                    
-                    $sum += $grade->fir_g > 0 ? $grade->fir_g : 0;
-                    $sum += $grade->sec_g > 0 ? $grade->sec_g : 0;
-                    $sum += $grade->thi_g > 0 ? $grade->thi_g : 0;
-                    $sum += $grade->fou_g > 0 ? $grade->fou_g : 0;
+                $ClassDetail = ClassDetail::join('section_details', 'section_details.id', '=' ,'class_details.section_id')
+                    ->join('rooms', 'rooms.id', '=' ,'class_details.room_id')
+                    ->join('school_years', 'school_years.id', '=' ,'class_details.school_year_id')
+                    ->join('faculty_informations', 'faculty_informations.id','=','class_details.adviser_id')
+                    ->selectRaw('
+                        class_details.id,
+                        class_details.section_id,
+                        class_details.room_id,
+                        class_details.school_year_id,
+                        class_details.grade_level,
+                        class_details.strand_id,
+                        class_details.current,
+                        section_details.section,
+                        section_details.grade_level as section_grade_level,
+                        school_years.school_year,
+                        rooms.room_code,
+                        rooms.room_description,
+                        faculty_informations.first_name, faculty_informations.middle_name ,  faculty_informations.last_name,
+                        faculty_informations.e_signature,
+                        faculty_informations.id as faculty_id
+                    ')
+                    ->where('section_details.status', 1)
+                    // ->where('school_years.current', 1)
+                    ->where('class_details.id', $request->cid)
+                    ->orderBY('school_years.id', 'ASC')
+                    ->first();
 
-                    // if ($grade_level <= 11)
-                    // {
-                    //     $sum += $grade->thi_g > 0 ? $grade->thi_g : 0;
-                    //     $sum += $grade->fou_g > 0 ? $grade->fou_g : 0;
-                    // }
+                $DateRemarks = DateRemark::where('school_year_id', $ClassDetail->school_year_id)->first();
 
-                    $divisor = 0;
-                    $divisor += $first > 0 ? 1 : 0;
-                    $divisor += $second > 0 ? 1 : 0;
-                    $divisor += $third > 0 ? 1 : 0;
-                    $divisor += $fourth > 0 ? 1 : 0;
-
-                    $final = 0;
-                    if ($divisor != 0) 
-                    {
-                        $final = $sum / $divisor;
-                    }
-                    
-                    $data = [
-                        'enrollment_id'     =>  $item->enrollment_id,
-                        'grade_level'       =>  $item->grade_level,
-                        'class_days'        =>  $item->class_days,
-                        'class_time_from'   =>  $item->class_time_from,
-                        'class_time_to'     =>  $item->class_time_to,
-                        'faculty_name'      =>  $item->faculty_name,
-                        'subject_id'        =>  $item->subject_id,
-                        'subject_code'      =>  $item->subject_code,
-                        'subject'           =>  $item->subject,
-                        'room_code'         =>  $item->room_code,
-                        'section'           =>  $item->section,
-                        'grade_id'          =>  $grade->id,
-                        'fir_g'             =>  $grade->fir_g,
-                        'sec_g'             =>  $grade->sec_g,
-                        'thi_g'             =>  $grade->thi_g,
-                        'fou_g'             =>  $grade->fou_g,
-                        'final_g'           =>  round($final),
-                        'grade_status'      =>  $grade_status,
-                        'divisor' => $divisor
-                    ];
-                    return $data;
-                });
-                for ($i=0; $i<count($GradeSheetData); $i++)
-                {
-                    if ($GradeSheetData[$i]['final_g'] > 0) // && $GradeSheetData[$i]['grade_status'] == 2) 
-                    {
-                        $subj_count++;
-                        $sub_total +=  $GradeSheetData[$i]['final_g'];
-                    }
-                }
-                if ($subj_count > 0) 
-                {
-                    $general_avg = $sub_total / $subj_count;
-                }
-            }
-            $GradeSheetData = json_decode(json_encode($GradeSheetData));
-            
-            $SchoolYear = SchoolYear::where('current', 1)
-                ->where('status', 1)
+                $Signatory = Enrollment::join('class_details', 'class_details.id', '=', 'enrollments.class_details_id')
+                    // ->join('student_enrolled_subjects', 'student_enrolled_subjects.enrollments_id', '=', 'enrollments.id')
+                    ->join('class_subject_details', 'class_subject_details.class_details_id', '=', 'class_details.id')
+                    ->join('rooms', 'rooms.id', '=', 'class_details.room_id')
+                    ->join('faculty_informations', 'faculty_informations.id', '=', 'class_subject_details.faculty_id')
+                    ->join('section_details', 'section_details.id', '=', 'class_details.section_id')
+                    ->join('subject_details', 'subject_details.id', '=', 'class_subject_details.subject_id')
+                    ->where('student_information_id', $StudentInformation->id)
+                    // ->where('class_subject_details.status', 1)
+                    ->where('class_subject_details.status', '!=', 0)
+                    ->where('enrollments.status', 1)
+                    ->where('class_details.status', 1)
+                    ->where('class_details.school_year_id', $ClassDetail->school_year_id)
+                    ->select(\DB::raw("
+                        enrollments.id as enrollment_id,
+                        enrollments.attendance,
+                        class_details.grade_level,
+                        class_subject_details.id as class_subject_details_id,
+                        class_subject_details.class_days,
+                        class_subject_details.class_time_from,
+                        class_subject_details.class_time_to,
+                        class_subject_details.status as grade_status,
+                        faculty_informations.last_name,faculty_informations.first_name,faculty_informations.middle_name,
+                        faculty_informations.e_signature,
+                        subject_details.id AS subject_id,
+                        subject_details.subject_code,
+                        subject_details.subject,
+                        rooms.room_code,
+                        section_details.section,
+                        class_details.school_year_id as school_year_id
+                    "))
+                    ->orderBy('class_subject_details.class_subject_order', 'ASC')
                 ->first();
-        
-            if($SchoolYear->id == 9){
-                $table_header = [
-                    ['key' => 'Jun',],
-                    ['key' => 'Jul',],
-                    ['key' => 'Aug',],
-                    ['key' => 'Sep',],
-                    ['key' => 'Oct',],
-                    ['key' => 'Nov',],
-                    ['key' => 'Dec',],
-                    ['key' => 'Jan',],
-                    ['key' => 'Feb',],
-                    ['key' => 'Mar*',],
-                    ['key' => 'Apr**',],
-                    ['key' => 'total',],
+                
+                $Enrollment = Enrollment::join('class_details', 'class_details.id', '=', 'enrollments.class_details_id')
+                    // ->join('student_enrolled_subjects', 'student_enrolled_subjects.enrollments_id', '=', 'enrollments.id')
+                    ->join('class_subject_details', 'class_subject_details.class_details_id', '=', 'class_details.id')
+                    ->join('rooms', 'rooms.id', '=', 'class_details.room_id')
+                    ->join('faculty_informations', 'faculty_informations.id', '=', 'class_subject_details.faculty_id')
+                    ->join('section_details', 'section_details.id', '=', 'class_details.section_id')
+                    ->join('subject_details', 'subject_details.id', '=', 'class_subject_details.subject_id')
+                    ->where('student_information_id', $StudentInformation->id)
+                    // ->where('class_subject_details.status', 1)
+                    ->where('class_subject_details.status', '!=', 0)
+                    ->where('enrollments.status', 1)
+                    ->where('class_details.status', 1)
+                    ->where('class_details.school_year_id', $ClassDetail->school_year_id)
+                    ->select(\DB::raw("
+                        enrollments.id as enrollment_id,
+                        enrollments.j_lacking_unit,
+                        enrollments.s2_lacking_unit,
+                        enrollments.eligible_transfer,
+                        enrollments.attendance,
+                        class_details.grade_level,
+                        class_subject_details.id as class_subject_details_id,
+                        class_subject_details.class_days,
+                        class_subject_details.class_time_from,
+                        class_subject_details.class_time_to,
+                        class_subject_details.status as grade_status,
+                        CONCAT(faculty_informations.last_name, ', ', faculty_informations.first_name, ' ', faculty_informations.middle_name) as faculty_name,
+                        faculty_informations.e_signature,
+                        subject_details.id AS subject_id,
+                        subject_details.subject_code,
+                        subject_details.subject,
+                        rooms.room_code,
+                        section_details.section,
+                        class_details.school_year_id as school_year_id
+                    "))
+                    ->orderBy('class_subject_details.class_subject_order', 'ASC')
+                    ->get();
+                $GradeSheetData = [];
+                $grade_level = 1;
+                $sub_total = 0;
+                $general_avg = 0;
+                $subj_count = 0;
+                $grade_status = $Enrollment[0]->grade_status;
+                $attendance_data = json_decode(json_encode([
+                    'days_of_school' => [
+                        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+                    ],
+                    'days_present' => [
+                        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+                    ],
+                    'days_absent' => [
+                        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+                    ],
+                    'times_tardy' => [
+                        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+                    ]
+                ]));
+
+                // return json_encode(['c' => count($Enrollment),'Enrollment' => $Enrollment,'StudentInformation' => $StudentInformation, ]);
+                if ($StudentInformation && count($Enrollment)>0)
+                {
+                    $StudentEnrolledSubject = StudentEnrolledSubject::where('enrollments_id', $Enrollment[0]->enrollment_id)
+                    ->get();
+                    $grade_level = $Enrollment[0]->grade_level;
+                    if ($Enrollment[0]->attendance) {
+                        $attendance_data = json_decode($Enrollment[0]->attendance);
+                    }
+                    // return json_encode(['a' => $StudentEnrolledSubject->count(), 'b' => $Enrollment->count(), 'StudentEnrolledSubject'=> $StudentEnrolledSubject, 'Enrollment' => $Enrollment]);
+                    $GradeSheetData = $Enrollment->map(function ($item, $key) use ($StudentEnrolledSubject, $grade_level, $grade_status) {
+                        // $grade = $StudentEnrolledSubject->firstWhere('subject_id', $item->subject_id);
+                        $grade = $StudentEnrolledSubject->firstWhere('class_subject_details_id', $item->class_subject_details_id);
+                        $sum = 0;
+                        $first = $grade->fir_g > 0 ? $grade->fir_g : 0;
+                        $second = $grade->sec_g > 0 ? $grade->sec_g : 0;
+                        $third = $grade->thi_g > 0 ? $grade->thi_g : 0;
+                        $fourth = $grade->fou_g > 0 ? $grade->fou_g : 0;
+                        // $third = 0;
+                        // $fourth = 0;
+                        // if ($grade_level <= 11)
+                        // {
+                        //     $third = $grade->thi_g > 0 ? $grade->thi_g : 0;
+                        //     $fourth = $grade->fou_g > 0 ? $grade->fou_g : 0;
+                        // }
+                        
+                        $sum += $grade->fir_g > 0 ? $grade->fir_g : 0;
+                        $sum += $grade->sec_g > 0 ? $grade->sec_g : 0;
+                        $sum += $grade->thi_g > 0 ? $grade->thi_g : 0;
+                        $sum += $grade->fou_g > 0 ? $grade->fou_g : 0;
+
+                        // if ($grade_level <= 11)
+                        // {
+                        //     $sum += $grade->thi_g > 0 ? $grade->thi_g : 0;
+                        //     $sum += $grade->fou_g > 0 ? $grade->fou_g : 0;
+                        // }
+
+                        $divisor = 0;
+                        $divisor += $first > 0 ? 1 : 0;
+                        $divisor += $second > 0 ? 1 : 0;
+                        $divisor += $third > 0 ? 1 : 0;
+                        $divisor += $fourth > 0 ? 1 : 0;
+
+                        $final = 0;
+                        if ($divisor != 0) 
+                        {
+                            $final = $sum / $divisor;
+                        }
+                        
+                        $data = [
+                            'enrollment_id'     =>  $item->enrollment_id,
+                            'grade_level'       =>  $item->grade_level,
+                            'class_days'        =>  $item->class_days,
+                            'class_time_from'   =>  $item->class_time_from,
+                            'class_time_to'     =>  $item->class_time_to,
+                            'faculty_name'      =>  $item->faculty_name,
+                            'subject_id'        =>  $item->subject_id,
+                            'subject_code'      =>  $item->subject_code,
+                            'subject'           =>  $item->subject,
+                            'room_code'         =>  $item->room_code,
+                            'section'           =>  $item->section,
+                            'grade_id'          =>  $grade->id,
+                            'fir_g'             =>  $grade->fir_g,
+                            'sec_g'             =>  $grade->sec_g,
+                            'thi_g'             =>  $grade->thi_g,
+                            'fou_g'             =>  $grade->fou_g,
+                            'final_g'           =>  round($final),
+                            'grade_status'      =>  $grade_status,
+                            'divisor' => $divisor
+                        ];
+                        return $data;
+                    });
+                    for ($i=0; $i<count($GradeSheetData); $i++)
+                    {
+                        if ($GradeSheetData[$i]['final_g'] > 0) // && $GradeSheetData[$i]['grade_status'] == 2) 
+                        {
+                            $subj_count++;
+                            $sub_total +=  $GradeSheetData[$i]['final_g'];
+                        }
+                    }
+                    if ($subj_count > 0) 
+                    {
+                        $general_avg = $sub_total / $subj_count;
+                    }
+                }
+                $GradeSheetData = json_decode(json_encode($GradeSheetData));
+                
+                $SchoolYear = SchoolYear::where('current', 1)
+                    ->where('status', 1)
+                    ->first();
+            
+                if($SchoolYear->id == 9){
+                    $table_header = [
+                        ['key' => 'Jun',],
+                        ['key' => 'Jul',],
+                        ['key' => 'Aug',],
+                        ['key' => 'Sep',],
+                        ['key' => 'Oct',],
+                        ['key' => 'Nov',],
+                        ['key' => 'Dec',],
+                        ['key' => 'Jan',],
+                        ['key' => 'Feb',],
+                        ['key' => 'Mar*',],
+                        ['key' => 'Apr**',],
+                        ['key' => 'total',],
+                    ];
+                }else{
+                    $table_header = [
+                        ['key' => 'Jun',],
+                        ['key' => 'Jul',],
+                        ['key' => 'Aug',],
+                        ['key' => 'Sep',],
+                        ['key' => 'Oct',],
+                        ['key' => 'Nov',],
+                        ['key' => 'Dec',],
+                        ['key' => 'Jan',],
+                        ['key' => 'Feb',],
+                        ['key' => 'Mar',],
+                        ['key' => 'Apr',],
+                        ['key' => 'total',],
+                    ];
+                }
+                
+                
+                $student_attendance = [
+                    'attendance_data'   => $attendance_data,
+                    'table_header'      => $table_header,
+                    'days_of_school_total' => array_sum($attendance_data->days_of_school),
+                    'days_present_total' => array_sum($attendance_data->days_present),
+                    'days_absent_total' => array_sum($attendance_data->days_absent),
+                    'times_tardy_total' => array_sum($attendance_data->times_tardy),
                 ];
-            }else{
-                $table_header = [
-                    ['key' => 'Jun',],
-                    ['key' => 'Jul',],
-                    ['key' => 'Aug',],
-                    ['key' => 'Sep',],
-                    ['key' => 'Oct',],
-                    ['key' => 'Nov',],
-                    ['key' => 'Dec',],
-                    ['key' => 'Jan',],
-                    ['key' => 'Feb',],
-                    ['key' => 'Mar',],
-                    ['key' => 'Apr',],
-                    ['key' => 'total',],
-                ];
+                // return json_encode(['a' => $GradeSheetData, 'subj_count' => $subj_count, 'general_avg' => $general_avg]);
+                return view('control_panel_student.grade_sheet.partials.print',
+                    compact('GradeSheetData', 'grade_level', 'StudentInformation', 'ClassDetail', 'general_avg', 'student_attendance', 'table_header',
+                        'Signatory','DateRemarks','Enrollment','semester'));
+                $pdf = \PDF::loadView('control_panel_student.grade_sheet.partials.print',
+                    compact('GradeSheetData', 'grade_level', 'StudentInformation', 'ClassDetail','Signatory','DateRemarks','Enrollment','semester'));
+                // $pdf->setPaper('Letter', 'landscape');
+                return $pdf->stream();
+                return view('control_panel_student.grade_sheet.index', compact('GradeSheetData'));
+                return json_encode(['GradeSheetData' => $GradeSheetData,]);
             }
-            
-            
-            $student_attendance = [
-                'attendance_data'   => $attendance_data,
-                'table_header'      => $table_header,
-                'days_of_school_total' => array_sum($attendance_data->days_of_school),
-                'days_present_total' => array_sum($attendance_data->days_present),
-                'days_absent_total' => array_sum($attendance_data->days_absent),
-                'times_tardy_total' => array_sum($attendance_data->times_tardy),
-            ];
-            // return json_encode(['a' => $GradeSheetData, 'subj_count' => $subj_count, 'general_avg' => $general_avg]);
-            return view('control_panel_student.grade_sheet.partials.print',
-                 compact('GradeSheetData', 'grade_level', 'StudentInformation', 'ClassDetail', 'general_avg', 'student_attendance', 'table_header',
-                    'Signatory','DateRemarks','Enrollment','semester'));
-            $pdf = \PDF::loadView('control_panel_student.grade_sheet.partials.print',
-                 compact('GradeSheetData', 'grade_level', 'StudentInformation', 'ClassDetail','Signatory','DateRemarks','Enrollment','semester'));
-            // $pdf->setPaper('Letter', 'landscape');
-            return $pdf->stream();
-            return view('control_panel_student.grade_sheet.index', compact('GradeSheetData'));
-            return json_encode(['GradeSheetData' => $GradeSheetData,]);
+            else {
+                return "Invalid request";
+            }
+        } catch (\Throwable $th) {
+            return json_encode('Sorry, No data Available.');
         }
-        else {
-            return "Invalid request";
-        }
+        
     }
 }

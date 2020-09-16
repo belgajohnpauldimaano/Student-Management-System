@@ -31,7 +31,7 @@ class StudentInformation extends Model
     }
 
     public function getFullNameAttribute() {
-        return ucwords(strtolower($this->last_name . ', ' . $this->first_name. ' ' . $this->middle_name));
+        return ucwords($this->last_name . ', ' . $this->first_name. ' ' . $this->middle_name);
     }
     
     public function payment_cat() 

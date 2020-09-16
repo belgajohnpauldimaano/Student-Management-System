@@ -72,7 +72,7 @@
             
             $('body').on('click', '.js-btn_print_grade', function (e) {
                 e.preventDefault();
-                {{--  loader_overlay();  --}}
+                
                 var id = $(this).data('id');
                 $.ajax({
                     url : "{{ route('admin.student.information.print_student_grade_modal') }}",

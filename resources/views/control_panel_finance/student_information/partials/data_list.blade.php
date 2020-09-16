@@ -17,7 +17,7 @@
                                 @forelse ($StudentInformation as $data)
                                     <tr>
                                         <td>{{ $data->full_name }} </td>
-                                        <td>{{ $hasUser == 1 ? $data->username : $data->user->username }}</td>
+                                        <td>{{ $data->user->username }}</td>
                                         <td>{{ ($data->gender == 1 ? 'Male' : 'Female') }}</td>
                                         <td style="color: red">
                                             {{-- {{ $data->transactions}} --}}

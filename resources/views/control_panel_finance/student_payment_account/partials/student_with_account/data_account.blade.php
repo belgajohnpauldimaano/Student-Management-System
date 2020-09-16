@@ -27,8 +27,7 @@
                     <h3>Other(s) Payment</h3>
                     
                     <div class="row">
-                        @if($AccountOthers)
-                            
+                        @if($AccountOthers)                            
                             <!-- /.box-header -->
                             <div class="box-body no-padding">
                                 <table class="table table-striped table-bordered">
@@ -44,7 +43,8 @@
                                             <th style="width:15%">Action</th>
                                         </tr>
                                         @if($grade_level_id < 13)
-                                            @foreach ($others as $key => $data)
+                                            
+                                            @forelse ($others as $key => $data)
                                                 <tr>
                                                     <td>{{$key+1}}.)</td>
                                                     <td>{{$data->transaction_id}}</td>
@@ -72,7 +72,11 @@
                                                         </a>
                                                     </td>
                                                 </tr>
-                                            @endforeach
+                                            @empty
+                                                <tr>                                
+                                                    <th colspan="8" style="text-align: center">No Payment History</td>
+                                                </tr>
+                                            @endforelse
                                         @else
                                             <option value="">The Grade level is over and not qualified.</option>
                                         @endif
@@ -83,9 +87,9 @@
                             <!-- /.box-body -->
                                         
                         @else
-                        <div class="col-md-12">                            
-                            <h5 style="text-align: center"><b>No payment history yet.</b></h5>                            
-                        </div>
+                            <div class="col-md-12">                            
+                                <h5 style="text-align: center"><b>No payment history yet.</b></h5>                            
+                            </div>
                         @endif
                     </div>
                     
@@ -127,7 +131,7 @@
                             @endforeach
                         @else
                             <tr>                                
-                                <th colspan="5" style="text-align: center">No Discount History</td>
+                                <th colspan="7" style="text-align: center">No Discount History</td>
                             </tr>
                         @endif
                     </table>

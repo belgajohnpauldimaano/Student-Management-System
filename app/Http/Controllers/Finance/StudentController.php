@@ -79,20 +79,19 @@ class StudentController extends Controller
                         if($request->section_list || $request->school_year != 0)
                         {
                             $query_join = StudentInformation::join('enrollments', 'enrollments.student_information_id', '=','student_informations.id')
-                            ->join('class_details', 'class_details.id', '=', 'enrollments.class_details_id')      
-                            ->join('users', 'users.id', '=', 'student_informations.user_id')                         
-                            
-                            ->selectRaw('
-                                student_informations.last_name,
-                                student_informations.first_name,  
-                                student_informations.middle_name,
-                                student_informations.gender,
-                                student_informations.status,
-                                student_informations.id,
-                                class_details.school_year_id,
-                                class_details.id as class_details_id,
-                                users.username                       
-                            ');
+                                ->join('users', 'users.id', '=', 'student_informations.user_id')          
+                                ->join('class_details', 'class_details.id', '=', 'enrollments.class_details_id')
+                                ->selectRaw('
+                                    student_informations.last_name,
+                                    student_informations.first_name,  
+                                    student_informations.middle_name,
+                                    student_informations.gender,
+                                    student_informations.status,
+                                    student_informations.id,
+                                    class_details.school_year_id,
+                                    class_details.id as class_details_id,
+                                    users.username                       
+                                ');
 
                             $query_join->where(function ($q) use ($request) {
                                 $q->where('first_name', 'like', '%'.$request->search.'%');

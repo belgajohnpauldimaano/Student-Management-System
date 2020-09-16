@@ -33,7 +33,7 @@
                         <td>
                             <span class="label label-{{ $item->approval == "Approved" ? 'success' : 'danger' }}">{{$item->approval}}</span>
                         </td>
-                        <td>{{ date_format(date_create($item->created_at), 'F d, Y H:i:s') }}</td>
+                        <td>{{ date_format(date_create($item->created_at), 'F d, Y') }}</td>
                         <td>
                             <a class="btn btn-sm btn-primary btn-transaction-edit" title="edit" data-id="{{ $item->id }}">
                                 <i class="far fa-edit"></i>

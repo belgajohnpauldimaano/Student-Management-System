@@ -315,12 +315,17 @@ class StudentAccountController extends Controller
             }else{
                 $Enrollment->email = 'none';
             }
-           
             $Enrollment->number = 'na';
             $Enrollment->payment_option = 'Walk-in';
             $Enrollment->transaction_id = $Transaction->id;
             $Enrollment->approval = 'Approved';    
-            $Enrollment->isSuccess = 0;    
+            $Enrollment->isSuccess = 0;  
+            
+            if($request->date_created)
+            {
+                $Enrollment->created_at = date('Y-m-d', strtotime($request->date_created));
+            }    
+
             $Enrollment->save();    
 
             $PaymentCategory = PaymentCategory::with('stud_category','tuition','misc_fee','other_fee')
@@ -804,6 +809,7 @@ class StudentAccountController extends Controller
             $UpdateTransaction->or_no = $request->or_number;
             $UpdateTransaction->balance = $request->balance;
             $UpdateTransaction->payment = $request->payment;
+            $UpdateTransaction->created_at = $request->date_created ? date('Y-m-d', strtotime($request->date_created)) : NULL;
             $UpdateTransaction->save();
 
             return response()->json(['res_code' => 0, 'res_msg' => 'Data successfully saved.']);

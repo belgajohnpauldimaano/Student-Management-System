@@ -35,18 +35,34 @@
                             <div class="col-md-12">
                                 <div class="form-group">
                                     <label for="">Payment</label>
-                                    <input placeholder="0.00" type="number" class="form-control" name="payment" id="payment" value="{{ $TransactionMonthPaid->payment }}">
+                                    <input type="hidden" id="payment_history" value="{{ $TransactionMonthPaid->payment }}">
+                                    <input placeholder="0.00" type="text" class="form-control" name="payment" id="payment" value="{{ $TransactionMonthPaid->payment }}">
                                     <div class="help-block text-red text-center" id="js-payment"></div>
                                 </div>
                             </div>   
 
                             <div class="col-md-12">
                                 <div class="form-group">
-                                    <label for="">Payment</label>
-                                    <input placeholder="0.00" type="number" class="form-control" name="balance" id="balance" value="{{ $TransactionMonthPaid->balance }}">
+                                    <label for="">Balance</label>
+                                    <input placeholder="0.00" type="text" class="form-control" name="balance" id="balance" value="{{ $TransactionMonthPaid->balance }}">
                                     <div class="help-block text-red text-center" id="js-balance"></div>
                                 </div>
                             </div> 
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label for="">Date <small class="text-red">Optional</small></label>
+                                    
+                                    <div class="input-group date">
+                                        <div class="input-group-addon">
+                                            <i class="fa fa-calendar"></i>
+                                        </div>
+                                        <input type="text" name="date_created" class="form-control pull-right" id="datepicker"
+                                        value="{{ $TransactionMonthPaid ? date_format(date_create($TransactionMonthPaid->created_at), 'F d, Y ') : '' }}">
+                                    </div>
+                                    <div class="help-block text-red text-center" id="js-date_created">
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                                             
                     </div>

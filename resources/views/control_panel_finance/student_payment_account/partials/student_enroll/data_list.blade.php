@@ -7,7 +7,19 @@
             </div>
             
             <div class="box-body">
-                
+                <div class="form-group">
+                    <label for="">Date <small class="text-red">Optional</small></label>
+                    
+                    <div class="input-group date">
+                        <div class="input-group-addon">
+                            <i class="fa fa-calendar"></i>
+                        </div>
+                        <input type="text" name="date_created" class="form-control pull-right" id="date" >
+                    </div>
+                    <div class="help-block text-red text-center" id="js-date_created">
+                    </div>
+                </div>
+
                 <input type="hidden" name="id" value="{{ $StudentInformation->id }}">
                 <div class="form-group">
                     <label for="">Email Address </label>

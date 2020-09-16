@@ -45,7 +45,10 @@
 
         $(function () {
 
-            
+            $('#date').datepicker({
+                autoclose: true
+            })
+            // .datepicker("setDate", new Date()); 
             // not yet enroll
             total_fees();
 
@@ -361,6 +364,10 @@
                 });
             });
 
+
+            
+            
+
             $('body').on('click', '.btn-transaction-edit', function (e) {
                 e.preventDefault();
                 var id = $(this).data('id');
@@ -372,8 +379,32 @@
                         $('.js-modal_holder').html(res);
                         $('.js-modal_holder .modal').modal({ backdrop : 'static' });
                         $('.js-modal_holder .modal').on('shown.bs.modal', function () {
-                            
-                        });;
+                            //Date picker
+                            $('#datepicker').datepicker({
+                                autoclose: true
+                            }); 
+
+                            // $('#payment').keyup(function() {
+                            //     var payment = $('#payment').val();
+                            //     var payment_history = $('#payment_history').val();
+                            //     var balance = $('#balance').val();
+                            //     var sub_total = 0;
+                                
+                            //     if(payment > payment_history)
+                            //     {
+                            //         total = (payment - payment_history);
+                            //         sub_total = parseFloat(balance + total);
+                            //         // alert(sub_total)
+                            //         $(balance).empty();
+                            //         document.getElementById('balance').value = (sub_total);
+                            //     }
+                            //     else(payment < payment_history)
+                            //     {
+                            //         total = payment_history - payment;
+                            //         sub_total = total + balance;
+                            //     }
+                            // });   
+                        });
                     }
                 });
             });
@@ -389,7 +420,10 @@
                         $('.js-modal_holder').html(res);
                         $('.js-modal_holder .modal').modal({ backdrop : 'static' });
                         $('.js-modal_holder .modal').on('shown.bs.modal', function () {
-                            
+                            //Date picker
+                            $('#datepicker').datepicker({
+                                autoclose: true
+                            }); 
                         });;
                     }
                 });
@@ -412,8 +446,12 @@
                 });
             });
 
+
+            
             $('body').on('submit', '#js-update_transaction', function (e) {
                 e.preventDefault();
+
+               
                 var formData = new FormData($(this)[0]);
                 $.ajax({
                     url         : "{{ route('finance.student_payment_account.update_data') }}",
