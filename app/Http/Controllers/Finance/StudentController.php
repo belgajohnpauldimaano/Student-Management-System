@@ -70,7 +70,8 @@ class StudentController extends Controller
                             $StudentInformation = $query->where('status', 1)
                                 ->orderBY('last_name', 'ASC')
                                 ->paginate(10);
-                        }else{
+                        }
+                        else{
                             $StudentInformation = $query->where('status', 1)
                                 ->orderBY('last_name', 'ASC')
                                 ->paginate(10);
@@ -99,8 +100,11 @@ class StudentController extends Controller
                                 $q->orWhere('last_name', 'like', '%'.$request->search.'%');
                                 // $query->orWhere('enrollments.class_details_id', 'like', '%'.$request->section_list.'%'$request->section_list);
                             });
-                            $query_join->where('enrollments.class_details_id', $request->section_list);                        
+                            
+                            $query_join->where('enrollments.class_details_id', $request->section_list);  
+
                             $query_join->where('class_details.school_year_id', $request->school_year);
+
                             $StudentInformation = $query_join->where('student_informations.status', 1)
                                 ->orderBY('student_informations.last_name', 'ASC')
                                 ->distinct('student_informations.id')
