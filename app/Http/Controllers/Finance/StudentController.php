@@ -73,9 +73,10 @@ class StudentController extends Controller
                                 ->orderBY('last_name', 'ASC')
                                 ->paginate(10);
                         }
-                        else{
-                            $hasUser = '1';  
-                            
+                        else
+                        {
+                            $hasUser = '0';  
+
                             $StudentInformation = $query->where('status', 1)
                                 ->orderBY('last_name', 'ASC')
                                 ->paginate(10);
