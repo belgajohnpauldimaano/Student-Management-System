@@ -146,14 +146,10 @@
                                 <td align="right">
                                     ₱ <span id="total_balance">0</span>
                                 </td>
-                            </tr>
-                            
+                            </tr>                            
                         </tr>
                     </tbody>
-
-                </table>
-
-                
+                </table>                
                             
                 <hr>
                 

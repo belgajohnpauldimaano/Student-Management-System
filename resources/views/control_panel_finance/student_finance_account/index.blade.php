@@ -169,7 +169,7 @@
             });
         }
 
-        $('body').on('click', '.btn-paid', function (e) {
+            $('body').on('click', '.btn-paid', function (e) {
                 e.preventDefault();
                 var id = $(this).data('id');
                 alertify.defaults.transition = "slide";

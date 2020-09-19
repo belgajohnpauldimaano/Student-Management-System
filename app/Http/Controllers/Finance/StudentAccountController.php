@@ -79,105 +79,105 @@ class StudentAccountController extends Controller
             $grade_level_id = ($ClassDetail->grade_level);
         }
 
-        if($request->ajax()){
-            $stud_id = Crypt::decrypt($request->c);
-            $Gradelvl = GradeLevel::where('current', 1)->where('status', 1)->get();
-            $Discount = DiscountFee::where('current', 1)->where('status', 1)->get();
-            $OtherFee = OtherFee::where('current', 1)->where('status', 1)->get();  
-            if(!$request->school_year)
-            {
-                $School_year_id = SchoolYear::where('status', 1)
-                    ->where('current', 1)->first()->id; 
-            }
-            else
-            {
-                $School_year_id = $request->school_year;
-            }         
-            $StudentCategory = StudentCategory::where('status', 1)->get();      
+        // if($request->ajax()){
+        //     $stud_id = Crypt::decrypt($request->c);
+        //     $Gradelvl = GradeLevel::where('current', 1)->where('status', 1)->get();
+        //     $Discount = DiscountFee::where('current', 1)->where('status', 1)->get();
+        //     $OtherFee = OtherFee::where('current', 1)->where('status', 1)->get();  
+        //     if(!$request->school_year)
+        //     {
+        //         $School_year_id = SchoolYear::where('status', 1)
+        //             ->where('current', 1)->first()->id; 
+        //     }
+        //     else
+        //     {
+        //         $School_year_id = $request->school_year;
+        //     }         
+        //     $StudentCategory = StudentCategory::where('status', 1)->get();      
 
-            $PaymentCategory = PaymentCategory::with('stud_category','tuition','misc_fee','other_fee')
-                ->where('status', 1)
-                ->where('current', 1)
-                ->orderBY('grade_level_id', 'ASC')
-                ->get();
+        //     $PaymentCategory = PaymentCategory::with('stud_category','tuition','misc_fee','other_fee')
+        //         ->where('status', 1)
+        //         ->where('current', 1)
+        //         ->orderBY('grade_level_id', 'ASC')
+        //         ->get();
 
-            $Transaction = Transaction::with('payment_cat')->where('student_id', $stud_id)
-                ->where('school_year_id', $School_year_id )->first();
+        //     $Transaction = Transaction::with('payment_cat')->where('student_id', $stud_id)
+        //         ->where('school_year_id', $School_year_id )->first();
 
-            $StudentInformation = StudentInformation::with(['user','transactions'])
-                ->where('id', $stud_id)
-                ->first();
+        //     $StudentInformation = StudentInformation::with(['user','transactions'])
+        //         ->where('id', $stud_id)
+        //         ->first();
             
-            $Downpayment = DownpaymentFee::where('status', 1)
-                ->where('grade_level_id', $grade_level_id)
-                ->get();
+        //     $Downpayment = DownpaymentFee::where('status', 1)
+        //         ->where('grade_level_id', $grade_level_id)
+        //         ->get();
 
-            $student_payment_category = PaymentCategory::with('misc_fee','tuition')
-                ->where('grade_level_id',  $grade_level_id)->first();
+        //     $student_payment_category = PaymentCategory::with('misc_fee','tuition')
+        //         ->where('grade_level_id',  $grade_level_id)->first();
 
-            if($Transaction){
+        //     if($Transaction){
             
-                $Payment =  PaymentCategory::where('id', $Transaction->payment_category_id)->first();
-                $MiscFee_payment =  MiscFee::where('id', $Payment->misc_fee_id)->first();
-                $Tuitionfee_payment =  TuitionFee::where('id', $Payment->tuition_fee_id)->first();
-                $Stud_cat_payment =  StudentCategory::where('id', $Payment->student_category_id)->first();
+        //         $Payment =  PaymentCategory::where('id', $Transaction->payment_category_id)->first();
+        //         $MiscFee_payment =  MiscFee::where('id', $Payment->misc_fee_id)->first();
+        //         $Tuitionfee_payment =  TuitionFee::where('id', $Payment->tuition_fee_id)->first();
+        //         $Stud_cat_payment =  StudentCategory::where('id', $Payment->student_category_id)->first();
 
-                $TransactionMonthPaid = TransactionMonthPaid::where('student_id', $stud_id)
-                    ->where('school_year_id', $School_year_id)
-                    ->where('approval', 'Approved')
-                    ->orderBY('id', 'DESC')->get();
+        //         $TransactionMonthPaid = TransactionMonthPaid::where('student_id', $stud_id)
+        //             ->where('school_year_id', $School_year_id)
+        //             ->where('approval', 'Approved')
+        //             ->orderBY('id', 'DESC')->get();
 
-                $TransactionOR = TransactionOtherFee::where('student_id', $stud_id)
-                    ->where('school_year_id', $School_year_id)->orderBY('id', 'DESC')
-                    ->distinct()
-                    ->get(['or_no']);
+        //         $TransactionOR = TransactionOtherFee::where('student_id', $stud_id)
+        //             ->where('school_year_id', $School_year_id)->orderBY('id', 'DESC')
+        //             ->distinct()
+        //             ->get(['or_no']);
 
-                $HasTransactionDiscount = TransactionDiscount::where('student_id', $stud_id)
-                    ->where('school_year_id', $School_year_id)
-                    ->where('isSuccess', 1)
-                    ->first();
+        //         $HasTransactionDiscount = TransactionDiscount::where('student_id', $stud_id)
+        //             ->where('school_year_id', $School_year_id)
+        //             ->where('isSuccess', 1)
+        //             ->first();
                 
-                $TransactionDiscount = TransactionDiscount::where('student_id', $stud_id)
-                    ->where('school_year_id', $School_year_id)
-                    ->where('isSuccess', 1)
-                    ->get();
+        //         $TransactionDiscount = TransactionDiscount::where('student_id', $stud_id)
+        //             ->where('school_year_id', $School_year_id)
+        //             ->where('isSuccess', 1)
+        //             ->get();
 
-                $AccountOthers = TransactionOtherFee::where('student_id', $stud_id)
-                    ->where('school_year_id', $School_year_id)->first();
+        //         $AccountOthers = TransactionOtherFee::where('student_id', $stud_id)
+        //             ->where('school_year_id', $School_year_id)->first();
 
-                $Account = TransactionMonthPaid::where('student_id', $stud_id)
-                    ->where('school_year_id', $School_year_id)->first();
+        //         $Account = TransactionMonthPaid::where('student_id', $stud_id)
+        //             ->where('school_year_id', $School_year_id)->first();
 
-                $others = TransactionOtherFee::where('student_id', $stud_id)
-                    ->where('transaction_id', $Transaction->id)
-                    ->where('school_year_id', $School_year_id)
-                    ->where('isSuccess', 1)
-                    ->get();
+        //         $others = TransactionOtherFee::where('student_id', $stud_id)
+        //             ->where('transaction_id', $Transaction->id)
+        //             ->where('school_year_id', $School_year_id)
+        //             ->where('isSuccess', 1)
+        //             ->get();
                 
-                $NotyetApprovedCount = $this->notYetApproved();
+        //         $NotyetApprovedCount = $this->notYetApproved();
                 
-                if($Transaction){
-                    $Transaction_disc = TransactionDiscount::with('discountFee')->where('or_no', $Transaction->or_number)
-                    ->get(); 
-                }else{
-                    return "Save the transaction first!";
-                }  
-            }
+        //         if($Transaction){
+        //             $Transaction_disc = TransactionDiscount::with('discountFee')->where('or_no', $Transaction->or_number)
+        //             ->get(); 
+        //         }else{
+        //             return "Save the transaction first!";
+        //         }  
+        //     }
 
-            $StudentInformation = StudentInformation::with(['user'])
-                ->where('id', $stud_id)
-                ->first();
+        //     $StudentInformation = StudentInformation::with(['user'])
+        //         ->where('id', $stud_id)
+        //         ->first();
 
-            $NotyetApprovedCount = $this->notYetApproved();
+        //     $NotyetApprovedCount = $this->notYetApproved();
             
 
-            return view('control_panel_finance.student_payment_account.partials.data_list', 
-            compact('StudentInformation','Profile','Gradelvl','Discount','OtherFee','SchoolYear','StudentCategory','PaymentCategory','Transaction'
-                    ,'Stud_cat_payment','Payment','MiscFee_payment','Tuitionfee_payment','School_year_id','Transaction_disc','TransactionMonthPaid'
-                    ,'Account','TransactionOR','AccountOthers','student_payment_category','Downpayment','grade_level_id', 'others','TransactionDiscount'
-                    ,'NotyetApprovedCount','HasTransactionDiscount'
-                ));
-        }
+        //     return view('control_panel_finance.student_payment_account.partials.data_list', 
+        //         compact('StudentInformation','Profile','Gradelvl','Discount','OtherFee','SchoolYear','StudentCategory','PaymentCategory','Transaction'
+        //             ,'Stud_cat_payment','Payment','MiscFee_payment','Tuitionfee_payment','School_year_id','Transaction_disc','TransactionMonthPaid'
+        //             ,'Account','TransactionOR','AccountOthers','student_payment_category','Downpayment','grade_level_id', 'others','TransactionDiscount'
+        //             ,'NotyetApprovedCount','HasTransactionDiscount'
+        //         ));
+        // }
 
         $Gradelvl = GradeLevel::where('current', 1)->where('status', 1)->get();
         $Discount = DiscountFee::where('current', 1)->where('status', 1)->get();
@@ -217,11 +217,11 @@ class StudentAccountController extends Controller
             $Stud_cat_payment =  StudentCategory::where('id', $Payment->student_category_id)->first();
 
             $TransactionMonthPaid = TransactionMonthPaid::where('student_id', $stud_id)
-                                    ->where('school_year_id', $School_year_id)
-                                    ->where('isSuccess', 1)
-                                    ->where('approval', 'Approved')
-                                    ->orderBY('id', 'DESC')
-                                    ->get();
+                ->where('school_year_id', $School_year_id)
+                ->where('isSuccess', 1)
+                ->where('approval', 'Approved')
+                ->orderBY('id', 'DESC')
+                ->get();
 
             $AccountOthers = TransactionOtherFee::where('student_id', $stud_id)
                 ->where('school_year_id', $School_year_id)->first();                                       
@@ -246,9 +246,10 @@ class StudentAccountController extends Controller
                 ->where('school_year_id', $School_year_id)
                 ->where('isSuccess', 1)
                 ->get();
-
             
-            $Account = TransactionMonthPaid::where('student_id', $stud_id)->first();   
+            $Account = TransactionMonthPaid::where('student_id', $stud_id)->first();
+            
+            
 
             if($Transaction){
                 $Transaction_disc = TransactionDiscount::with('discountFee')->where('or_no', $Transaction->or_number)

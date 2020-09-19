@@ -208,7 +208,7 @@ class StudentFinanceAccountController extends Controller
     {
         $Student_id = Transaction::where('id', $request->id)->first();
         $StudentInformation = StudentInformation::where('status', 1)
-        ->where('id', $Student_id->student_id)->first();
+            ->where('id', $Student_id->student_id)->first();
 
         $name = $StudentInformation->first_name.' '.$StudentInformation->last_name;
         $Unpaid = Transaction::where('id', $request->id)->first();       

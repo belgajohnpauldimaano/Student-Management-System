@@ -46,12 +46,22 @@
                     <span class="label label-danger">
                         Not-Paid
                     </span>
-                @endif
-            
+                @endif            
         </p>
         
-        <label for="">Incoming Grade-level: </label>
-        <p style="margin-top: -5px">{{ $grade_level_id ? $grade_level_id : 'none' }}</p>
+        <label for="">
+            <?php 
+                try {
+                    echo $Transaction->id ? 'Enrolled in ' : 'Incoming';
+                } catch (\Throwable $th) {
+                    echo 'Incoming';
+                }   
+            ?> Grade-level:
+        </label>
+
+        <p style="margin-top: -5px">            
+            {{ $grade_level_id ? $grade_level_id : 'none' }}
+        </p>
         
     </div>
     <!-- /.col -->

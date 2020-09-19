@@ -109,8 +109,8 @@
                                 <th  style="width: 10%">Action</th>
                             </tr>
                         </thead>       
-                        @if($HasTransactionDiscount) 
-                            @foreach ($TransactionDiscount as $item)
+                        
+                            @forelse ($TransactionDiscount as $item)
                                 <tr>
                                     <td>{{ $item->transaction_month_paid_id }}</td>
                                     <td>{{ $item->transactionMonth->or_no }}</td>
@@ -128,12 +128,11 @@
                                         </a>
                                     </td>
                                 </tr>
-                            @endforeach
-                        @else
-                            <tr>                                
-                                <th colspan="7" style="text-align: center">No Discount History</td>
-                            </tr>
-                        @endif
+                            @empty
+                                <tr>                                
+                                    <th colspan="7" style="text-align: center">No Discount History</td>
+                                </tr>
+                            @endforelse 
                     </table>
                 </div>
                 

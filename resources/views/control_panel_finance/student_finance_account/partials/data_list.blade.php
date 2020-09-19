@@ -55,7 +55,7 @@
                                 </td>
                                 <td>
                                     <span class="label label-danger">
-                                    Not yet Paid
+                                        Not yet Paid
                                     </span>
                                 </td>
                                 <td>

@@ -57,11 +57,12 @@
             } 
 
             downpayment_total = 0;
+            total = 0;  
             all_in = 0;
             function total_fees(){
                 disc_total = 0;            
                 less_total = 0;            
-                total = 0;  
+                
                 grandTotal = 0;
                 disc = [];
                 $('#disc_amt').html("");           
@@ -142,11 +143,11 @@
                 grand_total();         
             });
             
-
+            var final_total;
             function grand_total(){
                 less_total= disc_total + downpayment_total;
-                total = all_in - less_total;
-                $('#total_balance').text(currencyFormat(total));
+                final_total = all_in - less_total;
+                $('#total_balance').text(currencyFormat(final_total));
                 
             }
 
@@ -705,7 +706,12 @@
 
             $('body').on('submit', '#js-form_payment_transaction', function (e) {
                 e.preventDefault();
-                if(total > 0 || less_total > 0)
+                // if(final_total >= 0 || less_total >= 0)
+                if(final_total < 0  || less_total < 0)
+                {                   
+                    totalNegativeError();
+                }
+                else
                 {
                     var formData = new FormData($(this)[0]);
                     $.ajax({
@@ -749,10 +755,6 @@
                             }
                         }
                     });
-                }
-                else
-                {
-                    totalNegativeError();
                 }
                 
             });
@@ -800,6 +802,93 @@
                             fetch_data();
                         }
                     }
+                });
+            });
+
+            $('body').on('click', '.btn-paid', function (e) {
+                e.preventDefault();
+                var id = $(this).data('id');
+                alertify.defaults.transition = "slide";
+                alertify.defaults.theme.ok = "btn btn-primary btn-flat";
+                alertify.defaults.theme.cancel = "btn btn-danger btn-flat";
+                alertify.confirm('Confirmation', 'Are you sure you want the status paid? <i style="color: red">Note: The account of student will be paid in the whole year</i>.', function(){  
+                    $.ajax({
+                        url         : "{{ route('finance.student_acct.paid') }}",
+                        type        : 'POST',
+                        data        : { _token : '{{ csrf_token() }}', id : id },
+                        success     : function (res) {
+                            $('.help-block').html('');
+                            if (res.res_code == 1)
+                            {
+                                show_toast_alert({
+                                    heading : 'Error',
+                                    message : res.res_msg,
+                                    type    : 'error'
+                                });
+                            }
+                            else
+                            {
+                                show_toast_alert({
+                                    heading : 'Success',
+                                    message : res.res_msg,
+                                    type    : 'success'
+                                });
+
+                                loader_overlay();
+                                setTimeout(function(){
+                                    location.reload();
+                                }, 1500);
+                                // fetch_data();
+                            }
+                        }
+                    });
+                }, function(){  
+
+                });
+            });
+
+            $('body').on('click', '.btn-unpaid', function (e) {
+                e.preventDefault();
+                var id = $(this).data('id');
+                alertify.defaults.transition = "slide";
+                alertify.defaults.theme.ok = "btn btn-primary btn-flat";
+                alertify.defaults.theme.cancel = "btn btn-danger btn-flat";
+                alertify.confirm('Confirmation', 'Are you sure you want the status unpaid?', function(){  
+                    $.ajax({
+                        url         : "{{ route('finance.student_acct.unpaid') }}",
+                        type        : 'POST',
+                        data        : { _token : '{{ csrf_token() }}', id : id },
+                        success     : function (res) {
+                            $('.help-block').html('');
+                            if (res.res_code == 1)
+                            {
+                                show_toast_alert({
+                                    heading : 'Error',
+                                    message : res.res_msg,
+                                    type    : 'error'
+                                });
+                            }
+                            else
+                            {
+                                show_toast_alert({
+                                    heading : 'Success',
+                                    message : res.res_msg,
+                                    type    : 'success'
+                                });
+
+                                loader_overlay();
+                                setTimeout(function(){
+                                    location.reload();
+                                }, 1500);
+                                
+                               
+                               
+                                // fetch_data();
+                            }
+                        }
+                    });
+                }, function(){  
+
                 });
             });
 
@@ -851,6 +940,7 @@
                 e.preventDefault();
                 fetch_data();
             });
+
             $('body').on('click', '.pagination a', function (e) {
                 e.preventDefault();
                 page = $(this).attr('href').split('=')[1];
