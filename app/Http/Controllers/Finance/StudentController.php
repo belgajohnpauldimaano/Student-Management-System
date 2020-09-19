@@ -60,6 +60,8 @@ class StudentController extends Controller
 
                         if($request->search)
                         {
+                            $hasUser = '0';  
+
                             $query->where(function ($q) use ($request) {
                                 $q->where('first_name', 'like', '%'.$request->search.'%');
                                 $q->orWhere('middle_name', 'like', '%'.$request->search.'%');
@@ -79,6 +81,8 @@ class StudentController extends Controller
                         
                         if($request->section_list || $request->school_year != 0)
                         {
+                            $hasUser = '1';  
+
                             $query_join = StudentInformation::join('enrollments', 'enrollments.student_information_id', '=','student_informations.id')
                                 ->join('users', 'users.id', '=', 'student_informations.user_id')          
                                 ->join('class_details', 'class_details.id', '=', 'enrollments.class_details_id')
@@ -113,7 +117,7 @@ class StudentController extends Controller
 
                     
     
-                    $hasUser = '1';          
+                            
                     
                     $NotyetApprovedCount = $this->notYetApproved();
     

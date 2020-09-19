@@ -76,7 +76,7 @@ class StudentAccountController extends Controller
                 ->where('status', 1)->where('current', 1)->orderBY('grade_level', 'DESC')->first();
             }            
 
-            $grade_level_id = ($ClassDetail->grade_level + 1);
+            $grade_level_id = ($ClassDetail->grade_level);
         }
 
         if($request->ajax()){
