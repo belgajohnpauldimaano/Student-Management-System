@@ -20,7 +20,7 @@ class FinanceSummaryController extends Controller
     public function index(Request $request)
     {
         $NotyetApprovedCount = $this->notYetApproved();
-        $School_years = SchoolYear::where('status', 1)->get();
+        $School_years = SchoolYear::where('status', 1)->orderBy('id', 'Desc')->get();
         return view('control_panel_finance.payment_summary.index', compact('NotyetApprovedCount','School_years'));
     }
     

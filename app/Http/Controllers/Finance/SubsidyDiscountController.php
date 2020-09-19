@@ -16,7 +16,7 @@ class SubsidyDiscountController extends Controller
 
     public function index(Request $request){
         $NotyetApprovedCount = $this->notYetApproved();
-        $School_years = SchoolYear::where('status', 1)->get();
+        $School_years = SchoolYear::where('status', 1)->orderBy('id', 'Desc')->get();
 
         return view('control_panel_finance.subsidy_discount_summary.index', compact('NotyetApprovedCount','School_years'));
     }
