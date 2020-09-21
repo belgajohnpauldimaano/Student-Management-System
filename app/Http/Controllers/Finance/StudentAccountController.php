@@ -653,6 +653,17 @@ class StudentAccountController extends Controller
         $Tuitionfee_payment =  TuitionFee::where('id', $Payment->tuition_fee_id)->first();
         $Stud_cat_payment =  StudentCategory::where('id', $Payment->student_category_id)->first();
 
+        $others = TransactionOtherFee::where('student_id', $request->id)
+                ->where('transaction_id', $Transaction->id)
+                ->where('school_year_id', $SchoolYear->id)
+                ->where('isSuccess', 1)
+                ->get();
+
+        $TransactionDiscount = TransactionDiscount::where('student_id', $request->id)
+            ->where('school_year_id', $SchoolYear->id)
+            ->where('isSuccess', 1)
+            ->get();
+
         if($Transaction){
             $Transaction_disc = TransactionDiscount::with('discountFee')->where('or_no', $Transaction->or_number)
             ->get(); 
@@ -665,7 +676,7 @@ class StudentAccountController extends Controller
             compact(
                 'StudentInformation','Profile','Gradelvl','Discount','OtherFee','SchoolYear','StudentCategory',
                 'PaymentCategory','Transaction','School_year_id','Payment','MiscFee_payment','Tuitionfee_payment',
-                'Stud_cat_payment','Transaction_disc','TransactionMonthPaid','TransactionDiscount'
+                'Stud_cat_payment','Transaction_disc','TransactionMonthPaid','TransactionDiscount','others','TransactionDiscount'
                 ))->render(); 
     
         
