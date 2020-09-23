@@ -56,8 +56,8 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @if($OnlineAppointment)
-                                    @foreach ($OnlineAppointment as $item)
+                                
+                                    @forelse ($OnlineAppointment as $item)
                                         <tr>
                                             <td>{{ $item ? date_format(date_create($item->date), 'F d, Y') : '' }}</td>
                                             <td>{{ $item ? date_format(date_create($item->date), 'h:i A') : '' }}</td>
@@ -105,8 +105,14 @@
                                                 @endif
                                             </td>
                                         </tr>
-                                    @endforeach         
-                                @endif           
+                                    @empty
+                                        <tr>
+                                            <td class="text-center" colspan="5">
+                                                No Appointment Available
+                                            </td>
+                                        </tr>
+                                    @endforelse
+                                    
                             </tbody>
                         </table>
                         
