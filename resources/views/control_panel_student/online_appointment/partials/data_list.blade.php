@@ -36,8 +36,8 @@
                                     {{$IncomingStudentCount->grade_level_id}}
                                     <input type="hidden" class="js-grade" value="{{$IncomingStudentCount->grade_level_id}}">
                                 @else
-                                    {{$ClassDetail->grade_level+1}}
-                                    <input type="hidden" class="js-grade" value="{{$ClassDetail->grade_level+1}}">
+                                    {{$ClassDetail->grade_level}}
+                                    <input type="hidden" class="js-grade" value="{{$ClassDetail->grade_level}}">
                                 @endif
                                 </i>
                             </label><br/>
