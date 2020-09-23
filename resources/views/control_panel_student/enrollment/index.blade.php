@@ -175,7 +175,7 @@
 @endsection
 
 @section ('content_title')
-    Enrollment    
+    Online/Register Payment    
 @endsection
 
 @section ('content')    

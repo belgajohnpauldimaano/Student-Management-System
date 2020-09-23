@@ -114,8 +114,9 @@ class EnrollmentController extends Controller
                     $GradeSheet = 0;
                     if($Enrollment){
                         $GradeSheet = 1;
+
                         $ClassDetail = ClassDetail::where('id', $Enrollment->class_details_id)
-                        ->where('status', 1)->where('current', 1)->orderBY('grade_level', 'DESC')->first();
+                            ->where('status', 1)->where('current', 1)->orderBY('grade_level', 'DESC')->first();
                     }else{
                         $GradeSheet = 0;
                         return view('control_panel_student.enrollment.index', compact('GradeSheet'));

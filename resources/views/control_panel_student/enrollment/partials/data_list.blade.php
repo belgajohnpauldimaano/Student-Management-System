@@ -6,7 +6,7 @@
     <div class="box box-primary">
       
       <div class="box-header with-border">
-        <h3 class="box-title col-lg-12">Enrollment Method</h3>
+        <h3 class="box-title col-lg-12">Online/Registration Payment Method</h3>
       </div>
       
       <div class="box-body justify-content-center" style="height: 20em">

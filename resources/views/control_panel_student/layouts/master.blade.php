@@ -74,7 +74,7 @@
       <ul class="sidebar-menu" data-widget="tree">
         <li class="header">STUDENT NAVIGATION</li>
           <li><a href="{{ route('student.dashboard') }}"><i class="fa fa-home fa-fw fa-lg"></i>&nbsp;&nbsp; <span>Home</span></a></li>
-          <li><a href="{{ route('student.enrollment.index') }}"><i class="fas fa-file fa-lg"></i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span>Online Enrollment</span></a></li> 
+          <li><a href="{{ route('student.enrollment.index') }}"><i class="fas fa-file fa-lg"></i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span>Online/Registration Payment</span></a></li> 
           <li><a href="{{ route('student.student_appointment') }}"><i class="far fa-calendar-check fa-lg"></i></i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span>Appointment for Walk in</span></a></li> 
           <li><a href="{{ route('student.class_schedule.index') }}"><i class="fa fa-calendar fa-lg"></i>&nbsp;&nbsp;&nbsp; <span>Class Schedule</span></a></li>
           <li><a href="{{ route('student.grade_sheet.index') }}"><i class="fa fa-file-text-o fa-lg"></i>&nbsp;&nbsp;&nbsp; <span>Grade Sheet</span></a></li>

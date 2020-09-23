@@ -55,7 +55,7 @@
                             @if($IncomingStudentCount)
                               {{$IncomingStudentCount->grade_level_id}}
                             @else
-                              {{$ClassDetail->grade_level+1}}
+                              {{$ClassDetail->grade_level}}
                             @endif
                             </i>
                         </h4>
