@@ -14,11 +14,22 @@ class SchoolYearController extends Controller
         if ($request->ajax())
         {
             $SchoolYear = \App\SchoolYear::where('status', 1)->where('school_year', 'like', '%'.$request->search.'%')->paginate(10);
-            return view('control_panel.school_year.partials.data_list', compact('SchoolYear'))->render();
-            
+            return view('control_panel.school_year_section.school_year.partials.data_list', compact('SchoolYear'))->render();            
         }
+
         $SchoolYear = \App\SchoolYear::where('status', 1)->paginate(10);
-        return view('control_panel.school_year.index', compact('SchoolYear'));
+        return view('control_panel.school_year_section.school_year.index', compact('SchoolYear'));
+    }
+
+    public function registrar( Request $request){
+        if ($request->ajax())
+        {
+            $SchoolYear = \App\SchoolYear::where('status', 1)->where('school_year', 'like', '%'.$request->search.'%')->paginate(10);
+            return view('control_panel.school_year_section.registrar.partials.data_list', compact('SchoolYear'))->render();            
+        }
+
+        $SchoolYear = \App\SchoolYear::where('status', 1)->paginate(10);
+        return view('control_panel.school_year_section.registrar.index', compact('SchoolYear'));
     }
     
     public function modal_data (Request $request) 

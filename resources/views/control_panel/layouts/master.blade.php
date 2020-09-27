@@ -200,15 +200,29 @@
               </a>
               <ul class="treeview-menu" style="display: block">
                   {{--  Admin Menu  --}}
-                  <li><a href="{{ route('admin.maintenance.school_year') }}"><i class="fa fa-circle-o"></i>&nbsp;&nbsp;&nbsp; <span>School Year</span></a></li>
+                  <li>
+                    <a href="{{ route('admin.maintenance.school_year') }}">
+                      <i class="fa fa-circle-o"></i>&nbsp;&nbsp;&nbsp; <span>School Year</span>
+                      <span class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span>
+                    </a>
+                    <ul class="treeview-menu" style="display: block">
+                      <li>
+                        <a href="{{ route('admin.maintenance.school_year') }}">
+                          <i class="fa fa-circle-o"></i>&nbsp;&nbsp;&nbsp; <span>School Year</span>
+                        </a>
+                      </li>
+                      <li><a href=""><i class="fa fa-circle-o"></i>&nbsp;&nbsp;&nbsp; <span>Faculty</span></a></li>
+                      <li><a href=""><i class="fa fa-circle-o"></i>&nbsp;&nbsp;&nbsp; <span>Student</span></a></li>
+                      <li><a href=""><i class="fa fa-circle-o"></i>&nbsp;&nbsp;&nbsp; <span>Registrar</span></a></li>
+                    </ul>
+                  </li>
                   <li><a href="{{ route('admin.maintenance.semester') }}"><i class="fa fa-circle-o"></i>&nbsp;&nbsp;&nbsp; <span>Semester</span></a></li>
                   <li><a href="{{ route('admin.maintenance.strand') }}"><i class="fa fa-circle-o"></i>&nbsp;&nbsp;&nbsp; <span>Strands</span></a></li>
                   <li><a href="{{ route('admin.maintenance.subjects') }}"><i class="fa fa-circle-o"></i>&nbsp;&nbsp;&nbsp; <span>Subjects</span></a></li>
                   <li><a href="{{ route('admin.maintenance.classrooms') }}"><i class="fa fa-circle-o"></i>&nbsp;&nbsp;&nbsp; <span>Class Rooms</span></a></li>
                   <li><a href="{{ route('admin.maintenance.section_details') }}"><i class="fa fa-circle-o"></i>&nbsp;&nbsp;&nbsp; <span>Section Details</span></a></li>
                   <li><a href="{{ route('admin.maintenance.date_remarks_for_class_card') }}"><i class="fa fa-circle-o"></i>&nbsp;&nbsp;&nbsp; <span>Date of Remarks</span></a></li>
-                  {{--  Admin Menu End  --}}
-                  
+                  {{--  Admin Menu End  --}}                  
               </ul>
           </li>
         @endif
@@ -276,15 +290,15 @@
         @endif
         <li>
           @if (Auth::user()->role == 3)
-            <a href="{{ route('registrar.my_account.index') }}"><i class="fa fa-user fa-lg"></i>&nbsp;&nbsp;&nbsp; <span>My Account</span></a></li>
+            <a href="{{ route('registrar.my_account.index') }}"><i class="fa fa-user fa-lg"></i>&nbsp;&nbsp;&nbsp; <span>My Account</span></a>
           @elseif (Auth::user()->role == 4)
-            <a href="{{ route('faculty.my_account.index') }}"><i class="fa fa-user fa-lg"></i>&nbsp;&nbsp;&nbsp; <span>My Account</span></a></li>
+            <a href="{{ route('faculty.my_account.index') }}"><i class="fa fa-user fa-lg"></i>&nbsp;&nbsp;&nbsp; <span>My Account</span></a>
           @elseif (Auth::user()->role == 6)
-            <a href="{{ route('finance.my_account.index') }}"><i class="fa fa-user fa-lg"></i>&nbsp;&nbsp;&nbsp; <span>My Account</span></a></li>
+            <a href="{{ route('finance.my_account.index') }}"><i class="fa fa-user fa-lg"></i>&nbsp;&nbsp;&nbsp; <span>My Account</span></a>
           @elseif (Auth::user()->role == 7)
-            <a href="{{ route('admission.my_account.index') }}"><i class="fa fa-user fa-lg"></i>&nbsp;&nbsp;&nbsp; <span>My Account</span></a></li>
+            <a href="{{ route('admission.my_account.index') }}"><i class="fa fa-user fa-lg"></i>&nbsp;&nbsp;&nbsp; <span>My Account</span></a>
           @elseif (Auth::user()->role == 0 || Auth::user()->role == 1)
-            <a href="{{ route('my_account.index') }}"><i class="fa fa-user fa-lg"></i>&nbsp;&nbsp;&nbsp; <span>My Account</span></a></li>
+            <a href="{{ route('my_account.index') }}"><i class="fa fa-user fa-lg"></i>&nbsp;&nbsp;&nbsp; <span>My Account</span></a>
           @endif
         
       </ul>
