@@ -4,7 +4,7 @@
 // finance
 Route::group(['prefix' => 'finance', 'middleware' => ['auth', 'userroles'], 'roles' => ['finance']], function () {
     
-    Route::get('dashboard', 'Finance\FinanceDashboardController@index')->name('finance.dashboard');
+    Route::get('dashboard', 'Finance\FinanceDashboardController@index')->name('finance.dashboard');   
 
     Route::group(['prefix' => 'my-account', 'middleware' => ['auth']], function() {
         Route::get('', 'Finance\UserProfileController@view_my_profile')->name('finance.my_account.index');
@@ -23,6 +23,28 @@ Route::group(['prefix' => 'finance', 'middleware' => ['auth', 'userroles'], 'rol
         Route::post('save-data', 'Finance\StudentController@save_data')->name('finance.student_account.save_data'); 
         
         Route::post('save', 'Finance\StudentController@save_modal_account')->name('finance.student_account.save_modal_account');
+    });
+
+    Route::get('', 'Finance\StudentClassListController@index')->name('finance.class_details');
+    Route::post('', 'Finance\StudentClassListController@index')->name('finance.class_details');
+
+    Route::group(['prefix' => 'finance/student-class-list/{id}', 'middleware' => ['auth'], 'roles' => ['admin', 'root', 'finance']], function() {        
+        
+        Route::get('', 'Finance\StudentClassListController@studentList')->name('finance.student_list');
+        Route::post('', 'Finance\StudentClassListController@studentList')->name('finance.student_list');
+        Route::post('enrolled-student', 'Finance\StudentClassListController@fetch_enrolled_student')->name('Finance.student_enrollment.fetch_enrolled_student');
+        Route::get('enrolled-student', 'Registrar\StudentClassListController@fetch_enrolled_student')->name('registrar.student_enrollment.fetch_enrolled_student');
+
+        // Route::post('modal-data', 'Registrar\StudentEnrollmentController@modal_data')->name('registrar.student_enrollment.modal_data');
+        // Route::post('save-data', 'Registrar\StudentEnrollmentController@save_data')->name('registrar.student_enrollment.save_data');
+        // Route::post('enroll-student', 'Registrar\StudentEnrollmentController@enroll_student')->name('registrar.student_enrollment.enroll_student');
+        // Route::post('re-enroll-student', 'Registrar\StudentEnrollmentController@re_enroll_student')->name('registrar.student_enrollment.re_enroll_student');
+        // Route::post('re-enroll-student-all', 'Registrar\StudentEnrollmentController@re_enroll_student_all')->name('registrar.student_enrollment.re_enroll_student_all');
+        // Route::post('enrolled-student', 'Registrar\StudentEnrollmentController@fetch_enrolled_student')->name('registrar.student_enrollment.fetch_enrolled_student');
+        // Route::get('enrolled-student', 'Registrar\StudentEnrollmentController@fetch_enrolled_student')->name('registrar.student_enrollment.fetch_enrolled_student');
+        // Route::post('cancel-enroll-student', 'Registrar\StudentEnrollmentController@cancel_enroll_student')->name('registrar.student_enrollment.cancel_enroll_student');
+        
+        // Route::get('print-enrolled-students', 'Registrar\StudentEnrollmentController@print_enrolled_students')->name('registrar.student_enrollment.print_enrolled_students');
     });
 
     Route::group(['prefix' => 'student-payment'], function () {

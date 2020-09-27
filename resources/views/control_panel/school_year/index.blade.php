@@ -6,7 +6,7 @@
 
 @section ('content')
 <div class="row">
-    <div class="col-md-12">
+    <div class="col-md-7">
         <div class="box">
             <div class="box-header with-border">
                 <h3 class="box-title">Search</h3>
@@ -27,20 +27,53 @@
             </div>
         </div>
     </div>
-    {{-- <div class="col-md-5">
+    <div class="col-md-5">
         <div class="box">
             <div class="box-header with-border">
                 <h3 class="box-title">
-                    Set School Year for Student Class Card
+                    Setting of Active School Year
                 </h3>
             </div>
             <div class="box-body">
-                <div class="js-data-container">
-                    
+                <div class="js-data-school_year">
+                    <div class="form-group">
+                        <label>Finance</label>
+                        <select class="form-control" name="finance_sy">
+                            <option>Select School year</option>
+                            @foreach ($SchoolYear as $data)
+                                <option value="{{$data->id}}">{{$data->school_year}}</option>                                
+                            @endforeach
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Registrar</label>
+                       <select class="form-control" name="registrar_sy">
+                            <option>Select School year</option>
+                            @foreach ($SchoolYear as $data)
+                                <option value="{{$data->id}}">{{$data->school_year}}</option>                                
+                            @endforeach
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Student</label>
+                       <select class="form-control" name="student_sy">
+                            <option>Select School year</option>
+                            @foreach ($SchoolYear as $data)
+                                <option value="{{$data->id}}">{{$data->school_year}}</option>                                
+                            @endforeach
+                        </select>
+                    </div>
                 </div>
             </div>
+            <div class="box-footer with-border">
+                <button class="btn btn-flat btn-primary pull-right" type="submit">
+                    <i class="far fa-save"></i> Save
+                </button>
+            </div>
         </div>
-    </div> --}}
+    </div>
 </div>
 @endsection
 

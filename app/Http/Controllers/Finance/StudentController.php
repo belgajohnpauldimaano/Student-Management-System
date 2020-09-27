@@ -116,11 +116,7 @@ class StudentController extends Controller
                                 ->orderBY('student_informations.last_name', 'ASC')
                                 ->distinct('student_informations.id')
                                 ->paginate(10);
-                        }
-
-                    
-    
-                            
+                        }   
                     
                     $NotyetApprovedCount = $this->notYetApproved();
     

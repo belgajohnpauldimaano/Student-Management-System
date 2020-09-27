@@ -14,4 +14,6 @@ class Enrollment extends Model
     public function getFullNameAttribute() {
         return ucwords($this->last_name . ', ' . $this->first_name. ' ' . $this->middle_name);
     }
+
+    
 }

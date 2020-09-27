@@ -5,6 +5,12 @@
 @endsection
 
 @section ('content')
+    <div class="input-group pull-right" style="margin-top: -3em">
+        <a class="btn btn-danger btn-flat" href="{{ route('finance.class_details') }}">
+            <i class="far fa-list-alt fa-lg"></i> <span>Switch View</span>
+        </a>
+    </div>
+    {{-- <br/> --}}
     <div class="box">
         <div class="box-header with-border">            
             <div class="row">                
@@ -15,7 +21,7 @@
                         <div class="input-group input-school_year">
                             <select name="school_year" id="school_year" class="form-control ">                            
                                 <option value="0">
-                                    - Select School Year -
+                                    - School Year -
                                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                 </option>
                                 @foreach ($School_years as $item)
@@ -30,7 +36,7 @@
                         <label class="control-label">- Section -</label> 
                         <div class="form-group" style="padding-right:0">
                             <select name="section_list" id="section_list" class="form-control section_list">
-                                <option value="">Select Section</option>
+                                <option value="">Section</option>
                             </select>
                         </div>
                     </div>
@@ -38,7 +44,7 @@
                         <label class="control-label">Search</label>
                         <div class="input-group input-school_year col-md-12">
                             <div id="js-form_search" class="form-group " style="padding-left:0;padding-right:0">
-                                <input type="text" class="form-control" name="search">
+                                <input placeholder="first name or last name" type="text" class="form-control" name="search">
                             </div>                              
                         </div>
                      </div>  
@@ -51,12 +57,7 @@
                             </button>
                         </div>
                      </div>  
-                                           
-                    
-                    
-                    {{-- <button type="button" class="pull-right btn btn-flat btn-danger btn-sm" id="js-button-add">
-                        <i class="fa fa-plus"></i> Add
-                    </button> --}}
+                     
                 </form>
             </div>
         </div>

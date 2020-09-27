@@ -219,6 +219,7 @@
           {{-- <li><a href="{{ route('finance.student_account') }}"><i class="fas fa-pen-square fa-lg"></i>&nbsp;&nbsp;&nbsp; <span>Student Enrollment</span></a></li> --}}
           {{-- <li><a href="{{ route('finance.student_payment') }}">&nbsp;<i class="fas fa-clipboard-list fa-lg"></i>&nbsp;&nbsp;&nbsp; <span>Student Payment </i> --}}
           <li><a href="{{ route('finance.student_account') }}"><i class="fas fa-pen-square fa-lg"></i>&nbsp;&nbsp;&nbsp; <span>Student Enrollment/Billing</span></a></li>
+          {{-- <li><a href="{{ route('finance.class_details') }}"><i class="fas fa-pen-square fa-lg"></i>&nbsp;&nbsp;&nbsp; <span>Student Enrollment/Billing</span></a></li> --}}
           <li>
             <a href="#"><i class="fas fa-clipboard-list fa-lg"></i>&nbsp;&nbsp;&nbsp; <span>Student Payment</span>
               

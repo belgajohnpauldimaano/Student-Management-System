@@ -2,10 +2,9 @@
 
 namespace App\Http\Controllers\Control_Panel\Maintenance;
 
+use App\SchoolYear;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-
-
 
 class SchoolYearController extends Controller
 {
@@ -13,11 +12,13 @@ class SchoolYearController extends Controller
     {
         if ($request->ajax())
         {
-            $SchoolYear = \App\SchoolYear::where('status', 1)->where('school_year', 'like', '%'.$request->search.'%')->paginate(10);
-            return view('control_panel.school_year.partials.data_list', compact('SchoolYear'))->render();
-            
+            $SchoolYear = SchoolYear::where('status', 1)->where('school_year', 'like', '%'.$request->search.'%')->paginate(10);
+            return view('control_panel.school_year.partials.data_list', compact('SchoolYear'))->render();            
         }
-        $SchoolYear = \App\SchoolYear::where('status', 1)->paginate(10);
+        $SchoolYear = SchoolYear::where('status', 1)->paginate(10);
+
+        $finance = SchoolYearCategory::where('status', 1)->first();
+        
         return view('control_panel.school_year.index', compact('SchoolYear'));
     }
     
@@ -26,7 +27,7 @@ class SchoolYearController extends Controller
         $SchoolYear = NULL;
         if ($request->id)
         {
-            $SchoolYear = \App\SchoolYear::where('id', $request->id)->first();
+            $SchoolYear = SchoolYear::where('id', $request->id)->first();
         }
         return view('control_panel.school_year.partials.modal_data', compact('SchoolYear'))->render();
     }
@@ -47,14 +48,14 @@ class SchoolYearController extends Controller
 
         if ($request->id)
         {
-            $SchoolYear = \App\SchoolYear::where('id', $request->id)->first();
+            $SchoolYear = SchoolYear::where('id', $request->id)->first();
             $SchoolYear->school_year = $request->school_year;
             $SchoolYear->current = $request->current_sy;
             $SchoolYear->save();
             return response()->json(['res_code' => 0, 'res_msg' => 'Data successfully saved.']);
         }
 
-        $SchoolYear = new \App\SchoolYear();
+        $SchoolYear = new SchoolYear();
         $SchoolYear->school_year = $request->school_year;
         $SchoolYear->current = $request->current_sy;
         $SchoolYear->save();
@@ -63,7 +64,7 @@ class SchoolYearController extends Controller
 
     public function toggle_current_sy (Request $request)
     {
-        $SchoolYear = \App\SchoolYear::where('id', $request->id)->first();
+        $SchoolYear = SchoolYear::where('id', $request->id)->first();
         if ($SchoolYear) 
         {
             if ($SchoolYear->current == 0) 
@@ -82,7 +83,7 @@ class SchoolYearController extends Controller
     }
     public function deactivate_data (Request $request) 
     {
-        $SchoolYear = \App\SchoolYear::where('id', $request->id)->first();
+        $SchoolYear = SchoolYear::where('id', $request->id)->first();
 
         if ($SchoolYear)
         {

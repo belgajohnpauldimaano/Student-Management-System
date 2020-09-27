@@ -11,7 +11,7 @@
         </tr>
     </thead>
     <tbody>
-        @if ($SchoolYear)
+        @if($SchoolYear)
             @foreach ($SchoolYear as $data)
                 <tr>
                     <td>{{ $data->school_year }}</td>
