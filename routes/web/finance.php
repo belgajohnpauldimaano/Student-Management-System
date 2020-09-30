@@ -119,6 +119,7 @@ Route::group(['prefix' => 'finance', 'middleware' => ['auth', 'userroles'], 'rol
         Route::get('print-all-transaction', 'Finance\StudentAccountController@print_all_transaction')->name('finance.print_all_transaction');
 
         Route::post('delete-data', 'Finance\StudentAccountController@data_delete')->name('finance.data_delete');
+        Route::post('delete-transaction', 'Finance\StudentAccountController@deleteTransaction')->name('finance.delete_transaction');
     });
 
     Route::group(['prefix' => 'maintenance'], function () {

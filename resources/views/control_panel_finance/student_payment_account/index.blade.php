@@ -409,6 +409,7 @@
                     }
                 });
             });
+            
 
             $('body').on('click', '.btn-other-edit', function (e) {
                 e.preventDefault();
@@ -427,6 +428,43 @@
                             }); 
                         });;
                     }
+                });
+            });
+
+            $('body').on('click', '.btn-delete_transaction', function (e) {
+                e.preventDefault();
+                var id = $(this).data('id');
+                alertify.defaults.transition = "slide";
+                alertify.defaults.theme.ok = "btn btn-primary btn-flat";
+                alertify.defaults.theme.cancel = "btn btn-danger btn-flat";
+                alertify.confirm('Confirmation', 'Are you sure you want to delete?', function(){  
+                    $.ajax({
+                        url         : "{{ route('finance.delete_transaction') }}",
+                        type        : 'POST',
+                        data        : { _token : '{{ csrf_token() }}', id : id },
+                        success     : function (res) {
+                            $('.help-block').html('');
+                            if (res.res_code == 1)
+                            {
+                                show_toast_alert({
+                                    heading : 'Error',
+                                    message : res.res_msg,
+                                    type    : 'error'
+                                });
+                            }
+                            else
+                            {
+                                show_toast_alert({
+                                    heading : 'Success',
+                                    message : res.res_msg,
+                                    type    : 'success'
+                                });
+                                
+                                fetch_data();
+                            }
+                        }
+                    });
+                }, function(){  
                 });
             });
 

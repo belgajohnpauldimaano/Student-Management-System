@@ -188,12 +188,20 @@
     <h4>Transaction History</h4>
     <div class="box">
         @foreach ($Mo_history as $data)                        
-            <div class="box-header ">                
-
+            <div class="box-header ">
                 <table class="table-student-info" style="margin-top: 15px; margin-bottom: 10px; font-size:15px ">
                     <tr>
                         <td>Date and Time: <strong>{{ $Modal_data ? date_format(date_create($Modal_data->created_at), 'F d, Y h:i A') : '' }}</strong></td>
-                        <td>Status: <strong>{{ $data->approval ? $data->approval == 'Approved' ? 'Approved' : 'Not yet Approved' : 'Not yet Approved'}}</strong></td>
+                        <td>Status: <strong>
+                            {{-- {{ $data->approval ? $data->approval == 'Approved' ? 'Approved' : 'Not yet Approved' : 'Not yet Approved'}} --}}
+                            @if($data->approval == 'Approved')
+                                Approved
+                            @elseif($data->approval == 'Not yet Approved')
+                                Not yet Approved
+                            @elseif($data->approval == 'Disapproved')
+                                Disapproved
+                            @endif
+                        </strong></td>
                     </tr>
                    
                     <tr>

@@ -18,7 +18,7 @@
                     {{ csrf_field() }}
                     <div class="col-md-3">
                         <label class="control-label">- School year -</label>                                            
-                        <div class="input-group input-school_year">
+                        <div class="input-school_year">
                             <select name="school_year" id="school_year" class="form-control ">                            
                                 <option value="0">
                                     - School Year -
@@ -56,7 +56,8 @@
                                 <i class="fa fa-refresh"></i> Clear
                             </button>
                         </div>
-                     </div>  
+                     </div> 
+                     
                      
                 </form>
             </div>

@@ -63,15 +63,6 @@
                         {{-- <a class="btn btn-sm btn-success btn-approve" title="Approve" data-id="{{$data->transact_monthly_id}}"><i class="fas fa-thumbs-up"></i></a> --}}
                         <a class="btn btn-sm btn-danger btn-disapprove" title="Disapprove" data-id="{{$data->transact_monthly_id}}"><i class="fas fa-thumbs-down"></i></a>
                         
-                        {{-- <div class="input-group-btn pull-left text-left">
-                            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="true">Action
-                                <span class="fa fa-caret-down"></span></button>
-                            <ul class="dropdown-menu">
-                                <li><a href="#" class="btn-view-modal" data-id="{{$data->transaction_id}}"  data-monthly_id="{{$data->transact_monthly_id}}">View</a></li>
-                                <li><a href="#" class="btn-approve" data-id="{{$data->transact_monthly_id}}">Approve</a></li>
-                                <li><a href="#" class="btn-disapprove"  data-id="{{$data->transact_monthly_id}}">Disapprove</a></li>
-                            </ul>
-                        </div>  --}}
                     </td>
                 </tr>
             @endforeach

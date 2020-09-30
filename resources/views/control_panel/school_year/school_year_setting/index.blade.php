@@ -1,7 +1,7 @@
 @extends('control_panel.layouts.master')
 
 @section ('content_title')
-    School Year
+    School Year Setting
 @endsection
 
 @section ('content')
@@ -9,7 +9,7 @@
     <div class="col-md-6">
         <div class="box">
             <div class="box-header with-border">
-                <h3 class="box-title">Setting of Active School Year</h3>
+                <h3 class="box-title">School Year Setting</h3>
             </div>
             <div class="overlay hidden" id="js-loader-overlay"><i class="fa fa-refresh fa-spin"></i></div>
             <div class="box-body">
@@ -30,7 +30,7 @@
             formData.append('page', page);
             loader_overlay();
             $.ajax({
-                url : "{{ route('admin.maintenance.school_year') }}",
+                url : "{{ route('admin.maintenance.school_year_settings') }}",
                 type : 'POST',
                 data : formData,
                 processData : false,
@@ -57,11 +57,11 @@
                 });
             });
 
-            $('body').on('submit', '#js-form_school_year', function (e) {
+            $('body').on('submit', '#set-school-year-form', function (e) {
                 e.preventDefault();
                 var formData = new FormData($(this)[0]);
                 $.ajax({
-                    url         : "{{ route('admin.maintenance.school_year.save_data') }}",
+                    url         : "{{ route('admin.maintenance.set_school_year') }}",
                     type        : 'POST',
                     data        : formData,
                     processData : false,
@@ -77,7 +77,13 @@
                         }
                         else
                         {
-                            $('.js-modal_holder .modal').modal('hide');
+                            show_toast_alert({
+                                heading : 'Success',
+                                message : res.res_msg,
+                                type    : 'success'
+                            });
+
+                            location.reload()
                             fetch_data();
                         }
                     }

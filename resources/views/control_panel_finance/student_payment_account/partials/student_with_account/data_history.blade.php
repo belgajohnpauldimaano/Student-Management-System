@@ -9,17 +9,17 @@
     </div>
     
     <div class="table-responsive">
-        <table class="table table-bordered table-hover table-striped">
+        <table class="table table-bordered table-hover">
             <thead class="thead-dark">
                 <tr>
                     <th style="width: 10%">Transaction ID</th>
-                    <th style="width: 15%">Payment Option</th>
+                    <th style="width: 10%">Payment Option</th>
                     <th style="width: 15%">OR Number</th>
                     <th style="width: 15%">Payment Fee</th>
                     <th style="width: 10%">Balance</th>
                     <th style="width: 10%">Remarks</th>
                     <th style="width: 15%">Date</th>
-                    <th style="width: 20%">Action</th>
+                    <th style="width: 25%">Action</th>
                 </tr>
             </thead>
             @if($Account)
@@ -38,12 +38,17 @@
                             <a class="btn btn-sm btn-primary btn-transaction-edit" title="edit" data-id="{{ $item->id }}">
                                 <i class="far fa-edit"></i>
                             </a>
-                            <a class="btn btn-sm btn-danger js-btn_print_transaction" title="print"
+                            
+                            <a class="btn btn-sm btn-success js-btn_print_transaction" title="print"
                                 data-syid="{{$item->school_year_id}}"
                                 data-studid="{{ $item->student_id }}"
                                 data-or_num="{{ $item->or_no }}
                             ">
                                 <i class="fa fa-file-pdf"></i>
+                            </a>
+                            
+                            <a class="btn btn-sm btn-danger btn-delete_transaction" title="delete" data-id="{{ $item->id }}">
+                                <i class="far fa-trash-alt"></i>
                             </a>
                         </td>
                     </tr>

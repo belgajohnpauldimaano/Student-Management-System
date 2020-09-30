@@ -52,10 +52,9 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'userroles'], 'roles
             Route::post('deactivate-data', 'Control_Panel\Maintenance\SchoolYearController@deactivate_data')->name('admin.maintenance.school_year.deactivate_data');
             Route::post('toggle-current-sy', 'Control_Panel\Maintenance\SchoolYearController@toggle_current_sy')->name('admin.maintenance.school_year.toggle_current_sy');
 
-            Route::get('school-year-settings', 'Control_Panel\Maintenance\SchoolYearController@schoolYearSettings')
-                ->name('admin.maintenance.school_year_settings');
-            Route::post('school-year-settings', 'Control_Panel\Maintenance\SchoolYearController@schoolYearSettings')
-                ->name('admin.maintenance.school_year_settings');
+            Route::get('school-year-settings', 'Control_Panel\Maintenance\SchoolYearController@schoolYearSettings')->name('admin.maintenance.school_year_settings');
+            Route::post('school-year-settings', 'Control_Panel\Maintenance\SchoolYearController@schoolYearSettings')->name('admin.maintenance.school_year_settings');
+            Route::post('set-school-year', 'Control_Panel\Maintenance\SchoolYearController@saveSchoolYear')->name('admin.maintenance.set_school_year');
         });
 
         Route::group(['prefix' => 'semester'], function () {

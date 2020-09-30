@@ -29,22 +29,64 @@ class SchoolYearController extends Controller
         {
             $SchoolYear = SchoolYear::whereStatus(1)->paginate(10);
 
-            $finance = SchoolYearCategory::whereStatus(1)->whereType('1')->first();
-            $student = SchoolYearCategory::whereStatus(1)->whereType('2')->first();
-            $registrar = SchoolYearCategory::whereStatus(1)->whereType('3')->first();
-            return view('control_panel.school_year.school_year_setting.partials.data_list', compact('SchoolYear'))->render();            
+            $finance = SchoolYearCategory::whereStatus(1)->whereType(1)->first();
+            $registrar = SchoolYearCategory::whereStatus(1)->whereType(2)->first();
+            $student = SchoolYearCategory::whereStatus(1)->whereType(3)->first();
+            $faculty = SchoolYearCategory::whereStatus(1)->whereType(4)->first();
+            
+            
+            return view('control_panel.school_year.school_year_setting.partials.data_list', compact('SchoolYear','finance','student','registrar','faculty'));           
         }
 
         $SchoolYear = SchoolYear::whereStatus(1)->paginate(10);
 
-        $finance = SchoolYearCategory::whereStatus(1)->whereType('1')->first();
-        $student = SchoolYearCategory::whereStatus(1)->whereType('2')->first();
-        $registrar = SchoolYearCategory::whereStatus(1)->whereType('3')->first();
+        $finance = SchoolYearCategory::whereStatus(1)->whereType(1)->first();
+        $registrar = SchoolYearCategory::whereStatus(1)->whereType(2)->first();
+        $student = SchoolYearCategory::whereStatus(1)->whereType(3)->first();
+        $faculty = SchoolYearCategory::whereStatus(1)->whereType(4)->first();
         
-        return view('control_panel.school_year.school_year_setting.index', 
-            compact('SchoolYear','finance','student','registrar'));
+        
+        return view('control_panel.school_year.school_year_setting.index', compact('SchoolYear','finance','student','registrar','faculty'));
     }
 
+    public function saveSchoolYear(Request $request)
+    {
+        $rules = [
+            'finance' => 'required',
+            'registrar' => 'required',
+            'student' => 'required',
+            'faculty' => 'required',   
+        ];
+
+        $Validator = \Validator($request->all(), $rules);
+
+        if ($Validator->fails())
+        {
+            return response()->json(['res_code' => 1, 'res_msg' => 'Please fill all required fields.', 'res_error_msg' => $Validator->getMessageBag()]);
+        }
+        
+       
+        $finance = SchoolYearCategory::whereType(1)->first();
+        $finance->school_year_id = $request->finance;
+        $finance->save();          
+
+        $registrar = SchoolYearCategory::whereType(2)->first();
+        $registrar->school_year_id = $request->registrar;
+        $registrar->save();
+            
+        $student = SchoolYearCategory::whereType(3)->first();
+        $student->school_year_id = $request->student;
+        $student->save();
+
+        $student = SchoolYearCategory::whereType(4)->first();
+        $student->school_year_id = $request->faculty;
+        $student->save();
+        
+        return response()->json(['res_code' => 0, 'res_msg' => 'Data successfully saved.']);
+        
+    }
+
+    
     public function modal_data (Request $request) 
     {
         $SchoolYear = NULL;
@@ -84,21 +126,7 @@ class SchoolYearController extends Controller
         return response()->json(['res_code' => 0, 'res_msg' => 'Data successfully saved.']);
     }
 
-    public function saveSchoolYear(Request $request)
-    {
-        $rules = [
-            'school_year' => 'required'           
-        ];
-
-        $Validator = \Validator($request->all(), $rules);
-
-        if ($Validator->fails())
-        {
-            return response()->json(['res_code' => 1, 'res_msg' => 'Please fill all required fields.', 'res_error_msg' => $Validator->getMessageBag()]);
-        }
-
-        
-    }
+    
     
     public function toggle_current_sy (Request $request)
     {

@@ -30,23 +30,22 @@
         {{-- <input type="hidden" name="school_year_id" value="{{ $SchoolYear->school_year_id }}"> --}}
 
         <label for="">Payment Status: </label>
-        <p style="margin-top: -5px">
-            
-                @if($StudentInformation->transactions)
-                    @if($StudentInformation->transactions->school_year_id == $School_year_id)
-                        <span class="label {{ $StudentInformation->transactions->status == 0 ? 'label-success' : 'label-danger' }}">
-                            {{ $StudentInformation->transactions->status == 0 ? 'Paid' : 'Not-Paid' }}
-                        </span>
-                    @else
-                        <span class="label label-danger">
-                            Not-Paid
-                        </span>
-                    @endif
+        <p style="margin-top: -5px">            
+            @if($StudentInformation->transactions)
+                @if($StudentInformation->transactions->school_year_id == $School_year_id)
+                    <span class="label {{ $StudentInformation->transactions->status == 0 ? 'label-success' : 'label-danger' }}">
+                        {{ $StudentInformation->transactions->status == 0 ? 'Paid' : 'Not-Paid' }}
+                    </span>
                 @else
                     <span class="label label-danger">
                         Not-Paid
                     </span>
-                @endif            
+                @endif
+            @else
+                <span class="label label-danger">
+                    Not-Paid
+                </span>
+            @endif            
         </p>
         
         <label for="">
@@ -60,7 +59,7 @@
         </label>
 
         <p style="margin-top: -5px">            
-            {{ $grade_level_id ? $grade_level_id : 'none' }}
+            {{ $ClassDetail == '0' ? '' : $ClassDetail->section->section.' - ' }} {{ $grade_level_id ? $grade_level_id : 'none' }}
         </p>
         
     </div>
