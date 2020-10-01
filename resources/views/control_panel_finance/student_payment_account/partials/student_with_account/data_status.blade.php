@@ -10,7 +10,12 @@
                 data-id="{{ $Transaction->id }}" id="js-button-paid">
                 <i class="fas fa-check"></i> Unpaid
             </button>
-        @endif              
+        @endif           
+        
+        <button type="button" class=" btn btn-flat btn-danger btn-md" data-id="{{ $Transaction->id }}"  id="js-button-delete">
+            <i class="fas fa-trash"></i> Delete Entire Transaction
+        </button>
+
         <h3 style="margin-bottom: 0em">Payment Account:</h3>
        
         <div class="row">
@@ -54,13 +59,13 @@
                     <b>Total Balance:</b>
                     <i style="color: red">
                         @if($TransactionMonthPaid->count())
-                            {{number_format($TransactionMonthPaid[0]->balance != '' ? '' : $TransactionMonthPaid[0]->balance,2)}}
+                            {{number_format($TransactionMonthPaid[0]->balance,2)}}
                         @endif
                     </i>
                     <input type="hidden" name="js_current_balance" id="js-current_balance" 
                         value="
                         @if($TransactionMonthPaid->count())
-                            {{$TransactionMonthPaid[0]->balance != '' ? '' : $TransactionMonthPaid[0]->balance}}
+                            {{$TransactionMonthPaid[0]->balance}}
                         @endif
                         ">
                 </h5>

@@ -64,7 +64,7 @@
         
     </div>
     <!-- /.col -->
-    <div align="center" class="col-sm-3 invoice-col ">
+    <div align="center" class="col-sm-3 invoice-col">
         <div class="form-group">
             @if ($Profile)
                 <img class="profile-user-img img-responsive img-circle" id="img--user_photo" src="{{ $Profile->photo ? \File::exists(public_path('/img/account/photo/'.$Profile->photo)) ? asset('/img/account/photo/'.$Profile->photo) : asset('/img/account/photo/blank-user.gif') : asset('/img/account/photo/blank-user.gif') }}" style="width:150px; height:150px;  border-radius:50%;">

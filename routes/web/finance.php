@@ -120,6 +120,8 @@ Route::group(['prefix' => 'finance', 'middleware' => ['auth', 'userroles'], 'rol
 
         Route::post('delete-data', 'Finance\StudentAccountController@data_delete')->name('finance.data_delete');
         Route::post('delete-transaction', 'Finance\StudentAccountController@deleteTransaction')->name('finance.delete_transaction');
+
+        Route::post('delete-all-transaction', 'Finance\StudentAccountController@deleteEntireTransaction')->name('finance.delete_all_transaction');
     });
 
     Route::group(['prefix' => 'maintenance'], function () {

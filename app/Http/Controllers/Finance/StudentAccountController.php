@@ -1036,5 +1036,17 @@ class StudentAccountController extends Controller
         $hello = 'this is history';
         return view('control_panel_finance.student_payment_account.partials.data_list', compact('hello'))->render();
     }
+
+    public function deleteEntireTransaction(Request $request){
+        // echo 'delete';
+
+        if($request->id)
+        {
+            $transaction =Transaction::find($request->id);
+            $transaction ->delete();     
+            return response()->json(['res_code' => 0, 'res_msg' => 'The entire transaction is now deleted.']);     
+        }        
+        // return redirect()->route('finance.student_payment_account');
+    }
     
 }

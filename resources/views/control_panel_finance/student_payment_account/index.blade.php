@@ -1126,6 +1126,42 @@
                 });
             });
 
+            $('body').on('click', '#js-button-delete', function (e) {
+                e.preventDefault();
+                var id = $(this).data('id');
+                alertify.defaults.transition = "slide";
+                alertify.defaults.theme.ok = "btn btn-primary btn-flat";
+                alertify.defaults.theme.cancel = "btn btn-danger btn-flat";
+                alertify.confirm('<i style="color: red" class="fas fa-exclamation-triangle fa-lg"></i> Reminder', 'This function will delete the entire transaction, do you want to proceed?', function(){  
+                    $.ajax({
+                        url         : "{{ route('finance.delete_all_transaction') }}",
+                        type        : 'POST',
+                        data        : { _token : '{{ csrf_token() }}', id : id },
+                        success     : function (res) {
+                            $('.help-block').html('');
+                            if (res.res_code == 1)
+                            {
+                                show_toast_alert({
+                                    heading : 'Error',
+                                    message : res.res_msg,
+                                    type    : 'error'
+                                });
+                            }
+                            else
+                            {
+                                show_toast_alert({
+                                    heading : 'Success',
+                                    message : res.res_msg,
+                                    type    : 'success'
+                                });                                
+                                location.reload();
+                            }
+                        }
+                    });
+                }, function(){  
+                });
+            });
+
             $('body').on('click', '.js-btn_print_all_transaction', function (e) {
                 e.preventDefault();
 

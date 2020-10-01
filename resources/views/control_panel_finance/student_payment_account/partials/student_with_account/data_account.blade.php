@@ -4,7 +4,7 @@
     <div style="margin-botton: 100px">
         <button type="button" class="pull-right btn btn-flat btn-primary btn-md" data-id="{{ $StudentInformation->id }}" id="js-button-payment">
             <i class="fas fa-plus"></i> Add Payment
-        </button>
+        </button>        
             
         <div class="nav-tabs-custom" id="transaction-history"  style="; margin-top: 20px">
             <ul class="nav nav-tabs transaction-history">
