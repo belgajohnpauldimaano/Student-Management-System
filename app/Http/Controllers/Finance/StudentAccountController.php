@@ -134,12 +134,17 @@ class StudentAccountController extends Controller
                 ->where('school_year_id', $School_year_id)
                 ->distinct()
                 ->get(['or_no']);    
-                
-            $others = TransactionOtherFee::where('student_id', $stud_id)
+            
+            try {
+                $others = TransactionOtherFee::where('student_id', $stud_id)
                 ->where('transaction_id', $Transaction->id)
                 ->where('school_year_id', $School_year_id)
                 ->where('isSuccess', 1)
                 ->get();
+            } catch (\Throwable $th) {
+                $others = 0;
+            }
+            
 
             $HasTransactionDiscount = TransactionDiscount::where('student_id', $stud_id)
                 ->where('school_year_id', $School_year_id)

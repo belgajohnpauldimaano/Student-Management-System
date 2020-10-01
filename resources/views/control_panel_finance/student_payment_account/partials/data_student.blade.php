@@ -31,10 +31,10 @@
 
         <label for="">Payment Status: </label>
         <p style="margin-top: -5px">            
-            @if($StudentInformation->transactions)
-                @if($StudentInformation->transactions->school_year_id == $School_year_id)
-                    <span class="label {{ $StudentInformation->transactions->status == 0 ? 'label-success' : 'label-danger' }}">
-                        {{ $StudentInformation->transactions->status == 0 ? 'Paid' : 'Not-Paid' }}
+            @if($StudentInformation->finance_transaction)
+                @if($StudentInformation->finance_transaction->school_year_id == $School_year_id)
+                    <span class="label {{ $StudentInformation->finance_transaction->status == 0 ? 'label-success' : 'label-danger' }}">
+                        {{ $StudentInformation->finance_transaction->status == 0 ? 'Paid' : 'Not-Paid' }}
                     </span>
                 @else
                     <span class="label label-danger">

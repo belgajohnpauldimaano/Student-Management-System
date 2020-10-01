@@ -23,7 +23,7 @@
                 </tr>
             </thead>
             @if($Account)
-                @foreach ($TransactionMonthPaid as $key => $item)
+                @forelse ($TransactionMonthPaid as $key => $item)
                     <tr>
                         <td>{{ $item->transaction_id }}</td>
                         <td>{{ $item->payment_option }}</td>
@@ -52,9 +52,11 @@
                             </a>
                         </td>
                     </tr>
-                @endforeach
+                @empty
+                    <th colspan="9" style="text-align: center">No payment history yet.</th>
+                @endforelse
             @else
-                <th colspan="5" style="text-align: center">No payment history yet.</th>
+                <th colspan="9" style="text-align: center">No payment history yet.</th>
             @endif
         </table>  
     </div> 

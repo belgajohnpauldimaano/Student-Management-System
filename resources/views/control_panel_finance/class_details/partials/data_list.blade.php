@@ -2,7 +2,7 @@
     <div class="pull-right">
         {{ $ClassDetail ? $ClassDetail->links() : '' }}
     </div>
-    <table class="table no-margin">
+    <table class="table no-margin table-hover">
         <thead>
             <tr>
                 <th>School Year</th>

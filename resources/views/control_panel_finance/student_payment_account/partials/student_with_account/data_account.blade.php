@@ -49,7 +49,7 @@
                                                     <td>{{$key+1}}.)</td>
                                                     <td>{{$data->transaction_id}}</td>
                                                     <td>{{$data->or_no }}</td>
-                                                    <td>{{$data->other->other_fee_name}}</td>
+                                                    <td>{{$data->other_name}}</td>
                                                     <td>{{$data->item_qty}}</td>
                                                     <td>{{number_format($data->item_price, 2)}}</td>
                                                     <td><span class="label bg-green">Paid</span></td>

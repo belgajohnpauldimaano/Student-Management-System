@@ -53,15 +53,21 @@
                 <h5>
                     <b>Total Balance:</b>
                     <i style="color: red">
-                        {{number_format($TransactionMonthPaid[0]->balance,2)}}
+                        @if($TransactionMonthPaid->count())
+                            {{number_format($TransactionMonthPaid[0]->balance != '' ? '' : $TransactionMonthPaid[0]->balance,2)}}
+                        @endif
                     </i>
                     <input type="hidden" name="js_current_balance" id="js-current_balance" 
-                        value="{{$TransactionMonthPaid[0]->balance}}">
+                        value="
+                        @if($TransactionMonthPaid->count())
+                            {{$TransactionMonthPaid[0]->balance != '' ? '' : $TransactionMonthPaid[0]->balance}}
+                        @endif
+                        ">
                 </h5>
                 <h5>
                     <b>Other(s):</b> 
                     @forelse ($others as $data)
-                        <b>{{$data->other->other_fee_name}}</b> : <i style="color: red"> {{number_format($data->item_price, 2)}}</i> | <b>Qty:</b> {{$data->item_qty}}<br/>
+                        <b>{{$data->other_name}}</b> : <i style="color: red"> {{number_format($data->item_price, 2)}}</i> | <b>Qty:</b> {{$data->item_qty}}<br/>
                     @empty
                         <b><i style="color: red">No Record Other</i></b>
                     @endforelse
