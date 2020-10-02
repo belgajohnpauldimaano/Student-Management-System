@@ -8,12 +8,14 @@ trait HasTransaction{
 
     public function transactions()
     {
-        return $this->hasOne(Transaction::class, 'student_id', 'student_information_id');
+        return $this->hasOne(Transaction::class, 'student_id', 'id');
     }
 
     public function student_balance()
     {
-        return $this->hasOne(TransactionMonthPaid::class, 'student_id', 'id')->whereApproval('Approved')->latest();
+        $id = 'id' != '' ? 'id' : 'student_id';
+
+        return $this->hasOne(TransactionMonthPaid::class, 'student_id', $id )->whereApproval('Approved')->latest();
     }
 
     public function finance_transaction ()
@@ -21,7 +23,7 @@ trait HasTransaction{
         // $School_year_id = SchoolYear::where('status', 1)
         //     ->where('current', 1)->first()->id;
         // return $this->hasOne(Transaction::class, 'student_id', 'id')->where('school_year_id', $School_year_id);
-        return $this->hasOne(Transaction::class, 'student_id', 'id');
+        return $this->hasOne(Transaction::class, 'id', 'id');
     }
     
 }

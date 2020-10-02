@@ -44,7 +44,7 @@
                                                     <td>
                                                         <div class="input-group-btn pull-left text-left">
                                                             {{-- @if(!$transactions)                                                                  --}}
-                                                                <a href="{{ route('finance.student_payment_account') }}?c={{ encrypt($data->student_id) }}&school_year={{ $data->school_year_id }}&class_details={{ $data->id }}"
+                                                                <a href="{{ route('finance.student_payment_account') }}?c={{ encrypt($data->id) }}&school_year={{ $data->school_year_id }}&class_details={{ $data->id }}"
                                                                     class="btn btn-flat btn-primary btn-sm"
                                                                 >
                                                                     Account
@@ -100,7 +100,7 @@
                                                     <td>
                                                         <div class="input-group-btn pull-left text-left">
                                                             {{-- @if(!$Transaction)                                                                  --}}
-                                                                <a href="{{ route('finance.student_payment_account') }}?c={{ encrypt($data->student_id) }}&school_year={{ $data->school_year_id }}&class_details={{ $data->id }}"
+                                                                <a href="{{ route('finance.student_payment_account') }}?c={{ encrypt($data->id) }}&school_year={{ $data->school_year_id }}&class_details={{ $data->id }}"
                                                                     class="btn btn-flat btn-primary btn-sm"
                                                                 >
                                                                     Account
