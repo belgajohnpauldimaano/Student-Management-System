@@ -240,7 +240,7 @@ class StudentClassListController extends Controller
                 })
                 // ->whereRaw('student_informations.id NOT IN ((SELECT  * from enrollments where enrollments.class_details_id = 3))')
                 ->selectRaw("
-                    student_informations.id AS student_information_id,
+                    student_informations.id AS student_id,
                     users.username,
                     student_informations.last_name, student_informations.first_name, student_informations.middle_name,
                     enrollments.id AS enrollment_id

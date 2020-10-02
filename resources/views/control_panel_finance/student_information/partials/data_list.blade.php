@@ -8,6 +8,7 @@
                 <th>Name</th>
                 <th>Username</th>
                 <th>Gender</th>
+                <th>Balance</th>
                 <th>Payment Status</th>
                 <th>Status</th>
                 <th>Action</th>
@@ -19,6 +20,15 @@
                     <td>{{ $data->full_name }} </td>
                     <td>{{ $hasUser == 1 ? $data->username : $data->user->username }}</td>
                     <td>{{ ($data->gender == 1 ? 'Male' : 'Female') }}</td>
+                    <td>
+                        @if($data->student_balance)
+                            {{ number_format($data->student_balance->balance, 2) }}
+                        @else
+                            <span class="label label-warning">
+                                None
+                            </span> 
+                        @endif
+                    </td>
                     <td style="color: red">
                         {{-- {{ $data->transactions}} --}}
                         @if($data->finance_transaction)

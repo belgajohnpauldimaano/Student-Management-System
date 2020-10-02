@@ -9,9 +9,7 @@ class Transaction extends Model
     public function transactions() 
     {
         return $this->hasOne(TransactionOtherFee::class, 'or_number', 'or_number');
-    } 
-
-   
+    }    
 
     public function monthly(){
         return $this->hasOne(TransactionMonthPaid::class, 'transaction_id', 'id')->orderBY('id', 'DESC')->where('isSuccess', 1)
@@ -71,5 +69,3 @@ class Transaction extends Model
         return $this->belongsTo(SchoolYear::class, 'school_year_id', 'id');
     }
 }
-
-

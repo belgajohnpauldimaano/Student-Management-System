@@ -3,24 +3,18 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Traits\HasUser;
 
 class FacultyInformation extends Model
 {
     const DEPARTMENTS = [
-            ['id' => 1, 'department_name' => 'Business'],
-            ['id' => 2, 'department_name' => 'Voc Tech'],
-            ['id' => 3, 'department_name' => 'English'],
-            ['id' => 4, 'department_name' => 'Mathematics'],
-            ['id' => 5, 'department_name' => 'Science'],
-        ];
+        ['id' => 1, 'department_name' => 'Business'],
+        ['id' => 2, 'department_name' => 'Voc Tech'],
+        ['id' => 3, 'department_name' => 'English'],
+        ['id' => 4, 'department_name' => 'Mathematics'],
+        ['id' => 5, 'department_name' => 'Science'],
+    ];
 
-    public function user ()
-    {
-        return $this->hasOne(User::class, 'id', 'user_id');
-    }
-
-    public function getFullnameAttribute() {
-        return ucfirst($this->first_name) . ' ' . ucfirst($this->last_name);
-    }
+    use HasUser;
 }
  

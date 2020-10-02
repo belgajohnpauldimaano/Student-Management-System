@@ -4,36 +4,18 @@ namespace App;
 
 use Illuminate\Http\Request;
 use Illuminate\Database\Eloquent\Model;
+use App\Traits\HasTransaction;
+use App\Traits\HasUser;
 
 class StudentInformation extends Model
 {
-    public function user ()
-    {
-        return $this->hasOne(User::class, 'id', 'user_id');
-    }
+    use HasTransaction, HasUser;
     
     public function enrolled_class ()
     {        
        return $this->hasMany(Enrollment::class, 'student_information_id', 'id');
     }
 
-    public function transactions ()
-    {
-        return $this->hasOne(Transaction::class, 'id', 'student_id');
-    }
-
-    public function finance_transaction ()
-    {
-        $School_year_id = SchoolYear::where('status', 1)
-            ->where('current', 1)->first()->id;
-
-        return $this->hasOne(Transaction::class, 'student_id', 'id')->where('school_year_id', $School_year_id);
-    }
-
-    public function getFullNameAttribute() {
-        return ucwords($this->last_name . ', ' . $this->first_name. ' ' . $this->middle_name);
-    }
-    
     public function payment_cat() 
     {
         return $this->hasOne(PaymentCategory::class, 'id', 'payment_category_id');
