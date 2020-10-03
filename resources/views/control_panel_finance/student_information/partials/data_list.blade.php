@@ -31,21 +31,15 @@
                     </td>
                     <td style="color: red">
                         {{-- {{ $data->transactions}} --}}
-                        @if($data->finance_transaction)
-                            @if($data->finance_transaction->school_year_id == $School_year_id)
-                                <span class="label {{ $data->finance_transaction->status == 0 ? 'label-success' : 'label-danger' }}">
-                                    {{ $data->finance_transaction->status == 0 ? 'Paid' : 'Not-Paid' }}
-                                </span>
-                            @else
-                                <span class="label label-danger">
-                                    Not-Paid
-                                </span> 
-                            @endif
-                        @else
-                            <span class="label label-danger">
-                            Not-Paid
-                            </span>
-                        @endif
+                        @if($data->transactions)
+                                                            <span class="label {{ $data->transactions->status == 0 ? 'label-success' : 'label-danger' }}">
+                                                                {{ $data->transactions->status == 0 ? 'Paid' : 'Not-Paid' }}
+                                                            </span>
+                                                        @else
+                                                            <span class="label label-danger">
+                                                                 Not-Paid
+                                                            </span>
+                                                        @endif   
                     </td>
                     <td>
                         <span class="badge {{ $data->status == 1 ? 'bg-green' : 'bg-red' }}">

@@ -41,4 +41,19 @@ class StudentInformation extends Model
     {        
         return $this->hasMany(TransactionDiscount::class, 'transaction_month_paid_id', 'id' );
     }
+
+    protected $table = 'student_informations';
+
+    protected $fillable = [
+        'first_name', 
+        'middle_name', 
+        'last_name',
+        'address',
+        'email',
+        'contact_number',
+        'photo',
+        'user_id',
+        'current',
+        'status'
+    ];
 }

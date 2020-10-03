@@ -16,6 +16,7 @@ trait HasUser{
 
     public function getFullNameAttribute() {
         return ucwords($this->last_name . ', ' . $this->first_name. ' ' . $this->middle_name);
-    }
-    
+    }    
+
+   
 }
