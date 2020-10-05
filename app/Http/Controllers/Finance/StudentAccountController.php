@@ -66,15 +66,14 @@ class StudentAccountController extends Controller
                 ->where('current', 1)
                 ->orderBy('id', 'DESC')
                 ->first();
-            
-            if(!$request->class_details){
+            // return $Enrollment->class_details_id;
+            // if(!$request->class_details){
                 $ClassDetail = ClassDetail::where('id', $Enrollment->class_details_id)
-                    ->where('status', 1)->where('current', 1)->orderBY('grade_level', 'DESC')->first();
-            }
-            else{
-                $ClassDetail = ClassDetail::where('id', $request->class_details)
-                ->where('status', 1)->where('current', 1)->orderBY('grade_level', 'DESC')->first();
-            }            
+                    ->whereStatus(1)->whereCurrent(1)->latest()->first();
+            // }else{
+            //     $ClassDetail = ClassDetail::where('id', $request->class_details)
+            //         ->whereStatus(1)->whereCurrent(1)->latest()->first();
+            // }            
 
             $grade_level_id = ($ClassDetail->grade_level);
         }
