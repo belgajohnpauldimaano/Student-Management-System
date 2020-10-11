@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers\Control_Panel\Maintenance;
 
+use App\Strand;
+use App\DateRemark;
+use App\SchoolYear;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
@@ -12,17 +15,17 @@ class StrandController extends Controller
         
         if ($request->ajax())
         {
-            $Strand = \App\Strand::
+            $Strand = Strand::
             where('status', 1)
             ->where('strand', 'like', '%'.$request->search.'%')            
             ->paginate(10);
             return view('control_panel.strand.partials.data_list', compact('Strand'))->render();
-            // $SchoolYear_id = \App\SchoolYear::where('status', 1)->where('school_year', 'like', '%'.$request->search.'%')->paginate(10);
+            // $SchoolYear_id = SchoolYear::where('status', 1)->where('school_year', 'like', '%'.$request->search.'%')->paginate(10);
 
-            // $SchoolYear = \App\DateRemark::where('status', 1)->where('school_year_id', $SchoolYear_id[0]->id)->paginate(10);
+            // $SchoolYear = DateRemark::where('status', 1)->where('school_year_id', $SchoolYear_id[0]->id)->paginate(10);
             
         }  
-        $Strand = \App\Strand::
+        $Strand = Strand::
             where('status', 1)
             ->paginate(10);
         return view('control_panel.strand.index', compact('Strand'));
@@ -34,10 +37,10 @@ class StrandController extends Controller
         
         if ($request->id)
         {
-            $Strand = \App\Strand::where('id', $request->id)->first();         
+            $Strand = Strand::where('id', $request->id)->first();         
         }
 
-        // $getSchoolYear = \App\SchoolYear::get();        
+        // $getSchoolYear = SchoolYear::get();        
 
         return view('control_panel.strand.partials.modal_data', compact('Strand'))->render();
     }
@@ -59,14 +62,14 @@ class StrandController extends Controller
 
         if ($request->id)
         {
-            $Strand = \App\Strand::where('id', $request->id)->first();
+            $Strand = Strand::where('id', $request->id)->first();
             $Strand->strand = $request->strand_name;
             $Strand->abbreviation = $request->abb_name;            
             $Strand->save();
             return response()->json(['res_code' => 0, 'res_msg' => 'Data successfully saved.']);
         }
 
-        $Strand = new \App\Strand();
+        $Strand = new Strand();
         
         $Strand->strand = $request->strand_name;
         $Strand->abbreviation = $request->abb_name;            

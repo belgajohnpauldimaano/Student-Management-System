@@ -18,7 +18,7 @@
                     {{ csrf_field() }}
                         <div class="form-group col-sm-12 col-md-3" style="padding-right:0">
                             <select name="search_school_year" id="search_school_year" class="form-control">
-                                <option value="">Select SY</option>
+                                {{-- <option value="">Select SY</option> --}}
                                 @foreach ($SchoolYear as $data)
                                     <option value="{{ encrypt($data->id) }}">{{ $data->school_year }}</option>
                                 @endforeach
@@ -52,7 +52,7 @@
                     {{ csrf_field() }}
                     <div class="form-group col-sm-12 col-md-3" style="padding-right:0">
                         <select name="search_sy" id="search_sy" class="form-control">
-                            <option value="">Select SY</option>
+                            {{-- <option value="">Select SY</option> --}}
                             @foreach ($SchoolYear as $data)
                                 <option value="{{ encrypt($data->id) }}">{{ $data->school_year }}</option>
                             @endforeach
@@ -61,7 +61,15 @@
                     &nbsp;
                     <div class="form-group col-sm-12 col-md-4" style="padding-right:0">
                         <select name="quarter_grades" id="quarter_grades" class="form-control">
-                            <option value="">Select Class Quarter</option>                                
+                            <option value="">Select Class Quarter</option>       
+                            <option value="1st">First Quarter</option>
+                            <option value="2nd">Second Quarter</option>
+                            <option value="3rd">Third Quarter</option>
+                            <option value="4th">Fourth Quarter</option>
+                            <option value="">-------------------------------AVERAGE--------------------------------</option>
+                            <option value="1st-2nd">First - Second Quarter Average</option>
+                            <option value="1st-3rd">First - Second - Third Quarter Average</option>
+                            <option value="1st-4th">First - Second - Third - Fourth Quarter Average</option>       
                         </select>
                     </div>                
                     &nbsp;
@@ -91,7 +99,7 @@
                     {
                        {{-- alert('1st'); --}}
                         $.ajax({
-                            url : "{{ route('faculty.MyAdvisoryClass.firstquarter') }}",
+                            url : "{{ route('faculty.student_gradesheet.firstquarter') }}",
                             type : 'POST',
                             data : formData,
                             processData : false,
@@ -107,7 +115,7 @@
                     {
                         {{-- alert('2nd'); --}}
                         $.ajax({
-                            url : "{{ route('faculty.MyAdvisoryClass.secondquarter') }}",
+                            url : "{{ route('faculty.student_gradesheet.secondquarter') }}",
                             type : 'POST',
                             data : formData,
                             processData : false,

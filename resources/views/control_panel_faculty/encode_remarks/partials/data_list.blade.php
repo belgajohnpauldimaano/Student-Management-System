@@ -50,12 +50,12 @@
                                     </div>
                                     
                                     @if($ClassSubjectDetail->grade_level < 11) 
-                                        <input type="text" name="date" class="tbdatepicker form-control pull-right" id="tbdatepicker" placeholder="11/11/2000" value="{{ $DateRemarks->j_date }}">
+                                        <input type="text" name="date" class="tbdatepicker form-control pull-right" id="tbdatepicker" placeholder="11/11/2000" value="{{ $DateRemarks != '' ? $DateRemarks->j_date : '' }}">
                                     @elseif($ClassSubjectDetail->grade_level > 10)
                                         @if($Semester_id == 1)
-                                            <input type="text" name="date" disabled class="tbdatepicker form-control pull-right" id="tbdatepicker" placeholder="11/11/2000" value="{{ $DateRemarks->s_date1 }}">
+                                            <input type="text" name="date" disabled class="tbdatepicker form-control pull-right" id="tbdatepicker" placeholder="11/11/2000" value="{{ $DateRemarks->s_date1 ? $DateRemarks->s_date1 : '' }}">
                                         @else
-                                            <input type="text" name="date" disabled class="tbdatepicker form-control pull-right" id="tbdatepicker" placeholder="11/11/2000" value="{{ $DateRemarks->s_date2 }}">
+                                            <input type="text" name="date" disabled class="tbdatepicker form-control pull-right" id="tbdatepicker" placeholder="11/11/2000" value="{{ $DateRemarks->s_date2 ? $DateRemarks->s_date2 : '' }}">
                                         @endif
                                     @endif
                                 </div>                                
@@ -115,12 +115,12 @@
                                     </div>
                                     
                                     @if($ClassSubjectDetail->grade_level < 11) 
-                                        <input type="text" name="date" class="tbdatepicker form-control pull-right" id="tbdatepicker" placeholder="11/11/2000" value="{{ $DateRemarks->j_date }}">
+                                        <input type="text" name="date" class="tbdatepicker form-control pull-right" id="tbdatepicker" placeholder="11/11/2000" value="{{ $DateRemarks != '' ? $DateRemarks->j_date : '' }}">
                                     @elseif($ClassSubjectDetail->grade_level > 10)
                                         @if($Semester_id == 1)
-                                            <input type="text" name="date" disabled class="tbdatepicker form-control pull-right" id="tbdatepicker" placeholder="11/11/2000" value="{{ $DateRemarks->s_date1 }}">
+                                            <input type="text" name="date" disabled class="tbdatepicker form-control pull-right" id="tbdatepicker" placeholder="11/11/2000" value="{{ $DateRemarks->s_date1 ? $DateRemarks->s_date1 : '' }}">
                                         @else
-                                            <input type="text" name="date" disabled class="tbdatepicker form-control pull-right" id="tbdatepicker" placeholder="11/11/2000" value="{{ $DateRemarks->s_date2 }}">
+                                            <input type="text" name="date" disabled class="tbdatepicker form-control pull-right" id="tbdatepicker" placeholder="11/11/2000" value="{{ $DateRemarks->s_date2 ? $DateRemarks->s_date2 : ''}}">
                                         @endif
                                     @endif
                                 </div>                                

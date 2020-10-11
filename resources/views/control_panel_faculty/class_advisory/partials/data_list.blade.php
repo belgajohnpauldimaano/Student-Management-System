@@ -8,7 +8,6 @@
                                     <th>Room</th>
                                     <th>Grade Level</th>
                                     <th>Section</th>
-                                    <!-- {{-- <th>Adviser</th> --}} -->
                                     <th>Status</th>
                                     <th>Actions</th>
                                 </tr>
@@ -21,8 +20,6 @@
                                             <td>{{ $data->room_code }}</td>
                                             <td>{{ $data->grade_level }}</td>
                                             <td>{{ $data->section }}</td>
-                                            {{-- <td>{{ $data->adviser_name }}</td> --}}
-                                            {{--  <td>{{ $data->current == 1 ? 'Yes' : 'No' }}</td>  --}}
                                             <td>{{ $data->status == 0 ? 'Active' : 'Inactive' }}</td>
                                             <td>
                                                 <div class="input-group-btn pull-left text-left">
@@ -41,11 +38,12 @@
                                                             </a>
                                                         </li>
 
-                                                        <!-- {{-- <li><a href="{{ route('faculty.my_advisory_class.index') }}?c={{ encrypt($data->id) }}" class="js-btn_gradesheet" data-id="{{ encrypt($data->id) }}">Attendance</a></li> --}}
+                                                         <li>
+                                                            <a href="{{ route('faculty.student_gradesheet.index') }}?c={{ encrypt($data->id) }}" class="js-btn_gradesheet1" data-id="{{ encrypt($data->id) }}">
+                                                                Grade Sheet2
+                                                            </a>
+                                                        </li>
 
-                                                        {{-- <li><a href="{{ route('faculty.my_advisory_class.index') }}?c={{ encrypt($data->id) }}" class="js-btn_gradesheet" data-id="{{ encrypt($data->id) }}">Demographic Profile</a></li> --}}
-
-                                                        {{-- <li><a href="{{ route('faculty.my_advisory_class.index') }}?c={{ encrypt($data->id) }}" class="js-btn_view" data-id="{{ encrypt($data->id) }}">Demographic Profile</a></li> --}} -->
                                                     </ul>
                                                 </div>
                                             </td>

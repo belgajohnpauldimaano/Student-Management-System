@@ -20,10 +20,14 @@ class EncodeRemarkController extends Controller
     {
         $FacultyInformation = FacultyInformation::where('user_id', \Auth::user()->id)->first();
         $SchoolYear = SchoolYear::where('current', 1)->where('status', 1)->first();
-        $DateRemarks = DateRemark::where('school_year_id', $SchoolYear->id)->first();
+        try {
+            $DateRemarks = DateRemark::where('school_year_id', $SchoolYear->id)->first();
+        } catch (\Throwable $th) {
+            $DateRemarks = '';
+        }
+        
         $Semester_id = Semester::where('current', 1)->first()->id;
-
-
+        
         $ClassSubjectDetail = ClassSubjectDetail::join('class_details', 'class_details.id', '=', 'class_subject_details.class_details_id')
             ->join('rooms','rooms.id', '=', 'class_details.room_id')
             ->join('section_details', 'section_details.id', '=', 'class_details.section_id')

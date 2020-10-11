@@ -55,6 +55,7 @@ Route::group(['prefix' => 'faculty', 'middleware' => ['auth', 'userroles'], 'rol
 
     Route::group(['prefix' => 'advisory-class'], function () {
         Route::get('', 'Faculty\AdvisoryClassController@index')->name('faculty.advisory_class.index');
+
         Route::get('view', 'Faculty\AdvisoryClassController@view_class_list')->name('faculty.advisory_class.view');
         Route::post('manage_attendance', 'Faculty\AdvisoryClassController@manage_attendance')->name('faculty.advisory_class.manage_attendance');
         Route::post('view_edit','Faculty\AdvisoryClassController@manage_demographic_profile')->name('faculty.advisory_class.demographic_profile');
@@ -63,6 +64,8 @@ Route::group(['prefix' => 'faculty', 'middleware' => ['auth', 'userroles'], 'rol
         Route::get('print-class-grades', 'Faculty\AdvisoryClassController@print_student_class_grades')->name('faculty.AdvisoryClass.print_grades');
        
     });
+
+    
 
     Route::group(['prefix' => 'my-advisory-class'], function () {
         Route::get('', 'Faculty\MyAdvisoryClassController@index')->name('faculty.my_advisory_class.index');
@@ -104,6 +107,15 @@ Route::group(['prefix' => 'faculty', 'middleware' => ['auth', 'userroles'], 'rol
         Route::get('Senior/second_sem_Average/print', 'Faculty\MyAdvisoryClassController@second_sem_GradeSheetAverage_print')->name('faculty.MyAdvisoryClass.second_sem_print_average');
         Route::get('Senior/Final_Average/print', 'Faculty\MyAdvisoryClassController@finalGradeSheetAverage_print')->name('faculty.MyAdvisoryClass.final_print_average');
 
+    });
+
+    Route::group(['prefix' => 'student-gradesheet'], function () {
+        Route::get('', 'Faculty\StudentGradeSheetController@index')->name('faculty.student_gradesheet.index');
+        Route::post('first-quarter', 'Faculty\StudentGradeSheetController@firstquarter')->name('faculty.student_gradesheet.firstquarter');
+        Route::post('second-quarter', 'Faculty\StudentGradeSheetController@secondquarter')->name('faculty.student_gradesheet.secondquarter');
+
+        Route::post('list_quarter-details', 'Faculty\StudentGradeSheetController@list_quarter')->name('faculty.student_gradesheet.list_quarter');
+        Route::post('list_quarter-sem-details', 'Faculty\StudentGradeSheetController@list_quarter_sem')->name('faculty.student_gradesheet.list_quarter-sem-details');
     });
 
     Route::group(['prefix' => 'class-attendance'], function () {

@@ -47,63 +47,58 @@
                                             <input type="hidden" id="enroll_id" name="enroll_id" value="{{  $data1->e_id }}" />
                                             <input type="hidden" id="class_id" name="class_id" value="{{ encrypt($data1->c_id) }}" />
                                             <table id="mytable" class="table">
-                                                <tr>
-                                                                                                    
+                                                <tr>                                                                                                    
                                                     <?php
-                                                    $student_attendance = [];
-                                                    $table_header = [
-                                                            ['key' => 'Jun',],
-                                                            ['key' => 'Jul',],
-                                                            ['key' => 'Aug',],
-                                                            ['key' => 'Sep',],
-                                                            ['key' => 'Oct',],
+                                                        $student_attendance = [];
+                                                        $table_header = [
+                                                                ['key' => 'Jun',],
+                                                                ['key' => 'Jul',],
+                                                                ['key' => 'Aug',],
+                                                                ['key' => 'Sep',],
+                                                                ['key' => 'Oct',],
+                                                                
+                                                                ['key' => 'total',],
+                                                            ];
                                                             
-                                                            ['key' => 'total',],
-                                                        ];
-                                                        
-                                                        $attendance_data = json_decode(json_encode([
-                                                            'days_of_school' => [
-                                                                0, 0, 0, 0, 0, 
-                                                            ],
-                                                            'days_present' => [
-                                                                0, 0, 0, 0, 0,
-                                                            ],
-                                                            'days_absent' => [
-                                                                0, 0, 0, 0, 0,
-                                                            ],
-                                                            'times_tardy' => [
-                                                                0, 0, 0, 0, 0,
-                                                            ]
-                                                        ]));
-                                                        
-                                                        
-                                                        $attendance_data = json_decode($data1->attendance_first);
+                                                            $attendance_data = json_decode(json_encode([
+                                                                'days_of_school' => [
+                                                                    0, 0, 0, 0, 0, 
+                                                                ],
+                                                                'days_present' => [
+                                                                    0, 0, 0, 0, 0,
+                                                                ],
+                                                                'days_absent' => [
+                                                                    0, 0, 0, 0, 0,
+                                                                ],
+                                                                'times_tardy' => [
+                                                                    0, 0, 0, 0, 0,
+                                                                ]
+                                                            ]));
+                                                            
+                                                            
+                                                            $attendance_data = json_decode($data1->attendance_first);
+
+                                                            
+                                                        //    $attendance_data;
+
+                                                        //     if ($EnrollmentMale[0]->attendance) {
+                                                        //         $attendance_data = json_decode($EnrollmentMale[0]->attendance);
+                                                        //     }    
+
+                                                            $student_attendance = [
+                                                                // 'student_name'      => $EnrollmentMale[0]->student_name,
+                                                                'attendance_data'   => $attendance_data,
+                                                                'table_header'      => $table_header,
+                                                                'days_of_school_total' => array_sum($attendance_data->days_of_school),
+                                                                'days_present_total' => array_sum($attendance_data->days_present),
+                                                                'days_absent_total' => array_sum($attendance_data->days_absent),
+                                                                'times_tardy_total' => array_sum($attendance_data->times_tardy),
+                                                            ];
 
                                                         
-                                                    //    $attendance_data;
-
-                                                    //     if ($EnrollmentMale[0]->attendance) {
-                                                    //         $attendance_data = json_decode($EnrollmentMale[0]->attendance);
-                                                    //     }    
-
-                                                        $student_attendance = [
-                                                            // 'student_name'      => $EnrollmentMale[0]->student_name,
-                                                            'attendance_data'   => $attendance_data,
-                                                            'table_header'      => $table_header,
-                                                            'days_of_school_total' => array_sum($attendance_data->days_of_school),
-                                                            'days_present_total' => array_sum($attendance_data->days_present),
-                                                            'days_absent_total' => array_sum($attendance_data->days_absent),
-                                                            'times_tardy_total' => array_sum($attendance_data->times_tardy),
-                                                        ];
-
-                                                        
-                                                        ?>
-                                                        
-                                                        
-                                                    
-
+                                                    ?>
                                                         <th>
-                                                                <i style="font-size: 16px; color: red">First Semester</i>
+                                                            <i style="font-size: 16px; color: red">First Semester</i>
                                                         </th>
                                                             @foreach ($student_attendance['table_header'] as $data)
                                                                     <th>{{ $data['key'] }}</th> 
@@ -163,7 +158,6 @@
                                                         </th>
                                                     </tr>
                                                 </table>
-                            
                                             
                                                 {{-- <button type="button" class="btn btn-default btn-flat pull-right" data-dismiss="modal">Close</button> --}}
                                                 <button type="submit" id="btn_save1" class="btn btn-primary btn-flat pull-right">Save</button>

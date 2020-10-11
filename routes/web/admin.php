@@ -100,6 +100,14 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'userroles'], 'roles
             Route::post('modal-data', 'Control_Panel\Maintenance\StrandController@modal_data')->name('admin.maintenance.strand.modal_data');
             Route::post('save-data', 'Control_Panel\Maintenance\StrandController@save_data')->name('admin.maintenance.strand.save_data');
         });
+
+
+        Route::group(['prefix' => 'student_attendance'], function () {
+            Route::get('', 'Control_Panel\Maintenance\StudentAttendanceController@index')->name('admin.maintenance.student_attendance');
+            Route::post('', 'Control_Panel\Maintenance\StudentAttendanceController@index')->name('admin.maintenance.student_attendance');
+            Route::post('modal-data', 'Control_Panel\Maintenance\StudentAttendanceController@modal_data')->name('admin.maintenance.student_attendance.modal_data');
+            Route::post('save-data', 'Control_Panel\Maintenance\StudentAttendanceController@save_data')->name('admin.maintenance.student_attendance.save_data');
+        });
     });
     
     Route::group(['prefix' => 'my-account', 'middleware' => ['auth']], function() {
