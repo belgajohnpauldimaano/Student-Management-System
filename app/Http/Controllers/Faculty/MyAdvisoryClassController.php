@@ -77,7 +77,7 @@ class MyAdvisoryClassController extends Controller
     {
         $FacultyInformation = \App\FacultyInformation::where('user_id', \Auth::user()->id)->first(); 
         
-        $class_details_elements = '<option value="">Select Semester</option>';        
+        $class_details_elements = ' <option value="">Select Semester</option>';        
         $class_details_elements .= '<option value="1st">First Semester</option>';
         $class_details_elements .= '<option value="2nd">Second Semester</option>';
         $class_details_elements .= '<option value="3rd">Average</option>';        

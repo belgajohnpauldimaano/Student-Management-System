@@ -217,14 +217,14 @@ class EnrollmentController extends Controller
             return response()->json(['res_code' => 1, 'res_msg' => 'Please fill all required fields.', 'res_error_msg' => $validator->getMessageBag()]);
         }
 
-        $checktransaction_id = TransactionMonthPaid::where('or_no', $request->bank_transaction_id)->first();
-        if ($checktransaction_id) 
-        {
-            return response()->json([
-                'res_code' => 1,'res_msg' => 
-                'the reference number/transaction ID is already used! Please contact the Finance. Thank you'
-                ]);
-        }
+        // $checktransaction_id = TransactionMonthPaid::where('or_no', $request->bank_transaction_id)->first();
+        // if ($checktransaction_id) 
+        // {
+        //     return response()->json([
+        //         'res_code' => 1,'res_msg' => 
+        //         'the reference number/transaction ID is already used! Please contact the Finance. Thank you'
+        //         ]);
+        // }
         
        if($request->bank_balance){
             $Enrollment_total = $request->bank_balance;
@@ -414,14 +414,14 @@ class EnrollmentController extends Controller
             return response()->json(['res_code' => 1, 'res_msg' => 'Please fill all required fields.', 'res_error_msg' => $validator->getMessageBag()]);
         }
 
-        $checktransaction_id = TransactionMonthPaid::where('or_no', $request->gcash_transaction_id)->first();
-        if ($checktransaction_id) 
-        {
-            return response()->json([
-                'res_code' => 1,'res_msg' => 
-                'the reference number/transaction ID is already used! Please contact the Finance. Thank you'
-                ]);
-        }
+        // $checktransaction_id = TransactionMonthPaid::where('or_no', $request->gcash_transaction_id)->first();
+        // if ($checktransaction_id) 
+        // {
+        //     return response()->json([
+        //         'res_code' => 1,'res_msg' => 
+        //         'the reference number/transaction ID is already used! Please contact the Finance. Thank you'
+        //         ]);
+        // }
       
         if($request->gcash_balance){
             $Enrollment_total = $request->gcash_balance;

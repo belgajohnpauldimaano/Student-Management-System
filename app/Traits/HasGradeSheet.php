@@ -6,6 +6,7 @@ use App\SchoolYear;
 use App\ClassDetail;
 use App\SectionDetail;
 use App\SubjectDetail;
+use App\ClassSubjectDetail;
 use App\FacultyInformation;
 use App\StudentInformation;
 use App\StudentEnrolledSubject;
@@ -15,17 +16,16 @@ trait HasGradeSheet{
 
     public function classDetail()
     {     
-        $FacultyInformation = FacultyInformation::where('user_id', Auth::user()->id)->first();   
-        $sy_id = SchoolYear::whereCurrent(1)->whereStatus(1)->first();
-        
-        return $this->hasMany(ClassDetail::class, 'id', 'class_details_id')
-            ->where('adviser_id', $FacultyInformation->id)
-            ->where('status', '!=', 0)
-            ->where('school_year_id', $sy_id->id);
+        return $this->hasMany(ClassDetail::class, 'id', 'class_details_id');
+    }
+
+    public function classSubjectDetail()
+    {
+        return $this->hasOne(ClassSubjectDetail::class, 'class_details_id', 'id')->whereStatus(1);
     }
 
     public function grade(){
-        return $this->hasOne(ClassDetail::class, 'id', 'class_details_id');
+        return $this->hasOne(ClassDetail::class, 'id', 'grade_level');
     }
 
     public function section()

@@ -45,22 +45,7 @@ class StudentGradeSheetController extends Controller
             
     }
 
-    public function list_quarter (Request $request)
-    {
-        $FacultyInformation = FacultyInformation::where('user_id', \Auth::user()->id)->first();  
-        $class_details_elements = '<option value="">Select Class Quarter</option>';       
-        $class_details_elements .= '<option value="1st">First Quarter</option>';
-        $class_details_elements .= '<option value="2nd">Second Quarter</option>';
-        $class_details_elements .= '<option value="3rd">Third Quarter</option>';
-        $class_details_elements .= '<option value="4th">Fourth Quarter</option>';
-        $class_details_elements .= '<option value="">-------------------------------AVERAGE--------------------------------</option>';
-        $class_details_elements .= '<option value="1st-2nd">First - Second Quarter Average</option>';
-        $class_details_elements .= '<option value="1st-3rd">First - Second - Third Quarter Average</option>';
-        $class_details_elements .= '<option value="1st-4th">First - Second - Third - Fourth Quarter Average</option>';       
-        return $class_details_elements;
-    }
-
-    public function list_quarter_sem (Request $request)
+   public function listQuarterSem (Request $request)
     {
         $FacultyInformation = FacultyInformation::where('user_id', \Auth::user()->id)->first(); 
         
@@ -69,86 +54,49 @@ class StudentGradeSheetController extends Controller
             
             $class_details_elements = '<option value="1st-2nd">Sem-1 and 2 Average</option>';
         }
-        else
+
+        if($request->semester_grades == "1st")
         {
             $class_details_elements = '<option value="">Select Class Quarter</option>';
             $class_details_elements .= '<option value="1st">First Quarter</option>';
             $class_details_elements .= '<option value="2nd">Second Quarter</option>';
         }
-           
+
+        if($request->semester_grades == "2nd")
+        {
+            $class_details_elements = '<option value="">Select Class Quarter</option>';
+            $class_details_elements .= '<option value="3rd">First Quarter</option>';
+            $class_details_elements .= '<option value="4th">Second Quarter</option>';
+        }
+
         return $class_details_elements;
-    }
+    }    
 
-    public function firstquarter (Request $request) 
-    {
-        
-        $FacultyInformation = FacultyInformation::where('user_id', Auth::user()->id)->first();   
-        
-        $class_detail = ClassSubjectDetail::with(['section','classDetail'])
-            ->first();        
-
-        $AdvisorySubject = ClassSubjectDetail::with(['subject','classDetail','faculty'])
-            ->where('class_details_id', $class_detail->class_details_id)
-            ->where('status', 1)
-            ->orderBY('class_subject_order', 'ASC')
-            ->get();
-        
-        $Grade_sheet_males = Enrollment::join('class_details','class_details.id','=','enrollments.class_details_id')
-            ->join('student_informations','student_informations.id','=','enrollments.student_information_id')  
-            ->where('class_details.section_id', $class_detail->grade->section->id)
-            ->where('class_details.school_year_id', \Crypt::decrypt($request->search_sy))
-            ->whereRaw('student_informations.gender = 1')
-            ->selectRaw("                    
-                    student_informations.last_name, 
-                    student_informations.first_name, 
-                    student_informations.middle_name
-                    ,enrollments.id
-            ")
-            ->orderBY('last_name','ASC')
-            ->get();
-
-        $Grade_sheet_females = Enrollment::join('class_details','class_details.id','=','enrollments.class_details_id')
-            ->join('student_informations','student_informations.id','=','enrollments.student_information_id')  
-            ->where('class_details.section_id', $class_detail->grade->section->id)
-            ->where('class_details.school_year_id', \Crypt::decrypt($request->search_sy))
-            ->whereRaw('student_informations.gender = 2')
-            ->selectRaw("                    
-                    student_informations.last_name, 
-                    student_informations.first_name, 
-                    student_informations.middle_name
-                    ,enrollments.id
-            ")
-            ->orderBY('last_name','ASC')
-            ->get();
-        
-        $subject_grades = StudentEnrolledSubject::first();
-        
-        return view('control_panel_faculty.gradesheet.partials.data_list', 
-            compact( 'subject_grades','class_detail','AdvisorySubject','Grade_sheet_males','Grade_sheet_females'))
-            ->render();
-    }
 
     public function gradeSheet(Request $request)
     {
-        $quarter = $request->quarter_grades;
+        $quarter = $request->quarter_grades != '' ? $request->quarter_grades : $request->quarter;
+        $sy_id = Crypt::decrypt($request->search_sy != ''? $request->search_sy : $request->search_school_year);
+        $FacultyInformation = FacultyInformation::where('user_id', Auth::user()->id)->first(); 
+        $sem = $request->semester_grades;
 
-        
-        
-        $FacultyInformation = FacultyInformation::where('user_id', Auth::user()->id)->first();   
-        
-        $class_detail = ClassSubjectDetail::with(['section','classDetail'])
-            ->first();        
+        // return json_encode(['quarter' => $quarter, 'sy' => $sy_id, 'sem' => $sem]);
+
+        $class_detail = ClassDetail::with('section', 'classSubjectDetail')->whereAdviserId($FacultyInformation->id)->whereStatus(1)
+            ->whereSchoolYearId($sy_id)->first();
 
         $AdvisorySubject = ClassSubjectDetail::with(['subject','classDetail','faculty'])
-            ->where('class_details_id', $class_detail->class_details_id)
-            ->where('status', 1)
-            ->orderBY('class_subject_order', 'ASC')
+            ->whereClassDetailsId($class_detail->id)
+            ->whereStatus(1)
+            ->whereSem($sem)
+            ->orderBy('class_subject_order', 'ASC')
             ->get();
+        // return json_encode($class_detail);
         
         $Grade_sheet_males = Enrollment::join('class_details','class_details.id','=','enrollments.class_details_id')
             ->join('student_informations','student_informations.id','=','enrollments.student_information_id')  
-            ->where('class_details.section_id', $class_detail->grade->section->id)
-            ->where('class_details.school_year_id', \Crypt::decrypt($request->search_sy))
+            ->where('class_details.section_id', $class_detail->section->id)
+            ->where('class_details.school_year_id', $sy_id)
             ->whereRaw('student_informations.gender = 1')
             ->selectRaw("                    
                     student_informations.last_name, 
@@ -159,10 +107,12 @@ class StudentGradeSheetController extends Controller
             ->orderBY('last_name','ASC')
             ->get();
 
+        // return json_encode($Grade_sheet_males);
+
         $Grade_sheet_females = Enrollment::join('class_details','class_details.id','=','enrollments.class_details_id')
             ->join('student_informations','student_informations.id','=','enrollments.student_information_id')  
-            ->where('class_details.section_id', $class_detail->grade->section->id)
-            ->where('class_details.school_year_id', \Crypt::decrypt($request->search_sy))
+            ->where('class_details.section_id', $class_detail->section->id)
+            ->where('class_details.school_year_id', $sy_id)
             ->whereRaw('student_informations.gender = 2')
             ->selectRaw("                    
                     student_informations.last_name, 
@@ -173,11 +123,10 @@ class StudentGradeSheetController extends Controller
             ->orderBY('last_name','ASC')
             ->get();
         
-        $subject_grades = StudentEnrolledSubject::first();
-        
+        $subject_grades = StudentEnrolledSubject::first();        
         
         return view('control_panel_faculty.gradesheet.partials.data_list', 
-            compact( 'subject_grades','class_detail','AdvisorySubject','Grade_sheet_males','Grade_sheet_females','quarter'))
+            compact( 'subject_grades','class_detail','AdvisorySubject','Grade_sheet_males','Grade_sheet_females','quarter','sem'))
             ->render();
     }
 }

@@ -116,8 +116,8 @@ Route::group(['prefix' => 'faculty', 'middleware' => ['auth', 'userroles'], 'rol
         Route::post('first-quarter', 'Faculty\StudentGradeSheetController@firstquarter')->name('faculty.student_gradesheet.firstquarter');
         Route::post('second-quarter', 'Faculty\StudentGradeSheetController@secondquarter')->name('faculty.student_gradesheet.secondquarter');
 
-        Route::post('list_quarter-details', 'Faculty\StudentGradeSheetController@list_quarter')->name('faculty.student_gradesheet.list_quarter');
-        Route::post('list_quarter-sem-details', 'Faculty\StudentGradeSheetController@list_quarter_sem')->name('faculty.student_gradesheet.list_quarter-sem-details');
+        Route::post('sem-quarter', 'Faculty\StudentGradeSheetController@listQuarterSem')->name('faculty.student_gradesheet.list_quarter_sem');
+        
     });
 
     Route::group(['prefix' => 'class-attendance'], function () {
@@ -141,8 +141,6 @@ Route::group(['prefix' => 'faculty', 'middleware' => ['auth', 'userroles'], 'rol
         Route::get('encode-class-demographic-profile', 'Faculty\DemographicProfileController@index')->name('faculty.class_demographic_profile.index');
         Route::post('', 'Faculty\DemographicProfileController@save')->name('faculty.save_demographic');
     });
-
-
 
     Route::group(['prefix' => 'data-student'], function (){
         Route::get('create-data-grades', 'Faculty\GradeSheetController@view_student_data')->name('faculty.DataStudent');

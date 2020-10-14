@@ -1,6 +1,12 @@
 @extends('control_panel.layouts.master')
 
 @section ('styles') 
+<style>
+    td.text-red{
+        color: rgb(240, 13, 13) !important;
+        /* font-style: italic; */
+    }
+</style>
 @endsection
 
 @section ('content_title')
@@ -11,8 +17,10 @@
     <div class="box">        
         @if($GradeLevel->grade_level  == 11 ||  $GradeLevel->grade_level  == 12)                    
             <div class="box-header with-border">
-                <div class="form-group col-sm-12">
-                    <h3 class="box-title">Filter</h3>
+                <div class="row">
+                    <div class="form-group col-sm-12">
+                        <h3 class="box-title">Filter</h3>
+                    </div>
                 </div>                        
                 <form id="js-form_filter">
                     {{ csrf_field() }}
@@ -27,12 +35,15 @@
                         &nbsp;
                         <div class="form-group col-sm-12 col-md-4" style="padding-right:0">
                             <select name="semester_grades" id="semester_grades" class="form-control">                            
-                                <option value="">Select Semester</option>                      
+                                <option value="">Select Semester</option>
+                                <option value="1st">First Semester</option>
+                                <option value="2nd">Second Semester</option>
+                                <option value="3rd">Average</option>                      
                             </select>
                         </div>                
                         &nbsp;
                         <div class="form-group col-sm-12 col-md-4" style="padding-right:0">
-                            <select name="quarter_" id="quarter_" class="form-control">
+                            <select name="quarter" id="quarter" class="form-control">
                                 <option value="">Select Class Quarter</option>
                             </select>
                         </div>                
@@ -42,13 +53,14 @@
                 </form>
             </div>
             <div class="overlay hidden" id="js-loader-overlay"><i class="fa fa-refresh fa-spin"></i></div>
-            <div class="box-body">
-                <div class="js-data-container1"></div>
-            </div>                    
         @else
             <div class="box-header with-border">
-                <h3 class="box-title">Filter</h3>
-                <form id="js-form_search">
+                <div class="row">
+                    <div class="form-group col-sm-12">
+                        <h3 class="box-title">Filter</h3>
+                    </div>
+                </div>                   
+                <form id="js-form_search">                    
                     {{ csrf_field() }}
                     <div class="form-group col-sm-12 col-md-3" style="padding-right:0">
                         <select name="search_sy" id="search_sy" class="form-control">
@@ -76,10 +88,10 @@
                 </form>
             </div>
             <div class="overlay hidden" id="js-loader-overlay"><i class="fa fa-refresh fa-spin"></i></div>
-            <div class="box-body">
-                <div class="js-data-container"></div>
-            </div>
-        @endif                                                    
+        @endif   
+        <div class="box-body">
+            <div class="js-data-container"></div>
+        </div>                                                 
     </div>      
 @endsection
 
@@ -88,10 +100,9 @@
     <script>
         var page = 1;
 
-        $('body').on('submit', '#js-form_search', function (e) {
-            e.preventDefault();
+        function fetchGrades(formData)
+        {
             
-            var formData = new FormData($('#js-form_search')[0]);
             formData.append('page', page);
             loader_overlay();
             
@@ -107,302 +118,47 @@
                 }                        
             });
             return;
+        }
+
+        $('body').on('submit', '#js-form_search', function (e) {
+            e.preventDefault();
+
+            if (!$('#search_sy').val()) {                    
+                show_toast_alert({
+                    heading : 'Invalid',
+                    message : 'Please select a School year!',
+                    type    : 'error'
+                });
+                return;
+            }
+            if (!$('#quarter_grades').val()) {                    
+                show_toast_alert({
+                    heading : 'Invalid',
+                    message : 'Please select Class Quarter!',
+                    type    : 'error'
+                });
+                return;            
+            }
+            if($('#search_sy').val() !== null && $('#quarter_grades').val() !== null )
+            {
+                var formData = new FormData($('#js-form_search')[0]);
+                fetchGrades(formData);
+            }
+            
         });
 
-        
-            
-
-
-        // function fetch_data () {
-        //     var formData = new FormData($('#js-form_search')[0]);
-        //     formData.append('page', page);
-        //     loader_overlay();
-
-        //     var quarter_grades = $('#quarter_grades').val();
-
-        //     fetchGrades();
-        //     function fetchGrades(){
-        //         $.ajax({
-        //             url : "{{ route('faculty.student_gradesheet.fetch_grades') }}",
-        //             type : 'POST',
-        //             data : formData,
-        //             processData : false,
-        //             contentType : false,
-        //             success     : function (res) {
-        //                 loader_overlay();
-        //                 $('.js-data-container').html(res);
-        //             }                        
-        //         });
-        //         return;
-        //     }
-                    
-        //             if (quarter_grades == '1st') 
-        //             {
-        //                {{-- alert('1st'); --}}
-        //                 $.ajax({
-        //                     url : "{{ route('faculty.student_gradesheet.firstquarter') }}",
-        //                     type : 'POST',
-        //                     data : formData,
-        //                     processData : false,
-        //                     contentType : false,
-        //                     success     : function (res) {
-        //                         loader_overlay();
-        //                         $('.js-data-container').html(res);
-        //                     }                        
-        //                 });
-        //                 return;
-        //             }
-        //             else if(quarter_grades == '2nd')
-        //             {
-        //                 {{-- alert('2nd'); --}}
-        //                 $.ajax({
-        //                     url : "{{ route('faculty.student_gradesheet.secondquarter') }}",
-        //                     type : 'POST',
-        //                     data : formData,
-        //                     processData : false,
-        //                     contentType : false,
-        //                     success     : function (res) {
-        //                         loader_overlay();
-        //                         $('.js-data-container').html(res);
-        //                     }
-        //                 });
-        //                 return;
-        //             }
-        //             else if(quarter_grades == '3rd')
-        //             {
-        //                 {{-- alert('3rd'); --}}
-        //                 $.ajax({
-        //                     url : "{{ route('faculty.MyAdvisoryClass.thirdquarter') }}",
-        //                     type : 'POST',
-        //                     data : formData,
-        //                     processData : false,
-        //                     contentType : false,
-        //                     success     : function (res) {
-        //                         loader_overlay();
-        //                         $('.js-data-container').html(res);
-        //                     }
-        //                 });
-        //                 return;
-        //             }
-        //             else if(quarter_grades == '4th')
-        //             {
-        //                 {{-- alert('4th'); --}}
-        //                 $.ajax({
-        //                     url : "{{ route('faculty.MyAdvisoryClass.fourthquarter') }}",
-        //                     type : 'POST',
-        //                     data : formData,
-        //                     processData : false,
-        //                     contentType : false,
-        //                     success     : function (res) {
-        //                         loader_overlay();
-        //                         $('.js-data-container').html(res);
-        //                     }
-        //                 });
-        //                 return;
-        //             }
-        //             else if(quarter_grades == '1st-2nd')
-        //             {
-        //                 {{-- alert('4th'); --}}
-        //                 // alert('1st-2nd');
-        //                 $.ajax({
-        //                     url : "{{ route('faculty.Average') }}",
-        //                     type : 'POST',
-        //                     data : formData,
-        //                     processData : false,
-        //                     contentType : false,
-        //                     success     : function (res) {
-        //                         loader_overlay();
-        //                         $('.js-data-container').html(res);
-        //                     }
-        //                 });
-        //                 return;
-        //             }
-        //             else if(quarter_grades == '1st-3rd')
-        //             {
-        //                 // alert('1st-3rd');
-        //                 {{-- alert('4th'); --}}
-        //                 $.ajax({
-        //                     url : "{{ route('faculty.Average') }}",
-        //                     type : 'POST',
-        //                     data : formData,
-        //                     processData : false,
-        //                     contentType : false,
-        //                     success     : function (res) {
-        //                         loader_overlay();
-        //                         $('.js-data-container').html(res);
-        //                     }
-        //                 });
-        //                 return;
-        //             }
-        //             else if(quarter_grades == '1st-4th')
-        //             {
-        //                 // alert('1st-4th');
-        //                 {{-- alert('4th'); --}}
-        //                 $.ajax({
-        //                     url : "{{ route('faculty.Average') }}",
-        //                     type : 'POST',
-        //                     data : formData,
-        //                     processData : false,
-        //                     contentType : false,
-        //                     success     : function (res) {
-        //                         loader_overlay();
-        //                         $('.js-data-container').html(res);
-        //                     }
-        //                 });
-        //                 return;
-        //             }
-        // }
-
-        // var page = 1;
-        function fetch_data1() {
+        $('body').on('submit', '#js-form_filter', function (e) {
+            e.preventDefault();
             var formData = new FormData($('#js-form_filter')[0]);
-            formData.append('page', page);
-            loader_overlay();
-            
-            var semester_grades = $('#semester_grades').val();
-            var quarter_ = $("#quarter_").val();
-                    
-                    if (semester_grades == '1st') 
-                    {
-                       
-                        if (quarter_ == '1st') 
-                        {
-                            // alert('1st'); 
-                            $.ajax({
-                                url : "{{ route('faculty.MyAdvisoryClass.first_sem_1quarter') }}",
-                                type : 'POST',
-                                data : formData,
-                                processData : false,
-                                contentType : false,
-                                success     : function (res)
-                                {
-                                    loader_overlay();
-                                    $('.js-data-container1').html(res);
-                                }                        
-                            });
-                            return;
-                        }
-                        else
-                        {
-                            // alert('2nd');
-                            $.ajax({
-                                url : "{{ route('faculty.MyAdvisoryClass.first_sem_2quarter') }}",
-                                type : 'POST',
-                                data : formData,
-                                processData : false,
-                                contentType : false,
-                                success     : function (res)
-                                {
-                                    loader_overlay();
-                                    $('.js-data-container1').html(res);
-                                }                        
-                            });
-                            return;
-                        }        
-                    
-                    }
-                    else if(semester_grades == '2nd')
-                    {
-                        // alert('2nd');
-                        
-                        if (quarter_ == '1st') 
-                        {
-                            // alert('1st'); 
-                            $.ajax({
-                                url : "{{ route('faculty.MyAdvisoryClass.first_sem_3quarter') }}",
-                                type : 'POST',
-                                data : formData,
-                                processData : false,
-                                contentType : false,
-                                success     : function (res)
-                                {
-                                    loader_overlay();
-                                    $('.js-data-container1').html(res);
-                                }                        
-                            });
-                            return;
-                        }
-                        else
-                        {
-                            // alert('2nd');
-                            $.ajax({
-                                url : "{{ route('faculty.MyAdvisoryClass.first_sem_4quarter') }}",
-                                type : 'POST',
-                                data : formData,
-                                processData : false,
-                                contentType : false,
-                                success     : function (res)
-                                {
-                                    loader_overlay();
-                                    $('.js-data-container1').html(res);
-                                }                        
-                            });
-                            return;
-                        }        
-                    }
-                    else if(semester_grades == '3rd')
-                    {
-                        if (quarter_ == '1st-2nd') 
-                        {
-                            // alert('1st'); 
-                            $.ajax({
-                                url : "{{ route('faculty.Average_Senior') }}",
-                                type : 'POST',
-                                data : formData,
-                                processData : false,
-                                contentType : false,
-                                success     : function (res)
-                                {
-                                    loader_overlay();
-                                    $('.js-data-container1').html(res);
-                                }                        
-                            });
-                            return;
-                        }
-                        else if(quarter_ == '3rd-4th')
-                        {
-                            // alert('2nd');
-                            $.ajax({
-                                url : "{{ route('faculty.Average_Senior_Second_Sem') }}",
-                                type : 'POST',
-                                data : formData,
-                                processData : false,
-                                contentType : false,
-                                success     : function (res)
-                                {
-                                    loader_overlay();
-                                    $('.js-data-container1').html(res);
-                                }                        
-                            });
-                            return;
-                        }    
-                        else
-                        {
-                            $.ajax({
-                                url : "{{ route('faculty.Average_Senior') }}",
-                                type : 'POST',
-                                data : formData,
-                                processData : false,
-                                contentType : false,
-                                success     : function (res)
-                                {
-                                    loader_overlay();
-                                    $('.js-data-container1').html(res);
-                                }                        
-                            });
-                            return;
-                        }    
-                    }
-                   
-        }
-        
+            fetchGrades(formData);
+        });
+
         $(function(){
             
             $('body').on('change', '#search_school_year', function () {
                 $.ajax({
                     url : "{{ route('faculty.MyAdvisoryClass.list_class_subject_details') }}",
                     type : 'POST',
-                    {{--  dataType    : 'JSON',  --}}
                     data        : {_token: '{{ csrf_token() }}', search_school_year: $('#search_school_year').val()},
                     success     : function (res) {
                         $('#semester_grades').html(res);
@@ -412,12 +168,11 @@
 
             $('body').on('change', '#semester_grades', function () {
                 $.ajax({
-                    url : "{{ route('faculty.MyAdvisoryClass.list_quarter-sem-details') }}",
+                    url : "{{ route('faculty.student_gradesheet.list_quarter_sem') }}",
                     type : 'POST',
-                    {{--  dataType    : 'JSON',  --}}
                     data        : {_token: '{{ csrf_token() }}', semester_grades: $('#semester_grades').val()},
                     success     : function (res) {
-                        $('#quarter_').html(res);
+                        $('#quarter').html(res);
                     }
                 })
             })
@@ -426,7 +181,6 @@
                 $.ajax({
                     url : "{{ route('faculty.MyAdvisoryClass.list_quarter') }}",
                     type : 'POST',
-                    {{--  dataType    : 'JSON',  --}}
                     data        : {_token: '{{ csrf_token() }}', search_sy: $('#search_sy').val()},
                     success     : function (res) {
                         $('#quarter_grades').html(res);
@@ -436,29 +190,15 @@
 
             $('body').on('submit', '#js-form_search', function (e) {
                 e.preventDefault();
-                if (!$('#search_sy').val()) {                    
-                    show_toast_alert({
-                        heading : 'Invalid',
-                        message : 'Please select a School year!',
-                        type    : 'error'
-                    });
-                    return;
-                }
+                
             });
             
             $('body').on('submit', '#js-form_search', function (e) {
                 e.preventDefault();
-                if (!$('#quarter_grades').val()) {
-                    
-                    show_toast_alert({
-                        heading : 'Invalid',
-                        message : 'Please select Class Quarter!',
-                        type    : 'error'
-                    });
-                    return;
-                }
+                
                 fetch_data();
             });
+            
             //2nd form
             $('body').on('submit', '#js-form_filter', function (e) {
                 e.preventDefault();
@@ -488,7 +228,7 @@
 
             $('body').on('submit', '#js-form_filter', function (e) {
                 e.preventDefault();
-                if (!$('#quarter_').val()) {
+                if (!$('#quarter').val()) {
 
                     show_toast_alert({
                         heading : 'Invalid',
