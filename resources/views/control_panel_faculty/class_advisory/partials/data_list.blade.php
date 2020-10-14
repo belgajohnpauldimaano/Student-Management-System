@@ -32,15 +32,15 @@
                                                             </a>
                                                         </li>
 
-                                                        <li>
+                                                        {{-- <li>
                                                             <a href="{{ route('faculty.my_advisory_class.index') }}?c={{ encrypt($data->id) }}" class="js-btn_gradesheet" data-id="{{ encrypt($data->id) }}">
                                                                 Grade Sheet
                                                             </a>
-                                                        </li>
+                                                        </li> --}}
 
                                                          <li>
                                                             <a href="{{ route('faculty.student_gradesheet.index') }}?c={{ encrypt($data->id) }}" class="js-btn_gradesheet1" data-id="{{ encrypt($data->id) }}">
-                                                                Grade Sheet2
+                                                                Grade Sheet
                                                             </a>
                                                         </li>
 

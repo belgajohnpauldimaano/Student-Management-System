@@ -52,4 +52,6 @@ trait HasGradeSheet{
     {        
         return $this->hasOne(StudentInformation::class, 'student_information_id');
     }
+
+    
 }
