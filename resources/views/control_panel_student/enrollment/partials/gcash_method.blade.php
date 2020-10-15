@@ -43,7 +43,13 @@
             {{ csrf_field() }} 
             <div class="col-md-6">    
                 <div class="box-header with-border">
-                    <h3 class="box-title">{{$AlreadyEnrolled ? 'Payment' : 'Enrollment' }} Form </h3>
+                    <h3 class="box-title">{{$AlreadyEnrolled ? 'Registration' : 'Enrollment' }} Form </h3>
+                    <a class="d-lg-none d-block btn btn-sm btn-info pull-right btn-transaction-history" 
+                        data-id="{{$StudentInformation->id}}" 
+                        data-school_year_id="{{$SchoolYear->id}}" 
+                        href="#" style="margin-top: -10px">
+                        <i class="fas fa-history"></i> Transaction History
+                    </a>
                 </div>
                     
                     <input type="hidden" name="payment-cat" value="Transfer - Gcash">
@@ -53,7 +59,7 @@
                             @if($IncomingStudentCount)
                               {{$IncomingStudentCount->grade_level_id}}
                             @else
-                              {{$ClassDetail->grade_level+1}}
+                              {{$ClassDetail->grade_level}}
                             @endif
                             </i>
                         </h4>
@@ -143,13 +149,7 @@
             </div>
             <div class="col-md-6">        
                     <div class="box-header with-border">
-                        <h3 class="box-title">Upload with Gcash</h3>
-                        <a class="btn btn-sm btn-info pull-right btn-transaction-history" 
-                            data-id="{{$StudentInformation->id}}" 
-                            data-school_year_id="{{$SchoolYear->id}}" 
-                            href="#" style="margin-top: -10px">
-                            <i class="fas fa-history"></i> Transaction History
-                        </a>
+                        <h3 class="box-title"><i class="fas fa-file-upload"></i> Upload with Gcash</h3>
                     </div>
                     <div class="form-group col-lg-12" style="margin-top: 10px">
                         <label for="Gcash">Gcash Name</label>               

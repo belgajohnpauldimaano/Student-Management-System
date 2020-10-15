@@ -25,28 +25,28 @@ class DashboardController extends Controller
             ->first();  
 
         $AppointedCount = StudentTimeAppointment::with('appointment')
-                ->where('student_id', $StudentInformation->id)
-                ->where('status', 1)
+                ->whereStudentId($StudentInformation->id)
+                ->whereStatus(1)
                 ->count();
 
         $Appointed = StudentTimeAppointment::with('appointment')
-            ->where('student_id', $StudentInformation->id)
-            ->where('status', 1)
+            ->whereStudentId($StudentInformation->id)
+            ->whereStatus(1)
             ->get();
         
         $OnlineAppointment = OnlineAppointment::where('status', 1)
             ->get();
 
         $hasAppointment =  StudentTimeAppointment::with('appointment')
-            ->where('student_id', $StudentInformation->id)
-            ->where('status', 1)
+            ->whereStudentId($StudentInformation->id)
+            ->whereStatus(1)->whereApproval(1)
             ->first();
             
 
         $AlreadyEnrolled = TransactionMonthPaid::where('student_id', $StudentInformation->id)
-                ->where('school_year_id', $SchoolYear->id)
+                ->whereSchoolYearId($SchoolYear->id)
                 ->where('isSuccess', 1)
-                ->where('approval', 'Approved')
+                ->whereApproval('Approved')
                 ->orderBy('id', 'Desc')
                 ->first();
 

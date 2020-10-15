@@ -199,16 +199,35 @@ class EnrollmentController extends Controller
             ->where('status', 1)
             ->first();
 
-        $rules = [
-            'bank_tution_amt' => 'required',
-            'bank_phone' => 'required',
-            'bank_email' => 'email|required',
-            'bank'=>'required',
-            'bank_transaction_id'=>'required',
-            'bank_pay_fee' => 'required',
-            'bank_image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:5120',
-            // 'bank_image' => 'required'
-        ];
+        $AlreadyEnrolled = TransactionMonthPaid::whereStudentId($StudentInformation->id)
+            ->whereSchoolYearId($SchoolYear->id)
+            ->where('isSuccess', 1)
+            ->whereApproval('Approved')
+            ->orderBy('id', 'Desc')
+            ->first();
+
+        
+
+        if(!$AlreadyEnrolled){
+            $rules = [
+                'bank_tution_amt' => 'required',
+                'bank_phone' => 'required',
+                'bank_email' => 'email|required',
+                'bank'=>'required',
+                'bank_transaction_id'=>'required',
+                'bank_pay_fee' => 'required',
+                'bank_image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:5120',
+            ];
+        }else{
+            $rules = [                  
+                'bank_phone' => 'required',
+                'bank_email' => 'email|required',
+                'bank'=>'required',
+                'bank_transaction_id'=>'required',
+                'bank_pay_fee' => 'required',
+                'bank_image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:5120',
+            ];
+        }
         
         $validator = \Validator::make($request->all(), $rules);
 
@@ -396,17 +415,36 @@ class EnrollmentController extends Controller
             ->where('status', 1)
             ->first();
 
-        $rules = [
-            'gcash_tution_amt' => 'required',
-            'gcash_phone' => 'required',
-            'gcash_email' => 'email|required',
-            'Gcash'=>'required',
-            'gcash_transaction_id'=>'required',
-            'gcash_pay_fee' => 'required',
-            'gcash_image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:5120',
-            // 'bank_image' => 'required'
-        ];
+        $AlreadyEnrolled = TransactionMonthPaid::whereStudentId($StudentInformation->id)
+            ->whereSchoolYearId($SchoolYear->id)
+            ->where('isSuccess', 1)
+            ->whereApproval('Approved')
+            ->orderBy('id', 'Desc')
+            ->first();
+
         
+
+        if(!$AlreadyEnrolled){
+            $rules = [
+                'gcash_tution_amt' => 'required',
+                'gcash_phone' => 'required',
+                'gcash_email' => 'email|required',
+                'Gcash'=>'required',
+                'gcash_transaction_id'=>'required',
+                'gcash_pay_fee' => 'required',
+                'gcash_image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:5120',
+            ];
+        }else{
+            $rules = [                  
+                'gcash_phone' => 'required',
+                'gcash_email' => 'email|required',
+                'Gcash'=>'required',
+                'gcash_transaction_id'=>'required',
+                'gcash_pay_fee' => 'required',
+                'gcash_image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:5120',
+            ];
+        }
+
         $validator = \Validator::make($request->all(), $rules);
 
         if ($validator->fails())

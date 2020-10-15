@@ -24,9 +24,9 @@
                 <option value="0" selected>
                     --Select--
                 </option>
-                <option value="1">
-                  Credit card/Debit card/PayMaya
-                </option>
+                {{-- <option value="0">
+                  Credit card/Debit card/PayMaya <span style="color: red !important">(Not Available)</span>
+                </option> --}}
                 <option value="2">
                   Bank Deposit/Fund Transfer/Mobile Banking
                 </option>

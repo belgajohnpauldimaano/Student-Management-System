@@ -46,7 +46,14 @@
             {{ csrf_field() }}
             <div class="col-md-6">    
                 <div class="box-header with-border">
-                    <h3 class="box-title">{{$AlreadyEnrolled ? 'Payment' : 'Enrollment' }} Form </h3>
+                    <h3 class="box-title">{{$AlreadyEnrolled ? 'Registration' : 'Enrollment' }} Form </h3>
+
+                    <a style="margin-top: -10px" class="btn btn-sm btn-info pull-right btn-transaction-history d-lg-none " 
+                        data-id="{{$StudentInformation->id}}"
+                        data-school_year_id="{{$SchoolYear->id}}"
+                        href="#">
+                        <i class="fas fa-history"></i> Transaction History
+                    </a>
                 </div>      
                     <input type="hidden" name="payment-cat" value="over the counter - bank">
                     <div class="form-group col-lg-12" style="margin-top: 10px">
@@ -75,9 +82,7 @@
                                 <input type="hidden" name="other_price" value="{{$PaymentCategory->other_fee->other_fee_amt}}">
                                 <p>{{$PaymentCategory->other_fee->other_fee_name}} - (₱ {{number_format($PaymentCategory->other_fee->other_fee_amt, 2) }})</p>
                             @endif
-                            
-                        @else
-                            <p>There is no Tution and Miscellenous Fee</p>
+                        
                         @endif  
                         
                         <label for="e_discount">Discount Fee</label>
@@ -153,13 +158,8 @@
             </div>
             <div class="col-md-6">        
                     <div class="box-header with-border">
-                        <h3 class="box-title">Upload with Bank</h3>
-                        <a style="margin-top: -10px" class="btn btn-sm btn-info pull-right btn-transaction-history d-lg-none " 
-                            data-id="{{$StudentInformation->id}}"
-                            data-school_year_id="{{$SchoolYear->id}}"
-                            href="#">
-                            <i class="fas fa-history"></i> Transaction History
-                        </a>
+                        <h3 class="box-title"><i class="fas fa-file-upload"></i> Upload with Bank</h3>
+                        
                     </div>
                     <div class="form-group col-lg-12 input-bank" style="margin-top: 10px">
                         <label for="bank">Bank Name</label>               

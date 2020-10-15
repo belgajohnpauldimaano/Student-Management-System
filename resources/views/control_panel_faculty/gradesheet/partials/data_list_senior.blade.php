@@ -170,7 +170,6 @@
                                 @endphp  
                             </td>  
                         @endforeach
-                        
                     @endif
                 
                     
