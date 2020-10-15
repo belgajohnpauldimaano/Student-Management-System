@@ -1698,11 +1698,11 @@
                 if(payment != ''){
                     $('.input-gcash_pay_fee').addClass('has-success');
                     $('.input-gcash_pay_fee').removeClass('has-error');
-                    $('#js-gcash_pay_fee').text('Here is you balance now '+currencyFormat(result_bal)+' You are good to go!');
+                    $('#js-gcash_pay_fee').text('Here is you balance now '+result_bal+' You are good to go!');
                 }else if(payment<downpayment){
                     $('.input-gcash_pay_fee').addClass('has-error');
                     $('.input-gcash_pay_fee').removeClass('has-success');
-                    $('#js-gcash_pay_fee').text('Here is you balance now '+currencyFormat(result_bal)+' You have to enter the amount of downpayment or above amount.');
+                    $('#js-gcash_pay_fee').text('Here is you balance now '+result_bal+' You have to enter the amount of downpayment or above amount.');
                 }
             }
         });

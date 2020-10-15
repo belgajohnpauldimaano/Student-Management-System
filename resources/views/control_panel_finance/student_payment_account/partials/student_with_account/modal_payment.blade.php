@@ -43,11 +43,17 @@
                                     <h3 class="box-title">Discount(s)</h3>
                                 </div>
                                 <div class="box-body">
-                                    @if(!$TransactionMonthPaid[0]->id)
-                                        <input type="hidden" name="transaction_month_paid_id" value="{{ $TransactionDiscount->transaction_month_paid_id }}">
+                                    @if($TransactionMonthPaid->count())
+                                        @if(!$TransactionMonthPaid[0]->id)
+                                            <input type="hidden" name="transaction_month_paid_id" value="{{ $TransactionDiscount->transaction_month_paid_id }}">
+                                        @else
+                                            <input type="hidden" name="transaction_month_paid_id" value="{{ $TransactionMonthPaid[0]->id }}">
+                                        @endif
                                     @else
-                                        <input type="hidden" name="transaction_month_paid_id" value="{{ $TransactionMonthPaid[0]->id }}">
+
                                     @endif
+
+                                   
 
                                     <input type="hidden" name="student_id" value="{{ $StudentInformation->id }}">
 

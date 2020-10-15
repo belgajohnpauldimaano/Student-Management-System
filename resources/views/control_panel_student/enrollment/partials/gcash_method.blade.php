@@ -162,7 +162,7 @@
             
                     <div class="form-group col-lg-12 input-gcash_transaction_id">
                         <label for="gcash_transaction_id">Transaction Number</label>
-                        <input type="number" class="form-control" id="gcash_transaction_id" name="gcash_transaction_id" placeholder="">
+                        <input type="text" class="form-control" id="gcash_transaction_id" name="gcash_transaction_id" placeholder="">
                         <div class="help-block text-left" id="js-gcash_transaction_id"></div>
                     </div>
                     
@@ -186,7 +186,7 @@
                     </div>
                     <div class="box-footer col-lg-12">
                         <button type="button" class="btn-reset btn btn-danger pull-left">Reset</button>
-                        <button type="submit" disabled class="btn-gcash-enroll btn btn-primary pull-right">{{$AlreadyEnrolled ? 'Pay ' : 'Enroll' }}</button>
+                        <button type="submit" disabled class="btn-gcash-enroll btn btn-primary pull-right">Submit</button>
                     </div>
             </div>
         </form>
