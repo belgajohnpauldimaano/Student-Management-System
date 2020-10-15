@@ -80,18 +80,27 @@ class StudentGradeSheetController extends Controller
         $FacultyInformation = FacultyInformation::where('user_id', Auth::user()->id)->first(); 
         $sem = $request->semester_grades;
 
-        // return json_encode(['quarter' => $quarter, 'sy' => $sy_id, 'sem' => $sem]);
-
         $class_detail = ClassDetail::with('section', 'classSubjectDetail')->whereAdviserId($FacultyInformation->id)->whereStatus(1)
             ->whereSchoolYearId($sy_id)->first();
 
-        $AdvisorySubject = ClassSubjectDetail::with(['subject','classDetail','faculty'])
+        $query = ClassSubjectDetail::query();
+        if($sem == '1st' || $sem == '2nd')
+        {
+            $query->whereSem($sem);         
+        }
+
+        if($sem == '3rd')
+        {
+            $query->orderBy('sem', 'ASC')
+                ->orderBy('class_subject_order', 'ASC');
+        }
+
+        $AdvisorySubject = $query->with(['subject','classDetail','faculty'])
             ->whereClassDetailsId($class_detail->id)
             ->whereStatus(1)
-            ->whereSem($sem)
             ->orderBy('class_subject_order', 'ASC')
             ->get();
-        // return json_encode($class_detail);
+        // return json_encode($AdvisorySubject);
         
         $Grade_sheet_males = Enrollment::join('class_details','class_details.id','=','enrollments.class_details_id')
             ->join('student_informations','student_informations.id','=','enrollments.student_information_id')  
