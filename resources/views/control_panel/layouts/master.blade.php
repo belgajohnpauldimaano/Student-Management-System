@@ -224,7 +224,7 @@
                   </li>
                   <li><a href="{{ route('admin.maintenance.semester') }}"><i class="fa fa-circle-o"></i>&nbsp;&nbsp;&nbsp; <span>Semester</span></a></li>
                   <li><a href="{{ route('admin.maintenance.strand') }}"><i class="fa fa-circle-o"></i>&nbsp;&nbsp;&nbsp; <span>Strands</span></a></li>
-                  <li><a href="{{ route('admin.maintenance.student_attendance') }}"><i class="fa fa-circle-o"></i>&nbsp;&nbsp;&nbsp; <span>Student Attendance Setup</span></a></li>
+                  <li><a href="{{ route('admin.maintenance.student_attendance') }}"><i class="fa fa-circle-o"></i>&nbsp;&nbsp;&nbsp; <span>Attendance Setup</span></a></li>
                   <li><a href="{{ route('admin.maintenance.subjects') }}"><i class="fa fa-circle-o"></i>&nbsp;&nbsp;&nbsp; <span>Subjects</span></a></li>
                   
                   <li><a href="{{ route('admin.maintenance.section_details') }}"><i class="fa fa-circle-o"></i>&nbsp;&nbsp;&nbsp; <span>Section Details</span></a></li>

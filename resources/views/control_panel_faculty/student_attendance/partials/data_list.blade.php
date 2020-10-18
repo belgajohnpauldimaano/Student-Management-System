@@ -599,9 +599,7 @@
                         <thead>
                             <tr>
                                 <th style="width: 30px">#</th>
-                                <th colspan="13" style="text-align:left">Student Name</th>        
-                                                            
-                                
+                                <th colspan="13" style="text-align:left">Student Name</th>
                             </tr>
                         </thead>
                         <tbody>      

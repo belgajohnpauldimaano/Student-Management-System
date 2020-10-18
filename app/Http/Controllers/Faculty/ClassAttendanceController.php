@@ -2,18 +2,27 @@
 
 namespace App\Http\Controllers\Faculty;
 
+use App\Enrollment;
+use App\SchoolYear;
+use App\ClassDetail;
+use Barryvdh\DomPDF\PDF;
+use App\ClassSubjectDetail;
+use App\FacultyInformation;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Crypt;
 
 class ClassAttendanceController extends Controller
 {
     public function index (Request $request)
     {
-        $FacultyInformation = \App\FacultyInformation::where('user_id', \Auth::user()->id)->first();
+        $FacultyInformation = FacultyInformation::where('user_id', \Auth::user()->id)->first();
 
-        $school_year_id = \App\SchoolYear::where('current', 1)->where('status', 1)->first()->id;
+        $school_year_id = SchoolYear::where('current', 1)->where('status', 1)->first()->id;
         
-        $Semester = \App\ClassSubjectDetail::join('class_details', 'class_details.id', '=', 'class_subject_details.class_details_id')
+        $Semester = ClassSubjectDetail::join('class_details', 'class_details.id', '=', 'class_subject_details.class_details_id')
         ->join('rooms','rooms.id', '=', 'class_details.room_id')
         ->join('section_details', 'section_details.id', '=', 'class_details.section_id')
         ->where('class_details.adviser_id', $FacultyInformation->id)
@@ -32,12 +41,12 @@ class ClassAttendanceController extends Controller
         ->first();
             
 
-        $count = $class_id = \App\ClassDetail::where('adviser_id', $FacultyInformation->id)->count();
-        // $class_id = \App\ClassDetail::where('adviser_id', $FacultyInformation->id)->count();
+        $count = $class_id = ClassDetail::where('adviser_id', $FacultyInformation->id)->count();
+        // $class_id = ClassDetail::where('adviser_id', $FacultyInformation->id)->count();
         if ($request->ajax())
             {
                
-                $attendance_male = \App\Enrollment::join('student_informations', 'student_informations.id', '=', 'enrollments.student_information_id')
+                $attendance_male = Enrollment::join('student_informations', 'student_informations.id', '=', 'enrollments.student_information_id')
                 ->join('class_details', 'class_details.id', '=', 'enrollments.class_details_id')
                 ->where('class_details_id', $class_id)
                 ->where('class_details.school_year_id', $school_year_id)
@@ -52,7 +61,7 @@ class ClassAttendanceController extends Controller
                 ->orderBY('student_name', 'ASC')
                 ->get();
     
-                $attendance_female = \App\Enrollment::join('student_informations', 'student_informations.id', '=', 'enrollments.student_information_id')
+                $attendance_female = Enrollment::join('student_informations', 'student_informations.id', '=', 'enrollments.student_information_id')
                 ->join('class_details', 'class_details.id', '=', 'enrollments.class_details_id')
                 ->where('class_details_id', $class_id)
                 ->where('class_details.school_year_id', $school_year_id)
@@ -67,7 +76,7 @@ class ClassAttendanceController extends Controller
                 ->orderBY('student_name', 'ASC')
                 ->get();
     
-                $Senior_firstsem_m = \App\Enrollment::join('student_informations', 'student_informations.id', '=', 'enrollments.student_information_id')
+                $Senior_firstsem_m = Enrollment::join('student_informations', 'student_informations.id', '=', 'enrollments.student_information_id')
                 ->join('class_details', 'class_details.id', '=', 'enrollments.class_details_id')
                 ->where('class_details_id', $class_id)
                 ->where('class_details.school_year_id', $school_year_id)
@@ -83,7 +92,7 @@ class ClassAttendanceController extends Controller
                 ->orderBY('student_name', 'ASC')
                 ->get();
     
-                $Senior_firstsem_f = \App\Enrollment::join('student_informations', 'student_informations.id', '=', 'enrollments.student_information_id')
+                $Senior_firstsem_f = Enrollment::join('student_informations', 'student_informations.id', '=', 'enrollments.student_information_id')
                 ->join('class_details', 'class_details.id', '=', 'enrollments.class_details_id')
                 ->where('class_details_id', $class_id)
                 ->where('class_details.school_year_id', $school_year_id)
@@ -105,18 +114,18 @@ class ClassAttendanceController extends Controller
 
         if($count < 0)
         {
-            $class_id = \App\ClassDetail::where('adviser_id', $FacultyInformation->id)
+            $class_id = ClassDetail::where('adviser_id', $FacultyInformation->id)
                         ->where('school_year_id',$school_year_id)
                         ->where('adviser_id',$FacultyInformation->id)->first()->id;  
         }
         
         if($count > 0)
         {
-            $class_id = \App\ClassDetail::where('adviser_id', $FacultyInformation->id)
+            $class_id = ClassDetail::where('adviser_id', $FacultyInformation->id)
                         ->where('school_year_id',$school_year_id)
                         ->where('adviser_id',$FacultyInformation->id)->first()->id;            
            
-            $Semester = \App\ClassSubjectDetail::join('class_details', 'class_details.id', '=', 'class_subject_details.class_details_id')
+            $Semester = ClassSubjectDetail::join('class_details', 'class_details.id', '=', 'class_subject_details.class_details_id')
                 ->join('rooms','rooms.id', '=', 'class_details.room_id')
                 ->join('section_details', 'section_details.id', '=', 'class_details.section_id')
                 ->where('class_details.adviser_id', $FacultyInformation->id)
@@ -135,7 +144,7 @@ class ClassAttendanceController extends Controller
                 ->first();
     
             
-                $attendance_male = \App\Enrollment::join('student_informations', 'student_informations.id', '=', 'enrollments.student_information_id')
+                $attendance_male = Enrollment::join('student_informations', 'student_informations.id', '=', 'enrollments.student_information_id')
                 // ->join('class_details', 'class_details.id', '=', 'enrollments.class_details_id')
                 ->where('class_details_id', $class_id)
                 // ->where('class_details.school_year_id', $school_year_id)
@@ -150,7 +159,7 @@ class ClassAttendanceController extends Controller
                 ->orderBY('student_name', 'ASC')
                 ->get();
     
-                $attendance_female = \App\Enrollment::join('student_informations', 'student_informations.id', '=', 'enrollments.student_information_id')
+                $attendance_female = Enrollment::join('student_informations', 'student_informations.id', '=', 'enrollments.student_information_id')
                 // ->join('class_details', 'class_details.id', '=', 'enrollments.class_details_id')
                 // ->where('class_details.school_year_id', $school_year_id)
                 // ->where('class_details.adviser_id', $FacultyInformation->id)
@@ -165,7 +174,7 @@ class ClassAttendanceController extends Controller
                 ->orderBY('student_name', 'ASC')
                 ->get();
     
-                $Senior_firstsem_m = \App\Enrollment::join('student_informations', 'student_informations.id', '=', 'enrollments.student_information_id')
+                $Senior_firstsem_m = Enrollment::join('student_informations', 'student_informations.id', '=', 'enrollments.student_information_id')
                 // ->join('class_details', 'class_details.id', '=', 'enrollments.class_details_id')
                 // ->where('class_details.school_year_id', $school_year_id)
                 // ->where('class_details.adviser_id', $FacultyInformation->id)
@@ -181,7 +190,7 @@ class ClassAttendanceController extends Controller
                 ->orderBY('student_name', 'ASC')
                 ->get();
     
-                $Senior_firstsem_f = \App\Enrollment::join('student_informations', 'student_informations.id', '=', 'enrollments.student_information_id')
+                $Senior_firstsem_f = Enrollment::join('student_informations', 'student_informations.id', '=', 'enrollments.student_information_id')
                 // ->join('class_details', 'class_details.id', '=', 'enrollments.class_details_id')
                 // ->where('class_details.school_year_id', $school_year_id)
                 // ->where('class_details.adviser_id', $FacultyInformation->id)
@@ -204,11 +213,11 @@ class ClassAttendanceController extends Controller
 
     public function print_attendance (Request $request)
     {
-        $FacultyInformation = \App\FacultyInformation::where('user_id', \Auth::user()->id)->first();
+        $FacultyInformation = FacultyInformation::where('user_id', \Auth::user()->id)->first();
 
-        $school_year_id = \App\SchoolYear::where('current', 1)->where('status', 1)->first()->id;
+        $school_year_id = SchoolYear::where('current', 1)->where('status', 1)->first()->id;
 
-        $Semester = \App\ClassSubjectDetail::join('class_details', 'class_details.id', '=', 'class_subject_details.class_details_id')
+        $Semester = ClassSubjectDetail::join('class_details', 'class_details.id', '=', 'class_subject_details.class_details_id')
         ->join('rooms','rooms.id', '=', 'class_details.room_id')
         ->join('section_details', 'section_details.id', '=', 'class_details.section_id')
         ->where('class_details.adviser_id', $FacultyInformation->id)
@@ -227,12 +236,12 @@ class ClassAttendanceController extends Controller
         ->first();
             
 
-        $count = $class_id = \App\ClassDetail::where('adviser_id', $FacultyInformation->id)->count();
+        $count = $class_id = ClassDetail::where('adviser_id', $FacultyInformation->id)->count();
 
         if ($request->ajax())
             {
                
-                $attendance_male = \App\Enrollment::join('student_informations', 'student_informations.id', '=', 'enrollments.student_information_id')
+                $attendance_male = Enrollment::join('student_informations', 'student_informations.id', '=', 'enrollments.student_information_id')
                 ->join('class_details', 'class_details.id', '=', 'enrollments.class_details_id')
                 ->where('class_details_id', $class_id)
                 ->where('class_details.school_year_id', $school_year_id)
@@ -247,7 +256,7 @@ class ClassAttendanceController extends Controller
                 ->orderBY('student_name', 'ASC')
                 ->get();
     
-                $attendance_female = \App\Enrollment::join('student_informations', 'student_informations.id', '=', 'enrollments.student_information_id')
+                $attendance_female = Enrollment::join('student_informations', 'student_informations.id', '=', 'enrollments.student_information_id')
                 ->join('class_details', 'class_details.id', '=', 'enrollments.class_details_id')
                 ->where('class_details_id', $class_id)
                 ->where('class_details.school_year_id', $school_year_id)
@@ -262,7 +271,7 @@ class ClassAttendanceController extends Controller
                 ->orderBY('student_name', 'ASC')
                 ->get();
     
-                $Senior_firstsem_m = \App\Enrollment::join('student_informations', 'student_informations.id', '=', 'enrollments.student_information_id')
+                $Senior_firstsem_m = Enrollment::join('student_informations', 'student_informations.id', '=', 'enrollments.student_information_id')
                 ->join('class_details', 'class_details.id', '=', 'enrollments.class_details_id')
                 ->where('class_details_id', $class_id)
                 ->where('class_details.school_year_id', $school_year_id)
@@ -278,7 +287,7 @@ class ClassAttendanceController extends Controller
                 ->orderBY('student_name', 'ASC')
                 ->get();
     
-                $Senior_firstsem_f = \App\Enrollment::join('student_informations', 'student_informations.id', '=', 'enrollments.student_information_id')
+                $Senior_firstsem_f = Enrollment::join('student_informations', 'student_informations.id', '=', 'enrollments.student_information_id')
                 ->join('class_details', 'class_details.id', '=', 'enrollments.class_details_id')
                 ->where('class_details_id', $class_id)
                 ->where('class_details.school_year_id', $school_year_id)
@@ -300,14 +309,14 @@ class ClassAttendanceController extends Controller
 
         if($count < 0)
         {
-            $class_id = \App\ClassDetail::where('adviser_id', $FacultyInformation->id)->first()->id;
+            $class_id = ClassDetail::where('adviser_id', $FacultyInformation->id)->first()->id;
         }
         
         if($count > 0)
         {
-            $class_id = \App\ClassDetail::where('adviser_id', $FacultyInformation->id)->first()->id;            
+            $class_id = ClassDetail::where('adviser_id', $FacultyInformation->id)->first()->id;            
            
-            $Semester = \App\ClassSubjectDetail::join('class_details', 'class_details.id', '=', 'class_subject_details.class_details_id')
+            $Semester = ClassSubjectDetail::join('class_details', 'class_details.id', '=', 'class_subject_details.class_details_id')
                 ->join('rooms','rooms.id', '=', 'class_details.room_id')
                 ->join('section_details', 'section_details.id', '=', 'class_details.section_id')
                 ->where('class_details.adviser_id', $FacultyInformation->id)
@@ -326,13 +335,13 @@ class ClassAttendanceController extends Controller
                 ->first();
     
             
-            // $FacultyInformation = \App\FacultyInformation::where('user_id', \Auth::user()->id)->first();
+            // $FacultyInformation = FacultyInformation::where('user_id', \Auth::user()->id)->first();
     
-            // $class_id = \App\ClassDetail::where('adviser_id', $FacultyInformation->id)->first()->id;
+            // $class_id = ClassDetail::where('adviser_id', $FacultyInformation->id)->first()->id;
             
     
             
-                $attendance_male = \App\Enrollment::join('student_informations', 'student_informations.id', '=', 'enrollments.student_information_id')
+                $attendance_male = Enrollment::join('student_informations', 'student_informations.id', '=', 'enrollments.student_information_id')
                 ->join('class_details', 'class_details.id', '=', 'enrollments.class_details_id')
                 ->where('class_details_id', $class_id)
                 ->where('class_details.school_year_id', $school_year_id)
@@ -347,7 +356,7 @@ class ClassAttendanceController extends Controller
                 ->orderBY('student_name', 'ASC')
                 ->get();
     
-                $attendance_female = \App\Enrollment::join('student_informations', 'student_informations.id', '=', 'enrollments.student_information_id')
+                $attendance_female = Enrollment::join('student_informations', 'student_informations.id', '=', 'enrollments.student_information_id')
                 ->join('class_details', 'class_details.id', '=', 'enrollments.class_details_id')
                 ->where('class_details_id', $class_id)
                 ->where('class_details.school_year_id', $school_year_id)
@@ -362,7 +371,7 @@ class ClassAttendanceController extends Controller
                 ->orderBY('student_name', 'ASC')
                 ->get();
     
-                $Senior_firstsem_m = \App\Enrollment::join('student_informations', 'student_informations.id', '=', 'enrollments.student_information_id')
+                $Senior_firstsem_m = Enrollment::join('student_informations', 'student_informations.id', '=', 'enrollments.student_information_id')
                 ->join('class_details', 'class_details.id', '=', 'enrollments.class_details_id')
                 ->where('class_details_id', $class_id)
                 ->where('class_details.school_year_id', $school_year_id)
@@ -378,7 +387,7 @@ class ClassAttendanceController extends Controller
                 ->orderBY('student_name', 'ASC')
                 ->get();
     
-                $Senior_firstsem_f = \App\Enrollment::join('student_informations', 'student_informations.id', '=', 'enrollments.student_information_id')
+                $Senior_firstsem_f = Enrollment::join('student_informations', 'student_informations.id', '=', 'enrollments.student_information_id')
                 ->join('class_details', 'class_details.id', '=', 'enrollments.class_details_id')
                 ->where('class_details_id', $class_id)
                 ->where('class_details.school_year_id', $school_year_id)
@@ -405,12 +414,11 @@ class ClassAttendanceController extends Controller
        
     }
 
-    public function save_attendance (Request $request) 
+    public function save_attendance(Request $request) 
     {
-        $FacultyInformation = \App\FacultyInformation::where('user_id', \Auth::user()->id)->first();
+        $FacultyInformation = FacultyInformation::where('user_id', \Auth::user()->id)->first();
         
-        try {
-            
+        try {            
             // $class_id = \Crypt::decrypt($request->c);
             $enrollment_id = $request->enroll_id;
 
@@ -418,6 +426,7 @@ class ClassAttendanceController extends Controller
                 // 18, 22, 20, 20, 18, 19, 16, 22, 19,21,5,
                 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
             ];
+
             foreach ($request->days_of_school as $i => $d)
             {
                 $days_of_school[$i] = $d;
@@ -426,6 +435,7 @@ class ClassAttendanceController extends Controller
             $days_present = [
                 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
             ];
+
             foreach ($request->days_present as $i => $d)
             {
                 $days_present[$i] = $d;
@@ -434,6 +444,7 @@ class ClassAttendanceController extends Controller
             $days_absent = [
                 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
             ];
+
             foreach ($request->days_absent as $i => $d)
             {
                 $days_absent[$i] = $d;
@@ -442,6 +453,7 @@ class ClassAttendanceController extends Controller
             $times_tardy = [
                 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
             ];
+
             foreach ($request->times_tardy as $i => $d)
             {
                 $times_tardy[$i] = $d;
@@ -454,9 +466,7 @@ class ClassAttendanceController extends Controller
                 'times_tardy' => $times_tardy
             ];
 
-          
-
-            $Enrollment = \App\Enrollment::whereRaw('enrollments.id = '. $enrollment_id)->first();
+            $Enrollment = Enrollment::whereRaw('enrollments.id = '. $enrollment_id)->first();
             $Enrollment->attendance = json_encode($attendance_data);
             $Enrollment->save();
             // return redirect()->back()->with('flash_message_success','Attendance successfully saved!');
@@ -470,7 +480,7 @@ class ClassAttendanceController extends Controller
 
     public function save_attendance_senior_first (Request $request) 
     {
-        $FacultyInformation = \App\FacultyInformation::where('user_id', \Auth::user()->id)->first();
+        $FacultyInformation = FacultyInformation::where('user_id', \Auth::user()->id)->first();
         
         try {
             
@@ -519,7 +529,7 @@ class ClassAttendanceController extends Controller
 
           
 
-            $Enrollment = \App\Enrollment::whereRaw('enrollments.id = '. $enrollment_id)->first();
+            $Enrollment = Enrollment::whereRaw('enrollments.id = '. $enrollment_id)->first();
             $Enrollment->attendance_first = json_encode($attendance_data);
             $Enrollment->save();
             // return redirect()->back()->with('flash_message_success','Attendance successfully saved!');
@@ -533,7 +543,7 @@ class ClassAttendanceController extends Controller
 
     public function save_attendance_senior_second (Request $request) 
     {
-        $FacultyInformation = \App\FacultyInformation::where('user_id', \Auth::user()->id)->first();
+        $FacultyInformation = FacultyInformation::where('user_id', \Auth::user()->id)->first();
         
         try {
             
@@ -582,7 +592,7 @@ class ClassAttendanceController extends Controller
 
           
 
-            $Enrollment = \App\Enrollment::whereRaw('enrollments.id = '. $enrollment_id)->first();
+            $Enrollment = Enrollment::whereRaw('enrollments.id = '. $enrollment_id)->first();
             $Enrollment->attendance_second = json_encode($attendance_data);
             $Enrollment->save();
             // return redirect()->back()->with('flash_message_success','Attendance successfully saved!');

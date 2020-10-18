@@ -107,6 +107,8 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'userroles'], 'roles
             Route::post('', 'Control_Panel\Maintenance\StudentAttendanceController@index')->name('admin.maintenance.student_attendance');
             Route::post('modal-data', 'Control_Panel\Maintenance\StudentAttendanceController@modal_data')->name('admin.maintenance.student_attendance.modal_data');
             Route::post('save-data', 'Control_Panel\Maintenance\StudentAttendanceController@save_data')->name('admin.maintenance.student_attendance.save_data');
+            Route::post('apply-to-student', 'Control_Panel\Maintenance\StudentAttendanceController@apply')->name('admin.maintenance.student_attendance.apply');
+            Route::post('deactivate-data', 'Control_Panel\Maintenance\StudentAttendanceController@deactivate_data')->name('admin.maintenance.student_attendance.deactivate_data');
         });
     });
     

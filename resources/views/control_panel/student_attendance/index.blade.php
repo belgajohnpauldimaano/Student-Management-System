@@ -1,7 +1,7 @@
 @extends('control_panel.layouts.master')
 
 @section ('content_title')
-    Student Attendance
+    School Year Attendance Number
 @endsection
 
 @section ('content')
@@ -70,15 +70,13 @@
                         });
                     }
                 });
-            });
+            });            
 
-            
-
-            $('body').on('submit', '#js-form_school_year', function (e) {
+            $('body').on('submit', '#js-form_attendance', function (e) {
                 e.preventDefault();
                 var formData = new FormData($(this)[0]);
                 $.ajax({
-                    url         : "{{ route('admin.maintenance.strand.save_data') }}",
+                    url         : "{{ route('admin.maintenance.student_attendance.save_data') }}",
                     type        : 'POST',
                     data        : formData,
                     processData : false,
@@ -110,6 +108,48 @@
                 page = $(this).attr('href').split('=')[1];
                 fetch_data();
             });
+
+            $('body').on('click', '.js-btn_apply', function (e) {
+                e.preventDefault();
+                var id = $(this).data('id');
+                var sy = $(this).data('sy');
+                var school_year = $(this).data('school_year');
+
+                alertify.defaults.transition = "slide";
+                alertify.defaults.theme.ok = "btn btn-primary btn-flat";
+                alertify.defaults.theme.cancel = "btn btn-danger btn-flat";
+                alertify.confirm('Confirmation', 'Are you sure you want to apply it to <i style="color: red">school year '+ school_year +'</i>? It will apply to all student.', function(){  
+                    $.ajax({
+                        url         : "{{ route('admin.maintenance.student_attendance.apply') }}",
+                        type        : 'POST',
+                        data        : { _token : '{{ csrf_token() }}', id : id , sy : sy},
+                        success     : function (res) {
+                            $('.help-block').html('');
+                            if (res.res_code == 1)
+                            {
+                                show_toast_alert({
+                                    heading : 'Error',
+                                    message : res.res_msg,
+                                    type    : 'error'
+                                });
+                            }
+                            else
+                            {
+                                show_toast_alert({
+                                    heading : 'Success',
+                                    message : res.res_msg,
+                                    type    : 'success'
+                                });
+                                $('.js-modal_holder .modal').modal('hide');
+                                fetch_data();
+                            }
+                        }
+                    });
+                }, function(){  
+
+                });
+            });
+
             $('body').on('click', '.js-btn_deactivate', function (e) {
                 e.preventDefault();
                 var id = $(this).data('id');
@@ -118,7 +158,7 @@
                 alertify.defaults.theme.cancel = "btn btn-danger btn-flat";
                 alertify.confirm('Confirmation', 'Are you sure you want to deactivate?', function(){  
                     $.ajax({
-                        url         : "{{ route('admin.maintenance.school_year.deactivate_data') }}",
+                        url         : "{{ route('admin.maintenance.student_attendance.deactivate_data') }}",
                         type        : 'POST',
                         data        : { _token : '{{ csrf_token() }}', id : id },
                         success     : function (res) {

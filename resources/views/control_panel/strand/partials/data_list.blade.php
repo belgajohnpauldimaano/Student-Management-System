@@ -1,5 +1,5 @@
                         <div class="pull-right">
-                            {{-- {{ $SchoolYear ? $SchoolYear->links() : '' }} --}}
+                            {{ $Strand ? $Strand->links() : '' }}
                         </div>
                         <table class="table no-margin">
                             <thead>

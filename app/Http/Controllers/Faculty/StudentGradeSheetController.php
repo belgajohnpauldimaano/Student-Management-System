@@ -100,7 +100,15 @@ class StudentGradeSheetController extends Controller
             ->whereStatus(1)
             ->orderBy('class_subject_order', 'ASC')
             ->get();
-        // return json_encode($AdvisorySubject);
+
+        $no_second_sem = '';
+        if($AdvisorySubject->isEmpty())
+        {
+            $no_second_sem = 'No data found';
+            // return json_encode($no_second_sem);
+        }        
+        
+        
         
         $Grade_sheet_males = Enrollment::join('class_details','class_details.id','=','enrollments.class_details_id')
             ->join('student_informations','student_informations.id','=','enrollments.student_information_id')  
@@ -131,11 +139,12 @@ class StudentGradeSheetController extends Controller
             ")
             ->orderBY('last_name','ASC')
             ->get();
-        
-        $subject_grades = StudentEnrolledSubject::first();        
+
+        $subject_grades = StudentEnrolledSubject::first();
+    
         
         return view('control_panel_faculty.gradesheet.partials.data_list', 
-            compact( 'subject_grades','class_detail','AdvisorySubject','Grade_sheet_males','Grade_sheet_females','quarter','sem'))
+            compact( 'subject_grades','AdvisorySubject','class_detail','Grade_sheet_males','Grade_sheet_females','quarter','sem','no_second_sem'))
             ->render();
     }
 }

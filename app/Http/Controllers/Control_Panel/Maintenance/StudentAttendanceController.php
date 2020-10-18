@@ -2,34 +2,25 @@
 
 namespace App\Http\Controllers\Control_Panel\Maintenance;
 
+use App\SchoolYear;
+use App\ClassDetail;
 use App\StudentAttendance;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
 class StudentAttendanceController extends Controller
 {
-    public function index(){
-
-        $attendance = StudentAttendance::whereStatus(1)->paginate(10);
-
-        
-        return view('control_panel.student_attendance.index', compact('attendance'));
-    }
-
-    public function modal_data (Request $request) 
+    public function index(Request $request)
     {
-        $attendance = NULL;
-        
-        if ($request->id)
-        {
-            $attendance = StudentAttendance::where('id', $request->id)->first();         
-        }
+        $attendance = StudentAttendance::whereStatus(1)->paginate(5);
 
-        $attendance_data = ['jan' => '30'];
-            $attendance_data_str = json_encode($attendance_data);
-            $attendance_data_parsed = json_decode($attendance_data_str);
-            // return compact('Enrollment', 'ClassDetails', 'attendance_data_str', 'attendance_data_parsed');
-            $student_attendance = [];
+        $attendance_data = $attendance->map(function($item, $key) {
+
+            $school_year = SchoolYear::whereId($item->school_year_id)->first();
+            $attendance_data = json_decode($item->junior_attendance);
+            $s1_attendance = json_decode($item->s1_attendance);
+            $s2_attendance = json_decode($item->s2_attendance);
+
             $table_header = [
                 ['key' => 'Jun',],
                 ['key' => 'Jul',],
@@ -42,7 +33,55 @@ class StudentAttendanceController extends Controller
                 ['key' => 'Feb',],
                 ['key' => 'Mar',],
                 ['key' => 'Apr',],
-                ['key' => 'total',],
+                ['key' => 'total'],
+            ];      
+                       
+            $data = [
+                'attendance_data'   =>  $attendance_data,
+                'table_header'      =>  $table_header,
+                'school_year'       =>  $school_year->school_year,
+                's1_attendance'     =>  $s1_attendance,
+                's2_attendance'     =>  $s2_attendance,
+                'status'            =>  $item->status,
+                'id'                =>  $item->id,
+                'is_applied'        =>  $item->is_applied,
+                'school_year_id'    =>  $item->school_year_id,
+            ];
+            
+            return $data;
+        });
+        // return json_encode($attendance_data);
+        
+        if($request->ajax()){            
+            return view('control_panel.student_attendance.partials.data_list', compact('attendance','attendance_data'))->render();
+        }
+        return view('control_panel.student_attendance.index', compact('attendance','attendance_data'))->render();
+    }
+
+    public function modal_data (Request $request) 
+    {
+
+        $SchoolYear = SchoolYear::whereStatus(1)->orderBY('id', 'DESC')->get();
+
+        $attendance = NULL;
+        
+        if ($request->id)
+        {
+            $attendance = StudentAttendance::where('id', $request->id)->first();         
+        }            
+            $table_header = [
+                ['key' => 'Jun',],
+                ['key' => 'Jul',],
+                ['key' => 'Aug',],
+                ['key' => 'Sep',],
+                ['key' => 'Oct',],
+                ['key' => 'Nov',],
+                ['key' => 'Dec',],
+                ['key' => 'Jan',],
+                ['key' => 'Feb',],
+                ['key' => 'Mar',],
+                ['key' => 'Apr',],
+                // ['key' => 'total',],
             ];
             $attendance_data = json_decode(json_encode([
                 'days_of_school' => [
@@ -59,19 +98,199 @@ class StudentAttendanceController extends Controller
                 ]
             ]));
 
-            // if ($Enrollment->attendance) {
-            //     $attendance_data = json_decode($Enrollment->attendance);
-            // }
+            if($attendance)
+            {
+                $attendance_data = json_decode($attendance->junior_attendance);
+            }            
 
             $student_attendance = [
-                // 'student_name'      => $Enrollment->student_name,
                 'attendance_data'   => $attendance_data,
                 'table_header'      => $table_header,
-                'days_of_school_total' => array_sum($attendance_data->days_of_school),
-                'days_present_total' => array_sum($attendance_data->days_present),
-                'days_absent_total' => array_sum($attendance_data->days_absent),
-                'times_tardy_total' => array_sum($attendance_data->times_tardy),
             ];
-        return view('control_panel.student_attendance.partials.modal_data', compact('attendance','student_attendance'))->render();
+        return view('control_panel.student_attendance.partials.modal_data', 
+            compact('attendance','student_attendance','SchoolYear'))->render();
+    }
+
+    public function save_data(Request $request)
+    {
+                
+        try {            
+            // $class_id = \Crypt::decrypt($request->c);
+            // $enrollment_id = $request->enroll_id;
+            foreach ($request->days_of_school as $i => $d)
+            {
+                $days_of_school[$i] = $d;
+            }
+            
+            foreach ($request->days_present as $i => $d)
+            {
+                $days_present[$i] = $d;
+            }
+
+            foreach ($request->days_absent as $i => $d)
+            {
+                $days_absent[$i] = $d;
+            }
+
+            foreach ($request->times_tardy as $i => $d)
+            {
+                $times_tardy[$i] = $d;
+            }
+
+            $attendance_data = [
+                'days_of_school' => $days_of_school,
+                'days_present' => $days_present,
+                'days_absent' => $days_absent,
+                'times_tardy' => $times_tardy
+            ];
+
+            $i = 1;
+            foreach ($request->days_of_school as $i => $d)
+            {
+                $days_of_school1[$i] = $d;
+                if ($i++ == 5) {break;}
+            }
+            
+            $i = 1;
+            foreach ($request->days_present as $i => $d)
+            {
+                $days_present1[$i] = $d;
+                if ($i++ == 5) {break;}
+            }
+
+            $i = 1;
+            foreach ($request->days_absent as $i => $d)
+            {
+                $days_absent1[$i] = $d;
+                if ($i++ == 5) {break;}
+            }
+
+            $i = 1;
+            foreach ($request->times_tardy as $i => $d)
+            {
+                $times_tardy1[$i] = $d;
+                if ($i++ == 5) {break;}
+            }
+
+            $s1_data = [
+                'days_of_school' => $days_of_school1,
+                'days_present' => $days_present1,
+                'days_absent' => $days_absent1,
+                'times_tardy' => $times_tardy1
+            ];
+
+            $i = 1;
+            foreach ($request->days_of_school as $i => $d)
+            {
+                if ($i++ > 5) {
+                    $days_of_school2[$i] = $d;
+                }
+            }
+            
+            $i = 1;
+            foreach ($request->days_present as $i => $d)
+            {                
+                if ($i++ > 5) {
+                    $days_present2[$i] = $d;
+                }
+            }
+
+            $i = 1;
+            foreach ($request->days_absent as $i => $d)
+            {
+                if ($i++ > 5) {
+                    $days_absent2[$i] = $d;
+                }
+            }
+
+            $i = 1;
+            foreach ($request->times_tardy as $i => $d)
+            {
+                if ($i++ > 5) {
+                    $times_tardy2[$i] = $d;
+                }
+            }
+
+            $s2_data = [
+                'days_of_school' => $days_of_school2,
+                'days_present' => $days_present2,
+                'days_absent' => $days_absent2,
+                'times_tardy' => $times_tardy2
+            ];
+
+            if($request->id)
+            {
+                $student_attendance = StudentAttendance::whereId($request->id)->first();
+                $student_attendance->junior_attendance = json_encode($attendance_data);
+                $student_attendance->s1_attendance = json_encode($s1_data);
+                $student_attendance->s2_attendance = json_encode($s2_data);
+                $student_attendance->school_year_id = $request->sy_search;
+                $student_attendance->save();
+
+                return response()->json(['res_code' => 0, 'res_msg' => 'Attendance successfully saved.']);
+            }
+
+            $student_attendance = new StudentAttendance();
+            $student_attendance->junior_attendance = json_encode($attendance_data);
+            $student_attendance->s1_attendance = json_encode($s1_data);
+            $student_attendance->s2_attendance = json_encode($s2_data);
+            $student_attendance->school_year_id = $request->sy_search;
+            $student_attendance->save();
+            return response()->json(['res_code' => 0, 'res_msg' => 'Attendance successfully saved.',]);
+            
+        //    return json_encode([$request->all(), 'attendance_data' => json_encode($attendance_data), 'Enrollment' => $Enrollment]);
+        }catch (Illuminate\Contracts\Encryption\DecryptException $e) {
+            return "Invalid parameter";
+        }
+    }
+
+    public function apply(Request $request)
+    {
+        $id = $request->id;
+        $sy = $request->sy;
+
+        
+
+        $class_detail = ClassDetail::whereSchoolYearId($sy)->get();
+        $attendance_data = StudentAttendance::where('id', $id)->first();
+        
+        foreach($class_detail as $data){
+            // $data->id;
+            
+            // $enrollment = Enrollment::whereClassDetailsId($data->id)->first();
+            // $enrollment->attendance = $attendance_data->junior_attendance;
+            // $enrollment->attendance_first = $attendance_data->s1_attendance;
+            // $enrollment->attendance_second = $attendance_data->s2_attendance;
+            // $enrollment->save();
+
+            echo $attendance_data->junior_attendance.'<br/>';
+            echo $attendance_data->s1_attendance.'<br/>';
+            echo $attendance_data->s2_attendance.'<br/>';
+        }
+
+        // echo $class_detail.'<br/>';
+
+        // return response()->json(['res_code' => 0, 'res_msg' => 'Data successfully Applied. '.$class_detail]);
+    }
+
+    public function deactivate_data (Request $request) 
+    {
+        $SectionDetail = \App\SectionDetail::where('id', $request->id)->first();
+
+        if ($SectionDetail)
+        {
+            $SectionDetail->status = 0;
+            $SectionDetail->current = 0;
+            $SectionDetail->save();
+
+            $User = \App\User::where('id', $SectionDetail->user_id)->first();
+            if ($User)
+            {
+                $User->status = 0;
+                $User->save();
+            }
+            return response()->json(['res_code' => 0, 'res_msg' => 'Data successfully deactivated.']);
+        }
+        return response()->json(['res_code' => 1, 'res_msg' => 'Invalid request.']);
     }
 }
