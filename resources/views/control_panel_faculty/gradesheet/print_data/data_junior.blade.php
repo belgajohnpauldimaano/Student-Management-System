@@ -1,5 +1,4 @@
-<div class="table-responsive ">
-    <table class="table table-condensed table-bordered table-hover">
+<table class="table table-condensed table-bordered table-hover">
         <thead style="position: sticky;top: 0" class="thead-dark"> 
             @if($quarter == '1st' || $quarter == '2nd' || $quarter == '3rd' || $quarter == '4th')
             <tr>
@@ -303,4 +302,3 @@
             @endforeach
         </tbody>
     </table>
-</div>

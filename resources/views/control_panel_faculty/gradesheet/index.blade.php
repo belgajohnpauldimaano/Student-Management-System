@@ -4,8 +4,8 @@
 <style>
     td.text-red{
         color: rgb(240, 13, 13) !important;
-        /* font-style: italic; */
     }
+    
 </style>
 @endsection
 
@@ -16,39 +16,34 @@
 @section ('content')
     <div class="box">        
         @if($GradeLevel->grade_level  == 11 ||  $GradeLevel->grade_level  == 12)                    
-            <div class="box-header with-border">
-                <div class="row">
-                    <div class="form-group col-sm-12">
-                        <h3 class="box-title">Filter</h3>
-                    </div>
-                </div>                        
+            <div class="box-header with-border">                
+                <h3 class="box-title">Filter</h3>  
+
                 <form id="js-form_filter">
                     {{ csrf_field() }}
-                        <div class="form-group col-sm-12 col-md-3" style="padding-right:0">
-                            <select name="search_school_year" id="search_school_year" class="form-control">
-                                {{-- <option value="">Select SY</option> --}}
-                                @foreach ($SchoolYear as $data)
-                                    <option value="{{ encrypt($data->id) }}">{{ $data->school_year }}</option>
-                                @endforeach
-                            </select>
-                        </div> 
-                        &nbsp;
-                        <div class="form-group col-sm-12 col-md-4" style="padding-right:0">
-                            <select name="semester_grades" id="semester_grades" class="form-control">                            
-                                <option value="">Select Semester</option>
-                                <option value="1st">First Semester</option>
-                                <option value="2nd">Second Semester</option>
-                                <option value="3rd">Average</option>                      
-                            </select>
-                        </div>                
-                        &nbsp;
-                        <div class="form-group col-sm-12 col-md-4" style="padding-right:0">
-                            <select name="quarter" id="quarter" class="form-control">
-                                <option value="">Select Class Quarter</option>
-                            </select>
-                        </div>                
-                        &nbsp;
-
+                    <div class="form-group col-sm-12 col-md-3" style="padding-right:0">
+                        <select name="search_school_year" id="search_school_year" class="form-control">
+                            @foreach ($SchoolYear as $data)
+                                <option value="{{ encrypt($data->id) }}">{{ $data->school_year }}</option>
+                            @endforeach
+                        </select>
+                    </div> 
+                    &nbsp;
+                    <div class="form-group col-sm-12 col-md-4" style="padding-right:0">
+                        <select name="semester_grades" id="semester_grades" class="form-control">                            
+                            <option value="">Select Semester</option>
+                            <option value="1st">First Semester</option>
+                            <option value="2nd">Second Semester</option>
+                            <option value="3rd">Average</option>                      
+                        </select>
+                    </div>                
+                    &nbsp;
+                    <div class="form-group col-sm-12 col-md-4" style="padding-right:0">
+                        <select name="quarter" id="quarter" class="form-control">
+                            <option value="">Select Class Quarter</option>
+                        </select>
+                    </div>                
+                    &nbsp;
                     <button type="submit" class="btn btn-flat btn-success">Search</button>
                 </form>
             </div>
@@ -99,10 +94,8 @@
     <script src="{{ asset('cms/plugins/timepicker/bootstrap-timepicker.min.js') }}"></script>
     <script>
         var page = 1;
-
         function fetchGrades(formData)
-        {
-            
+        {            
             formData.append('page', page);
             loader_overlay();
             
@@ -150,7 +143,11 @@
         $('body').on('submit', '#js-form_filter', function (e) {
             e.preventDefault();
             var formData = new FormData($('#js-form_filter')[0]);
-            fetchGrades(formData);
+
+            if ($('#search_school_year').val() && $('#semester_grades').val() && $('#quarter').val()) {
+                fetchGrades(formData);
+            }
+            
         });
 
         $(function(){
@@ -188,16 +185,6 @@
                 })
             })
 
-            $('body').on('submit', '#js-form_search', function (e) {
-                e.preventDefault();
-                
-            });
-            
-            $('body').on('submit', '#js-form_search', function (e) {
-                e.preventDefault();
-                
-                fetch_data();
-            });
             
             //2nd form
             $('body').on('submit', '#js-form_filter', function (e) {
@@ -238,79 +225,36 @@
                     
                     return;
                 }
-                fetch_data1();
+                // fetch_data1();
             });
         });
 
-        $('body').on('click', '#js-btn_print', function (e) {
+        $('body').on('click', '#js-print', function (e) {
             e.preventDefault()
-            const quarter_grades = $('#quarter_grades').val();          
-            const search_class_subject = $('#search_class_subject').val()
-            const search_sy = $('#search_sy').val()
+            const search_sy = $('#search_sy').val();
+            const quarter_grades = $('#quarter_grades').val(); 
+
+            
             const search_school_year = $('#search_school_year').val();
-            const semester_grades = $('#semester_grades').val()
-            const quarter_ = $('#quarter_').val()                   
-            //junnior   
-            if (quarter_grades == '1st') 
+            const semester = $('#semester_grades').val();
+            const quarter = $('#quarter').val();
+
+            var id = $(this).data('id');
+            var sy = $(this).data('sy');
+            var adviser_id = $(this).data('adviser_id');            
+            
+            if(search_sy && quarter_grades)
             {
-                window.open("{{ route('faculty.MyAdvisoryClass.print_first_quarter') }}?search_sy="+search_sy, '', 'height=800,width=800')
+                $category = 'junior';
+                window.open("{{ route('faculty.student_grade_sheet.print') }}?sy="+sy+"&id="+id+"&ad_id="+adviser_id+"&quarter="+quarter_grades+"&level="+$category,'','height=800,width=800')
             }
-            else if(quarter_grades == '2nd')
+
+            if(search_school_year && semester && quarter)
             {
-                window.open("{{ route('faculty.MyAdvisoryClass.print_second_quarter') }}?search_sy="+search_sy, '', 'height=800,width=800')
-            }
-            else if(quarter_grades == '3rd')
-            {
-                window.open("{{ route('faculty.MyAdvisoryClass.print_third_quarter') }}?search_sy="+search_sy, '', 'height=800,width=800')
-            }
-            else if(quarter_grades == '4th')
-            {
-                window.open("{{ route('faculty.MyAdvisoryClass.print_fourth_quarter') }}?search_sy="+search_sy, '', 'height=800,width=800')
-            }
-            else if(quarter_grades == '1st-2nd')
-            {
-                window.open("{{ route('faculty.MyAdvisoryClass.first_second_print_average') }}?search_sy="+search_sy, '', 'height=800,width=800')
-            }
-            else if(quarter_grades == '1st-3rd')
-            {
-                window.open("{{ route('faculty.MyAdvisoryClass.first_third_print_average') }}?search_sy="+search_sy, '', 'height=800,width=800')
-            }
-            else if(quarter_grades == '1st-4th')
-            {
-                window.open("{{ route('faculty.MyAdvisoryClass.first_fourth_print_average') }}?search_sy="+search_sy, '', 'height=800,width=800')
+                $category = 'senior';
+                window.open("{{ route('faculty.student_grade_sheet.print') }}?sy="+sy+"&id="+id+"&ad_id="+adviser_id+"&sem="+semester+"&quarter="+quarter+"&level="+$category,'','height=800,width=800')
             }
             
-            // senior
-            if(semester_grades == '1st')
-            {
-                if(quarter_ == '1st')
-                {
-                    window.open("{{ route('faculty.MyAdvisoryClass.print_firstSem_firstq') }}?search_school_year="+search_school_year, '', 'height=800,width=800')                       
-                }
-                else
-                {
-                    window.open("{{ route('faculty.MyAdvisoryClass.print_firstSem_secondq') }}?search_school_year="+search_school_year, '', 'height=800,width=800') 
-                }
-            }
-            else if(semester_grades == '2nd')
-            {
-                if(quarter_ == '1st')
-                {
-                    window.open("{{ route('faculty.MyAdvisoryClass.print_secondSem_firstq') }}?search_school_year="+search_school_year, '', 'height=800,width=800') 
-                }
-                else
-                {
-                    window.open("{{ route('faculty.MyAdvisoryClass.print_secondSem_secondq') }}?search_school_year="+search_school_year, '', 'height=800,width=800') 
-                }
-            }
-            else
-            {
-                if(quarter_ == '1st-2nd')
-                {
-                    window.open("{{ route('faculty.MyAdvisoryClass.final_print_average') }}?search_school_year="+search_school_year, '', 'height=800,width=1200') 
-                }
-                
-            }            
         });
        
         

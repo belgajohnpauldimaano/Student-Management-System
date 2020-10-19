@@ -3,13 +3,15 @@
 namespace App;
 
 use App\SectionDetail;
+use App\Traits\HasUser;
 use App\ClassSubjectDetail;
 use App\Traits\HasGradeSheet;
+use App\Traits\HasSchoolYear;
 use Illuminate\Database\Eloquent\Model;
 
 class ClassDetail extends Model
 {
-    use HasGradeSheet;
+    use HasGradeSheet, HasSchoolYear, HasUser;
     
     public function class_subjects ()
     {

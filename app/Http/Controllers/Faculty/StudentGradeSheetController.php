@@ -82,7 +82,8 @@ class StudentGradeSheetController extends Controller
 
         $class_detail = ClassDetail::with('section', 'classSubjectDetail')->whereAdviserId($FacultyInformation->id)->whereStatus(1)
             ->whereSchoolYearId($sy_id)->first();
-
+        // return json_encode($class_detail);
+        
         $query = ClassSubjectDetail::query();
         if($sem == '1st' || $sem == '2nd')
         {
@@ -106,9 +107,7 @@ class StudentGradeSheetController extends Controller
         {
             $no_second_sem = 'No data found';
             // return json_encode($no_second_sem);
-        }        
-        
-        
+        }
         
         $Grade_sheet_males = Enrollment::join('class_details','class_details.id','=','enrollments.class_details_id')
             ->join('student_informations','student_informations.id','=','enrollments.student_information_id')  
@@ -146,5 +145,90 @@ class StudentGradeSheetController extends Controller
         return view('control_panel_faculty.gradesheet.partials.data_list', 
             compact( 'subject_grades','AdvisorySubject','class_detail','Grade_sheet_males','Grade_sheet_females','quarter','sem','no_second_sem'))
             ->render();
+    }
+
+    public function print(Request $request)
+    {
+        // return json_encode($request->all());
+        $sy_id = $request->sy;
+        $class_id = $request->id;
+        $adviser_id = $request->ad_id;
+        $quarter = $request->quarter;
+        $sem = $request->sem ? $request->sem : '';
+        $category = $request->category;
+
+        if($sy_id && $class_id && $adviser_id && $quarter)
+        {
+             $class_detail = ClassDetail::with('section', 'classSubjectDetail')->whereAdviserId($adviser_id)->whereStatus(1)
+            ->whereSchoolYearId($sy_id)->first();
+            // return json_encode($class_detail);
+            // return json_encode($sem);
+            
+            $query = ClassSubjectDetail::query();
+            if($sem == '1st' || $sem == '2nd')
+            {
+                $query->whereSem($sem);         
+            }
+
+            if($sem == '3rd')
+            {
+                $query->orderBy('sem', 'ASC')
+                    ->orderBy('class_subject_order', 'ASC');
+            }
+
+            $AdvisorySubject = $query->with(['subject','classDetail','faculty'])
+                ->whereClassDetailsId($class_id)
+                ->whereStatus(1)
+                ->orderBy('class_subject_order', 'ASC')
+                ->get();
+
+            $no_second_sem = '';
+            if($AdvisorySubject->isEmpty())
+            {
+                $no_second_sem = 'No data found';
+                // return json_encode($no_second_sem);
+            }
+            
+            $Grade_sheet_males = Enrollment::join('class_details','class_details.id','=','enrollments.class_details_id')
+                ->join('student_informations','student_informations.id','=','enrollments.student_information_id')  
+                ->where('class_details.section_id', $class_detail->section->id)
+                ->where('class_details.school_year_id', $sy_id)
+                ->whereRaw('student_informations.gender = 1')
+                ->selectRaw("                    
+                        student_informations.last_name, 
+                        student_informations.first_name, 
+                        student_informations.middle_name
+                        ,enrollments.id
+                ")
+                ->orderBY('last_name','ASC')
+                ->get();
+
+            // return json_encode($Grade_sheet_males);
+
+            $Grade_sheet_females = Enrollment::join('class_details','class_details.id','=','enrollments.class_details_id')
+                ->join('student_informations','student_informations.id','=','enrollments.student_information_id')  
+                ->where('class_details.section_id', $class_detail->section->id)
+                ->where('class_details.school_year_id', $sy_id)
+                ->whereRaw('student_informations.gender = 2')
+                ->selectRaw("                    
+                        student_informations.last_name, 
+                        student_informations.first_name, 
+                        student_informations.middle_name
+                        ,enrollments.id
+                ")
+                ->orderBY('last_name','ASC')
+                ->get();
+
+            $subject_grades = StudentEnrolledSubject::first();
+        
+            return view('control_panel_faculty.gradesheet.print_data.print', 
+                compact('subject_grades','AdvisorySubject','class_detail','Grade_sheet_males','Grade_sheet_females','quarter','no_second_sem','category','sem'))
+                ->render();
+
+            $pdf = \PDF::loadView('control_panel_faculty.gradesheet.print_data.print', 
+                compact('subject_grades','AdvisorySubject','class_detail','Grade_sheet_males','Grade_sheet_females','quarter','category','no_second_sem','sem'));
+            $pdf->setPaper('Legal', 'portrait');
+                return $pdf->stream();
+        }
     }
 }

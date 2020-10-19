@@ -117,7 +117,7 @@ Route::group(['prefix' => 'faculty', 'middleware' => ['auth', 'userroles'], 'rol
         Route::post('second-quarter', 'Faculty\StudentGradeSheetController@secondquarter')->name('faculty.student_gradesheet.secondquarter');
 
         Route::post('sem-quarter', 'Faculty\StudentGradeSheetController@listQuarterSem')->name('faculty.student_gradesheet.list_quarter_sem');
-        
+        Route::get('print-gradesheet', 'Faculty\StudentGradeSheetController@print')->name('faculty.student_grade_sheet.print');
     });
 
     Route::group(['prefix' => 'class-attendance'], function () {

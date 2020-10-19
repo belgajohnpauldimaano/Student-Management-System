@@ -2,6 +2,7 @@
 namespace App\Traits;
 
 use App\User;
+use App\FacultyInformation;
 
 trait HasUser{
 
@@ -12,7 +13,12 @@ trait HasUser{
 
     public function getFullNameAttribute() {
         return ucwords($this->last_name . ', ' . $this->first_name. ' ' . $this->middle_name);
-    }    
+    }
+
+    public function adviser()
+    {
+        return $this->hasOne(FacultyInformation::class, 'id', 'adviser_id');
+    }
 
    
 }
