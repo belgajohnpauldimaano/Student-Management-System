@@ -72,7 +72,7 @@
                                         @endif           
                                     @endif              
                                     
-                                    <td class="text-center">
+                                    <td class="text-left">
                                         <?php                                                   
                                             $faculty = \App\ClassSubjectDetail::where('id', $data->class_subject_details_id)->first();
                                             $faculty_name = \App\FacultyInformation::where('id', $faculty->faculty_id)->first();
