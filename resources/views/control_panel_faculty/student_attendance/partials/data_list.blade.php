@@ -111,7 +111,6 @@
             <b>Female</b> 
         </td>
     </tr>
-
     @forelse ($attendance_female as $key => $data) 
     <tr>
         <td>{{ $key + 1 }}.</td>

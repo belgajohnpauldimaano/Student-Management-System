@@ -19,89 +19,60 @@
             </tr>
         </thead>
         <tbody>
-            
-            @foreach($Enrollment_first_sem as $key => $data)
-            <tr>
-                <td>
-                    <?php
-                        $subject = \App\ClassSubjectDetail::where('id', $data->class_subject_details_id)                                        
-                            ->orderBY('class_subject_order', 'ASC')->get();
-                        echo \App\SubjectDetail::where('id', $subject[0]->subject_id)->first()->subject;                     
-                    ?>
-                </td>
-                
-                <td style="text-align: center">
-                    <?php 
-                        $StudentEnrolledSubject1 = \App\StudentEnrolledSubject::where('enrollments_id', $data->enrollment_id)
-                        ->where('subject_id', $data->subject_id)
-                        ->where('class_subject_details_id', $data->class_subject_details_id)
-                        ->where('sem', 1)
-                        ->first(); 
-                        
-                        if($StudentEnrolledSubject1)
-                        {
-                            echo $StudentEnrolledSubject1->fir_g ? $StudentEnrolledSubject1->fir_g > 0 ? round($StudentEnrolledSubject1->fir_g) : '' : '';
-                        }
-                    ?>               
-                </td>
-                <td style="text-align: center">
-                    <?php 
-                        $StudentEnrolledSubject1 = \App\StudentEnrolledSubject::where('enrollments_id', $data->enrollment_id)
-                        ->where('subject_id', $data->subject_id)
-                        ->where('sem', 1)
-                        ->first(); 
-
-                        if($StudentEnrolledSubject1)
-                        {
-                            echo $StudentEnrolledSubject1->sec_g ? $StudentEnrolledSubject1->sec_g > 0 ? round($StudentEnrolledSubject1->sec_g) : '' : '';
-                        }
-                    ?>                
-                </td>
-                <td style="text-align: center">
-                    <?php 
-                        $StudentEnrolledSubject1 = \App\StudentEnrolledSubject::where('enrollments_id', $data->enrollment_id)
-                        ->where('subject_id', $data->subject_id)
-                        ->where('sem', 1)
-                        ->first(); 
-
-                        if($StudentEnrolledSubject1)
-                        {
-                            if(round($StudentEnrolledSubject1->fir_g) != 0 && round($StudentEnrolledSubject1->sec_g) != 0)
-                            {
-                                echo round($final_ave = (round($StudentEnrolledSubject1->fir_g) + round($StudentEnrolledSubject1->sec_g)) / 2);
-                            }
-                            else 
-                            {
-                                echo "";
-                            }    
-                        }                                    
-                    ?>
-                </td>
-                @if($StudentEnrolledSubject1)                                
-                    @if(round($StudentEnrolledSubject1->fir_g) != 0 && round($StudentEnrolledSubject1->sec_g) != 0) 
-                    <td style="color:{{ round($final_ave) >= 75 ? 'green' : 'red' }};">
-                        <center>
-                            <strong>
-                                {{ round($final_ave) >= 75 ? 'Passed' : 'Failed' }}
-                            </strong>
-                        </center>
-                    </td> 
-                    @else
-                        <td></td>
-                    @endif
-                @else    
-                    <td></td>   
-                @endif   
-                <td>
-                    <?php                                                   
-                        $faculty = \App\ClassSubjectDetail::where('id', $data->class_subject_details_id)->first();
-                        $faculty_name = \App\FacultyInformation::where('id', $faculty->faculty_id)->first();
-                        echo $faculty_name->last_name.', '.$faculty_name->first_name.' '.$faculty_name->middle_name;                                             
-                    ?>                
-                </td> 
-            </tr>
-            @endforeach
+            @if($Enrollment_first_sem->count() > 0) 
+                @forelse($Enrollment_first_sem as $key => $data)
+                    <tr>
+                        <td>
+                            {{$data['subject']->subject}}
+                        </td>                        
+                        <td style="text-align: center">
+                            {{round($data['fir_g'])}}
+                        </td>
+                        <td style="text-align: center">
+                            {{round($data['sec_g'])}}             
+                        </td>
+                        <td style="text-align: center">
+                            {{round($data['final_g'])}}
+                        </td>
+                        @if($data['final_g'])
+                            @if($data['fir_g'] != '' && $data['sec_g'] != '')                                
+                                <td style="color:{{ round($data['final_g']) >= 75 ? 'green' : 'red' }};">
+                                    <center>
+                                        <strong>
+                                            {{ round($data['final_g']) >= 75 ? 'Passed' : 'Failed' }}
+                                        </strong>
+                                    </center>
+                                </td> 
+                            @else    
+                                <td></td>   
+                            @endif
+                        @else    
+                            <td></td>   
+                        @endif    
+                        <td>
+                            {{$data['faculty_name']}}        
+                        </td> 
+                    </tr>
+                @empty
+                    <tr>
+                        <th class="text-center" colspan="6">
+                            No Data for Second Semester.   
+                        </th> 
+                    </tr>
+                @endforelse
+            @else
+                <tr>
+                    <th class="text-center" colspan="6">
+                        No Data for Second Semester.   
+                    </th> 
+                </tr>
+            @endif
         </tbody>
     </table>
-    @include('control_panel_student.grade_sheet.partials.grade_panel.senior.first_sem.attendance')
+
+    @if($Enrollment_first_sem->count() > 0)
+        @if($student_attendance1 !='')
+            @include('control_panel_student.grade_sheet.partials.grade_panel.senior.first_sem.attendance')
+        @endif
+    @endif
 </div>
