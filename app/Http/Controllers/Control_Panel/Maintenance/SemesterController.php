@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Control_Panel\Maintenance;
 
+use App\Semester;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Control_Panel\Maintenance\SemesterController;
@@ -13,24 +14,24 @@ class SemesterController extends Controller
     {
         if ($request->ajax())
         {
-            $Semester = \App\Semester::get();
+            $Semester = Semester::get();
             return view('control_panel.semester.index', compact('Semester'))->render();
         }
         
-        $Semester = \App\Semester::get();
+        $Semester = Semester::get();
         return view('control_panel.semester.index', compact('Semester'));
     }
 
     public function toggle_current_sy (Request $request)
     {
-        $Semester = \App\Semester::where('id', $request->id)->first();
+        $Semester = Semester::where('id', $request->id)->first();
         if ($Semester) 
         {
             if($request->id == 1)
             {
                 if ($Semester->current == 0) 
                 {
-                    \App\Semester::where(['id'=> 2])->update(['current'=>0]);
+                    Semester::where(['id'=> 2])->update(['current'=>0]);
     
                     $Semester->current = 1; 
                     $Semester->save(); 
@@ -38,7 +39,7 @@ class SemesterController extends Controller
                 }
                 else 
                 {
-                    \App\Semester::where(['id'=> 2])->update(['current'=>1]);
+                    Semester::where(['id'=> 2])->update(['current'=>1]);
     
                     $Semester->current = 0; 
                     $Semester->save(); 
@@ -49,7 +50,7 @@ class SemesterController extends Controller
             {
                 if ($Semester->current == 0) 
                 {
-                    \App\Semester::where(['id'=> 1])->update(['current'=>0]);
+                    Semester::where(['id'=> 1])->update(['current'=>0]);
     
                     $Semester->current = 1; 
                     $Semester->save(); 
@@ -57,7 +58,7 @@ class SemesterController extends Controller
                 }
                 else 
                 {
-                    \App\Semester::where(['id'=> 1])->update(['current'=>1]);
+                    Semester::where(['id'=> 1])->update(['current'=>1]);
     
                     $Semester->current = 0; 
                     $Semester->save(); 
@@ -70,7 +71,7 @@ class SemesterController extends Controller
 
     public function set_sem (Request $request)
     {
-        $Semester = \App\Semester::where('id', $request->id)->first();
+        $Semester = Semester::where('id', $request->id)->first();
         
         if ($Semester) 
         {

@@ -124,8 +124,6 @@ Route::group(['prefix' => 'faculty', 'middleware' => ['auth', 'userroles'], 'rol
         Route::get('encode-class-attendance', 'Faculty\ClassAttendanceController@index')->name('faculty.class-attendance.index');
         Route::post('encode-class-attendance', 'Faculty\ClassAttendanceController@index')->name('faculty.class-attendance.index');
         Route::post('', 'Faculty\ClassAttendanceController@save_attendance')->name('faculty.save_class_attendance');
-        Route::post('first_sem/save', 'Faculty\ClassAttendanceController@save_attendance_senior_first')->name('faculty.save_attendance_senior_first');
-        Route::post('second_sem/save', 'Faculty\ClassAttendanceController@save_attendance_senior_second')->name('faculty.save_attendance_senior_second');
         Route::get('print-class-attendance', 'Faculty\ClassAttendanceController@print_attendance')->name('faculty.print_attendance');
     });
 

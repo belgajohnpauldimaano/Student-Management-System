@@ -50,29 +50,105 @@
                                     </div>
                                     
                                     @if($ClassSubjectDetail->grade_level < 11) 
-                                        <input type="text" name="date" class="tbdatepicker form-control pull-right" id="tbdatepicker" placeholder="11/11/2000" value="{{ $DateRemarks != '' ? $DateRemarks->j_date : '' }}">
+                                        <input type="text" name="date" disabled class="tbdatepicker form-control pull-right" 
+                                                id="tbdatepicker" placeholder="11/11/2000" value="
+                                                @php
+                                                    try {
+                                                        $DateRemarks != '' ? $DateRemarks->j_date : '' ;
+                                                    } catch (\Throwable $th) {
+                                                        $DateRemarks = '';
+                                                    }
+                                                @endphp                                                
+                                                "
+                                            >
                                     @elseif($ClassSubjectDetail->grade_level > 10)
                                         @if($Semester_id == 1)
-                                            <input type="text" name="date" disabled class="tbdatepicker form-control pull-right" id="tbdatepicker" placeholder="11/11/2000" value="{{ $DateRemarks->s_date1 ? $DateRemarks->s_date1 : '' }}">
+                                            <input type="text" name="date" disabled class="tbdatepicker form-control pull-right" 
+                                                id="tbdatepicker" placeholder="11/11/2000" value="
+                                                @php
+                                                    try {
+                                                        $DateRemarks->s_date1 ? $DateRemarks->s_date1 : '' ;
+                                                    } catch (\Throwable $th) {
+                                                        $DateRemarks = '';
+                                                    }
+                                                @endphp                                                
+                                                "
+                                            >
                                         @else
-                                            <input type="text" name="date" disabled class="tbdatepicker form-control pull-right" id="tbdatepicker" placeholder="11/11/2000" value="{{ $DateRemarks->s_date2 ? $DateRemarks->s_date2 : '' }}">
+                                            <input type="text" name="date" disabled class="tbdatepicker form-control pull-right" 
+                                            id="tbdatepicker" placeholder="11/11/2000" value="
+                                                @php
+                                                    try {
+                                                        $DateRemarks->s_date2 ? $DateRemarks->s_date2 : '' ;
+                                                    } catch (\Throwable $th) {
+                                                        $DateRemarks = '';
+                                                    }
+                                                @endphp       
+                                            ">
                                         @endif
                                     @endif
                                 </div>                                
                             </td>
                             
-                            <td>
-                                <center>    
-                                    <input name="print_sy" id="print_sy" value="{{ encrypt($ClassSubjectDetail->id) }}" type="hidden" /> 
-                                    <input name="stud_id" id="stud_id" value="{{ $data->student_information_id }}" type="hidden" />
-                                    <input name="s_year" id="s_year" value="{{ $SchoolYear->id }}" type="hidden" />
-                                    <input name="level" id="level" value="{{ $ClassSubjectDetail->grade_level }}" type="hidden" />
-                                    <input name="sem" id="sem" value="{{ $Semester_id }}" type="hidden" />
-                                    <input name="e_id" value="{{ $data->e_id}}" type="hidden" />
+                            <td class="text-center">                                 
+                                <input name="print_sy" id="print_sy" value="{{ encrypt($ClassSubjectDetail->id) }}" type="hidden" /> 
+                                <input name="stud_id" id="stud_id" value="{{ $data->student_information_id }}" type="hidden" />
+                                <input name="s_year" id="s_year" value="{{ $SchoolYear->id }}" type="hidden" />
+                                <input name="level" id="level" value="{{ $ClassSubjectDetail->grade_level }}" type="hidden" />
+                                <input name="sem" id="sem" value="{{ $Semester_id }}" type="hidden" />
+                                <input name="e_id" value="{{ $data->e_id}}" type="hidden" />
+                                <button type="submit" class="btn btn-sm btn-primary save">save</button>
+                                
+                                @if($ClassSubjectDetail->grade_level < 11)
+                                        <button 
+                                            @php
+                                                try {
+                                                    echo $DateRemarks->j_date ? '' : 'disabled';
+                                                } catch (\Throwable $th) {
+                                                    echo $DateRemarks = 'disabled';
+                                                }
+                                            @endphp  
+                                        class="btn btn-sm btn-danger printGradebtn" 
+                                            rel="{{ encrypt($data->student_information_id) }}" 
+                                            id="js-btn_print" 
+                                            data-id="{{ encrypt($data->student_information_id) }}">
+                                            Print
+                                        </button>
+                                @endif
 
-                                    <button type="submit" class="btn btn-sm btn-primary save">save</button>
-                                    <button class="btn btn-sm btn-danger printGradebtn" rel="{{ encrypt($data->student_information_id) }}" id="js-btn_print" data-id="{{ encrypt($data->student_information_id) }}">Print</button>
-                                </center>
+                                @if($ClassSubjectDetail->grade_level > 10)
+                                    @if($Semester_id == 1)
+                                        <button 
+                                            @php
+                                                try {
+                                                    echo $DateRemarks->s_date1 ? '' : 'disabled';
+                                                } catch (\Throwable $th) {
+                                                    echo $DateRemarks = 'disabled';
+                                                }
+                                            @endphp  
+                                        class="btn btn-sm btn-danger printGradebtn" 
+                                            rel="{{ encrypt($data->student_information_id) }}" 
+                                            id="js-btn_print" 
+                                            data-id="{{ encrypt($data->student_information_id) }}">
+                                            Print
+                                        </button>
+                                    @else
+                                        <button 
+                                            @php
+                                                try {
+                                                    echo $DateRemarks->s_date2 ? '' : 'disabled';
+                                                } catch (\Throwable $th) {
+                                                    echo $DateRemarks = 'disabled';
+                                                }
+                                            @endphp  
+                                        class="btn btn-sm btn-danger printGradebtn" 
+                                            rel="{{ encrypt($data->student_information_id) }}" 
+                                            id="js-btn_print" 
+                                            data-id="{{ encrypt($data->student_information_id) }}">
+                                            Print
+                                        </button>
+                                    @endif
+                                @endif
                             </td>                            
                         </tr>
                     </form>
@@ -115,29 +191,105 @@
                                     </div>
                                     
                                     @if($ClassSubjectDetail->grade_level < 11) 
-                                        <input type="text" name="date" class="tbdatepicker form-control pull-right" id="tbdatepicker" placeholder="11/11/2000" value="{{ $DateRemarks != '' ? $DateRemarks->j_date : '' }}">
+                                         <input type="text" name="date" disabled class="tbdatepicker form-control pull-right" 
+                                                id="tbdatepicker" placeholder="11/11/2000" value="
+                                                @php
+                                                    try {
+                                                        $DateRemarks != '' ? $DateRemarks->j_date : '' ;
+                                                    } catch (\Throwable $th) {
+                                                        $DateRemarks = '';
+                                                    }
+                                                @endphp                                                
+                                                "
+                                            >
                                     @elseif($ClassSubjectDetail->grade_level > 10)
                                         @if($Semester_id == 1)
-                                            <input type="text" name="date" disabled class="tbdatepicker form-control pull-right" id="tbdatepicker" placeholder="11/11/2000" value="{{ $DateRemarks->s_date1 ? $DateRemarks->s_date1 : '' }}">
+                                            <input type="text" name="date" disabled class="tbdatepicker form-control pull-right" 
+                                                id="tbdatepicker" placeholder="11/11/2000" value="
+                                                @php
+                                                    try {
+                                                        $DateRemarks->s_date1 ? $DateRemarks->s_date1 : '' ;
+                                                    } catch (\Throwable $th) {
+                                                        $DateRemarks = '';
+                                                    }
+                                                @endphp                                                
+                                                "
+                                            >
                                         @else
-                                            <input type="text" name="date" disabled class="tbdatepicker form-control pull-right" id="tbdatepicker" placeholder="11/11/2000" value="{{ $DateRemarks->s_date2 ? $DateRemarks->s_date2 : ''}}">
+                                            <input type="text" name="date" disabled class="tbdatepicker form-control pull-right" 
+                                            id="tbdatepicker" placeholder="11/11/2000" value="
+                                                @php
+                                                    try {
+                                                        $DateRemarks->s_date2 ? $DateRemarks->s_date2 : '' ;
+                                                    } catch (\Throwable $th) {
+                                                        $DateRemarks = '';
+                                                    }
+                                                @endphp       
+                                            ">
                                         @endif
                                     @endif
                                 </div>                                
                             </td>
                             
-                            <td>
-                                <center>    
-                                    <input name="print_sy" id="print_sy" value="{{ encrypt($ClassSubjectDetail->id) }}" type="hidden" /> 
-                                    <input name="stud_id" id="stud_id" value="{{ $data->student_information_id }}" type="hidden" />
-                                    <input name="s_year" id="s_year" value="{{ $SchoolYear->id }}" type="hidden" />
-                                    <input name="level" id="level" value="{{ $ClassSubjectDetail->grade_level }}" type="hidden" />
-                                    <input name="sem" id="sem" value="{{ $Semester_id }}" type="hidden" />
-                                    <input name="e_id" value="{{ $data->e_id}}" type="hidden" />
+                            <td class="text-center">                                    
+                                <input name="print_sy" id="print_sy" value="{{ encrypt($ClassSubjectDetail->id) }}" type="hidden" /> 
+                                <input name="stud_id" id="stud_id" value="{{ $data->student_information_id }}" type="hidden" />
+                                <input name="s_year" id="s_year" value="{{ $SchoolYear->id }}" type="hidden" />
+                                <input name="level" id="level" value="{{ $ClassSubjectDetail->grade_level }}" type="hidden" />
+                                <input name="sem" id="sem" value="{{ $Semester_id }}" type="hidden" />
+                                <input name="e_id" value="{{ $data->e_id}}" type="hidden" />
 
-                                    <button type="submit" class="btn btn-sm btn-primary save">save</button>
-                                    <button class="btn btn-sm btn-danger printGradebtn" rel="{{ encrypt($data->student_information_id) }}" id="js-btn_print" data-id="{{ encrypt($data->student_information_id) }}">Print</button>
-                                </center>
+                                <button type="submit" class="btn btn-sm btn-primary save">save</button>
+                                @if($ClassSubjectDetail->grade_level < 11)
+                                        <button 
+                                            @php
+                                                try {
+                                                    echo $DateRemarks->j_date ? '' : 'disabled';
+                                                } catch (\Throwable $th) {
+                                                    echo $DateRemarks = 'disabled';
+                                                }
+                                            @endphp  
+                                        class="btn btn-sm btn-danger printGradebtn" 
+                                            rel="{{ encrypt($data->student_information_id) }}" 
+                                            id="js-btn_print" 
+                                            data-id="{{ encrypt($data->student_information_id) }}">
+                                            Print
+                                        </button>
+                                @endif
+
+                                @if($ClassSubjectDetail->grade_level > 10)
+                                    @if($Semester_id == 1)
+                                        <button 
+                                            @php
+                                                try {
+                                                    echo $DateRemarks->s_date1 ? '' : 'disabled';
+                                                } catch (\Throwable $th) {
+                                                    echo $DateRemarks = 'disabled';
+                                                }
+                                            @endphp  
+                                        class="btn btn-sm btn-danger printGradebtn" 
+                                            rel="{{ encrypt($data->student_information_id) }}" 
+                                            id="js-btn_print" 
+                                            data-id="{{ encrypt($data->student_information_id) }}">
+                                            Print
+                                        </button>
+                                    @else
+                                        <button 
+                                            @php
+                                                try {
+                                                    echo $DateRemarks->s_date2 ? '' : 'disabled';
+                                                } catch (\Throwable $th) {
+                                                    echo $DateRemarks = 'disabled';
+                                                }
+                                            @endphp  
+                                        class="btn btn-sm btn-danger printGradebtn" 
+                                            rel="{{ encrypt($data->student_information_id) }}" 
+                                            id="js-btn_print" 
+                                            data-id="{{ encrypt($data->student_information_id) }}">
+                                            Print
+                                        </button>
+                                    @endif
+                                @endif
                             </td>                            
                         </tr>
                     </form>

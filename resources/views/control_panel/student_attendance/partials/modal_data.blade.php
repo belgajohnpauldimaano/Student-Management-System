@@ -10,15 +10,14 @@
                 <div class="modal-body">
                     <form id="js-form_attendance">
                         {{ csrf_field() }}                        
-                        <h4 class="modal-title">
-                            Attendance Number
-                        </h4>
+                        
                         @if ($attendance)
                             <input type="hidden" name="id" value="{{ $attendance->id }}">
                         @endif
                         <br/>
                         <div class="grid-width-100">
-                            <select name="sy_search" id="sy_search" class="form-control">
+                            <label for="">-School Year-</label>
+                            <select name="school_year" id="school_year" class="form-control">
                                 <option value="">Select School Year</option>
                                 @foreach ($SchoolYear as $data)
                                     <option value="{{ $data->id }}" 
@@ -32,17 +31,18 @@
                                     >{{ $data->school_year }}</option>
                                 @endforeach
                             </select>
+                            <div class="help-block text-red text-left" id="js-school_year">
+                            </div>
                         </div>
                         <br/>
-                        <br/>
                         <table class="table">
-                            <tr>
+                            <label for="">-Attendance Number-</label>
+                            {{-- <tr>
                                 <th>Title</th>
                                 @foreach ($student_attendance['table_header'] as $data)
                                     <th>{{ $data['key'] }}</th>
-                                {{--  {{ json_encode($data) }}  --}}
                                 @endforeach
-                            </tr>
+                            </tr> --}}
                             <tr>
                                 <th>
                                     Days of School

@@ -21,7 +21,7 @@
                         {{ csrf_field() }}
                         <div class="form-group col-sm-12 col-md-3" style="padding-right:0">
                             <select name="search_sy" id="search_sy" class="form-control search_sy">
-                                <option value="">Select SY</option>
+                                {{-- <option value="">Select SY</option> --}}
                                 @foreach ($SchoolYear as $data)
                                     <option value="{{ $data->id }}">{{ $data->school_year }}</option>
                                 @endforeach
@@ -41,7 +41,7 @@
                         {{ csrf_field() }}
                         <div class="form-group col-sm-12 col-md-3" style="padding-right:0">
                             <select name="search_sy1" id="search_sy1" class="form-control search_sy">
-                                <option value="">Select SY</option>
+                                {{-- <option value="">Select SY</option> --}}
                                 @foreach ($SchoolYear as $data)
                                     <option value="{{ $data->id }}">{{ $data->school_year }}</option>
                                 @endforeach
@@ -81,7 +81,7 @@
     <script src="{{ asset('cms/plugins/timepicker/bootstrap-timepicker.min.js') }}"></script>
     <script>
         var page = 1;
-        function fetch_data () {
+        function fetch_data() {
             var formData = new FormData($('#js-form_search')[0]);
             formData.append('page', page);
             loader_overlay();
@@ -115,7 +115,8 @@
                 fetch_data();
             });
 
-            $('body').on('change', '#search_sy', function () {
+            
+            // $('body').on('change', '#search_sy', function () {
                 $.ajax({
                     url : "{{ route('faculty.student_grade_sheet.list_class_subject_details') }}",
                     type : 'POST',
@@ -126,7 +127,7 @@
                         $('#search_class_subject').html(res);
                     }
                 })
-            })
+            // })
             
             function fetch_data1() {
                 var formData = new FormData($('#js-form_search1')[0]);
@@ -157,7 +158,8 @@
                 }
                 // fetch_data1();
             });
-            $('body').on('change', '#search_sy1', function () {
+
+            // $('body').on('change', '#search_sy1', function () {
                 $.ajax({
                     url : "{{ route('faculty.student_grade_sheet.semester') }}",
                     type : 'POST',
@@ -168,7 +170,7 @@
                         $('#search_semester').html(res);
                     }
                 })
-            })
+            // })
             $('body').on('submit', '#js-form_search1', function (e) {
                 e.preventDefault();
                 if (!$('#search_class_subject_sem').val()) {

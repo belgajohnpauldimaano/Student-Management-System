@@ -95,9 +95,6 @@
     </style>
 </head>
 <body>
-        
-        
-        
         <h3 style="text-align: center;margin-bottom: 0px">Saint John Academy</h3>
         @if($Semester->grade_level == '11' || $Semester->grade_level == '12')
             <h4 style="text-align: center; margin-top: 0px; margin-bottom: 0em">SENIOR HIGH SCHOOL</h4>
@@ -105,823 +102,204 @@
             <h4 style="text-align: center; margin-top: 0px; margin-bottom: 0em">JUNIOR HIGH SCHOOL</h4>
         @endif
         <h4 style="text-align: center; margin-top: 0px">Class Attendance</h4>
-        <img style="margin-left: 10em; margin-top: -1em"  class="logo sja-logo" width="85" src="{{ asset('img/sja-logo.png') }}" />
-        
-        @if($Semester->grade_level == '11' || $Semester->grade_level == '12')
-        <table class="table" style="margin-top: 1em">
-                <thead>
-                    <tr>                        
-                        <th colspan="2" style="text-align:left">Grade and Section: <i style="color: red">{{ $Semester->grade_level.' - '.$Semester->section }}</i></th>        
-                    </tr>
-                </thead>
-                <tbody>      
-                                            
-                    <tr>
-                        <td colspan="2">
-                            <b>Male</b> 
-                        </td>
-                    </tr>
+        <h5 class="text-center">
+            S.Y. - {{$school_year->school_year}}<br/>
+            @if($Semester->grade_level > 10)
+                @if($Semester->sem == 1)
+                    First Semester
+                @endif
 
-                    @foreach ($Senior_firstsem_m as $key => $data1) 
-                    <tr>
-                        
-                        <td colspan="2">
-                            <b style="font-size: 11px">
-                                    {{ $key + 1 }}.{{ $data1->student_name }}
-                            </b>
+                @if($Semester->sem == 2)
+                    Second Semester
+                @endif
+            @endif
+        </h5>
+        <img style="margin-left: 10em; margin-top: 0em"  class="logo sja-logo" width="85" src="{{ asset('img/sja-logo.png') }}" />
 
-                            
-                            {{-- {{ $data1->attendance }}  --}}
-                            
-                            @if($data1->attendance_first=="")
+        <table>
+            <thead>
+                <tr>
+                    <th style="width: 30px">#</th>
+                    <th colspan="13" style="text-align:left">Student Name</th>
+                </tr>
+            </thead>
+            <tbody>      
+                                                            
+            <tr>
+                <td colspan="16">
+                    <b>Male</b> 
+                </td>
+            </tr>
 
-                            @else
+            @forelse ($attendance_male as $key => $data) 
+            <tr>
+                <td>{{ $key + 1 }}.</td>
+                <td>
+                    <b style="padding-top: 5px">
+                        {{ $data['student_name'] }}
+                    </b><br/>
+                    
+                        <table class="table" style="margin-top: 5px">
                             <tr>
-                                <td>
-                                        <table class="table">
-                                                <tr>                                                                                                    
-                                                    <?php
-                                                    $student_attendance = [];
-                                                    $table_header = [
-                                                            ['key' => 'Jun',],
-                                                            ['key' => 'Jul',],
-                                                            ['key' => 'Aug',],
-                                                            ['key' => 'Sep',],
-                                                            ['key' => 'Oct',],
-                                                            
-                                                            ['key' => 'total',],
-                                                        ];
-                                                        
-                                                        $attendance_data = json_decode(json_encode([
-                                                            'days_of_school' => [
-                                                                0, 0, 0, 0, 0, 
-                                                            ],
-                                                            'days_present' => [
-                                                                0, 0, 0, 0, 0,
-                                                            ],
-                                                            'days_absent' => [
-                                                                0, 0, 0, 0, 0,
-                                                            ],
-                                                            'times_tardy' => [
-                                                                0, 0, 0, 0, 0,
-                                                            ]
-                                                        ]));
-                                                        
-                                                        
-                                                        $attendance_data = json_decode($data1->attendance_first);
-        
-                                                        
-                                                    //    $attendance_data;
-        
-                                                    //     if ($EnrollmentMale[0]->attendance) {
-                                                    //         $attendance_data = json_decode($EnrollmentMale[0]->attendance);
-                                                    //     }    
-        
-                                                        $student_attendance = [
-                                                            // 'student_name'      => $EnrollmentMale[0]->student_name,
-                                                            'attendance_data'   => $attendance_data,
-                                                            'table_header'      => $table_header,
-                                                            'days_of_school_total' => array_sum($attendance_data->days_of_school),
-                                                            'days_present_total' => array_sum($attendance_data->days_present),
-                                                            'days_absent_total' => array_sum($attendance_data->days_absent),
-                                                            'times_tardy_total' => array_sum($attendance_data->times_tardy),
-                                                        ];
-        
-                                                        
-                                                        ?>
-                                                        
-                                                        
-                                                    
-                                                        <th style="width: 90px">
-                                                                    <i style="font-size: 11px; color: red">First Semester</i>
-                                                        </th>
-                                                                @foreach ($student_attendance['table_header'] as $data)
-                                                                        <th style="text-align:center">{{ $data['key'] }}</th>
-                                                                @endforeach
-                                                        </tr>
-                                                        <tr>
-                                                            <th>
-                                                                Days of School
-                                                            </th>
-                                                            @foreach ($student_attendance['attendance_data']->days_of_school as $key => $data)
-                                                                <th style="text-align:center">{{ $data }}
-                                                                </th>
-                                                            @endforeach
-                                                            <th class="days_of_school_total" style="text-align:center">
-                                                                {{ $student_attendance['days_of_school_total'] }}
-                                                            </th>
-                                                        </tr>
-                                                        <tr>
-                                                            <th>
-                                                                Days Present
-                                                            </th>
-                                                            @foreach ($student_attendance['attendance_data']->days_present as $key => $data)
-                                                                <th style="text-align:center">{{ $data }} 
-                                                                </th>
-                                                            @endforeach
-                                                            <th class="days_present_total" style="text-align: center">
-                                                                {{ $student_attendance['days_present_total'] }}
-                                                            </th>
-                                                        </tr>
-                                                        <tr>
-                                                            <th>
-                                                                Days Absent
-                                                            </th>
-                                                            @foreach ($student_attendance['attendance_data']->days_absent as $key => $data)
-                                                                <th style="text-align:center">{{ $data }}  
-                                                                </th>
-                                                            @endforeach
-                                                            <th class="days_absent_total" style="text-align: center">
-                                                                {{ $student_attendance['days_absent_total'] }}
-                                                            </th>
-                                                        </tr>
-                                                        <tr>
-                                                            <th>
-                                                                Times Tardy
-                                                            </th>
-                                                            @foreach ($student_attendance['attendance_data']->times_tardy as $key => $data)
-                                                                <th style="text-align:center">{{ $data }}  
-                                                                </th>
-                                                            @endforeach
-                                                            <th class="times_tardy_total" style="text-align: center">
-                                                                {{ $student_attendance['times_tardy_total'] }}
-                                                            </th>
-                                                        </tr>
-                                            </table>
-                                </td>
-
-                                <td>
-                                        <table id="mytable" class="table">
-                                                <tr>
-                                                                                                    
-                                                    <?php
-                                                    $student_attendance = [];
-                                                    $table_header = [
-                                                            ['key' => 'Nov',],
-                                                            ['key' => 'Dec',],
-                                                            ['key' => 'Jan',],
-                                                            ['key' => 'Feb',],
-                                                            ['key' => 'Mar',],
-                                                            ['key' => 'Apr',],
-                                                            
-                                                            ['key' => 'total',],
-                                                        ];
-                                                        
-                                                        $attendance_data = json_decode(json_encode([
-                                                            'days_of_school' => [
-                                                                0, 0, 0, 0, 0, 
-                                                            ],
-                                                            'days_present' => [
-                                                                0, 0, 0, 0, 0,
-                                                            ],
-                                                            'days_absent' => [
-                                                                0, 0, 0, 0, 0,
-                                                            ],
-                                                            'times_tardy' => [
-                                                                0, 0, 0, 0, 0,
-                                                            ]
-                                                        ]));
-                                                        
-                                                        
-                                                        $attendance_data = json_decode($data1->attendance_second);
-    
-                                                        $student_attendance = [
-                                                            // 'student_name'      => $EnrollmentMale[0]->student_name,
-                                                            'attendance_data'   => $attendance_data,
-                                                            'table_header'      => $table_header,
-                                                            'days_of_school_total' => array_sum($attendance_data->days_of_school),
-                                                            'days_present_total' => array_sum($attendance_data->days_present),
-                                                            'days_absent_total' => array_sum($attendance_data->days_absent),
-                                                            'times_tardy_total' => array_sum($attendance_data->times_tardy),
-                                                        ];
-    
-                                                        
-                                                        ?>
-                                                        
-                                                        
-                                                    
-    
-                                                        <th style="width: 90px">
-                                                            <i style="font-size: 11px; color: red">Second Semester</i>
-                                                        </th>
-                                                            @foreach ($student_attendance['table_header'] as $data)
-                                                                    <th>{{ $data['key'] }}</th> 
-                                                            {{-- / {{ json_encode($data) }}  --}}
-                                                            @endforeach
-                                                    </tr>
-                                                    <tr>
-                                                            <th>
-                                                                Days of School
-                                                            </th>
-                                                            @foreach ($student_attendance['attendance_data']->days_of_school as $key => $data)
-                                                                <th style="text-align:center">{{ $data }}
-                                                                </th>
-                                                            @endforeach
-                                                            <th class="days_of_school_total" style="text-align:center">
-                                                                {{ $student_attendance['days_of_school_total'] }}
-                                                            </th>
-                                                        </tr>
-                                                        <tr>
-                                                            <th>
-                                                                Days Present
-                                                            </th>
-                                                            @foreach ($student_attendance['attendance_data']->days_present as $key => $data)
-                                                                <th style="text-align:center">{{ $data }} 
-                                                                </th>
-                                                            @endforeach
-                                                            <th class="days_present_total" style="text-align: center">
-                                                                {{ $student_attendance['days_present_total'] }}
-                                                            </th>
-                                                        </tr>
-                                                        <tr>
-                                                            <th>
-                                                                Days Absent
-                                                            </th>
-                                                            @foreach ($student_attendance['attendance_data']->days_absent as $key => $data)
-                                                                <th style="text-align:center">{{ $data }}  
-                                                                </th>
-                                                            @endforeach
-                                                            <th class="days_absent_total" style="text-align: center">
-                                                                {{ $student_attendance['days_absent_total'] }}
-                                                            </th>
-                                                        </tr>
-                                                        <tr>
-                                                            <th>
-                                                                Times Tardy
-                                                            </th>
-                                                            @foreach ($student_attendance['attendance_data']->times_tardy as $key => $data)
-                                                                <th style="text-align:center">{{ $data }}  
-                                                                </th>
-                                                            @endforeach
-                                                            <th class="times_tardy_total" style="text-align: center">
-                                                                {{ $student_attendance['times_tardy_total'] }}
-                                                            </th>
-                                                        </tr>
-                                                </table>
-                                </td>
-                            </tr>        
-                        @endif
-                        </td>
-                    </tr>
-                    @endforeach
-
-                    <tr>
-                        <td colspan="2">
-                            <b>Female</b>
-                        </td>
-                    </tr>
-
-                    @foreach ($Senior_firstsem_f as $key => $data1) 
-                    <tr>
-                        
-                        
-                        <td colspan="2">
-                            <b style="font-size: 11px">
-                                    {{ $key + 1 }}.{{ $data1->student_name }}
-                            </b>
-                            {{-- {{ $data1->attendance }}  --}}
-                            {{-- <form action="{{ route('faculty.save-class-attendance') }}" method="POST" novalidate="novalidate"> --}}
-                            @if($data1->attendance_first=="")
-
-                            @else
-                            
-                            <tr>
-                                <td>
-                                        <table class="table">
-                                                <tr>
-                                                                                                    
-                                                        <?php
-                                                        $student_attendance = [];
-                                                        $table_header = [
-                                                                ['key' => 'Jun',],
-                                                                ['key' => 'Jul',],
-                                                                ['key' => 'Aug',],
-                                                                ['key' => 'Sep',],
-                                                                ['key' => 'Oct',],
-                                                                
-                                                                ['key' => 'total',],
-                                                            ];
-                                                            
-                                                            $attendance_data = json_decode(json_encode([
-                                                                'days_of_school' => [
-                                                                    0, 0, 0, 0, 0, 
-                                                                ],
-                                                                'days_present' => [
-                                                                    0, 0, 0, 0, 0,
-                                                                ],
-                                                                'days_absent' => [
-                                                                    0, 0, 0, 0, 0,
-                                                                ],
-                                                                'times_tardy' => [
-                                                                    0, 0, 0, 0, 0,
-                                                                ]
-                                                            ]));
-                                                            
-                                                            
-                                                            $attendance_data = json_decode($data1->attendance_first);
-                                                            
-        
-                                                            $student_attendance = [
-                                                                // 'student_name'      => $EnrollmentMale[0]->student_name,
-                                                                'attendance_data'   => $attendance_data,
-                                                                'table_header'      => $table_header,
-                                                                'days_of_school_total' => array_sum($attendance_data->days_of_school),
-                                                                'days_present_total' => array_sum($attendance_data->days_present),
-                                                                'days_absent_total' => array_sum($attendance_data->days_absent),
-                                                                'times_tardy_total' => array_sum($attendance_data->times_tardy),
-                                                            ];
-        
-                                                            
-                                                            ?>
-                                                        
-                                                        
-                                                    
-        
-                                                        <th style="width: 90px">
-                                                                <i style="font-size: 11px; color: red">First Semester</i>
-                                                        </th>
-                                                            @foreach ($student_attendance['table_header'] as $data)
-                                                            <th>{{ $data['key'] }}</th> 
-                                                            {{-- / {{ json_encode($data) }}  --}}
-                                                            @endforeach
-                                                    </tr>
-                                                    <tr>
-                                                            <th>
-                                                                Days of School
-                                                            </th>
-                                                            @foreach ($student_attendance['attendance_data']->days_of_school as $key => $data)
-                                                                <th style="text-align:center">{{ $data }}
-                                                                </th>
-                                                            @endforeach
-                                                            <th class="days_of_school_total" style="text-align:center">
-                                                                {{ $student_attendance['days_of_school_total'] }}
-                                                            </th>
-                                                        </tr>
-                                                        <tr>
-                                                            <th>
-                                                                Days Present
-                                                            </th>
-                                                            @foreach ($student_attendance['attendance_data']->days_present as $key => $data)
-                                                                <th style="text-align:center">{{ $data }} 
-                                                                </th>
-                                                            @endforeach
-                                                            <th class="days_present_total" style="text-align: center">
-                                                                {{ $student_attendance['days_present_total'] }}
-                                                            </th>
-                                                        </tr>
-                                                        <tr>
-                                                            <th>
-                                                                Days Absent
-                                                            </th>
-                                                            @foreach ($student_attendance['attendance_data']->days_absent as $key => $data)
-                                                                <th style="text-align:center">{{ $data }}  
-                                                                </th>
-                                                            @endforeach
-                                                            <th class="days_absent_total" style="text-align: center">
-                                                                {{ $student_attendance['days_absent_total'] }}
-                                                            </th>
-                                                        </tr>
-                                                        <tr>
-                                                            <th>
-                                                                Times Tardy
-                                                            </th>
-                                                            @foreach ($student_attendance['attendance_data']->times_tardy as $key => $data)
-                                                                <th style="text-align:center">{{ $data }}  
-                                                                </th>
-                                                            @endforeach
-                                                            <th class="times_tardy_total" style="text-align: center">
-                                                                {{ $student_attendance['times_tardy_total'] }}
-                                                            </th>
-                                                        </tr>
-                                                </table>
-                                </td>
-
-                                <td>
-                                        <table class="table">
-                                                <tr>
-                                                                                                    
-                                                    <?php
-                                                    $student_attendance = [];
-                                                    $table_header = [
-                                                        ['key' => 'Nov',],
-                                                            ['key' => 'Dec',],
-                                                            ['key' => 'Jan',],
-                                                            ['key' => 'Feb',],
-                                                            ['key' => 'Mar',],
-                                                            ['key' => 'Apr',],
-                                                            
-                                                            ['key' => 'total',],
-                                                        ];
-                                                        
-                                                        $attendance_data = json_decode(json_encode([
-                                                            'days_of_school' => [
-                                                                0, 0, 0, 0, 0, 
-                                                            ],
-                                                            'days_present' => [
-                                                                0, 0, 0, 0, 0,
-                                                            ],
-                                                            'days_absent' => [
-                                                                0, 0, 0, 0, 0,
-                                                            ],
-                                                            'times_tardy' => [
-                                                                0, 0, 0, 0, 0,
-                                                            ]
-                                                        ]));
-                                                        
-                                                        
-                                                        $attendance_data = json_decode($data1->attendance_second);
-    
-                                                        
-                                                    //    $attendance_data;
-    
-                                                    //     if ($EnrollmentMale[0]->attendance) {
-                                                    //         $attendance_data = json_decode($EnrollmentMale[0]->attendance);
-                                                    //     }    
-    
-                                                        $student_attendance = [
-                                                            // 'student_name'      => $EnrollmentMale[0]->student_name,
-                                                            'attendance_data'   => $attendance_data,
-                                                            'table_header'      => $table_header,
-                                                            'days_of_school_total' => array_sum($attendance_data->days_of_school),
-                                                            'days_present_total' => array_sum($attendance_data->days_present),
-                                                            'days_absent_total' => array_sum($attendance_data->days_absent),
-                                                            'times_tardy_total' => array_sum($attendance_data->times_tardy),
-                                                        ];
-    
-                                                        
-                                                        ?>
-                                                        
-                                                        
-                                                    
-    
-                                                        <th style="width: 90px">
-                                                            <i style="font-size: 11px; color: red">Second Semester</i>
-                                                        </th>
-                                                            @foreach ($student_attendance['table_header'] as $data)
-                                                                <th>{{ $data['key'] }}</th> 
-                                                            {{-- / {{ json_encode($data) }}  --}}
-                                                            @endforeach
-                                                    </tr>
-                                                        <tr>
-                                                            <th>
-                                                                Days of School
-                                                            </th>
-                                                            @foreach ($student_attendance['attendance_data']->days_of_school as $key => $data)
-                                                                <th style="text-align:center">{{ $data }}
-                                                                </th>
-                                                            @endforeach
-                                                            <th class="days_of_school_total" style="text-align:center">
-                                                                {{ $student_attendance['days_of_school_total'] }}
-                                                            </th>
-                                                        </tr>
-                                                        <tr>
-                                                            <th>
-                                                                Days Present
-                                                            </th>
-                                                            @foreach ($student_attendance['attendance_data']->days_present as $key => $data)
-                                                                <th style="text-align:center">{{ $data }} 
-                                                                </th>
-                                                            @endforeach
-                                                            <th class="days_present_total" style="text-align: center">
-                                                                {{ $student_attendance['days_present_total'] }}
-                                                            </th>
-                                                        </tr>
-                                                        <tr>
-                                                            <th>
-                                                                Days Absent
-                                                            </th>
-                                                            @foreach ($student_attendance['attendance_data']->days_absent as $key => $data)
-                                                                <th style="text-align:center">{{ $data }}  
-                                                                </th>
-                                                            @endforeach
-                                                            <th class="days_absent_total" style="text-align: center">
-                                                                {{ $student_attendance['days_absent_total'] }}
-                                                            </th>
-                                                        </tr>
-                                                        <tr>
-                                                            <th>
-                                                                Times Tardy
-                                                            </th>
-                                                            @foreach ($student_attendance['attendance_data']->times_tardy as $key => $data)
-                                                                <th style="text-align:center">{{ $data }}  
-                                                                </th>
-                                                            @endforeach
-                                                            <th class="times_tardy_total" style="text-align: center">
-                                                                {{ $student_attendance['times_tardy_total'] }}
-                                                            </th>
-                                                        </tr>
-                                                </table>
-
-                                </td>
+                                <th>
+                                    Title
+                                </th>
+                                    @foreach ($data['table_header'] as $item)
+                                            <th>{{ $item['key'] }}</th> 
+                                    @endforeach
                             </tr>
-                                    
+                            <tr>
+                                <th>
+                                    Days of School
+                                </th>
+                                @foreach ($data['attendance_data']->days_of_school as $key => $item)
+                                    <th style="">
+                                        {{ $item ? $item : '' }}
+                                    </th>                                                                        
+                                @endforeach
+                                <th class="days_of_school_total">
+                                    {{ $data['days_of_school_total'] }}
+                                </th>
+                            </tr>
+                            <tr>
+                                <th>
+                                    Days Present
+                                </th>
+                                @foreach ($data['attendance_data']->days_present as $key => $item)
+                                    <th style="">
+                                        {{ $item ? $item : '' }}    
+                                    </th>
+                                @endforeach
+                                <th class="days_present_total">
+                                    {{ $data['days_present_total'] }}
+                                </th>
+                            </tr>
+                            <tr>
+                                <th>
+                                    Days Absent
+                                </th>
+                                @foreach ($data['attendance_data']->days_absent as $key => $item)
+                                    <th style="">
+                                        {{ $item ? $item : '' }}   
+                                    </th>
+                                @endforeach
+                                <th class="days_absent_total">
+                                    {{ $data['days_absent_total'] }}
+                                </th>
+                            </tr>
+                            <tr>
+                                <th>
+                                    Times Tardy
+                                </th>
+                                @foreach ($data['attendance_data']->times_tardy as $key => $item)
+                                    <th style="">
+                                        {{ $item ? $item : '' }}    
+                                    </th>
+                                @endforeach
+                                <th class="times_tardy_total">
+                                    {{ $data['times_tardy_total'] }}
+                                </th>
+                            </tr>
+                        </table>
+                </td>
+            </tr>
+            @empty
+            <tr>
+                <th class="text-center">
+                    No Available Data
+                </th>
+            </tr>
+            @endforelse
+
+            <tr>
+                <td colspan="16">
+                    <b>Female</b> 
+                </td>
+            </tr>
+
+            @forelse ($attendance_female as $key => $data) 
+            <tr>
+                <td>{{ $key + 1 }}.</td>
+                <td>
+                    <b style="padding-top: 5px">
+                        {{ $data['student_name'] }}
+                    </b><br/>
                     
-                                    
-                                        
-                            
-                                            
-                            @endif
-                        
-                        </td>
-                    </tr>
-                    @endforeach
-                    
+                        <table class="table" style="margin-top: 5px">
+                            <tr>
+                                <th>
+                                    Title
+                                </th>
+                                    @foreach ($data['table_header'] as $item)
+                                            <th>{{ $item['key'] }}</th> 
+                                    @endforeach
+                            </tr>
+                            <tr>
+                                <th>
+                                    Days of School
+                                </th>
+                                @foreach ($data['attendance_data']->days_of_school as $key => $item)
+                                    <th style="">
+                                        {{ $item ? $item : '' }}
+                                    </th>                                                                        
+                                @endforeach
+                                <th class="days_of_school_total">
+                                    {{ $data['days_of_school_total'] }}
+                                </th>
+                            </tr>
+                            <tr>
+                                <th>
+                                    Days Present
+                                </th>
+                                @foreach ($data['attendance_data']->days_present as $key => $item)
+                                    <th style="">
+                                        {{ $item ? $item : '' }}    
+                                    </th>
+                                @endforeach
+                                <th class="days_present_total">
+                                    {{ $data['days_present_total'] }}
+                                </th>
+                            </tr>
+                            <tr>
+                                <th>
+                                    Days Absent
+                                </th>
+                                @foreach ($data['attendance_data']->days_absent as $key => $item)
+                                    <th style="">
+                                        {{ $item ? $item : '' }}   
+                                    </th>
+                                @endforeach
+                                <th class="days_absent_total">
+                                    {{ $data['days_absent_total'] }}
+                                </th>
+                            </tr>
+                            <tr>
+                                <th>
+                                    Times Tardy
+                                </th>
+                                @foreach ($data['attendance_data']->times_tardy as $key => $item)
+                                    <th style="">
+                                        {{ $item ? $item : '' }}    
+                                    </th>
+                                @endforeach
+                                <th class="times_tardy_total">
+                                    {{ $data['times_tardy_total'] }}
+                                </th>
+                            </tr>
+                        </table>
+                </td>
+            </tr>
+            @empty
+            <tr>
+                <th class="text-center">
+                    No Available Data
+                </th>
+            </tr>
+            @endforelse
+            
         </table>
 
-        @else
-            <table class="table no-margin table-striped table-bordered" style="margin-top: 3em; width: 100%">
-                <thead>
-                    <tr>
-                        {{-- <th style="width: 30px">#</th> --}}
-                        <th colspan="1" style="text-align:left">Grade and Section: <i style="color: red">{{ $Semester->grade_level.' - '.$Semester->section }}</i></th>        
-                                                    
-                        
-                    </tr>
-                </thead>
-                <tbody>      
-                                            
-                    <tr>
-                        <td colspan="1">
-                            <b>Male</b> 
-                        </td>
-                    </tr>
-
-                    @foreach ($attendance_male as $key => $data1) 
-                    <tr>
-                        {{-- <td>{{ $key + 1 }}.</td> --}}
-                        <td>
-                            <b style="font-size: 11px">
-                                {{ $key + 1 }}.&nbsp;{{ $data1->student_name }}
-                            </b>
-
-                            
-                            
-                            @if($data1->attendance=="")
-
-                            @else
-                            
-                                    <table id="mytable" class="table" style="margin-top: .5em">
-                                        <tr>
-                                                                                            
-                                            <?php
-                                            $student_attendance = [];
-                                            $table_header = [
-                                                    ['key' => 'Jun',],
-                                                    ['key' => 'Jul',],
-                                                    ['key' => 'Aug',],
-                                                    ['key' => 'Sep',],
-                                                    ['key' => 'Oct',],
-                                                    ['key' => 'Nov',],
-                                                    ['key' => 'Dec',],
-                                                    ['key' => 'Jan',],
-                                                    ['key' => 'Feb',],
-                                                    ['key' => 'Mar',],
-                                                    ['key' => 'Apr',],
-                                                    ['key' => 'total',],
-                                                ];
-                                                
-                                                $attendance_data = json_decode(json_encode([
-                                                    'days_of_school' => [
-                                                        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
-                                                    ],
-                                                    'days_present' => [
-                                                        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
-                                                    ],
-                                                    'days_absent' => [
-                                                        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
-                                                    ],
-                                                    'times_tardy' => [
-                                                        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
-                                                    ]
-                                                ]));
-                                                
-                                                
-                                                $attendance_data = json_decode($data1->attendance);
-                                            //    $attendance_data;
-
-                                            //     if ($EnrollmentMale[0]->attendance) {
-                                            //         $attendance_data = json_decode($EnrollmentMale[0]->attendance);
-                                            //     }    
-
-                                                $student_attendance = [
-                                                    // 'student_name'      => $EnrollmentMale[0]->student_name,
-                                                    'attendance_data'   => $attendance_data,
-                                                    'table_header'      => $table_header,
-                                                    'days_of_school_total' => array_sum($attendance_data->days_of_school),
-                                                    'days_present_total' => array_sum($attendance_data->days_present),
-                                                    'days_absent_total' => array_sum($attendance_data->days_absent),
-                                                    'times_tardy_total' => array_sum($attendance_data->times_tardy),
-                                                ];
-
-                                                
-                                                ?>
-                                                
-                                                
-                                            
-
-                                                <th>
-                                                    TITLE
-                                                </th>
-                                                    @foreach ($student_attendance['table_header'] as $data)
-                                                            <th style="text-align: center">{{ $data['key'] }}</th> 
-                                                    {{-- / {{ json_encode($data) }}  --}}
-                                                    @endforeach
-                                            </tr>
-                                            <tr>
-                                                <th>
-                                                    Days of School
-                                                </th>
-                                                @foreach ($student_attendance['attendance_data']->days_of_school as $key => $data)
-                                                    <th style="text-align:center">{{ $data }}
-                                                    </th>
-                                                @endforeach
-                                                <th class="days_of_school_total" style="text-align:center">
-                                                    {{ $student_attendance['days_of_school_total'] }}
-                                                </th>
-                                            </tr>
-                                            <tr>
-                                                <th>
-                                                    Days Present
-                                                </th>
-                                                @foreach ($student_attendance['attendance_data']->days_present as $key => $data)
-                                                    <th style="text-align:center">{{ $data }} 
-                                                    </th>
-                                                @endforeach
-                                                <th class="days_present_total" style="text-align: center">
-                                                    {{ $student_attendance['days_present_total'] }}
-                                                </th>
-                                            </tr>
-                                            <tr>
-                                                <th>
-                                                    Days Absent
-                                                </th>
-                                                @foreach ($student_attendance['attendance_data']->days_absent as $key => $data)
-                                                    <th style="text-align:center">{{ $data }}  
-                                                    </th>
-                                                @endforeach
-                                                <th class="days_absent_total" style="text-align: center">
-                                                    {{ $student_attendance['days_absent_total'] }}
-                                                </th>
-                                            </tr>
-                                            <tr>
-                                                <th>
-                                                    Times Tardy
-                                                </th>
-                                                @foreach ($student_attendance['attendance_data']->times_tardy as $key => $data)
-                                                    <th style="text-align:center">{{ $data }}  
-                                                    </th>
-                                                @endforeach
-                                                <th class="times_tardy_total" style="text-align: center">
-                                                    {{ $student_attendance['times_tardy_total'] }}
-                                                </th>
-                                            </tr>
-                                        </table>
-                    
-                                    
-                                        
-                        @endif
-                        </td>
-                    </tr>
-                    @endforeach
-
-                    <tr>
-                        <td colspan="1">
-                            <b>Female</b>
-                        </td>
-                    </tr>
-
-                    @foreach ($attendance_female as $key => $data1) 
-                    <tr>
-                       
-                        <td>
-                            <b style="font-size: 11px">
-                                {{ $key + 1 }}.&nbsp;{{ $data1->student_name }}
-                            </b>                           
-                                    <table class="table" style="margin-top: .5em">
-                                        <tr>
-                                                                                            
-                                            <?php
-                                            $student_attendance = [];
-                                            $table_header = [
-                                                    ['key' => 'Jun',],
-                                                    ['key' => 'Jul',],
-                                                    ['key' => 'Aug',],
-                                                    ['key' => 'Sep',],
-                                                    ['key' => 'Oct',],
-                                                    ['key' => 'Nov',],
-                                                    ['key' => 'Dec',],
-                                                    ['key' => 'Jan',],
-                                                    ['key' => 'Feb',],
-                                                    ['key' => 'Mar',],
-                                                    ['key' => 'Apr',],
-                                                    ['key' => 'total',],
-                                                ];
-                                                
-                                                $attendance_data = json_decode(json_encode([
-                                                    'days_of_school' => [
-                                                        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
-                                                    ],
-                                                    'days_present' => [
-                                                        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
-                                                    ],
-                                                    'days_absent' => [
-                                                        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
-                                                    ],
-                                                    'times_tardy' => [
-                                                        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
-                                                    ]
-                                                ]));
-                                                
-                                                
-                                                $attendance_data = json_decode($data1->attendance);
-                                            //    $attendance_data;
-
-                                            //     if ($EnrollmentMale[0]->attendance) {
-                                            //         $attendance_data = json_decode($EnrollmentMale[0]->attendance);
-                                            //     }    
-
-                                                $student_attendance = [
-                                                    // 'student_name'      => $EnrollmentMale[0]->student_name,
-                                                    'attendance_data'   => $attendance_data,
-                                                    'table_header'      => $table_header,
-                                                    'days_of_school_total' => array_sum($attendance_data->days_of_school),
-                                                    'days_present_total' => array_sum($attendance_data->days_present),
-                                                    'days_absent_total' => array_sum($attendance_data->days_absent),
-                                                    'times_tardy_total' => array_sum($attendance_data->times_tardy),
-                                                ];
-
-                                                
-                                                ?>
-                                            
-
-                                                <th>
-                                                    TITLE
-                                                </th>
-                                                    @foreach ($student_attendance['table_header'] as $data)
-                                                            <th>{{ $data['key'] }}</th> 
-                                                    {{-- / {{ json_encode($data) }}  --}}
-                                                    @endforeach
-                                            </tr>
-                                            <tr>
-                                                <th>
-                                                    Days of School
-                                                </th>
-                                                @foreach ($student_attendance['attendance_data']->days_of_school as $key => $data)
-                                                    <th style="text-align:center">{{ $data }}
-                                                    </th>
-                                                @endforeach
-                                                <th class="days_of_school_total" style="text-align:center">
-                                                    {{ $student_attendance['days_of_school_total'] }}
-                                                </th>
-                                            </tr>
-                                            <tr>
-                                                <th>
-                                                    Days Present
-                                                </th>
-                                                @foreach ($student_attendance['attendance_data']->days_present as $key => $data)
-                                                    <th style="text-align:center">{{ $data }} 
-                                                    </th>
-                                                @endforeach
-                                                <th class="days_present_total" style="text-align: center">
-                                                    {{ $student_attendance['days_present_total'] }}
-                                                </th>
-                                            </tr>
-                                            <tr>
-                                                <th>
-                                                    Days Absent
-                                                </th>
-                                                @foreach ($student_attendance['attendance_data']->days_absent as $key => $data)
-                                                    <th style="text-align:center">{{ $data }}  
-                                                    </th>
-                                                @endforeach
-                                                <th class="days_absent_total" style="text-align: center">
-                                                    {{ $student_attendance['days_absent_total'] }}
-                                                </th>
-                                            </tr>
-                                            <tr>
-                                                <th>
-                                                    Times Tardy
-                                                </th>
-                                                @foreach ($student_attendance['attendance_data']->times_tardy as $key => $data)
-                                                    <th style="text-align:center">{{ $data }}  
-                                                    </th>
-                                                @endforeach
-                                                <th class="times_tardy_total" style="text-align: center">
-                                                    {{ $student_attendance['times_tardy_total'] }}
-                                                </th>
-                                            </tr>
-                                        </table>
-                    
-                                    
-                                      
-                        </td>
-                    </tr>
-                    @endforeach
-                                                    
-                    
-                    
-                </table>
-                <p style="text-align: right; font-size: 11px"><b>{{ $FacultyInformation->first_name.' '.$FacultyInformation->middle_name.' '.$FacultyInformation->last_name }}</b> <i>Class Adviser</i></p>
-        @endif
+        {{-- <p style="text-align: right; font-size: 11px"><b>{{ $FacultyInformation->first_name.' '.$FacultyInformation->middle_name.' '.$FacultyInformation->last_name }}</b> <i>Class Adviser</i></p> --}}
+        
 </body>
 </html>

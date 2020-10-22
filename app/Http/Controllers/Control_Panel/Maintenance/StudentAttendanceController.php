@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers\Control_Panel\Maintenance;
 
+use App\Enrollment;
 use App\SchoolYear;
 use App\ClassDetail;
 use App\StudentAttendance;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Validator;
 
 class StudentAttendanceController extends Controller
 {
@@ -38,7 +40,7 @@ class StudentAttendanceController extends Controller
                        
             $data = [
                 'attendance_data'   =>  $attendance_data,
-                'table_header'      =>  $table_header,
+                // 'table_header'      =>  $table_header,
                 'school_year'       =>  $school_year->school_year,
                 's1_attendance'     =>  $s1_attendance,
                 's2_attendance'     =>  $s2_attendance,
@@ -83,20 +85,42 @@ class StudentAttendanceController extends Controller
                 ['key' => 'Apr',],
                 // ['key' => 'total',],
             ];
-            $attendance_data = json_decode(json_encode([
-                'days_of_school' => [
-                    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
-                ],
-                'days_present' => [
-                    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
-                ],
-                'days_absent' => [
-                    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
-                ],
-                'times_tardy' => [
-                    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
-                ]
-            ]));
+            $school_year = SchoolYear::where('current', 1)->where('status', 1)->first()->school_year;
+
+            if('2020-2021' == $school_year)
+            {
+                $attendance_data = json_decode(json_encode([                    
+                    'days_of_school' => [
+                        0, 0, 0, 0, 0, 0, 0, 0, 0
+                    ],
+                    'days_present' => [
+                        0, 0, 0, 0, 0, 0, 0, 0, 0
+                    ],
+                    'days_absent' => [
+                        0, 0, 0, 0, 0, 0, 0, 0, 0
+                    ],
+                    'times_tardy' => [
+                        0, 0, 0, 0, 0, 0, 0, 0, 0
+                    ]
+                ]));
+            }
+            else
+            {
+                $attendance_data = json_decode(json_encode([                    
+                    'days_of_school' => [
+                        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+                    ],
+                    'days_present' => [
+                        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+                    ],
+                    'days_absent' => [
+                        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+                    ],
+                    'times_tardy' => [
+                        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+                    ]
+                ]));
+            }
 
             if($attendance)
             {
@@ -113,7 +137,21 @@ class StudentAttendanceController extends Controller
 
     public function save_data(Request $request)
     {
-                
+            
+        $rules = [
+            'school_year' => 'required',
+            'days_of_school' => 'required',
+            'days_present' => 'required',
+            'days_absent' => 'required',
+            'times_tardy' => 'required'            
+        ];
+
+        $Validator = Validator($request->all(), $rules);
+
+        if ($Validator->fails())
+        {
+            return response()->json(['res_code' => 1, 'res_msg' => 'Please fill all required fields.', 'res_error_msg' => $Validator->getMessageBag()]);
+        }
         try {            
             // $class_id = \Crypt::decrypt($request->c);
             // $enrollment_id = $request->enroll_id;
@@ -144,79 +182,73 @@ class StudentAttendanceController extends Controller
                 'times_tardy' => $times_tardy
             ];
 
-            $i = 1;
             foreach ($request->days_of_school as $i => $d)
             {
                 $days_of_school1[$i] = $d;
-                if ($i++ == 5) {break;}
+                if ($i == 4) {break;}
             }
             
-            $i = 1;
             foreach ($request->days_present as $i => $d)
             {
                 $days_present1[$i] = $d;
-                if ($i++ == 5) {break;}
+                if ($i == 4) {break;}
             }
 
-            $i = 1;
             foreach ($request->days_absent as $i => $d)
             {
                 $days_absent1[$i] = $d;
-                if ($i++ == 5) {break;}
+                if ($i == 4) {break;}
             }
 
-            $i = 1;
             foreach ($request->times_tardy as $i => $d)
             {
                 $times_tardy1[$i] = $d;
-                if ($i++ == 5) {break;}
+                if ($i == 4) {break;}
             }
 
             $s1_data = [
                 'days_of_school' => $days_of_school1,
-                'days_present' => $days_present1,
-                'days_absent' => $days_absent1,
-                'times_tardy' => $times_tardy1
+                'days_present'   => $days_present1,
+                'days_absent'    => $days_absent1,
+                'times_tardy'    => $times_tardy1
             ];
 
-            $i = 1;
             foreach ($request->days_of_school as $i => $d)
             {
-                if ($i++ > 5) {
+                if($i > 4){
                     $days_of_school2[$i] = $d;
                 }
             }
-            
-            $i = 1;
+           
             foreach ($request->days_present as $i => $d)
             {                
-                if ($i++ > 5) {
+                if ($i > 4) {
                     $days_present2[$i] = $d;
                 }
             }
 
-            $i = 1;
             foreach ($request->days_absent as $i => $d)
             {
-                if ($i++ > 5) {
+                if ($i > 4) {
                     $days_absent2[$i] = $d;
                 }
             }
 
-            $i = 1;
             foreach ($request->times_tardy as $i => $d)
             {
-                if ($i++ > 5) {
+                if ($i > 4) {
                     $times_tardy2[$i] = $d;
                 }
             }
 
+            
             $s2_data = [
                 'days_of_school' => $days_of_school2,
-                'days_present' => $days_present2,
-                'days_absent' => $days_absent2,
-                'times_tardy' => $times_tardy2
+                'days_present'   => $days_present2,
+                'days_absent'    => $days_absent2,
+                'times_tardy'    => $times_tardy2
             ];
+            
 
             if($request->id)
             {
@@ -224,7 +256,7 @@ class StudentAttendanceController extends Controller
                 $student_attendance->junior_attendance = json_encode($attendance_data);
                 $student_attendance->s1_attendance = json_encode($s1_data);
                 $student_attendance->s2_attendance = json_encode($s2_data);
-                $student_attendance->school_year_id = $request->sy_search;
+                $student_attendance->school_year_id = $request->school_year;
                 $student_attendance->save();
 
                 return response()->json(['res_code' => 0, 'res_msg' => 'Attendance successfully saved.']);
@@ -234,7 +266,7 @@ class StudentAttendanceController extends Controller
             $student_attendance->junior_attendance = json_encode($attendance_data);
             $student_attendance->s1_attendance = json_encode($s1_data);
             $student_attendance->s2_attendance = json_encode($s2_data);
-            $student_attendance->school_year_id = $request->sy_search;
+            $student_attendance->school_year_id = $request->school_year;
             $student_attendance->save();
             return response()->json(['res_code' => 0, 'res_msg' => 'Attendance successfully saved.',]);
             
@@ -249,28 +281,32 @@ class StudentAttendanceController extends Controller
         $id = $request->id;
         $sy = $request->sy;
 
-        
-
         $class_detail = ClassDetail::whereSchoolYearId($sy)->get();
         $attendance_data = StudentAttendance::where('id', $id)->first();
-        
-        foreach($class_detail as $data){
-            // $data->id;
-            
-            // $enrollment = Enrollment::whereClassDetailsId($data->id)->first();
-            // $enrollment->attendance = $attendance_data->junior_attendance;
-            // $enrollment->attendance_first = $attendance_data->s1_attendance;
-            // $enrollment->attendance_second = $attendance_data->s2_attendance;
-            // $enrollment->save();
-
-            echo $attendance_data->junior_attendance.'<br/>';
-            echo $attendance_data->s1_attendance.'<br/>';
-            echo $attendance_data->s2_attendance.'<br/>';
+        $save_attendance = 0;
+        try {
+            foreach($class_detail as $data){
+                $enrollment = Enrollment::whereClassDetailsId($data->id)->get();
+                try {
+                    foreach($enrollment as $data){
+                        // echo $data->id.'<br/><br/>';
+                        $setSchoolYear = Enrollment::find($data->id);
+                        $setSchoolYear->attendance = $attendance_data->junior_attendance;
+                        $setSchoolYear->attendance_first = $attendance_data->s1_attendance;
+                        $setSchoolYear->attendance_second = $attendance_data->s2_attendance;
+                        $setSchoolYear->save();
+                    }
+                } catch (\Throwable $th) {
+                    return response()->json(['res_code' => 1, 'res_msg' => 'Invalid request.'.$th]);
+                }
+            }
+                $attendance = StudentAttendance::whereId($request->id)->first();
+                $attendance->is_applied = 1;
+                $attendance->save();
+            return response()->json(['res_code' => 0, 'res_msg' => 'Data successfully Applied. ']);
+        } catch (\Throwable $th) {
+            return response()->json(['res_code' => 1, 'res_msg' => 'Invalid request.'.$th]);
         }
-
-        // echo $class_detail.'<br/>';
-
-        // return response()->json(['res_code' => 0, 'res_msg' => 'Data successfully Applied. '.$class_detail]);
     }
 
     public function deactivate_data (Request $request) 

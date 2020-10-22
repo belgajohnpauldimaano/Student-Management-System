@@ -198,42 +198,44 @@ class SubjectClassController extends Controller
         }
         return $class_details_elements;
     }
-    // public function modal_data (Request $request) 
-    // {
-    //     $ClassDetail = NULL;
-    //     if ($request->id)
-    //     {
-    //         $ClassDetail = ClassDetail::where('id', $request->id)->first();
-    //     }
-    //     // return json_encode($ClassDetail);
-    //     $FacultyInformation = FacultyInformation::where('status', 1)->get();
-    //     $SubjectDetail = SubjectDetail::where('status', 1)->get();
-    //     $SectionDetail = SectionDetail::where('status', 1)->get();
-    //     $Room = Room::where('status', 1)->get();
-    //     $SchoolYear = SchoolYear::where('status', 1)->where('current', 1)->get();
-    //     return view('control_panel_registrar.class_details.partials.modal_data', compact('ClassDetail', 'FacultyInformation', 'SubjectDetail', 'SectionDetail', 'Room', 'SchoolYear'))->render();
-    // }
+    
+    public function modal_data (Request $request) 
+    {
+        $ClassDetail = NULL;
+        if ($request->id)
+        {
+            $ClassDetail = ClassDetail::where('id', $request->id)->first();
+        }
+        // return json_encode($ClassDetail);
+        $FacultyInformation = FacultyInformation::where('status', 1)->get();
+        $SubjectDetail = SubjectDetail::where('status', 1)->get();
+        $SectionDetail = SectionDetail::where('status', 1)->get();
+        $Room = Room::where('status', 1)->get();
+        $SchoolYear = SchoolYear::where('status', 1)->where('current', 1)->get();
+        return view('control_panel_registrar.class_details.partials.modal_data', compact('ClassDetail', 'FacultyInformation', 'SubjectDetail', 'SectionDetail', 'Room', 'SchoolYear'))->render();
+    }
 
-    // public function modal_manage_subjects (Request $request) 
-    // {
-    //     $ClassDetail = NULL;
-    //     if ($request->id)
-    //     {
-    //         $ClassDetail = ClassDetail::where('id', $request->id)->first();
-    //     }
-    //     // return json_encode($ClassDetail);
-    //     $FacultyInformation = FacultyInformation::where('status', 1)->get();
-    //     $SubjectDetail = SubjectDetail::where('status', 1)->get();
-    //     $SectionDetail = SectionDetail::where('status', 1)->get();
-    //     $Room = Room::where('status', 1)->get();
-    //     $SchoolYear = SchoolYear::where('status', 1)->get();
-    //     return view('control_panel_registrar.class_details.partials.modal_manage_subjects', compact('ClassDetail', 'FacultyInformation', 'SubjectDetail', 'SectionDetail', 'Room', 'SchoolYear'))->render();
-    // }
+    public function modal_manage_subjects (Request $request) 
+    {
+        $ClassDetail = NULL;
+        if ($request->id)
+        {
+            $ClassDetail = ClassDetail::where('id', $request->id)->first();
+        }
+        // return json_encode($ClassDetail);
+        $FacultyInformation = FacultyInformation::where('status', 1)->get();
+        $SubjectDetail = SubjectDetail::where('status', 1)->get();
+        $SectionDetail = SectionDetail::where('status', 1)->get();
+        $Room = Room::where('status', 1)->get();
+        $SchoolYear = SchoolYear::where('status', 1)->get();
+        return view('control_panel_registrar.class_details.partials.modal_manage_subjects', compact('ClassDetail', 'FacultyInformation', 'SubjectDetail', 'SectionDetail', 'Room', 'SchoolYear'))->render();
+    }
 
     public function class_schedules (Request $request)
     {
         $FacultyInformation = FacultyInformation::where('user_id', \Auth::user()->id)->first();
-        $SchoolYear         = SchoolYear::where('status', 1)->orderBy('current', 'ASC')->orderBy('school_year', 'ASC')->get();
+        $SchoolYear         = SchoolYear::whereStatus(1)->whereCurrent(1)->first()->id;
+
         $ClassSubjectDetail = ClassSubjectDetail::where('faculty_id', $FacultyInformation->id)
             ->join('class_details', 'class_details.id', '=', 'class_subject_details.class_details_id')
             ->join('school_years', 'school_years.id', '=', 'class_details.school_year_id')
@@ -255,8 +257,7 @@ class SubjectClassController extends Controller
             '))
             ->where('class_details.status', 1)
             ->where('class_details.current', 1)
-            ->where('school_years.status', 1)
-            ->where('school_years.current', 1)
+            ->where('class_details.school_year_id', $SchoolYear)
             ->where('class_subject_details.status', '!=', 0)
             ->orderBy('class_time_from', 'ASC')
             ->get();
@@ -295,6 +296,7 @@ class SubjectClassController extends Controller
             ->orderBy('class_time_from', 'ASC')
             ->get();
         // return json_encode($ClassSubjectDetail);
+        return view('control_panel_faculty.class_schedule.partials.print', compact('ClassSubjectDetail','FacultyInformation'))->render();
         $pdf = \PDF::loadView('control_panel_faculty.class_schedule.partials.print',
          compact('FacultyInformation', 'ClassSubjectDetail'));
         $pdf->setPaper('Legal', 'portrait');
@@ -319,12 +321,13 @@ class SubjectClassController extends Controller
     //     ->where('class_subject_details.status', 1)
     //     ->orderBy('class_time_from', 'ASC')
     //     ->get();
+
     //     $class_sched_table = [
-    //         'm'     => [], 
-    //         'tu'    => [], 
-    //         'w'     => [], 
-    //         'th'    => [], 
-    //         'f'     => [], 
+    //         'm'   =>  [], 
+    //         'tu'  =>  [], 
+    //         'w'   =>  [], 
+    //         'th'  =>  [], 
+    //         'f'   =>  [], 
     //     ];
     //     foreach ($ClassSubjectDetail as $data)
     //     {
@@ -340,8 +343,8 @@ class SubjectClassController extends Controller
     //         }
     //     }
     //     $class_sched_table = json_decode(json_encode($class_sched_table), FALSE);
-    //     // $class_sched_table = (object) $class_sched_table;
-    //     // echo $class_sched_table->m[0];
+    //     $class_sched_table = (object) $class_sched_table;
+    //     // return  json_encode($class_sched_table);
 
     //     // foreach ($class_sched_table as $data)
     //     // {
@@ -388,48 +391,48 @@ class SubjectClassController extends Controller
     //     }
 
 
-    //     $hasOpened = false;
-    //     foreach ($time_list as $data)
-    //     {
-    //         $mon = $class_sched_table->m[0];
+    //     // $hasOpened = false;
+    //     // foreach ($time_list as $data)
+    //     // {
+    //     //     $mon = $class_sched_table->m[0];
             
-    //         if ($data == strftime('%r', strtotime($mon->from))) 
-    //         {
-    //             $table_monday[$data] = 'open';
-    //             $hasOpened = true;
-    //         }
+    //     //     if ($data == strftime('%r', strtotime($mon->from))) 
+    //     //     {
+    //     //         $table_monday[$data] = 'open';
+    //     //         $hasOpened = true;
+    //     //     }
 
-    //         if ($data == strftime('%r', strtotime($mon->to)))
-    //         {
+    //     //     if ($data == strftime('%r', strtotime($mon->to)))
+    //     //     {
 
-    //             $hasOpened = false;
-    //         }
+    //     //         $hasOpened = false;
+    //     //     }
 
-    //         if ($hasOpened && $table_monday[$data] == '-')
-    //         { 
-    //             $table_monday[$data] = 'delete';
-    //         }
+    //     //     if ($hasOpened && $table_monday[$data] == '-')
+    //     //     { 
+    //     //         $table_monday[$data] = 'delete';
+    //     //     }
 
-    //         $mon = $class_sched_table->m[1];
+    //     //     $mon = $class_sched_table->m[1];
             
-    //         if ($data == strftime('%r', strtotime($mon->from))) 
-    //         {
-    //             $diff = strtotime($mon->to) - strtotime($mon->from);
-    //             $table_monday[$data] = 'open';
-    //             $hasOpened = true;
-    //         }
+    //     //     if ($data == strftime('%r', strtotime($mon->from))) 
+    //     //     {
+    //     //         $diff = strtotime($mon->to) - strtotime($mon->from);
+    //     //         $table_monday[$data] = 'open';
+    //     //         $hasOpened = true;
+    //     //     }
 
-    //         if ($data == strftime('%r', strtotime($mon->to)))
-    //         {
+    //     //     if ($data == strftime('%r', strtotime($mon->to)))
+    //     //     {
 
-    //             $hasOpened = false;
-    //         }
+    //     //         $hasOpened = false;
+    //     //     }
 
-    //         if ($hasOpened && $table_monday[$data] == '-')
-    //         {
-    //             $table_monday[$data] = 'delete';
-    //         }
-    //     }
+    //     //     if ($hasOpened && $table_monday[$data] == '-')
+    //     //     {
+    //     //         $table_monday[$data] = 'delete';
+    //     //     }
+    //     // }
     //     // $temp = $table_monday;
     //     // foreach ($time_list as $data)
     //     // {
@@ -464,8 +467,8 @@ class SubjectClassController extends Controller
     //     }
     //     $time_plot .= '</table>';
     //     echo $time_plot;
-    //     return;
-    //     return json_encode($table_monday);
+    //     // return;
+    //     // return json_encode($table_monday);
 
     //     // $hasOpened = false;
     //     // foreach ($time_list as $data)
@@ -506,8 +509,8 @@ class SubjectClassController extends Controller
     //     //         $table_elem
     //     //     .'
     //     // </table>';
-    //     return;
-    //     return json_encode($monday_time);
+    //     // return;
+    //     // return json_encode($monday_time);
     //     // return json_encode($class_sched_table);
     //     // return view('control_panel_faculty.class_schedule.index', compact('SchoolYear'));
     // }

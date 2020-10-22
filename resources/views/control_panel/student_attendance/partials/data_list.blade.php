@@ -44,8 +44,16 @@
                                                 </tr>
                                             </table>
                                         </td>
-                                        <td>{{ $item['is_applied'] == 1 ? 'Yes' : 'No' }}</td>    
-                                        <td>{{ $item['status'] == 1 ? 'Active' : 'Inactive' }}</td>                                                                                
+                                        <td>
+                                            <span class="label {{ $item['is_applied'] == 1 ? 'label-success' : 'label-warning' }}">
+                                                {{ $item['is_applied'] == 1 ? 'Applied' : 'Not Yet' }}
+                                            </span>
+                                        </td>    
+                                        <td>
+                                            <span class="badge {{ $item['status'] == 1 ? 'bg-green' : 'bg-red' }}">
+                                                {{ $item['status'] == 1 ? 'Active' : 'Inactive' }}
+                                            </span>
+                                        </td>                                                                                
                                         <td width="15%">
                                             <div class="input-group-btn pull-left text-left">
                                                 <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="true">Action
