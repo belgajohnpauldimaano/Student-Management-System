@@ -13,7 +13,8 @@ trait HasTransaction{
 
     public function student_balance()
     {
-        return $this->hasOne(TransactionMonthPaid::class, 'student_id', 'id' )->whereApproval('Approved')->latest();
+        return $this->hasOne(TransactionMonthPaid::class, 'student_id', 'id' )
+            ->whereApproval('Approved')->orderBY('id', 'DESC')->latest();
     }
 
     public function finance_transaction ()
