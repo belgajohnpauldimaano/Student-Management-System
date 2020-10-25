@@ -38,8 +38,7 @@
                         <input type="hidden" name="id" value="{{ $StudentInformation->id }}">
                     @endif
                     
-                    <div class="modal-body">                        
-                        
+                    <div class="modal-body">
                         <div class="form-group">
                             <label for="">Username</label>
                             <input type="text" class="form-control" name="username" value="{{ $StudentInformation ? $StudentInformation->user->username : '' }}">

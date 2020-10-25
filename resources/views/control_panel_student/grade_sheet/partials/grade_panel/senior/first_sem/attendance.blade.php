@@ -2,11 +2,9 @@
     <table style="width:100%; margin-bottom: 1em" class="table no-margin table-bordered table-striped">
         <tr>
             <th style="text-align:center">
-                <center>
                 @foreach ($student_attendance1['table_header'] as $data)
-                <th style="text-align:center">{{ $data['key'] }}</th>
+                    <th style="text-align:center">{{ $data['key'] }}</th>
                 @endforeach
-                </center>
             </th>                
         </tr>
         <tr>

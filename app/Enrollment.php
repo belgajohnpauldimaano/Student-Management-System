@@ -2,13 +2,14 @@
 
 namespace App;
 
-use Illuminate\Database\Eloquent\Model;
-use App\Traits\HasTransaction;
 use App\Traits\HasUser;
+use App\Traits\HasGradeSheet;
+use App\Traits\HasTransaction;
+use Illuminate\Database\Eloquent\Model;
 
 class Enrollment extends Model
 {
-    use HasTransaction, HasUser;
+    use HasTransaction, HasGradeSheet, HasUser;
     // public function enrollment()
     // {
     //     return $this->belongsTo('App\Registration', 'regid', 'id');

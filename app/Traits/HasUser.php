@@ -15,6 +15,11 @@ trait HasUser{
         return ucwords($this->last_name . ', ' . $this->first_name. ' ' . $this->middle_name);
     }
 
+    public function getAdviserSignatureAttribute()
+    {
+        return ucwords($this->first_name. ' ' . $this->middle_name.' '.$this->last_name);
+    }
+
     public function adviser()
     {
         return $this->hasOne(FacultyInformation::class, 'id', 'adviser_id');

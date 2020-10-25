@@ -13,7 +13,7 @@
                     @if ($Enrollment)
                         <input name="print_student_id" id="print_student_id" value="{{ $student_id }}" type="hidden" />
                         <div class="form-group">
-                        <label>Select School Year</label>
+                            <label>Select School Year</label>
                             <select class="form-control" id="print_sy" name="print_sy">
                                 <option value="0">Select School Year</option>
                                 @foreach ($Enrollment as $e)
@@ -21,8 +21,7 @@
                                 @endforeach
                             </select>
                         </div>
-
-                        <div class="form-group semester fadeIn" style="padding-right:0; display: none; " >                            
+                        <div class="form-group semester fadeIn" style="padding-right:0; display: none;">                            
                         </div>
                     @else
                         <h3>No Class tagged</h3>

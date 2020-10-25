@@ -74,7 +74,7 @@
                         @endif
                     @endif                                    
                 </tr>
-        @else
+    @else
             
     @endif
 </tbody>
@@ -238,10 +238,10 @@
                     <tr>
                         <td style="border: 0; width: 50%;">
                             <center>
-                                @if($ClassDetail->faculty_id == 30)
-                                    <img class="profile-user-img img-responsive img-circle" id="img--user_photo" src="{{ $ClassDetail->e_signature ? \File::exists(public_path('/img/signature/'.$ClassDetail->e_signature)) ? asset('/img/signature/'.$ClassDetail->e_signature) : asset('/img/account/photo/blank-user.png') : asset('/img/account/photo/blank-user.png') }}" style="width:150px; margin-bottom: 1em">
+                                @if($Signatory->adviser->id == 30)
+                                    <img class="profile-user-img img-responsive img-circle" id="img--user_photo" src="{{ $Signatory->adviser->e_signature ? \File::exists(public_path('/img/signature/'.$Signatory->adviser->e_signature)) ? asset('/img/signature/'.$Signatory->adviser->e_signature) : asset('/img/account/photo/blank-user.png') : asset('/img/account/photo/blank-user.png') }}" style="width:150px; margin-bottom: 1em">
                                 @else
-                                    <img class="profile-user-img img-responsive img-circle" id="img--user_photo" src="{{ $ClassDetail->e_signature ? \File::exists(public_path('/img/signature/'.$ClassDetail->e_signature)) ? asset('/img/signature/'.$ClassDetail->e_signature) : asset('/img/account/photo/blank-user.png') : asset('/img/account/photo/blank-user.png') }}" style="width:100px">
+                                    <img class="profile-user-img img-responsive img-circle" id="img--user_photo" src="{{ $Signatory->adviser->e_signature ? \File::exists(public_path('/img/signature/'.$Signatory->adviser->e_signature)) ? asset('/img/signature/'.$Signatory->adviser->e_signature) : asset('/img/account/photo/blank-user.png') : asset('/img/account/photo/blank-user.png') }}" style="width:100px">
                                 @endif
                                 
                             </center>
@@ -249,10 +249,10 @@
                         <td style="border: 0; width: 50%;">
                             <center>
 
-                                @if($ClassDetail->faculty_id == 26 || $ClassDetail->faculty_id == 28 || $ClassDetail->faculty_id == 66 || $ClassDetail->faculty_id == 10|| $ClassDetail->faculty_id == 11)
+                                @if($Signatory->adviser->id == 26 || $Signatory->adviser->id == 28 || $Signatory->adviser->id == 66 || $Signatory->adviser->id == 10|| $Signatory->adviser->id == 11)
                                     <img class="profile-user-img img-responsive img-circle" id="img--user_photo" src="{{ asset('/img/signature/principal_signature.png') }}" 
                                         style="width:170px; margin-top: 2em">
-                                @elseif($ClassDetail->faculty_id == 23) 
+                                @elseif($Signatory->adviser->id == 23) 
                                     <img class="profile-user-img img-responsive img-circle" id="img--user_photo" src="{{ asset('/img/signature/principal_signature.png') }}" 
                                         style="width:170px; margin-top: 2.5em">            
                                 @else
@@ -265,16 +265,16 @@
                     </tr>
             </table>
 
-            @if($ClassDetail->faculty_id == 7)
+            @if($Signatory->adviser->id == 7)
                 <table border="0" style="width: 100%; margin-top: -100px; margin-bottom: 0em">     
-            @elseif($ClassDetail->faculty_id == 20 || $ClassDetail->faculty_id == 59 || $ClassDetail->faculty_id == 21)
+            @elseif($Signatory->adviser->id == 20 || $Signatory->adviser->id == 59 || $Signatory->adviser->id == 21)
                 <table border="0" style="width: 100%; margin-top: -85px; margin-bottom: 0em">
-            @elseif($ClassDetail->faculty_id== 68|| $ClassDetail->faculty_id == 10|| $ClassDetail->faculty_id == 11 || $ClassDetail->faculty_id == 14 || $ClassDetail->faculty_id == 30)
+            @elseif($Signatory->adviser->id== 68|| $Signatory->adviser->id == 10|| $Signatory->adviser->id == 11 || $Signatory->adviser->id == 14 || $Signatory->adviser->id == 30)
                 <table border="0" style="width: 100%; margin-top: -90px; margin-bottom: 0em">
-            @elseif($ClassDetail->faculty_id == 66)
+            @elseif($Signatory->adviser->id == 66)
                 <table border="0" style="width: 100%; margin-top: -90px; margin-bottom: 0em">
-            @elseif($ClassDetail->faculty_id == 26 || $ClassDetail->faculty_id == 28 || $ClassDetail->faculty_id == 65 || $ClassDetail->faculty_id == 23 || $ClassDetail->faculty_id == 62 || $ClassDetail->faculty_id == 19
-              || $ClassDetail->faculty_id == 45 || $ClassDetail->faculty_id == 37 || $ClassDetail->faculty_id == 60  || $ClassDetail->faculty_id == 25 || $ClassDetail->faculty_id== 67)
+            @elseif($Signatory->adviser->id == 26 || $Signatory->adviser->id == 28 || $Signatory->adviser->id == 65 || $Signatory->adviser->id == 23 || $Signatory->adviser->id == 62 || $Signatory->adviser->id == 19
+              || $Signatory->adviser->id == 45 || $Signatory->adviser->id == 37 || $Signatory->adviser->id == 60  || $Signatory->adviser->id == 25 || $Signatory->adviser->id== 67)
                 <table border="0" style="width: 100%; margin-top: -80px; margin-bottom: 0em">                         
             @else
                 <table border="0" style="width: 100%; margin-top: -80px; margin-bottom: 0em">
@@ -283,7 +283,7 @@
                     <td style="border: 0; width: 50%; height: 100px">
                         <span style="margin-left: 2em; text-transform: uppercase">
                             <center>
-                                {{ $ClassDetail->first_name }} {{ $ClassDetail->middle_name }} {{ $ClassDetail->last_name }}
+                                {{ $Signatory->adviser->adviser_signature }}
                             </center>
                             </br>
                             <center style="margin-top: -1em">Adviser</center>

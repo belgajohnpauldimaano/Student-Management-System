@@ -132,7 +132,7 @@
             .less-m-top2{
                 margin-top: -5px;
             }
-        </style>
+    </style>
 </head>
 <body>
 
@@ -176,7 +176,7 @@
             
         @endif
         
-        <?php 
+        @php 
             try {
                 if($semester){
                     $Semester = $semester;
@@ -184,7 +184,7 @@
             } catch (\Throwable $th) {
                 $Semester = \App\Semester::where('current', 1)->first()->id;
             }             
-        ?>
+        @endphp
                 <p class="heading1">Republic of the Philippines</p>
                 <p class="heading1">Department of Education</p>
                 <p class="heading1">Region III</p>
@@ -195,9 +195,14 @@
                 <p class="heading2 heading2-subtitle"><b>Formerly Saint John Academy</b></p>
                 <p class="heading2 heading2-subtitle">Dinalupihan, Bataan</p>
                 <br/>
-                <p class="report-progress m0">REPORT ON LEARNING PROGRESS AND ACHIEVEMENT</p>
-                <p class="report-progress m0">( {{ $ClassDetail ?  $ClassDetail->section_grade_level >= 11 ? 'SENIOR HIGH SCHOOL' : 'JUNIOR HIGH SCHOOL' : ''}} )</p>
-                <img style="margin-right: 3em; margin-top: {{ $ClassDetail ?  $ClassDetail->section_grade_level >= 11 ? '4em' : '4.5em' : ''}}"  class="logo sja-logo" width="{{ $ClassDetail ?  $ClassDetail->section_grade_level >= 11 ? 115 : 100 : ''}}"
+                <p class="report-progress m0">
+                    REPORT ON LEARNING PROGRESS AND ACHIEVEMENT
+                </p>
+                <p class="report-progress m0">
+                    ( {{ $ClassDetail ? $ClassDetail->section_grade_level >= 11 ? 'SENIOR HIGH SCHOOL' : 'JUNIOR HIGH SCHOOL' : '' }} )
+                </p>
+                <img style="margin-right: 3em; margin-top: {{ $ClassDetail ?  $ClassDetail->section_grade_level >= 11 ? '4em' : '4.5em' : ''}}"
+                 class="logo sja-logo" width="{{ $ClassDetail ?  $ClassDetail->section_grade_level >= 11 ? 115 : 100 : ''}}"
                  src="{{ $ClassDetail ?  $ClassDetail->section_grade_level >= 11 ? asset('img/sja-logo.png') : asset('img/sja-logo.png') : ''}}" />
                 <img style="margin-left: 3em; margin-top: 4.5em;" class="logo deped-bataan-logo" width="100" 
                 src="{{ asset('img/deped-bataan-logo.png') }}" />
@@ -214,16 +219,17 @@
                     </tr>                    
                     <tr>
                         <td>
-                            <p class="p0 m0 student-info"><b>School</b> Year : {{ $ClassDetail ? $ClassDetail->school_year : '' }}</p>
+                            <p class="p0 m0 student-info"><b>School Year</b> : {{ $ClassDetail ? $ClassDetail->schoolYear->school_year : '' }}</p>
                         </td>
                         <td>
                             <p class="p0 m0 student-info"><b>Age</b> : 
-                                {{ $StudentInformation->age_may }} years old</p> 
+                                {{ $StudentInformation->age_may }} years old
+                            </p> 
                         </td>
                     </tr>
                     <tr>
                         <td>
-                            <p class="p0 m0 student-info"><b>Grade & Section </b>: {{ $ClassDetail ? $ClassDetail->section_grade_level : '' }} - {{ $ClassDetail ? $ClassDetail->section : '' }}</p>
+                            <p class="p0 m0 student-info"><b>Grade & Section </b>: {{ $ClassDetail ? $ClassDetail->grade_level : '' }} - {{ $ClassDetail ? $ClassDetail->section->section : '' }}</p>
                         </td>
                         <td>
                             <p class="p0 m0 student-info"><b>Birthdate</b> : {{ $StudentInformation->birthdate ? date_format(date_create($StudentInformation->birthdate), 'F d, Y') : '' }}</p>
@@ -241,12 +247,15 @@
                             @if($Semester == 1)
                                 <td>
                                     <p class="p0 m0 student-info"><b>Track/Strand - Academic:</b> 
-                                        <?php  
-                                       
+                                        @php
+                                            try {
                                                 $strand_name = \App\Strand::where('id', $ClassDetail->strand_id)
-                                                ->first(); 
+                                                    ->first(); 
                                                 echo $strand_name->strand;
-                                        ?>                                        
+                                            } catch (\Throwable $th) {
+                                                $strand_name = '';
+                                            }  
+                                        @endphp                                        
                                     </p>
                                     <p class="p0 m0 student-info"><b>Semester</b> : <i style="color: red">First</i></p>
                                 </td>
@@ -255,10 +264,10 @@
                             @else
                                 <td>
                                     <p class="p0 m0 student-info"><b>Track/Strand - Academic:</b> 
-                                        <?php  $strand_name = \App\Strand::where('id', $ClassDetail->strand_id)
+                                        @php  $strand_name = \App\Strand::where('id', $ClassDetail->strand_id)
                                                 ->first(); 
                                                 echo $strand_name->strand;
-                                        ?>                                        
+                                        @endphp                                        
                                     </p>
                                     <p class="p0 m0 student-info"><b>Semester</b> : <i style="color: red">Second</i></p>
                                 </td>

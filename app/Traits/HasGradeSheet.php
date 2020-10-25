@@ -16,12 +16,17 @@ trait HasGradeSheet{
 
     public function classDetail()
     {     
-        return $this->hasMany(ClassDetail::class, 'id', 'class_details_id');
+        return $this->hasMany(ClassDetail::class, 'id', 'class_details_id')->whereStatus(1);
     }
 
     public function classSubjectDetail()
     {
-        return $this->hasOne(ClassSubjectDetail::class, 'class_details_id', 'id')->whereStatus(1);
+        return $this->hasOne(ClassSubjectDetail::class, 'class_details_id', 'id')->whereStatus(1)->where('class_subject_order', 'ASC');
+    }
+
+    public function class_subjects()
+    {
+        return $this->hasOne(ClassSubjectDetail::class, 'class_details_id', 'class_details_id')->whereStatus(1)->where('class_subject_order', 'ASC');
     }
 
     public function grade(){
@@ -53,5 +58,9 @@ trait HasGradeSheet{
         return $this->hasOne(StudentInformation::class, 'student_information_id');
     }
 
+    public function student_enrollment()
+    {
+        return $this->hasOne(Enrollment::class, 'class_details_id','id')->whereStatus(1);
+    }
    
 }

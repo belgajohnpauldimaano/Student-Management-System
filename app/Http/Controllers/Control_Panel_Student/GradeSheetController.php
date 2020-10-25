@@ -67,13 +67,13 @@ class GradeSheetController extends Controller
                             "))
                             ->orderBy('class_subject_details.class_subject_order', 'ASC')
                             ->get();
+                        // return json_encode($Enrollment);
 
                             
                         $ClassDetail = [];
                        
                         if ($Enrollment)
                         {       
-                                
                             $ClassDetail = ClassDetail::join('section_details', 'section_details.id', '=' ,'class_details.section_id')
                                 ->join('rooms', 'rooms.id', '=' ,'class_details.room_id')
                                 ->join('school_years', 'school_years.id', '=' ,'class_details.school_year_id')
@@ -265,9 +265,6 @@ class GradeSheetController extends Controller
                             }
                         }
 
-                        
-        
-
                         $StudentEnrolledSubject = StudentEnrolledSubject::where('enrollments_id', $Enrollment[0]->enrollment_id)
                             ->where('sem', 1)
                             ->get();
@@ -309,6 +306,8 @@ class GradeSheetController extends Controller
                                 ->where('class_details.school_year_id', $request->school_year)
                                 ->orderBy('class_subject_details.class_subject_order', 'ASC')
                                 ->get();
+
+                            // return json_encode($Enrollment_first_sem);
 
                             try {
                                 if($Enrollment_first_sem[0]){
@@ -375,11 +374,8 @@ class GradeSheetController extends Controller
                                 ];
                                 return $data;
                             });
-
                             // return json_encode($Enrollment_first_sem);
 
-                            
-                            
                             $StudentEnrolledSubject = StudentEnrolledSubject::where('enrollments_id', $Enrollment[0]->enrollment_id)
                                 ->where('sem', 2)
                                 ->get();
@@ -436,8 +432,6 @@ class GradeSheetController extends Controller
                             } catch (\Throwable $th) {
                                 $attendance_data2 = '';
                             }
-                            
-                            
 
                             $Enrollment_secondsem = $Enrollment_secondsem->map(function($item, $key) use ($StudentEnrolledSubject, $grade_level, $grade_status){
             
@@ -559,27 +553,27 @@ class GradeSheetController extends Controller
             {
                 
                 $ClassDetail = ClassDetail::join('section_details', 'section_details.id', '=' ,'class_details.section_id')
-                ->join('rooms', 'rooms.id', '=' ,'class_details.room_id')
-                ->join('school_years', 'school_years.id', '=' ,'class_details.school_year_id')
-                ->selectRaw('
-                    class_details.id,
-                    class_details.section_id,
-                    class_details.room_id,
-                    class_details.school_year_id,
-                    class_details.grade_level,
-                    class_details.current,
-                    class_details.strand_id,
-                    section_details.section,
-                    section_details.grade_level as section_grade_level,
-                    school_years.school_year,
-                    rooms.room_code,
-                    rooms.room_description,
-                    faculty_informations.id as faculty_id
-                ')
-                ->where('section_details.status', 1)
-                // ->where('school_years.current', 1)
-                ->where('class_details.id', $Enrollment[0]->cid)
-                ->first();
+                    ->join('rooms', 'rooms.id', '=' ,'class_details.room_id')
+                    ->join('school_years', 'school_years.id', '=' ,'class_details.school_year_id')
+                    ->selectRaw('
+                        class_details.id,
+                        class_details.section_id,
+                        class_details.room_id,
+                        class_details.school_year_id,
+                        class_details.grade_level,
+                        class_details.current,
+                        class_details.strand_id,
+                        section_details.section,
+                        section_details.grade_level as section_grade_level,
+                        school_years.school_year,
+                        rooms.room_code,
+                        rooms.room_description,
+                        faculty_informations.id as faculty_id
+                    ')
+                    ->where('section_details.status', 1)
+                    // ->where('school_years.current', 1)
+                    ->where('class_details.id', $Enrollment[0]->cid)
+                    ->first();
             }
 
 

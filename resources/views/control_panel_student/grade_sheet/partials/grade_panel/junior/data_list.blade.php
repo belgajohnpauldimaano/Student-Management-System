@@ -73,11 +73,7 @@
                                     @endif              
                                     
                                     <td class="text-left">
-                                        <?php                                                   
-                                            $faculty = \App\ClassSubjectDetail::where('id', $data->class_subject_details_id)->first();
-                                            $faculty_name = \App\FacultyInformation::where('id', $faculty->faculty_id)->first();
-                                            echo $faculty_name->last_name.', '.$faculty_name->first_name.' '.$faculty_name->middle_name;                                             
-                                        ?>
+                                        {{$data['faculty_name']}}
                                     </td>
                                     
                             @endif                        
