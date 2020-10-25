@@ -31,10 +31,12 @@
                             {{round($data['fou_g'])}}             
                         </td>
                         <td style="text-align: center">
-                            {{round($data['final_g'])}}
+                            @if($data['thi_g'] != 0 && $data['fou_g'] != 0)
+                                {{round($data['final_g'])}}
+                            @endif
                         </td>
                         @if($data['final_g'])
-                            @if($data['thi_g'] != '' && $data['fou_g'] != '')                                
+                            @if($data['thi_g'] != 0 && $data['fou_g'] != 0)                                
                                 <td style="color:{{ round($data['final_g']) >= 75 ? 'green' : 'red' }};">
                                     <center>
                                         <strong>

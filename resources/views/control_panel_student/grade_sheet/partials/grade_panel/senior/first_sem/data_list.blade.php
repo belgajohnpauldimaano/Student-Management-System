@@ -32,16 +32,16 @@
                             {{round($data['sec_g'])}}             
                         </td>
                         <td style="text-align: center">
-                            {{round($data['final_g'])}}
+                            @if($data['fir_g'] != 0 && $data['sec_g'] != 0)
+                                {{round($data['final_g'])}}
+                            @endif
                         </td>
                         @if($data['final_g'])
-                            @if($data['fir_g'] != '' && $data['sec_g'] != '')                                
-                                <td style="color:{{ round($data['final_g']) >= 75 ? 'green' : 'red' }};">
-                                    <center>
+                            @if($data['fir_g'] != 0 && $data['sec_g'] != 0)                                
+                                <td class="text-center" style="color:{{ round($data['final_g']) >= 75 ? 'green' : 'red' }};">
                                         <strong>
                                             {{ round($data['final_g']) >= 75 ? 'Passed' : 'Failed' }}
                                         </strong>
-                                    </center>
                                 </td> 
                             @else    
                                 <td></td>   

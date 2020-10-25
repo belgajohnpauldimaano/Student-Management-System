@@ -44,11 +44,9 @@
                                                 {{ $data->final_g ? round($data->final_g) : '' }}
                                             </td> 
                                             <td style="color:{{ round($final_ave) >= 75 ? 'green' : 'red' }};">
-                                                
-                                                    <strong>
-                                                        {{ round($final_ave) >= 75 ? 'Passed' : 'Failed' }}
-                                                    </strong>
-                                                
+                                                <strong>
+                                                    {{ round($final_ave) >= 75 ? 'Passed' : 'Failed' }}
+                                                </strong>                                                
                                             </td>                                                
                                         @endif                                                     
                                         
@@ -57,27 +55,20 @@
                                             <td class="text-center"></td>
                                             <td class="text-center"></td> 
                                         @else
-                                            <td class="text-center">
-                                                
-                                                    <?php echo round($final_ave = (round($data->fir_g) + round($data->sec_g) + round($data->thi_g) + round($data->fou_g)) / 4) ?>
-                                                
+                                            <td class="text-center">                                                
+                                                @php echo round($final_ave = (round($data->fir_g) + round($data->sec_g) + round($data->thi_g) + round($data->fou_g)) / 4) @endphp
                                             </td> 
-                                            <td style="color:{{ round($final_ave) >= 75 ? 'green' : 'red' }};">
-                                                
-                                                    <strong>
-                                                        {{ round($final_ave) >= 75 ? 'Passed' : 'Failed' }}
-                                                    </strong>
-                                                
+                                            <td style="color:{{ round($final_ave) >= 75 ? 'green' : 'red' }};">                                                
+                                                <strong>
+                                                    {{ round($final_ave) >= 75 ? 'Passed' : 'Failed' }}
+                                                </strong>                                                
                                             </td>                                                
                                         @endif           
-                                    @endif              
-                                    
+                                    @endif
                                     <td class="text-left">
-                                        {{$data['faculty_name']}}
+                                        {{$data->faculty_name}}
                                     </td>
-                                    
-                            @endif                        
-                        
+                            @endif       
                     </tr>
                 @endforeach
             @endif
