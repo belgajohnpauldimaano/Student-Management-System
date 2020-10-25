@@ -246,7 +246,7 @@ class StudentController extends Controller
 
         $StudentInformation = StudentInformation::with(['user'])->where('id', $request->id)->first();
         
-        // try {
+        try {
             if ($StudentInformation) 
             {
                 $ClassDetail = ClassDetail::with('section')->whereId($request->cid)->whereStatus(1)->first();
@@ -786,9 +786,9 @@ class StudentController extends Controller
             else {
                 return "Invalid request";
             }
-        // } catch (\Throwable $th) {
-        //     return view('errors.404');
-        // }
+        } catch (\Throwable $th) {
+            return view('errors.404');
+        }
         
     }
 }
