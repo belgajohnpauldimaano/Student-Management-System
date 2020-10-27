@@ -69,26 +69,26 @@
 
                                     if($quarter == '1st')
                                     {
-                                        $sum += $sub_grade->fir_g;
-                                        echo number_format(round($sub_grade->fir_g));
+                                        $sum += $sub_grade['fir_g'];
+                                        echo number_format(round($sub_grade['fir_g']));
                                     }                                
                                     if($quarter == '2nd')
                                     {
-                                        $sum += $sub_grade->sec_g;
-                                        echo number_format(round($sub_grade->sec_g));
+                                        $sum += $sub_grade['sec_g'];
+                                        echo number_format(round($sub_grade['sec_g']));
                                     }                                
                                     if($quarter == '3rd')
                                     {
-                                        $sum += $sub_grade->thi_g;
-                                        echo number_format(round($sub_grade->thi_g));
+                                        $sum += $sub_grade['thi_g'];
+                                        echo number_format(round($sub_grade['thi_g']));
                                     }                                
                                     if($quarter == '4th')
                                     {
-                                        $sum += $sub_grade->fou_g;
-                                        echo number_format(round($sub_grade->fou_g));
+                                        $sum += $sub_grade['fou_g'];
+                                        echo number_format(round($sub_grade['fou_g']));
                                     }
                                     $final = $sum / $divisor;
-                                    if($sub_grade->fir_g == 0 || $sub_grade->sec_g == 0 || $sub_grade->thi_g == 0 || $sub_grade->fou_g == 0)
+                                    if($sub_grade['fir_g'] == 0 || $sub_grade['sec_g'] == 0 || $sub_grade['thi_g'] == 0 || $sub_grade['fou_g'] == 0)
                                     {
                                         $isEmpty = 'na';
                                     }                                
@@ -104,10 +104,10 @@
                                     ->where('subject_id', $sub->subject_id)
                                     ->first();                         
 
-                                $fir += $sub_grade->fir_g;
-                                $sec += $sub_grade->sec_g;   
-                                $thi += $sub_grade->thi_g;
-                                $fou += $sub_grade->fou_g;                               
+                                $fir += $sub_grade['fir_g'];
+                                $sec += $sub_grade['sec_g'];   
+                                $thi += $sub_grade['thi_g'];
+                                $fou += $sub_grade['fou_g'];                               
                                 $final_first = $fir / $divisor;
                                 $final_sec = $sec / $divisor;
                                 $final_thi = $thi / $divisor;
@@ -122,7 +122,7 @@
                                 if($quarter == '1st-4th'){
                                     $final = round($final_first + $final_sec + $final_thi + $final_fou) / 4;
                                 }
-                                if($sub_grade->fir_g == 0 || $sub_grade->sec_g == 0)
+                                if($sub_grade['fir_g'] == 0 || $sub_grade['sec_g'] == 0)
                                 {
                                     $isEmpty = 'na';
                                 }
@@ -201,26 +201,26 @@
 
                                     if($quarter == '1st')
                                     {
-                                        $sum += $sub_grade->fir_g;
-                                        echo number_format(round($sub_grade->fir_g));
+                                        $sum += $sub_grade['fir_g'];
+                                        echo number_format(round($sub_grade['fir_g']));
                                     }                                
                                     if($quarter == '2nd')
                                     {
-                                        $sum += $sub_grade->sec_g;
-                                        echo number_format(round($sub_grade->sec_g));
+                                        $sum += $sub_grade['sec_g'];
+                                        echo number_format(round($sub_grade['sec_g']));
                                     }                                
                                     if($quarter == '3rd')
                                     {
-                                        $sum += $sub_grade->thi_g;
-                                        echo number_format(round($sub_grade->thi_g));
+                                        $sum += $sub_grade['thi_g'];
+                                        echo number_format(round($sub_grade['thi_g']));
                                     }                                
                                     if($quarter == '4th')
                                     {
-                                        $sum += $sub_grade->fou_g;
-                                        echo number_format(round($sub_grade->fou_g));
+                                        $sum += $sub_grade['fou_g'];
+                                        echo number_format(round($sub_grade['fou_g']));
                                     }
                                     $final = $sum / $divisor;
-                                    if($sub_grade->fir_g == 0 || $sub_grade->sec_g == 0 || $sub_grade->thi_g == 0 || $sub_grade->fou_g == 0)
+                                    if($sub_grade['fir_g'] == 0 || $sub_grade['sec_g'] == 0 || $sub_grade['thi_g'] == 0 || $sub_grade['fou_g'] == 0)
                                     {
                                         $isEmpty = 'na';
                                     }                                
@@ -236,10 +236,10 @@
                                     ->where('subject_id', $sub->subject_id)
                                     ->first();                         
 
-                                $fir += $sub_grade->fir_g;
-                                $sec += $sub_grade->sec_g;   
-                                $thi += $sub_grade->thi_g;
-                                $fou += $sub_grade->fou_g;                               
+                                $fir += $sub_grade['fir_g'];
+                                $sec += $sub_grade['sec_g'];   
+                                $thi += $sub_grade['thi_g'];
+                                $fou += $sub_grade['fou_g'];                               
                                 $final_first = $fir / $divisor;
                                 $final_sec = $sec / $divisor;
                                 $final_thi = $thi / $divisor;
@@ -254,7 +254,7 @@
                                 if($quarter == '1st-4th'){
                                     $final = round($final_first + $final_sec + $final_thi + $final_fou) / 4;
                                 }
-                                if($sub_grade->fir_g == 0 || $sub_grade->sec_g == 0)
+                                if($sub_grade['fir_g'] == 0 || $sub_grade['sec_g'] == 0)
                                 {
                                     $isEmpty = 'na';
                                 }

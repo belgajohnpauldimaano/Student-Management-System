@@ -29,7 +29,7 @@
 <h4>
     Grade &amp; Section: <span class="text-red"><i>{{ $class_detail->grade->id . '-' .$class_detail->section->section }}</i></span>
     <div class="text-right" style="margin-top: -2em">
-        <button id="js-print" class="btn btn-flat btn-success" 
+        <button id="js-print" class="btn btn-flat btn-danger" 
             data-id='{{$class_detail->id}}' 
             data-sy='{{$class_detail->school_year_id}}'
             data-adviser_id='{{$class_detail->adviser_id}}'
