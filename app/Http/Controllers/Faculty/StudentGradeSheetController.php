@@ -113,7 +113,7 @@ class StudentGradeSheetController extends Controller
             ->orderBy('class_subject_order', 'ASC')
             ->get();
 
-            return json_encode($AdvisorySubject);
+            // return json_encode($AdvisorySubject);
 
         $no_second_sem = '';
         if($AdvisorySubject->isEmpty())
