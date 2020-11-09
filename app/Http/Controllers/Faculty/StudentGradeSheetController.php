@@ -136,7 +136,7 @@ class StudentGradeSheetController extends Controller
             ->orderBY('last_name','ASC')
             ->get();
 
-        return json_encode($Grade_sheet_males);
+        // return json_encode($Grade_sheet_males);
 
         $Grade_sheet_females = Enrollment::join('class_details','class_details.id','=','enrollments.class_details_id')
             ->join('student_informations','student_informations.id','=','enrollments.student_information_id')  
