@@ -96,15 +96,21 @@ class EncodeRemarkController extends Controller
                     "))
                     ->orderBY('student_name', 'ASC')
                     ->get();
+                $hasData = 1;
+
+                return view('control_panel_faculty.encode_remarks.index', 
+                    compact('hasData','EnrollmentMale','EnrollmentFemale','ClassSubjectDetail','SchoolYear','DateRemarks','Semester_id'))
+                    ->render();
             }
             else{
-                return 'invalid';
+                $hasData = 0;
+                return view('control_panel_faculty.encode_remarks.index', 
+                    compact('hasData'))
+                    ->render();
             }
                         
 
-            return view('control_panel_faculty.encode_remarks.index', 
-                    compact('EnrollmentMale','EnrollmentFemale','ClassSubjectDetail','SchoolYear','DateRemarks','Semester_id'))
-                    ->render();
+           
         
         
         // return view('control_panel_faculty.encode_remarks.index');

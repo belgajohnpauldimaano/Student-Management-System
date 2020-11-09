@@ -76,18 +76,29 @@ class StudentGradeSheetController extends Controller
     public function gradeSheet(Request $request)
     {
         $quarter = $request->quarter_grades != '' ? $request->quarter_grades : $request->quarter;
-        $sy_id = Crypt::decrypt($request->search_sy != ''? $request->search_sy : $request->search_school_year);
+        $sy_id = Crypt::decrypt($request->search_sy != '' ? $request->search_sy : $request->search_school_year);
         $FacultyInformation = FacultyInformation::where('user_id', Auth::user()->id)->first(); 
         $sem = $request->semester_grades;
 
-        $class_detail = ClassDetail::with('section', 'classSubjectDetail')->whereAdviserId($FacultyInformation->id)->whereStatus(1)
+        $class_detail = ClassDetail::with('section', 'classSubjectDetail')
+            ->whereAdviserId($FacultyInformation->id)->whereStatus(1)
             ->whereSchoolYearId($sy_id)->first();
         // return json_encode($class_detail);
         
         $query = ClassSubjectDetail::query();
+
         if($sem == '1st' || $sem == '2nd')
         {
-            $query->whereSem($sem);         
+            if($sem == '1st')
+            {
+                $query->whereSem(1);   
+            }
+
+            if($sem == '2nd')
+            {
+                $query->whereSem(2);   
+            }
+                  
         }
 
         if($sem == '3rd')
@@ -101,6 +112,8 @@ class StudentGradeSheetController extends Controller
             ->whereStatus(1)
             ->orderBy('class_subject_order', 'ASC')
             ->get();
+
+            return json_encode($AdvisorySubject);
 
         $no_second_sem = '';
         if($AdvisorySubject->isEmpty())
@@ -123,7 +136,7 @@ class StudentGradeSheetController extends Controller
             ->orderBY('last_name','ASC')
             ->get();
 
-        // return json_encode($Grade_sheet_males);
+        return json_encode($Grade_sheet_males);
 
         $Grade_sheet_females = Enrollment::join('class_details','class_details.id','=','enrollments.class_details_id')
             ->join('student_informations','student_informations.id','=','enrollments.student_information_id')  
@@ -165,6 +178,7 @@ class StudentGradeSheetController extends Controller
             // return json_encode($sem);
             
             $query = ClassSubjectDetail::query();
+            
             if($sem == '1st' || $sem == '2nd')
             {
                 $query->whereSem($sem);         
@@ -181,6 +195,8 @@ class StudentGradeSheetController extends Controller
                 ->whereStatus(1)
                 ->orderBy('class_subject_order', 'ASC')
                 ->get();
+
+            // return json_encode($AdvisorySubject);
 
             $no_second_sem = '';
             if($AdvisorySubject->isEmpty())

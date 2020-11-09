@@ -94,8 +94,6 @@ class DemographicProfileController extends Controller
 
         return view('control_panel_faculty.demographic_profile.index', compact('EnrollmentMale','EnrollmentFemale','ClassSubjectDetail'))->render();
         
-        
-    
     }
 
 

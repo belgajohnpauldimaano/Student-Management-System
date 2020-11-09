@@ -63,9 +63,17 @@
             @if($no_second_sem == 'No data found')
                 <th class="text-center" 
                     colspan="
-                        @if($quarter == '3rd' && $sem == '2nd')
+                        @if($quarter == '3rd' && $sem == '2nd' )
                             4
                         @elseif($quarter == '4th' && $sem == '2nd')
+                            5
+                        @endif
+
+                        @if($quarter == '1st' && $sem == '1st')
+                            4
+                        @endif
+
+                        @if($quarter == '2nd' && $sem == '1st')
                             5
                         @endif
                     ">

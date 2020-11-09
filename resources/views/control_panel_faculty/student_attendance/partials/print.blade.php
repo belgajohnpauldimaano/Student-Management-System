@@ -205,7 +205,7 @@
             </tr>
             @empty
             <tr>
-                <th class="text-center">
+                <th colspan="16" class="text-center">
                     No Available Data
                 </th>
             </tr>
@@ -291,7 +291,7 @@
             </tr>
             @empty
             <tr>
-                <th class="text-center">
+                <th colspan="16" class="text-center">
                     No Available Data
                 </th>
             </tr>

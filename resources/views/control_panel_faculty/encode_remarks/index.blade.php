@@ -16,7 +16,22 @@
         <div class="overlay hidden" id="js-loader-overlay"><i class="fa fa-refresh fa-spin"></i></div>
         <div class="box-body">
             <div class="js-data-container">
-                @include('control_panel_faculty.encode_remarks.partials.data_list')                            
+                @if($hasData == 0)
+                    <section class="content">
+                        <div class="">
+                            <div class="error-content">
+                                <h3><i class="fa fa-warning text-yellow"></i> No Data Found.</h3>
+                                <p>
+                                    We could not find the page you were looking for.
+                                    Meanwhile, you may <a href="https://sja-bataan.com/faculty/dashboard">return to dashboard</a>.
+                                </p>          
+                            </div>
+                        </div>
+                    </section>
+                @else
+                    @include('control_panel_faculty.encode_remarks.partials.data_list')
+                @endif
+                                           
             </div>
         </div>            
     </div>                       

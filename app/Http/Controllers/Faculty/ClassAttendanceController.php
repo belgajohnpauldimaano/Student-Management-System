@@ -36,50 +36,78 @@ class ClassAttendanceController extends Controller
             '))
             ->first();
 
-        $class_id = ClassDetail::where('adviser_id', $FacultyInformation->id)
-            ->where('school_year_id', $school_year->id)
-            ->where('adviser_id', $FacultyInformation->id)->first()->id;            
+        try {
+            //code...
+            
+            $class_id = ClassDetail::where('adviser_id', $FacultyInformation->id)
+                ->where('school_year_id', $school_year->id)
+                ->where('adviser_id', $FacultyInformation->id)->first()->id;            
 
+            
+            $attendance_male = Enrollment::join('student_informations', 'student_informations.id', '=', 'enrollments.student_information_id')
+                ->join('class_details', 'class_details.id', '=', 'enrollments.class_details_id')
+                ->where('class_details_id', $class_id)
+                ->where('class_details.school_year_id', $school_year->id)
+                ->where('class_details.adviser_id', $FacultyInformation->id)
+                ->whereRaw('student_informations.gender = 1')
+                ->select(\DB::raw("
+                        enrollments.id as e_id,
+                        enrollments.attendance,
+                        enrollments.attendance_first,
+                        enrollments.attendance_second,
+                        student_informations.id,
+                        CONCAT(student_informations.last_name, ', ', student_informations.first_name, ' ', student_informations.middle_name) as student_name
+                    "))
+                ->orderBY('student_name', 'ASC')
+                ->get();
         
-        $attendance_male = Enrollment::join('student_informations', 'student_informations.id', '=', 'enrollments.student_information_id')
-            ->join('class_details', 'class_details.id', '=', 'enrollments.class_details_id')
-            ->where('class_details_id', $class_id)
-            ->where('class_details.school_year_id', $school_year->id)
-            ->where('class_details.adviser_id', $FacultyInformation->id)
-            ->whereRaw('student_informations.gender = 1')
-            ->select(\DB::raw("
-                    enrollments.id as e_id,
-                    enrollments.attendance,
-                    enrollments.attendance_first,
-                    enrollments.attendance_second,
-                    student_informations.id,
-                    CONCAT(student_informations.last_name, ', ', student_informations.first_name, ' ', student_informations.middle_name) as student_name
-                "))
-            ->orderBY('student_name', 'ASC')
-            ->get();
-    
-        $attendance_female = Enrollment::join('student_informations', 'student_informations.id', '=', 'enrollments.student_information_id')
-            ->join('class_details', 'class_details.id', '=', 'enrollments.class_details_id')
-            ->where('class_details_id', $class_id)
-            ->where('class_details.school_year_id', $school_year->id)
-            ->where('class_details.adviser_id', $FacultyInformation->id)
-            ->whereRaw('student_informations.gender = 2')
-            ->select(\DB::raw("
-                    enrollments.id as e_id,
-                    enrollments.attendance,
-                    enrollments.attendance_first,
-                    enrollments.attendance_second,
-                    student_informations.id,
-                    CONCAT(student_informations.last_name, ', ', student_informations.first_name, ' ', student_informations.middle_name) as student_name
-                "))
-            ->orderBY('student_name', 'ASC')
-            ->get();
+            $attendance_female = Enrollment::join('student_informations', 'student_informations.id', '=', 'enrollments.student_information_id')
+                ->join('class_details', 'class_details.id', '=', 'enrollments.class_details_id')
+                ->where('class_details_id', $class_id)
+                ->where('class_details.school_year_id', $school_year->id)
+                ->where('class_details.adviser_id', $FacultyInformation->id)
+                ->whereRaw('student_informations.gender = 2')
+                ->select(\DB::raw("
+                        enrollments.id as e_id,
+                        enrollments.attendance,
+                        enrollments.attendance_first,
+                        enrollments.attendance_second,
+                        student_informations.id,
+                        CONCAT(student_informations.last_name, ', ', student_informations.first_name, ' ', student_informations.middle_name) as student_name
+                    "))
+                ->orderBY('student_name', 'ASC')
+                ->get();
 
-        if('2020-2021' == $school_year->school_year)
-        {
-                if($Semester->grade_level > 10)
-                {
-                    if($Semester->sem == 1)
+            if('2020-2021' == $school_year->school_year)
+            {
+                    if($Semester->grade_level > 10)
+                    {
+                        if($Semester->sem == 1)
+                        {
+                            $table_header = [
+                                ['key' => 'Aug',],
+                                ['key' => 'Sep',],
+                                ['key' => 'Oct',],
+                                ['key' => 'Nov',],
+                                ['key' => 'Dec',],
+                                ['key' => 'total']
+                            ];      
+                        }
+
+                        if($Semester->sem == 2)
+                        {
+                            $table_header = [
+                                ['key' => 'Jan',],
+                                ['key' => 'Feb',],
+                                ['key' => 'Mar',],
+                                ['key' => 'Apr',],
+                                ['key' => 'total']
+                            ];      
+                        }
+
+                    }
+                    
+                    if($Semester->grade_level < 11)
                     {
                         $table_header = [
                             ['key' => 'Aug',],
@@ -87,46 +115,48 @@ class ClassAttendanceController extends Controller
                             ['key' => 'Oct',],
                             ['key' => 'Nov',],
                             ['key' => 'Dec',],
-                            ['key' => 'total']
-                        ];      
-                    }
-
-                    if($Semester->sem == 2)
-                    {
-                        $table_header = [
                             ['key' => 'Jan',],
                             ['key' => 'Feb',],
                             ['key' => 'Mar',],
                             ['key' => 'Apr',],
-                            ['key' => 'total']
+                            ['key' => 'total'],
                         ];      
                     }
 
+                    
                 }
-                
-                if($Semester->grade_level < 11)
+                else
                 {
-                    $table_header = [
-                        ['key' => 'Aug',],
-                        ['key' => 'Sep',],
-                        ['key' => 'Oct',],
-                        ['key' => 'Nov',],
-                        ['key' => 'Dec',],
-                        ['key' => 'Jan',],
-                        ['key' => 'Feb',],
-                        ['key' => 'Mar',],
-                        ['key' => 'Apr',],
-                        ['key' => 'total'],
-                    ];      
-                }
+                    if($Semester->grade_level > 10)
+                    {
+                        if($Semester->sem == 1)
+                        {
+                            $table_header = [
+                                ['key' => 'Jun',],
+                                ['key' => 'Jul',],
+                                ['key' => 'Aug',],
+                                ['key' => 'Sep',],
+                                ['key' => 'Oct',],
+                                ['key' => 'total'],
+                            ];      
+                        }
 
-                
-            }
-            else
-            {
-                if($Semester->grade_level > 10)
-                {
-                    if($Semester->sem == 1)
+                        if($Semester->sem == 2)
+                        {
+                            $table_header = [
+                                ['key' => 'Nov',],
+                                ['key' => 'Dec',],
+                                ['key' => 'Jan',],
+                                ['key' => 'Feb',],
+                                ['key' => 'Mar',],
+                                ['key' => 'Apr',],
+                                ['key' => 'total'],
+                            ];      
+                        }
+
+                    }
+
+                    if($Semester->grade_level < 11)
                     {
                         $table_header = [
                             ['key' => 'Jun',],
@@ -134,13 +164,6 @@ class ClassAttendanceController extends Controller
                             ['key' => 'Aug',],
                             ['key' => 'Sep',],
                             ['key' => 'Oct',],
-                            ['key' => 'total'],
-                        ];      
-                    }
-
-                    if($Semester->sem == 2)
-                    {
-                        $table_header = [
                             ['key' => 'Nov',],
                             ['key' => 'Dec',],
                             ['key' => 'Jan',],
@@ -150,102 +173,91 @@ class ClassAttendanceController extends Controller
                             ['key' => 'total'],
                         ];      
                     }
+                    
+            }
+            
+            $attendance_male = $attendance_male->map(function($item, $key) use ($table_header,$Semester){
+                
+                if($Semester->grade_level > 10)
+                {
+                    if($Semester->sem == 1)
+                    {
+                        $attendance_data = json_decode($item->attendance_first);
+                    }
+
+                    if($Semester->sem == 2)
+                    {
+                        $attendance_data = json_decode($item->attendance_second);
+                    }
 
                 }
-
                 if($Semester->grade_level < 11)
                 {
-                    $table_header = [
-                        ['key' => 'Jun',],
-                        ['key' => 'Jul',],
-                        ['key' => 'Aug',],
-                        ['key' => 'Sep',],
-                        ['key' => 'Oct',],
-                        ['key' => 'Nov',],
-                        ['key' => 'Dec',],
-                        ['key' => 'Jan',],
-                        ['key' => 'Feb',],
-                        ['key' => 'Mar',],
-                        ['key' => 'Apr',],
-                        ['key' => 'total'],
-                    ];      
+                    $attendance_data = json_decode($item->attendance);
                 }
+
+                $data = [
+                    'table_header'          =>  $table_header,
+                    'student_name'          =>  $item->student_name,
+                    'attendance_data'       =>  $attendance_data,
+                    'status'                =>  $item->status,
+                    'id'                    =>  $item->id,
+                    'days_of_school_total'  => array_sum($attendance_data->days_of_school),
+                    'days_present_total'    => array_sum($attendance_data->days_present),
+                    'days_absent_total'     => array_sum($attendance_data->days_absent),
+                    'times_tardy_total'     => array_sum($attendance_data->times_tardy),
+                    'e_id'                  => $item->e_id,
+                ];
                 
+                return $data;
+            });
+            
+            $attendance_female = $attendance_female->map(function($item, $key) use ($table_header,$Semester){
+                
+                if($Semester->grade_level > 10)
+                {
+                    if($Semester->sem == 1)
+                    {
+                        $attendance_data = json_decode($item->attendance_first);
+                    }
+
+                    if($Semester->sem == 2)
+                    {
+                        $attendance_data = json_decode($item->attendance_second);
+                    }
+
+                }
+                if($Semester->grade_level < 11)
+                {
+                    $attendance_data = json_decode($item->attendance);
+                }
+                $data = [
+                    'table_header'          =>  $table_header,
+                    'student_name'          =>  $item->student_name,
+                    'attendance_data'       =>  $attendance_data,
+                    'status'                =>  $item->status,
+                    'id'                    =>  $item->id,
+                    'days_of_school_total'  => array_sum($attendance_data->days_of_school),
+                    'days_present_total'    => array_sum($attendance_data->days_present),
+                    'days_absent_total'     => array_sum($attendance_data->days_absent),
+                    'times_tardy_total'     => array_sum($attendance_data->times_tardy),
+                    'e_id'                  => $item->e_id,
+                ];
+                
+                return $data;
+            });
+
+            $hasData = 0;
+            // $attendance_male = json_decode(json_encode($attendance_male, true));
+            return view('control_panel_faculty.student_attendance.index', 
+                compact('attendance_male','attendance_female','Semester','class_id','hasData'))->render();
+                
+        } catch (\Throwable $th) {
+            //throw $th;
+            $hasData = 1;
+            return view('control_panel_faculty.student_attendance.index', 
+                compact('hasData'))->render();
         }
-        
-        $attendance_male = $attendance_male->map(function($item, $key) use ($table_header,$Semester){
-            
-            if($Semester->grade_level > 10)
-            {
-                if($Semester->sem == 1)
-                {
-                    $attendance_data = json_decode($item->attendance_first);
-                }
-
-                if($Semester->sem == 2)
-                {
-                    $attendance_data = json_decode($item->attendance_second);
-                }
-
-            }
-            if($Semester->grade_level < 11)
-            {
-                $attendance_data = json_decode($item->attendance);
-            }
-
-            $data = [
-                'table_header'          =>  $table_header,
-                'student_name'          =>  $item->student_name,
-                'attendance_data'       =>  $attendance_data,
-                'status'                =>  $item->status,
-                'id'                    =>  $item->id,
-                'days_of_school_total'  => array_sum($attendance_data->days_of_school),
-                'days_present_total'    => array_sum($attendance_data->days_present),
-                'days_absent_total'     => array_sum($attendance_data->days_absent),
-                'times_tardy_total'     => array_sum($attendance_data->times_tardy),
-                'e_id'                  => $item->e_id,
-            ];
-            
-            return $data;
-        });
-        
-        $attendance_female = $attendance_female->map(function($item, $key) use ($table_header,$Semester){
-            
-            if($Semester->grade_level > 10)
-            {
-                if($Semester->sem == 1)
-                {
-                    $attendance_data = json_decode($item->attendance_first);
-                }
-
-                if($Semester->sem == 2)
-                {
-                    $attendance_data = json_decode($item->attendance_second);
-                }
-
-            }
-            if($Semester->grade_level < 11)
-            {
-                $attendance_data = json_decode($item->attendance);
-            }
-            $data = [
-                'table_header'          =>  $table_header,
-                'student_name'          =>  $item->student_name,
-                'attendance_data'       =>  $attendance_data,
-                'status'                =>  $item->status,
-                'id'                    =>  $item->id,
-                'days_of_school_total'  => array_sum($attendance_data->days_of_school),
-                'days_present_total'    => array_sum($attendance_data->days_present),
-                'days_absent_total'     => array_sum($attendance_data->days_absent),
-                'times_tardy_total'     => array_sum($attendance_data->times_tardy),
-                'e_id'                  => $item->e_id,
-            ];
-            
-            return $data;
-        });
-        // $attendance_male = json_decode(json_encode($attendance_male, true));
-        return view('control_panel_faculty.student_attendance.index', 
-            compact('attendance_male','attendance_female','Semester','class_id'))->render();
         
     }
 
