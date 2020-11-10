@@ -124,9 +124,9 @@
 
                                         if($quarter == '1st')
                                         {
-                                            $sum += $sub_grade->fir_g;
-                                            echo number_format(round($sub_grade->fir_g));
-                                            if($sub_grade->fir_g == 0)
+                                            $sum += $sub_grade['fir_g'];
+                                            echo number_format(round($sub_grade['fir_g']));
+                                            if($sub_grade['fir_g'] == 0)
                                             {
                                                 $isEmpty = 'na';
                                             }     
@@ -134,9 +134,9 @@
                                                                     
                                         if($quarter == '3rd')
                                         {
-                                            $sum += $sub_grade->thi_g;
-                                            echo number_format(round($sub_grade->thi_g));
-                                            if($sub_grade->thi_g == 0)
+                                            $sum += $sub_grade['thi_g'];
+                                            echo number_format(round($sub_grade['thi_g']));
+                                            if($sub_grade['thi_g'] == 0)
                                             {
                                                 $isEmpty = 'na';
                                             }  
@@ -160,17 +160,17 @@
 
                                         if($quarter == '2nd' && $sem == '1st')
                                         {
-                                            $fir += round($sub_grade->fir_g);
-                                            $sec += round($sub_grade->sec_g);
+                                            $fir += round($sub_grade['fir_g']);
+                                            $sec += round($sub_grade['sec_g']);
                                             $final_first = round($fir + $sec);
                                             $div = $divisor * 2;
                                             $final = $final_first / $div;
                                             
-                                            $final_first = round($sub_grade->fir_g + $sub_grade->sec_g) / 2;                                   
-                                            echo '<td class="text-center">'.number_format(round($sub_grade->fir_g)).'</td>';
-                                            echo '<td class="text-center">'.number_format(round($sub_grade->sec_g)).'</td>';
+                                            $final_first = round($sub_grade['fir_g'] + $sub_grade['sec_g']) / 2;                                   
+                                            echo '<td class="text-center">'.number_format(round($sub_grade['fir_g'])).'</td>';
+                                            echo '<td class="text-center">'.number_format(round($sub_grade['sec_g'])).'</td>';
                                             echo '<td class="text-center text-red">'.number_format(round($final_first)).'</td>';
-                                            if($sub_grade->fir_g == 0 && $sub_grade->sec_g == 0)
+                                            if($sub_grade['fir_g'] == 0 && $sub_grade['sec_g'] == 0)
                                             {
                                                 $isEmpty = 'na';
                                             } 
@@ -178,17 +178,17 @@
                                                                     
                                         if($quarter == '4th' && $sem == '2nd')
                                         {                                    
-                                            $thi += round($sub_grade->thi_g);
-                                            $fou += round($sub_grade->fou_g);
+                                            $thi += round($sub_grade['thi_g']);
+                                            $fou += round($sub_grade['fou_g']);
                                             $final_sec = round($thi + $fou);
                                             $div = $divisor * 2;
                                             $final = $final_sec / $div;
                                             
-                                            $final_sec = round($sub_grade->thi_g + $sub_grade->fou_g) / 2;
-                                            echo '<td class="text-center">'.number_format(round($sub_grade->thi_g)).'</td>';                                
-                                            echo '<td class="text-center">'.number_format(round($sub_grade->fou_g)).'</td>';
+                                            $final_sec = round($sub_grade['thi_g'] + $sub_grade['fou_g']) / 2;
+                                            echo '<td class="text-center">'.number_format(round($sub_grade['thi_g'])).'</td>';                                
+                                            echo '<td class="text-center">'.number_format(round($sub_grade['fou_g'])).'</td>';
                                             echo '<td class="text-center text-red">'.number_format(round($final_sec)).'</td>';
-                                            if($sub_grade->thi_g == 0 && $sub_grade->fou_g == 0)
+                                            if($sub_grade['thi_g'] == 0 && $sub_grade['fou_g'] == 0)
                                             {
                                                 $isEmpty = 'na';
                                             }      
@@ -206,12 +206,12 @@
                                                 ->where('subject_id', $sub->subject_id)
                                                 ->first(); 
                                             
-                                            $fir += round($sub_grade->fir_g);
-                                            $sec += round($sub_grade->sec_g);
+                                            $fir += round($sub_grade['fir_g']);
+                                            $sec += round($sub_grade['sec_g']);
                                             $final_first = round($fir + $sec);
                                             
                                             
-                                            $fg = round($sub_grade->fir_g + $sub_grade->sec_g); 
+                                            $fg = round($sub_grade['fir_g'] + $sub_grade['sec_g']); 
                                             echo $first = number_format(round($fg) / 2);
                                         @endphp  
                                     </td>
@@ -224,12 +224,12 @@
                                                 ->where('enrollments_id',$item->id)
                                                 ->where('subject_id', $sub->subject_id)
                                                 ->first(); 
-                                            $thi += round($sub_grade->thi_g);
-                                            $fou += round($sub_grade->fou_g);
+                                            $thi += round($sub_grade['thi_g']);
+                                            $fou += round($sub_grade['fou_g']);
 
                                             try {
                                                 $final_sec = round($thi + $fou);
-                                                $fg = round($sub_grade->thi_g + $sub_grade->fou_g); 
+                                                $fg = round($sub_grade['thi_g'] + $sub_grade['fou_g']); 
                                                 echo $second = number_format(round($fg) / 2);
                                             } catch (\Throwable $th) {
                                                 $final_sec = 0;
@@ -242,7 +242,7 @@
                                 @endforelse
                                 @php
                                     $div = $divisor * 2;
-                                    if($sub_grade->fir_g == 0 && $sub_grade->sec_g == 0 && $sub_grade->thi_g == 0 && $sub_grade->fou_g == 0)
+                                    if($sub_grade['fir_g'] == 0 && $sub_grade['sec_g'] == 0 && $sub_grade['thi_g'] == 0 && $sub_grade['fou_g'] == 0)
                                     {
                                         $isEmpty = 'na';
                                     }   
@@ -338,9 +338,9 @@
 
                                         if($quarter == '1st')
                                         {
-                                            $sum += $sub_grade->fir_g;
-                                            echo number_format(round($sub_grade->fir_g));
-                                            if($sub_grade->fir_g == 0)
+                                            $sum += $sub_grade['fir_g'];
+                                            echo number_format(round($sub_grade['fir_g']));
+                                            if($sub_grade['fir_g'] == 0)
                                             {
                                                 $isEmpty = 'na';
                                             }     
@@ -348,9 +348,9 @@
                                                                     
                                         if($quarter == '3rd')
                                         {
-                                            $sum += $sub_grade->thi_g;
-                                            echo number_format(round($sub_grade->thi_g));
-                                            if($sub_grade->thi_g == 0)
+                                            $sum += $sub_grade['thi_g'];
+                                            echo number_format(round($sub_grade['thi_g']));
+                                            if($sub_grade['thi_g'] == 0)
                                             {
                                                 $isEmpty = 'na';
                                             }  
@@ -374,17 +374,17 @@
 
                                         if($quarter == '2nd' && $sem == '1st')
                                         {
-                                            $fir += round($sub_grade->fir_g);
-                                            $sec += round($sub_grade->sec_g);
+                                            $fir += round($sub_grade['fir_g']);
+                                            $sec += round($sub_grade['sec_g']);
                                             $final_first = round($fir + $sec);
                                             $div = $divisor * 2;
                                             $final = $final_first / $div;
                                             
-                                            $final_first = round($sub_grade->fir_g + $sub_grade->sec_g) / 2;                                   
-                                            echo '<td class="text-center">'.number_format(round($sub_grade->fir_g)).'</td>';
-                                            echo '<td class="text-center">'.number_format(round($sub_grade->sec_g)).'</td>';
+                                            $final_first = round($sub_grade['fir_g'] + $sub_grade['sec_g']) / 2;                                   
+                                            echo '<td class="text-center">'.number_format(round($sub_grade['fir_g'])).'</td>';
+                                            echo '<td class="text-center">'.number_format(round($sub_grade['sec_g'])).'</td>';
                                             echo '<td class="text-center text-red">'.number_format(round($final_first)).'</td>';
-                                            if($sub_grade->fir_g == 0 && $sub_grade->sec_g == 0)
+                                            if($sub_grade['fir_g'] == 0 && $sub_grade['sec_g'] == 0)
                                             {
                                                 $isEmpty = 'na';
                                             } 
@@ -392,17 +392,17 @@
                                                                     
                                         if($quarter == '4th' && $sem == '2nd')
                                         {                                    
-                                            $thi += round($sub_grade->thi_g);
-                                            $fou += round($sub_grade->fou_g);
+                                            $thi += round($sub_grade['thi_g']);
+                                            $fou += round($sub_grade['fou_g']);
                                             $final_sec = round($thi + $fou);
                                             $div = $divisor * 2;
                                             $final = $final_sec / $div;
                                             
-                                            $final_sec = round($sub_grade->thi_g + $sub_grade->fou_g) / 2;
-                                            echo '<td class="text-center">'.number_format(round($sub_grade->thi_g)).'</td>';                                
-                                            echo '<td class="text-center">'.number_format(round($sub_grade->fou_g)).'</td>';
+                                            $final_sec = round($sub_grade['thi_g'] + $sub_grade['fou_g']) / 2;
+                                            echo '<td class="text-center">'.number_format(round($sub_grade['thi_g'])).'</td>';                                
+                                            echo '<td class="text-center">'.number_format(round($sub_grade['fou_g'])).'</td>';
                                             echo '<td class="text-center text-red">'.number_format(round($final_sec)).'</td>';
-                                            if($sub_grade->thi_g == 0 && $sub_grade->fou_g == 0)
+                                            if($sub_grade['thi_g'] == 0 && $sub_grade['fou_g'] == 0)
                                             {
                                                 $isEmpty = 'na';
                                             }      
@@ -420,12 +420,12 @@
                                                 ->where('subject_id', $sub->subject_id)
                                                 ->first(); 
                                             
-                                            $fir += round($sub_grade->fir_g);
-                                            $sec += round($sub_grade->sec_g);
+                                            $fir += round($sub_grade['fir_g']);
+                                            $sec += round($sub_grade['sec_g']);
                                             $final_first = round($fir + $sec);
                                             
                                             
-                                            $fg = round($sub_grade->fir_g + $sub_grade->sec_g); 
+                                            $fg = round($sub_grade['fir_g'] + $sub_grade['sec_g']); 
                                             echo $first = number_format(round($fg) / 2);
                                         @endphp  
                                     </td>
@@ -438,12 +438,12 @@
                                                 ->where('enrollments_id',$item->id)
                                                 ->where('subject_id', $sub->subject_id)
                                                 ->first(); 
-                                            $thi += round($sub_grade->thi_g);
-                                            $fou += round($sub_grade->fou_g);
+                                            $thi += round($sub_grade['thi_g']);
+                                            $fou += round($sub_grade['fou_g']);
 
                                             try {
                                                 $final_sec = round($thi + $fou);
-                                                $fg = round($sub_grade->thi_g + $sub_grade->fou_g); 
+                                                $fg = round($sub_grade['thi_g'] + $sub_grade['fou_g']); 
                                                 echo $second = number_format(round($fg) / 2);
                                             } catch (\Throwable $th) {
                                                 $final_sec = 0;
@@ -456,7 +456,7 @@
                                 @endforelse
                                 @php
                                     $div = $divisor * 2;
-                                    if($sub_grade->fir_g == 0 && $sub_grade->sec_g == 0 && $sub_grade->thi_g == 0 && $sub_grade->fou_g == 0)
+                                    if($sub_grade['fir_g'] == 0 && $sub_grade['sec_g'] == 0 && $sub_grade['thi_g'] == 0 && $sub_grade['fou_g'] == 0)
                                     {
                                         $isEmpty = 'na';
                                     }   
