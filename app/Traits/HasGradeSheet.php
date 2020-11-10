@@ -17,7 +17,7 @@ trait HasGradeSheet{
     public function classDetail()
     {     
         return $this->hasMany(ClassDetail::class, 'id', 'class_details_id')
-            ->whereStatus(1);
+            ->whereStatus(1)->whereCurrent(1);
     }
 
     public function classSubjectDetail()
