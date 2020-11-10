@@ -37,11 +37,13 @@ class ClassAttendanceController extends Controller
             ->first();
 
         try {
-            //code...
             
             $class_id = ClassDetail::where('adviser_id', $FacultyInformation->id)
                 ->where('school_year_id', $school_year->id)
-                ->where('adviser_id', $FacultyInformation->id)->first()->id;            
+                ->where('adviser_id', $FacultyInformation->id)
+                ->whereStatus(1)
+                ->whereCurrent(1)
+                ->first()->id;            
 
             
             $attendance_male = Enrollment::join('student_informations', 'student_informations.id', '=', 'enrollments.student_information_id')
@@ -60,6 +62,8 @@ class ClassAttendanceController extends Controller
                     "))
                 ->orderBY('student_name', 'ASC')
                 ->get();
+
+            // return json_encode($attendance_male);
         
             $attendance_female = Enrollment::join('student_informations', 'student_informations.id', '=', 'enrollments.student_information_id')
                 ->join('class_details', 'class_details.id', '=', 'enrollments.class_details_id')
