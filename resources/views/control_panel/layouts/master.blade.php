@@ -223,7 +223,7 @@
           <li class="{{request()->routeIs('faculty.class-attendance.index') ? 'active' : '' }}"><a href="{{ route('faculty.class-attendance.index') }}"><i class="fa fa-calendar-plus-o fa-lg"></i> &nbsp;&nbsp;&nbsp;<span>Encode Class Attendance</span></a></li>
           <li class="{{request()->routeIs('faculty.encode-remarks.index') ? 'active' : '' }}"><a href="{{ route('faculty.encode-remarks.index') }}"><i class="fa fa-pencil-square-o fa-lg"></i> &nbsp;&nbsp;&nbsp;<span>Print Class Card</span></a></li>
           <li class="{{request()->routeIs('faculty.class_demographic_profile.index') ? 'active' : '' }}"><a href="{{ route('faculty.class_demographic_profile.index') }}"><i class="fa fa-info-circle fa-lg"></i> &nbsp;&nbsp;&nbsp;<span>Demographic Profile</span></a></li>
-          <li class="{{request()->routeIs('faculty.advisory_class.index') ? 'active' : '' }}"><a href="{{ route('faculty.advisory_class.index') }}"><i class="fa fa-users fa-lg"></i> &nbsp;&nbsp;&nbsp;<span>My Advisory Class</span></a></li>
+          <li class="{{request()->routeIs('faculty.advisory_class.index*') ? 'active' : '' }}"><a href="{{ route('faculty.advisory_class.index') }}"><i class="fa fa-users fa-lg"></i> &nbsp;&nbsp;&nbsp;<span>My Advisory Class</span></a></li>
           
          {{--  <li><a href="{{ route('faculty.my_advisory_class.index') }}"><i class="fa fa-circle-o"></i> <span>My Advisory Class</span></a>  --}}
             

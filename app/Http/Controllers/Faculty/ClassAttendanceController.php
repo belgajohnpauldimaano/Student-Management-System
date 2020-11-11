@@ -287,7 +287,10 @@ class ClassAttendanceController extends Controller
 
         $class_id = ClassDetail::where('adviser_id', $FacultyInformation->id)
             ->where('school_year_id', $school_year->id)
-            ->where('adviser_id', $FacultyInformation->id)->first()->id;            
+            ->where('adviser_id', $FacultyInformation->id)
+            ->whereStatus(1)
+            ->whereCurrent(1)
+            ->first()->id;            
 
         
         $attendance_male = Enrollment::join('student_informations', 'student_informations.id', '=', 'enrollments.student_information_id')
