@@ -1,6 +1,5 @@
 @include('control_panel.layouts.header')
 
-
 <body class="hold-transition skin-black sidebar-mini fixed skin-red-light">
 <div class="wrapper">
 
@@ -68,17 +67,28 @@
   <!-- Left side column. contains the logo and sidebar -->
   <aside class="main-sidebar">
     <!-- sidebar: style can be found in sidebar.less -->
-    <section class="sidebar">
-      
+    <section class="sidebar">      
       <!-- sidebar menu: : style can be found in sidebar.less -->
       <ul class="sidebar-menu" data-widget="tree">
         <li class="header">STUDENT NAVIGATION</li>
-          <li><a href="{{ route('student.dashboard') }}"><i class="fa fa-home fa-fw fa-lg"></i>&nbsp;&nbsp; <span>Home</span></a></li>
-          <li><a href="{{ route('student.enrollment.index') }}"><i class="fas fa-file fa-lg"></i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span>Online/Registration Payment</span></a></li> 
-          <li><a href="{{ route('student.student_appointment') }}"><i class="far fa-calendar-check fa-lg"></i></i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span>Appointment for Walk in</span></a></li> 
-          <li><a href="{{ route('student.class_schedule.index') }}"><i class="fa fa-calendar fa-lg"></i>&nbsp;&nbsp;&nbsp; <span>Class Schedule</span></a></li>
-          <li><a href="{{ route('student.grade_sheet.index') }}"><i class="fa fa-file-text-o fa-lg"></i>&nbsp;&nbsp;&nbsp; <span>Grade Sheet</span></a></li>
-          <li><a href="{{ route('student.my_account.index') }}"><i class="fa fa-user fa-lg"></i>&nbsp;&nbsp;&nbsp;  <span>My Profile</span></a></li>
+          <li class="{{request()->routeIs('student.dashboard') ? 'active' : '' }}">
+            <a href="{{ route('student.dashboard') }}"><i class="fa fa-home fa-fw fa-lg"></i>&nbsp;&nbsp; <span>Home</span></a>
+          </li>
+          <li class="{{request()->routeIs('student.enrollment.index') ? 'active' : '' }}">
+            <a href="{{ route('student.enrollment.index') }}"><i class="fas fa-file fa-lg"></i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span>Online/Registration Payment</span></a>
+          </li> 
+          <li class="{{request()->routeIs('student.student_appointment') ? 'active' : '' }}">
+            <a href="{{ route('student.student_appointment') }}"><i class="far fa-calendar-check fa-lg"></i></i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span>Appointment for Walk in</span></a>
+          </li> 
+          <li class="{{request()->routeIs('student.class_schedule.index') ? 'active' : '' }}">
+            <a href="{{ route('student.class_schedule.index') }}"><i class="fa fa-calendar fa-lg"></i>&nbsp;&nbsp;&nbsp; <span>Class Schedule</span></a>
+          </li>
+          <li class="{{request()->routeIs('student.grade_sheet.index') ? 'active' : '' }}">
+            <a href="{{ route('student.grade_sheet.index') }}"><i class="fa fa-file-text-o fa-lg"></i>&nbsp;&nbsp;&nbsp; <span>Grade Sheet</span></a>
+          </li>
+          <li class="{{request()->routeIs('student.my_account.index') ? 'active' : '' }}">
+            <a href="{{ route('student.my_account.index') }}"><i class="fa fa-user fa-lg"></i>&nbsp;&nbsp;&nbsp;  <span>My Profile</span></a>
+          </li>
       </ul>
     </section>
     <!-- /.sidebar -->
