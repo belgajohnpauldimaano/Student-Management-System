@@ -7,6 +7,7 @@ use App\DateRemark;
 use App\Enrollment;
 use App\SchoolYear;
 use App\ClassDetail;
+use App\Traits\HasUser;
 use App\StudentInformation;
 use Illuminate\Http\Request;
 use App\StudentEnrolledSubject;
@@ -16,10 +17,13 @@ use Illuminate\Support\Facades\Auth;
 
 class StudentController extends Controller
 {
-    use hasIncomingStudents;
+    use hasIncomingStudents, HasUser;
     
     public function index (Request $request) 
     {
+        $IncomingStudentCount = $this->IncomingStudentCount();
+        $isAdmin = $this->isAdmin();
+
         if($request->ajax())
         {
             $StudentInformation = StudentInformation::with(['user', 'enrolled_class'])->where('status', 1)
@@ -32,14 +36,13 @@ class StudentController extends Controller
                 // ->orWhere('first_name', 'like', '%'.$request->search.'%')
                 ->paginate(10);
             // return json_encode(['student_info' => $StudentInformation]);
-            return view('control_panel.student_information.partials.data_list', compact('StudentInformation'))->render();
+            return view('control_panel.student_information.partials.data_list', compact('StudentInformation','isAdmin'))->render();
         }
-        $IncomingStudentCount = $this->IncomingStudentCount();
 
         $StudentInformation = StudentInformation::with(['user', 'enrolled_class'])
             ->where('status', 1)->orderBY('last_name', 'ASC')->paginate(10);
         // return json_encode(['student_info' => $StudentInformation]);
-        return view('control_panel.student_information.index', compact('StudentInformation','IncomingStudentCount'));
+        return view('control_panel.student_information.index', compact('StudentInformation','IncomingStudentCount','isAdmin'));
     }
 
     public function modal_data (Request $request) 

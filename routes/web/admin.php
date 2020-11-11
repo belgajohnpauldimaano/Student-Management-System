@@ -2,6 +2,7 @@
 
 Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'userroles'], 'roles' => ['admin', 'root']], function() {
     Route::get('dashboard', 'Control_Panel\DashboardController@index')->name('admin.dashboard');
+    Route::post('reset-password', 'Control_Panel\ResetPasswordController@reset')->name('admin.reset_password');
 
     Route::group(['prefix' => 'registrar-information'], function() {
         Route::get('', 'Control_Panel\RegistrarController@index')->name('admin.registrar_information');

@@ -24,17 +24,41 @@
                                             <td>{{ $data->birthdate ? date_format(date_create($data->birthdate), 'F d, Y') : '' }}</td>
                                             <td>{{ $data->guardian }}</td>
                                             <td>{{ $data->c_address }}</td>
-                                            <td>{{ $data->status == 1 ? 'Active' : 'Inactive' }}</td>
                                             <td>
+                                                <span class="label label-{{ $data->status == 1 ? 'success' : 'danger' }}">
+                                                    {{ $data->status == 1 ? 'Active' : 'Inactive' }}
+                                                </span>
+                                            </td>
+                                            <td width="15%">
                                                 <div class="input-group-btn pull-left text-left">
-                                                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="true">Action
-                                                        <span class="fa fa-caret-down"></span></button>
+                                                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="true">
+                                                        Action <span class="fa fa-caret-down"></span>
+                                                    </button>
                                                     <ul class="dropdown-menu">
                                                         @if ($data->enrolled_class) 
-                                                            <li><a href="#" class="js-btn_print_grade" data-id="{{ $data->id }}">Print Grade</a></li>
+                                                            <li>
+                                                                <a href="#" class="js-btn_print_grade" data-id="{{ $data->id }}">
+                                                                    Print Grade
+                                                                </a>
+                                                            </li>
                                                         @endif
-                                                        <li><a href="#" class="js-btn_update_sy" data-id="{{ $data->id }}">Edit</a></li>
-                                                        <li><a href="#" class="js-btn_deactivate" data-id="{{ $data->id }}">Deactivate</a></li>
+                                                        <li>
+                                                            <a href="#" class="js-btn_update_sy" data-id="{{ $data->id }}">
+                                                                Edit
+                                                            </a>
+                                                        </li>
+                                                        @if($isAdmin->role == 1)
+                                                        <li>
+                                                            <a href="#" class="js-btn_reset_pw" data-id="{{ $data->id }}" data-type="student">
+                                                                Reset Password
+                                                            </a>
+                                                        </li>
+                                                        @endif
+                                                        <li>
+                                                            <a href="#" class="js-btn_deactivate" data-id="{{ $data->id }}">
+                                                                Deactivate
+                                                            </a>
+                                                        </li>
                                                     </ul>>
                                                 </div>
                                             </td>

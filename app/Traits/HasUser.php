@@ -25,5 +25,11 @@ trait HasUser{
         return $this->hasOne(FacultyInformation::class, 'id', 'adviser_id');
     }
 
+    public function isAdmin()
+    {
+        $isAdmin = \Auth::user();
+        return $isAdmin;
+    }
+
    
 }

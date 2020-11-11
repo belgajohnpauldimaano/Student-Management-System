@@ -98,6 +98,47 @@
                 page = $(this).attr('href').split('=')[1];
                 fetch_data();
             });
+            $('body').on('click', '.js-btn_reset_pw', function (e) {
+                e.preventDefault();
+                
+                var id = $(this).data('id');
+                var type = $(this).data('type');
+                alertify.defaults.theme.ok = "btn btn-primary btn-flat";
+                alertify.defaults.theme.cancel = "btn btn-danger btn-flat";
+                alertify.confirm('<i style="color: red" class="fas fa-exclamation-triangle"></i> Warning',"Do you want to reset the password?", function(){  
+                    
+                    $.ajax({
+                        url         : "{{ route('admin.reset_password') }}",
+                        type        : 'POST',
+                        data        : { _token : '{{ csrf_token() }}', id : id , type : type },
+                        success     : function (res) {
+                            $('.help-block').html('');
+                            if (res.res_code == 1)
+                            {
+                                show_toast_alert({
+                                    heading : 'Error',
+                                    message : res.res_msg,
+                                    type    : 'error'
+                                });
+                            }
+                            else
+                            {
+                                show_toast_alert({
+                                    heading : 'Success',
+                                    message : res.res_msg,
+                                    type    : 'success'
+                                });
+                                $('.js-modal_holder .modal').modal('hide');
+                                fetch_data();
+                            }
+                        }
+                    });
+                }, function(){  
+
+                });
+                
+                
+            })
             $('body').on('click', '.js-btn_deactivate', function (e) {
                 e.preventDefault();
                 var id = $(this).data('id');

@@ -2,13 +2,16 @@
 
 namespace App\Http\Controllers\Control_Panel;
 
+use App\Traits\HasUser;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
 class RegistrarController extends Controller
 {
+    use HasUser;
     public function index (Request $request) 
     {
+        $isAdmin = $this->isAdmin();
         if ($request->ajax())
         {
             $RegistrarInformation = \App\RegistrarInformation::with(['user'])->where('status', 1)
@@ -19,10 +22,10 @@ class RegistrarController extends Controller
             })
             // ->orWhere('first_name', 'like', '%'.$request->search.'%')
             ->paginate(10);
-            return view('control_panel.registrar_information.partials.data_list', compact('RegistrarInformation'))->render();
+            return view('control_panel.registrar_information.partials.data_list', compact('RegistrarInformation','isAdmin'))->render();
         }
         $RegistrarInformation = \App\RegistrarInformation::with(['user'])->where('status', 1)->paginate(10);
-        return view('control_panel.registrar_information.index', compact('RegistrarInformation'));
+        return view('control_panel.registrar_information.index', compact('RegistrarInformation','isAdmin'));
     }
     public function modal_data (Request $request) 
     {

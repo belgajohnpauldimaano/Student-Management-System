@@ -3,14 +3,18 @@
 namespace App\Http\Controllers\Control_Panel;
 
 use App\User;
+use App\Traits\HasUser;
 use Illuminate\Http\Request;
 use App\AdmissionInformation;
 use App\Http\Controllers\Controller;
 
 class AdmissionController extends Controller
 {
+    use HasUser;
+
     public function index (Request $request) 
     {
+        $isAdmin = $this->isAdmin();
         if ($request->ajax())
         {
             $AdmissionInformation = AdmissionInformation::with(['user'])->where('status', 1)
@@ -20,10 +24,10 @@ class AdmissionController extends Controller
                 $query->orWhere('last_name', 'like', '%'.$request->search.'%');
             })
             ->paginate(10);
-            return view('control_panel.admission_information.partials.data_list', compact('AdmissionInformation'))->render();
+            return view('control_panel.admission_information.partials.data_list', compact('AdmissionInformation','isAdmin'))->render();
         }
         $AdmissionInformation = AdmissionInformation::with(['user'])->where('status', 1)->paginate(10);
-        return view('control_panel.admission_information.index', compact('AdmissionInformation'));
+        return view('control_panel.admission_information.index', compact('AdmissionInformation','isAdmin'));
     }
 
     public function modal_data (Request $request) 

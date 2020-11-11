@@ -2,13 +2,17 @@
 
 namespace App\Http\Controllers\Control_Panel;
 
+use App\Traits\HasUser;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
 class FacultyController extends Controller
 {
+    use HasUser;
+    
     public function index (Request $request) 
     {
+        $isAdmin = $this->isAdmin();
         if ($request->ajax())
         {
             $FacultyInformation = \App\FacultyInformation::with(['user'])->where('status', 1)
@@ -21,10 +25,10 @@ class FacultyController extends Controller
             // ->orWhere('first_name', 'like', '%'.$request->search.'%')
             ->paginate(10);
             
-            return view('control_panel.faculty_information.partials.data_list', compact('FacultyInformation'))->render();
+            return view('control_panel.faculty_information.partials.data_list', compact('FacultyInformation','isAdmin'))->render();
         }
         $FacultyInformation = \App\FacultyInformation::with(['user'])->where('status', 1)->orderBY('last_name','ASC')->paginate(10);
-        return view('control_panel.faculty_information.index', compact('FacultyInformation'));
+        return view('control_panel.faculty_information.index', compact('FacultyInformation','isAdmin'));
     }
     public function modal_data (Request $request) 
     {
@@ -167,4 +171,3 @@ class FacultyController extends Controller
         return view('control_panel.faculty_information.partials.modal_additional_information', compact('FacultyEducation', 'FacultySeminar', 'FacultyInformation'))->render();
     }
 }
-

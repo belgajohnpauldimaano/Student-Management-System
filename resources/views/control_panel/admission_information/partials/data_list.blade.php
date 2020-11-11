@@ -23,6 +23,13 @@
                                                         <span class="fa fa-caret-down"></span></button>
                                                     <ul class="dropdown-menu">
                                                         <li><a href="#" class="js-btn_update_sy" data-id="{{ $data->id }}">Edit</a></li>
+                                                        @if($isAdmin->role == 1)
+                                                        <li>
+                                                            <a href="#" class="js-btn_reset_pw" data-id="{{ $data->id }}" data-type="admission">
+                                                                Reset Password
+                                                            </a>
+                                                        </li>
+                                                        @endif
                                                         <li><a href="#" class="js-btn_deactivate" data-id="{{ $data->id }}">Deactivate</a></li>
                                                     </ul>>
                                                 </div>

@@ -2,13 +2,16 @@
 
 namespace App\Http\Controllers\Control_Panel;
 
+use App\Traits\HasUser;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
 class FinanceController extends Controller
 {
+    use HasUser;
     public function index (Request $request) 
     {
+        $isAdmin = $this->isAdmin();
         if ($request->ajax())
         {
             $FinanceInformation = \App\FinanceInformation::with(['user'])->where('status', 1)
@@ -19,10 +22,10 @@ class FinanceController extends Controller
             })
             // ->orWhere('first_name', 'like', '%'.$request->search.'%')
             ->paginate(10);
-            return view('control_panel.finance_information.partials.data_list', compact('FinanceInformation'))->render();
+            return view('control_panel.finance_information.partials.data_list', compact('FinanceInformation','isAdmin'))->render();
         }
         $FinanceInformation = \App\FinanceInformation::with(['user'])->where('status', 1)->paginate(10);
-        return view('control_panel.finance_information.index', compact('FinanceInformation'));
+        return view('control_panel.finance_information.index', compact('FinanceInformation','isAdmin'));
     }
 
     public function modal_data (Request $request) 
