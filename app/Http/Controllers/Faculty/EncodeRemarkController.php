@@ -18,8 +18,8 @@ class EncodeRemarkController extends Controller
 {
     public function index (Request $request)
     {
-        $FacultyInformation = FacultyInformation::where('user_id', \Auth::user()->id)->first();
-        $SchoolYear = SchoolYear::where('current', 1)->where('status', 1)->first();
+        $FacultyInformation = FacultyInformation::where('user_id', Auth::user()->id)->first();
+        $SchoolYear = SchoolYear::whereCurrent(1)->whereStatus(1)->first();
         try {
             $DateRemarks = DateRemark::where('school_year_id', $SchoolYear->id)->first();
         } catch (\Throwable $th) {
@@ -108,11 +108,7 @@ class EncodeRemarkController extends Controller
                     compact('hasData'))
                     ->render();
             }
-                        
-
-           
-        
-        
+                       
         // return view('control_panel_faculty.encode_remarks.index');
     }
 

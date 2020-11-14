@@ -2,19 +2,36 @@
 
 namespace App\Http\Controllers\Faculty;
 
+use App\Room;
+use App\Semester;
+use App\DateRemark;
+use App\Enrollment;
+use App\GradeLevel;
+use App\SchoolYear;
+use App\ClassDetail;
+use App\SectionDetail;
+use App\SubjectDetail;
+use Barryvdh\DomPDF\PDF;
+use App\ClassSubjectDetail;
+use App\FacultyInformation;
+use App\StudentInformation;
 use Illuminate\Http\Request;
+use App\StudentEnrolledSubject;
+use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Crypt;
 
 class AdvisoryClassController extends Controller
 {
     public function index (Request $request) 
     {        
-        $FacultyInformation = \App\FacultyInformation::where('user_id', \Auth::user()->id)->first();
+        $FacultyInformation = FacultyInformation::where('user_id', \Auth::user()->id)->first();
         
-        // $SchoolYear = \App\SchoolYear::where('current,' 1)->where('status',1)->first();
-        $SchoolYear = \App\SchoolYear::where('status', 1)->where('current', 1)->first();
+        // $SchoolYear = SchoolYear::where('current,' 1)->where('status',1)->first();
+        $SchoolYear = SchoolYear::where('status', 1)->where('current', 1)->first();
 
-        $ClassDetail = \App\ClassDetail::join('section_details', 'section_details.id', '=' ,'class_details.section_id')
+        $ClassDetail = ClassDetail::join('section_details', 'section_details.id', '=' ,'class_details.section_id')
             ->join('rooms', 'rooms.id', '=' ,'class_details.room_id')
             ->leftJoin('faculty_informations', 'faculty_informations.id', '=' ,'class_details.adviser_id')
             ->join('school_years', 'school_years.id', '=' ,'class_details.school_year_id')
@@ -56,7 +73,7 @@ class AdvisoryClassController extends Controller
             return view('control_panel_faculty.class_advisory.partials.data_list', compact('ClassDetail'))->render();
         }
 
-        // $SchoolYear = \App\SchoolYear::where('status', 1)->where('current', 1)->orderBy('current', 'DESC')->get();
+        // $SchoolYear = SchoolYear::where('status', 1)->where('current', 1)->orderBy('current', 'DESC')->get();
 
         $ClassDetail = $ClassDetail->paginate(10);
         
@@ -66,12 +83,12 @@ class AdvisoryClassController extends Controller
     
     public function view_class_list (Request $request) 
     {
-        $FacultyInformation = \App\FacultyInformation::where('user_id', \Auth::user()->id)->first();
+        $FacultyInformation = FacultyInformation::where('user_id', \Auth::user()->id)->first();
 
         try {
             $class_id = \Crypt::decrypt($request->c);
             
-            $EnrollmentMale = \App\Enrollment::join('student_informations', 'student_informations.id', '=', 'enrollments.student_information_id')
+            $EnrollmentMale = Enrollment::join('student_informations', 'student_informations.id', '=', 'enrollments.student_information_id')
             ->join('class_details', 'class_details.id', '=', 'enrollments.class_details_id')
             ->join('users', 'users.id', '=', 'student_informations.user_id')
             ->whereRaw('class_details.adviser_id = '. $FacultyInformation->id)
@@ -86,7 +103,7 @@ class AdvisoryClassController extends Controller
             ->orderBY('student_name', 'ASC')
             ->paginate(100);
 
-            $EnrollmentFemale = \App\Enrollment::join('student_informations', 'student_informations.id', '=', 'enrollments.student_information_id')
+            $EnrollmentFemale = Enrollment::join('student_informations', 'student_informations.id', '=', 'enrollments.student_information_id')
             ->join('class_details', 'class_details.id', '=', 'enrollments.class_details_id')
             ->join('users', 'users.id', '=', 'student_informations.user_id')
             ->whereRaw('class_details.adviser_id = '. $FacultyInformation->id)
@@ -101,7 +118,7 @@ class AdvisoryClassController extends Controller
             ->orderBY('student_name', 'ASC')
             ->paginate(100);
 
-            $ClassDetails = \App\ClassDetail::join('section_details', 'section_details.id', '=', 'class_details.section_id')
+            $ClassDetails = ClassDetail::join('section_details', 'section_details.id', '=', 'class_details.section_id')
             ->join('school_years', 'school_years.id', '=', 'class_details.school_year_id')
             ->where('class_details.id', $class_id)
             ->first();
@@ -120,11 +137,11 @@ class AdvisoryClassController extends Controller
 
     public function manage_attendance (Request $request) 
     {
-        $FacultyInformation = \App\FacultyInformation::where('user_id', \Auth::user()->id)->first();
+        $FacultyInformation = FacultyInformation::where('user_id', \Auth::user()->id)->first();
         try {
             $class_id = \Crypt::decrypt($request->c);
             $enrollment_id = \Crypt::decrypt($request->enr);
-            $Enrollment = \App\Enrollment::join('student_informations', 'student_informations.id', '=', 'enrollments.student_information_id')
+            $Enrollment = Enrollment::join('student_informations', 'student_informations.id', '=', 'enrollments.student_information_id')
             ->join('class_details', 'class_details.id', '=', 'enrollments.class_details_id')
             ->join('users', 'users.id', '=', 'student_informations.user_id')
             ->whereRaw('enrollments.class_details_id = '. $class_id)
@@ -138,7 +155,7 @@ class AdvisoryClassController extends Controller
             "))
             ->first();
 
-            $ClassDetails = \App\ClassDetail::join('section_details', 'section_details.id', '=', 'class_details.section_id')
+            $ClassDetails = ClassDetail::join('section_details', 'section_details.id', '=', 'class_details.section_id')
             ->join('school_years', 'school_years.id', '=', 'class_details.school_year_id')
             ->where('class_details.id', $class_id)->first();
             
@@ -198,7 +215,7 @@ class AdvisoryClassController extends Controller
 
     public function save_attendance (Request $request) 
     {
-        $FacultyInformation = \App\FacultyInformation::where('user_id', \Auth::user()->id)->first();
+        $FacultyInformation = FacultyInformation::where('user_id', \Auth::user()->id)->first();
         try {
             
             $class_id = \Crypt::decrypt($request->c);
@@ -244,7 +261,7 @@ class AdvisoryClassController extends Controller
                 'times_tardy' => $times_tardy
             ];
 
-            $Enrollment = \App\Enrollment::whereRaw('enrollments.id = '. $enrollment_id)->first();
+            $Enrollment = Enrollment::whereRaw('enrollments.id = '. $enrollment_id)->first();
             $Enrollment->attendance = json_encode($attendance_data);
             $Enrollment->save();
             return json_encode([$request->all(), 'attendance_data' => json_encode($attendance_data), 'Enrollment' => $Enrollment]);
@@ -256,23 +273,23 @@ class AdvisoryClassController extends Controller
     public function modal_data (Request $request) 
     {
         $ClassDetail = NULL;
-        $FacultyInformation = \App\FacultyInformation::where('status', 1)->get();
+        $FacultyInformation = FacultyInformation::where('status', 1)->get();
         if ($request->id)
         {
-            $ClassDetail = \App\ClassDetail::where('id', $request->id)->first();
+            $ClassDetail = ClassDetail::where('id', $request->id)->first();
         }
-        // $FacultyInformation = \App\FacultyInformation::where('status', 1)->get();
-        // $SubjectDetail = \App\SubjectDetail::where('status', 1)->get();
+        // $FacultyInformation = FacultyInformation::where('status', 1)->get();
+        // $SubjectDetail = SubjectDetail::where('status', 1)->get();
 
-        $SectionDetail = \App\SectionDetail::where('status', 1)->orderBy('grade_level')->get();
+        $SectionDetail = SectionDetail::where('status', 1)->orderBy('grade_level')->get();
         $SectionDetail_grade_levels = \DB::table('section_details')->select(\DB::raw('DISTINCT(grade_level) as grade_level'))->whereRaw('status = 1')->orderByRaw('grade_level ASC')->get();
         if ($ClassDetail) 
         {
-            $SectionDetail = \App\SectionDetail::where('status', 1)->where('grade_level', $ClassDetail->grade_level)->orderBy('grade_level')->get();
+            $SectionDetail = SectionDetail::where('status', 1)->where('grade_level', $ClassDetail->grade_level)->orderBy('grade_level')->get();
         }
-        $GradeLevel = \App\GradeLevel::where('status', 1)->get();
-        $Room = \App\Room::where('status', 1)->get();
-        $SchoolYear = \App\SchoolYear::where('status', 1)->where('current', 1)->get();
+        $GradeLevel = GradeLevel::where('status', 1)->get();
+        $Room = Room::where('status', 1)->get();
+        $SchoolYear = SchoolYear::where('status', 1)->where('current', 1)->get();
         return view('control_panel_faculty.class_advisory.partials.modal_data', compact('ClassDetail', 'SectionDetail', 'Room', 'SchoolYear', 'SectionDetail_grade_levels', 'GradeLevel', 'FacultyInformation'))->render();
     }
 
@@ -281,14 +298,14 @@ class AdvisoryClassController extends Controller
         $ClassDetail = NULL;
         if ($request->id)
         {
-            $ClassDetail = \App\ClassDetail::where('id', $request->id)->first();
+            $ClassDetail = ClassDetail::where('id', $request->id)->first();
         }
         // return json_encode($ClassDetail);
-        $FacultyInformation = \App\FacultyInformation::where('status', 1)->get();
-        $SubjectDetail = \App\SubjectDetail::where('status', 1)->get();
-        $SectionDetail = \App\SectionDetail::where('status', 1)->get();
-        $Room = \App\Room::where('status', 1)->get();
-        $SchoolYear = \App\SchoolYear::where('status', 1)->get();
+        $FacultyInformation = FacultyInformation::where('status', 1)->get();
+        $SubjectDetail = SubjectDetail::where('status', 1)->get();
+        $SectionDetail = SectionDetail::where('status', 1)->get();
+        $Room = Room::where('status', 1)->get();
+        $SchoolYear = SchoolYear::where('status', 1)->get();
         return view('control_panel_faculty.class_advisory.partials.modal_manage_subjects', compact('ClassDetail', 'FacultyInformation', 'SubjectDetail', 'SectionDetail', 'Room', 'SchoolYear'))->render();
     }
 
@@ -309,11 +326,11 @@ class AdvisoryClassController extends Controller
             return response()->json(['res_code' => 1, 'res_msg' => 'Please fill all required fields.', 'res_error_msg' => $Validator->getMessageBag()]);
         }
 
-        $sectionDetail = \App\SectionDetail::where('id', $request->section)->first();
+        $sectionDetail = SectionDetail::where('id', $request->section)->first();
 
         if ($request->id)
         {
-            $ClassDetail = \App\ClassDetail::where('id', $request->id)->first();
+            $ClassDetail = ClassDetail::where('id', $request->id)->first();
             $ClassDetail->section_id	 = $request->section;
             $ClassDetail->room_id	 = $request->room;
             $ClassDetail->school_year_id = $request->school_year;
@@ -323,7 +340,7 @@ class AdvisoryClassController extends Controller
             return response()->json(['res_code' => 0, 'res_msg' => 'Data successfully saved.']);
         }
 
-        $ClassDetail = new \App\ClassDetail();
+        $ClassDetail = new ClassDetail();
         $ClassDetail->section_id	 = $request->section;
         $ClassDetail->room_id	 = $request->room;
         $ClassDetail->school_year_id = $request->school_year;
@@ -335,7 +352,7 @@ class AdvisoryClassController extends Controller
 
     public function deactivate_data (Request $request) 
     {
-        $ClassDetail = \App\ClassDetail::where('id', $request->id)->first();
+        $ClassDetail = ClassDetail::where('id', $request->id)->first();
 
         if ($ClassDetail)
         {
@@ -347,7 +364,7 @@ class AdvisoryClassController extends Controller
     }
     public function delete_data (Request $request)
     {
-        $ClassDetail = \App\ClassDetail::where('id', $request->id)->first();
+        $ClassDetail = ClassDetail::where('id', $request->id)->first();
 
         if ($ClassDetail)
         {
@@ -360,7 +377,7 @@ class AdvisoryClassController extends Controller
 
     public function fetch_section_by_grade_level (Request $request)
     {
-        $SectionDetail = \App\SectionDetail::where('grade_level', $request->grade_level)->where('status', 1)->get();
+        $SectionDetail = SectionDetail::where('grade_level', $request->grade_level)->where('status', 1)->get();
         if ($request->type == 'json') 
         {
             return response()->json(compact('SectionDetail'));
@@ -381,116 +398,125 @@ class AdvisoryClassController extends Controller
             return "Invalid request";
         }
 
-        $StudentInformation = \App\StudentInformation::with(['user'])->where('id', \Crypt::decrypt($request->id))->first();
-
-        $SchoolYear = \App\SchoolYear::where('current', 1)->where('status', 1)->first();
-        $DateRemarks = \App\DateRemark::where('school_year_id', $SchoolYear->id)->first();
+        $StudentInformation = StudentInformation::with(['user'])->whereId(Crypt::decrypt($request->id))->first();
+        $SchoolYear = SchoolYear::whereCurrent(1)->whereStatus(1)->first();
+        $DateRemarks = DateRemark::whereSchoolYearId($SchoolYear->id)->first();
         $level = $request->level;
-        // $StudentInformation = \App\StudentInformation::with('user')->where('id', \Crypt::decrypt($request->id))->first();
-        // $SchoolYear = \App\SchoolYear::where('current', $request->cid)->first();
+        // $StudentInformation = StudentInformation::with('user')->where('id', \Crypt::decrypt($request->id))->first();
+        // $SchoolYear = SchoolYear::where('current', $request->cid)->first();
         // // return json_encode(['xx'=> $request->all(), 's' => $StudentInformation]);
+
+        
 
         if ($StudentInformation) 
         {
             if($level < 11)
             {
-                $ClassDetail = \App\ClassDetail::join('section_details', 'section_details.id', '=' ,'class_details.section_id')
-                ->join('rooms', 'rooms.id', '=' ,'class_details.room_id')
-                ->join('school_years', 'school_years.id', '=' ,'class_details.school_year_id')
-                ->join('faculty_informations', 'faculty_informations.id','=','class_details.adviser_id')
-                
-                ->selectRaw('
-                    class_details.id,
-                    class_details.section_id,
-                    class_details.room_id,
-                    class_details.school_year_id,
-                    class_details.grade_level,
-                    class_details.strand_id,
-                    class_details.current,
-                    section_details.section,
-                    section_details.grade_level as section_grade_level,
-                    school_years.school_year,
-                    rooms.room_code,
-                    rooms.room_description,
-                    faculty_informations.id as faculty_id,
-                    faculty_informations.first_name, faculty_informations.middle_name ,  faculty_informations.last_name,
-                    faculty_informations.e_signature
-                    
-                ')
-                ->where('section_details.status', 1)
-                ->where('class_details.school_year_id', $SchoolYear->id)
-                ->where('class_details.id', \Crypt::decrypt($request->cid))
-                ->orderBY('school_years.id', 'ASC')
-                ->first();
+                $ClassDetail = ClassDetail::join('section_details', 'section_details.id', '=' ,'class_details.section_id')
+                    ->join('rooms', 'rooms.id', '=' ,'class_details.room_id')
+                    ->join('school_years', 'school_years.id', '=' ,'class_details.school_year_id')
+                    ->join('faculty_informations', 'faculty_informations.id','=','class_details.adviser_id')                
+                    ->selectRaw('
+                        class_details.id,
+                        class_details.section_id,
+                        class_details.room_id,
+                        class_details.school_year_id,
+                        class_details.grade_level,
+                        class_details.strand_id,
+                        class_details.current,
+                        section_details.section,
+                        section_details.grade_level as section_grade_level,
+                        school_years.school_year,
+                        rooms.room_code,
+                        rooms.room_description,
+                        faculty_informations.id as faculty_id,
+                        faculty_informations.first_name, faculty_informations.middle_name ,  faculty_informations.last_name,
+                        faculty_informations.e_signature                    
+                    ')
+                    ->where('section_details.status', 1)
+                    ->where('class_details.school_year_id', $SchoolYear->id)
+                    ->where('class_details.id', \Crypt::decrypt($request->cid))
+                    ->orderBY('school_years.id', 'ASC')
+                    ->first();
             }
             else 
             {
-                $ClassDetail = \App\ClassDetail::join('section_details', 'section_details.id', '=' ,'class_details.section_id')
-                ->join('rooms', 'rooms.id', '=' ,'class_details.room_id')
-                ->join('school_years', 'school_years.id', '=' ,'class_details.school_year_id')
-                ->join('faculty_informations', 'faculty_informations.id','=','class_details.adviser_id')
-                ->join('strands', 'strands.id','=','class_details.strand_id')
-                ->selectRaw('
-                    class_details.id,
-                    class_details.section_id,
-                    class_details.room_id,
-                    class_details.school_year_id,
-                    class_details.grade_level,
-                    class_details.strand_id,
-                    class_details.current,
-                    section_details.section,
-                    section_details.grade_level as section_grade_level,
-                    school_years.school_year,
-                    rooms.room_code,
-                    rooms.room_description,
-                    faculty_informations.id as faculty_id,
-                    faculty_informations.first_name, faculty_informations.middle_name ,  faculty_informations.last_name,
-                    faculty_informations.e_signature,
-                    strands.strand
-                    
-                ')
-                ->where('section_details.status', 1)
-                ->where('class_details.school_year_id', $SchoolYear->id)
-                ->where('class_details.id', \Crypt::decrypt($request->cid))
-                // ->orderBY('school_years.id', 'ASC')
-                ->first();
+                $ClassDetail = ClassDetail::join('section_details', 'section_details.id', '=' ,'class_details.section_id')
+                    ->join('rooms', 'rooms.id', '=' ,'class_details.room_id')
+                    ->join('school_years', 'school_years.id', '=' ,'class_details.school_year_id')
+                    ->join('faculty_informations', 'faculty_informations.id','=','class_details.adviser_id')
+                    ->join('strands', 'strands.id','=','class_details.strand_id')
+                    ->selectRaw('
+                        class_details.id,
+                        class_details.section_id,
+                        class_details.room_id,
+                        class_details.school_year_id,
+                        class_details.grade_level,
+                        class_details.strand_id,
+                        class_details.current,
+                        section_details.section,
+                        section_details.grade_level as section_grade_level,
+                        school_years.school_year,
+                        rooms.room_code,
+                        rooms.room_description,
+                        faculty_informations.id as faculty_id,
+                        faculty_informations.first_name, faculty_informations.middle_name ,  faculty_informations.last_name,
+                        faculty_informations.e_signature,
+                        strands.strand
+                        
+                    ')
+                    ->where('section_details.status', 1)
+                    ->where('class_details.school_year_id', $SchoolYear->id)
+                    ->where('class_details.id', \Crypt::decrypt($request->cid))
+                    // ->orderBY('school_years.id', 'ASC')
+                    ->first();
             }
+
+            $Signatory = ClassDetail::with('student_enrollment')
+                    ->where('school_year_id', $ClassDetail->school_year_id)
+                    ->whereHas('student_enrollment', function ($query) use ($StudentInformation) {
+                        $query->where('student_information_id', $StudentInformation->id);
+                    })
+                    ->whereStatus(1)
+                    ->first();
+
+            $semester = Semester::where('current', 1)->first()->id;
             
-            $Enrollment = \App\Enrollment::join('class_details', 'class_details.id', '=', 'enrollments.class_details_id')
+            $Enrollment = Enrollment::join('class_details', 'class_details.id', '=', 'enrollments.class_details_id')
             // ->join('student_enrolled_subjects', 'student_enrolled_subjects.enrollments_id', '=', 'enrollments.id')
-            ->join('class_subject_details', 'class_subject_details.class_details_id', '=', 'class_details.id')
-            ->join('rooms', 'rooms.id', '=', 'class_details.room_id')
-            ->join('faculty_informations', 'faculty_informations.id', '=', 'class_subject_details.faculty_id')
-            ->join('section_details', 'section_details.id', '=', 'class_details.section_id')
-            ->join('subject_details', 'subject_details.id', '=', 'class_subject_details.subject_id')
-            ->where('student_information_id', $StudentInformation->id)
-            // ->where('class_subject_details.status', 1)
-            ->where('class_subject_details.status', 1)
-            ->where('enrollments.status', 1)
-            ->where('class_details.status', 1)
-            ->where('class_details.school_year_id', $SchoolYear->id)
-            ->select(\DB::raw("
-                enrollments.id as enrollment_id,
-                enrollments.attendance,
-                enrollments.j_lacking_unit,
-                enrollments.s1_lacking_unit,
-                enrollments.s2_lacking_unit,
-                class_details.grade_level,
-                class_subject_details.id as class_subject_details_id,
-                class_subject_details.class_days,
-                class_subject_details.class_time_from,
-                class_subject_details.class_time_to,
-                class_subject_details.status as grade_status,
-                CONCAT(faculty_informations.last_name, ', ', faculty_informations.first_name, ' ', faculty_informations.middle_name) as faculty_name,
-                subject_details.id AS subject_id,
-                subject_details.subject_code,
-                subject_details.subject,
-                rooms.room_code,
-                section_details.section,
-                class_details.school_year_id as school_year_id
-            "))
-            ->orderBy('class_subject_details.class_subject_order', 'ASC')
-            ->get();
+                ->join('class_subject_details', 'class_subject_details.class_details_id', '=', 'class_details.id')
+                ->join('rooms', 'rooms.id', '=', 'class_details.room_id')
+                ->join('faculty_informations', 'faculty_informations.id', '=', 'class_subject_details.faculty_id')
+                ->join('section_details', 'section_details.id', '=', 'class_details.section_id')
+                ->join('subject_details', 'subject_details.id', '=', 'class_subject_details.subject_id')
+                ->where('student_information_id', $StudentInformation->id)
+                // ->where('class_subject_details.status', 1)
+                ->where('class_subject_details.status', 1)
+                ->where('enrollments.status', 1)
+                ->where('class_details.status', 1)
+                ->where('class_details.school_year_id', $SchoolYear->id)
+                ->select(\DB::raw("
+                    enrollments.id as enrollment_id,
+                    enrollments.attendance,
+                    enrollments.j_lacking_unit,
+                    enrollments.s1_lacking_unit,
+                    enrollments.s2_lacking_unit,
+                    class_details.grade_level,
+                    class_subject_details.id as class_subject_details_id,
+                    class_subject_details.class_days,
+                    class_subject_details.class_time_from,
+                    class_subject_details.class_time_to,
+                    class_subject_details.status as grade_status,
+                    CONCAT(faculty_informations.last_name, ', ', faculty_informations.first_name, ' ', faculty_informations.middle_name) as faculty_name,
+                    subject_details.id AS subject_id,
+                    subject_details.subject_code,
+                    subject_details.subject,
+                    rooms.room_code,
+                    section_details.section,
+                    class_details.school_year_id as school_year_id
+                "))
+                ->orderBy('class_subject_details.class_subject_order', 'ASC')
+                ->get();
             
             $GradeSheetData = [];
             $grade_level = 1;
@@ -513,7 +539,7 @@ class AdvisoryClassController extends Controller
                 ]
             ]));
 
-            $Totalsubject = \App\ClassSubjectDetail::join('subject_details', 'subject_details.id', '=' ,'class_subject_details.subject_id')
+            $Totalsubject = ClassSubjectDetail::join('subject_details', 'subject_details.id', '=' ,'class_subject_details.subject_id')
                 ->join('class_details', 'class_details.id', '=' ,'class_subject_details.class_details_id')
                 ->join('faculty_informations', 'faculty_informations.id', '=' ,'class_subject_details.faculty_id')           
                 ->selectRaw("                
@@ -527,7 +553,7 @@ class AdvisoryClassController extends Controller
             // return json_encode(['c' => count($Enrollment),'Enrollment' => $Enrollment,'StudentInformation' => $StudentInformation, ]);
             if ($StudentInformation && count($Enrollment)>0)
             {
-                $StudentEnrolledSubject = \App\StudentEnrolledSubject::where('enrollments_id', $Enrollment[0]->enrollment_id)
+                $StudentEnrolledSubject = StudentEnrolledSubject::where('enrollments_id', $Enrollment[0]->enrollment_id)
                     ->get();
 
                 $grade_level = $Enrollment[0]->grade_level;
@@ -544,24 +570,11 @@ class AdvisoryClassController extends Controller
                     $second = $grade->sec_g > 0 ? $grade->sec_g : 0;
                     $third = $grade->thi_g > 0 ? $grade->thi_g : 0;
                     $fourth = $grade->fou_g > 0 ? $grade->fou_g : 0;
-                    // $third = 0;
-                    // $fourth = 0;
-                    // if ($grade_level <= 11)
-                    // {
-                    //     $third = $grade->thi_g > 0 ? $grade->thi_g : 0;
-                    //     $fourth = $grade->fou_g > 0 ? $grade->fou_g : 0;
-                    // }
                     
                     $sum += $grade->fir_g > 0 ? $grade->fir_g : 0;
                     $sum += $grade->sec_g > 0 ? $grade->sec_g : 0;
                     $sum += $grade->thi_g > 0 ? $grade->thi_g : 0;
                     $sum += $grade->fou_g > 0 ? $grade->fou_g : 0;
-
-                    // if ($grade_level <= 11)
-                    // {
-                    //     $sum += $grade->thi_g > 0 ? $grade->thi_g : 0;
-                    //     $sum += $grade->fou_g > 0 ? $grade->fou_g : 0;
-                    // }
 
                     $divisor = 0;
                     $divisor += $first > 0 ? 1 : 0;
@@ -614,37 +627,263 @@ class AdvisoryClassController extends Controller
             $GradeSheetData = json_decode(json_encode($GradeSheetData));
            
         
-            if($SchoolYear->id == 9){
-                $table_header = [
-                    ['key' => 'Jun',],
-                    ['key' => 'Jul',],
-                    ['key' => 'Aug',],
-                    ['key' => 'Sep',],
-                    ['key' => 'Oct',],
-                    ['key' => 'Nov',],
-                    ['key' => 'Dec',],
-                    ['key' => 'Jan',],
-                    ['key' => 'Feb',],
-                    ['key' => 'Mar*',],
-                    ['key' => 'Apr*',],
-                    ['key' => 'total',],
-                ];
-            }else{
-                $table_header = [
-                    ['key' => 'Jun',],
-                    ['key' => 'Jul',],
-                    ['key' => 'Aug',],
-                    ['key' => 'Sep',],
-                    ['key' => 'Oct',],
-                    ['key' => 'Nov',],
-                    ['key' => 'Dec',],
-                    ['key' => 'Jan',],
-                    ['key' => 'Feb',],
-                    ['key' => 'Mar',],
-                    ['key' => 'Apr',],
-                    ['key' => 'total',],
-                ];
-            }
+            if('2020-2021' == $SchoolYear->school_year)
+                {    
+                    if($Enrollment[0]->grade_level > 10)
+                    {     
+                        if($semester == 1)
+                        {
+                            $table_header = [
+                                ['key' => 'Aug',],
+                                ['key' => 'Sep',],
+                                ['key' => 'Oct',],
+                                ['key' => 'Nov',],
+                                ['key' => 'Dec',],
+                                ['key' => 'total']
+                            ];       
+                        }  
+                        
+                        if($semester == 2)
+                        {
+                            $table_header = [
+                                ['key' => 'Jan',],
+                                ['key' => 'Feb',],
+                                ['key' => 'Mar',],
+                                ['key' => 'Apr',],
+                                ['key' => 'total']
+                            ];       
+                        }
+                    }
+                                
+                    if($Enrollment[0]->grade_level < 11)
+                    {          
+                        $table_header = [
+                            ['key' => 'Aug',],
+                            ['key' => 'Sep',],
+                            ['key' => 'Oct',],
+                            ['key' => 'Nov',],
+                            ['key' => 'Dec',],
+                            ['key' => 'Jan',],
+                            ['key' => 'Feb',],
+                            ['key' => 'Mar',],
+                            ['key' => 'Apr',],
+                            ['key' => 'total'],
+                        ];
+                    }
+
+                    if($Enrollment[0]->grade_level > 10)
+                    {
+                        
+                        if($semester == 1)
+                        {
+                            $attendance_data = json_decode(json_encode([
+                                'days_of_school' => [
+                                    0, 0, 0, 0, 0, 
+                                ],
+                                'days_present' => [
+                                    0, 0, 0, 0, 0,
+                                ],
+                                'days_absent' => [
+                                    0, 0, 0, 0, 0,
+                                ],
+                                'times_tardy' => [
+                                    0, 0, 0, 0, 0, 
+                                ]
+                            ]));
+                        }
+
+                        if($semester == 2)
+                        {
+                            $attendance_data = json_decode(json_encode([
+                                'days_of_school' => [
+                                    0, 0, 0, 0, 
+                                ],
+                                'days_present' => [
+                                    0, 0, 0, 0, 
+                                ],
+                                'days_absent' => [
+                                    0, 0, 0, 0, 
+                                ],
+                                'times_tardy' => [
+                                    0, 0, 0, 0, 
+                                ]
+                            ]));
+                        }
+                    }
+
+                    if($Enrollment[0]->grade_level < 11)
+                    {
+                        $attendance_data = json_decode(json_encode([
+                            'days_of_school' => [
+                                0, 0, 0, 0, 0, 0, 0, 0, 0,
+                            ],
+                            'days_present' => [
+                                0, 0, 0, 0, 0, 0, 0, 0, 0,
+                            ],
+                            'days_absent' => [
+                                0, 0, 0, 0, 0, 0, 0, 0, 0,
+                            ],
+                            'times_tardy' => [
+                                0, 0, 0, 0, 0, 0, 0, 0, 0,
+                            ]
+                        ]));
+                    }
+                }
+                else
+                {   
+                    if($SchoolYear->id == 9){                        
+                        if($Enrollment[0]->grade_level > 10)
+                        {
+                            if($semester == 1)
+                            {
+                                $table_header = [
+                                    ['key' => 'Jun',],
+                                    ['key' => 'Jul',],
+                                    ['key' => 'Aug',],
+                                    ['key' => 'Sep',],
+                                    ['key' => 'Oct',],
+                                    ['key' => 'total'],
+                                ];
+                            }
+                            
+                            if($semester == 2)
+                            {    
+                                $table_header = [
+                                    ['key' => 'Nov',],
+                                    ['key' => 'Dec',],
+                                    ['key' => 'Jan',],
+                                    ['key' => 'Feb',],
+                                    ['key' => 'Mar*',],
+                                    ['key' => 'Apr*',],
+                                    ['key' => 'total'],
+                                ];
+                            }      
+                        }
+                        
+                        if($Enrollment[0]->grade_level < 11)
+                        {
+                            $table_header = [
+                                ['key' => 'Jun',],
+                                ['key' => 'Jul',],
+                                ['key' => 'Aug',],
+                                ['key' => 'Sep',],
+                                ['key' => 'Oct',],
+                                ['key' => 'Nov',],
+                                ['key' => 'Dec',],
+                                ['key' => 'Jan',],
+                                ['key' => 'Feb',],
+                                ['key' => 'Mar*',],
+                                ['key' => 'Apr*',],
+                                ['key' => 'total',],
+                            ];
+                        }
+                    }else{
+
+                        if($Enrollment[0]->grade_level > 10)
+                        {
+                            if($semester == 1)
+                            {
+                                $table_header = [
+                                    ['key' => 'Jun',],
+                                    ['key' => 'Jul',],
+                                    ['key' => 'Aug',],
+                                    ['key' => 'Sep',],
+                                    ['key' => 'Oct',],
+                                    ['key' => 'total'],
+                                ];
+                            }
+
+                            if($semester == 2)
+                            {
+                                $table_header = [
+                                    ['key' => 'Nov',],
+                                    ['key' => 'Dec',],
+                                    ['key' => 'Jan',],
+                                    ['key' => 'Feb',],
+                                    ['key' => 'Mar',],
+                                    ['key' => 'Apr',],
+                                    ['key' => 'total'],
+                                ];
+                            }
+                        }  
+                        
+                        if($Enrollment[0]->grade_level < 11)
+                        {
+                            $table_header = [
+                                ['key' => 'Jun',],
+                                ['key' => 'Jul',],
+                                ['key' => 'Aug',],
+                                ['key' => 'Sep',],
+                                ['key' => 'Oct',],
+                                ['key' => 'Nov',],
+                                ['key' => 'Dec',],
+                                ['key' => 'Jan',],
+                                ['key' => 'Feb',],
+                                ['key' => 'Mar',],
+                                ['key' => 'Apr',],
+                                ['key' => 'total',],
+                            ];
+                        }
+                    }   
+                    
+                    if($Enrollment[0]->grade_level > 10)
+                    {
+                        
+                        if($semester == 1)
+                        {
+                            $attendance_data = json_decode(json_encode([
+                                'days_of_school' => [
+                                    0, 0, 0, 0, 0, 0,  
+                                ],
+                                'days_present' => [
+                                    0, 0, 0, 0, 0, 0, 
+                                ],
+                                'days_absent' => [
+                                    0, 0, 0, 0, 0, 0, 
+                                ],
+                                'times_tardy' => [
+                                    0, 0, 0, 0, 0, 0,
+                                ]
+                            ]));
+                        }
+
+                        if($semester == 2)
+                        {
+                            $attendance_data = json_decode(json_encode([
+                                'days_of_school' => [
+                                    0, 0, 0, 0, 0, 0, 0 
+                                ],
+                                'days_present' => [
+                                    0, 0, 0, 0, 0, 0, 0
+                                ],
+                                'days_absent' => [
+                                    0, 0, 0, 0, 0, 0, 0
+                                ],
+                                'times_tardy' => [
+                                    0, 0, 0, 0, 0, 0, 0
+                                ]
+                            ]));
+                        }
+                    }
+
+                    if($Enrollment[0]->grade_level < 11)
+                    {
+                        $attendance_data = json_decode(json_encode([
+                            'days_of_school' => [
+                                0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+                            ],
+                            'days_present' => [
+                                0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+                            ],
+                            'days_absent' => [
+                                0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+                            ],
+                            'times_tardy' => [
+                                0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+                            ]
+                        ]));
+                    }
+                }
             
             $student_attendance = [
                 'attendance_data'   => $attendance_data,
@@ -656,7 +895,7 @@ class AdvisoryClassController extends Controller
             ];
             // return json_encode(['a' => $GradeSheetData, 'subj_count' => $subj_count, 'general_avg' => $general_avg]);
             return view('control_panel_student.grade_sheet.partials.print', compact('GradeSheetData', 'grade_level', 'StudentInformation',
-                'ClassDetail', 'general_avg', 'student_attendance', 'table_header','Signatory','DateRemarks','Enrollment[0]'));
+                'ClassDetail', 'general_avg', 'student_attendance', 'table_header','Signatory','DateRemarks','Enrollment'));
                 
             $pdf = \PDF::loadView('control_panel_student.grade_sheet.partials.print', compact('GradeSheetData', 'grade_level', 'StudentInformation', 'ClassDetail'
                  , 'general_avg', 'student_attendance', 'table_header','Signatory','DateRemarks','Enrollment[0]'));

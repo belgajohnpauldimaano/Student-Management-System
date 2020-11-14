@@ -4,7 +4,7 @@
 @endsection
 
 @section ('content_title')
-    Attendance
+    My Student List
 @endsection
 
 @section ('content')
@@ -21,7 +21,7 @@
                             <th>#</th>
                             <th>Username</th>
                             <th>Student Name</th>
-                            <th>Action</th>
+                            {{-- <th>Action</th> --}}
                         </tr>
                     </thead>
                     <tbody>
@@ -36,7 +36,7 @@
                                     <td>{{ $data->username }}</td>
                                     <td>{{ $data->student_name }}</td>                                    
                                     
-                                    <td>
+                                    {{-- <td>
                                         <div class="input-group-btn pull-left text-left">
                                             <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="true">Action
                                                 <span class="fa fa-caret-down"></span></button>
@@ -45,13 +45,13 @@
 
                                                 <li><a href="{{ route('faculty.advisory_class.demographic_profile') }}?c={{ encrypt($data->id) }}" class="js-btn_manage_demographic" data-id="{{ encrypt($data->id) }}">Demographic Profile</a></li>
                                                 
-                                                {{-- <li><a href="{{ route('faculty.advisory_class.manage_attendance') }}?c={{ encrypt($data->e_id) }}" class="js-btn_manage" data-id="{{ encrypt($data->e_id) }}">Manage Attendance</a></li> --}}
+                                                <li><a href="{{ route('faculty.advisory_class.manage_attendance') }}?c={{ encrypt($data->e_id) }}" class="js-btn_manage" data-id="{{ encrypt($data->e_id) }}">Manage Attendance</a></li>
                                                 
                                                 <li><a style="cursor: pointer;" rel="{{ $data->id }}" class="printGrade" data-id="{{ encrypt($data->id) }}">Print Grade</a></li>
                                             
                                             </ul>
                                         </div>
-                                    </td>
+                                    </td> --}}
                                 </tr>
                             @endforeach
                           
@@ -66,7 +66,7 @@
                                     <td>{{ $data->student_name }}</td>
                                     
                                     
-                                    <td>
+                                    {{-- <td>
                                         <div class="input-group-btn pull-left text-left">
                                             <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="true">Action
                                                 <span class="fa fa-caret-down"></span></button>
@@ -79,7 +79,7 @@
                                             
                                             </ul>
                                         </div>
-                                    </td>
+                                    </td> --}}
                                 </tr>
                             @endforeach
                         @endif

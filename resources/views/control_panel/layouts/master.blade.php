@@ -276,8 +276,8 @@
                   <li class="{{request()->routeIs('admin.student.information') ? 'active' : '' }}">
                     <a href="{{ route('admin.student.information') }}"><i class="fa fa-circle-o"></i>&nbsp;&nbsp;&nbsp; <span>Class Rooms</span></a>
                   </li>
-                  <li class="{{request()->routeIs('admin.student.information') ? 'active' : '' }}">
-                    <a href="{{ route('admin.student.information') }}"><i class="fa fa-circle-o"></i>&nbsp;&nbsp;&nbsp; <span>Date of Remarks</span></a>
+                  <li class="{{request()->routeIs('admin.maintenance.date_remarks_for_class_card') ? 'active' : '' }}">
+                    <a href="{{ route('admin.maintenance.date_remarks_for_class_card') }}"><i class="fa fa-circle-o"></i>&nbsp;&nbsp;&nbsp; <span>Date of Remarks</span></a>
                   </li>
                   <li class="{{request()->routeIs('admin.maintenance.school_year') ? 'active' : '' }}">
                     <a href="{{ route('admin.maintenance.school_year') }}">

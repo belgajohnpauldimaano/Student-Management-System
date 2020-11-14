@@ -111,11 +111,9 @@ Route::group(['prefix' => 'faculty', 'middleware' => ['auth', 'userroles'], 'rol
 
     Route::group(['prefix' => 'student-gradesheet'], function () {
         Route::get('', 'Faculty\StudentGradeSheetController@index')->name('faculty.student_gradesheet.index');
-
         Route::post('grade-sheet', 'Faculty\StudentGradeSheetController@gradeSheet')->name('faculty.student_gradesheet.fetch_grades');
         Route::post('first-quarter', 'Faculty\StudentGradeSheetController@firstquarter')->name('faculty.student_gradesheet.firstquarter');
         Route::post('second-quarter', 'Faculty\StudentGradeSheetController@secondquarter')->name('faculty.student_gradesheet.secondquarter');
-
         Route::post('sem-quarter', 'Faculty\StudentGradeSheetController@listQuarterSem')->name('faculty.student_gradesheet.list_quarter_sem');
         Route::get('print-gradesheet', 'Faculty\StudentGradeSheetController@print')->name('faculty.student_grade_sheet.print');
     });

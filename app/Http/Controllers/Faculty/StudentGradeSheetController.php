@@ -168,7 +168,7 @@ class StudentGradeSheetController extends Controller
         $adviser_id = $request->ad_id;
         $quarter = $request->quarter;
         $sem = $request->sem ? $request->sem : '';
-        $category = $request->category;
+        $category = $request->level;
 
         if($sy_id && $class_id && $adviser_id && $quarter)
         {

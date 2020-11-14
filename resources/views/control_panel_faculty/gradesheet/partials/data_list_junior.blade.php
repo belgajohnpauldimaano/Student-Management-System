@@ -35,12 +35,11 @@
                 </tr>
             @endif
         </thead>
-        <tbody>
-            
+        <tbody>            
             <tr>
-            <td colspan="13">
-                <b>Male</b>
-            </td>
+                <td colspan="13">
+                    <b>Male</b>
+                </td>
             </tr>        
             @foreach ($Grade_sheet_males as $key => $item)
                 @php 

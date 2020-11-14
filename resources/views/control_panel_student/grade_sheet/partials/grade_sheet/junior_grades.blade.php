@@ -55,14 +55,15 @@
                         </b>
                     </td>
                     @if($data->fir_g == 0 || $data->sec_g == 0 || $data->thi_g == 0 || $data->fou_g == 0)
-                        @if($general_avg && $general_avg > 74) 
+                        {{-- @if($general_avg && $general_avg > 74) 
                             <td style="color:'green';"><strong>Passed</strong></td>
                             <td></td>
                         @elseif($general_avg < 75) 
                             <td style="color:'red';"><strong>Failed</strong></td>
                         @else 
                             <td></td>
-                        @endif
+                        @endif --}}
+                        <td></td>
                     @else
                         @if($general_avg < 75 && $general_avg > 74) 
                             <td style="color:'green';"><strong>Passed</strong></td>
@@ -197,29 +198,20 @@
         <td style="border: 0"></td>
         <td style="border: 0"></td>   
     </tr>
-
-    
-
     <tr style="margin-top: .5em">
-        <td colspan="3" style="border: 0">Eligible to transfer and admission to:               
-            {{-- @if($general_avg && $general_avg > 74) 
-                <strong><u>&nbsp;&nbsp;Grade {{ $ClassDetail->section_grade_level + 1 }}&nbsp;&nbsp;&nbsp;&nbsp;</u></strong>
-            @elseif($general_avg && $general_avg < 75)  --}}
-                <strong><u>&nbsp;&nbsp;{{ $Enrollment[0]->eligible_transfer  ? '' : 'Grade ' }}
-                    {{ $Enrollment[0]->eligible_transfer  ? $Enrollment[0]->eligible_transfer : $ClassDetail->section_grade_level + 1 }}&nbsp;&nbsp;&nbsp;</u></strong>
-            {{-- @else 
-                _______________________                                            
-            @endif --}}
-            
+        <td colspan="3" style="border: 0">Eligible to transfer and admission to:
+            <strong>
+                <u>
+                    &nbsp;&nbsp;{{ $Enrollment[0]->eligible_transfer  ? '' : 'Grade ' }}
+                        {{ $Enrollment[0]->eligible_transfer  ? $Enrollment[0]->eligible_transfer : $ClassDetail->section_grade_level + 1 }}
+                    &nbsp;&nbsp;&nbsp;
+                </u>
+            </strong>
         </td>                
     </tr>
-
-    
-
     <tr style="margin-top: .5em">
         <td colspan="3" style="border: 0">Lacking units in:____<u> {{$Enrollment[0]->j_lacking_unit}}</u>____</td>                
-    </tr>
-    
+    </tr>    
     <tr style="margin-top: .5em">
         @if($DateRemarks)
             <td colspan="3" style="border: 0">Date:___<u>{{ $DateRemarks->j_date ? date_format(date_create( $DateRemarks->j_date ), 'F d, Y') : '' }}</u>____</td>
@@ -232,34 +224,51 @@
     </tr>
     {{-- <tr> <td colspan="3" style="border: 0">&nbsp;</td>   </tr> --}}
 
-    <tr style="margin-top: 0em">
-        
+    <tr style="margin-top: 0em">        
             <table border="0" style="width: 100%; margin-top: 1.5em">
                     <tr>
                         <td style="border: 0; width: 50%;">
                             <center>
                                 @if($Signatory->adviser->id == 30)
-                                    <img class="profile-user-img img-responsive img-circle" id="img--user_photo" src="{{ $Signatory->adviser->e_signature ? \File::exists(public_path('/img/signature/'.$Signatory->adviser->e_signature)) ? asset('/img/signature/'.$Signatory->adviser->e_signature) : asset('/img/account/photo/blank-user.png') : asset('/img/account/photo/blank-user.png') }}" style="width:150px; margin-bottom: 1em">
+                                    <img class="profile-user-img img-responsive img-circle" id="img--user_photo" 
+                                        src="{{ $Signatory->adviser->e_signature ? \File::exists(public_path('/img/signature/'.$Signatory->adviser->e_signature)) 
+                                        ? asset('/img/signature/'.$Signatory->adviser->e_signature) 
+                                        : asset('/img/account/photo/blank-user.png') 
+                                        : asset('/img/account/photo/blank-user.png') }}" 
+                                        style="width:150px; margin-bottom: 1em"
+                                    >
                                 @else
-                                    <img class="profile-user-img img-responsive img-circle" id="img--user_photo" src="{{ $Signatory->adviser->e_signature ? \File::exists(public_path('/img/signature/'.$Signatory->adviser->e_signature)) ? asset('/img/signature/'.$Signatory->adviser->e_signature) : asset('/img/account/photo/blank-user.png') : asset('/img/account/photo/blank-user.png') }}" style="width:100px">
-                                @endif
-                                
+                                    <img class="profile-user-img img-responsive img-circle" id="img--user_photo" 
+                                        src="{{ $Signatory->adviser->e_signature 
+                                        ? \File::exists(public_path('/img/signature/'.$Signatory->adviser->e_signature)) 
+                                        ? asset('/img/signature/'.$Signatory->adviser->e_signature) 
+                                        : asset('/img/account/photo/blank-user.png') 
+                                        : asset('/img/account/photo/blank-user.png') }}" style="width:100px"
+                                    >
+                                @endif                                
                             </center>
                         </td>
                         <td style="border: 0; width: 50%;">
                             <center>
-
                                 @if($Signatory->adviser->id == 26 || $Signatory->adviser->id == 28 || $Signatory->adviser->id == 66 || $Signatory->adviser->id == 10|| $Signatory->adviser->id == 11)
-                                    <img class="profile-user-img img-responsive img-circle" id="img--user_photo" src="{{ asset('/img/signature/principal_signature.png') }}" 
-                                        style="width:170px; margin-top: 2em">
+                                    <img class="profile-user-img img-responsive img-circle" 
+                                        id="img--user_photo" 
+                                        src="{{ asset('/img/signature/principal_signature.png') }}" 
+                                        style="width:170px; margin-top: 2em"
+                                    >
                                 @elseif($Signatory->adviser->id == 23) 
-                                    <img class="profile-user-img img-responsive img-circle" id="img--user_photo" src="{{ asset('/img/signature/principal_signature.png') }}" 
-                                        style="width:170px; margin-top: 2.5em">            
+                                    <img class="profile-user-img img-responsive img-circle" 
+                                        id="img--user_photo" 
+                                        src="{{ asset('/img/signature/principal_signature.png') }}" 
+                                        style="width:170px; margin-top: 2.5em"
+                                    >            
                                 @else
-                                    <img class="profile-user-img img-responsive img-circle" id="img--user_photo" src="{{ asset('/img/signature/principal_signature.png') }}" 
-                                        style="width:170px; margin-bottom: -1em">
-                                @endif
-                                
+                                    <img class="profile-user-img img-responsive img-circle" 
+                                        id="img--user_photo" 
+                                        src="{{ asset('/img/signature/principal_signature.png') }}" 
+                                        style="width:170px; margin-bottom: -1em"
+                                    >
+                                @endif                                
                             </center>
                         </td>
                     </tr>
@@ -290,19 +299,15 @@
                         </span>
                     </td>
                     <td style="border: 0; width: 50%; height: 100px">
-                            <span style="margin-left: 23em;">
-                                <center>Gemma R. Yao, Ph.D.</center>
-                                </br>
-                                <center style="margin-top: -1em">PRINCIPAL</center>
-                            </span>
-                        </td>
+                        <span style="margin-left: 23em;">
+                            <center>Gemma R. Yao, Ph.D.</center>
+                            </br>
+                            <center style="margin-top: -1em">PRINCIPAL</center>
+                        </span>
+                    </td>
                 </tr>
             </table>
-        
-        
     </tr>
-    
-
 </table>
 
 <div class="page-break"></div>

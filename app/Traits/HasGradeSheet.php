@@ -22,12 +22,14 @@ trait HasGradeSheet{
 
     public function classSubjectDetail()
     {
-        return $this->hasOne(ClassSubjectDetail::class, 'class_details_id', 'id')->whereStatus(1)->where('class_subject_order', 'ASC');
+        return $this->hasOne(ClassSubjectDetail::class, 'class_details_id', 'id')
+            ->whereStatus(1)->where('class_subject_order', 'ASC');
     }
 
     public function class_subjects()
     {
-        return $this->hasOne(ClassSubjectDetail::class, 'class_details_id', 'class_details_id')->whereStatus(1)->where('class_subject_order', 'ASC');
+        return $this->hasOne(ClassSubjectDetail::class, 'class_details_id', 'class_details_id')
+            ->whereStatus(1)->where('class_subject_order', 'ASC');
     }
 
     public function grade(){

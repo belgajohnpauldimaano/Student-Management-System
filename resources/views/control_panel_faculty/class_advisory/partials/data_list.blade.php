@@ -28,7 +28,7 @@
                                                     <ul class="dropdown-menu">
                                                         <li>
                                                             <a href="{{ route('faculty.advisory_class.view') }}?c={{ encrypt($data->id) }}" class="js-btn_view" data-id="{{ encrypt($data->id) }}">
-                                                                View
+                                                                Student List
                                                             </a>
                                                         </li>
 

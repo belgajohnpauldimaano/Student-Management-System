@@ -199,7 +199,7 @@
     <tr style="margin-top: .5em">
         <td colspan="3" style="border: 0">
             Lacking units in:______<u>
-                {{  $GradeSheetData[0] ? $GradeSheetData[0]->grade_level == 11 ? $GradeSheetData[0]->lacking_unit : $GradeSheetData[0]->lacking_unit : '' }}
+                {{  $GradeSheetData[0]->grade_level == 11 ? $GradeSheetData[0]->lacking_unit : '' }}
         </u>_______</td>
     </tr>
     
