@@ -1,4 +1,4 @@
-<div class="table-responsive">  
+<div class="table-responsive table-hover">  
     <div class="pull-right">
         {{ $ClassDetail ? $ClassDetail->links() : '' }}
     </div>

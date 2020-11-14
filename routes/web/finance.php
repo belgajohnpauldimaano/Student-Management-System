@@ -28,7 +28,7 @@ Route::group(['prefix' => 'finance', 'middleware' => ['auth', 'userroles'], 'rol
     Route::get('', 'Finance\StudentClassListController@index')->name('finance.class_details');
     Route::post('', 'Finance\StudentClassListController@index')->name('finance.class_details');
 
-    Route::group(['prefix' => 'finance/student-class-list/{id}', 'middleware' => ['auth'], 'roles' => ['admin', 'root', 'finance']], function() {        
+    Route::group(['prefix' => 'student-class-list/{id}'], function() {        
         
         Route::get('', 'Finance\StudentClassListController@studentList')->name('finance.student_list');
         Route::post('', 'Finance\StudentClassListController@studentList')->name('finance.student_list');

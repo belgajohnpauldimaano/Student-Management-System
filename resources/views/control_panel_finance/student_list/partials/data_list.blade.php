@@ -1,7 +1,7 @@
                         <div class="pull-right">
                             {{ $StudentInformation ? $StudentInformation->links() : '' }}
                         </div>
-                        <table class="table no-margin">
+                        <table class="table no-margin table-hover">
                             <thead>
                                 <tr>
                                     <th>Student Number</th>

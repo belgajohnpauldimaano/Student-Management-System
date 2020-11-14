@@ -3,7 +3,7 @@
                           
                            
                            @if($ClassDetail->grade_level == 11 || $ClassDetail->grade_level == 12)            
-                                <table class="table no-margin">
+                                <table class="table no-margin table-hover">
                                     <thead>
                                         <tr>
                                             <th>No.</th>
@@ -59,7 +59,7 @@
                                 </table>
 
                             @else
-                                <table class="table no-margin">
+                                <table class="table no-margin table-hover">
                                     <thead>
                                         <tr>
                                             <th>No.</th>
