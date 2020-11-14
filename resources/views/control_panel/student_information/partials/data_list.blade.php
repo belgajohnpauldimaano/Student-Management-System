@@ -48,17 +48,27 @@
                                                             </a>
                                                         </li>
                                                         @if($isAdmin->role == 1)
-                                                        <li>
-                                                            <a href="#" class="js-btn_reset_pw" data-id="{{ $data->id }}" data-type="student">
-                                                                Reset Password
-                                                            </a>
-                                                        </li>
+                                                            <li>
+                                                                <a href="#" class="js-btn_reset_pw" data-id="{{ $data->id }}" data-type="student">
+                                                                    Reset Password
+                                                                </a>
+                                                            </li>
+                                                            @if($data->status == 1)
+                                                                <li>
+                                                                    <a href="#" class="js-btn_deactivate" data-id="{{ $data->id }}">
+                                                                        Deactivate
+                                                                    </a>
+                                                                </li>
+                                                            @endif
+                                                            @if($data->status == 0)
+                                                                <li>
+                                                                    <a href="#" class="js-btn_activate" data-id="{{ $data->id }}">
+                                                                        Activate
+                                                                    </a>
+                                                                </li>
+                                                            @endif
+
                                                         @endif
-                                                        <li>
-                                                            <a href="#" class="js-btn_deactivate" data-id="{{ $data->id }}">
-                                                                Deactivate
-                                                            </a>
-                                                        </li>
                                                     </ul>>
                                                 </div>
                                             </td>

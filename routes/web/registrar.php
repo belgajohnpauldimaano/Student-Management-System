@@ -99,6 +99,7 @@ Route::group(['prefix' => 'admin/student-information', 'middleware' => ['auth', 
     Route::get('modal-data', 'Control_Panel\StudentController@modal_data')->name('admin.student.information.modal_data');
     Route::post('save-data', 'Control_Panel\StudentController@save_data')->name('admin.student.information.save_data');
     Route::post('deactivate-data', 'Control_Panel\StudentController@deactivate_data')->name('admin.student.information.deactivate_data');
+    Route::post('activate-data', 'Control_Panel\StudentController@activate_data')->name('admin.student.information.activate_data');
     Route::post('print-student-grade-modal', 'Control_Panel\StudentController@print_student_grade_modal')->name('admin.student.information.print_student_grade_modal');
     Route::post('list-semester', 'Control_Panel\StudentController@getSemester')->name('admission.get_semester');
     Route::get('print-student-grades', 'Control_Panel\StudentController@print_student_grades')->name('admin.student.information.print_student_grades');

@@ -26,7 +26,8 @@ class StudentController extends Controller
 
         if($request->ajax())
         {
-            $StudentInformation = StudentInformation::with(['user', 'enrolled_class'])->where('status', 1)
+            $StudentInformation = StudentInformation::with(['user', 'enrolled_class'])
+                // ->where('status', 1)
                 ->orderBY('last_name', 'ASC')
                 ->where(function ($query) use ($request) {
                     $query->where('first_name', 'like', '%'.$request->search.'%');
@@ -40,7 +41,8 @@ class StudentController extends Controller
         }
 
         $StudentInformation = StudentInformation::with(['user', 'enrolled_class'])
-            ->where('status', 1)->orderBY('last_name', 'ASC')->paginate(10);
+            // ->where('status', 1)
+            ->orderBY('last_name', 'ASC')->paginate(10);
         // return json_encode(['student_info' => $StudentInformation]);
         return view('control_panel.student_information.index', compact('StudentInformation','IncomingStudentCount','isAdmin'));
     }
@@ -192,6 +194,26 @@ class StudentController extends Controller
                 $User->save();
             }
             return response()->json(['res_code' => 0, 'res_msg' => 'Data successfully deactivated.']);
+        }
+        return response()->json(['res_code' => 1, 'res_msg' => 'Invalid request.']);
+    }
+
+    public function activate_data (Request $request) 
+    {
+        $StudentInformation = StudentInformation::where('id', $request->id)->first();
+
+        if ($StudentInformation)
+        {
+            $StudentInformation->status = 1;
+            $StudentInformation->save();
+
+            $User = User::where('id', $StudentInformation->user_id)->first();
+            if ($User)
+            {
+                $User->status = 1;
+                $User->save();
+            }
+            return response()->json(['res_code' => 0, 'res_msg' => 'Data successfully Activated.']);
         }
         return response()->json(['res_code' => 1, 'res_msg' => 'Invalid request.']);
     }

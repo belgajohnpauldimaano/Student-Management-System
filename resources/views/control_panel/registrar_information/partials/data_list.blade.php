@@ -31,8 +31,10 @@
                                                                 Reset Password
                                                             </a>
                                                         </li>
+                                                        <li>
+                                                            <a href="#" class="js-btn_deactivate" data-id="{{ $data->id }}">Deactivate</a>
+                                                        </li>
                                                         @endif
-                                                        <li><a href="#" class="js-btn_deactivate" data-id="{{ $data->id }}">Deactivate</a></li>
                                                     </ul>>
                                                 </div>
                                             </td>

@@ -30,9 +30,11 @@
                                                             <a href="#" class="js-btn_reset_pw" data-id="{{ $data->id }}" data-type="finance">
                                                                 Reset Password
                                                             </a>
+                                                        </li>                                                       
+                                                        <li>
+                                                            <a href="#" class="js-btn_deactivate" data-id="{{ $data->id }}">Deactivate</a>
                                                         </li>
                                                         @endif
-                                                        <li><a href="#" class="js-btn_deactivate" data-id="{{ $data->id }}">Deactivate</a></li>
                                                     </ul>>
                                                 </div>
                                             </td>
