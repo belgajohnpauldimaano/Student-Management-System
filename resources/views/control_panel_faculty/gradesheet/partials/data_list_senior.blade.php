@@ -126,7 +126,7 @@
                                         {
                                             $sum += $sub_grade['fir_g'];
                                             echo number_format(round($sub_grade['fir_g']));
-                                            if($sub_grade['fir_g'] == 0)
+                                            if($sub_grade['fir_g'] == 0.00)
                                             {
                                                 $isEmpty = 'na';
                                             }     
@@ -136,7 +136,7 @@
                                         {
                                             $sum += $sub_grade['thi_g'];
                                             echo number_format(round($sub_grade['thi_g']));
-                                            if($sub_grade['thi_g'] == 0)
+                                            if($sub_grade['thi_g'] == 0.00)
                                             {
                                                 $isEmpty = 'na';
                                             }  
@@ -170,7 +170,7 @@
                                             echo '<td class="text-center">'.number_format(round($sub_grade['fir_g'])).'</td>';
                                             echo '<td class="text-center">'.number_format(round($sub_grade['sec_g'])).'</td>';
                                             echo '<td class="text-center text-red">'.number_format(round($final_first)).'</td>';
-                                            if($sub_grade['fir_g'] == 0 && $sub_grade['sec_g'] == 0)
+                                            if($sub_grade['sec_g'] == 0.00)
                                             {
                                                 $isEmpty = 'na';
                                             } 
@@ -188,7 +188,7 @@
                                             echo '<td class="text-center">'.number_format(round($sub_grade['thi_g'])).'</td>';                                
                                             echo '<td class="text-center">'.number_format(round($sub_grade['fou_g'])).'</td>';
                                             echo '<td class="text-center text-red">'.number_format(round($final_sec)).'</td>';
-                                            if($sub_grade['thi_g'] == 0 && $sub_grade['fou_g'] == 0)
+                                            if($sub_grade['fou_g'] == 0.00)
                                             {
                                                 $isEmpty = 'na';
                                             }      
@@ -242,7 +242,7 @@
                                 @endforelse
                                 @php
                                     $div = $divisor * 2;
-                                    if($sub_grade['fir_g'] == 0 && $sub_grade['sec_g'] == 0 && $sub_grade['thi_g'] == 0 && $sub_grade['fou_g'] == 0)
+                                    if($sub_grade['fir_g'] == 0.00 && $sub_grade['sec_g'] == 0.00 && $sub_grade['thi_g'] == 0.00 && $sub_grade['fou_g'] == 0.00)
                                     {
                                         $isEmpty = 'na';
                                     }   
@@ -340,7 +340,7 @@
                                         {
                                             $sum += $sub_grade['fir_g'];
                                             echo number_format(round($sub_grade['fir_g']));
-                                            if($sub_grade['fir_g'] == 0)
+                                            if($sub_grade['fir_g'] == 0.00)
                                             {
                                                 $isEmpty = 'na';
                                             }     
@@ -350,7 +350,7 @@
                                         {
                                             $sum += $sub_grade['thi_g'];
                                             echo number_format(round($sub_grade['thi_g']));
-                                            if($sub_grade['thi_g'] == 0)
+                                            if($sub_grade['thi_g'] == 0.00)
                                             {
                                                 $isEmpty = 'na';
                                             }  
@@ -384,7 +384,7 @@
                                             echo '<td class="text-center">'.number_format(round($sub_grade['fir_g'])).'</td>';
                                             echo '<td class="text-center">'.number_format(round($sub_grade['sec_g'])).'</td>';
                                             echo '<td class="text-center text-red">'.number_format(round($final_first)).'</td>';
-                                            if($sub_grade['fir_g'] == 0 && $sub_grade['sec_g'] == 0)
+                                            if($sub_grade['fir_g'] == 0.00 && $sub_grade['sec_g'] == 0.00)
                                             {
                                                 $isEmpty = 'na';
                                             } 
@@ -402,7 +402,7 @@
                                             echo '<td class="text-center">'.number_format(round($sub_grade['thi_g'])).'</td>';                                
                                             echo '<td class="text-center">'.number_format(round($sub_grade['fou_g'])).'</td>';
                                             echo '<td class="text-center text-red">'.number_format(round($final_sec)).'</td>';
-                                            if($sub_grade['thi_g'] == 0 && $sub_grade['fou_g'] == 0)
+                                            if($sub_grade['thi_g'] == 0.00 && $sub_grade['fou_g'] == 0.00)
                                             {
                                                 $isEmpty = 'na';
                                             }      
@@ -456,7 +456,7 @@
                                 @endforelse
                                 @php
                                     $div = $divisor * 2;
-                                    if($sub_grade['fir_g'] == 0 && $sub_grade['sec_g'] == 0 && $sub_grade['thi_g'] == 0 && $sub_grade['fou_g'] == 0)
+                                    if($sub_grade['fir_g'] == 0.00 && $sub_grade['sec_g'] == 0.00 && $sub_grade['thi_g'] == 0.00 && $sub_grade['fou_g'] == 0.00)
                                     {
                                         $isEmpty = 'na';
                                     }   
