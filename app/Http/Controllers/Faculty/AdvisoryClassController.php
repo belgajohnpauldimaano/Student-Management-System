@@ -468,17 +468,20 @@ class AdvisoryClassController extends Controller
                     ->where('section_details.status', 1)
                     ->where('class_details.school_year_id', $SchoolYear->id)
                     ->where('class_details.id', \Crypt::decrypt($request->cid))
+                    ->where('class_details.status', 1)
                     // ->orderBY('school_years.id', 'ASC')
                     ->first();
             }
 
+            // return json_encode($ClassDetail->id);
+
             $Signatory = ClassDetail::with('student_enrollment')
-                    ->where('school_year_id', $ClassDetail->school_year_id)
-                    ->whereHas('student_enrollment', function ($query) use ($StudentInformation) {
-                        $query->where('student_information_id', $StudentInformation->id);
-                    })
-                    ->whereStatus(1)
-                    ->first();
+                ->where('school_year_id', $SchoolYear->id)
+                ->whereHas('student_enrollment', function ($query) use ($StudentInformation) {
+                    $query->where('student_information_id', $StudentInformation->id);
+                })
+                ->whereStatus(1)
+                ->first();
 
             $semester = Semester::where('current', 1)->first()->id;
             

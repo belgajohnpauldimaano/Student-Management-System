@@ -229,7 +229,19 @@
                     </tr>
                     <tr>
                         <td>
-                            <p class="p0 m0 student-info"><b>Grade & Section </b>: {{ $ClassDetail ? $ClassDetail->grade_level : '' }} - {{ $ClassDetail ? $ClassDetail->section->section : '' }}</p>
+                            <p class="p0 m0 student-info">
+                                <b>Grade & Section </b>: 
+                                {{ $ClassDetail ? $ClassDetail->grade_level : '' }}
+                                 - 
+                                @php
+                                    try {
+                                         echo $ClassDetail ? $ClassDetail->section->section : '';
+                                    } catch (\Throwable $th) {
+                                        echo $ClassDetail ? $ClassDetail->section : '';
+                                    }
+                                @endphp
+                                
+                            </p>
                         </td>
                         <td>
                             <p class="p0 m0 student-info"><b>Birthdate</b> : {{ $StudentInformation->birthdate ? date_format(date_create($StudentInformation->birthdate), 'F d, Y') : '' }}</p>
