@@ -1,4 +1,4 @@
-                        <?php
+                        @php
                                 $days = $ClassSubjectDetail ? $ClassSubjectDetail->class_schedule ? explode(';', rtrim($ClassSubjectDetail->class_schedule,";")) : [] : [];
                                 $daysObj = [];
                                 $daysDisplay = '';
@@ -24,9 +24,14 @@
                                     }
                                 }
 
-                        ?>
+                        @endphp
 
-                        <h4>Subject : <span class="text-red"><i>{{ $ClassSubjectDetail->id }} {{ $ClassSubjectDetail->subject }}</i></span> 
+                        <h4>Subject : <span class="text-red">
+                            <i>
+                                {{-- {{ $ClassSubjectDetail->id }}  --}}
+                                {{ $ClassSubjectDetail->subject }}
+                            </i>
+                        </span> 
                         {{--  Time : <span class="text-red"><i>{{ strftime('%r',strtotime($ClassSubjectDetail->class_time_from)) . ' - ' . strftime('%r',strtotime($ClassSubjectDetail->class_time_to)) }}</i></span> Days : <span class="text-red"><i>{{ $ClassSubjectDetail->class_days }}</i></span>  --}}
                         Schedule : <span class="text-red"><i>{{ rtrim($daysDisplay, '/') }}</i></span>
                         </h4>
@@ -71,13 +76,13 @@
                                                                     <span class="text-red final-ratings_{{ $data->student_enrolled_subject_id }}">
                                                                         <strong>
                                                                                 <center>
-                                                                                    <?php
+                                                                                    @php
                                                                                         $g_ctr = 0;
                                                                                         $g_ctr += $data->fir_g > 0 ? 1 : 0;
                                                                                         $g_ctr += $data->sec_g > 0 ? 1 : 0;
                                                                                         $g_ctr += $data->thi_g > 0 ? 1 : 0;
                                                                                         $g_ctr += $data->fou_g > 0 ? 1 : 0;
-                                                                                    ?>
+                                                                                    @endphp
                                                                                     {{ ($g_ctr ? round(($data->fir_g + $data->sec_g + $data->thi_g + $data->fou_g) / $g_ctr) : 0)  }}
                                                                                 </center>
                                                                         </strong>
@@ -98,13 +103,15 @@
                                                                 
                                                                 <td>
                                                                     <div class="input-group" data-grading="{{ base64_encode('first') }}">
-                                                                        <input style ="text-align: center" type="number" {{ $data->fir_g_status ? "readonly='readonly'" : '' }} class="input-sm txt-grade_input form-control grade-input-{{ $data->student_enrolled_subject_id }}" value="{{ $data->fir_g <= 0.00 ? "" : round($data->fir_g) }}" id="first_grading_{{ $data->student_enrolled_subject_id }}">
+                                                                        <input style ="text-align: center" type="number" {{ $data->fir_g_status ? "readonly='readonly'" : '' }} class="input-sm txt-grade_input form-control grade-input-{{ $data->student_enrolled_subject_id }}" 
+                                                                        value="{{ $data->fir_g <= 0.00 ? "" : round($data->fir_g) }}" id="first_grading_{{ $data->student_enrolled_subject_id }}">
                                                                         <input id="classSubjectDetailID" name="classSubjectDetailID" type="hidden" value="{{ $ClassSubjectDetail->id }}">
                                                                     </div>
                                                                 </td>
                                                                 <td>
                                                                     <div class="input-group" data-grading="{{ base64_encode('second') }}">
-                                                                        <input style ="text-align: center" type="number" {{ $data->sec_g_status ? "readonly='readonly'" : '' }}  class="input-sm txt-grade_input form-control" value="{{ $data->fir_g <= 0.00 ? "" : round($data->sec_g) }}" id="second_grading_{{ $data->student_enrolled_subject_id }}">
+                                                                        <input style ="text-align: center" type="number" {{ $data->sec_g_status ? "readonly='readonly'" : '' }}  class="input-sm txt-grade_input form-control" 
+                                                                        value="{{ $data->fir_g <= 0.00 ? "" : round($data->sec_g) }}" id="second_grading_{{ $data->student_enrolled_subject_id }}">
                                                                         <input id="classSubjectDetailID" name="classSubjectDetailID" type="hidden" value="{{ $ClassSubjectDetail->id }}">
                                                                     </div>
                                                                 </td>
@@ -113,13 +120,13 @@
                                                                     <span class="text-red final-ratings_{{ $data->student_enrolled_subject_id }}">
                                                                         <strong>
                                                                             <center>
-                                                                            <?php
+                                                                            @php
                                                                                 $g_ctr = 0;
                                                                                 $g_ctr += $data->fir_g > 0 ? 1 : 0;
                                                                                 $g_ctr += $data->sec_g > 0 ? 1 : 0;
                                                                                 $g_ctr += $data->thi_g > 0 ? 1 : 0;
                                                                                 $g_ctr += $data->fou_g > 0 ? 1 : 0;
-                                                                            ?>
+                                                                            @endphp
                                                                             {{ ($g_ctr ? round(($data->fir_g + $data->sec_g + $data->thi_g + $data->fou_g) / $g_ctr) : 0)  }}
                                                                             </center>
                                                                         </strong>
@@ -151,13 +158,13 @@
                                                                     <span class="text-red final-ratings_{{ $data->student_enrolled_subject_id }}">
                                                                         <strong>
                                                                                 <center>
-                                                                                    <?php
+                                                                                    @php
                                                                                         $g_ctr = 0;
                                                                                         $g_ctr += $data->fir_g > 0 ? 1 : 0;
                                                                                         $g_ctr += $data->sec_g > 0 ? 1 : 0;
                                                                                         $g_ctr += $data->thi_g > 0 ? 1 : 0;
                                                                                         $g_ctr += $data->fou_g > 0 ? 1 : 0;
-                                                                                    ?>
+                                                                                    @endphp
                                                                                     {{ ($g_ctr ? (($data->fir_g + $data->sec_g + $data->thi_g + $data->fou_g) / $g_ctr) : 0)  }}
                                                                                 </center>
                                                                         </strong>
@@ -169,18 +176,18 @@
                                                         @foreach ($EnrollmentFemale as $key => $data)
                                                             <tr data-student_enrolled_subject_id="{{ base64_encode($data->student_enrolled_subject_id) }}" data-student_id="{{ base64_encode($data->id) }}" data-enrollment_id="{{ base64_encode($data->enrollment_id) }}">
                                                                 <td>{{ $key + 1 }}.</td>
-                                                                <td>{{ $data->student_name }}</td>
-                                                                
+                                                                <td>{{ $data->student_name }}</td>                                                                
                                                                 <td>
                                                                     <div class="input-group" data-grading="{{ base64_encode('first') }}">
-                                                                        <input style ="text-align: center" type="number" {{ $data->fir_g_status ? "readonly='readonly'" : '' }} class="input-sm txt-grade_input form-control grade-input-{{ $data->student_enrolled_subject_id }}" value="{{ $data->fir_g <= 0.00 ? "" : round($data->fir_g) }}" id="first_grading_{{ $data->student_enrolled_subject_id }}">
+                                                                        <input style ="text-align: center" type="number" {{ $data->fir_g_status ? "readonly='readonly'" : '' }} class="input-sm txt-grade_input form-control grade-input-{{ $data->student_enrolled_subject_id }}" 
+                                                                        value="{{ $data->fir_g <= 0.00 ? "" : round($data->fir_g) }}" id="first_grading_{{ $data->student_enrolled_subject_id }}">
                                                                         <input id="classSubjectDetailID" name="classSubjectDetailID" type="hidden" value="{{ $ClassSubjectDetail->id }}">
-                                                                        
                                                                     </div>
                                                                 </td>
                                                                 <td>
                                                                     <div class="input-group" data-grading="{{ base64_encode('second') }}">
-                                                                        <input style ="text-align: center" type="number" {{ $data->sec_g_status ? "readonly='readonly'" : '' }}  class="input-sm txt-grade_input form-control" value="{{ $data->sec_g <= 0.00 ? "" : round($data->sec_g) }}" id="second_grading_{{ $data->student_enrolled_subject_id }}">
+                                                                        <input style ="text-align: center" type="number" {{ $data->sec_g_status ? "readonly='readonly'" : '' }}  class="input-sm txt-grade_input form-control" 
+                                                                        value="{{ $data->sec_g <= 0.00 ? "" : round($data->sec_g) }}" id="second_grading_{{ $data->student_enrolled_subject_id }}">
                                                                         <input id="classSubjectDetailID" name="classSubjectDetailID" type="hidden" value="{{ $ClassSubjectDetail->id }}">
                                                                         
                                                                     </div>
@@ -190,13 +197,13 @@
                                                                     <span class="text-red final-ratings_{{ $data->student_enrolled_subject_id }}">
                                                                         <strong>
                                                                             <center>
-                                                                            <?php
+                                                                            @php
                                                                                 $g_ctr = 0;
                                                                                 $g_ctr += $data->fir_g > 0 ? 1 : 0;
                                                                                 $g_ctr += $data->sec_g > 0 ? 1 : 0;
                                                                                 $g_ctr += $data->thi_g > 0 ? 1 : 0;
                                                                                 $g_ctr += $data->fou_g > 0 ? 1 : 0;
-                                                                            ?>
+                                                                            @endphp
                                                                             {{ ($g_ctr ? round(($data->fir_g + $data->sec_g + $data->thi_g + $data->fou_g) / $g_ctr) : 0)  }}
                                                                             </center>
                                                                         </strong>
@@ -240,13 +247,13 @@
                                                             <span class="text-red final-ratings_{{ $data->student_enrolled_subject_id }}">
                                                                 <strong>
                                                                         <center>
-                                                                            <?php
+                                                                            @php
                                                                                 $g_ctr = 0;
                                                                                 $g_ctr += $data->fir_g > 0 ? 1 : 0;
                                                                                 $g_ctr += $data->sec_g > 0 ? 1 : 0;
                                                                                 $g_ctr += $data->thi_g > 0 ? 1 : 0;
                                                                                 $g_ctr += $data->fou_g > 0 ? 1 : 0;
-                                                                            ?>
+                                                                            @endphp
                                                                             {{ ($g_ctr ? round(($data->fir_g + $data->sec_g + $data->thi_g + $data->fou_g) / $g_ctr) : 0)  }}
                                                                         </center>
                                                                 </strong>
@@ -267,13 +274,15 @@
                                                         
                                                         <td>
                                                             <div class="input-group" data-grading="{{base64_encode('third')}}">
-                                                                <input style ="text-align: center" type="number" {{ $data->thi_g_status ? "readonly='readonly'" : '' }} class="input-sm txt-grade_input form-control" value="{{ $data->thi_g <= 0.00 ? "" : round($data->thi_g) }}" id="third_grading_{{ $data->student_enrolled_subject_id }}">
+                                                                <input style ="text-align: center" type="number" {{ $data->thi_g_status ? "readonly='readonly'" : '' }} class="input-sm txt-grade_input form-control" 
+                                                                value="{{ $data->thi_g <= 0.00 ? "" : round($data->thi_g) }}" id="third_grading_{{ $data->student_enrolled_subject_id }}">
                                                                 <input id="classSubjectDetailID" name="classSubjectDetailID" type="hidden" value="{{ $ClassSubjectDetail->id }}">
                                                             </div>
                                                         </td>
                                                         <td>
                                                             <div class="input-group" data-grading="{{base64_encode('fourth')}}">
-                                                                <input style ="text-align: center" type="number" {{ $data->fou_g_status ? "readonly='readonly'" : '' }} class="input-sm txt-grade_input form-control" value="{{ $data->fou_g <= 0.00 ? "" : round($data->fou_g) }}" id="fourth_grading_{{ $data->student_enrolled_subject_id }}">
+                                                                <input style ="text-align: center" type="number" {{ $data->fou_g_status ? "readonly='readonly'" : '' }} class="input-sm txt-grade_input form-control" 
+                                                                value="{{ $data->fou_g <= 0.00 ? "" : round($data->fou_g) }}" id="fourth_grading_{{ $data->student_enrolled_subject_id }}">
                                                                 <input id="classSubjectDetailID" name="classSubjectDetailID" type="hidden" value="{{ $ClassSubjectDetail->id }}">    
                                                             </div>
                                                         </td>
@@ -281,13 +290,13 @@
                                                             <span class="text-red final-ratings_{{ $data->student_enrolled_subject_id }}">
                                                                 <strong>
                                                                     <center>
-                                                                    <?php
+                                                                    @php
                                                                         $g_ctr = 0;
                                                                         $g_ctr += $data->fir_g > 0 ? 1 : 0;
                                                                         $g_ctr += $data->sec_g > 0 ? 1 : 0;
                                                                         $g_ctr += $data->thi_g > 0 ? 1 : 0;
                                                                         $g_ctr += $data->fou_g > 0 ? 1 : 0;
-                                                                    ?>
+                                                                    @endphp
                                                                     {{ ($g_ctr ? round(($data->fir_g + $data->sec_g + $data->thi_g + $data->fou_g) / $g_ctr) : 0)  }}
                                                                     </center>
                                                                 </strong>
@@ -318,13 +327,13 @@
                                                             <span class="text-red final-ratings_{{ $data->student_enrolled_subject_id }}">
                                                                 <strong>
                                                                         <center>
-                                                                            <?php
+                                                                            @php
                                                                                 $g_ctr = 0;
                                                                                 $g_ctr += $data->fir_g > 0 ? 1 : 0;
                                                                                 $g_ctr += $data->sec_g > 0 ? 1 : 0;
                                                                                 $g_ctr += $data->thi_g > 0 ? 1 : 0;
                                                                                 $g_ctr += $data->fou_g > 0 ? 1 : 0;
-                                                                            ?>
+                                                                            @endphp
                                                                             {{ ($g_ctr ? (($data->fir_g + $data->sec_g + $data->thi_g + $data->fou_g) / $g_ctr) : 0)  }}
                                                                         </center>
                                                                 </strong>
@@ -340,13 +349,15 @@
                                                         
                                                         <td>
                                                             <div class="input-group" data-grading="{{base64_encode('third')}}">
-                                                                <input style ="text-align: center" type="number" {{ $data->thi_g_status ? "readonly='readonly'" : '' }} class="input-sm txt-grade_input form-control" value="{{ $data->thi_g <= 0.00 ? "" : round($data->thi_g) }}" id="third_grading_{{ $data->student_enrolled_subject_id }}">
+                                                                <input style ="text-align: center" type="number" {{ $data->thi_g_status ? "readonly='readonly'" : '' }} class="input-sm txt-grade_input form-control" 
+                                                                value="{{ $data->thi_g <= 0.00 ? "" : round($data->thi_g) }}" id="third_grading_{{ $data->student_enrolled_subject_id }}">
                                                                 <input id="classSubjectDetailID" name="classSubjectDetailID" type="hidden" value="{{ $ClassSubjectDetail->id }}">
                                                             </div>
                                                         </td>
                                                         <td>
                                                             <div class="input-group" data-grading="{{base64_encode('fourth')}}">                                                            
-                                                                <input style ="text-align: center" type="number" {{ $data->fou_g_status ? "readonly='readonly'" : '' }} class="input-sm txt-grade_input form-control" value="{{ $data->fou_g <= 0.00 ? "" : round($data->fou_g) }}" id="fourth_grading_{{ $data->student_enrolled_subject_id }}">
+                                                                <input style ="text-align: center" type="number" {{ $data->fou_g_status ? "readonly='readonly'" : '' }} class="input-sm txt-grade_input form-control" 
+                                                                value="{{ $data->fou_g <= 0.00 ? "" : round($data->fou_g) }}" id="fourth_grading_{{ $data->student_enrolled_subject_id }}">
                                                                 <input id="classSubjectDetailID" name="classSubjectDetailID" type="hidden" value="{{ $ClassSubjectDetail->id }}">    
                                                             </div>
                                                         </td>
@@ -354,13 +365,13 @@
                                                             <span class="text-red final-ratings_{{ $data->student_enrolled_subject_id }}">
                                                                 <strong>
                                                                         <center>
-                                                                            <?php
+                                                                            @php
                                                                                 $g_ctr = 0;
                                                                                 $g_ctr += $data->fir_g > 0 ? 1 : 0;
                                                                                 $g_ctr += $data->sec_g > 0 ? 1 : 0;
                                                                                 $g_ctr += $data->thi_g > 0 ? 1 : 0;
                                                                                 $g_ctr += $data->fou_g > 0 ? 1 : 0;
-                                                                            ?>
+                                                                            @endphp
                                                                             {{ ($g_ctr ? round(($data->fir_g + $data->sec_g + $data->thi_g + $data->fou_g) / $g_ctr) : 0)  }}
                                                                         </center>
                                                                 </strong>
@@ -417,13 +428,13 @@
                                                             <span class="text-red final-ratings_{{ $data->student_enrolled_subject_id }}">
                                                                 <strong>
                                                                         <center>
-                                                                            <?php
+                                                                            @php
                                                                                 $g_ctr = 0;
                                                                                 $g_ctr += $data->fir_g > 0 ? 1 : 0;
                                                                                 $g_ctr += $data->sec_g > 0 ? 1 : 0;
                                                                                 $g_ctr += $data->thi_g > 0 ? 1 : 0;
                                                                                 $g_ctr += $data->fou_g > 0 ? 1 : 0;
-                                                                            ?>
+                                                                            @endphp
                                                                             {{ ($g_ctr ? round(($data->fir_g + $data->sec_g + $data->thi_g + $data->fou_g) / $g_ctr) : 0)  }}
                                                                         </center>
                                                                 </strong>
@@ -444,25 +455,29 @@
                                                             
                                                             <td>
                                                                 <div class="input-group" data-grading="{{ base64_encode('first') }}">
-                                                                    <input style ="text-align: center" type="number" {{ $data->fir_g_status ? "readonly='readonly'" : '' }} class="input-sm txt-grade_input form-control grade-input-{{ $data->student_enrolled_subject_id }}" value="{{ $data->fir_g <= 0.00 ? "" : round($data->fir_g) }}" id="first_grading_{{ $data->student_enrolled_subject_id }}">
+                                                                    <input style ="text-align: center" type="number" {{ $data->fir_g_status ? "readonly='readonly'" : '' }} class="input-sm txt-grade_input form-control grade-input-{{ $data->student_enrolled_subject_id }}" 
+                                                                    value="{{ $data->fir_g <= 0.00 ? "" : round($data->fir_g) }}" id="first_grading_{{ $data->student_enrolled_subject_id }}">
                                                                     <input id="classSubjectDetailID" name="classSubjectDetailID" type="hidden" value="{{ $ClassSubjectDetail->id }}">
                                                                 </div>
                                                             </td>
                                                             <td>
                                                                 <div class="input-group" data-grading="{{ base64_encode('second') }}">
-                                                                    <input style ="text-align: center" type="number" {{ $data->sec_g_status ? "readonly='readonly'" : '' }}  class="input-sm txt-grade_input form-control" value="{{ $data->sec_g <= 0.00 ? "" : round($data->sec_g) }}" id="second_grading_{{ $data->student_enrolled_subject_id }}">
+                                                                    <input style ="text-align: center" type="number" {{ $data->sec_g_status ? "readonly='readonly'" : '' }}  class="input-sm txt-grade_input form-control" 
+                                                                    value="{{ $data->sec_g <= 0.00 ? "" : round($data->sec_g) }}" id="second_grading_{{ $data->student_enrolled_subject_id }}">
                                                                     <input id="classSubjectDetailID" name="classSubjectDetailID" type="hidden" value="{{ $ClassSubjectDetail->id }}">
                                                                 </div>
                                                             </td>
                                                             <td>
                                                                 <div class="input-group" data-grading="{{base64_encode('third')}}">
-                                                                    <input style ="text-align: center" type="number" {{ $data->thi_g_status ? "readonly='readonly'" : '' }} class="input-sm txt-grade_input form-control" value="{{ $data->thi_g <= 0.00 ? "" : round($data->thi_g) }}" id="third_grading_{{ $data->student_enrolled_subject_id }}">
+                                                                    <input style ="text-align: center" type="number" {{ $data->thi_g_status ? "readonly='readonly'" : '' }} class="input-sm txt-grade_input form-control" 
+                                                                    value="{{ $data->thi_g <= 0.00 ? "" : round($data->thi_g) }}" id="third_grading_{{ $data->student_enrolled_subject_id }}">
                                                                     <input id="classSubjectDetailID" name="classSubjectDetailID" type="hidden" value="{{ $ClassSubjectDetail->id }}">
                                                                 </div>
                                                             </td>
                                                             <td>
                                                                 <div class="input-group" data-grading="{{base64_encode('fourth')}}">
-                                                                    <input style ="text-align: center" type="number" {{ $data->fou_g_status ? "readonly='readonly'" : '' }} class="input-sm txt-grade_input form-control" value="{{ $data->fou_g <= 0.00 ? "" : round($data->fou_g) }}" id="fourth_grading_{{ $data->student_enrolled_subject_id }}">
+                                                                    <input style ="text-align: center" type="number" {{ $data->fou_g_status ? "readonly='readonly'" : '' }} class="input-sm txt-grade_input form-control" 
+                                                                    value="{{ $data->fou_g <= 0.00 ? "" : round($data->fou_g) }}" id="fourth_grading_{{ $data->student_enrolled_subject_id }}">
                                                                     <input id="classSubjectDetailID" name="classSubjectDetailID" type="hidden" value="{{ $ClassSubjectDetail->id }}">    
                                                                 </div>
                                                             </td>
@@ -470,13 +485,13 @@
                                                             <span class="text-red final-ratings_{{ $data->student_enrolled_subject_id }}">
                                                                 <strong>
                                                                         <center>
-                                                                            <?php
+                                                                            @php
                                                                                 $g_ctr = 0;
                                                                                 $g_ctr += $data->fir_g > 0 ? 1 : 0;
                                                                                 $g_ctr += $data->sec_g > 0 ? 1 : 0;
                                                                                 $g_ctr += $data->thi_g > 0 ? 1 : 0;
                                                                                 $g_ctr += $data->fou_g > 0 ? 1 : 0;
-                                                                            ?>
+                                                                            @endphp
                                                                             {{ ($g_ctr ? round(($data->fir_g + $data->sec_g + $data->thi_g + $data->fou_g) / $g_ctr) : 0)  }}
                                                                         </center>
                                                                 </strong>
@@ -513,13 +528,13 @@
                                                             <span class="text-red final-ratings_{{ $data->student_enrolled_subject_id }}">
                                                                 <strong>
                                                                         <center>
-                                                                            <?php
+                                                                            @php
                                                                                 $g_ctr = 0;
                                                                                 $g_ctr += $data->fir_g > 0 ? 1 : 0;
                                                                                 $g_ctr += $data->sec_g > 0 ? 1 : 0;
                                                                                 $g_ctr += $data->thi_g > 0 ? 1 : 0;
                                                                                 $g_ctr += $data->fou_g > 0 ? 1 : 0;
-                                                                            ?>
+                                                                            @endphp
                                                                             {{ ($g_ctr ? (($data->fir_g + $data->sec_g + $data->thi_g + $data->fou_g) / $g_ctr) : 0)  }}
                                                                         </center>
                                                                 </strong>
@@ -561,13 +576,13 @@
                                                             <span class="text-red final-ratings_{{ $data->student_enrolled_subject_id }}">
                                                                 <strong>
                                                                         <center>
-                                                                            <?php
+                                                                            @php
                                                                                 $g_ctr = 0;
                                                                                 $g_ctr += $data->fir_g > 0 ? 1 : 0;
                                                                                 $g_ctr += $data->sec_g > 0 ? 1 : 0;
                                                                                 $g_ctr += $data->thi_g > 0 ? 1 : 0;
                                                                                 $g_ctr += $data->fou_g > 0 ? 1 : 0;
-                                                                            ?>
+                                                                            @endphp
                                                                             {{ ($g_ctr ? round(($data->fir_g + $data->sec_g + $data->thi_g + $data->fou_g) / $g_ctr) : 0)  }}
                                                                         </center>
                                                                 </strong>

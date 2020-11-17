@@ -112,7 +112,7 @@
     <p class="p0 m0 student-info">Grade & Section : <b>{{ $ClassSubjectDetail ? $ClassSubjectDetail->grade_level : '' }} - {{ $ClassSubjectDetail ? $ClassSubjectDetail->section : '' }}</b</p>
     {{--  <p class="p0 m0 student-info">Student Name : <b>{{ ucfirst($StudentInformation->last_name). ', ' .ucfirst($StudentInformation->first_name). ' ' . ucfirst($StudentInformation->middle_name) }}</b</p>  --}}
     <br/>
-    <?php
+    @php
         $days = $ClassSubjectDetail ? $ClassSubjectDetail->class_schedule ? explode(';', rtrim($ClassSubjectDetail->class_schedule,";")) : [] : [];
         $daysObj = [];
         $daysDisplay = '';
@@ -138,7 +138,7 @@
             }
         }
 
-    ?>
+    @endphp
     <p class="p0 m0 student-info">Faculty : {{ ucfirst($FacultyInformation->last_name). ', ' .ucfirst($FacultyInformation->first_name). ' ' . ucfirst($FacultyInformation->middle_name) }}</p>
     <p class="p0 m0 student-info">Subject : <span class="text-red"><i>{{ $ClassSubjectDetail->subject }}</i></span> 
     {{--  Time : <span class="text-red"><i>{{ strftime('%r',strtotime($ClassSubjectDetail->class_time_from)) . ' - ' . strftime('%r',strtotime($ClassSubjectDetail->class_time_to)) }}</i></span> Days : <span class="text-red"><i>{{ $ClassSubjectDetail->class_days }}</i></span>  --}}
@@ -176,12 +176,11 @@
                                     @if ($data->fir_g > 0 && $data->sec_g > 0)
                                         <span class="text-red final-ratings_{{ $data->student_enrolled_subject_id }}">
                                             <strong>
-                                                    <?php
+                                                @php
                                                     $g_ctr = 0;
                                                     $g_ctr += $data->fir_g ? $data->fir_g > 0 ? 1 : 0 : 0;
-                                                    $g_ctr += $data->sec_g ? $data->sec_g > 0 ? 1 : 0 : 0;
-                                                   
-                                                ?>
+                                                    $g_ctr += $data->sec_g ? $data->sec_g > 0 ? 1 : 0 : 0;                                                   
+                                                @endphp
                                                 {{ ($g_ctr ? round(($data->fir_g + $data->sec_g ) / $g_ctr) : '')  }}
                                             </strong>
                                         </span>
@@ -200,22 +199,23 @@
                             <td>{{ $key + 1 }}.</td>
                             <td>{{ $data->student_name }}</td>
                             <td style="text-align:center">
-                                {{ $data->fir_g ? round($data->fir_g) : '' }}
+                                {{-- {{ $data->fir_g ? round($data->fir_g) : '' }} --}}
+                                {{ $data->fir_g ? $data->fir_g > 0 ? round($data->fir_g) : '' : '' }}
                             </td>
                             <td style="text-align:center">
-                                {{ $data->sec_g ? round($data->sec_g) : '' }}
+                                {{-- {{ $data->sec_g ? round($data->sec_g) : '' }} --}}
+                                {{ $data->sec_g ? $data->sec_g > 0 ? round($data->sec_g) : '' : '' }}
                             </td>
                             <td style="text-align:center">
                                 @if ($data->fir_g && $data->sec_g)
                                     @if ($data->fir_g > 0 && $data->sec_g > 0)
                                         <span class="text-red final-ratings_{{ $data->student_enrolled_subject_id }}">
                                             <strong>
-                                                    <?php
+                                                @php
                                                     $g_ctr = 0;
                                                     $g_ctr += $data->fir_g ? $data->fir_g > 0 ? 1 : 0 : 0;
-                                                    $g_ctr += $data->sec_g ? $data->sec_g > 0 ? 1 : 0 : 0;
-                                                   
-                                                ?>
+                                                    $g_ctr += $data->sec_g ? $data->sec_g > 0 ? 1 : 0 : 0;                                                   
+                                                @endphp
                                                 {{ ($g_ctr ? round(($data->fir_g + $data->sec_g ) / $g_ctr) : '')  }}
                                             </strong>
                                         </span>
@@ -245,12 +245,11 @@
                                     @if ($data->thi_g > 0 && $data->fou_g > 0)
                                         <span class="text-red final-ratings_{{ $data->student_enrolled_subject_id }}">
                                             <strong>
-                                                    <?php
+                                                @php
                                                     $g_ctr = 0;
                                                     $g_ctr += $data->thi_g ? $data->thi_g > 0 ? 1 : 0 : 0;
-                                                    $g_ctr += $data->fou_g ? $data->fou_g > 0 ? 1 : 0 : 0;
-                                                
-                                                ?>
+                                                    $g_ctr += $data->fou_g ? $data->fou_g > 0 ? 1 : 0 : 0;                                                
+                                                @endphp
                                                 {{ ($g_ctr ? round(($data->thi_g + $data->fou_g ) / $g_ctr) : '')  }}
                                             </strong>
                                         </span>
@@ -279,12 +278,11 @@
                                     @if ($data->thi_g > 0 && $data->fou_g > 0)
                                         <span class="text-red final-ratings_{{ $data->student_enrolled_subject_id }}">
                                             <strong>
-                                                    <?php
+                                                @php
                                                     $g_ctr = 0;
                                                     $g_ctr += $data->thi_g ? $data->thi_g > 0 ? 1 : 0 : 0;
-                                                    $g_ctr += $data->fou_g ? $data->fou_g > 0 ? 1 : 0 : 0;
-                                                
-                                                ?>
+                                                    $g_ctr += $data->fou_g ? $data->fou_g > 0 ? 1 : 0 : 0;                                                
+                                                @endphp
                                                 {{ ($g_ctr ? round(($data->thi_g + $data->fou_g ) / $g_ctr) : '')  }}
                                             </strong>
                                         </span>
@@ -295,9 +293,6 @@
                     @endforeach
                 @endif
             @endif
-                
-                
-             
         </tbody>
     </table>
 </body>

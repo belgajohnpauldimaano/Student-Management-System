@@ -235,22 +235,22 @@ class GradeSheetController extends Controller
         $FacultyInformation = FacultyInformation::where('user_id', \Auth::user()->id)->first();
         // return json_encode(['FacultyInformation' => $FacultyInformation, 'req' => $request->all()]);
 
-        $faculty_id = TeacherSubject::join('class_subject_details','class_subject_details.id', '=', 'teacher_subjects.class_subject_details_id')
-            ->join('class_details', 'class_details.id', '=', 'class_subject_details.class_details_id')
-            ->select(\DB::raw('  
-                class_subject_details.id,
-                class_subject_details.class_details_id,
-                class_subject_details.class_schedule,
-                class_subject_details.class_time_from,
-                class_subject_details.class_time_to,
-                class_subject_details.class_days,
-                class_subject_details.sem,
-                teacher_subjects.faculty_id
-            '))
-            ->where('teacher_subjects.faculty_id', $FacultyInformation->id)
-            ->where('class_details.school_year_id', $request->search_sy)
-            ->where('teacher_subjects.status', 1)
-            ->first();
+        // $faculty_id = TeacherSubject::join('class_subject_details','class_subject_details.id', '=', 'teacher_subjects.class_subject_details_id')
+        //     ->join('class_details', 'class_details.id', '=', 'class_subject_details.class_details_id')
+        //     ->select(\DB::raw('  
+        //         class_subject_details.id,
+        //         class_subject_details.class_details_id,
+        //         class_subject_details.class_schedule,
+        //         class_subject_details.class_time_from,
+        //         class_subject_details.class_time_to,
+        //         class_subject_details.class_days,
+        //         class_subject_details.sem,
+        //         teacher_subjects.faculty_id
+        //     '))
+        //     ->where('teacher_subjects.faculty_id', $FacultyInformation->id)
+        //     ->where('class_details.school_year_id', $request->search_sy)
+        //     ->where('teacher_subjects.status', 1)
+        //     ->first();
 
         // return $faculty_id->faculty_id;
         try {
@@ -368,7 +368,6 @@ class GradeSheetController extends Controller
         return $pdf->stream();
     }
     
-
     public function list_class_subject_details (Request $request) 
     {
         $FacultyInformation = FacultyInformation::where('user_id', \Auth::user()->id)->first(); 
@@ -819,7 +818,8 @@ class GradeSheetController extends Controller
         $semester = $request->search_semester;
         
 
-        return view('control_panel_faculty.student_grade_sheet.partials.print_senior', compact('EnrollmentFemale', 'EnrollmentMale', 'ClassSubjectDetail', 'FacultyInformation','semester'));
+        return view('control_panel_faculty.student_grade_sheet.partials.print_senior', 
+            compact('EnrollmentFemale', 'EnrollmentMale', 'ClassSubjectDetail', 'FacultyInformation','semester'));
         $pdf = \PDF::loadView('control_panel_faculty.student_grade_sheet.partials.print_senior', compact('EnrollmentFemale', 'EnrollmentMale', 'ClassSubjectDetail', 'FacultyInformation','semester'));
         $pdf->setPaper('Letter', 'portrait');
         return $pdf->stream();
