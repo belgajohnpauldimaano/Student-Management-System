@@ -8,34 +8,27 @@
 
 <div class="box">
     <div class="box-header with-border">            
-        <div class="row">
             <form id="js-form_search">
-                {{ csrf_field() }}
-                <div class="col-md-3">
-                    <label class="control-label">- School year -</label>                                            
-                    <div class="input-group input-school_year">
-                        <select name="school_year" id="school_year" class="form-control ">                            
-                            <option value="0">
-                                - Select School Year -
-                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                            </option>
-                            @foreach ($School_years as $item)
-                                <option value="{{ $item->id }}">{{ $item->school_year }}</option>
-                            @endforeach      
-                        </select>
-                    </div>
-                    <div class="help-block text-red text-left" id="js-school_year">
-                    </div>
-                </div>       
-                <div class="col-md-2">
-                    <label class="control-label">&nbsp;</label>
-                    <div class="input-group input-school_year">
-                        <button type="submit" class="btn btn-flat btn-success">Search</button>
-                        <button type="button" class="btn btn-flat btn-primary pull-right btn_clear" style="display: none">
-                            <i class="fa fa-refresh"></i> Clear
-                        </button>
-                    </div>
-                </div>  
+                {{ csrf_field() }}                
+                {{-- <label class="control-label">- School year -</label> --}}
+                <div class="form-group col-md-3 input-school_year" style="padding-right:0; padding-left: 0">
+                    <select name="school_year" id="school_year" class="form-control">                            
+                        <option value="0">
+                            - Select School Year -
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        </option>
+                        @foreach ($School_years as $item)
+                            <option value="{{ $item->id }}">{{ $item->school_year }}</option>
+                        @endforeach      
+                    </select>
+                </div>
+                <div class="help-block text-red text-left" id="js-school_year">
+                </div>
+                &nbsp;
+                <button type="submit" class="btn btn-flat btn-success">Search</button>
+                <button type="button" class="btn btn-flat btn-primary btn_clear" style="display: none">
+                    <i class="fa fa-refresh"></i> Clear
+                </button>                    
             </form>
             {{-- <div class="overlay hidden" id="js-loader-overlay"><i class="fa fa-refresh fa-spin"></i></div>
             <div class="box-body">
@@ -50,8 +43,6 @@
                     @include('control_panel_student.grade_sheet.partials.data_list')       
                 </div>            
             </div>
-                
-        </div>
     </div>        
 </div>
 @endsection
@@ -73,7 +64,7 @@
                 success     : function (res) {
                     loader_overlay();
                     $('.js-data-container').html(res);
-                    $('.btn_clear').css('display', 'block')
+                    $('.btn_clear').removeAttr('style');
                 }
             });
         }

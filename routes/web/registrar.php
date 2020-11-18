@@ -89,8 +89,21 @@ Route::group(['prefix' => 'registrar/student-enrollment/{id}', 'middleware' => [
     Route::get('enrolled-student', 'Registrar\StudentEnrollmentController@fetch_enrolled_student')->name('registrar.student_enrollment.fetch_enrolled_student');
     Route::post('cancel-enroll-student', 'Registrar\StudentEnrollmentController@cancel_enroll_student')->name('registrar.student_enrollment.cancel_enroll_student');
     
-    Route::get('print-enrolled-students', 'Registrar\StudentEnrollmentController@print_enrolled_students')->name('registrar.student_enrollment.print_enrolled_students');
+    Route::post('drop-student', 'Registrar\StudentEnrollmentController@drop')
+        ->name('registrar.student_enrollment.drop');
+
+    Route::get('print-enrolled-students', 'Registrar\StudentEnrollmentController@print_enrolled_students')
+        ->name('registrar.student_enrollment.print_enrolled_students');
 });
+
+// Route::group(['prefix' => 'registrar/student-enrolled-list/{id}', 'middleware' => ['auth'], 'roles' => ['admin', 'root', 'registrar']], function() {
+//     Route::get('', 'Registrar\StudentEnrolledListController@index')->name('registrar.student_enrolled_list');
+//     Route::post('', 'Registrar\StudentEnrolledListController@index')->name('registrar.student_enrolled_list');
+//     Route::post('enrolled-student', 'Registrar\StudentEnrolledListController@fetch_enrolled_student')->name('registrar.student_enrollment.fetch_enrolled_student');
+//     Route::get('enrolled-student', 'Registrar\StudentEnrolledListController@fetch_enrolled_student')->name('registrar.student_enrollment.fetch_enrolled_student');
+    
+// });
+
 
 Route::group(['prefix' => 'admin/student-information', 'middleware' => ['auth', 'userroles'], 'roles' => ['admin', 'root', 'registrar', 'admission']], function() {
     Route::get('', 'Control_Panel\StudentController@index')->name('admin.student.information');

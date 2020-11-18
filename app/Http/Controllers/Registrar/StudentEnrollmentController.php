@@ -382,8 +382,8 @@ class StudentEnrollmentController extends Controller
                 foreach ($ClassDetail->class_subjects as $key => $class_subject)
                 {
                     $StudentEnrolledSubject = StudentEnrolledSubject::where('enrollments_id', $enrollment_id)
-                    ->where('class_subject_details_id', $class_subject->id)
-                    ->first();
+                        ->where('class_subject_details_id', $class_subject->id)
+                        ->first();
                     
                     if ($StudentEnrolledSubject) {
                         $StudentEnrolledSubject_list[] = $StudentEnrolledSubject;
@@ -465,39 +465,66 @@ class StudentEnrollmentController extends Controller
 
         $EnrollmentMale = Enrollment::join('student_informations', 'student_informations.id', '=', 'enrollments.student_information_id')
             ->join('users', 'users.id', '=', 'student_informations.user_id')
-            // ->whereRaw('student_informations.id NOT IN ((SELECT  * from enrollments where enrollments.class_details_id = 3))')
             ->selectRaw("
                 student_informations.id AS student_information_id,
                 users.username,
-                CONCAT(student_informations.last_name, ', ', student_informations.first_name, ' ', student_informations.middle_name) AS fullname,
+                student_informations.last_name, student_informations.first_name, student_informations.middle_name,
                 enrollments.id AS enrollment_id
             ")
             ->where('student_informations.gender', 1)
             ->where('class_details_id', $request->id)
-            ->orderByRaw('fullname', 'ASC')
-            // ->orWhere('first_name', 'like', '%'.$request->search.'%')
-            ->get(); //
+            ->orderByRaw('student_informations.last_name', 'ASC')
+            ->get();
 
         $EnrollmentFemale = Enrollment::join('student_informations', 'student_informations.id', '=', 'enrollments.student_information_id')
             ->join('users', 'users.id', '=', 'student_informations.user_id')
-            // ->whereRaw('student_informations.id NOT IN ((SELECT  * from enrollments where enrollments.class_details_id = 3))')
             ->selectRaw("
                 student_informations.id AS student_information_id,
                 users.username,
-                CONCAT(student_informations.last_name, ', ', student_informations.first_name, ' ', student_informations.middle_name) AS fullname,
+                student_informations.last_name, student_informations.first_name, student_informations.middle_name,
                 enrollments.id AS enrollment_id
             ")
             ->where('student_informations.gender', 2)
             ->where('class_details_id', $request->id)
-            ->orderByRaw('fullname', 'ASC')
-            // ->orWhere('first_name', 'like', '%'.$request->search.'%')
-            ->get(); //
+            ->orderByRaw('student_informations.last_name', 'ASC')
+            ->get();
         
         return view('control_panel_registrar.student_enrollment.partials.print',
             compact('EnrollmentMale', 'EnrollmentFemale', 'ClassDetail'));
         $pdf = \PDF::loadView('control_panel_registrar.student_enrollment.partials.print',
              compact('EnrollmentMale', 'EnrollmentFemale', 'ClassDetail'));
-        return $pdf->stream();
-     
+        return $pdf->stream();     
+    }
+
+    public function drop(Request $request)
+    {
+        $enrollment_id = $request->enrollment_id;
+        $class_detail_id = $request->class_detail_id;
+        $student_id = $request->student_id;
+
+        try {
+            if($enrollment_id && $class_detail_id && $student_id)
+            {
+                $Enrollment = Enrollment::whereId($enrollment_id)->first();
+                $Enrollment->status = 2;
+                $Enrollment->save();
+
+                $student_enrolled_subject = StudentEnrolledSubject::whereEnrollmentsId($enrollment_id)->get();
+                
+                foreach ($student_enrolled_subject as $data) 
+                {
+                    $drop = StudentEnrolledSubject::find($data->id);
+                    $drop->status = 2;
+                    $drop->save();
+                    // echo $data->id.'<br/>';
+                }
+                return response()->json(['res_code' => 0, 'res_msg' => 'Student successfully dropped!'.$enrollment_id.' '.$class_detail_id.' '.$student_id]);
+            }
+        } catch (\Throwable $th) {
+            return response()->json(['res_code' => 1, 'res_msg' => 'There is a problem in dropping student.']);  
+        }
+        
+
+        
     }
 }

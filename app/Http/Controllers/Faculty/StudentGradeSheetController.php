@@ -127,6 +127,7 @@ class StudentGradeSheetController extends Controller
             ->where('class_details.section_id', $class_detail->section->id)
             ->where('class_details.school_year_id', $sy_id)
             ->whereRaw('student_informations.gender = 1')
+            ->where('enrollments.status', 1)
             ->selectRaw("                    
                     student_informations.last_name, 
                     student_informations.first_name, 
@@ -142,6 +143,7 @@ class StudentGradeSheetController extends Controller
             ->join('student_informations','student_informations.id','=','enrollments.student_information_id')  
             ->where('class_details.section_id', $class_detail->section->id)
             ->where('class_details.school_year_id', $sy_id)
+            ->where('enrollments.status', 1)
             ->whereRaw('student_informations.gender = 2')
             ->selectRaw("                    
                     student_informations.last_name, 

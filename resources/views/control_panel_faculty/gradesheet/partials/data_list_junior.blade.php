@@ -64,8 +64,10 @@
                                 @php 
                                     $sub_grade = $subject_grades
                                         ->where('enrollments_id',$item->id)
-                                        ->where('subject_id', $sub->subject_id)
-                                        ->first();                       
+                                        // ->where('subject_id', $sub->subject_id)
+                                        ->where('class_subject_details_id', $sub->id)
+                                        ->where('status', 1)
+                                        ->first();                      
 
                                     if($quarter == '1st')
                                     {
@@ -149,8 +151,10 @@
                             @php 
                                 $sub_grade = $subject_grades
                                     ->where('enrollments_id',$item->id)
-                                    ->where('subject_id', $sub->subject_id)
-                                    ->first();                         
+                                    // ->where('subject_id', $sub->subject_id)
+                                    ->where('class_subject_details_id', $sub->id)
+                                    ->where('status', 1)
+                                    ->first();                          
 
                                 $fir += $sub_grade['fir_g'];
                                 $sec += $sub_grade['sec_g'];   
@@ -244,8 +248,10 @@
                                 @php 
                                     $sub_grade = $subject_grades
                                         ->where('enrollments_id',$item->id)
-                                        ->where('subject_id', $sub->subject_id)
-                                        ->first();                       
+                                        // ->where('subject_id', $sub->subject_id)
+                                        ->where('class_subject_details_id', $sub->id)
+                                        ->where('status', 1)
+                                        ->first();                          
 
                                     if($quarter == '1st')
                                     {
@@ -329,8 +335,10 @@
                             @php 
                                 $sub_grade = $subject_grades
                                     ->where('enrollments_id',$item->id)
-                                    ->where('subject_id', $sub->subject_id)
-                                    ->first();                         
+                                    // ->where('subject_id', $sub->subject_id)
+                                    ->where('class_subject_details_id', $sub->id)
+                                    ->where('status', 1)
+                                    ->first();                           
 
                                 $fir += $sub_grade['fir_g'];
                                 $sec += $sub_grade['sec_g'];   

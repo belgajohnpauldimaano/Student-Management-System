@@ -105,6 +105,8 @@
     <div style="margin-top: 50px">
         <p class="m0 heading2-subtitle">School Year: <strong>{{ $ClassDetail->school_year }}</p>
         <p class="m0 heading2-subtitle">Grade & Section: <strong>{{ $ClassDetail->grade_level }} - {{ $ClassDetail->section }}</strong></p>
+        
+        
         <div style="margin-top: 10px">
             <table class="table table-bordered">
                 <thead>
@@ -125,7 +127,7 @@
                             <tr>
                                 <td>{{ $key + 1 }}.</td>
                                 <td style="text-align: center">{{ $data->username }}</td>
-                                <td style="text-align: center">{{ $data->full_name }}</td>
+                                <td style="text-align: center">{{ ucwords(strtolower($data->fullname)) }}</td>
                             </tr>
                         @endforeach
                         <tr>
@@ -137,7 +139,7 @@
                             <tr>
                                 <td>{{ $key + 1 }}.</td>
                                 <td style="text-align: center">{{ $data->username }}</td>
-                                <td style="text-align: center">{{ $data->full_name }}</td>
+                                <td style="text-align: center">{{ ucwords(strtolower($data->fullname)) }}</td>
                             </tr>
                         @endforeach
                     @endif
