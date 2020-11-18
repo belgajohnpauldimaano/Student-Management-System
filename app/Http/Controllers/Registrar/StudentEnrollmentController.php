@@ -518,7 +518,10 @@ class StudentEnrollmentController extends Controller
                     $drop->save();
                     // echo $data->id.'<br/>';
                 }
-                return response()->json(['res_code' => 0, 'res_msg' => 'Student successfully dropped!'.$enrollment_id.' '.$class_detail_id.' '.$student_id]);
+                return response()->json([
+                    'res_code' => 0, 'res_msg' => 'Student successfully dropped!'
+                    // .$enrollment_id.' '.$class_detail_id.' '.$student_id
+                ]);
             }
         } catch (\Throwable $th) {
             return response()->json(['res_code' => 1, 'res_msg' => 'There is a problem in dropping student.']);  

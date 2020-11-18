@@ -429,8 +429,10 @@
                                     message : res.res_msg,
                                     type    : 'success'
                                 });
-                                fetch_data();
-                                fetch_data_enrolled();
+
+                                setTimeout(function() {
+                                    location.reload();
+                                }, 3000);
                             }
                         }
                     });
