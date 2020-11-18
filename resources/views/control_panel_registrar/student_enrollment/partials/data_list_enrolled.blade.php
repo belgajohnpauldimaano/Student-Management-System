@@ -9,7 +9,7 @@
         </button>
         {{ $Enrollment ? $Enrollment->links() : '' }}
     </div>
-    <table class="table no-margin">
+    <table class="table no-margin table-hover">
         <thead>
             <tr>
                 <th>No.</th>
@@ -84,7 +84,7 @@
         </button>
         {{ $Enrollment ? $Enrollment->links() : '' }}
     </div> 
-    <table class="table no-margin">
+    <table class="table no-margin table-hover">
         <thead>
             <tr>
                 <th>No.</th>
