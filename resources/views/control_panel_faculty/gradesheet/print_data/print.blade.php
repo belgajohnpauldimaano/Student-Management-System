@@ -107,7 +107,7 @@
     <p class="report-progress m0">S.Y. {{ $class_detail->school_year_id ? $class_detail->schoolYear->school_year : '' }}</p>
     <p class="report-progress m0">GRADE SHEET</p>
     
-    <img style="margin-top: -.4em; margin-left: 9em" class="logo" width="100" src="{{ asset('img/sja-logo.png') }}" />
+    <img style="margin-top: -.4em; margin-left: 6em" class="logo" width="100" src="{{ asset('img/sja-logo.png') }}" />
     <br/>
     <br/>
     
