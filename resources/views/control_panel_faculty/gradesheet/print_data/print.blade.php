@@ -125,6 +125,14 @@
         @include('control_panel_faculty.gradesheet.print_data.data_senior')
     @endif
 
-    <p style="text-align: right; font-size: 12px"><b>{{$class_detail->adviser->full_name }}</b> - <i>Class Adviser</i></p>
+    <table border="0" style="margin-top: 50px">
+        <tr>
+            <td class="text-center" width="50%" style="border: 0;"><b>Gemma R. Yao, PhD</b><br/><i>Principal</i></td>
+        
+            <td class="text-center" width="50%" style="border: 0;"><b>{{$class_detail->adviser->full_name }}</b><br/><i>Class Adviser</i></td>
+        </tr>
+    </table>
+
+    {{-- <p style="text-align: right; font-size: 12px"><b>{{$class_detail->adviser->full_name }}</b> - <i>Class Adviser</i></p> --}}
 </body>
 </html>
