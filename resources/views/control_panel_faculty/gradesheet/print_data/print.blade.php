@@ -125,7 +125,7 @@
         @include('control_panel_faculty.gradesheet.print_data.data_senior')
     @endif
 
-    <table border="0" style="margin-top: 50px">
+    <table border="0" style="margin-top: 60px">
         <tr>
             <td class="text-center" width="50%" style="border: 0;"><b>Gemma R. Yao, PhD</b><br/><i>Principal</i></td>
         
