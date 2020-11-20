@@ -510,7 +510,8 @@ class GradeSheetController extends Controller
                     section_details.section,
                     class_details.grade_level
                 '))
-                ->get();
+                ->distinct()
+                ->get('subject_details.subject');
             
             
                 $class_details_elements = '<option value="">Select Class Subject</option>';
@@ -620,7 +621,8 @@ class GradeSheetController extends Controller
                 class_subject_details.sem
             "))
             ->orderBy('student_name',  'ASC')
-            ->paginate(100);
+            ->distinct()
+            ->paginate(100, 'student_informations.id');
             
                     
         $EnrollmentFemale = Enrollment::join('class_subject_details', 'class_subject_details.class_details_id', '=', 'enrollments.class_details_id')
@@ -657,7 +659,7 @@ class GradeSheetController extends Controller
                 class_subject_details.sem
             "))
             ->orderBy('student_name', 'ASC')
-            ->paginate(100);
+            ->paginate(100, 'student_informations.id');
         // return json_encode($Enrollment);
         // $ClassSubjectDetail_status = ClassSubjectDetail::where('id', $request->search_class_subject)->first();
         $ClassSubjectDetail = ClassSubjectDetail::join('class_details', 'class_details.id', '=', 'class_subject_details.class_details_id')
