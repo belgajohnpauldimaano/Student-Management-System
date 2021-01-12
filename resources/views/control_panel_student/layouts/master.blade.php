@@ -24,6 +24,48 @@
       <!-- Navbar Right Menu -->
       <div class="navbar-custom-menu">
           <ul class="nav navbar-nav">
+            <li class="dropdown notifications-menu">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+              <i class="fa fa-bell-o"></i>
+              <span class="label label-warning">10</span>
+            </a>
+            <ul class="dropdown-menu">
+              <li class="header">You have 10 notifications</li>
+              <li>
+                <!-- inner menu: contains the actual data -->
+                <ul class="menu">
+                  <li>
+                    <a href="#">
+                      <i class="fa fa-users text-aqua"></i> 5 new members joined today
+                    </a>
+                  </li>
+                  <li>
+                    <a href="#">
+                      <i class="fa fa-warning text-yellow"></i> Very long description here that may not fit into the
+                      page and may cause design problems
+                    </a>
+                  </li>
+                  <li>
+                    <a href="#">
+                      <i class="fa fa-users text-red"></i> 5 new members joined
+                    </a>
+                  </li>
+
+                  <li>
+                    <a href="#">
+                      <i class="fa fa-shopping-cart text-green"></i> 25 sales made
+                    </a>
+                  </li>
+                  <li>
+                    <a href="#">
+                      <i class="fa fa-user text-red"></i> You changed your username
+                    </a>
+                  </li>
+                </ul>
+              </li>
+              <li class="footer"><a href="#">View all</a></li>
+            </ul>
+          </li>
               <li class="dropdown user user-menu">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                     {{-- <img src="dist/img/user2-160x160.jpg" class="user-image" alt="User Image"> --}}
@@ -70,7 +112,7 @@
     <section class="sidebar">      
       <!-- sidebar menu: : style can be found in sidebar.less -->
       <ul class="sidebar-menu" data-widget="tree">
-        <li class="header">STUDENT NAVIGATION</li>
+          <li class="header">STUDENT NAVIGATION</li>
           <li class="{{request()->routeIs('student.dashboard') ? 'active' : '' }}">
             <a href="{{ route('student.dashboard') }}"><i class="fa fa-home fa-fw fa-lg"></i>&nbsp;&nbsp; <span>Home</span></a>
           </li>
@@ -86,6 +128,22 @@
           <li class="{{request()->routeIs('student.grade_sheet.index') ? 'active' : '' }}">
             <a href="{{ route('student.grade_sheet.index') }}"><i class="fa fa-file-text-o fa-lg"></i>&nbsp;&nbsp;&nbsp; <span>Grade Sheet</span></a>
           </li>
+          
+          <li class="header">CAMPUS LMS</li>
+          <li class="">
+            <a href=""><i class="fa fa-user fa-lg"></i>&nbsp;&nbsp;&nbsp;  <span>Current Lesson</span></a>
+          </li>
+          <li class="">
+            <a href=""><i class="fa fa-user fa-lg"></i>&nbsp;&nbsp;&nbsp;  <span>Upcoming Lesson</span></a>
+          </li>
+          <li class="">
+            <a href=""><i class="fa fa-user fa-lg"></i>&nbsp;&nbsp;&nbsp;  <span>Past Lesson</span></a>
+          </li>
+          <li class="">
+            <a href=""><i class="fa fa-user fa-lg"></i>&nbsp;&nbsp;&nbsp;  <span>Assessment</span></a>
+          </li>
+
+          <li class="header">PROFILE</li>
           <li class="{{request()->routeIs('student.my_account.index') ? 'active' : '' }}">
             <a href="{{ route('student.my_account.index') }}"><i class="fa fa-user fa-lg"></i>&nbsp;&nbsp;&nbsp;  <span>My Profile</span></a>
           </li>

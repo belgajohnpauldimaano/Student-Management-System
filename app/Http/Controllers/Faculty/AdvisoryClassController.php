@@ -711,7 +711,7 @@ class AdvisoryClassController extends Controller
                 'ClassDetail', 'general_avg', 'student_attendance', 'table_header','Signatory','DateRemarks','Enrollment'));
                 
             $pdf = \PDF::loadView('control_panel_student.grade_sheet.partials.print', compact('GradeSheetData', 'grade_level', 'StudentInformation', 'ClassDetail'
-                 , 'general_avg', 'student_attendance', 'table_header','Signatory','DateRemarks','Enrollment[0]'));
+                 , 'general_avg', 'student_attendance', 'table_header','Signatory','DateRemarks','Enrollment'));
                 return $pdf->stream();
             
             return view('control_panel_student.grade_sheet.index', compact('GradeSheetData'));

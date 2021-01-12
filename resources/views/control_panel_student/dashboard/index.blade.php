@@ -11,33 +11,23 @@
 @endsection
 
 @section ('content')
-    <div class="row">        
+    <div class="row">
         <div class="col-md-8">
+            <p>Announcement:</p>
             <div class="box">
                 <div class="overlay hidden" id="js-loader-overlay"><i class="fa fa-refresh fa-spin"></i></div>
-                <div class="box-body">   
-                    @if($AlreadyEnrolled)
-                        <div class="alert alert-success alert-dismissible">
-                            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-                            <h4><i class="icon fa fa-check"></i> Alert!</h4>
-                            Congratulations, You are now Enrolled school year - {{ $SchoolYear->school_year }}!
-                        </div>
-                    @endif
-                       
-                    <h2 style="text-align: center">
-                        <b>
-                            Welcome, {{ $StudentInformation->first_name.' '.$StudentInformation->middle_name.' '.$StudentInformation->last_name }}
-                        </b>
-                    </h2>            
-                    <center>
-                            <img class="img-responsive  img-responsive img-circle" src="{{ asset('img/sja-logo.png') }}" style="width:150px; height:150px;  border-radius:50%;">
-                    </center> 
-                    <br/>
-                    <br/>              
+                
+                <div class="box-body sample-body">   
+                     
                 </div>
             </div>
         </div>
         <div class="col-md-4">
+                <div class="box box-primary direct-chat direct-chat-primary">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">Current School Year Enrolled: {{ $SchoolYear->school_year }}</h3>    
+                    </div>               
+                </div>  
                 <div class="box box-primary direct-chat direct-chat-primary">
                     <div class="box-header with-border">
                     <h3 class="box-title">Appointment</h3>    
@@ -80,4 +70,14 @@
     
 
     
+@endsection
+@section('scripts')
+    <script>
+        setInterval(function(){ 
+            // check notif count
+            $('.sample-body').text('hello world!');
+            // alert('hello')
+        }, 3000);
+        
+    </script>
 @endsection
