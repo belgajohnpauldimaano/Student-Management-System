@@ -64,18 +64,18 @@
                                             <td>{{$item->available_students == 0 ? 'The maximum number are reached to this schedule' : $item->available_students}}</td>
                                             <td>{{$item->status}}</td>
                                             <td> 
-                                                <?php                                         
-                                                    $Appointment = \App\StudentTimeAppointment::where('student_id', $StudentInformation->id)
+                                                @php                                         
+                                                    $Appointment = \App\Models\StudentTimeAppointment::where('student_id', $StudentInformation->id)
                                                         // ->where('school_year_id', $SchoolYear->id)
                                                         // ->where('status', 1)
                                                         ->where('online_appointment_id', $item->id)->first(); 
                         
                                                     if($Appointment){
-                                                        $OnlineAppointment = \App\OnlineAppointment::where('status', 1)
+                                                        $OnlineAppointment = \App\Models\OnlineAppointment::where('status', 1)
                                                             ->where('id', $Appointment->online_appointment_id)
                                                             ->first();
                                                     }
-                                                ?>
+                                                @endphp
                                                 @if($Appointment)
                                                     @if($OnlineAppointment->date == $item->date)                                   
                                                         <button {{$Appointment ? 'disabled' : ''}} class="btn btn-primary btn-reserve" 

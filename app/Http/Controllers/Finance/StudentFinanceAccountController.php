@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers\Finance;
 
-use App\SchoolYear;
-use App\Transaction;
-use App\StudentInformation;
-use App\TransactionDiscount;
-use App\TransactionOtherFee;
+use App\Models\SchoolYear;
+use App\Models\Transaction;
+use App\Models\StudentInformation;
+use App\Models\TransactionDiscount;
+use App\Models\TransactionOtherFee;
 use Illuminate\Http\Request;
-use App\TransactionMonthPaid;
+use App\Models\TransactionMonthPaid;
 use App\Traits\hasNotYetApproved;
 use App\Http\Controllers\Controller;
 

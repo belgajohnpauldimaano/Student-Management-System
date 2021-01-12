@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers\Control_Panel;
 
-use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
 use Crypt;
-
+use Illuminate\Http\Request;
+use App\Models\TrascriptArhieve;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Validator;
 
 class TranscriptArchiveController extends Controller
 {
@@ -13,7 +14,7 @@ class TranscriptArchiveController extends Controller
     {
         if ($request->ajax())
         {
-            $TrascriptArhieve = \App\TrascriptArhieve::where(function ($query) use($request) {
+            $TrascriptArhieve = TrascriptArhieve::where(function ($query) use($request) {
                 if ($request->search_sy) 
                 {
                     $query->where('school_year_graduated', 'like',     '%'.$request->search_sy.'%');
@@ -31,7 +32,7 @@ class TranscriptArchiveController extends Controller
             return view('control_panel.transcript_archieve.partials.data_list', compact('TrascriptArhieve'));
         }
         
-        $TrascriptArhieve = \App\TrascriptArhieve::
+        $TrascriptArhieve = TrascriptArhieve::
         where('status', 1)
         ->paginate(50);
         return view('control_panel.transcript_archieve.index', compact('TrascriptArhieve'));
@@ -39,7 +40,7 @@ class TranscriptArchiveController extends Controller
     public function modal_data (Request $request)
     {
         $FacultyInformation = [];
-        $TrascriptArhieve = \App\TrascriptArhieve::where('id', $request->id)->first();
+        $TrascriptArhieve = TrascriptArhieve::where('id', $request->id)->first();
         // return view('control_panel.transcript_archieve.partials.modal_data', compact('FacultyInformation'))->render();
         return view('control_panel.transcript_archieve.partials.modal_data_tor_uploader', compact('FacultyInformation', 'TrascriptArhieve'))->render();
     }
@@ -85,7 +86,7 @@ class TranscriptArchiveController extends Controller
                 }
             }
             
-            $TrascriptArhieve = \App\TrascriptArhieve::where('id', $request->id)->first();
+            $TrascriptArhieve = TrascriptArhieve::where('id', $request->id)->first();
             $TrascriptArhieve->first_name           = $request->first_name;
             $TrascriptArhieve->middle_name          = $request->middle_name;
             $TrascriptArhieve->last_name            = $request->last_name;
@@ -128,7 +129,7 @@ class TranscriptArchiveController extends Controller
         $file_name = base64_encode(date('U') . '-'. $request->last_name .'-'. $request->first_name .'-'. $request->middle_name . '-' . $request->school_year_graduated.'.').'.'.$request->tor->getClientOriginalExtension();
         $request->tor->move(public_path('data/files'), $file_name);
         
-        $TrascriptArhieve = new \App\TrascriptArhieve();
+        $TrascriptArhieve = new TrascriptArhieve();
         $TrascriptArhieve->first_name           = $request->first_name;
         $TrascriptArhieve->middle_name          = $request->middle_name;
         $TrascriptArhieve->last_name            = $request->last_name;
@@ -144,7 +145,7 @@ class TranscriptArchiveController extends Controller
             return response()->json(['res_code' => 1, 'res_msg' => 'Invalid request1']);
         }
 
-        $TrascriptArhieve = \App\TrascriptArhieve::where('id', $request->id)->first();
+        $TrascriptArhieve = TrascriptArhieve::where('id', $request->id)->first();
 
         if (!$TrascriptArhieve) 
         {
@@ -160,7 +161,7 @@ class TranscriptArchiveController extends Controller
             return response()->json(['res_code' => 1, 'res_msg' => 'Invalid request1']);
         }
 
-        $TrascriptArhieve = \App\TrascriptArhieve::where('id', $request->id)->first();
+        $TrascriptArhieve = TrascriptArhieve::where('id', $request->id)->first();
 
         if (!$TrascriptArhieve) 
         {

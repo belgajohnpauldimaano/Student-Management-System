@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Control_Panel\Maintenance;
 
+use App\Models\Room;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
@@ -11,7 +12,7 @@ class RoomController extends Controller
     {
         if ($request->ajax())
         {
-            $Room = \App\Room::where('status', 1)
+            $Room = Room::where('status', 1)
             ->where(function ($query) use ($request) {
                 $query->where('room_code', 'like', '%'.$request->search.'%');
                 $query->orWhere('room_description', 'like', '%'.$request->search.'%');
@@ -19,7 +20,7 @@ class RoomController extends Controller
             ->paginate(10);
             return view('control_panel.class_rooms.partials.data_list', compact('Room'))->render();
         }
-        $Room = \App\Room::where('status', 1)->paginate(10);
+        $Room = Room::where('status', 1)->paginate(10);
         return view('control_panel.class_rooms.index', compact('Room'));
     }
     public function modal_data (Request $request) 
@@ -27,7 +28,7 @@ class RoomController extends Controller
         $Room = NULL;
         if ($request->id)
         {
-            $Room = \App\Room::where('id', $request->id)->first();
+            $Room = Room::where('id', $request->id)->first();
         }
         return view('control_panel.class_rooms.partials.modal_data', compact('Room'))->render();
     }
@@ -48,14 +49,14 @@ class RoomController extends Controller
 
         if ($request->id)
         {
-            $Room = \App\Room::where('id', $request->id)->first();
+            $Room = Room::where('id', $request->id)->first();
             $Room->room_code = $request->room_code;
             $Room->room_description = $request->room_description;
             $Room->save();
             return response()->json(['res_code' => 0, 'res_msg' => 'Data successfully saved.']);
         }
 
-        $Room = new \App\Room();
+        $Room = new Room();
         $Room->room_code = $request->room_code;
         $Room->room_description = $request->room_description;
         $Room->save();
@@ -64,7 +65,7 @@ class RoomController extends Controller
 
     public function deactivate_data (Request $request) 
     {
-        $Room = \App\Room::where('id', $request->id)->first();
+        $Room = Room::where('id', $request->id)->first();
 
         if ($Room)
         {

@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers\Finance;
 
-use App\SchoolYear;
-use App\FinanceInformation;
-use App\StudentInformation;
+use App\Models\SchoolYear;
+use App\Models\FinanceInformation;
+use App\Models\StudentInformation;
 use Illuminate\Http\Request;
 use App\Traits\hasNotYetApproved;
 use App\Http\Controllers\Controller;

@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers\Control_Panel\Maintenance;
 
+use App\Models\User;
+use App\Models\GradeLevel;
 use Illuminate\Http\Request;
+use App\Models\SectionDetail;
 use App\Http\Controllers\Controller;
 
 class SectionController extends Controller
@@ -11,7 +14,7 @@ class SectionController extends Controller
     {
         if ($request->ajax())
         {
-            $SectionDetail = \App\SectionDetail::where('status', 1)
+            $SectionDetail = SectionDetail::where('status', 1)
             ->where(function ($query) use ($request) {
                 if ($request->grade_level) 
                 {
@@ -22,7 +25,7 @@ class SectionController extends Controller
             ->paginate(10);
             return view('control_panel.section_details.partials.data_list', compact('SectionDetail'))->render();
         }
-        $SectionDetail = \App\SectionDetail::where('status', 1)->paginate(10);
+        $SectionDetail = SectionDetail::where('status', 1)->paginate(10);
         return view('control_panel.section_details.index', compact('SectionDetail'));
     }
     public function modal_data (Request $request) 
@@ -30,9 +33,9 @@ class SectionController extends Controller
         $SectionDetail = NULL;
         if ($request->id)
         {
-            $SectionDetail = \App\SectionDetail::where('id', $request->id)->first();
+            $SectionDetail = SectionDetail::where('id', $request->id)->first();
         }
-        $GradeLevel = \App\GradeLevel::where('status', 1)->get();
+        $GradeLevel = GradeLevel::where('status', 1)->get();
         return view('control_panel.section_details.partials.modal_data', compact('SectionDetail', 'GradeLevel'))->render();
     }
 
@@ -53,14 +56,14 @@ class SectionController extends Controller
 
         if ($request->id)
         {
-            $SectionDetail = \App\SectionDetail::where('id', $request->id)->first();
+            $SectionDetail = SectionDetail::where('id', $request->id)->first();
             $SectionDetail->section = $request->section;
             $SectionDetail->grade_level = $request->grade_level;
             $SectionDetail->save();
             return response()->json(['res_code' => 0, 'res_msg' => 'Data successfully saved.']);
         }
 
-        $SectionDetail = new \App\SectionDetail();
+        $SectionDetail = new SectionDetail();
         $SectionDetail->grade_level = $request->grade_level;
         $SectionDetail->section = $request->section;
         $SectionDetail->save();
@@ -69,7 +72,7 @@ class SectionController extends Controller
     }
     public function deactivate_data (Request $request) 
     {
-        $SectionDetail = \App\SectionDetail::where('id', $request->id)->first();
+        $SectionDetail = SectionDetail::where('id', $request->id)->first();
 
         if ($SectionDetail)
         {
@@ -77,7 +80,7 @@ class SectionController extends Controller
             $SectionDetail->current = 0;
             $SectionDetail->save();
 
-            $User = \App\User::where('id', $SectionDetail->user_id)->first();
+            $User = User::where('id', $SectionDetail->user_id)->first();
             if ($User)
             {
                 $User->status = 0;

@@ -337,7 +337,7 @@
             </a>
             <ul class="treeview-menu menu-open" style="display: block">
               {{--  Admin Menu  --}}
-                <li>
+                <li class="{{request()->routeIs('finance.student_payment.not_yet_approved') ? 'active' : '' }}">
                   <a href="{{ route('finance.student_payment.not_yet_approved')}}">
                     <i class="fa fa-circle-o"></i>&nbsp;&nbsp;&nbsp; <span>Not yet Approved</span>
                     <span class="{{$NotyetApprovedCount == 0 ? '' : 'label label-danger'}} pull-right">

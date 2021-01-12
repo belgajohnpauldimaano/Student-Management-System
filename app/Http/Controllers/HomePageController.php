@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use App\Models\Article;
 
-use App\Article;
+use Illuminate\Http\Request;
 
 class HomePageController extends Controller
 {

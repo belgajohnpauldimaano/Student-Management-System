@@ -170,6 +170,7 @@
         font-weight: 600;
         font-size: 50px;
         background-color: rgba(0, 0, 0, 0.5);
+        top: -20px;
         }
     </style>
 @endsection

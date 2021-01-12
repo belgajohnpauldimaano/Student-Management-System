@@ -2,21 +2,22 @@
 
 namespace App\Http\Controllers\Faculty;
 
-use App\Enrollment;
-use App\SchoolYear;
-use App\ClassSubjectDetail;
-use App\FacultyInformation;
-use App\StudentInformation;
+use App\Models\Enrollment;
+use App\Models\SchoolYear;
+use App\Models\ClassSubjectDetail;
+use App\Models\FacultyInformation;
+use App\Models\StudentInformation;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\FacadesAuth;
 use Illuminate\Support\Facades\Auth;
 
 class DemographicProfileController extends Controller
 {
     public function index(Request $request)
     {
-        $FacultyInformation = FacultyInformation::where('user_id', \Auth::user()->id)->first();
+        $FacultyInformation = FacultyInformation::where('user_id', Auth::user()->id)->first();
         $school_year_id = SchoolYear::where('current', 1)->where('status', 1)->first()->id;
 
         $ClassSubjectDetail = ClassSubjectDetail::join('class_details', 'class_details.id', '=', 'class_subject_details.class_details_id')

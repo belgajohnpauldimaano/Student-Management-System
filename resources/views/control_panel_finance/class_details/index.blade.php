@@ -68,6 +68,9 @@
                 }
             });
         }
+        // setInterval(function(){ 
+        //     alert('hello')
+        // }, 3000);
         $(function () {
             $('body').on('click', '#js-button-add, .js-btn_update', function (e) {
                 e.preventDefault();

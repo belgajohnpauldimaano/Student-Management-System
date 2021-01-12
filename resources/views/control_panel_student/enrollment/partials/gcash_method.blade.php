@@ -87,7 +87,7 @@
                             @foreach ($Discount as $item)                
                                 <label>                      
                                 <?php 
-                                    $hasAlreadyDiscount = \App\TransactionDiscount::where('student_id', $StudentInformation->id)
+                                    $hasAlreadyDiscount = \App\Models\TransactionDiscount::where('student_id', $StudentInformation->id)
                                         ->where('school_year_id', $SchoolYear->id)->where('discount_type', $item->disc_type)
                                         ->where('isSuccess', 1)
                                         ->first();

@@ -3,20 +3,22 @@
 namespace App\Http\Controllers\Control_Panel;
 
 use Illuminate\Http\Request;
+use App\Models\AdminInformation;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 
 class UserProfileController extends Controller
 {
     public function view_my_profile (Request $request)
     {
-        $User = \Auth::user();
-        $Profile = \App\AdminInformation::where('user_id', $User->id)->first();
+        $User = Auth::user();
+        $Profile = AdminInformation::where('user_id', $User->id)->first();
         return view('control_panel.user_profile.index', compact('User', 'Profile'));
     }
     public function fetch_profile (Request $request)
     {
-        $User = \Auth::user();
-        $Profile = \App\AdminInformation::where('user_id', $User->id)->first();
+        $User = Auth::user();
+        $Profile = AdminInformation::where('user_id', $User->id)->first();
         return response()->json(['res_code' => 0, 'res_msg' => '', 'Profile' => $Profile]);
     }
     public function update_profile (Request $request) 
@@ -33,8 +35,8 @@ class UserProfileController extends Controller
         {   
             return response()->json(['res_code' => 1, 'res_msg' => 'Please fill all required fields.', 'res_error_msg' => $validator->getMessageBag()]);
         }
-        $User = \Auth::user();
-        $Profile = \App\AdminInformation::where('user_id', $User->id)->first();
+        $User = Auth::user();
+        $Profile = AdminInformation::where('user_id', $User->id)->first();
 
         $Profile->first_name = $request->first_name;
         $Profile->middle_name = $request->middle_name;
@@ -61,8 +63,8 @@ class UserProfileController extends Controller
 
 
 
-        $User = \Auth::user();
-        $Profile = \App\AdminInformation::where('user_id', $User->id)->first();
+        $User = Auth::user();
+        $Profile = AdminInformation::where('user_id', $User->id)->first();
 
         if ($Profile->photo) 
         {
@@ -101,11 +103,11 @@ class UserProfileController extends Controller
         {   
             return response()->json(['res_code' => 1, 'res_msg' => 'Please fill all required fields.', 'res_error_msg' => $validator->getMessageBag()]);
         }
-        // return json_encode(['aa' => \Auth::user()->password]);
-        if (\Hash::check($request->old_password, \Auth::user()->password))
+        // return json_encode(['aa' => Auth::user()->password]);
+        if (\Hash::check($request->old_password, Auth::user()->password))
         {
-            \Auth::user()->password = bcrypt($request->password);
-            \Auth::user()->save();
+            Auth::user()->password = bcrypt($request->password);
+            Auth::user()->save();
             
             
             return response()->json(['res_code' => 0, 'res_msg' => 'Password successfully changed.']);

@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers\Finance;
 
-use App\FinanceInformation;
 use Illuminate\Http\Request;
 use App\Traits\hasNotYetApproved;
+use App\Models\FinanceInformation;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 
 class UserProfileController extends Controller
 {
@@ -13,7 +14,7 @@ class UserProfileController extends Controller
     
     public function view_my_profile (Request $request)
     {
-        $User = \Auth::user();
+        $User = Auth::user();
         $Profile = FinanceInformation::where('user_id', $User->id)->first();
         $NotyetApprovedCount = $this->notYetApproved();
         // $RegistrarInformation = collect(\AFinanceformation::DEPARTMENTS);
@@ -21,7 +22,7 @@ class UserProfileController extends Controller
     }
     public function fetch_profile (Request $request)
     {
-        $User = \Auth::user();
+        $User = Auth::user();
         $Profile = FinanceInformation::where('user_id', $User->id)->first();
         // return json_encode($Profile);
         return response()->json(['res_code' => 0, 'res_msg' => '', 'Profile' => $Profile]);
@@ -40,7 +41,7 @@ class UserProfileController extends Controller
         {   
             return response()->json(['res_code' => 1, 'res_msg' => 'Please fill all required fields.', 'res_error_msg' => $validator->getMessageBag()]);
         }
-        $User = \Auth::user();
+        $User = Auth::user();
         $Profile = FinanceInformation::where('user_id', $User->id)->first();
 
         $Profile->first_name = $request->first_name;
@@ -70,7 +71,7 @@ class UserProfileController extends Controller
 
 
 
-        $User = \Auth::user();
+        $User = Auth::user();
         $Profile = FinanceInformation::where('user_id', $User->id)->first();
 
         if ($Profile->photo) 
@@ -110,12 +111,11 @@ class UserProfileController extends Controller
         {   
             return response()->json(['res_code' => 1, 'res_msg' => 'Please fill all required fields.', 'res_error_msg' => $validator->getMessageBag()]);
         }
-        // return json_encode(['aa' => \Auth::user()->password]);
-        if (\Hash::check($request->old_password, \Auth::user()->password))
+        // return json_encode(['aa' => Auth::user()->password]);
+        if (\Hash::check($request->old_password, Auth::user()->password))
         {
-            \Auth::user()->password = bcrypt($request->password);
-            \Auth::user()->save();
-            
+            Auth::user()->password = bcrypt($request->password);
+            Auth::user()->save();
             
             return response()->json(['res_code' => 0, 'res_msg' => 'Password successfully changed.']);
         }

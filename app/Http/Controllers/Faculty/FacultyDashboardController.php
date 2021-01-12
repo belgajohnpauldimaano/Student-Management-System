@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers\Faculty;
 
-use App\SchoolYear;
-use App\ClassSubjectDetail;
-use App\FacultyInformation;
+use App\Models\SchoolYear;
+use App\Models\ClassSubjectDetail;
+use App\Models\FacultyInformation;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
@@ -12,8 +12,9 @@ use Illuminate\Support\Facades\Auth;
 
 class FacultyDashboardController extends Controller
 {
-    public function index () 
+    public function index (Request $request) 
     {
+        $request->id;
         $FacultyInformation = FacultyInformation::where('user_id', \Auth::user()->id)->first();
         $SchoolYear         = SchoolYear::where('current', 1)->first();
 

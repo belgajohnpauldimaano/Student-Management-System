@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Control_Panel\Maintenance;
 
 use Illuminate\Http\Request;
+use App\Models\SubjectDetail;
 use App\Http\Controllers\Controller;
 
 class SubjectController extends Controller
@@ -11,7 +12,7 @@ class SubjectController extends Controller
     {
         if ($request->ajax())
         {
-            $SubjectDetail = \App\SubjectDetail::where('status', 1)
+            $SubjectDetail = SubjectDetail::where('status', 1)
             ->where(function ($query) use ($request) {
                 $query->where('subject_code', 'like', '%'.$request->search.'%');
                 $query->orWhere('subject', 'like', '%'.$request->search.'%');
@@ -19,7 +20,7 @@ class SubjectController extends Controller
             ->paginate(10);
             return view('control_panel.subject.partials.data_list', compact('SubjectDetail'))->render();
         }
-        $SubjectDetail = \App\SubjectDetail::where('status', 1)->paginate(10);
+        $SubjectDetail = SubjectDetail::where('status', 1)->paginate(10);
         return view('control_panel.subject.index', compact('SubjectDetail'));
     }
     public function modal_data (Request $request) 
@@ -27,7 +28,7 @@ class SubjectController extends Controller
         $SubjectDetail = NULL;
         if ($request->id)
         {
-            $SubjectDetail = \App\SubjectDetail::where('id', $request->id)->first();
+            $SubjectDetail = SubjectDetail::where('id', $request->id)->first();
         }
         return view('control_panel.subject.partials.modal_data', compact('SubjectDetail'))->render();
     }
@@ -49,7 +50,7 @@ class SubjectController extends Controller
 
         if ($request->id)
         {
-            $SubjectDetail = \App\SubjectDetail::where('id', $request->id)->first();
+            $SubjectDetail = SubjectDetail::where('id', $request->id)->first();
             $SubjectDetail->subject_code = $request->subject_code;
             $SubjectDetail->subject = $request->subject;
             $SubjectDetail->subject_abbr = $request->subject_abbr;
@@ -58,7 +59,7 @@ class SubjectController extends Controller
             return response()->json(['res_code' => 0, 'res_msg' => 'Data successfully saved.']);
         }
 
-        $SubjectDetail = new \App\SubjectDetail();
+        $SubjectDetail = new SubjectDetail();
         $SubjectDetail->subject_code = $request->subject_code;
         $SubjectDetail->subject = $request->subject;
         $SubjectDetail->subject_abbr = $request->subject_abbr;
@@ -68,7 +69,7 @@ class SubjectController extends Controller
     }
     public function deactivate_data (Request $request) 
     {
-        $SubjectDetail = \App\SubjectDetail::where('id', $request->id)->first();
+        $SubjectDetail = SubjectDetail::where('id', $request->id)->first();
 
         if ($SubjectDetail)
         {

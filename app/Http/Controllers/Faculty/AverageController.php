@@ -3,16 +3,21 @@
 namespace App\Http\Controllers\Faculty;
 
 use Illuminate\Http\Request;
+use App\Models\ClassSubjectDetail;
+use App\Models\FacultyInformation;
+use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\FacadesAuth;
 
 class AverageController extends Controller
 {
     public function firstSecondAverage(Request $request)
     {
         $type = "average";
-        $FacultyInformation = \App\FacultyInformation::where('user_id', \Auth::user()->id)->first();
+
+        $FacultyInformation = FacultyInformation::where('user_id', Auth::user()->id)->first();
      
-        $ClassSubjectDetail = \App\ClassSubjectDetail::join('class_details', 'class_details.id', '=', 'class_subject_details.class_details_id')
+        $ClassSubjectDetail = ClassSubjectDetail::join('class_details', 'class_details.id', '=', 'class_subject_details.class_details_id')
             // ->join('subject_details', 'subject_details.id', '=', 'class_subject_details.subject_id')
             ->join('rooms','rooms.id', '=', 'class_details.room_id')
             ->join('section_details', 'section_details.id', '=', 'class_details.section_id')

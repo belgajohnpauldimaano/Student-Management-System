@@ -2,18 +2,19 @@
 
 namespace App\Http\Controllers\Control_Panel_Student;
 
-use App\Enrollment;
-use App\SchoolYear;
-use App\ClassDetail;
-use App\StudentInformation;
+use App\Models\Enrollment;
+use App\Models\SchoolYear;
+use App\Models\ClassDetail;
 use Illuminate\Http\Request;
+use App\Models\StudentInformation;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 
 class ClassScheduleController extends Controller
 {
     public function index (Request $request) 
     {
-        $StudentInformation = StudentInformation::where('user_id', \Auth::user()->id)->first();
+        $StudentInformation = StudentInformation::where('user_id', Auth::user()->id)->first();
         $SchoolYear = SchoolYear::where('current', 1)->where('status', 1)->first();
         $findSchoolYear = ClassDetail::where('school_year_id' , $SchoolYear->id)->first();
 

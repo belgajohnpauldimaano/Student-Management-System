@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Finance\Maintenance;
 
-use App\OtherFee;
+use App\Models\OtherFee;
 use Illuminate\Http\Request;
 use App\Traits\hasNotYetApproved;
 use App\Http\Controllers\Controller;
@@ -10,6 +10,7 @@ use App\Http\Controllers\Controller;
 class OtherFeeController extends Controller
 {
     use hasNotYetApproved;
+    
     public function index(Request $request)
     {
         if ($request->ajax())

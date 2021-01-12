@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers\Faculty;
 
-use App\Semester;
-use App\DateRemark;
-use App\Enrollment;
-use App\SchoolYear;
-use App\ClassSubjectDetail;
-use App\FacultyInformation;
+use App\Models\Semester;
+use App\Models\DateRemark;
+use App\Models\Enrollment;
+use App\Models\SchoolYear;
+use App\Models\ClassSubjectDetail;
+use App\Models\FacultyInformation;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
@@ -20,11 +20,8 @@ class EncodeRemarkController extends Controller
     {
         $FacultyInformation = FacultyInformation::where('user_id', Auth::user()->id)->first();
         $SchoolYear = SchoolYear::whereCurrent(1)->whereStatus(1)->first();
-        try {
-            $DateRemarks = DateRemark::where('school_year_id', $SchoolYear->id)->first();
-        } catch (\Throwable $th) {
-            $DateRemarks = '';
-        }
+        
+        // return json_encode($DateRemarks);
         
         $Semester_id = Semester::where('current', 1)->first()->id;
         
@@ -51,6 +48,12 @@ class EncodeRemarkController extends Controller
             '))
             ->orderBY('class_details.school_year_id','DESC')
             ->first();
+
+            try {
+                $DateRemarks = DateRemark::where('school_year_id', $SchoolYear->id)->first();
+            } catch (\Throwable $th) {
+                $DateRemarks = '';
+            }
 
             if($ClassSubjectDetail){            
                 $EnrollmentMale = Enrollment::join('student_informations', 'student_informations.id', '=', 'enrollments.student_information_id')
@@ -97,7 +100,6 @@ class EncodeRemarkController extends Controller
                     ->orderBY('student_name', 'ASC')
                     ->get();
                 $hasData = 1;
-
                 return view('control_panel_faculty.encode_remarks.index', 
                     compact('hasData','EnrollmentMale','EnrollmentFemale','ClassSubjectDetail','SchoolYear','DateRemarks','Semester_id'))
                     ->render();

@@ -109,6 +109,10 @@
 
     <table class="table-student-info" style="margin-top: 25px; margin-bottom: 10px; font-size:15px ">
         <tr>
+            <td><strong></strong></td>
+            <td style="text-align: right">Date: {{ $now }}</td>
+        </tr>
+        <tr>
             <td>Student name: <strong>{{$Modal_data->student->last_name.', '.$Modal_data->student->first_name.' '.$Modal_data->student->middle_name}}</strong></td>
             <td>Status: <strong>{{ $Modal_data->status ? $Modal_data->status == 0 ? 'Paid' : 'Not yet paid' : 'Paid'}}</strong></td>
         </tr>

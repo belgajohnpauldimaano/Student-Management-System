@@ -2,29 +2,33 @@
 
 namespace App\Http\Controllers\Control_Panel;
 
+use App\Models\User;
 use App\Traits\HasUser;
 use Illuminate\Http\Request;
+use App\Models\FinanceInformation;
 use App\Http\Controllers\Controller;
 
 class FinanceController extends Controller
 {
     use HasUser;
+    
     public function index (Request $request) 
     {
         $isAdmin = $this->isAdmin();
-        if ($request->ajax())
-        {
-            $FinanceInformation = \App\FinanceInformation::with(['user'])->where('status', 1)
+        
+        $FinanceInformation = FinanceInformation::with(['user'])->where('status', 1)
             ->where(function ($query) use ($request) {
                 $query->where('first_name', 'like', '%'.$request->search.'%');
                 $query->orWhere('middle_name', 'like', '%'.$request->search.'%');
                 $query->orWhere('last_name', 'like', '%'.$request->search.'%');
             })
-            // ->orWhere('first_name', 'like', '%'.$request->search.'%')
             ->paginate(10);
+            
+        if ($request->ajax())
+        {
             return view('control_panel.finance_information.partials.data_list', compact('FinanceInformation','isAdmin'))->render();
         }
-        $FinanceInformation = \App\FinanceInformation::with(['user'])->where('status', 1)->paginate(10);
+        
         return view('control_panel.finance_information.index', compact('FinanceInformation','isAdmin'));
     }
 
@@ -33,7 +37,7 @@ class FinanceController extends Controller
         $FinanceInformation = NULL;
         if ($request->id)
         {
-            $FinanceInformation = \App\FinanceInformation::with(['user'])->where('id', $request->id)->first();
+            $FinanceInformation = FinanceInformation::with(['user'])->where('id', $request->id)->first();
         }
         return view('control_panel.finance_information.partials.modal_data', compact('FinanceInformation'))->render();
     }
@@ -56,8 +60,8 @@ class FinanceController extends Controller
         
         if ($request->id)
         {
-            $FinanceInformation = \App\FinanceInformation::where('id', $request->id)->first();
-            $User = \App\User::where('username', $request->username)->where('id', '!=', $FinanceInformation->user_id)->first();
+            $FinanceInformation = FinanceInformation::where('id', $request->id)->first();
+            $User = User::where('username', $request->username)->where('id', '!=', $FinanceInformation->user_id)->first();
             if ($User) 
             {
                 return response()->json(['res_code' => 1,'res_msg' => 'Username already used.']);
@@ -69,13 +73,13 @@ class FinanceController extends Controller
             return response()->json(['res_code' => 0, 'res_msg' => 'Data successfully saved.']);
         }
 
-        $User = new \App\User();
+        $User = new User();
         $User->username = $request->username;
         $User->password = bcrypt($request->first_name . '.' . $request->last_name);
         $User->role     = 6;
         $User->save();
 
-        $FinanceInformation = new \App\FinanceInformation();
+        $FinanceInformation = new FinanceInformation();
         $FinanceInformation->first_name = $request->first_name;
         $FinanceInformation->middle_name = $request->middle_name;
         $FinanceInformation->last_name = $request->last_name;
@@ -87,14 +91,14 @@ class FinanceController extends Controller
 
     public function deactivate_data (Request $request) 
     {
-        $FinanceInformation = \App\FinanceInformation::where('id', $request->id)->first();
+        $FinanceInformation = FinanceInformation::where('id', $request->id)->first();
 
         if ($FinanceInformation)
         {
             $FinanceInformation->status = 0;
             $FinanceInformation->save();
 
-            $User = \App\User::where('id', $FinanceInformation->user_id)->first();
+            $User = User::where('id', $FinanceInformation->user_id)->first();
             if ($User)
             {
                 $User->status = 0;

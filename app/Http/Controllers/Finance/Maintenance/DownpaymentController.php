@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers\Finance\Maintenance;
 
-use App\GradeLevel;
-use App\DownpaymentFee;
+use App\Models\GradeLevel;
+use App\Models\DownpaymentFee;
 use Illuminate\Http\Request;
 use App\Traits\hasNotYetApproved;
 use App\Http\Controllers\Controller;

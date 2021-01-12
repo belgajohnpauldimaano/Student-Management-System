@@ -96,7 +96,7 @@
             Days of School
         </th>
         @foreach ($student_attendance['attendance_data']->days_of_school as $key => $data)
-            <th style="width:7%">{{ $data }}
+            <th style="width:7%">{{ $data == '' ? 0 : $data}} 
             </th>
         @endforeach
         <th class="days_of_school_total">
@@ -108,7 +108,7 @@
             Days Present
         </th>
         @foreach ($student_attendance['attendance_data']->days_present as $key => $data)
-            <th style="width:7%">{{ $data }} 
+            <th style="width:7%">{{ $data == '' ? 0 : $data}}  
             </th>
         @endforeach
         <th class="days_present_total">
@@ -120,7 +120,7 @@
             Days Absent
         </th>
         @foreach ($student_attendance['attendance_data']->days_absent as $key => $data)
-            <th style="width:7%">{{ $data }}  
+            <th style="width:7%">{{ $data == '' ? 0 : $data}}   
             </th>
         @endforeach
         <th class="days_absent_total">
@@ -132,7 +132,7 @@
             Times Tardy
         </th>
         @foreach ($student_attendance['attendance_data']->times_tardy as $key => $data)
-            <th style="width:7%">{{ $data }}  
+            <th style="width:7%">{{ $data == '' ? 0 : $data}}   
             </th>
         @endforeach
         <th class="times_tardy_total">
@@ -210,7 +210,7 @@
         </td>                
     </tr>
     <tr style="margin-top: .5em">
-        <td colspan="3" style="border: 0">Lacking units in:____<u> {{$Enrollment[0]->j_lacking_unit}}</u>____</td>                
+        <td colspan="3" style="border: 0">Lacking units in:____<u> {{ $GradeSheetData[0]->lacking_unit }} </u>____</td>                
     </tr>    
     <tr style="margin-top: .5em">
         @if($DateRemarks)

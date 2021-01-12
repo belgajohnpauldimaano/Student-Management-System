@@ -1,7 +1,7 @@
 <?php
 namespace App\Traits;
 
-use App\SchoolYear;
+use App\Models\SchoolYear;
 
 trait HasSchoolYear{
 
@@ -9,4 +9,5 @@ trait HasSchoolYear{
     {
         return $this->hasOne(SchoolYear::class, 'id', 'school_year_id');
     }
+    
 }

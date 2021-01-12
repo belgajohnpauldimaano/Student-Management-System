@@ -2,14 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use App\User;
-use App\Email;
-use App\SchoolYear;
+use App\Models\User;
+use App\Models\Email;
 use Dotenv\Validator;
-use App\IncomingStudent;
-use App\StudentInformation;
+use App\Models\SchoolYear;
 use Illuminate\Http\Request;
 use App\Mail\InformationEmail;
+use App\Models\IncomingStudent;
+use App\Models\StudentInformation;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\NotifyNewRegisterStudentMail;
@@ -106,7 +107,7 @@ class RegistrationController extends Controller
         catch(\Exception $e){
             // do task when error
                // insert query
-            \Log::error($e->getMessage());
+            Log::error($e->getMessage());
             return response()->json(['res_code' => 1, 'res_msg' => $e->getMessage()]);
         }
     }   
@@ -139,16 +140,16 @@ class RegistrationController extends Controller
                 $email->save();
 
                 $email = Email::find($email->id);
-                    Mail::to('info@sja-bataan.com')->send(new InformationEmail($email));
+                    Mail::to('info@sja-bataan.com')->from($request->email)->send(new InformationEmail($email));
                 return response()->json(['res_code' => 0, 'res_msg' => 'You have successfuly send your email! Thank you']);
 
             }catch(\Exception $e){
-                \Log::error($e->getMessage());
+                Log::error($e->getMessage());
                 return response()->json(['res_code' => 1, 'res_msg' => $e->getMessage()]);
             }
 
         }catch(\Exception $e){
-            \Log::error($e->getMessage());
+            Log::error($e->getMessage());
             return response()->json(['res_code' => 1, 'res_msg' => $e->getMessage()]);
         }
     }

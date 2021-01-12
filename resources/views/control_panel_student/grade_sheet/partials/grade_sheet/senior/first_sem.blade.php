@@ -69,11 +69,10 @@
 <p class="report-progress-left m0"  style="margin-top: .5em"><b>ATTENDANCE RECORD</b></p>
 <table style="width:100%; margin-bottom: 1em">
     <tr>
-        <th>
-        </th>
-            @foreach ($student_attendance['table_header'] as $data)
-                    <th>{{ $data['key'] }}</th>
-            @endforeach
+        <th></th>
+        @foreach ($student_attendance['table_header'] as $data)
+                <th>{{ $data['key'] }}</th>
+        @endforeach
     </tr>
     <tr>
         <th>
@@ -92,7 +91,7 @@
             Days Present
         </th>
         @foreach ($student_attendance['attendance_data']->days_present as $key => $data)
-            <th style="width:7%">{{ $data }} 
+            <th style="width:7%">{{ $data == '' ? 0 : $data}} 
             </th>
         @endforeach
         <th class="days_present_total">
@@ -104,7 +103,7 @@
             Days Absent
         </th>
         @foreach ($student_attendance['attendance_data']->days_absent as $key => $data)
-            <th style="width:7%">{{ $data }}  
+            <th style="width:7%">{{ $data == '' ? 0 : $data}} 
             </th>
         @endforeach
         <th class="days_absent_total">
@@ -116,7 +115,7 @@
             Times Tardy
         </th>
         @foreach ($student_attendance['attendance_data']->times_tardy as $key => $data)
-            <th style="width:7%">{{ $data }}  
+            <th style="width:7%">{{ $data == '' ? 0 : $data}} 
             </th>
         @endforeach
         <th class="times_tardy_total">
@@ -172,16 +171,24 @@
     <tr style="margin-top: .5em">
         <td colspan="3" style="border: 0">Eligible to transfer and admission to:
         
-            @if(round($GradeSheetData[0]->fir_g) != 0 && round($GradeSheetData[0]->sec_g) != 0)
+            @if(round($GradeSheetData[0]->fir_g) != 0)
                 @if(round($general_avg) > 74)                     
-                 <strong><u>&nbsp;&nbsp;{{ $GradeSheetData[0]->eligible_transfer ? $GradeSheetData[0]->eligible_transfer : '____________' }}&nbsp;&nbsp;</u></strong>                                      
+                 <strong><u>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        @php
+                            try {
+                                echo $GradeSheetData[0]->eligible_transfer ? $GradeSheetData[0]->eligible_transfer : '____________';
+                            } catch (\Throwable $th) {
+                                echo '____________';
+                            }
+                        @endphp
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</u></strong>                                      
                 @elseif(round($general_avg) < 75)                     
                    <strong>Failed</strong>
                 @else 
-                ________________________________
+                _______________________
                 @endif
             @else
-            ________________________________
+            _________________________
             @endif        
        
         </td>                
@@ -190,9 +197,16 @@
     <tr style="margin-top: .5em">
         <td colspan="3" style="border: 0">
             Lacking units in:______<u>
-                {{  $GradeSheetData[0]->grade_level == 11 ? $GradeSheetData[0]->lacking_unit : '' }}
-        </u>_______</td>
-        {{-- <td colspan="3" style="border: 0">Lacking units in:__________________</td>                 --}}
+                    @php
+                        try {
+                            echo $GradeSheetData[0]->lacking_unit;
+                        } catch (\Throwable $th) {
+                            echo '_______________';
+                        }
+                    @endphp
+                ______</u>
+        </td>
+        
     </tr>
     
     <tr style="margin-top: .5em">
@@ -228,6 +242,9 @@
                                 @elseif($Signatory->adviser->id == 36)
                                     <img class="profile-user-img img-responsive img-circle" id="img--user_photo" src="{{ $Signatory->adviser->e_signature ? \File::exists(public_path('/img/signature/'.$Signatory->adviser->e_signature)) ? asset('/img/signature/'.$Signatory->adviser->e_signature) : asset('/img/account/photo/blank-user.png') : asset('/img/account/photo/blank-user.png') }}" 
                                     style="width:170px; margin-top: -1.5em">
+                                @elseif($Signatory->adviser->id == 50)
+                                    <img class="profile-user-img img-responsive img-circle" id="img--user_photo" src="{{ $Signatory->adviser->e_signature ? \File::exists(public_path('/img/signature/'.$Signatory->adviser->e_signature)) ? asset('/img/signature/'.$Signatory->adviser->e_signature) : asset('/img/account/photo/blank-user.png') : asset('/img/account/photo/blank-user.png') }}" 
+                                    style="width:120px; margin-top: -2em !important">
                                 @else
                                     <img class="profile-user-img img-responsive img-circle" id="img--user_photo" src="{{ $Signatory->adviser->e_signature ? \File::exists(public_path('/img/signature/'.$Signatory->adviser->e_signature)) ? asset('/img/signature/'.$Signatory->adviser->e_signature) : asset('/img/account/photo/blank-user.png') : asset('/img/account/photo/blank-user.png') }}"
                                     style="width:100px">

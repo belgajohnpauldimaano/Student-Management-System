@@ -23,18 +23,18 @@
                 <h5>
                     <b>Student Category:</b> 
                     <i style="color: red">
-                        <?php echo $Stud_cat_payment->student_category; echo -  $Payment->grade_level_id;?>
+                        @php echo $Stud_cat_payment->student_category; echo -  $Payment->grade_level_id; @endphp
                     </i>
                 </h5>
             
                 <h5>
                     <b>Tuition Fee:</b> 
                     <i style="color: red"> 
-                        <?php echo number_format($Tuitionfee_payment->tuition_amt, 2); ?> 
+                        @php echo number_format($Tuitionfee_payment->tuition_amt, 2); @endphp 
                     </i>
                     <b>| Miscelleneous Fee:</b> 
                     <i style="color: red"> 
-                        <?php echo number_format($MiscFee_payment->misc_amt,2); ?>
+                        @php echo number_format($MiscFee_payment->misc_amt,2); @endphp
                     </i>                   
                 </h5>
 

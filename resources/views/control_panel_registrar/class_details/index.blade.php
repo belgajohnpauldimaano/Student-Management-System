@@ -13,16 +13,16 @@
             <h3 class="box-title">Search</h3>
             <form id="js-form_search">
                 {{ csrf_field() }}
-                <div class="form-group col-sm-12 col-md-3">
+                <div class="form-group col-sm-12 col-md-3" style="padding-left:0;padding-right:0">
                     <select name="sy_search" id="sy_search" class="form-control">
-                        <option value="">Select School Year</option>
+                        {{-- <option value="">Select School Year</option> --}}
                         @foreach ($SchoolYear as $data)
                             <option value="{{ $data->id }}">{{ $data->school_year }}</option>
                         @endforeach
                     </select>
                 </div>
                 <div id="js-form_search" class="form-group col-sm-12 col-md-3" style="padding-left:0;padding-right:0">
-                    <input type="text" class="form-control" name="search">
+                    <input type="text" class="form-control" name="search" placeholder="section">
                 </div>
                 <button type="submit" class="btn btn-flat btn-success">Search</button>
                 <button type="button" class="pull-right btn btn-flat btn-danger btn-sm" id="js-button-add"><i class="fa fa-plus"></i> Add</button>
@@ -81,6 +81,29 @@
                     }
                 });
             });
+
+            // $('body').on('click', '.js-btn_view', function (e) {
+            //     e.preventDefault();
+                
+            //     var id = $(this).data('id');
+            //     $.ajax({
+            //         url : "{{ route('faculty.dashboard') }}",
+            //         type : 'POST',
+            //         data : { _token : '{{ csrf_token() }}', id : id },
+            //         success : function (res) {
+                        
+            //             $('.js-modal_holder').html(res);
+            //             $('.js-modal_holder .modal').modal({ backdrop : 'static' });
+            //             $('.js-modal_holder .modal').on('shown.bs.modal', function () {
+            //                 //Timepicker
+            //                 $('.timepicker').timepicker({
+            //                 showInputs: false
+            //                 })
+
+            //             })
+            //         }
+            //     });
+            // });
 
             $('body').on('submit', '#js-form_subject_details', function (e) {
                 e.preventDefault();

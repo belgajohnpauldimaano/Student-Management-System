@@ -40,7 +40,9 @@
     <!-- /.box-body -->
 </div>
 <div class="box box-primary">
-    <h2 class="{{$isPaid ? $isPaid ? 'overlay-paid' : '' : ''}}">{{$isPaid ? $isPaid ? 'PAID' : '' : ''}}</h2>
+    <h2 class="{{$isPaid ? $isPaid ? 'overlay-paid' : '' : ''}}">
+        {{$isPaid ? $isPaid ? 'PAID' : '' : ''}}
+    </h2>
     <div class="box-body">
         <form id="#js-bank-form" class="js-bank-form" enctype="multipart/form-data">
             {{ csrf_field() }}
@@ -90,7 +92,7 @@
                             @foreach ($Discount as $item)                
                                 <label>                      
                                 <?php 
-                                    $hasAlreadyDiscount = \App\TransactionDiscount::where('student_id', $StudentInformation->id)
+                                    $hasAlreadyDiscount = \App\Models\TransactionDiscount::where('student_id', $StudentInformation->id)
                                         ->where('school_year_id', $SchoolYear->id)->where('discount_type', $item->disc_type)
                                         ->where('isSuccess', 1)
                                         ->first();
@@ -152,8 +154,7 @@
                         <label for="bank_email">Email Address</label>
                         <input type="email" class="form-control" id="bank_email" name="bank_email" placeholder="your@email.com" value="{{ $StudentInformation->email }}">
                         <div class="help-block text-left" id="js-bank_email"></div>
-                    </div>    
-                
+                    </div>
                 {{-- </div> --}}
             </div>
             <div class="col-md-6">        

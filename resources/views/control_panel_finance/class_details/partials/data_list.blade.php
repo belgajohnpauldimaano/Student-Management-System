@@ -29,7 +29,9 @@
                             </span>
                         </td>
                         <td>
-                            <a class="btn btn-flat btn-primary"  href="{{ route('finance.student_list', $data->id) }}" data-id="{{ $data->id }}" >
+                            <a class="btn btn-flat btn-primary" 
+                                href="{{ route('finance.student_list', encrypt($data->id)) }}?school_year={{ encrypt($data->schoolyearid) }}" 
+                            >
                                 <i class="fas fa-eye"></i> View List
                             </a>
                         </td>

@@ -2,21 +2,21 @@
 
 namespace App\Http\Controllers\Finance;
 
-use App\MiscFee;
-use App\OtherFee;
-use App\GradeLevel;
-use App\SchoolYear;
-use App\TuitionFee;
-use App\ClassDetail;
-use App\DiscountFee;
-use App\Transaction;
-use App\PaymentCategory;
-use App\StudentCategory;
-use App\StudentInformation;
-use App\TransactionDiscount;
-use App\TransactionOtherFee;
+use App\Models\MiscFee;
+use App\Models\OtherFee;
+use App\Models\GradeLevel;
+use App\Models\SchoolYear;
+use App\Models\TuitionFee;
+use App\Models\ClassDetail;
+use App\Models\DiscountFee;
+use App\Models\Transaction;
+use App\Models\PaymentCategory;
+use App\Models\StudentCategory;
+use App\Models\StudentInformation;
+use App\Models\TransactionDiscount;
+use App\Models\TransactionOtherFee;
 use Illuminate\Http\Request;
-use App\TransactionMonthPaid;
+use App\Models\TransactionMonthPaid;
 use App\Traits\hasNotYetApproved;
 use App\Http\Controllers\Controller;
 
@@ -46,17 +46,21 @@ class StudentController extends Controller
         $School_year_id = SchoolYear::where('status', 1)
             ->where('current', 1)->first()->id;
 
+        $sy_transaction =  $request->school_year;
+
+        $transactionSchoolYear = Transaction::first();
+        $transactionMonth = TransactionMonthPaid::first();
+
         if ($request->ajax())
         {
             
-                try{
+            try{
                     $Transaction = Transaction::with('payment_cat')
-                        ->where('school_year_id', $request->school_year)
+                        ->where('school_year_id', $sy_transaction)
                         ->where('student_id', $request->id)
-                        ->where('status', 1)->first();
-    
-                    $query = StudentInformation::with(['user', 'enrolled_class', 'finance_transaction']);                        
-                   
+                        ->where('status', 1)->first();                    
+
+                    $query = StudentInformation::with(['user', 'enrolled_class', 'finance_transaction']);
 
                         if($request->search)
                         {
@@ -110,7 +114,7 @@ class StudentController extends Controller
                             
                             $query_join->where('enrollments.class_details_id', $request->section_list);  
 
-                            $query_join->where('class_details.school_year_id', $request->school_year);
+                            $query_join->where('class_details.school_year_id', $sy_transaction);
 
                             $StudentInformation = $query_join->where('student_informations.status', 1)
                                 ->orderBY('student_informations.last_name', 'ASC')
@@ -122,7 +126,7 @@ class StudentController extends Controller
     
                     // return json_encode(['student_info' => $StudentInformation]);
                     return view('control_panel_finance.student_information.partials.data_list', 
-                        compact('StudentInformation','Transaction','School_year_id','hasUser', 'NotyetApprovedCount','School_years'))->render();
+                        compact('StudentInformation','Transaction','School_year_id','hasUser', 'NotyetApprovedCount','School_years','sy_transaction','transactionSchoolYear','transactionMonth'))->render();
 
                 }catch(\Exception $e){                
                     return '<div class="box-body"><div class="row"><table class="table"><tbody><tr><th style="text-align:center"><img src="https://cdn.iconscout.com/icon/free/png-256/data-not-found-1965034-1662569.png" alt="no data"/><br/>Sorry, there is no data found.</th></tr></tbody></table></div></div>';
@@ -144,7 +148,7 @@ class StudentController extends Controller
         $NotyetApprovedCount = $this->notYetApproved();
         // return json_encode(['student_info' => $StudentInformation]);
         return view('control_panel_finance.student_information.index', 
-            compact('StudentInformation','Transaction','School_year_id','hasUser','NotyetApprovedCount','School_years'));
+            compact('StudentInformation','Transaction','School_year_id','hasUser','NotyetApprovedCount','School_years','sy_transaction','transactionSchoolYear','transactionMonth'));
     }
 
     public function modal_data (Request $request) 

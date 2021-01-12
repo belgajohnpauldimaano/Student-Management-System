@@ -7,9 +7,9 @@
                                     <th>Name</th>
                                     <th>Username</th>
                                     <th>Gender</th>
-                                    <th>Date of Birth</th>
                                     <th>Parent/Guardian</th>
                                     <th>Address</th>
+                                    <th>Login URL <i style="color: red">(use other browser)</i></th>
                                     <th>Status</th>
                                     <th>Actions</th>
                                 </tr>
@@ -21,9 +21,10 @@
                                             <td>{{ $data->last_name . ' ' .$data->first_name . ' ' . $data->middle_name }}</td>
                                             <td>{{ $data->user->username }}</td>
                                             <td>{{ ($data->gender == 1 ? 'Male' : 'Female') }}</td>
-                                            <td>{{ $data->birthdate ? date_format(date_create($data->birthdate), 'F d, Y') : '' }}</td>
+                                            {{-- <td>{{ $data->birthdate ? date_format(date_create($data->birthdate), 'F d, Y') : '' }}</td> --}}
                                             <td>{{ $data->guardian }}</td>
                                             <td>{{ $data->c_address }}</td>
+                                            <td  width="5%">{{ $data->loginlink }}</td>
                                             <td>
                                                 <span class="label label-{{ $data->status == 1 ? 'success' : 'danger' }}">
                                                     {{ $data->status == 1 ? 'Active' : 'Inactive' }}

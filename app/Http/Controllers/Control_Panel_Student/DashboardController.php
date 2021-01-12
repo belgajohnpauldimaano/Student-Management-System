@@ -2,14 +2,14 @@
 
 namespace App\Http\Controllers\Control_Panel_Student;
 
-use App\SchoolYear;
-use App\OnlineAppointment;
-use App\StudentInformation;
+use App\Models\SchoolYear;
 use Illuminate\Http\Request;
-use App\TransactionMonthPaid;
-use App\StudentTimeAppointment;
+use App\Models\OnlineAppointment;
+use App\Models\StudentInformation;
 use App\Http\Controllers\Controller;
+use App\Models\TransactionMonthPaid;
 use Illuminate\Support\Facades\Auth;
+use App\Models\StudentTimeAppointment;
 
 class DashboardController extends Controller
 {

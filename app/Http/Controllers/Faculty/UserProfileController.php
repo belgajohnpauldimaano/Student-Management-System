@@ -3,21 +3,26 @@
 namespace App\Http\Controllers\Faculty;
 
 use Illuminate\Http\Request;
+use App\Models\FacultySeminar;
+use App\Models\FacultyEducation;
+use App\Models\FacultyInformation;
+use Illuminate\Support\FacadesAuth;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 
 class UserProfileController extends Controller
 {
     public function view_my_profile (Request $request)
     {
-        $User = \Auth::user();
-        $Profile = \App\FacultyInformation::where('user_id', $User->id)->first();
-        $FacultyInformation = collect(\App\FacultyInformation::DEPARTMENTS);
+        $User = Auth::user();
+        $Profile = FacultyInformation::where('user_id', $User->id)->first();
+        $FacultyInformation = collect(FacultyInformation::DEPARTMENTS);
         return view('control_panel_faculty.user_profile.index', compact('User', 'Profile', 'FacultyInformation'));
     }
     public function fetch_profile (Request $request)
     {
-        $User = \Auth::user();
-        $Profile = \App\FacultyInformation::where('user_id', $User->id)->first();
+        $User = Auth::user();
+        $Profile = FacultyInformation::where('user_id', $User->id)->first();
         return response()->json(['res_code' => 0, 'res_msg' => '', 'Profile' => $Profile]);
     }
     public function update_profile (Request $request) 
@@ -34,8 +39,8 @@ class UserProfileController extends Controller
         {   
             return response()->json(['res_code' => 1, 'res_msg' => 'Please fill all required fields.', 'res_error_msg' => $validator->getMessageBag()]);
         }
-        $User = \Auth::user();
-        $Profile = \App\FacultyInformation::where('user_id', $User->id)->first();
+        $User = Auth::user();
+        $Profile = FacultyInformation::where('user_id', $User->id)->first();
 
         $Profile->first_name = $request->first_name;
         $Profile->middle_name = $request->middle_name;
@@ -64,8 +69,8 @@ class UserProfileController extends Controller
 
 
 
-        $User = \Auth::user();
-        $Profile = \App\FacultyInformation::where('user_id', $User->id)->first();
+        $User = Auth::user();
+        $Profile = FacultyInformation::where('user_id', $User->id)->first();
 
         if ($Profile->photo) 
         {
@@ -104,11 +109,11 @@ class UserProfileController extends Controller
         {   
             return response()->json(['res_code' => 1, 'res_msg' => 'Please fill all required fields.', 'res_error_msg' => $validator->getMessageBag()]);
         }
-        // return json_encode(['aa' => \Auth::user()->password]);
-        if (\Hash::check($request->old_password, \Auth::user()->password))
+        // return json_encode(['aa' => Auth::user()->password]);
+        if (\Hash::check($request->old_password, Auth::user()->password))
         {
-            \Auth::user()->password = bcrypt($request->password);
-            \Auth::user()->save();
+            Auth::user()->password = bcrypt($request->password);
+            Auth::user()->save();
             
             
             return response()->json(['res_code' => 0, 'res_msg' => 'Password successfully changed.']);
@@ -121,9 +126,9 @@ class UserProfileController extends Controller
 
     public function educational_attainment (Request $request) 
     {
-        $User = \Auth::user();
-        $Profile = \App\FacultyInformation::where('user_id', $User->id)->first();
-        $FacultyEducation = \App\FacultyEducation::where('faculty_id', $Profile->id)->get();
+        $User = Auth::user();
+        $Profile = FacultyInformation::where('user_id', $User->id)->first();
+        $FacultyEducation = FacultyEducation::where('faculty_id', $Profile->id)->get();
 
         $data = '
         ';
@@ -181,12 +186,12 @@ class UserProfileController extends Controller
             return response()->json(['res_code' => 1, 'res_msg' => 'Please fill required fields', 'res_error_msg' => $validator->getMessageBag()]);
         }
 
-        $User = \Auth::user();
-        $Profile = \App\FacultyInformation::where('user_id', $User->id)->first();
+        $User = Auth::user();
+        $Profile = FacultyInformation::where('user_id', $User->id)->first();
 
         if ($request->educ_id) 
         {
-            $FacultyEducation = \App\FacultyEducation::where('id', $request->educ_id)->first();
+            $FacultyEducation = FacultyEducation::where('id', $request->educ_id)->first();
             $FacultyEducation->course = $request->course;
             $FacultyEducation->school = $request->school;
             $FacultyEducation->from = $request->date_from ? date('Y-m-d', strtotime($request->date_from)) : NULL;
@@ -196,7 +201,7 @@ class UserProfileController extends Controller
             return response()->json(['res_code' => 0, 'res_msg' => 'Educational attainment successfully added.']);
         }
 
-        $FacultyEducation = new \App\FacultyEducation();
+        $FacultyEducation = new FacultyEducation();
         $FacultyEducation->course = $request->course;
         $FacultyEducation->school = $request->school;
         $FacultyEducation->from = $request->date_from ? date('Y-m-d', strtotime($request->date_from)) : NULL;
@@ -209,7 +214,7 @@ class UserProfileController extends Controller
     public function educational_attainment_fetch_by_id (Request $request)
     {
         if ($request->educ_id) {
-            $FacultyEducation = \App\FacultyEducation::where('id', $request->educ_id)->first();
+            $FacultyEducation = FacultyEducation::where('id', $request->educ_id)->first();
             return response()->json(['res_code' => 0, 'res_msg' => 'Data available.', 'FacultyEducation' => $FacultyEducation]);
         }
         return response()->json(['res_code' => 1, 'res_msg' => 'Unable to fetch data']);
@@ -217,7 +222,7 @@ class UserProfileController extends Controller
     public function educational_attainment_delete_by_id (Request $request)
     {
         if ($request->educ_id) {
-            $FacultyEducation = \App\FacultyEducation::where('id', $request->educ_id)->first();
+            $FacultyEducation = FacultyEducation::where('id', $request->educ_id)->first();
             $FacultyEducation->delete();
             return response()->json(['res_code' => 0, 'res_msg' => 'Data successfully deleted.']);
         }
@@ -225,9 +230,9 @@ class UserProfileController extends Controller
     }
     public function trainings_seminars (Request $request) 
     {   
-        $User = \Auth::user();
-        $Profile = \App\FacultyInformation::where('user_id', $User->id)->first();
-        $FacultySeminar = \App\FacultySeminar::where('faculty_id', $Profile->id)->get();
+        $User = Auth::user();
+        $Profile = FacultyInformation::where('user_id', $User->id)->first();
+        $FacultySeminar = FacultySeminar::where('faculty_id', $Profile->id)->get();
 
         $seminars_trainings = '';
         if ($FacultySeminar)
@@ -284,7 +289,7 @@ class UserProfileController extends Controller
     {
         if ($request->id) 
         {
-            $FacultySeminar = \App\FacultySeminar::where('id', $request->id)->first();
+            $FacultySeminar = FacultySeminar::where('id', $request->id)->first();
             if ($FacultySeminar) 
             {
                 return response()->json(['res_code' => 0, 'res_msg' => '', 'FacultySeminar' => $FacultySeminar]);
@@ -322,7 +327,7 @@ class UserProfileController extends Controller
 
         if ($request->seminar_id) 
         {
-            $FacultySeminar = \App\FacultySeminar::where('id', $request->seminar_id)->first();
+            $FacultySeminar = FacultySeminar::where('id', $request->seminar_id)->first();
             if ($FacultySeminar)
             {
                 $FacultySeminar->title          = $request->title;
@@ -342,9 +347,9 @@ class UserProfileController extends Controller
         }
         else 
         {
-            $User = \Auth::user();
-            $Profile = \App\FacultyInformation::where('user_id', $User->id)->first();
-            $FacultySeminar = new \App\FacultySeminar();
+            $User = Auth::user();
+            $Profile = FacultyInformation::where('user_id', $User->id)->first();
+            $FacultySeminar = new FacultySeminar();
             $FacultySeminar->title          = $request->title;
             $FacultySeminar->date_from      = $request->seminar_date_from ? date('Y-m-d', strtotime($request->seminar_date_from)) : NULL;
             $FacultySeminar->date_to        = $request->seminar_date_to ? date('Y-m-d', strtotime($request->seminar_date_to)) : NULL;
@@ -363,7 +368,7 @@ class UserProfileController extends Controller
         {
             $id = base64_decode($request->id);
             
-            $FacultySeminar = \App\FacultySeminar::where('id', $id)->first();
+            $FacultySeminar = FacultySeminar::where('id', $id)->first();
             if ($FacultySeminar) 
             {
                 if ($FacultySeminar->delete()) 

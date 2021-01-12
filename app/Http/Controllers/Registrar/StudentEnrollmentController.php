@@ -2,14 +2,14 @@
 
 namespace App\Http\Controllers\Registrar;
 
-use App\User;
-use App\Enrollment;
-use App\SchoolYear;
-use App\ClassDetail;
-use App\Transaction;
-use App\StudentInformation;
+use App\Models\User;
+use App\Models\Enrollment;
+use App\Models\SchoolYear;
+use App\Models\ClassDetail;
+use App\Models\Transaction;
+use App\Models\StudentInformation;
 use Illuminate\Http\Request;
-use App\StudentEnrolledSubject;
+use App\Models\StudentEnrolledSubject;
 use App\Http\Controllers\Controller;
 
 class StudentEnrollmentController extends Controller
@@ -416,28 +416,38 @@ class StudentEnrollmentController extends Controller
 
     public function cancel_enroll_student (Request $request, $id) 
     {
+
+        $enrollment_id = $request->enrollment_id;
         $SchoolYear = SchoolYear::where('status', 1)->where('current', 1)->first();
-        $Enrollment = Enrollment::where('id', $request->enrollment_id)->first();
+        $Enrollment = Enrollment::where('id', $enrollment_id)->first();
 
         if ($Enrollment)
         {
-
             $IsEnrolled = Transaction::where('student_id', $request->student_id)->where('school_year_id', $SchoolYear->id)->first();
             $IsEnrolled->IsEnrolled = 0;
-            // if($IsEnrolled->save() || $Enrollment->delete())
+            
             if($IsEnrolled->save())
             {
-                $Enrollment = Enrollment::where('id', $request->enrollment_id)->delete();
-                // $studentEnrolled = StudentEnrolledSubject::where('enrollments_id', $Enrollment->id)->delete();
+                $Enrollment = Enrollment::whereId($enrollment_id)->delete();
+
+                $student_enrolled_subject = StudentEnrolledSubject::whereEnrollmentsId($enrollment_id)->get();
+                    
+                foreach ($student_enrolled_subject as $data) 
+                {
+                    $cancel = StudentEnrolledSubject::find($data->id);
+                    $cancel->delete();
+                }
+                
                 return response()->json(['res_code' => 0, 'res_msg' => 'Student successfully canceled.']);
             }
             else{
-                return response()->json(['res_code' => 1, 'res_msg' => 'There is a problem in enrolling student.']);   
+                return response()->json(['res_code' => 1, 'res_msg' => 'There is a problem in cancelling enrollment.']);   
             }
-            return response()->json(['res_code' => 0, 'res_msg' => 'Student successfully canceled.'.$request->student_id]);
+            
+            // return response()->json(['res_code' => 0, 'res_msg' => 'Student successfully canceled.'.$request->student_id]);
             
         }
-        // return response()->json(['res_code' => 1, 'res_msg' => 'There is a problem in enrolling student.']);   
+       
     }
 
     public function print_enrolled_students (Request $request, $id) 
@@ -526,8 +536,5 @@ class StudentEnrollmentController extends Controller
         } catch (\Throwable $th) {
             return response()->json(['res_code' => 1, 'res_msg' => 'There is a problem in dropping student.']);  
         }
-        
-
-        
     }
 }

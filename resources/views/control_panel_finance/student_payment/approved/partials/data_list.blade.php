@@ -1,5 +1,7 @@
 <div class="table-responsive">  
-    <a href="{{ route('export_excel.excel') }}" class="btn btn-success"><i class="fas fa-file-excel"></i> Export to Excel</a>
+    <a href="{{ route('export_excel.excel') }}" class="btn btn-success mb-1">
+        <i class="fas fa-file-excel"></i> Export to Excel
+    </a>
     <div class="pull-right">
         {{ $Approved ? $Approved->links() : '' }}
     </div>
@@ -24,28 +26,30 @@
             @foreach($Approved as $key => $data)
                 <tr>
                     <td>{{$key + 1}}</td>
-                    <td>{{$data->student_name}}</td>
-                    <td>{{$data->student_level}}</td>
+                    <td>{{$data->student->full_name}}</td>
+                    <td>
+                        {{$data->student_level}}
+                    </td>
                     <td>{{number_format($data->tuition_amt,2)}}</td>
                     <td>{{number_format($data->misc_amt,2)}}</td>
                     <td>
-                        <?php 
-                            $other = \App\TransactionOtherFee::where('student_id', $data->student_id)
+                        @php 
+                            $other = \App\Models\TransactionOtherFee::where('student_id', $data->student_id)
                                 ->where('school_year_id', $data->school_year_id)
                                 ->where('transaction_id', $data->transaction_id)
                                 ->where('isSuccess', 1)
                                 ->sum('item_price');
                             echo number_format($other, 2);
-                        ?>
+                        @endphp
                     </td>
                     <td>
-                        <?php 
-                            $discount = \App\TransactionDiscount::where('student_id', $data->student_id)
+                        @php 
+                            $discount = \App\Models\TransactionDiscount::where('student_id', $data->student_id)
                                 ->where('school_year_id', $data->school_year_id)
                                 ->where('isSuccess', 1)
                                 ->sum('discount_amt');
                             echo number_format($discount, 2);
-                        ?>
+                        @endphp
                         {{-- {{number_format($data->discount_amt, 2)}} --}}
                     </td>
                     <td>

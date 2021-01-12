@@ -5,8 +5,9 @@
     <meta charset="utf-8">
     <title>@yield('title')</title>
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
-    <meta content="" name="keywords">
-    <meta content="" name="description">
+    <meta content="private school" name="keywords">
+    <meta content="St. John's Academy Inc., formerly known as Saint John Academy, is a private Roman Catholic secondary school in Dinalupihan, Bataan, Philippines. It provides a deeply-rooted Christian formation to the young and supply the volunteers for the Parochial catechetical program at the public schools within the parish. The school is a member of the Diocesan Schools of Bataan (DSOB) and the Catholic Educational Association of the Philippines (CEAP)" name="description">
+    <meta name="author" content="Intelliroad Business Solutions">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.10/css/all.css" 
     integrity="sha384-+d0P83n9kaQMCwj8F4RJB66tzIwOKmrdb46+porD/OvrJ+37WqIM7UoBtwHO6Nlg" crossorigin="anonymous">
     <!-- Favicons -->
@@ -30,6 +31,15 @@
     {{-- alertify --}}
     <link rel="stylesheet" href="{{ asset('cms/plugins/alertifyjs/css/alertify.min.css') }}">
     <link rel="stylesheet" href="{{ asset('cms/plugins/alertifyjs/css/themes/bootstrap.min.css') }}">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-GRDQMJRGKQ"></script>
+    <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-GRDQMJRGKQ');
+    </script>
 </head>
 
 <body>

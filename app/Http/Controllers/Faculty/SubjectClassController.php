@@ -2,15 +2,15 @@
 
 namespace App\Http\Controllers\Faculty;
 
-use App\Room;
-use App\Enrollment;
-use App\SchoolYear;
-use App\ClassDetail;
-use App\SectionDetail;
-use App\SubjectDetail;
+use App\Models\Room;
+use App\Models\Enrollment;
+use App\Models\SchoolYear;
+use App\Models\ClassDetail;
+use App\Models\SectionDetail;
+use App\Models\SubjectDetail;
 use Barryvdh\DomPDF\PDF;
-use App\ClassSubjectDetail;
-use App\FacultyInformation;
+use App\Models\ClassSubjectDetail;
+use App\Models\FacultyInformation;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;

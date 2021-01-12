@@ -1,7 +1,3 @@
-                       
-
-                          
-                           
 @if($ClassDetail->grade_level == 11 || $ClassDetail->grade_level == 12)                   
     <div class="pull-right">
         <button type="button" style="margin-right:2px" class="btn btn-flat btn-danger js-btn_re_enroll_all_student" aria-expanded="true">

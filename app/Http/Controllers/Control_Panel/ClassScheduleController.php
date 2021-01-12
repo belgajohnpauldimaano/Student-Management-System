@@ -2,19 +2,26 @@
 
 namespace App\Http\Controllers\Control_Panel;
 
+use App\SchoolYear;
+use Barryvdh\DomPDF\PDF;
+use App\ClassSubjectDetail;
+use App\FacultyInformation;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 
 class ClassScheduleController extends Controller
 {
     public function index (Request $request) 
     {
-        $SchoolYear = \App\SchoolYear::where('current', 1)->first();
-        $FacultyInformation = \App\FacultyInformation::where('status', 1)
+        $SchoolYear = SchoolYear::where('current', 1)->first();
+        $FacultyInformation = FacultyInformation::where('status', 1)
         ->select(\DB::raw(
             "
-                faculty_informations.id,
-                CONCAT(last_name, ' ', first_name, ', ', middle_name) as fullname,
+                faculty_informations.id, 
+                faculty_informations.last_name, 
+                faculty_informations.first_name, 
+                faculty_informations.middle_name,
                 department_id,
                 (   SELECT 
                         COUNT(*) 
@@ -24,11 +31,16 @@ class ClassScheduleController extends Controller
                         class_subject_details.faculty_id = faculty_informations.id 
                     AND 
                         class_subject_details.status = 1 
-                    AND class_details_id IN (SELECT id FROM class_details where school_year_id IN (SELECT id FROM school_years WHERE current = 1 and status = 1) AND status = 1)
+                    AND class_details_id IN 
+                    
+                    (SELECT id FROM class_details where school_year_id IN 
+                    (SELECT id FROM school_years WHERE current = 1 and status = 1)
+                     AND status = 1)
                 ) 
                     AS subjects_count
             "
-        ))->orderByRaw('fullname ASC');
+        ))->orderBy('last_name', 'ASC');
+
         if ($request->ajax()) 
         {
             $FacultyInformation = $FacultyInformation->where(function ($query) use ($request) {
@@ -52,8 +64,8 @@ class ClassScheduleController extends Controller
     }
     public function get_faculty_class_schedule (Request $request)
     {
-        $SchoolYear = \App\SchoolYear::where('current', 1)->first();
-        $ClassSubjectDetail = \App\ClassSubjectDetail::join('subject_details', 'subject_details.id', '=', 'class_subject_details.subject_id')
+        $SchoolYear = SchoolYear::where('current', 1)->first();
+        $ClassSubjectDetail = ClassSubjectDetail::join('subject_details', 'subject_details.id', '=', 'class_subject_details.subject_id')
         ->join('class_details', 'class_details.id', '=', 'class_subject_details.class_details_id')
         ->join('section_details', 'section_details.id', '=', 'class_details.section_id')
         ->join('rooms', 'rooms.id', '=', 'class_details.room_id')
@@ -87,11 +99,11 @@ class ClassScheduleController extends Controller
 
     public function print_handled_subject (Request $request) 
     {
-        $FacultyInformation = \App\FacultyInformation::where('status', 1)
+        $FacultyInformation = FacultyInformation::where('status', 1)
             ->where('id', $request->id)
             ->first();
-        $SchoolYear = \App\SchoolYear::where('current', 1)->first();
-        $ClassSubjectDetail = \App\ClassSubjectDetail::join('subject_details', 'subject_details.id', '=', 'class_subject_details.subject_id')
+        $SchoolYear = SchoolYear::where('current', 1)->first();
+        $ClassSubjectDetail = ClassSubjectDetail::join('subject_details', 'subject_details.id', '=', 'class_subject_details.subject_id')
         ->join('class_details', 'class_details.id', '=', 'class_subject_details.class_details_id')
         ->join('section_details', 'section_details.id', '=', 'class_details.section_id')
         ->join('rooms', 'rooms.id', '=', 'class_details.room_id')
@@ -110,14 +122,14 @@ class ClassScheduleController extends Controller
 
     public function print_handled_subject_all (Request $request) 
     {
-        $FacultyInformation = \App\FacultyInformation::where('status', 1)->get();
-        $SchoolYear = \App\SchoolYear::where('current', 1)->first();
+        $FacultyInformation = FacultyInformation::where('status', 1)->get();
+        $SchoolYear = SchoolYear::where('current', 1)->first();
 
         $faculty_subjects = [];
 
         foreach ($FacultyInformation as $fa) 
         {
-            $ClassSubjectDetail = \App\ClassSubjectDetail::join('subject_details', 'subject_details.id', '=', 'class_subject_details.subject_id')
+            $ClassSubjectDetail = ClassSubjectDetail::join('subject_details', 'subject_details.id', '=', 'class_subject_details.subject_id')
             ->join('class_details', 'class_details.id', '=', 'class_subject_details.class_details_id')
             ->join('section_details', 'section_details.id', '=', 'class_details.section_id')
             ->join('rooms', 'rooms.id', '=', 'class_details.room_id')

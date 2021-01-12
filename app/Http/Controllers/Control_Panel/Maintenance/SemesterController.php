@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Control_Panel\Maintenance;
 
-use App\Semester;
+use App\Models\Semester;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Control_Panel\Maintenance\SemesterController;

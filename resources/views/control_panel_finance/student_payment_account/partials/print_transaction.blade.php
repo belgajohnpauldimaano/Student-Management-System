@@ -108,7 +108,7 @@
     <table class="table-student-info" style="margin-top: 15px; margin-bottom: 10px">
         <tr>
             <td>Student name: <strong>{{ $Transaction->student_name }}</strong></td>
-            <td style="text-align: right">Date: {{  now()->toDateTimeString('Y-m-d') }}</td>
+            <td style="text-align: right">Date: {{ $now }}</td>
         </tr>
         <tr>
             <td>School Year: <strong>{{ $Transaction->school_year }}</strong></td>
@@ -137,7 +137,7 @@
                 <tbody>  
                     <tr>
                         <td>Date and Time:</td>
-                        <td style="text-align: right">{{  date_format(date_create($Transaction->updated_at), 'F d, Y h:i A') }}</td>                                 
+                        <td style="text-align: right">{{ date_format(date_create($Transaction->updated_at), 'F d, Y h:i A') }}</td>                                 
                     </tr>
                     <tr>
                         <td>Tuition Fee</td>

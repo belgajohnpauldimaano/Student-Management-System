@@ -29,7 +29,14 @@
                                     <input type="text" class="form-control" name="eligible_transfer" value="{{$data->eligible_transfer}}" placeholder="none">                                     
                                 @else
                                     <input type="text" class="form-control" name="eligible_transfer" 
-                                    value="{{ $ClassSubjectDetail->grade_level == 12 ? 'College' : $data->eligible_transfer ? $data->eligible_transfer : 'Grade '.($ClassSubjectDetail->grade_level + 1 ) }}" placeholder="Grade">                                             
+                                    value="
+                                            @if($ClassSubjectDetail->grade_level == 12)
+                                                'College'
+                                            @elseif($data->eligible_transfer)
+                                                'Grade '.($ClassSubjectDetail->grade_level + 1
+                                            @endif
+                                        "
+                                    placeholder="Grade">                                             
                                 @endif                                 
                             </td>
                             <td>
@@ -51,40 +58,16 @@
                                     
                                     @if($ClassSubjectDetail->grade_level < 11) 
                                         <input type="text" name="date" disabled class="tbdatepicker form-control pull-right" 
-                                                id="tbdatepicker" placeholder="11/11/2000" value="
-                                                @php
-                                                    try {
-                                                        $DateRemarks != '' ? $DateRemarks->j_date : '' ;
-                                                    } catch (\Throwable $th) {
-                                                        $DateRemarks = '';
-                                                    }
-                                                @endphp                                                
-                                                "
-                                            >
+                                                id="tbdatepicker" placeholder="11/11/2000" value="{{ $DateRemarks != '' ? $DateRemarks->j_date : '' }}">
                                     @elseif($ClassSubjectDetail->grade_level > 10)
                                         @if($Semester_id == 1)
                                             <input type="text" name="date" disabled class="tbdatepicker form-control pull-right" 
-                                                id="tbdatepicker" placeholder="11/11/2000" value="
-                                                @php
-                                                    try {
-                                                        $DateRemarks->s_date1 ? $DateRemarks->s_date1 : '' ;
-                                                    } catch (\Throwable $th) {
-                                                        $DateRemarks = '';
-                                                    }
-                                                @endphp                                                
-                                                "
+                                                id="tbdatepicker" placeholder="11/11/2000" value="{{ $DateRemarks->s_date1 ? $DateRemarks->s_date1 : '' }}"
+                                                
                                             >
                                         @else
                                             <input type="text" name="date" disabled class="tbdatepicker form-control pull-right" 
-                                            id="tbdatepicker" placeholder="11/11/2000" value="
-                                                @php
-                                                    try {
-                                                        $DateRemarks->s_date2 ? $DateRemarks->s_date2 : '' ;
-                                                    } catch (\Throwable $th) {
-                                                        $DateRemarks = '';
-                                                    }
-                                                @endphp       
-                                            ">
+                                            id="tbdatepicker" placeholder="11/11/2000" value="{{ $DateRemarks->s_date2 ? $DateRemarks->s_date2 : '' }}">
                                         @endif
                                     @endif
                                 </div>                                
@@ -170,7 +153,14 @@
                                     <input type="text" class="form-control" name="eligible_transfer" value="{{$data->eligible_transfer}}" placeholder="none">                                     
                                 @else
                                     <input type="text" class="form-control" name="eligible_transfer" 
-                                    value="{{ $ClassSubjectDetail->grade_level == 12 ? 'College' : $data->eligible_transfer ? $data->eligible_transfer : 'Grade '.($ClassSubjectDetail->grade_level + 1 ) }}" placeholder="Grade">                                             
+                                    value="
+                                            @if($ClassSubjectDetail->grade_level == 12)
+                                                'College'
+                                            @elseif($data->eligible_transfer)
+                                                'Grade '.($ClassSubjectDetail->grade_level + 1
+                                            @endif
+                                        " 
+                                    placeholder="Grade">                                             
                                 @endif     
                             </td>
                             <td>
@@ -191,44 +181,20 @@
                                     </div>
                                     
                                     @if($ClassSubjectDetail->grade_level < 11) 
-                                         <input type="text" name="date" disabled class="tbdatepicker form-control pull-right" 
-                                                id="tbdatepicker" placeholder="11/11/2000" value="
-                                                @php
-                                                    try {
-                                                        $DateRemarks != '' ? $DateRemarks->j_date : '' ;
-                                                    } catch (\Throwable $th) {
-                                                        $DateRemarks = '';
-                                                    }
-                                                @endphp                                                
-                                                "
-                                            >
+                                        <input type="text" name="date" disabled class="tbdatepicker form-control pull-right" 
+                                                id="tbdatepicker" placeholder="11/11/2000" value="{{ $DateRemarks != '' ? $DateRemarks->j_date : '' }}">
                                     @elseif($ClassSubjectDetail->grade_level > 10)
                                         @if($Semester_id == 1)
                                             <input type="text" name="date" disabled class="tbdatepicker form-control pull-right" 
-                                                id="tbdatepicker" placeholder="11/11/2000" value="
-                                                @php
-                                                    try {
-                                                        $DateRemarks->s_date1 ? $DateRemarks->s_date1 : '' ;
-                                                    } catch (\Throwable $th) {
-                                                        $DateRemarks = '';
-                                                    }
-                                                @endphp                                                
-                                                "
+                                                id="tbdatepicker" placeholder="11/11/2000" value="{{ $DateRemarks->s_date1 ? $DateRemarks->s_date1 : '' }}"
+                                                
                                             >
                                         @else
                                             <input type="text" name="date" disabled class="tbdatepicker form-control pull-right" 
-                                            id="tbdatepicker" placeholder="11/11/2000" value="
-                                                @php
-                                                    try {
-                                                        $DateRemarks->s_date2 ? $DateRemarks->s_date2 : '' ;
-                                                    } catch (\Throwable $th) {
-                                                        $DateRemarks = '';
-                                                    }
-                                                @endphp       
-                                            ">
+                                            id="tbdatepicker" placeholder="11/11/2000" value="{{ $DateRemarks->s_date2 ? $DateRemarks->s_date2 : '' }}">
                                         @endif
                                     @endif
-                                </div>                                
+                                </div>                                 
                             </td>
                             
                             <td class="text-center">                                    
@@ -294,7 +260,6 @@
                         </tr>
                     </form>
                 @endforeach
-               
         </tbody>            
     </table>
 @endif

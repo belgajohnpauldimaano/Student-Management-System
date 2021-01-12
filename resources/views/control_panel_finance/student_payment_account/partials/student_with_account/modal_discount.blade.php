@@ -19,13 +19,13 @@
                                 <div class="radio" style="margin-top: -2.5px;">
                                     @foreach ($DiscountFee as $item)         
                                         <label>                      
-                                            <?php 
-                                                $hasAlreadyDiscount = \App\TransactionDiscount::where('student_id', $TransactionDiscount->student_id)
+                                            @php 
+                                                $hasAlreadyDiscount = \App\Models\TransactionDiscount::where('student_id', $TransactionDiscount->student_id)
                                                     ->where('school_year_id', $SchoolYear->id)->where('discount_type', $item->disc_type)
                                                     ->where('isSuccess', 1)
                                                     ->first();
                                                 
-                                            ?>
+                                            @endphp
                                             <input type="radio" 
                                                 {{$hasAlreadyDiscount ? 'checked' : ''  }} 
                                                 class="js-discount"

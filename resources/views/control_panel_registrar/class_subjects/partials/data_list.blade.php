@@ -15,7 +15,7 @@
                                 @if($ClassDetail->grade_level == 11 || $ClassDetail->grade_level == 12)
                                     @if ($ClassSubjectDetail)
                                             @foreach ($ClassSubjectDetail as $data)
-                                                <?php
+                                                @php
                                                     $days = $data ? $data->class_schedule ? explode(';', rtrim($data->class_schedule,";")) : [] : [];
                                                     $daysObj = [];
                                                     $daysDisplay = '';
@@ -50,15 +50,15 @@
                                                         }
                                                     }
 
-                                                ?>
+                                                @endphp
                                                 <tr>
                                                     <td>{{ $data->subject_code }}</td>
                                                     <td>{{ $data->subject }}</td>
                                                     {{--  <td>{{ $data->class_days }}</td>  --}}
                                                     <td>{{ rtrim($daysDisplay, '/') }}</td>
                                                     <td>
-                                                        <?php 
-                                                            $teachers = \App\TeacherSubject::join('faculty_informations', 'faculty_informations.id','=','teacher_subjects.faculty_id')
+                                                        @php 
+                                                            $teachers = \App\Models\TeacherSubject::join('faculty_informations', 'faculty_informations.id','=','teacher_subjects.faculty_id')
                                                                 ->selectRaw('
                                                                         CONCAT(faculty_informations.last_name, " ", faculty_informations.first_name, " " ,  faculty_informations.middle_name) AS adviser_name
                                                                     ')
@@ -69,7 +69,7 @@
                                                             foreach ($teachers as $key => $value) {
                                                                 echo ''.$value->adviser_name.'</br>';
                                                             }
-                                                        ?>
+                                                        @endphp
                                                     </td>
                                                     <td>
                                                         <div class="input-group-btn pull-left text-left">
@@ -92,7 +92,7 @@
 
                                     @if ($ClassSubjectDetail1)
                                         @foreach ($ClassSubjectDetail1 as $data)
-                                            <?php
+                                            @php
                                                 $days = $data ? $data->class_schedule ? explode(';', rtrim($data->class_schedule,";")) : [] : [];
                                                 $daysObj = [];
                                                 $daysDisplay = '';
@@ -127,15 +127,15 @@
                                                     }
                                                 }
 
-                                            ?>
+                                            @endphp
                                             <tr>
                                                 <td>{{ $data->subject_code }} </td>
                                                 <td>{{ $data->subject }}</td>
                                                 {{--  <td>{{ $data->class_days }}</td>  --}}
                                                 <td> {{ rtrim($daysDisplay, '/') }} </td>
                                                 <td>
-                                                    <?php 
-                                                            $teachers = \App\TeacherSubject::join('faculty_informations', 'faculty_informations.id','=','teacher_subjects.faculty_id')
+                                                    @php 
+                                                            $teachers = \App\Models\TeacherSubject::join('faculty_informations', 'faculty_informations.id','=','teacher_subjects.faculty_id')
                                                                 ->selectRaw('
                                                                         CONCAT(faculty_informations.last_name, " ", faculty_informations.first_name, " " ,  faculty_informations.middle_name) AS adviser_name
                                                                     ')
@@ -143,7 +143,7 @@
                                                                     ->where('teacher_subjects.status', 1)
                                                                 ->get();
 
-                                                            $teachers_count = \App\TeacherSubject::join('faculty_informations', 'faculty_informations.id','=','teacher_subjects.faculty_id')
+                                                            $teachers_count = \App\Models\TeacherSubject::join('faculty_informations', 'faculty_informations.id','=','teacher_subjects.faculty_id')
                                                                 ->selectRaw('
                                                                         CONCAT(faculty_informations.last_name, " ", faculty_informations.first_name, " " ,  faculty_informations.middle_name) AS adviser_name
                                                                     ')
@@ -162,7 +162,7 @@
                                                                echo $data->faculty_name;
                                                             }
                                                                                                                      
-                                                    ?>
+                                                    @endphp
                                                 </td>
                                                 <td>
                                                     <div class="input-group-btn pull-left text-left">

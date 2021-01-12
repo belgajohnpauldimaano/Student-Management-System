@@ -2,14 +2,14 @@
 
 namespace App\Http\Controllers\Control_Panel;
 
-use App\FacultyInformation;
-use App\FinanceInformation;
-use App\StudentInformation;
+use App\Models\User;
 use Illuminate\Http\Request;
-use App\AdmissionInformation;
-use App\RegistrarInformation;
+use App\Models\FacultyInformation;
+use App\Models\FinanceInformation;
+use App\Models\StudentInformation;
 use App\Http\Controllers\Controller;
-use Illuminate\Foundation\Auth\User;
+use App\Models\AdmissionInformation;
+use App\Models\RegistrarInformation;
 
 class ResetPasswordController extends Controller
 {

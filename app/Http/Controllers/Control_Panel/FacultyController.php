@@ -2,9 +2,15 @@
 
 namespace App\Http\Controllers\Control_Panel;
 
+use App\Models\User;
 use App\Traits\HasUser;
 use Illuminate\Http\Request;
+use App\Models\FacultySeminar;
+use App\Models\FacultyEducation;
+use App\Models\FacultyInformation;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
+use Symfony\Component\HttpFoundation\File\File;
 
 class FacultyController extends Controller
 {
@@ -15,7 +21,7 @@ class FacultyController extends Controller
         $isAdmin = $this->isAdmin();
         if ($request->ajax())
         {
-            $FacultyInformation = \App\FacultyInformation::with(['user'])->where('status', 1)
+            $FacultyInformation = FacultyInformation::with(['user'])->where('status', 1)
             ->orderBY('last_name','ASC')
             ->where(function ($query) use ($request) {
                 $query->where('first_name', 'like', '%'.$request->search.'%');
@@ -27,17 +33,17 @@ class FacultyController extends Controller
             
             return view('control_panel.faculty_information.partials.data_list', compact('FacultyInformation','isAdmin'))->render();
         }
-        $FacultyInformation = \App\FacultyInformation::with(['user'])->where('status', 1)->orderBY('last_name','ASC')->paginate(10);
+        $FacultyInformation = FacultyInformation::with(['user'])->where('status', 1)->orderBY('last_name','ASC')->paginate(10);
         return view('control_panel.faculty_information.index', compact('FacultyInformation','isAdmin'));
     }
     public function modal_data (Request $request) 
     {
         $FacultyInformation = NULL;
-        $Esignature = \App\FacultyInformation::where('id', $request->id)->first(); 
+        $Esignature = FacultyInformation::where('id', $request->id)->first(); 
         if ($request->id)
         {
-            $FacultyInformation = \App\FacultyInformation::with(['user'])->where('id', $request->id)->first();
-            $Esignature = \App\FacultyInformation::where('id', $request->id)->first();   
+            $FacultyInformation = FacultyInformation::with(['user'])->where('id', $request->id)->first();
+            $Esignature = FacultyInformation::where('id', $request->id)->first();   
         }
         return view('control_panel.faculty_information.partials.modal_data', compact('FacultyInformation','Esignature'))->render();
     }
@@ -49,12 +55,10 @@ class FacultyController extends Controller
         $destinationPath = public_path('/img/signature/');
         $request->user_photo->move($destinationPath, $name);
 
-
-
     //    / $User = \Auth::user();
         if($request->id)
         {
-            $Esignature = \App\FacultyInformation::where('id', $request->id)->first();
+            $Esignature = FacultyInformation::where('id', $request->id)->first();
 
             if ($Esignature->e_signature) 
             {
@@ -102,14 +106,14 @@ class FacultyController extends Controller
         if ($request->fid)
         {
          
-            $FacultyInformation = \App\FacultyInformation::where('id', $request->fid)->first();
+            $FacultyInformation = FacultyInformation::where('id', $request->fid)->first();
                
-            $User = \App\User::where('username', $request->username)->where('id', '!=', $FacultyInformation->user_id)->first();
+            $User = User::where('username', $request->username)->where('id', '!=', $FacultyInformation->user_id)->first();
             if ($User) 
             {
                 return response()->json(['res_code' => 1,'res_msg' => 'Username already used.']);
             }
-            $User = \App\User::where('id', $FacultyInformation->user_id)->first();
+            $User = User::where('id', $FacultyInformation->user_id)->first();
             $User->username = $request->username;
             $User->save();
 
@@ -121,20 +125,20 @@ class FacultyController extends Controller
             return response()->json(['res_code' => 0, 'res_msg' => 'Data successfully saved.']);
         }
 
-        $User = \App\User::where('username', $request->username)->first();
+        $User = User::where('username', $request->username)->first();
         if ($User) 
         {
             return response()->json(['res_code' => 1,'res_msg' => 'Username already used.']);
         }
 
 
-        $User = new \App\User();
+        $User = new User();
         $User->username = $request->username;
         $User->password = bcrypt($request->first_name . '.' . $request->last_name);
         $User->role     = 4;
         $User->save();
 
-        $FacultyInformation = new \App\FacultyInformation();
+        $FacultyInformation = new FacultyInformation();
         $FacultyInformation->first_name = $request->first_name;
         $FacultyInformation->middle_name = $request->middle_name;
         $FacultyInformation->last_name = $request->last_name;
@@ -146,14 +150,14 @@ class FacultyController extends Controller
     }
     public function deactivate_data (Request $request) 
     {
-        $FacultyInformation = \App\FacultyInformation::where('id', $request->id)->first();
+        $FacultyInformation = FacultyInformation::where('id', $request->id)->first();
 
         if ($FacultyInformation)
         {
             $FacultyInformation->status = 0;
             $FacultyInformation->save();
 
-            $User = \App\User::where('id', $FacultyInformation->user_id)->first();
+            $User = User::where('id', $FacultyInformation->user_id)->first();
             if ($User)
             {
                 $User->status = 0;
@@ -165,9 +169,9 @@ class FacultyController extends Controller
     }
     public function additional_information (Request $request)
     {
-        $FacultyInformation = \App\FacultyInformation::where('id', $request->id)->first();
-        $FacultyEducation = \App\FacultyEducation::where('faculty_id', $request->id)->get();
-        $FacultySeminar = \App\FacultySeminar::where('faculty_id', $request->id)->get();
+        $FacultyInformation = FacultyInformation::where('id', $request->id)->first();
+        $FacultyEducation = FacultyEducation::where('faculty_id', $request->id)->get();
+        $FacultySeminar = FacultySeminar::where('faculty_id', $request->id)->get();
         return view('control_panel.faculty_information.partials.modal_additional_information', compact('FacultyEducation', 'FacultySeminar', 'FacultyInformation'))->render();
     }
 }

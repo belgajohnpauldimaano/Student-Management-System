@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers\Control_Panel;
 
-use App\User;
+use App\Models\User;
 use App\Traits\HasUser;
 use Illuminate\Http\Request;
-use App\AdmissionInformation;
 use App\Http\Controllers\Controller;
+use App\Models\AdmissionInformation;
 
 class AdmissionController extends Controller
 {

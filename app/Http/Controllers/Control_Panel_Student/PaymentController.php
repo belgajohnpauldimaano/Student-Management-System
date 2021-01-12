@@ -3,8 +3,8 @@
 namespace App\Http\Controllers\Control_Panel_Student;
 
 use Carbon\Carbon;
-use App\SchoolYear;
-use App\DiscountFee;
+use App\Models\SchoolYear;
+use App\Models\DiscountFee;
 
 /** Paypal Details classes **/
 use PayPal\Api\Item;
@@ -14,16 +14,16 @@ use PayPal\Api\Amount;
 use PayPal\Api\Details;
 use PayPal\Api\Payment;
 use PayPal\Api\ItemList;
-use App\StudentInformation;
+use App\Models\StudentInformation;
 use PayPal\Api\InputFields;
 use PayPal\Api\Transaction;
 use PayPal\Rest\ApiContext;
-use App\TransactionDiscount;
-use App\TransactionOtherFee;
+use App\Models\TransactionDiscount;
+use App\Models\TransactionOtherFee;
 use Illuminate\Http\Request;
 use PayPal\Api\RedirectUrls;
 use App\Mail\NotifyAdminMail;
-use App\TransactionMonthPaid;
+use App\Models\TransactionMonthPaid;
 use PayPal\Api\PaymentExecution;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
@@ -67,7 +67,7 @@ class PaymentController extends Controller
             return response()->json(['res_code' => 1, 'res_msg' => 'Please fill all required fields.', 'res_error_msg' => $validator->getMessageBag()]);
         }
 
-        $User = \Auth::user();
+        $User = Auth::user();
         $StudentInformation = StudentInformation::where('user_id', $User->id)->first();
         $mytime = Carbon::now();
         $SchoolYear = SchoolYear::where('current', 1)

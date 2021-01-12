@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Finance\Maintenance;
 
+use App\Models\MiscFee;
 use Illuminate\Http\Request;
 use App\Traits\hasNotYetApproved;
 use App\Http\Controllers\Controller;
@@ -15,11 +16,11 @@ class MiscelleneousFeeController extends Controller
         if ($request->ajax())
         {
             $NotyetApprovedCount = $this->notYetApproved();
-            $MiscFee = \App\MiscFee::where('status', 1)->where('misc_amt', 'like', '%'.$request->search.'%')->paginate(10);
+            $MiscFee = MiscFee::where('status', 1)->where('misc_amt', 'like', '%'.$request->search.'%')->paginate(10);
             return view('control_panel_finance.maintenance.miscelleneous_fee.partials.data_list', compact('MiscFee','NotyetApprovedCount'))->render();
         }
         $NotyetApprovedCount = $this->notYetApproved();
-        $MiscFee = \App\MiscFee::where('status', 1)->paginate(10);
+        $MiscFee = MiscFee::where('status', 1)->paginate(10);
         return view('control_panel_finance.maintenance.miscelleneous_fee.index', compact('MiscFee','NotyetApprovedCount'));
     }
 
@@ -28,7 +29,7 @@ class MiscelleneousFeeController extends Controller
         $MiscFee = NULL;
         if ($request->id)
         {
-            $MiscFee = \App\MiscFee::where('id', $request->id)->first();
+            $MiscFee = MiscFee::where('id', $request->id)->first();
         }
         return view('control_panel_finance.maintenance.miscelleneous_fee.partials.modal_data', compact('MiscFee'))->render();
     }
@@ -48,14 +49,14 @@ class MiscelleneousFeeController extends Controller
         // update
         if ($request->id)
         {
-            $MiscFee = \App\MiscFee::where('id', $request->id)->first();
+            $MiscFee = MiscFee::where('id', $request->id)->first();
             $MiscFee->misc_amt = $request->misc_fee;
             $MiscFee->current = $request->current_sy;
             $MiscFee->save();
             return response()->json(['res_code' => 0, 'res_msg' => 'Data successfully saved.']);
         }
         // save
-        $MiscFee = new \App\MiscFee();
+        $MiscFee = new MiscFee();
         $MiscFee->misc_amt = $request->misc_fee;
         $MiscFee->current = $request->current_sy;
         $MiscFee->save();
@@ -64,7 +65,7 @@ class MiscelleneousFeeController extends Controller
 
     public function toggle_current_sy (Request $request)
     {
-        $MiscFee = \App\MiscFee::where('id', $request->id)->first();
+        $MiscFee = MiscFee::where('id', $request->id)->first();
         if ($MiscFee) 
         {
             if ($MiscFee->current == 0) 
@@ -84,7 +85,7 @@ class MiscelleneousFeeController extends Controller
 
     public function deactivate_data (Request $request) 
     {
-        $MiscFee = \App\MiscFee::where('id', $request->id)->first();
+        $MiscFee = MiscFee::where('id', $request->id)->first();
 
         if ($MiscFee)
         {

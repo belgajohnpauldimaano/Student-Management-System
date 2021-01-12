@@ -48,14 +48,12 @@
                     <div class="box">
                         <div class="box-header ">
                             <p class="box-title">
-                                Date and Time:  <?php 
-                                                    $date = \App\TransactionMonthPaid::where('id', $Monthly_history->id)
-                                                        ->first();
-
-                                                   
-                                                   
-                                                ?>
-                                                {{ $date ? date_format(date_create($date->created_at), 'F d, Y h:i A') : '' }}
+                                Date and Time:  
+                                @php 
+                                    $date = \App\Models\TransactionMonthPaid::where('id', $Monthly_history->id)
+                                        ->first();
+                                @endphp
+                                {{ $date ? date_format(date_create($date->created_at), 'F d, Y h:i A') : '' }}
                             </p>
                         </div>
                         
@@ -83,12 +81,12 @@
                                     <tr>
                                         <td>Other Fee {{ $Modal_data->others ? $Modal_data->others->other_name : '' }}</td>
                                         <td>
-                                            <?php 
+                                            @php 
                                                 $others_fee =  0;
                                                 if($Modal_data->others){
                                                     $others_fee = $Modal_data->others->item_price;
                                                 }    
-                                            ?>
+                                            @endphp
                                             {{ number_format($others_fee, 2)}}
                                         </td>
                                     </tr>
@@ -96,7 +94,7 @@
                                         <td><b>Sub Total</b></td>
                                         <td>
                                             <b>
-                                                <?php $sub_total = $Modal_data->payment_cat->tuition->tuition_amt + $Modal_data->payment_cat->misc_fee->misc_amt + $others_fee ?>
+                                                @php $sub_total = $Modal_data->payment_cat->tuition->tuition_amt + $Modal_data->payment_cat->misc_fee->misc_amt + $others_fee @endphp
                                                 {{ $st = number_format($sub_total, 2) }}
                                             </b>
                                         </td>                                
@@ -104,13 +102,13 @@
                                     <tr>
                                         <td>Less Discount Fee</td>
                                         <td>
-                                            <?php 
-                                                $discount = \App\TransactionDiscount::where('student_id', $Monthly_history->student_id)
+                                            @php 
+                                                $discount = \App\Models\TransactionDiscount::where('student_id', $Monthly_history->student_id)
                                                     ->where('school_year_id', $Monthly_history->school_year_id)
                                                     ->where('isSuccess', 1)
                                                     ->sum('discount_amt');
                                                 echo number_format($discount, 2);
-                                            ?>
+                                            @endphp
                                         </td>
                                         {{-- <td>{{$Modal_data->disc_transaction_fee ? number_format($Modal_data->disc_transaction_fee->discount_amt,2) : '0.00'}}</td> --}}
                                     </tr>
@@ -134,8 +132,8 @@
                                                 @if($current_bal->balance==0)
                                                     0.00
                                                 @else
-                                                    <?php 
-                                                        $current_bal = \App\TransactionMonthPaid::where('student_id', $Monthly_history->student_id)
+                                                    @php 
+                                                        $current_bal = \App\Models\TransactionMonthPaid::where('student_id', $Monthly_history->student_id)
                                                             ->where('school_year_id', $Monthly_history->school_year_id)
                                                             ->where('approval', 'Approved')
                                                             ->orderBY('id', 'desc')
@@ -145,7 +143,7 @@
 
                                                         $t_bal_other = $current_bal->balance + $others_fee;
                                                         echo number_format($t_bal_other, 2);
-                                                    ?>
+                                                    @endphp
                                                     {{-- {{$Monthly_history->balance}} --}}
                                                     {{-- @if($Modal_data->disc_transaction_fee)
                                                         {{ number_format($Modal_data->payment_cat->tuition->tuition_amt + $Modal_data->payment_cat->misc_fee->misc_amt , 2)}}
@@ -167,15 +165,15 @@
                                     <tr>                                        
                                         <td><b>Incoming Balance</b></td>
                                         <td>
-                                            <?php 
-                                                $payment = \App\TransactionMonthPaid::where('student_id', $Modal_data->student_id)
+                                            @php 
+                                                $payment = \App\Models\TransactionMonthPaid::where('student_id', $Modal_data->student_id)
                                                     ->where('school_year_id', $Modal_data->school_year_id)
                                                     ->where('isSuccess', 1)
                                                     ->where('approval', 'Approved')
                                                     ->sum('payment');  
                                                     
                                                 $incoming_bal = (($sub_total - $discount) - $payment) - $Monthly_history->payment;
-                                            ?>
+                                            @endphp
                                             <b>{{ number_format($incoming_bal, 2)}}</b>
                                             {{-- <b>{{ $current_bal }}</b> --}}
                                         </td>                                    

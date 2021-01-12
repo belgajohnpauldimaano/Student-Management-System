@@ -2,18 +2,18 @@
 
 namespace App\Http\Controllers\Control_Panel;
 
-use App\User;
-use App\DateRemark;
-use App\Enrollment;
-use App\SchoolYear;
-use App\ClassDetail;
+use App\Models\User;
 use App\Traits\HasUser;
-use App\StudentInformation;
+use App\Models\DateRemark;
+use App\Models\Enrollment;
+use App\Models\SchoolYear;
+use App\Models\ClassDetail;
 use Illuminate\Http\Request;
-use App\StudentEnrolledSubject;
+use App\Models\StudentInformation;
 use App\Traits\hasIncomingStudents;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use App\Models\StudentEnrolledSubject;
 
 class StudentController extends Controller
 {
@@ -24,25 +24,20 @@ class StudentController extends Controller
         $IncomingStudentCount = $this->IncomingStudentCount();
         $isAdmin = $this->isAdmin();
 
+        $StudentInformation = StudentInformation::with(['user', 'enrolled_class'])
+            ->where(function ($query) use ($request) {
+                $query->where('first_name', 'like', '%'.$request->search.'%');
+                $query->orWhere('middle_name', 'like', '%'.$request->search.'%');
+                $query->orWhere('last_name', 'like', '%'.$request->search.'%');
+            })
+            ->orderBY('last_name', 'ASC')
+            ->paginate(10);
+
         if($request->ajax())
         {
-            $StudentInformation = StudentInformation::with(['user', 'enrolled_class'])
-                // ->where('status', 1)
-                ->orderBY('last_name', 'ASC')
-                ->where(function ($query) use ($request) {
-                    $query->where('first_name', 'like', '%'.$request->search.'%');
-                    $query->orWhere('middle_name', 'like', '%'.$request->search.'%');
-                    $query->orWhere('last_name', 'like', '%'.$request->search.'%');
-                })
-                // ->orWhere('first_name', 'like', '%'.$request->search.'%')
-                ->paginate(10);
-            // return json_encode(['student_info' => $StudentInformation]);
             return view('control_panel.student_information.partials.data_list', compact('StudentInformation','isAdmin'))->render();
         }
 
-        $StudentInformation = StudentInformation::with(['user', 'enrolled_class'])
-            // ->where('status', 1)
-            ->orderBY('last_name', 'ASC')->paginate(10);
         // return json_encode(['student_info' => $StudentInformation]);
         return view('control_panel.student_information.index', compact('StudentInformation','IncomingStudentCount','isAdmin'));
     }
@@ -308,9 +303,89 @@ class StudentController extends Controller
 
                 // return json_encode($Enrollment);
 
-                if($semester==1 || $semester==2) 
-                {
-                      $Enrollment = Enrollment::join('class_details', 'class_details.id', '=', 'enrollments.class_details_id')
+                // if($semester==1 || $semester==2) 
+                // {
+                //       $Enrollment = Enrollment::join('class_details', 'class_details.id', '=', 'enrollments.class_details_id')
+                //         ->join('class_subject_details', 'class_subject_details.class_details_id', '=', 'class_details.id')
+                //         ->join('rooms', 'rooms.id', '=', 'class_details.room_id')
+                //         ->join('faculty_informations', 'faculty_informations.id', '=', 'class_subject_details.faculty_id')
+                //         ->join('section_details', 'section_details.id', '=', 'class_details.section_id')
+                //         ->join('subject_details', 'subject_details.id', '=', 'class_subject_details.subject_id')
+                //         ->where('student_information_id', $StudentInformation->id)
+                //         ->where('class_subject_details.status', '!=', 0)
+                //         ->where('enrollments.status', 1)
+                //         ->where('class_details.status', 1)
+                //         ->where('class_details.school_year_id', $ClassDetail->school_year_id)
+                //         ->where('class_subject_details.sem', $semester)
+                //         ->select(\DB::raw("
+                //             enrollments.id as enrollment_id,
+                //             enrollments.j_lacking_unit,
+                //             enrollments.s1_lacking_unit,
+                //             enrollments.s2_lacking_unit,
+                //             enrollments.eligible_transfer,
+                //             enrollments.attendance,
+                //             enrollments.attendance_first,enrollments.attendance_second,
+                //             class_details.grade_level,
+                //             class_subject_details.id as class_subject_details_id,
+                //             class_subject_details.class_days,
+                //             class_subject_details.class_time_from,
+                //             class_subject_details.class_time_to,
+                //             class_subject_details.status as grade_status,
+                //             CONCAT(faculty_informations.last_name, ', ', faculty_informations.first_name, ' ', faculty_informations.middle_name) as faculty_name,
+                //             faculty_informations.e_signature,
+                //             subject_details.id AS subject_id,
+                //             subject_details.subject_code,
+                //             subject_details.subject,
+                //             rooms.room_code,
+                //             section_details.section,
+                //             class_details.school_year_id as school_year_id
+                //         "))
+                //         ->orderBy('class_subject_details.class_subject_order', 'ASC')
+                //         ->get();    
+                        
+                //         // return json_encode($Enrollment);
+                // }
+                // else
+                // {
+                //     $Enrollment = Enrollment::join('class_details', 'class_details.id', '=', 'enrollments.class_details_id')
+                //     ->join('class_subject_details', 'class_subject_details.class_details_id', '=', 'class_details.id')
+                //     ->join('rooms', 'rooms.id', '=', 'class_details.room_id')
+                //     ->join('faculty_informations', 'faculty_informations.id', '=', 'class_subject_details.faculty_id')
+                //     ->join('section_details', 'section_details.id', '=', 'class_details.section_id')
+                //     ->join('subject_details', 'subject_details.id', '=', 'class_subject_details.subject_id')
+                //     ->where('student_information_id', $StudentInformation->id)
+                //     ->where('class_subject_details.status', '!=', 0)
+                //     ->where('enrollments.status', 1)
+                //     ->where('class_details.status', 1)
+                //     ->where('class_details.school_year_id', $ClassDetail->school_year_id)
+                //     ->select(\DB::raw("
+                //         enrollments.id as enrollment_id,
+                //         enrollments.j_lacking_unit,
+                //         enrollments.s1_lacking_unit,
+                //         enrollments.s2_lacking_unit,
+                //         enrollments.eligible_transfer,
+                //         enrollments.attendance,
+                //         enrollments.attendance_first,enrollments.attendance_second,
+                //         class_details.grade_level,
+                //         class_subject_details.id as class_subject_details_id,
+                //         class_subject_details.class_days,
+                //         class_subject_details.class_time_from,
+                //         class_subject_details.class_time_to,
+                //         class_subject_details.status as grade_status,
+                //         CONCAT(faculty_informations.last_name, ', ', faculty_informations.first_name, ' ', faculty_informations.middle_name) as faculty_name,
+                //         faculty_informations.e_signature,
+                //         subject_details.id AS subject_id,
+                //         subject_details.subject_code,
+                //         subject_details.subject,
+                //         rooms.room_code,
+                //         section_details.section,
+                //         class_details.school_year_id as school_year_id
+                //     "))
+                //     ->orderBy('class_subject_details.class_subject_order', 'ASC')
+                //     ->get();
+                // }
+                
+                 $Enrollment = Enrollment::join('class_details', 'class_details.id', '=', 'enrollments.class_details_id')
                         ->join('class_subject_details', 'class_subject_details.class_details_id', '=', 'class_details.id')
                         ->join('rooms', 'rooms.id', '=', 'class_details.room_id')
                         ->join('faculty_informations', 'faculty_informations.id', '=', 'class_subject_details.faculty_id')
@@ -347,47 +422,6 @@ class StudentController extends Controller
                         "))
                         ->orderBy('class_subject_details.class_subject_order', 'ASC')
                         ->get();    
-                        
-                        // return json_encode($Enrollment);
-                }
-                else
-                {
-                    $Enrollment = Enrollment::join('class_details', 'class_details.id', '=', 'enrollments.class_details_id')
-                    ->join('class_subject_details', 'class_subject_details.class_details_id', '=', 'class_details.id')
-                    ->join('rooms', 'rooms.id', '=', 'class_details.room_id')
-                    ->join('faculty_informations', 'faculty_informations.id', '=', 'class_subject_details.faculty_id')
-                    ->join('section_details', 'section_details.id', '=', 'class_details.section_id')
-                    ->join('subject_details', 'subject_details.id', '=', 'class_subject_details.subject_id')
-                    ->where('student_information_id', $StudentInformation->id)
-                    ->where('class_subject_details.status', '!=', 0)
-                    ->where('enrollments.status', 1)
-                    ->where('class_details.status', 1)
-                    ->where('class_details.school_year_id', $ClassDetail->school_year_id)
-                    ->select(\DB::raw("
-                        enrollments.id as enrollment_id,
-                        enrollments.j_lacking_unit,
-                        enrollments.eligible_transfer,
-                        enrollments.attendance,
-                        enrollments.attendance_first,enrollments.attendance_second,
-                        class_details.grade_level,
-                        class_subject_details.id as class_subject_details_id,
-                        class_subject_details.class_days,
-                        class_subject_details.class_time_from,
-                        class_subject_details.class_time_to,
-                        class_subject_details.status as grade_status,
-                        CONCAT(faculty_informations.last_name, ', ', faculty_informations.first_name, ' ', faculty_informations.middle_name) as faculty_name,
-                        faculty_informations.e_signature,
-                        subject_details.id AS subject_id,
-                        subject_details.subject_code,
-                        subject_details.subject,
-                        rooms.room_code,
-                        section_details.section,
-                        class_details.school_year_id as school_year_id
-                    "))
-                    ->orderBy('class_subject_details.class_subject_order', 'ASC')
-                    ->get();
-                }
-                
                     
 
                 $SchoolYear = SchoolYear::whereId($ClassDetail->school_year_id)

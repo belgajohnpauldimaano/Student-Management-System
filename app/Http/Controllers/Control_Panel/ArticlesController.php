@@ -2,15 +2,13 @@
 
 namespace App\Http\Controllers\Control_Panel;
 
+use Auth;
+use File;
+use Validator;
+use Carbon\Carbon;
+use App\Models\Article;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-
-use Validator;
-use File;
-use Carbon\Carbon;
-use Auth;
-
-use App\Article;
 
 class ArticlesController extends Controller
 {
@@ -18,10 +16,10 @@ class ArticlesController extends Controller
     {
         if ($request->ajax())
         {
-            $Article = \App\Article::where('status', 1)->where('title', 'like', '%'.$request->search.'%')->paginate(10);
+            $Article = Article::where('status', 1)->where('title', 'like', '%'.$request->search.'%')->paginate(10);
             return view('control_panel.articles.partials.data_list', compact('Article'))->render();
         }
-        $Article = \App\Article::where('status', 1)->paginate(10);
+        $Article = Article::where('status', 1)->paginate(10);
         return view('control_panel.articles.index', compact('Article'));
     }
 
@@ -30,7 +28,7 @@ class ArticlesController extends Controller
         $Article = NULL;
         if ($request->id)
         {
-            $Article = \App\Article::where('id', $request->id)->first();
+            $Article = Article::where('id', $request->id)->first();
         }
         return view('control_panel.articles.partials.modal_data', compact('Article'))->render();
     }

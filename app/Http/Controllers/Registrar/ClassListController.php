@@ -2,14 +2,14 @@
 
 namespace App\Http\Controllers\Registrar;
 
-use App\Room;
-use App\Strand;
-use App\GradeLevel;
-use App\SchoolYear;
-use App\ClassDetail;
-use App\SectionDetail;
-use App\SubjectDetail;
-use App\FacultyInformation;
+use App\Models\Room;
+use App\Models\Strand;
+use App\Models\GradeLevel;
+use App\Models\SchoolYear;
+use App\Models\ClassDetail;
+use App\Models\SectionDetail;
+use App\Models\SubjectDetail;
+use App\Models\FacultyInformation;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
@@ -19,52 +19,25 @@ class ClassListController extends Controller
     {
         $SchoolYear = SchoolYear::where('status', 1)->where('current', 1)->first();
 
-        $ClassDetail = ClassDetail::join('section_details', 'section_details.id', '=' ,'class_details.section_id')
-            ->join('rooms', 'rooms.id', '=' ,'class_details.room_id')
-            ->leftJoin('faculty_informations', 'faculty_informations.id', '=' ,'class_details.adviser_id')
-            ->join('school_years', 'school_years.id', '=' ,'class_details.school_year_id')
-            ->selectRaw('
-                class_details.id,
-                class_details.section_id,
-                class_details.room_id,
-                class_details.school_year_id,
-                class_details.grade_level,
-                class_details.current,
-                section_details.section,
-                section_details.grade_level as section_grade_level,
-                school_years.school_year,
-                school_years.id as schoolyearid,
-                rooms.room_code,
-                rooms.room_description,
-                CONCAT(faculty_informations.last_name, ", ", faculty_informations.first_name, " " ,  faculty_informations.middle_name) AS adviser_name
-            ')
-            ->where('section_details.status', 1)
-            ->where('class_details.current', 1)
-            ->where('class_details.status', 1)
-            ->where('school_year_id', $request->sy_search ? $request->sy_search : $SchoolYear->id)
-            ->where(function ($query) use($request) {
-                if ($request->sy_search) 
-                {
-                    $query->where('school_years.id', $request->sy_search);
-                }
+        $ClassDetail = ClassDetail::with(['section','room','schoolYear','adviserData'])
+            ->whereCurrent(1)
+            ->whereStatus(1)
+            ->whereSchoolYearId($request->sy_search ? $request->sy_search : $SchoolYear->id)
+            ->WhereHas('section', function($query) use ($request) {
                 if ($request->search) 
                 {
-                    $query->orWhere('section_details.section', 'like', '%' . $request->search . '%');
-                    $query->orWhere('rooms.room_code', 'like', '%' . $request->search . '%');
+                    $query->where('section', 'like', '%' . $request->search . '%');
                 }
-            });
+            })
+            ->paginate(10);
+
         if ($request->ajax())
         {            
-            $ClassDetail = $ClassDetail->paginate(10);
-            // return json_encode($ClassDetail);
             return view('control_panel_registrar.class_details.partials.data_list', compact('ClassDetail'))->render();
         }
 
         $SchoolYear = SchoolYear::where('status', 1)->orderBy('school_year', 'DESC')->get();
 
-        $ClassDetail = $ClassDetail->paginate(10);
-        
-        // return json_encode($ClassDetail);
         return view('control_panel_registrar.class_details.index', compact('ClassDetail', 'SchoolYear'));
     }
     public function modal_data (Request $request) 

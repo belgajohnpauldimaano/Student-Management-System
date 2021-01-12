@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers\Finance\Maintenance;
 
-use App\MiscFee;
-use App\OtherFee;
-use App\GradeLevel;
-use App\TuitionFee;
-use App\PaymentCategory;
-use App\StudentCategory;
+use App\Models\MiscFee;
+use App\Models\OtherFee;
+use App\Models\GradeLevel;
+use App\Models\TuitionFee;
+use App\Models\PaymentCategory;
+use App\Models\StudentCategory;
 use Illuminate\Http\Request;
 use App\Traits\hasNotYetApproved;
 use App\Http\Controllers\Controller;

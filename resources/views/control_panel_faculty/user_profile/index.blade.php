@@ -33,7 +33,7 @@
                     <p class="text-muted text-center">Faculty Member</p>
                     <div class="form-group">
                         <label for="">Department</label>
-                        <div class="form-control">{{ collect(\App\FacultyInformation::DEPARTMENTS)->firstWhere('id', $Profile->department_id)['department_name'] }}</div>
+                        <div class="form-control">{{ collect(\App\Models\FacultyInformation::DEPARTMENTS)->firstWhere('id', $Profile->department_id)['department_name'] }}</div>
                     </div>
                     <div class="form-group">
                         <label for="">Contact Number</label>

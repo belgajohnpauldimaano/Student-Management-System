@@ -21,25 +21,58 @@
                     <td>{{ $hasUser == 1 ? $data->username : $data->user->username }}</td>
                     <td>{{ ($data->gender == 1 ? 'Male' : 'Female') }}</td>
                     <td>
-                        @if($data->student_balance)
-                            {{ number_format($data->student_balance->balance, 2) }}
+                        @if($sy_transaction)
+                            @php
+                                $transactionSchoolYear->where('school_year_id', $sy_transaction)->first();
+                                $sub = $transactionMonth->where('student_id', $data->id)
+                                    ->where('school_year_id', $sy_transaction)
+                                    ->whereApproval('Approved')->orderBY('id', 'DESC')->first();
+                                if($sub){
+                                    echo number_format($sub->balance, 2);
+                                }else{
+                                    echo '<span class="label label-warning">
+                                        None
+                                    </span> ';
+                                }
+                            @endphp
                         @else
-                            <span class="label label-warning">
-                                None
-                            </span> 
+                            @if($data->student_balance)
+                                {{ number_format($data->student_balance->balance, 2) }}
+                            @else
+                                <span class="label label-warning">
+                                    None
+                                </span> 
+                            @endif
                         @endif
                     </td>
                     <td style="color: red">
-                        {{-- {{ $data->transactions}} --}}
-                        @if($data->transactions)
-                                                            <span class="label {{ $data->transactions->status == 0 ? 'label-success' : 'label-danger' }}">
-                                                                {{ $data->transactions->status == 0 ? 'Paid' : 'Not-Paid' }}
-                                                            </span>
-                                                        @else
-                                                            <span class="label label-danger">
-                                                                 Not-Paid
-                                                            </span>
-                                                        @endif   
+                        @if($sy_transaction)
+                            @php
+                                $sub_sy =  $transactionSchoolYear->where('student_id', $data->id)
+                                    ->where('school_year_id', $sy_transaction)->first();
+                                if($sub_sy){
+                                    echo '<span class="label ';
+                                        echo $sub_sy->status == 0 ? 'label-success' : 'label-danger';
+                                        echo '">';
+                                    echo $sub_sy->status == 0 ? 'Paid' : 'Not-Paid';
+                                    echo '</span>';
+                                }else{
+                                    echo '<span class="label label-warning">
+                                        None
+                                    </span> ';
+                                }
+                            @endphp
+                        @else
+                            @if($data->transactions)
+                                <span class="label {{ $data->transactions->status == 0 ? 'label-success' : 'label-danger' }}">
+                                    {{ $data->transactions->status == 0 ? 'Paid' : 'Not-Paid' }}
+                                </span>
+                            @else
+                                <span class="label label-danger">
+                                    Not-Paid
+                                </span>
+                            @endif   
+                        @endif
                     </td>
                     <td>
                         <span class="badge {{ $data->status == 1 ? 'bg-green' : 'bg-red' }}">
@@ -48,12 +81,12 @@
                     </td>
                     <td>
                         <div class="input-group-btn pull-left text-left">
-                            @if(!$Transaction)                                                                 
-                                <a href="{{ route('finance.student_payment_account') }}?c={{ encrypt($data->id) }}&school_year={{ $data->school_year_id }}&class_details={{ $data->class_details_id }}"
+                            @if(!$Transaction)
+                                <a href="{{ route('finance.student_payment_account') }}?c={{ encrypt($data->id) }}&school_year={{ $sy_transaction }}&class_details={{ $data->class_details_id }}"
                                     class="btn btn-flat btn-primary btn-sm"
                                 >
                                     Account
-                                </a>   
+                                </a
                             @endif                                                    
                         </div>
                     </td>

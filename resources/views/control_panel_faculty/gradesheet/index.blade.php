@@ -21,15 +21,14 @@
 
                 <form id="js-form_filter">
                     {{ csrf_field() }}
-                    <div class="form-group col-sm-12 col-md-3" style="padding-right:0">
+                    <div class="form-group col-sm-12 col-md-3" style="padding-left:0;padding-right:0">
                         <select name="search_school_year" id="search_school_year" class="form-control">
                             @foreach ($SchoolYear as $data)
                                 <option value="{{ encrypt($data->id) }}">{{ $data->school_year }}</option>
                             @endforeach
                         </select>
                     </div> 
-                    &nbsp;
-                    <div class="form-group col-sm-12 col-md-4" style="padding-right:0">
+                    <div class="form-group col-sm-12 col-md-4" style="padding-left:0;padding-right:0">
                         <select name="semester_grades" id="semester_grades" class="form-control">                            
                             <option value="">Select Semester</option>
                             <option value="1st">First Semester</option>
@@ -37,13 +36,11 @@
                             <option value="3rd">Average</option>                      
                         </select>
                     </div>                
-                    &nbsp;
-                    <div class="form-group col-sm-12 col-md-4" style="padding-right:0">
+                    <div class="form-group col-sm-12 col-md-4" style="padding-left:0;padding-right:0">
                         <select name="quarter" id="quarter" class="form-control">
                             <option value="">Select Class Quarter</option>
                         </select>
                     </div>                
-                    &nbsp;
                     <button type="submit" class="btn btn-flat btn-success">Search</button>
                 </form>
             </div>
@@ -57,7 +54,7 @@
                 </div>                   
                 <form id="js-form_search">                    
                     {{ csrf_field() }}
-                    <div class="form-group col-sm-12 col-md-3" style="padding-right:0">
+                    <div class="form-group col-sm-12 col-md-3" style="padding-left:0;padding-right:0">
                         <select name="search_sy" id="search_sy" class="form-control">
                             @foreach ($SchoolYear as $data)
                                 <option value="{{ encrypt($data->id) }}">{{ $data->school_year }}</option>
@@ -65,7 +62,7 @@
                         </select>
                     </div> 
                     &nbsp;
-                    <div class="form-group col-sm-12 col-md-4" style="padding-right:0">
+                    <div class="form-group col-sm-12 col-md-4" style="padding-left:0;padding-right:0">
                         <select name="quarter_grades" id="quarter_grades" class="form-control">
                             <option value="">Select Class Quarter</option>       
                             <option value="1st">First Quarter</option>
@@ -146,12 +143,10 @@
 
             if ($('#search_school_year').val() && $('#semester_grades').val() && $('#quarter').val()) {
                 fetchGrades(formData);
-            }
-            
+            }            
         });
 
-        $(function(){
-            
+        $(function(){            
             $('body').on('change', '#search_school_year', function () {
                 $.ajax({
                     url : "{{ route('faculty.MyAdvisoryClass.list_class_subject_details') }}",

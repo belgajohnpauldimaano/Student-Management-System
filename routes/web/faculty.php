@@ -1,7 +1,7 @@
 <?php
 
-Route::group(['prefix' => 'faculty', 'middleware' => ['auth', 'userroles'], 'roles' => ['faculty']], function() {
-    
+Route::group(['prefix' => 'faculty', 'middleware' => 'auth', 'roles' => ['admin', 'root', 'faculty']], function() {
+
     Route::get('dashboard', 'Faculty\FacultyDashboardController@index')->name('faculty.dashboard');
     
     Route::group(['prefix' => 'subject-class'], function() {

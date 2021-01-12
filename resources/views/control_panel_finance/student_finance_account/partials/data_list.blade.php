@@ -33,15 +33,15 @@
                                 <td>{{$data->student_level}}</td>
                                 <td>
                                     
-                                    <?php 
-                                        $bal = \App\TransactionMonthPaid::where('transaction_id', $data->transactions_id)
+                                    @php 
+                                        $bal = \App\Models\TransactionMonthPaid::where('transaction_id', $data->transactions_id)
                                             ->where('approval', 'Approved')
                                             ->ORDERBY('id', 'DESC')
                                             ->first();
 
-                                        $other_fee_amt = \App\OtherFee::where('id', $data->other_fee_id)->first()->other_fee_amt;
+                                        $other_fee_amt = \App\Models\OtherFee::where('id', $data->other_fee_id)->first()->other_fee_amt;
                                         
-                                        $Discount_amt = \App\TransactionDiscount::where('student_id', $data->student_id)
+                                        $Discount_amt = \App\Models\TransactionDiscount::where('student_id', $data->student_id)
                                             ->where('school_year_id', $data->school_year_id)
                                             ->where('isSuccess', 1)
                                             ->sum('discount_amt');                                        
@@ -51,7 +51,7 @@
                                         }else{
                                             echo number_format(($data->tuition_amt + $data->misc_amt + $other_fee_amt) - ($Discount_amt),2);
                                         }                        
-                                    ?>
+                                    @endphp
                                 </td>
                                 <td>
                                     <span class="label label-danger">
@@ -96,15 +96,15 @@
                                 <td>{{$data->student_name}}</td>
                                 <td>{{$data->student_level}}</td>
                                 <td>
-                                    <?php 
-                                        $bal = \App\TransactionMonthPaid::where('transaction_id', $data->transactions_id)
+                                    @php 
+                                        $bal = \App\Models\TransactionMonthPaid::where('transaction_id', $data->transactions_id)
                                             ->where('approval', 'Approved')
                                             ->ORDERBY('id', 'DESC')
                                             ->first();
 
-                                        $other_fee_amt = \App\OtherFee::where('id', $data->other_fee_id)->first()->other_fee_amt;
+                                        $other_fee_amt = \App\Models\OtherFee::where('id', $data->other_fee_id)->first()->other_fee_amt;
                                         
-                                        $Discount_amt = \App\TransactionDiscount::where('student_id', $data->student_id)
+                                        $Discount_amt = \App\Models\TransactionDiscount::where('student_id', $data->student_id)
                                             ->where('school_year_id', $data->school_year_id)
                                             ->where('isSuccess', 1)
                                             ->sum('discount_amt');                                        
@@ -114,7 +114,7 @@
                                         }else{
                                             echo number_format(($data->tuition_amt + $data->misc_amt + $other_fee_amt) - ($Discount_amt),2);
                                         }                             
-                                    ?>
+                                    @endphp
                                 </td>
                                 <td>
                                     <span class="label label-success">

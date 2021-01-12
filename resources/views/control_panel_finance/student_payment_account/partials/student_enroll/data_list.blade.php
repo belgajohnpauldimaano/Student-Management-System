@@ -83,12 +83,12 @@
                         <div class="checkbox" style="margin-top: -2.5px;">
                             @foreach ($Discount as $item)                
                                 <label>                      
-                                    <?php 
-                                    $hasAlreadyDiscount = \App\TransactionDiscount::where('student_id', $StudentInformation->id)
-                                        ->where('school_year_id', $SchoolYear->id)->where('discount_type', $item->disc_type)
-                                        ->where('isSuccess', 1)
-                                        ->first();
-                                    ?>
+                                    @php 
+                                        $hasAlreadyDiscount = \App\Models\TransactionDiscount::where('student_id', $StudentInformation->id)
+                                            ->where('school_year_id', $School_year_id)->where('discount_type', $item->disc_type)
+                                            ->where('isSuccess', 1)
+                                            ->first();
+                                    @endphp
                                     <input type="checkbox" {{$hasAlreadyDiscount ? 'disabled' : ''  }} class="discountSelected" name="discount[]" value="{{$item->id}}"
                                     data-type="{{$item->disc_type}}" 
                                     data-fee="{{$item->disc_amt}}">

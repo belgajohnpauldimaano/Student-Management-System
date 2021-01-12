@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers\Control_Panel;
 
+use App\Models\User;
 use App\Traits\HasUser;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Models\RegistrarInformation;
 
 class RegistrarController extends Controller
 {
@@ -14,7 +16,7 @@ class RegistrarController extends Controller
         $isAdmin = $this->isAdmin();
         if ($request->ajax())
         {
-            $RegistrarInformation = \App\RegistrarInformation::with(['user'])->where('status', 1)
+            $RegistrarInformation = RegistrarInformation::with(['user'])->where('status', 1)
             ->where(function ($query) use ($request) {
                 $query->where('first_name', 'like', '%'.$request->search.'%');
                 $query->orWhere('middle_name', 'like', '%'.$request->search.'%');
@@ -24,7 +26,7 @@ class RegistrarController extends Controller
             ->paginate(10);
             return view('control_panel.registrar_information.partials.data_list', compact('RegistrarInformation','isAdmin'))->render();
         }
-        $RegistrarInformation = \App\RegistrarInformation::with(['user'])->where('status', 1)->paginate(10);
+        $RegistrarInformation = RegistrarInformation::with(['user'])->where('status', 1)->paginate(10);
         return view('control_panel.registrar_information.index', compact('RegistrarInformation','isAdmin'));
     }
     public function modal_data (Request $request) 
@@ -32,7 +34,7 @@ class RegistrarController extends Controller
         $RegistrarInformation = NULL;
         if ($request->id)
         {
-            $RegistrarInformation = \App\RegistrarInformation::with(['user'])->where('id', $request->id)->first();
+            $RegistrarInformation = RegistrarInformation::with(['user'])->where('id', $request->id)->first();
         }
         return view('control_panel.registrar_information.partials.modal_data', compact('RegistrarInformation'))->render();
     }
@@ -56,8 +58,8 @@ class RegistrarController extends Controller
         
         if ($request->id)
         {
-            $RegistrarInformation = \App\RegistrarInformation::where('id', $request->id)->first();
-            $User = \App\User::where('username', $request->username)->where('id', '!=', $RegistrarInformation->user_id)->first();
+            $RegistrarInformation = RegistrarInformation::where('id', $request->id)->first();
+            $User = User::where('username', $request->username)->where('id', '!=', $RegistrarInformation->user_id)->first();
             if ($User) 
             {
                 return response()->json(['res_code' => 1,'res_msg' => 'Username already used.']);
@@ -69,13 +71,13 @@ class RegistrarController extends Controller
             return response()->json(['res_code' => 0, 'res_msg' => 'Data successfully saved.']);
         }
 
-        $User = new \App\User();
+        $User = new User();
         $User->username = $request->username;
         $User->password = bcrypt($request->first_name . '.' . $request->last_name);
         $User->role     = 3;
         $User->save();
 
-        $RegistrarInformation = new \App\RegistrarInformation();
+        $RegistrarInformation = new RegistrarInformation();
         $RegistrarInformation->first_name = $request->first_name;
         $RegistrarInformation->middle_name = $request->middle_name;
         $RegistrarInformation->last_name = $request->last_name;
@@ -86,14 +88,14 @@ class RegistrarController extends Controller
     }
     public function deactivate_data (Request $request) 
     {
-        $RegistrarInformation = \App\RegistrarInformation::where('id', $request->id)->first();
+        $RegistrarInformation = RegistrarInformation::where('id', $request->id)->first();
 
         if ($RegistrarInformation)
         {
             $RegistrarInformation->status = 0;
             $RegistrarInformation->save();
 
-            $User = \App\User::where('id', $RegistrarInformation->user_id)->first();
+            $User = User::where('id', $RegistrarInformation->user_id)->first();
             if ($User)
             {
                 $User->status = 0;

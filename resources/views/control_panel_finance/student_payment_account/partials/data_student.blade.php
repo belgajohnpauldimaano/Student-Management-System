@@ -26,7 +26,15 @@
     <!-- /.col -->
     <div class="col-sm-3 invoice-col">
         <label for="">School Year: </label>
-        <p style="margin-top: -5px">{{ $SchoolYear->school_year }}</p>
+        <p style="margin-top: -5px">
+            @php
+                try {
+                    echo $SchoolYear->school_year;
+                } catch (\Throwable $th) {
+                    echo $School_year_id;
+                }
+            @endphp
+        </p>
         {{-- <input type="hidden" name="school_year_id" value="{{ $SchoolYear->school_year_id }}"> --}}
 
         <label for="">Payment Status: </label>
@@ -49,17 +57,18 @@
         </p>
         
         <label for="">
-            <?php 
+            @php 
                 try {
                     echo $Transaction->id ? 'Enrolled in ' : 'Incoming';
                 } catch (\Throwable $th) {
                     echo 'Incoming';
                 }   
-            ?> Grade-level:
+            @endphp Grade-level:
         </label>
 
         <p style="margin-top: -5px">            
             {{ $ClassDetail == '0' ? '' : $ClassDetail->section->section.' - ' }} {{ $grade_level_id ? $grade_level_id : 'none' }}
+            {{-- {{ $ClassDetail }} --}}
         </p>
         
     </div>

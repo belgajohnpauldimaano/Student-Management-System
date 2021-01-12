@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Finance\Maintenance;
 
-use App\DiscountFee;
+use App\Models\DiscountFee;
 use Illuminate\Http\Request;
 use App\Traits\hasNotYetApproved;
 use App\Http\Controllers\Controller;

@@ -154,8 +154,7 @@
     <script>
         $('.datepicker').datepicker({
             autoclose: true
-        }) 
-        
+        })        
 
         var page = 1;
         function fetch_data () {
@@ -173,9 +172,7 @@
                     $('.js-data-container').html(res);
                 }
             });
-        }
-
-        
+        }       
 
         $('body').on('click', '.btn-approve', function (e) {
                 e.preventDefault();

@@ -110,7 +110,7 @@
     <table class="table-student-info" style="margin-top: 15px; margin-bottom: 10px">
         <tr>
             <td>Student name: <strong>{{ $TransactionOther[0]->student_name }}</strong></td>
-            <td style="text-align: right">Date: {{  now()->toDateTimeString('Y-m-d') }}</td>
+            <td style="text-align: right">Date: {{ $now }}</td>
         </tr>
         <tr>
             <td>School Year: <strong>{{ $TransactionOther[0]->school_year }}</strong></td>

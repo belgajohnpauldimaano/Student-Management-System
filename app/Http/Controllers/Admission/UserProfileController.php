@@ -3,9 +3,11 @@
 namespace App\Http\Controllers\Admission;
 
 use Illuminate\Http\Request;
-use App\AdmissionInformation;
 use App\Traits\hasIncomingStudents;
 use App\Http\Controllers\Controller;
+use App\Models\AdmissionInformation;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 
 class UserProfileController extends Controller
 {
@@ -13,7 +15,7 @@ class UserProfileController extends Controller
     
     public function view_my_profile (Request $request)
     {
-        $User = \Auth::user();
+        $User = Auth::user();
         $Profile = AdmissionInformation::where('user_id', $User->id)->first();
         $IncomingStudentCount = $this->IncomingStudentCount();
         
@@ -21,7 +23,7 @@ class UserProfileController extends Controller
     }
     public function fetch_profile (Request $request)
     {
-        $User = \Auth::user();
+        $User = Auth::user();
         $Profile = AdmissionInformation::where('user_id', $User->id)->first();
         // return json_encode($Profile);
         return response()->json(['res_code' => 0, 'res_msg' => '', 'Profile' => $Profile]);
@@ -40,7 +42,7 @@ class UserProfileController extends Controller
         {   
             return response()->json(['res_code' => 1, 'res_msg' => 'Please fill all required fields.', 'res_error_msg' => $validator->getMessageBag()]);
         }
-        $User = \Auth::user();
+        $User = Auth::user();
         $Profile = AdmissionInformation::where('user_id', $User->id)->first();
 
         $Profile->first_name = $request->first_name;
@@ -68,7 +70,7 @@ class UserProfileController extends Controller
         $destinationPath = public_path('/img/account/photo/');
         $request->user_photo->move($destinationPath, $name);
 
-        $User = \Auth::user();
+        $User = Auth::user();
         $Profile = AdmissionInformation::where('user_id', $User->id)->first();
 
         if ($Profile->photo) 
@@ -109,11 +111,10 @@ class UserProfileController extends Controller
             return response()->json(['res_code' => 1, 'res_msg' => 'Please fill all required fields.', 'res_error_msg' => $validator->getMessageBag()]);
         }
         // return json_encode(['aa' => \Auth::user()->password]);
-        if (\Hash::check($request->old_password, \Auth::user()->password))
+        if (Hash::check($request->old_password, \Auth::user()->password))
         {
-            \Auth::user()->password = bcrypt($request->password);
-            \Auth::user()->save();
-            
+            Auth::user()->password = bcrypt($request->password);
+            Auth::user()->save();
             
             return response()->json(['res_code' => 0, 'res_msg' => 'Password successfully changed.']);
         }

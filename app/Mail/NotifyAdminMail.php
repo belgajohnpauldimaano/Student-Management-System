@@ -6,8 +6,8 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Contracts\Queue\ShouldQueue;
-use App\Transaction;
-use App\PaymentCategory;
+use App\Models\Transaction;
+use App\Models\PaymentCategory;
 
 class NotifyAdminMail extends Mailable
 {

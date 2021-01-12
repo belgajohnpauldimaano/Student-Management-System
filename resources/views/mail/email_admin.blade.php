@@ -17,9 +17,11 @@
         
         <p>You have received an email from {{$email->name}}.</p>
         
-        <p>Email from: {{$email->email}}<br/>
+        <p>
+            Email from: {{$email->email}}<br/>
         Subject: {{$email->subject}}<br/>
-        Message: {{$email->message}}</p>        
+        Message: {{$email->message}}
+    </p>        
            
         
     </div>

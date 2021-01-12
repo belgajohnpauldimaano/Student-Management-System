@@ -2,16 +2,16 @@
 
 namespace App\Http\Controllers\finance\Maintenance;
 
-use App\Enrollment;
-use App\GradeLevel;
-use App\SchoolYear;
-use App\ClassDetail;
-use App\IncomingStudent;
+use App\Models\Enrollment;
+use App\Models\GradeLevel;
+use App\Models\SchoolYear;
+use App\Models\ClassDetail;
+use App\Models\IncomingStudent;
 use Barryvdh\DomPDF\PDF;
-use App\OnlineAppointment;
-use App\StudentInformation;
+use App\Models\OnlineAppointment;
+use App\Models\StudentInformation;
 use Illuminate\Http\Request;
-use App\StudentTimeAppointment;
+use App\Models\StudentTimeAppointment;
 use App\Traits\hasNotYetApproved;
 use Illuminate\Support\Facades\DB;
 use App\Mail\OnlineAppointmentMail;

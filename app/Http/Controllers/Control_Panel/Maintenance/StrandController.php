@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers\Control_Panel\Maintenance;
 
-use App\Strand;
 use App\DateRemark;
 use App\SchoolYear;
+use App\Models\Strand;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
@@ -15,13 +15,12 @@ class StrandController extends Controller
         
         if ($request->ajax())
         {
-            $Strand = Strand::
-            where('status', 1)
+            $Strand = Strand::where('status', 1)
                 ->where('strand', 'like', '%'.$request->search.'%')            
                 ->paginate(10);
+                
             return view('control_panel.strand.partials.data_list', compact('Strand'))->render();
             // $SchoolYear_id = SchoolYear::where('status', 1)->where('school_year', 'like', '%'.$request->search.'%')->paginate(10);
-
             // $SchoolYear = DateRemark::where('status', 1)->where('school_year_id', $SchoolYear_id[0]->id)->paginate(10);
             
         }  

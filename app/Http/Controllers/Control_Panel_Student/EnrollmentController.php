@@ -3,40 +3,41 @@
 namespace App\Http\Controllers\Control_Panel_Student;
 
 use Carbon\Carbon;
-use App\Enrollment;
-use App\SchoolYear;
-use App\TuitionFee;
-use App\ClassDetail;
-
-use App\DiscountFee;
-use App\Transaction;
 use App\Mail\SendMail;
-use App\DownpaymentFee;
-use App\IncomingStudent;
-use App\PaymentCategory;
-use App\StudentInformation;
-use App\TransactionDiscount;
-use App\TransactionOtherFee;
+use App\Models\Enrollment;
+use App\Models\SchoolYear;
+use App\Models\TuitionFee;
+use App\Models\ClassDetail;
+use App\Models\DiscountFee;
+use App\Models\Transaction;
 use Illuminate\Http\Request;
 use App\Mail\NotifyAdminMail;
-use App\TransactionMonthPaid;
+use App\Models\DownpaymentFee;
+use App\Models\IncomingStudent;
+use App\Models\PaymentCategory;
+use App\Models\StudentInformation;
 use Illuminate\Support\Facades\DB;
+use App\Models\TransactionDiscount;
+use App\Models\TransactionOtherFee;
 use App\Http\Controllers\Controller;
+use App\Models\TransactionMonthPaid;
+use Illuminate\Support\Facades\Auth;
 
 class EnrollmentController extends Controller
 {
 
     public function index(Request $request)
     {    
-        $User = \Auth::user();
+        $User = Auth::user();
+        
         $StudentInformation = StudentInformation::where('user_id', $User->id)
             ->first();
+            
         $SchoolYear = SchoolYear::where('current', 1)
             ->where('status', 1)
             ->first();
 
-        $findSchoolYear = ClassDetail::where('school_year_id' , $SchoolYear->id)->first();
-       
+        $findSchoolYear = ClassDetail::where('school_year_id' , $SchoolYear->id)->first();       
         
         // if($findSchoolYear){  
             $IncomingStudentCount = IncomingStudent::where('student_id', $StudentInformation->id)
@@ -170,9 +171,16 @@ class EnrollmentController extends Controller
                         }
                     }
                     
-                    return view('control_panel_student.enrollment.index', 
+                    try {
+                        return view('control_panel_student.enrollment.index', 
                         compact('AlreadyEnrolled','grade_level','GradeSheet', 'ClassDetail','PaymentCategory','Downpayment','sum_total_item','hasOtherfee','isPaid',
                         'Profile','StudentInformation','Tuition','Enrollment','User','SchoolYear','Discount', 'IncomingStudentCount','TransactionDiscount','TransactionDiscountTotal'));
+                    } catch (\Throwable $th) {
+                        return view('control_panel_student.enrollment.index', 
+                        compact('AlreadyEnrolled','GradeSheet', 'ClassDetail','PaymentCategory','Downpayment','isPaid',
+                        'Profile','StudentInformation','Tuition','Enrollment','User','SchoolYear','Discount', 'IncomingStudentCount','TransactionDiscount','TransactionDiscountTotal'));
+                    }
+                    
                     return json_encode(['GradeSheetData' => $GradeSheetData,]);
                         
                 }else{
@@ -662,7 +670,6 @@ class EnrollmentController extends Controller
                     ->where('school_year_id', $request->school_year_id)->where('transaction_id', $Transaction_history[0]->id)
                     ->where('isSuccess', 1)
                     ->get();
-
                 
                 $Other_price = TransactionOtherFee::where('student_id', $request->id)
                     ->where('school_year_id', $request->school_year_id)->where('transaction_id', $Transaction_history[0]->id)
@@ -675,10 +682,9 @@ class EnrollmentController extends Controller
                     $tuition_misc_fee = $Transaction_history[0]->payment_cat->tuition->tuition_amt + $Transaction_history[0]->payment_cat->misc_fee->misc_amt + $Other_price;
                 }
             }
-            
-            
         }
-        return view('control_panel_student.enrollment.partials.modal_data',
+
+       return view('control_panel_student.enrollment.partials.modal_data',
             compact('Discount_amt','Transaction_history','Transaction','Discount','tuition_misc_fee','hasTransaction','OtherFee','payment'))
             ->render();
     }

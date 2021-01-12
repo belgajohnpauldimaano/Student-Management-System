@@ -104,6 +104,7 @@
                         $thi = 0;
                         $fou = 0;
                         $final_g;
+                        $average=0;
                         $i = 1;
                         $divisor = $AdvisorySubject->count();
                     @endphp
@@ -163,16 +164,20 @@
 
                                         if($quarter == '2nd' && $sem == '1st')
                                         {
-                                            $fir += round($sub_grade['fir_g']);
-                                            $sec += round($sub_grade['sec_g']);
-                                            $final_first = round($fir + $sec);
-                                            $div = $divisor * 2;
-                                            $final = $final_first / $div;
+                                            // $fir += round($sub_grade['fir_g']);
+                                            // $sec += round($sub_grade['sec_g']);
+                                            // $final_first = round($fir + $sec);
+                                            // $div = $divisor * 2;
+                                            // $final = $final_first / $div;
                                             
                                             $final_first = round($sub_grade['fir_g'] + $sub_grade['sec_g']) / 2;                                   
                                             echo '<td class="text-center">'.number_format(round($sub_grade['fir_g'])).'</td>';
                                             echo '<td class="text-center">'.number_format(round($sub_grade['sec_g'])).'</td>';
                                             echo '<td class="text-center text-red">'.number_format(round($final_first)).'</td>';
+                                            
+                                            $average += round($final_first);
+                                            $final =  $average / $divisor;
+
                                             if($sub_grade['sec_g'] == 0.00)
                                             {
                                                 $isEmpty = 'na';
@@ -181,16 +186,20 @@
                                                                     
                                         if($quarter == '4th' && $sem == '2nd')
                                         {                                    
-                                            $thi += round($sub_grade['thi_g']);
-                                            $fou += round($sub_grade['fou_g']);
-                                            $final_sec = round($thi + $fou);
-                                            $div = $divisor * 2;
-                                            $final = $final_sec / $div;
+                                            // $thi += round($sub_grade['thi_g']);
+                                            // $fou += round($sub_grade['fou_g']);
+                                            // $final_sec = round($thi + $fou);
+                                            // $div = $divisor * 2;
+                                            // $final = $final_sec / $div;
                                             
                                             $final_sec = round($sub_grade['thi_g'] + $sub_grade['fou_g']) / 2;
                                             echo '<td class="text-center">'.number_format(round($sub_grade['thi_g'])).'</td>';                                
                                             echo '<td class="text-center">'.number_format(round($sub_grade['fou_g'])).'</td>';
                                             echo '<td class="text-center text-red">'.number_format(round($final_sec)).'</td>';
+
+                                            $average += round($final_sec);
+                                            $final =  $average / $divisor;
+
                                             if($sub_grade['fou_g'] == 0.00)
                                             {
                                                 $isEmpty = 'na';
@@ -328,6 +337,7 @@
                         $thi = 0;
                         $fou = 0;
                         $final_g;
+                        $average=0;
                         $i = 1;
                         $divisor = $AdvisorySubject->count();
                     @endphp
@@ -387,16 +397,20 @@
 
                                         if($quarter == '2nd' && $sem == '1st')
                                         {
-                                            $fir += round($sub_grade['fir_g']);
-                                            $sec += round($sub_grade['sec_g']);
-                                            $final_first = round($fir + $sec);
-                                            $div = $divisor * 2;
-                                            $final = $final_first / $div;
+                                            // $fir += round($sub_grade['fir_g']);
+                                            // $sec += round($sub_grade['sec_g']);
+                                            // $final_first = round($fir + $sec);
+                                            // $div = $divisor * 2;
+                                            // $final = $final_first / $div;
                                             
                                             $final_first = round($sub_grade['fir_g'] + $sub_grade['sec_g']) / 2;                                   
                                             echo '<td class="text-center">'.number_format(round($sub_grade['fir_g'])).'</td>';
                                             echo '<td class="text-center">'.number_format(round($sub_grade['sec_g'])).'</td>';
                                             echo '<td class="text-center text-red">'.number_format(round($final_first)).'</td>';
+                                            
+                                            $average += round($final_first);
+                                            $final =  $average / $divisor;
+
                                             if($sub_grade['sec_g'] == 0.00)
                                             {
                                                 $isEmpty = 'na';
@@ -405,16 +419,20 @@
                                                                     
                                         if($quarter == '4th' && $sem == '2nd')
                                         {                                    
-                                            $thi += round($sub_grade['thi_g']);
-                                            $fou += round($sub_grade['fou_g']);
-                                            $final_sec = round($thi + $fou);
-                                            $div = $divisor * 2;
-                                            $final = $final_sec / $div;
+                                            // $thi += round($sub_grade['thi_g']);
+                                            // $fou += round($sub_grade['fou_g']);
+                                            // $final_sec = round($thi + $fou);
+                                            // $div = $divisor * 2;
+                                            // $final = $final_sec / $div;
                                             
                                             $final_sec = round($sub_grade['thi_g'] + $sub_grade['fou_g']) / 2;
                                             echo '<td class="text-center">'.number_format(round($sub_grade['thi_g'])).'</td>';                                
                                             echo '<td class="text-center">'.number_format(round($sub_grade['fou_g'])).'</td>';
                                             echo '<td class="text-center text-red">'.number_format(round($final_sec)).'</td>';
+
+                                            $average += round($final_sec);
+                                            $final =  $average / $divisor;
+
                                             if($sub_grade['fou_g'] == 0.00)
                                             {
                                                 $isEmpty = 'na';

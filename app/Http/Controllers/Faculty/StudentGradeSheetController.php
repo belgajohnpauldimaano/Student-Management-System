@@ -2,28 +2,29 @@
 
 namespace App\Http\Controllers\Faculty;
 
-use App\Enrollment;
-use App\SchoolYear;
-use App\ClassDetail;
-use App\Grade_sheet_first;
-use App\ClassSubjectDetail;
-use App\FacultyInformation;
+use App\Models\Enrollment;
+use App\Models\SchoolYear;
+use App\Models\ClassDetail;
 use Illuminate\Http\Request;
 use App\Traits\HasGradeSheet;
-use App\StudentEnrolledSubject;
+use Illuminate\Support\Facades;
+use App\Models\Grade_sheet_first;
+use App\Models\ClassSubjectDetail;
+use App\Models\FacultyInformation;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;
+use App\Models\StudentEnrolledSubject;
 
 class StudentGradeSheetController extends Controller
 {
     public function index (Request $request)
     {
-        $FacultyInformation = FacultyInformation::where('user_id', \Auth::user()->id)->first();
+        $FacultyInformation = FacultyInformation::where('user_id', Auth::user()->id)->first();
         
         $SchoolYear  = SchoolYear::where('status', 1)->where('current', 1)->orderBy('current', 'ASC')->orderBy('school_year', 'ASC')->get();
-        $class_id = \Crypt::decrypt($request->c);        
+        $class_id = Crypt::decrypt($request->c);        
         $GradeLevel = ClassSubjectDetail::join('class_details', 'class_details.id', '=', 'class_subject_details.class_details_id')            
             ->join('rooms','rooms.id', '=', 'class_details.room_id')
             ->join('section_details', 'section_details.id', '=', 'class_details.section_id')            
@@ -47,7 +48,7 @@ class StudentGradeSheetController extends Controller
 
    public function listQuarterSem (Request $request)
     {
-        $FacultyInformation = FacultyInformation::where('user_id', \Auth::user()->id)->first(); 
+        $FacultyInformation = FacultyInformation::where('user_id', Auth::user()->id)->first(); 
         
         if($request->semester_grades == "3rd")
         {

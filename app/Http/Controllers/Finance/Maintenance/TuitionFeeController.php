@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Finance\Maintenance;
 
+use App\Models\TuitionFee;
 use Illuminate\Http\Request;
 use App\Traits\hasNotYetApproved;
 use App\Http\Controllers\Controller;
@@ -15,12 +16,12 @@ class TuitionFeeController extends Controller
         if ($request->ajax())
         {
             $NotyetApprovedCount = $this->notYetApproved();
-            $TuitionFee = \App\TuitionFee::where('status', 1)->where('tuition_amt', 'like', '%'.$request->search.'%')->paginate(10);
+            $TuitionFee = TuitionFee::where('status', 1)->where('tuition_amt', 'like', '%'.$request->search.'%')->paginate(10);
             return view('control_panel_finance.maintenance.tuition_fee.partials.data_list', compact('TuitionFee','NotyetApprovedCount'))->render();
         }
 
         $NotyetApprovedCount = $this->notYetApproved();
-        $TuitionFee = \App\TuitionFee::where('status', 1)->paginate(10);
+        $TuitionFee = TuitionFee::where('status', 1)->paginate(10);
         return view('control_panel_finance.maintenance.tuition_fee.index', compact('TuitionFee','NotyetApprovedCount'));
     }
 
@@ -29,7 +30,7 @@ class TuitionFeeController extends Controller
         $TuitionFee = NULL;
         if ($request->id)
         {
-            $TuitionFee = \App\TuitionFee::where('id', $request->id)->first();
+            $TuitionFee = TuitionFee::where('id', $request->id)->first();
         }
         return view('control_panel_finance.maintenance.tuition_fee.partials.modal_data', compact('TuitionFee'))->render();
     }
@@ -50,14 +51,14 @@ class TuitionFeeController extends Controller
         // update
         if ($request->id)
         {
-            $TuitionFee = \App\TuitionFee::where('id', $request->id)->first();
+            $TuitionFee = TuitionFee::where('id', $request->id)->first();
             $TuitionFee->tuition_amt = $request->tuition_fee;
             $TuitionFee->current = $request->current_sy;
             $TuitionFee->save();
             return response()->json(['res_code' => 0, 'res_msg' => 'Data successfully saved.']);
         }
         // save
-        $TuitionFee = new \App\TuitionFee();
+        $TuitionFee = new TuitionFee();
         $TuitionFee->tuition_amt = $request->tuition_fee;
         $TuitionFee->current = $request->current_sy;
         $TuitionFee->save();
@@ -66,7 +67,7 @@ class TuitionFeeController extends Controller
 
     public function toggle_current_sy (Request $request)
     {
-        $TuitionFee = \App\TuitionFee::where('id', $request->id)->first();
+        $TuitionFee = TuitionFee::where('id', $request->id)->first();
         if ($TuitionFee) 
         {
             if ($TuitionFee->current == 0) 
@@ -86,7 +87,7 @@ class TuitionFeeController extends Controller
 
     public function deactivate_data (Request $request) 
     {
-        $TuitionFee = \App\TuitionFee::where('id', $request->id)->first();
+        $TuitionFee = TuitionFee::where('id', $request->id)->first();
 
         if ($TuitionFee)
         {

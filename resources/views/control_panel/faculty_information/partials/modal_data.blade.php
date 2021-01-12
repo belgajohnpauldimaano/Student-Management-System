@@ -80,7 +80,7 @@
                         <label for="">Department</label>
                         <select class="form-control" name="department" id="department">
                             <option value="">Select department</option>
-                            @foreach (json_decode(json_encode(\App\FacultyInformation::DEPARTMENTS)) as $department)
+                            @foreach (json_decode(json_encode(\App\Models\FacultyInformation::DEPARTMENTS)) as $department)
                                 {{--  <option value="{{ $department['id'] }}" {{ $department['id'] == $FacultyInformation->department_id ? 'selected' : '' }}</option>{{ $department['department_name'] }}</option>  --}}
                                 <option value="{{ $department->id }}" {{  $FacultyInformation ? ($department->id == $FacultyInformation->department_id ? 'selected' : '') : '' }}>{{ $department->department_name }}</option>
                             @endforeach

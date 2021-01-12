@@ -2,16 +2,16 @@
 
 namespace App\Http\Controllers\Registrar;
 
-use App\Room;
-use App\Semester;
-use App\SchoolYear;
-use App\ClassDetail;
-use App\SectionDetail;
-use App\Subject_Title;
-use App\SubjectDetail;
-use App\TeacherSubject;
-use App\ClassSubjectDetail;
-use App\FacultyInformation;
+use App\Models\Room;
+use App\Models\Semester;
+use App\Models\SchoolYear;
+use App\Models\ClassDetail;
+use App\Models\SectionDetail;
+use App\Models\Subject_Title;
+use App\Models\SubjectDetail;
+use App\Models\TeacherSubject;
+use App\Models\ClassSubjectDetail;
+use App\Models\FacultyInformation;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
@@ -19,10 +19,8 @@ class ClassSubjectsController extends Controller
 {
     public function index (Request $request, $class_id) 
     {
-        $Semester = Semester::where('current', 1)->first();
-        
+        $Semester = Semester::where('current', 1)->first();        
         $ClassDetail = NULL;
-
         
         if($Semester->semester == '1st')
         {
@@ -147,10 +145,8 @@ class ClassSubjectsController extends Controller
         $ClassSubjectDetail = $ClassSubjectDetail->paginate(10);
         $ClassSubjectDetail1 = $ClassSubjectDetail1->paginate(10);
         return view('control_panel_registrar.class_subjects.index', 
-            compact('ClassSubjectDetail', 'class_id', 'ClassDetail','Semester','ClassSubjectDetail1','order_numbers'));
+            compact('ClassSubjectDetail', 'class_id', 'ClassDetail','Semester','ClassSubjectDetail1'));
     }
-
-    
 
     public function modal_data (Request $request) 
     {
@@ -164,6 +160,10 @@ class ClassSubjectsController extends Controller
         if (!$request->class_subject_details_id)
         {
             $FacultyInformation = FacultyInformation::where('status', 1)->get();
+        }
+        else
+        {
+            $FacultyInformation = '';
         }
         
         $SubjectDetail = SubjectDetail::where('status', 1)->get();
@@ -277,10 +277,7 @@ class ClassSubjectsController extends Controller
                     }
                 }
             }
-            
 
-            // return json_encode($order_numbers);
-        
         // return json_encode($ClassSubjectDetail);
         return view('control_panel_registrar.class_subjects.partials.modal_data', 
             compact('subject_order_available','ClassSubjectDetail', 'FacultyInformation', 'SubjectDetail', 'faculties',

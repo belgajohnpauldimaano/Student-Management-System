@@ -2,36 +2,37 @@
 
 namespace App\Http\Controllers\Control_Panel_Student;
 
-use App\Enrollment;
-use App\SchoolYear;
-use App\ClassDetail;
 use Barryvdh\DomPDF\PDF;
-use App\ClassSubjectDetail;
-use App\StudentInformation;
+use App\Models\Enrollment;
+use App\Models\SchoolYear;
+use App\Models\ClassDetail;
 use Illuminate\Http\Request;
-use App\StudentEnrolledSubject;
+use App\Models\ClassSubjectDetail;
+use App\Models\StudentInformation;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\FacadesAuth;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use App\Models\StudentEnrolledSubject;
 
 class GradeSheetController extends Controller
 {
     public function index (Request $request)
     {
-        $StudentInformation = StudentInformation::where('user_id', \Auth::user()->id)->first();        
+        $StudentInformation = StudentInformation::where('user_id', Auth::user()->id)->first();        
         $School_years = SchoolYear::where('status', 1)->get();
         
         if($request->ajax())
         {
             
             $enrolled = 0;
+            
             try{
                 $has_schoolyear = ClassDetail::where('school_year_id' ,$request->school_year)
                     ->first()->id;
             }catch(\Exception $e){
                 return '<div class="box-body"><div class="row"><table class="table"><tbody><tr><th style="text-align:center"><img src="https://cdn.iconscout.com/icon/free/png-256/data-not-found-1965034-1662569.png" alt="no data"/><br/>Sorry, there is no data found.</th></tr></tbody></table></div></div>';
-            }
-            
+            }            
 
             if($has_schoolyear){        
                 if ($StudentInformation) 
@@ -174,12 +175,12 @@ class GradeSheetController extends Controller
                             if ($Enrollment[0]->attendance) {
                                 $attendance_data = json_decode($Enrollment[0]->attendance);
                                 $student_attendance = [
-                                    'attendance_data'   => $attendance_data,
-                                    'table_header'      => $table_header,
-                                    'days_of_school_total' => array_sum($attendance_data->days_of_school),
-                                    'days_present_total' => array_sum($attendance_data->days_present),
-                                    'days_absent_total' => array_sum($attendance_data->days_absent),
-                                    'times_tardy_total' => array_sum($attendance_data->times_tardy),
+                                    'attendance_data'       => $attendance_data,
+                                    'table_header'          => $table_header,
+                                    'days_of_school_total'  => array_sum($attendance_data->days_of_school),
+                                    'days_present_total'    => array_sum($attendance_data->days_present),
+                                    'days_absent_total'     => array_sum($attendance_data->days_absent),
+                                    'times_tardy_total'     => array_sum($attendance_data->times_tardy),
                                 ];
                             }
                         } catch (\Throwable $th) {
@@ -481,16 +482,27 @@ class GradeSheetController extends Controller
                             });
 
                             // return json_encode($Enrollment_secondsem);
-
-                            
                         
                         $GradeSheet = 1;
-        
                         $GradeSheetData = json_decode(json_encode($GradeSheetData));
-                        return view('control_panel_student.grade_sheet.partials.data_list', 
-                            compact('GradeSheetData', 'grade_level', 'StudentInformation', 'ClassDetail',
-                                    'general_avg','Enrollment','Enrollment_first_sem','Enrollment_secondsem','findSchoolYear',
-                                    'GradeSheet','School_years','student_attendance1','student_attendance2','student_attendance'));
+                        try {
+                            return view('control_panel_student.grade_sheet.partials.data_list', 
+                            compact(
+                                    'GradeSheetData', 'grade_level', 'StudentInformation', 'ClassDetail',
+                                    'general_avg','Enrollment','Enrollment_first_sem','Enrollment_secondsem',
+                                    'GradeSheet','School_years','student_attendance1','student_attendance2',
+                                    'student_attendance'
+                                ));
+                        } catch (\Throwable $th) {
+                            return view('control_panel_student.grade_sheet.partials.data_list', 
+                            compact(
+                                    'GradeSheetData', 'grade_level', 'StudentInformation', 'ClassDetail',
+                                    'general_avg','Enrollment','Enrollment_first_sem','Enrollment_secondsem',
+                                    'GradeSheet','School_years','student_attendance1',
+                                    'student_attendance'
+                                ));
+                        }
+                       
                         return json_encode(['GradeSheetData' => $GradeSheetData,]);
                     }catch(\Exception $e){                
                         return '<div class="box-body"><div class="row"><table class="table"><tbody><tr><th style="text-align:center"><img src="https://cdn.iconscout.com/icon/free/png-256/data-not-found-1965034-1662569.png" alt="no data"/><br/>Sorry, there is no data found.</th></tr></tbody></table></div></div>';
@@ -509,10 +521,10 @@ class GradeSheetController extends Controller
     
     public function print_grades (Request $request)
     {
-        $StudentInformation = StudentInformation::where('user_id', \Auth::user()->id)->first();
+        $StudentInformation = StudentInformation::where('user_id', Auth::user()->id)->first();
         $SchoolYear = SchoolYear::where('current', 1)
-        ->where('status', 1)
-        ->first();
+            ->where('status', 1)
+            ->first();
         
         if ($StudentInformation) 
         {
@@ -656,7 +668,8 @@ class GradeSheetController extends Controller
 
             $GradeSheetData = json_decode(json_encode($GradeSheetData));
             $pdf = \PDF::loadView('control_panel_student.grade_sheet.partials.print', 
-                compact('GradeSheetData', 'grade_level', 'StudentInformation', 'ClassDetail', 'general_avg','Enrollment'));
+                compact('GradeSheetData', 'grade_level', 'StudentInformation', 'ClassDetail',
+                     'general_avg','Enrollment'));
             // $pdf->setPaper('Letter', 'landscape');
             return $pdf->stream();
             return view('control_panel_student.grade_sheet.index', compact('GradeSheetData'));

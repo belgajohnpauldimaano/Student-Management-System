@@ -2,18 +2,19 @@
 
 namespace App\Http\Controllers\Control_Panel_Student;
 
-use App\StudentInformation;
 use Illuminate\Http\Request;
+use App\Models\StudentInformation;
 use App\Http\Controllers\Controller;
+use App\Models\RegistrarInformation;
 use Illuminate\Support\Facades\Auth;
 
 class AccountProfileController extends Controller
 {
     public function view_my_profile (Request $request)
     {
-        $User = \Auth::user();
-        $Profile = \App\StudentInformation::where('user_id', $User->id)->first();
-        // $RegistrarInformation = collect(\App\RegistrarInformation::DEPARTMENTS); 
+        $User = Auth::user();
+        $Profile = StudentInformation::where('user_id', $User->id)->first();
+        // $RegistrarInformation = collect(RegistrarInformation::DEPARTMENTS); 
         return view('control_panel_student.account_profile.index', compact('User', 'Profile'));
     }
 
@@ -53,7 +54,6 @@ class AccountProfileController extends Controller
 
         $User = Auth::user();
         $Profile = StudentInformation::where('user_id', $User->id)->first();
-
         $Profile->first_name = $request->first_name;
         $Profile->middle_name = $request->middle_name;
         $Profile->last_name = $request->last_name;
@@ -130,8 +130,7 @@ class AccountProfileController extends Controller
         if (\Hash::check($request->old_password, \Auth::user()->password))
         {
             \Auth::user()->password = bcrypt($request->password);
-            \Auth::user()->save();
-            
+            \Auth::user()->save();         
             
             return response()->json(['res_code' => 0, 'res_msg' => 'Password successfully changed.']);
         }

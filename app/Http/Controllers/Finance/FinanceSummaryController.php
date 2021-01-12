@@ -3,12 +3,12 @@
 namespace App\Http\Controllers\Finance;
 
 use Carbon\Carbon;
-use App\SchoolYear;
+use App\Models\SchoolYear;
 use Barryvdh\DomPDF\PDF;
-use App\FinanceInformation;
-use App\StudentInformation;
+use App\Models\FinanceInformation;
+use App\Models\StudentInformation;
 use Illuminate\Http\Request;
-use App\TransactionMonthPaid;
+use App\Models\TransactionMonthPaid;
 use App\Traits\hasNotYetApproved;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
@@ -77,6 +77,7 @@ class FinanceSummaryController extends Controller
 
     public function print(Request $request) 
     {
+        $now = Carbon::now()->toDateString();
         
         $data = StudentInformation::join('transactions','transactions.student_id', '=' ,'student_informations.id')    
             ->join('transaction_month_paids', 'transaction_month_paids.student_id', '=', 'student_informations.id')                                   

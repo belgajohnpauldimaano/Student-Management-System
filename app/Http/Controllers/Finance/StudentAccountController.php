@@ -2,31 +2,32 @@
 
 namespace App\Http\Controllers\Finance;
 
-use App\MiscFee;
-use App\OtherFee;
-use App\Enrollment;
-use App\GradeLevel;
-use App\SchoolYear;
-use App\TuitionFee;
-use App\ClassDetail;
-use App\DiscountFee;
-use App\Transaction;
-use App\Mail\SendMail;
-use App\DownpaymentFee;
-use App\IncomingStudent;
-use App\PaymentCategory;
-use App\StudentCategory;
-use App\FinanceInformation;
-use App\StudentInformation;
-use App\TransactionDiscount;
-use App\TransactionOtherFee;
+use Carbon\Carbon;
+use App\Models\MiscFee;
+use App\Models\OtherFee;
+use App\Models\Enrollment;
+use App\Models\GradeLevel;
+use App\Models\SchoolYear;
+use App\Models\TuitionFee;
+use App\Models\ClassDetail;
+use App\Models\DiscountFee;
+use App\Models\Transaction;
 use Illuminate\Http\Request;
 use App\Mail\NotifyAdminMail;
-use App\TransactionMonthPaid;
+use App\Models\Mail\SendMail;
+use App\Models\DownpaymentFee;
+use App\Models\IncomingStudent;
+use App\Models\PaymentCategory;
+use App\Models\StudentCategory;
 use App\Traits\hasNotYetApproved;
+use App\Models\FinanceInformation;
+use App\Models\StudentInformation;
 use App\Mail\SendManualFinanceMail;
 use App\Mail\sendManualStudentMail;
+use App\Models\TransactionDiscount;
+use App\Models\TransactionOtherFee;
 use App\Http\Controllers\Controller;
+use App\Models\TransactionMonthPaid;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Crypt;
@@ -36,19 +37,23 @@ class StudentAccountController extends Controller
     use hasNotYetApproved;
     
     public function index(Request $request){
+        
         $stud_id = Crypt::decrypt($request->c);
         $Profile = StudentInformation::where('id', $stud_id)->first(); 
         
-        if(!$request->school_year)
-        {
-            $School_year_id = SchoolYear::where('status', 1)
-                ->where('current', 1)->first()->id; 
-        }
-        else
-        {
-            $School_year_id = $request->school_year;
-        }                              
+        // if(!$request->school_year)
+        // {
+        //     $School_year_id = SchoolYear::where('status', 1)
+        //         ->where('current', 1)->first()->id;
+        // }
+        // else
+        // {
+        //     $School_year_id = $request->school_year;
+        // }
 
+        $School_year_id = SchoolYear::where('status', 1)
+                ->where('current', 1)->first()->id;
+        
         $StudentInformation = NULL;
         
         $IncomingStudentCount = IncomingStudent::where('student_id', $stud_id)
@@ -62,19 +67,21 @@ class StudentAccountController extends Controller
         if(!$IncomingStudentCount){
 
             $Enrollment = Enrollment::where('student_information_id', $stud_id)
+                ->where('class_details_id', $request->class_details)
                 ->where('status', 1)
                 ->where('current', 1)
                 ->orderBy('id', 'DESC')
                 ->first();
-            // return $Enrollment->class_details_id;
-            // if(!$request->class_details){
-                $ClassDetail = ClassDetail::where('id', $Enrollment->class_details_id)
-                    ->whereStatus(1)->whereCurrent(1)->latest()->first();
+            
+            $ClassDetail = ClassDetail::find($request->class_details);
+                    
+                    // ->whereStatus(1)->whereCurrent(1)
             // }else{
             //     $ClassDetail = ClassDetail::where('id', $request->class_details)
             //         ->whereStatus(1)->whereCurrent(1)->latest()->first();
-            // }            
-
+            // }
+            // return json_encode($ClassDetail);
+            
             $grade_level_id = ($ClassDetail->grade_level);
         }
         else
@@ -85,7 +92,8 @@ class StudentAccountController extends Controller
         $Gradelvl = GradeLevel::where('current', 1)->where('status', 1)->get();
         $Discount = DiscountFee::where('current', 1)->where('status', 1)->get();
         $OtherFee = OtherFee::where('current', 1)->where('status', 1)->get();  
-        $SchoolYear = SchoolYear::where('current', 1)->where('status', 1)->first();
+        $SchoolYear = SchoolYear::whereId($School_year_id)
+                    ->where('current', 1)->where('status', 1)->first();
         $StudentCategory = StudentCategory::where('status', 1)->get();  
 
         $PaymentCategory = PaymentCategory::with('stud_category','tuition','misc_fee','other_fee')
@@ -109,8 +117,9 @@ class StudentAccountController extends Controller
         $student_payment_category = PaymentCategory::with('misc_fee','tuition')
             ->where('grade_level_id',  $grade_level_id)->first();
         
-            $NotyetApprovedCount = $this->notYetApproved();
+        $NotyetApprovedCount = $this->notYetApproved();
 
+        // if has transaction
         if($Transaction){
         
             $Payment =  PaymentCategory::where('id', $Transaction->payment_category_id)->first();
@@ -142,8 +151,7 @@ class StudentAccountController extends Controller
                 ->get();
             } catch (\Throwable $th) {
                 $others = 0;
-            }
-            
+            }            
 
             $HasTransactionDiscount = TransactionDiscount::where('student_id', $stud_id)
                 ->where('school_year_id', $School_year_id)
@@ -741,6 +749,7 @@ class StudentAccountController extends Controller
     
     public function print_enrollment_bill(Request $request){
 
+        $now = Carbon::now()->toDateString('m-d-Y');
         // $stud_stats = $request->stud_status;
         $StudentInformation = StudentInformation::with(['user'])->where('id', $request->studid)->first();
         $balance = $request->balance;
@@ -811,16 +820,17 @@ class StudentAccountController extends Controller
             }
 
         return view('control_panel_finance.student_payment_account.partials.print_transaction',
-                    compact('Transaction','PaymentCategory','Transaction_disc', 'stud_stats','TransactionMonthPaid','balance','total'));
+                    compact('Transaction','PaymentCategory','Transaction_disc', 'stud_stats','TransactionMonthPaid','balance','total','now'));
 
         $pdf = \PDF::loadView('control_panel_finance.student_payment_account.partials.print_transaction', 
-                compact('Transaction','PaymentCategory','Transaction_disc', 'stud_stats','TransactionMonthPaid','balance','total'));
+                compact('Transaction','PaymentCategory','Transaction_disc', 'stud_stats','TransactionMonthPaid','balance','total','now'));
         $pdf->setPaper('Letter', 'portrait');
         return $pdf->stream();
     }
 
     public function print_other(Request $request){
 
+        $now = Carbon::now()->toDateString('m-d-Y');
         if($request->or_num){
         
             $TransactionOther = TransactionOtherFee::join('student_informations', 'student_informations.id', '=' ,'transaction_other_fees.student_id')
@@ -902,18 +912,18 @@ class StudentAccountController extends Controller
             return "Invalid request";
         }
 
-        return view('control_panel_finance.student_payment_account.partials.print_other_fee', compact('TransactionOther','total_price'));
+        return view('control_panel_finance.student_payment_account.partials.print_other_fee', compact('TransactionOther','total_price','now'));
 
-        $pdf = \PDF::loadView('control_panel_finance.student_payment_account.partials.print_other_fee', compact('TransactionOther','total_price'));
+        $pdf = \PDF::loadView('control_panel_finance.student_payment_account.partials.print_other_fee', compact('TransactionOther','total_price','now'));
         $pdf->setPaper('Letter', 'portrait');
         return $pdf->stream(); 
     }
 
     public function print_all_transaction(Request $request)
     {
+        $now = Carbon::now()->toDateString('m-d-Y');
         if ($request->id)
         {
-            
             $PreparedBy = FinanceInformation::where('user_id', Auth::user()->id)->first();
             $fullname = $PreparedBy->first_name.' '.$PreparedBy->last_name;
 
@@ -966,10 +976,10 @@ class StudentAccountController extends Controller
         }
 
         return view('control_panel_finance.student_payment_account.partials.print_all_transaction', 
-                        compact('Modal_data','Mo_history','other_fee','Discount','Discount_amt','total','other','fullname','ItemPrice','OtherFee'));
+                        compact('Modal_data','Mo_history','other_fee','Discount','Discount_amt','total','other','fullname','ItemPrice','OtherFee','now'));
 
         $pdf = \PDF::loadView('control_panel_finance.student_payment_account.partials.print_all_transaction', 
-                        compact('Modal_data','Mo_history','other_fee','Discount','Discount_amt','total','other','fullname','ItemPrice','OtherFee'));
+                        compact('Modal_data','Mo_history','other_fee','Discount','Discount_amt','total','other','fullname','ItemPrice','OtherFee','now'));
 
         $pdf->setPaper('Letter', 'portrait');
         return $pdf->stream(); 

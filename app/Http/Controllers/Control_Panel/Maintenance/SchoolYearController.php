@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers\Control_Panel\Maintenance;
 
-use App\SchoolYear;
-use App\SchoolYearCategory;
+use App\Models\SchoolYear;
 use Illuminate\Http\Request;
+use App\Models\SchoolYearCategory;
 use App\Http\Controllers\Controller;
 
 class SchoolYearController extends Controller

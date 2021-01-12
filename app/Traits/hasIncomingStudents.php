@@ -1,7 +1,7 @@
 <?php
 namespace App\Traits;
 
-use App\IncomingStudent;
+use App\Models\IncomingStudent;
 
 trait hasIncomingStudents{
     public function IncomingStudentCount(){

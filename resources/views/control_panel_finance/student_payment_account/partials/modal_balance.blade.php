@@ -70,17 +70,17 @@
                 <hr>
                     <div class="row">   
                         <div class="container">
-                            <?php 
-                                $payment =  \App\PaymentCategory::where('id', $Transaction->payment_category_id)->first();
-                                $MiscFee_payment =  \App\MiscFee::where('id', $payment->misc_fee_id)->first();
-                                $tuitionfee_payment =  \App\TuitionFee::where('id', $payment->tuition_fee_id)->first();
-                                $stud_cat_payment =  \App\StudentCategory::where('id', $payment->student_category_id)->first();
-                            ?>
+                            @php 
+                                $payment =  \App\Models\PaymentCategory::where('id', $Transaction->payment_category_id)->first();
+                                $MiscFee_payment =  \App\Models\MiscFee::where('id', $payment->misc_fee_id)->first();
+                                $tuitionfee_payment =  \App\Models\TuitionFee::where('id', $payment->tuition_fee_id)->first();
+                                $stud_cat_payment =  \App\Models\StudentCategory::where('id', $payment->student_category_id)->first();
+                            @endphp
 
                             <h3 style="margin-bottom: 1em">Payment Category:</h3>
                             
-                            <h4><b>Student Category:</b> <i style="color: red"><?php echo $stud_cat_payment->student_category; echo -  $payment->grade_level_id;?></i></h4>
-                            <h4><b>Tuition Fee:</b> <i style="color: red"> <?php echo number_format($tuitionfee_payment->tuition_amt, 2); ?> <b>|</b> Miscelleneous Fee: <?php echo number_format($MiscFee_payment->misc_amt,2); ?></i></h4>
+                            <h4><b>Student Category:</b> <i style="color: red">@php echo $stud_cat_payment->student_category; echo -  $payment->grade_level_id;@endphp</i></h4>
+                            <h4><b>Tuition Fee:</b> <i style="color: red"> @php echo number_format($tuitionfee_payment->tuition_amt, 2); @endphp <b>|</b> Miscelleneous Fee: @php echo number_format($MiscFee_payment->misc_amt,2); @endphp</i></h4>
                         </div>
                     </div>
                <hr>

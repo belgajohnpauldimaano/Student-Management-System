@@ -2,13 +2,16 @@
 
 namespace App\Http\Controllers\Finance;
 
-use App\Enrollment;
-use App\SchoolYear;
-use App\ClassDetail;
-use App\StudentInformation;
+use App\Models\Enrollment;
+use App\Models\SchoolYear;
+use App\Models\ClassDetail;
+use App\Models\Transaction;
 use Illuminate\Http\Request;
 use App\Traits\hasNotYetApproved;
+use App\Models\StudentInformation;
 use App\Http\Controllers\Controller;
+use App\Models\TransactionMonthPaid;
+use Illuminate\Support\Facades\Crypt;
 
 class StudentClassListController extends Controller
 {
@@ -68,11 +71,18 @@ class StudentClassListController extends Controller
         $NotyetApprovedCount = $this->notYetApproved();
         
         // return json_encode($ClassDetail);
-        return view('control_panel_finance.class_details.index', compact('ClassDetail', 'SchoolYear','NotyetApprovedCount'));
+        return view('control_panel_finance.class_details.index', 
+            compact('ClassDetail', 'SchoolYear','NotyetApprovedCount'));
     }
 
     public function studentList(Request $request, $id){
 
+        $_id = Crypt::decrypt($id);
+        $sy_transaction = Crypt::decrypt($request->school_year);
+        $transactionSchoolYear = Transaction::first();
+        $transactionMonth = TransactionMonthPaid::first();
+        // return json_encode($sy_transaction);
+        
         if ($request->ajax())
         {
             if (!$request->search_fn &&
@@ -81,7 +91,8 @@ class StudentClassListController extends Controller
                 !$request->search_student_id) 
             {
                 $StudentInformation = [];
-                return view('control_panel_finance.student_list.partials.data_list', compact('StudentInformation'))->render();
+                return view('control_panel_finance.student_list.partials.data_list', 
+                    compact('StudentInformation'))->render();
             }
 
             $StudentInformation = StudentInformation::with(['user','finance_transaction'])
@@ -116,8 +127,15 @@ class StudentClassListController extends Controller
                 ->paginate(10);
 
             // return json_encode(['s' => $StudentInformation, 'req' => $request->all(), 'ClassDetail' => $id]);
-            return view('control_panel_finance.student_list.partials.data_list', compact('StudentInformation'))->render();
+            return view('control_panel_finance.student_list.partials.data_list', 
+                compact('StudentInformation'))->render();
         }
+
+        // $Enrollment = Enrollment::where('student_information_id', $stud_id)
+        //         ->where('status', 1)
+        //         ->where('current', 1)
+        //         ->orderBy('id', 'DESC')
+        //         ->first();
 
         $ClassDetail = ClassDetail::join('section_details', 'section_details.id', '=' ,'class_details.section_id')
             ->join('rooms', 'rooms.id', '=' ,'class_details.room_id')
@@ -137,9 +155,11 @@ class StudentClassListController extends Controller
                 rooms.room_description
             ')
             ->where('section_details.status', 1)
-            // ->where('school_years.current', 1)
-            ->where('class_details.id', $id)
+            ->where('school_years.id', $sy_transaction)
+            ->where('class_details.id', $_id)
             ->first();
+
+        // return json_encode($ClassDetail);
 
         $StudentInformation = [];
 
@@ -172,10 +192,11 @@ class StudentClassListController extends Controller
                 student_informations.last_name, student_informations.first_name, student_informations.middle_name,
                 enrollments.id AS enrollment_id
             ")
-            ->where('class_details_id', $id)
+            ->where('class_details_id', $_id)
             ->where('enrollments.status', 1)
             ->orderByRaw('student_informations.last_name')
             ->paginate(70);
+            
 
         $Enrollment_ids = '';
         foreach($Enrollment as $data)
@@ -185,13 +206,26 @@ class StudentClassListController extends Controller
 
         $NotyetApprovedCount = $this->notYetApproved();
 
-        return view('control_panel_finance.student_list.index', compact('StudentInformation', 'ClassDetail', 'id', 'Enrollment', 'Enrollment_ids','NotyetApprovedCount'));
+        return view('control_panel_finance.student_list.index', 
+            compact(
+                'StudentInformation',
+                'ClassDetail',
+                'id',
+                'Enrollment',
+                'Enrollment_ids',
+                'NotyetApprovedCount',
+                'sy_transaction',
+                'transactionSchoolYear',
+                'transactionMonth',
+                '_id'
+            ));
     }
 
 
     public function fetch_enrolled_student (Request $request, $id)
     {        
-
+        $sy_transaction = Crypt::decrypt($request->school_year);
+        
         if($request->ajax()){
             $ClassDetail = ClassDetail::join('section_details', 'section_details.id', '=' ,'class_details.section_id')
                 ->join('rooms', 'rooms.id', '=' ,'class_details.room_id')

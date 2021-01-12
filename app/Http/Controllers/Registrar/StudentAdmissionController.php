@@ -2,20 +2,20 @@
 
 namespace App\Http\Controllers\Registrar;
 
-use App\Enrollment;
-use App\GradeLevel;
-use App\SchoolYear;
-use App\ClassDetail;
-use App\Transaction;
-use App\Grade_sheet_first;
-use App\Grade_sheet_third;
-use App\Grade_sheet_fourth;
-use App\Grade_sheet_second;
-use App\StudentInformation;
+use App\Models\Enrollment;
+use App\Models\GradeLevel;
+use App\Models\SchoolYear;
+use App\Models\ClassDetail;
+use App\Models\Transaction;
+use App\Models\Grade_sheet_first;
+use App\Models\Grade_sheet_third;
+use App\Models\Grade_sheet_fourth;
+use App\Models\Grade_sheet_second;
+use App\Models\StudentInformation;
 use Illuminate\Http\Request;
-use App\Grade_sheet_firstsem;
-use App\StudentEnrolledSubject;
-use App\Grade_sheet_firstsemsecond;
+use App\Models\Grade_sheet_firstsem;
+use App\Models\StudentEnrolledSubject;
+use App\Models\Grade_sheet_firstsemsecond;
 use App\Http\Controllers\Controller;
 
 class StudentAdmissionController extends Controller
@@ -59,7 +59,7 @@ class StudentAdmissionController extends Controller
 
             return view('control_panel_registrar.student_admission.Grade7.partials.data_list', 
                 compact(
-                    'Grade7','gradelevel','g_s_7','g_s_7_c'
+                    'Grade7','g_s_7','g_s_7_c'
                 ));
         }
 
@@ -85,13 +85,12 @@ class StudentAdmissionController extends Controller
 
         return view('control_panel_registrar.student_admission.Grade7.index', 
             compact(
-                'Grade7','gradelevel','g_s_7','g_s_7_c'
+                'Grade7','g_s_7','g_s_7_c'
             ));
     }
 
     public function grade8(Request $request)
-    {
-        
+    {        
         $SchoolYear = SchoolYear::where('current', 1)
             ->where('status', 1)
             ->first(); 
@@ -127,7 +126,7 @@ class StudentAdmissionController extends Controller
 
             return view('control_panel_registrar.student_admission.Grade8.partials.data_list', 
                 compact(
-                    'Grade8','gradelevel','g_s_8','g_s_8_c'
+                    'Grade8','g_s_8','g_s_8_c'
                 ));
         }
 
@@ -153,7 +152,7 @@ class StudentAdmissionController extends Controller
 
         return view('control_panel_registrar.student_admission.Grade8.index', 
             compact(
-                'Grade8','gradelevel','g_s_8','g_s_8_c'
+                'Grade8','g_s_8','g_s_8_c'
             ));
     }
 
@@ -194,7 +193,7 @@ class StudentAdmissionController extends Controller
 
             return view('control_panel_registrar.student_admission.Grade9.partials.data_list', 
                 compact(
-                    'Grade9','gradelevel','g_s_9','g_s_9_c'
+                    'Grade9','g_s_9','g_s_9_c'
                 ));
         }
 
@@ -220,7 +219,7 @@ class StudentAdmissionController extends Controller
 
         return view('control_panel_registrar.student_admission.Grade9.index', 
             compact(
-                'Grade9','gradelevel','g_s_9','g_s_9_c'
+                'Grade9','g_s_9','g_s_9_c'
             ));
     }
 
@@ -262,7 +261,7 @@ class StudentAdmissionController extends Controller
 
             return view('control_panel_registrar.student_admission.Grade10.partials.data_list', 
                 compact(
-                    'Grade10','gradelevel','g_s_10','g_s_10_c'
+                    'Grade10','g_s_10','g_s_10_c'
                 ));
         }
 
@@ -288,7 +287,7 @@ class StudentAdmissionController extends Controller
 
         return view('control_panel_registrar.student_admission.Grade10.index', 
             compact(
-                'Grade10','gradelevel','g_s_10','g_s_10_c'
+                'Grade10','g_s_10','g_s_10_c'
             ));
     }
 
@@ -330,7 +329,7 @@ class StudentAdmissionController extends Controller
 
             return view('control_panel_registrar.student_admission.Grade11.partials.data_list', 
                 compact(
-                    'Grade11','gradelevel','g_s_11','g_s_11_c'
+                    'Grade11','g_s_11','g_s_11_c'
                 ));
         }
 
@@ -356,7 +355,7 @@ class StudentAdmissionController extends Controller
 
         return view('control_panel_registrar.student_admission.Grade11.index', 
             compact(
-                'Grade11','gradelevel','g_s_11','g_s_11_c'
+                'Grade11','g_s_11','g_s_11_c'
             ));
     }
 
@@ -398,7 +397,7 @@ class StudentAdmissionController extends Controller
 
             return view('control_panel_registrar.student_admission.Grade12.partials.data_list', 
                 compact(
-                    'Grade12','gradelevel','g_s_12','g_s_12_c'
+                    'Grade12','g_s_12','g_s_12_c'
                 ));
         }
 
@@ -424,7 +423,7 @@ class StudentAdmissionController extends Controller
 
         return view('control_panel_registrar.student_admission.Grade12.index', 
             compact(
-                'Grade12','gradelevel','g_s_12','g_s_12_c'
+                'Grade12','g_s_12','g_s_12_c'
             ));
     }
 
@@ -458,9 +457,7 @@ class StudentAdmissionController extends Controller
             ->where('school_years.current', 1)
             ->where('school_years.status', 1)
             ->where('class_details.id', $ClassDetail->id)
-            ->first();
-
-        
+            ->first();       
 
         try {
             $Enrollment = new Enrollment();

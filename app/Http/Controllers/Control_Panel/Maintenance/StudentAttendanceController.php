@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers\Control_Panel\Maintenance;
 
-use App\Enrollment;
-use App\SchoolYear;
-use App\ClassDetail;
-use App\StudentAttendance;
+use App\Models\User;
+use App\Models\Enrollment;
+use App\Models\SchoolYear;
+use App\Models\ClassDetail;
 use Illuminate\Http\Request;
+use App\Models\SectionDetail;
+use App\Models\StudentAttendance;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
 
@@ -311,7 +313,7 @@ class StudentAttendanceController extends Controller
 
     public function deactivate_data (Request $request) 
     {
-        $SectionDetail = \App\SectionDetail::where('id', $request->id)->first();
+        $SectionDetail = SectionDetail::where('id', $request->id)->first();
 
         if ($SectionDetail)
         {
@@ -319,7 +321,7 @@ class StudentAttendanceController extends Controller
             $SectionDetail->current = 0;
             $SectionDetail->save();
 
-            $User = \App\User::where('id', $SectionDetail->user_id)->first();
+            $User = User::where('id', $SectionDetail->user_id)->first();
             if ($User)
             {
                 $User->status = 0;

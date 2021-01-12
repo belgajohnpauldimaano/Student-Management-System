@@ -2,14 +2,15 @@
 
 namespace App\Http\Controllers\Faculty;
 
-use App\Enrollment;
-use App\SchoolYear;
-use App\ClassDetail;
 use Barryvdh\DomPDF\PDF;
-use App\ClassSubjectDetail;
-use App\FacultyInformation;
+use App\Models\Enrollment;
+use App\Models\SchoolYear;
+use App\Models\ClassDetail;
 use Illuminate\Http\Request;
+use App\Models\ClassSubjectDetail;
+use App\Models\FacultyInformation;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\FacadesAuth;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;
@@ -18,7 +19,7 @@ class ClassAttendanceController extends Controller
 {
     public function index (Request $request)
     {
-        $FacultyInformation = FacultyInformation::where('user_id', \Auth::user()->id)->first();
+        $FacultyInformation = FacultyInformation::where('user_id', Auth::user()->id)->first();
         $school_year = SchoolYear::whereCurrent(1)->whereStatus(1)->first();
         
         $Semester = ClassSubjectDetail::join('class_details', 'class_details.id', '=', 'class_subject_details.class_details_id')
@@ -125,9 +126,7 @@ class ClassAttendanceController extends Controller
                             ['key' => 'Apr',],
                             ['key' => 'total'],
                         ];      
-                    }
-
-                    
+                    }                    
                 }
                 else
                 {
@@ -267,7 +266,7 @@ class ClassAttendanceController extends Controller
 
     public function print_attendance(Request $request)
     {
-        $FacultyInformation = FacultyInformation::where('user_id', \Auth::user()->id)->first();
+        $FacultyInformation = FacultyInformation::where('user_id', Auth::user()->id)->first();
         $school_year = SchoolYear::whereCurrent(1)->whereStatus(1)->first();
         
         $Semester = ClassSubjectDetail::join('class_details', 'class_details.id', '=', 'class_subject_details.class_details_id')

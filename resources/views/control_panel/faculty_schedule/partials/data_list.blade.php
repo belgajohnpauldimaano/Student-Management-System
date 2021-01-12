@@ -14,10 +14,11 @@
                                 @if ($FacultyInformation)
                                     @foreach ($FacultyInformation as $data)
                                         <tr>
-                                            <td>{{ $data->fullname }}</td>
-                                            <td>{{ collect(\App\FacultyInformation::DEPARTMENTS)->firstWhere('id', $data->department_id)['department_name'] }}</td>
-                                            <td>{{ $data->subjects_count }}</td>
-                                            
+                                            <td>{{ $data->full_name }}</td>
+                                            <td>{{ collect(\App\Models\FacultyInformation::DEPARTMENTS)->firstWhere('id', $data->department_id)['department_name'] }}</td>
+                                            <td class="text-center">
+                                                {{ $data->subjects_count }}
+                                            </td>                                            
                                             <td>
                                                 <div class="input-group-btn pull-left text-left">
                                                     <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="true">Action

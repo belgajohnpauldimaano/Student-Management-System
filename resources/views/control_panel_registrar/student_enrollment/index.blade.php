@@ -75,9 +75,7 @@
                             <i class="fa fa-file-pdf"></i>
                         </button>
                     </div>
-                    {{--  <div class="col-sm-12 col-md-1">
-                        <button type="button" class="btn btn-block btn-flat btn-danger btn-sm" id="js-button-add"><i class="fa fa-plus"></i> Add</button>
-                    </div>  --}}
+                    
                 </div>
             </form>
         </div>
@@ -125,6 +123,7 @@
         </div>
         
     </div>
+    
     <h3>Enrolled Students</h3>
     <div class="box">
         <div class="box-header with-border">
@@ -132,18 +131,18 @@
             <form id="js-form_search_enrolled">
                 {{ csrf_field() }}
                 <div class="row">
-                    <div id="js-form_search" class="form-group col-sm-12 col-md-3" style="">
+                    <div id="js-form_search_enrolled" class="form-group col-sm-12 col-md-3" style="">
                         <input type="text" class="form-control" name="search_student_id" placeholder="Student ID">
                     </div>
                 </div>
                 <div class="row">
-                    <div id="js-form_search" class="form-group col-sm-12 col-md-3" style="">
+                    <div id="js-form_search_enrolled" class="form-group col-sm-12 col-md-3" style="">
                         <input type="text" class="form-control" name="search_fn" placeholder="First name">
                     </div>
-                    <div id="js-form_search" class="form-group col-sm-12 col-md-3" style="">
+                    <div id="js-form_search_enrolled" class="form-group col-sm-12 col-md-3" style="">
                         <input type="text" class="form-control" name="search_mn" placeholder="Middle name">
                     </div>
-                    <div id="js-form_search" class="form-group col-sm-12 col-md-3" style="">
+                    <div id="js-form_search_enrolled" class="form-group col-sm-12 col-md-3" style="">
                         <input type="text" class="form-control" name="search_ln" placeholder="Last name">
                     </div>
                     <div class="col-sm-12 col-md-2">
@@ -166,8 +165,7 @@
             <div class="js-data-container-enrolled">                        
                 @include('control_panel_registrar.student_enrollment.partials.data_list_enrolled')                        
             </div>
-        </div>
-        
+        </div>        
     </div>
 @endif
 
@@ -177,6 +175,8 @@
 @section ('scripts')
     <script src="{{ asset('cms/plugins/timepicker/bootstrap-timepicker.min.js') }}"></script>
     <script>
+        
+
         var page = 1;
         function fetch_data () {
             var formData = new FormData($('#js-form_search')[0]);
@@ -194,10 +194,12 @@
                 }
             });
         }
-        function fetch_data_enrolled() {
+        var page_enrolled = 1;
+        function fetch_data_enrolled() {   
+              
             $('#js-loader-overlay-enrolled').removeClass('hidden')
             var formData = new FormData($('#js-form_search_enrolled')[0]);
-            formData.append('page', page);
+            formData.append('page', page_enrolled);
             $.ajax({
                 url : "{{ route('registrar.student_enrollment.fetch_enrolled_student', $id) }}",
                 type : 'POST',
@@ -226,7 +228,7 @@
                         $('.js-modal_holder .modal').on('shown.bs.modal', function () {
                             //Timepicker
                             $('.timepicker').timepicker({
-                            showInputs: false
+                                showInputs: false
                             })
                         })
                     }
@@ -238,19 +240,21 @@
                 e.preventDefault();
                 fetch_data();
             });
-            $('body').on('click', '.pagination a', function (e) {
+            
+            $('body').on('click', '#js-form_search .pagination a', function (e) {
                 e.preventDefault();
                 page = $(this).attr('href').split('=')[1];
-                fetch_data();
+                fetch_data();                
             });
             
             $('body').on('submit', '#js-form_search_enrolled', function (e) {
                 e.preventDefault();
                 fetch_data_enrolled();
             });
+            
             $('body').on('click', '.js-data-container-enrolled .pagination a', function (e) {
                 e.preventDefault();
-                page = $(this).attr('href').split('=')[1];
+                page_enrolled = $(this).attr('href').split('=')[1];
                 fetch_data_enrolled();
             });
             

@@ -182,7 +182,7 @@
                     $Semester = $semester;
                 }
             } catch (\Throwable $th) {
-                $Semester = \App\Semester::where('current', 1)->first()->id;
+                $Semester = \App\Models\Semester::where('current', 1)->first()->id;
             }             
         @endphp
                 <p class="heading1">Republic of the Philippines</p>
@@ -261,7 +261,7 @@
                                     <p class="p0 m0 student-info"><b>Track/Strand - Academic:</b> 
                                         @php
                                             try {
-                                                $strand_name = \App\Strand::where('id', $ClassDetail->strand_id)
+                                                $strand_name = \App\Models\Strand::where('id', $ClassDetail->strand_id)
                                                     ->first(); 
                                                 echo $strand_name->strand;
                                             } catch (\Throwable $th) {
@@ -276,7 +276,7 @@
                             @else
                                 <td>
                                     <p class="p0 m0 student-info"><b>Track/Strand - Academic:</b> 
-                                        @php  $strand_name = \App\Strand::where('id', $ClassDetail->strand_id)
+                                        @php  $strand_name = \App\Models\Strand::where('id', $ClassDetail->strand_id)
                                                 ->first(); 
                                                 echo $strand_name->strand;
                                         @endphp                                        

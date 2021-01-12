@@ -29,37 +29,37 @@
                     <td>{{number_format($data->tuition_amt,2)}}</td>
                     <td>{{number_format($data->misc_amt,2)}}</td>
                     <td>
-                        <?php 
-                            $other = \App\TransactionOtherFee::where('student_id', $data->student_id)
+                        @php 
+                            $other = \App\Models\TransactionOtherFee::where('student_id', $data->student_id)
                                 ->where('school_year_id', $data->school_year_id)
                                 ->where('transaction_id', $data->transaction_id)
                                 ->where('isSuccess', 1)
                                 ->sum('item_price');
                             echo number_format($other, 2);
-                        ?>
+                        @endphp
                     </td>
                     <td>
-                        <?php 
-                            $discount = \App\TransactionDiscount::where('student_id', $data->student_id)
+                        @php 
+                            $discount = \App\Models\TransactionDiscount::where('student_id', $data->student_id)
                                 ->where('school_year_id', $data->school_year_id)
                                 ->where('isSuccess', 1)
                                 ->sum('discount_amt');
                             echo number_format($discount, 2);
-                        ?>
+                        @endphp
                     </td>
                     <td>
                         {{number_format(($data->tuition_amt + $data->misc_amt + $other) - $discount, 2)}}
                     </td>
                     <td>{{number_format($data->payment,2)}}</td>
-                    <?php 
-                        $payment = \App\TransactionMonthPaid::where('student_id', $data->student_id)
+                    @php 
+                        $payment = \App\Models\TransactionMonthPaid::where('student_id', $data->student_id)
                             ->where('school_year_id', $data->school_year_id)
                             ->where('isSuccess', 1)
                             ->where('approval', 'Approved')
                             ->sum('payment');
 
                         $incoming_bal = (($data->tuition_amt + $data->misc_amt + $other) - $discount) - $payment - $data->payment;
-                    ?>
+                    @endphp
                     <td>{{number_format($incoming_bal,2)}}</td>
                     <td>
                         <span class="label label-danger">

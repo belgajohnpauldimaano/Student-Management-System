@@ -2,24 +2,30 @@
 
 namespace App\Http\Controllers\Registrar;
 
+use App\Models\Enrollment;
+use App\Models\SchoolYear;
 use Illuminate\Http\Request;
+use App\Models\ClassSubjectDetail;
+use App\Models\FacultyInformation;
+use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 
 class GradeSheetController extends Controller
 {
     
     public function index (Request $request) 
     {
-        // $FacultyInformation = \App\FacultyInformation::where('user_id', \Auth::user()->id)->first();
+        // $FacultyInformation = FacultyInformation::where('user_id', \Auth::user()->id)->first();
         // return json_encode(['FacultyInformation' => $FacultyInformation, 'Auth' => \Auth::user()]);
-        $SchoolYear = \App\SchoolYear::where('status', 1)->orderBy('current', 'ASC')->orderBy('school_year', 'ASC')->get();
+        $SchoolYear = SchoolYear::where('status', 1)->orderBy('current', 'ASC')->orderBy('school_year', 'ASC')->get();
         return view('control_panel_registrar.student_grade_sheet.index', compact('SchoolYear'));
     }
     public function list_students_by_class (Request $request) 
     {
-        // $FacultyInformation = \App\FacultyInformation::where('user_id', \Auth::user()->id)->first();
+        // $FacultyInformation = FacultyInformation::where('user_id', \Auth::user()->id)->first();
         
-        $Enrollment = \App\Enrollment::join('class_subject_details', 'class_subject_details.class_details_id', '=', 'enrollments.class_details_id')
+        $Enrollment = Enrollment::join('class_subject_details', 'class_subject_details.class_details_id', '=', 'enrollments.class_details_id')
                     ->join('class_details', 'class_details.id', '=', 'class_subject_details.class_details_id')
                     ->join('student_informations', 'student_informations.id', '=', 'enrollments.student_information_id')
                     // ->join('student_enrolled_subjects', 'student_enrolled_subjects.subject_id', '=', 'class_subject_details.subject_id')
@@ -50,7 +56,7 @@ class GradeSheetController extends Controller
                         student_enrolled_subjects.fin_g_status
                     "))
                     ->paginate(50);
-        $ClassSubjectDetail = \App\ClassSubjectDetail::join('class_details', 'class_details.id', '=', 'class_subject_details.class_details_id')
+        $ClassSubjectDetail = ClassSubjectDetail::join('class_details', 'class_details.id', '=', 'class_subject_details.class_details_id')
             ->join('subject_details', 'subject_details.id', '=', 'class_subject_details.subject_id')
             ->join('section_details', 'section_details.id', '=', 'class_details.section_id')
             ->where('class_subject_details.id', $request->search_class_subject)
@@ -73,8 +79,8 @@ class GradeSheetController extends Controller
     }
     public function list_class_subject_details (Request $request) 
     {
-        // $FacultyInformation = \App\FacultyInformation::where('user_id', \Auth::user()->id)->first();
-        $ClassSubjectDetail = \App\ClassSubjectDetail::join('class_details', 'class_details.id', '=', 'class_subject_details.class_details_id')
+        // $FacultyInformation = FacultyInformation::where('user_id', \Auth::user()->id)->first();
+        $ClassSubjectDetail = ClassSubjectDetail::join('class_details', 'class_details.id', '=', 'class_subject_details.class_details_id')
             ->join('subject_details', 'subject_details.id', '=', 'class_subject_details.subject_id')
             ->join('section_details', 'section_details.id', '=', 'class_details.section_id')
             // ->where('faculty_id', $FacultyInformation->id)
