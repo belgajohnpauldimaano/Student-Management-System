@@ -26,7 +26,7 @@ class ClassAttendanceController extends Controller
             ->join('section_details', 'section_details.id', '=', 'class_details.section_id')
             ->where('class_details.adviser_id', $FacultyInformation->id)
             ->where('class_details.school_year_id', $school_year->id)
-            ->where('class_details.status', '!=', 0)
+            ->where('class_details.status', 1)
             ->select(\DB::raw('
                     section_details.section,
                     class_details.id,
@@ -44,7 +44,7 @@ class ClassAttendanceController extends Controller
                 ->where('adviser_id', $FacultyInformation->id)
                 ->whereStatus(1)
                 ->whereCurrent(1)
-                ->first()->id;            
+                ->first()->id;
 
             
             $attendance_male = Enrollment::join('student_informations', 'student_informations.id', '=', 'enrollments.student_information_id')
@@ -53,6 +53,7 @@ class ClassAttendanceController extends Controller
                 ->where('class_details.school_year_id', $school_year->id)
                 ->where('class_details.adviser_id', $FacultyInformation->id)
                 ->whereRaw('student_informations.gender = 1')
+                ->whereRaw('enrollments.status = 1')
                 ->select(\DB::raw("
                         enrollments.id as e_id,
                         enrollments.attendance,
@@ -72,6 +73,7 @@ class ClassAttendanceController extends Controller
                 ->where('class_details.school_year_id', $school_year->id)
                 ->where('class_details.adviser_id', $FacultyInformation->id)
                 ->whereRaw('student_informations.gender = 2')
+                ->whereRaw('enrollments.status = 1')
                 ->select(\DB::raw("
                         enrollments.id as e_id,
                         enrollments.attendance,
@@ -273,7 +275,7 @@ class ClassAttendanceController extends Controller
             ->join('section_details', 'section_details.id', '=', 'class_details.section_id')
             ->where('class_details.adviser_id', $FacultyInformation->id)
             ->where('class_details.school_year_id', $school_year->id)
-            ->where('class_details.status', '!=', 0)
+            ->where('class_details.status', 1)
             ->select(\DB::raw('
                     section_details.section,
                     class_details.id,
@@ -515,7 +517,7 @@ class ClassAttendanceController extends Controller
             ->join('section_details', 'section_details.id', '=', 'class_details.section_id')
             ->where('class_details.adviser_id', $FacultyInformation->id)
             ->where('class_details.school_year_id', $class_id->school_year_id)
-            ->where('class_details.status', '!=', 0)
+            ->where('class_details.status', 1)
             ->select(\DB::raw('
                     section_details.section,
                     class_details.id,

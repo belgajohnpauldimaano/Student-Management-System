@@ -30,7 +30,7 @@ class OnlineAppointmentFinanceMail extends Mailable
      */
     public function build()
     {
-        return $this->view('mail.online_appointment_finance_mail')
+        return $this->view('mails.online_appointment_finance_mail')
             ->subject('New Online Appointment');
     }
 }

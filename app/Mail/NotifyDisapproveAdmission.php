@@ -30,6 +30,6 @@ class NotifyDisapproveAdmission extends Mailable
      */
     public function build()
     {
-        return $this->view('mail.student_account_disapproved_admission')->subject('Account Activation');
+        return $this->view('mails.student_account_disapproved_admission')->subject('Account Activation');
     }
 }

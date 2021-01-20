@@ -43,6 +43,9 @@
 </head>
 
 <body>
+    @php
+        $registration = \App\Models\RegistrationButton::whereId(1)->first()->is_enabled;
+    @endphp
     <header id="header">
         <div class="container-fluid">
             <div id="logo" class="pull-left">
@@ -102,10 +105,11 @@
                             <li><a href="{{ route('pages.faqs_on_distance_learning') }}">Frequently Asked Questions on Distance Learning</a></li>
                         </ul>
                     </li>
-                    {{-- <li class="menu">
-                        <a class="btn-enroll" data-toggle="modal" data-target="#js-registration"  href="#"><i class="fas fa-mouse-pointer"></i> Registration</a>
-                    </li> --}}
-
+                    @if($registration == 1)
+                        <li class="menu">
+                            <a class="btn-enroll" data-toggle="modal" data-target="#js-registration"  href="#"><i class="fas fa-mouse-pointer"></i> Registration</a>
+                        </li>
+                    @endif
                     <li class="menu">
                         <a class="btn-login" href="{{ route('login') }}"><i class="fas fa-sign-in-alt"></i> Login</a>
                     </li>

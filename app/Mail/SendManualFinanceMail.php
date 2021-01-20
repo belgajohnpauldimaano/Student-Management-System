@@ -30,7 +30,7 @@ class SendManualFinanceMail extends Mailable
      */
     public function build()
     {
-        return $this->view('mail.notify_finance_manual')
+        return $this->view('mails.notify_finance_manual')
             ->subject('Manual Billing Confirmation');
         
     }

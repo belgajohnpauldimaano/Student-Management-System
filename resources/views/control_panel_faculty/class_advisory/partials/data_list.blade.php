@@ -20,7 +20,7 @@
                     <td>{{ $data->room->room_code }}</td>
                     <td>{{ $data->grade_level }}</td>
                     <td>{{ $data->section->section }}</td>
-                    <td>{{ $data->status == 0 ? 'Active' : 'Inactive' }}</td>
+                    <td>{{ $data->status == 0 ? 'Inactive' : 'Active' }}</td>
                     <td>
                         <div class="input-group-btn pull-left text-left">
                             <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="true">Action
@@ -28,7 +28,8 @@
                             </button>
                             <ul class="dropdown-menu">
                                 <li>
-                                    <a href="{{ route('faculty.advisory_class.view') }}?c={{ encrypt($data->id) }}" class="js-btn_view" data-id="{{ encrypt($data->id) }}">
+                                    <a href="{{ route('faculty.advisory_class.view') }}?c={{ encrypt($data->id) }}" 
+                                        class="js-btn_view" data-id="{{ encrypt($data->id) }}">
                                         Student List
                                     </a>
                                 </li>
@@ -38,7 +39,8 @@
                                     </a>
                                 </li> --}}
                                  <li>
-                                    <a href="{{ route('faculty.student_gradesheet.index') }}?c={{ encrypt($data->id) }}" class="js-btn_gradesheet1" data-id="{{ encrypt($data->id) }}">
+                                    <a href="{{ route('faculty.student_gradesheet.index') }}?c={{ encrypt($data->id) }}" 
+                                        class="js-btn_gradesheet1" data-id="{{ encrypt($data->id) }}">
                                         Grade Sheet
                                     </a>
                                 </li>

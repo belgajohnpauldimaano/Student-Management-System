@@ -37,23 +37,19 @@ class StudentAccountController extends Controller
     use hasNotYetApproved;
     
     public function index(Request $request){
-        
         $stud_id = Crypt::decrypt($request->c);
         $Profile = StudentInformation::where('id', $stud_id)->first(); 
         
-        // if(!$request->school_year)
-        // {
-        //     $School_year_id = SchoolYear::where('status', 1)
-        //         ->where('current', 1)->first()->id;
-        // }
-        // else
-        // {
-        //     $School_year_id = $request->school_year;
-        // }
+        if(!$request->school_year)
+        {
+            $School_year_id = SchoolYear::where('status', 1)
+                ->where('current', 1)->first()->id; 
+        }
+        else
+        {
+            $School_year_id = $request->school_year;
+        }                              
 
-        $School_year_id = SchoolYear::where('status', 1)
-                ->where('current', 1)->first()->id;
-        
         $StudentInformation = NULL;
         
         $IncomingStudentCount = IncomingStudent::where('student_id', $stud_id)
@@ -67,21 +63,19 @@ class StudentAccountController extends Controller
         if(!$IncomingStudentCount){
 
             $Enrollment = Enrollment::where('student_information_id', $stud_id)
-                ->where('class_details_id', $request->class_details)
                 ->where('status', 1)
                 ->where('current', 1)
                 ->orderBy('id', 'DESC')
                 ->first();
-            
-            $ClassDetail = ClassDetail::find($request->class_details);
-                    
-                    // ->whereStatus(1)->whereCurrent(1)
+            // return $Enrollment->class_details_id;
+            // if(!$request->class_details){
+                $ClassDetail = ClassDetail::where('id', $Enrollment->class_details_id)
+                    ->whereStatus(1)->whereCurrent(1)->latest()->first();
             // }else{
             //     $ClassDetail = ClassDetail::where('id', $request->class_details)
             //         ->whereStatus(1)->whereCurrent(1)->latest()->first();
-            // }
-            // return json_encode($ClassDetail);
-            
+            // }            
+
             $grade_level_id = ($ClassDetail->grade_level);
         }
         else
@@ -92,8 +86,7 @@ class StudentAccountController extends Controller
         $Gradelvl = GradeLevel::where('current', 1)->where('status', 1)->get();
         $Discount = DiscountFee::where('current', 1)->where('status', 1)->get();
         $OtherFee = OtherFee::where('current', 1)->where('status', 1)->get();  
-        $SchoolYear = SchoolYear::whereId($School_year_id)
-                    ->where('current', 1)->where('status', 1)->first();
+        $SchoolYear = SchoolYear::where('current', 1)->where('status', 1)->first();
         $StudentCategory = StudentCategory::where('status', 1)->get();  
 
         $PaymentCategory = PaymentCategory::with('stud_category','tuition','misc_fee','other_fee')
@@ -117,9 +110,8 @@ class StudentAccountController extends Controller
         $student_payment_category = PaymentCategory::with('misc_fee','tuition')
             ->where('grade_level_id',  $grade_level_id)->first();
         
-        $NotyetApprovedCount = $this->notYetApproved();
+            $NotyetApprovedCount = $this->notYetApproved();
 
-        // if has transaction
         if($Transaction){
         
             $Payment =  PaymentCategory::where('id', $Transaction->payment_category_id)->first();
@@ -151,7 +143,8 @@ class StudentAccountController extends Controller
                 ->get();
             } catch (\Throwable $th) {
                 $others = 0;
-            }            
+            }
+            
 
             $HasTransactionDiscount = TransactionDiscount::where('student_id', $stud_id)
                 ->where('school_year_id', $School_year_id)

@@ -89,8 +89,8 @@ Route::group(['prefix' => 'registrar/student-enrollment/{id}', 'middleware' => [
     Route::get('enrolled-student', 'Registrar\StudentEnrollmentController@fetch_enrolled_student')->name('registrar.student_enrollment.fetch_enrolled_student');
     Route::post('cancel-enroll-student', 'Registrar\StudentEnrollmentController@cancel_enroll_student')->name('registrar.student_enrollment.cancel_enroll_student');
     
-    // Route::post('drop-student', 'Registrar\StudentEnrollmentController@drop')
-    //     ->name('registrar.student_enrollment.drop');
+    Route::post('drop-student', 'Registrar\StudentEnrollmentController@drop')
+        ->name('registrar.student_enrollment.drop');
 
     Route::get('print-enrolled-students', 'Registrar\StudentEnrollmentController@print_enrolled_students')
         ->name('registrar.student_enrollment.print_enrolled_students');

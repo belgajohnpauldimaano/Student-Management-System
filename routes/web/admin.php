@@ -58,6 +58,12 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'userroles'], 'roles
             Route::post('set-school-year', 'Control_Panel\Maintenance\SchoolYearController@saveSchoolYear')->name('admin.maintenance.set_school_year');
         });
 
+        Route::group(['prefix' => 'registration_button'], function () {
+            Route::get('', 'Control_Panel\Maintenance\RegistrationButtonController@index')->name('admin.maintenance.registration_button');
+            Route::post('', 'Control_Panel\Maintenance\RegistrationButtonController@index')->name('admin.maintenance.registration_button');
+            Route::post('update', 'Control_Panel\Maintenance\RegistrationButtonController@update')->name('admin.maintenance.registration_button.updated');
+        });
+
         Route::group(['prefix' => 'semester'], function () {
             Route::get('', 'Control_Panel\Maintenance\SemesterController@index')->name('admin.maintenance.semester');
             Route::post('', 'Control_Panel\Maintenance\SemesterController@index')->name('admin.maintenance.semester');

@@ -86,7 +86,7 @@
                                     class="btn btn-flat btn-primary btn-sm"
                                 >
                                     Account
-                                </a
+                                </a>
                             @endif                                                    
                         </div>
                     </td>

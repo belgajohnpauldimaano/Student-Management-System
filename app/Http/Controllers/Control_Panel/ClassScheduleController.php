@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers\Control_Panel;
 
-use App\SchoolYear;
 use Barryvdh\DomPDF\PDF;
-use App\ClassSubjectDetail;
-use App\FacultyInformation;
+use App\Models\SchoolYear;
+use App\Models\ClassSubjectDetail;
+use App\Models\FacultyInformation;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;

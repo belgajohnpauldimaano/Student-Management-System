@@ -56,7 +56,8 @@ Route::group(['prefix' => 'faculty', 'middleware' => 'auth', 'roles' => ['admin'
     Route::group(['prefix' => 'advisory-class'], function () {
         Route::get('', 'Faculty\AdvisoryClassController@index')->name('faculty.advisory_class.index');
 
-        Route::get('view', 'Faculty\AdvisoryClassController@view_class_list')->name('faculty.advisory_class.view');
+        Route::get('student-list', 'Faculty\AdvisoryClassController@view_class_list')->name('faculty.advisory_class.view');
+        Route::post('student-list', 'Faculty\AdvisoryClassController@view_class_list')->name('faculty.advisory_class.view');
         Route::post('manage_attendance', 'Faculty\AdvisoryClassController@manage_attendance')->name('faculty.advisory_class.manage_attendance');
         Route::post('view_edit','Faculty\AdvisoryClassController@manage_demographic_profile')->name('faculty.advisory_class.demographic_profile');
         Route::post('save_attendance', 'Faculty\AdvisoryClassController@save_attendance')->name('faculty.advisory_class.save_attendance');

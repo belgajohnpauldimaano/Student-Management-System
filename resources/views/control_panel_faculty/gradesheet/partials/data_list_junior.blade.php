@@ -52,6 +52,8 @@
                     $fou = 0;
                     $empty = 0;
                     $divisor = $AdvisorySubject->count();
+                    $g_status = 0;
+                    $inc = 0;
                 @endphp
                 <tr>
                     <td class="text-center">{{$key+1}}.</td>
@@ -73,6 +75,16 @@
                                     {
                                         $sum += $sub_grade['fir_g'];
                                         echo number_format(round($sub_grade['fir_g']));
+                                        
+                                        if($sub_grade['fir_g'] < 80)
+                                        {
+                                            $g_status += 1;
+                                        }
+
+                                        if($sub_grade['fir_g'] == 0)
+                                        {
+                                            $inc += 1;
+                                        }
 
                                         if($sub_grade['fir_g'] == 0.00)
                                         {
@@ -92,6 +104,16 @@
                                         $sum += $sub_grade['sec_g'];
                                         echo number_format(round($sub_grade['sec_g']));
 
+                                        if($sub_grade['sec_g'] < 80)
+                                        {
+                                            $g_status += 1;
+                                        }
+
+                                        if($sub_grade['sec_g'] == 0)
+                                        {
+                                            $inc += 1;
+                                        }
+
                                         if($sub_grade['sec_g'] == 0.00)
                                         {
                                             $isEmpty = 'na';         
@@ -110,6 +132,16 @@
                                         $sum += $sub_grade['thi_g'];
                                         echo number_format(round($sub_grade['thi_g']));
 
+                                        if($sub_grade['thi_g'] < 80)
+                                        {
+                                            $g_status += 1;
+                                        }
+
+                                        if($sub_grade['thi_g'] == 0)
+                                        {
+                                            $inc += 1;
+                                        }
+
                                         if($sub_grade['thi_g'] == 0.00)
                                         {
                                             $isEmpty = 'na';         
@@ -127,6 +159,16 @@
                                     {
                                         $sum += $sub_grade['fou_g'];
                                         echo number_format(round($sub_grade['fou_g']));
+
+                                        if($sub_grade['fou_g'] < 80)
+                                        {
+                                            $g_status += 1;
+                                        }
+
+                                        if($sub_grade['fou_g'] == 0)
+                                        {
+                                            $inc += 1;
+                                        }
 
                                         if($sub_grade['fou_g'] == 0.00)
                                         {
@@ -159,7 +201,30 @@
                                 $fir += $sub_grade['fir_g'];
                                 $sec += $sub_grade['sec_g'];   
                                 $thi += $sub_grade['thi_g'];
-                                $fou += $sub_grade['fou_g'];                               
+                                $fou += $sub_grade['fou_g'];
+                                
+                                if($sub_grade['fir_g'] < 80 && $sub_grade['sec_g'] < 80 && $sub_grade['thi_g'] < 80 && $sub_grade['fou_g'] < 80)
+                                {
+                                    $g_status += 1;
+                                }
+
+                                if($sub_grade['fir_g'] == 0 )
+                                {
+                                    $inc += 1;
+                                }
+                                if($sub_grade['sec_g'] == 0)
+                                {
+                                    $inc += 1;
+                                }
+                                if($sub_grade['thi_g'] == 0)
+                                {
+                                    $inc += 1;
+                                }
+                                if($sub_grade['fou_g'] == 0)
+                                {
+                                    $inc += 1;
+                                }
+                                
                                 $final_first = $fir / $divisor;
                                 $final_sec = $sec / $divisor;
                                 $final_thi = $thi / $divisor;
@@ -206,18 +271,35 @@
                     </td>
                     <td class="text-center">
                         @if($isEmpty != 'na')
+                            {{-- {{ $g_status }} --}}
                             @if(round($final) > 74 && round($final) <= 89)
                                 Passed
                             @elseif(round($final) >= 90 && round($final) <= 94)
-                                with honors
+                                @if($g_status > 0)
+                                    Passed
+                                @else
+                                    <span class="text-green">with honors</span>
+                                @endif
                             @elseif(round($final)>= 95 && round($final) <= 97)
-                                with high honors
+                                @if($g_status > 0)
+                                    Passed
+                                @else
+                                    <span class="text-green">with high honors</span>
+                                @endif
                             @elseif(round($final) >= 98 && round($final) <= 100)
-                                with highest honors
-                            @elseif(round($final) < 75)
-                                Failed
-                            @endif   
-                        @endif                 
+                                @if($g_status > 0)
+                                    Passed
+                                @else
+                                    <span class="text-green">with highest honors</span>
+                                @endif
+                            @elseif(round($final) < 75)                                    
+                                <span class="text-red">Failed</span>
+                            @endif
+                        @else
+                            <span class="text-red">
+                                {{ $inc > 0 ? 'INC' : '' }}
+                            </span>        
+                        @endif                             
                     </td>
                 </tr>
             @endforeach
@@ -235,7 +317,10 @@
                     $sec = 0;
                     $thi = 0;
                     $fou = 0;
+                    $empty = 0;
                     $divisor = $AdvisorySubject->count();
+                    $g_status = 0;
+                    $inc = 0;
                 @endphp
                 <tr>
                     <td class="text-center">{{$key+1}}.</td>
@@ -251,12 +336,22 @@
                                         // ->where('subject_id', $sub->subject_id)
                                         ->where('class_subject_details_id', $sub->id)
                                         ->where('status', 1)
-                                        ->first();                          
+                                        ->first();                      
 
                                     if($quarter == '1st')
                                     {
                                         $sum += $sub_grade['fir_g'];
                                         echo number_format(round($sub_grade['fir_g']));
+                                        
+                                        if($sub_grade['fir_g'] < 80)
+                                        {
+                                            $g_status += 1;
+                                        }
+
+                                        if($sub_grade['fir_g'] == 0)
+                                        {
+                                            $inc += 1;
+                                        }
 
                                         if($sub_grade['fir_g'] == 0.00)
                                         {
@@ -276,6 +371,16 @@
                                         $sum += $sub_grade['sec_g'];
                                         echo number_format(round($sub_grade['sec_g']));
 
+                                        if($sub_grade['sec_g'] < 80)
+                                        {
+                                            $g_status += 1;
+                                        }
+
+                                        if($sub_grade['sec_g'] == 0)
+                                        {
+                                            $inc += 1;
+                                        }
+
                                         if($sub_grade['sec_g'] == 0.00)
                                         {
                                             $isEmpty = 'na';         
@@ -293,6 +398,16 @@
                                     {
                                         $sum += $sub_grade['thi_g'];
                                         echo number_format(round($sub_grade['thi_g']));
+
+                                        if($sub_grade['thi_g'] < 80)
+                                        {
+                                            $g_status += 1;
+                                        }
+
+                                        if($sub_grade['thi_g'] == 0)
+                                        {
+                                            $inc += 1;
+                                        }
 
                                         if($sub_grade['thi_g'] == 0.00)
                                         {
@@ -312,6 +427,16 @@
                                         $sum += $sub_grade['fou_g'];
                                         echo number_format(round($sub_grade['fou_g']));
 
+                                        if($sub_grade['fou_g'] < 80)
+                                        {
+                                            $g_status += 1;
+                                        }
+
+                                        if($sub_grade['fou_g'] == 0)
+                                        {
+                                            $inc += 1;
+                                        }
+
                                         if($sub_grade['fou_g'] == 0.00)
                                         {
                                             $isEmpty = 'na';         
@@ -326,7 +451,7 @@
                                         }
                                     }
                                     $final = $sum / $divisor;                                                                
-                                @endphp                         
+                                @endphp                        
                             </td>
                         @endforeach
                     @endif
@@ -338,12 +463,35 @@
                                     // ->where('subject_id', $sub->subject_id)
                                     ->where('class_subject_details_id', $sub->id)
                                     ->where('status', 1)
-                                    ->first();                           
+                                    ->first();                          
 
                                 $fir += $sub_grade['fir_g'];
                                 $sec += $sub_grade['sec_g'];   
                                 $thi += $sub_grade['thi_g'];
-                                $fou += $sub_grade['fou_g'];                               
+                                $fou += $sub_grade['fou_g'];
+                                
+                                if($sub_grade['fir_g'] < 80 && $sub_grade['sec_g'] < 80 && $sub_grade['thi_g'] < 80 && $sub_grade['fou_g'] < 80)
+                                {
+                                    $g_status += 1;
+                                }
+
+                                if($sub_grade['fir_g'] == 0 )
+                                {
+                                    $inc += 1;
+                                }
+                                if($sub_grade['sec_g'] == 0)
+                                {
+                                    $inc += 1;
+                                }
+                                if($sub_grade['thi_g'] == 0)
+                                {
+                                    $inc += 1;
+                                }
+                                if($sub_grade['fou_g'] == 0)
+                                {
+                                    $inc += 1;
+                                }
+                                
                                 $final_first = $fir / $divisor;
                                 $final_sec = $sec / $divisor;
                                 $final_thi = $thi / $divisor;
@@ -390,18 +538,35 @@
                     </td>
                     <td class="text-center">
                         @if($isEmpty != 'na')
+                            {{-- {{ $g_status }} --}}
                             @if(round($final) > 74 && round($final) <= 89)
                                 Passed
                             @elseif(round($final) >= 90 && round($final) <= 94)
-                                with honors
+                                @if($g_status > 0)
+                                    Passed
+                                @else
+                                    <span class="text-green">with honors</span>
+                                @endif
                             @elseif(round($final)>= 95 && round($final) <= 97)
-                                with high honors
+                                @if($g_status > 0)
+                                    Passed
+                                @else
+                                    <span class="text-green">with high honors</span>
+                                @endif
                             @elseif(round($final) >= 98 && round($final) <= 100)
-                                with highest honors
-                            @elseif(round($final) < 75)
-                                Failed
-                            @endif   
-                        @endif                 
+                                @if($g_status > 0)
+                                    Passed
+                                @else
+                                    <span class="text-green">with highest honors</span>
+                                @endif
+                            @elseif(round($final) < 75)                                    
+                                <span class="text-red">Failed</span>
+                            @endif
+                        @else
+                            <span class="text-red">
+                                {{ $inc > 0 ? 'INC' : '' }}
+                            </span>        
+                        @endif                             
                     </td>
                 </tr>
             @endforeach

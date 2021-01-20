@@ -54,9 +54,9 @@
       @include('control_panel_student.enrollment.partials.deposit_bank')
   </div>
 
-  {{-- <div class="row" id="gcash" style="display: none; padding:0 16px 0 16px">    
+  <div class="row" id="gcash" style="display: none; padding:0 16px 0 16px">    
     @include('control_panel_student.enrollment.partials.gcash_method')
-  </div> --}}
+  </div>
 
 
 

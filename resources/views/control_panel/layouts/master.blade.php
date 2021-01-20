@@ -265,13 +265,13 @@
         @endif               --}}
           {{--  Registrar Menu End  --}}
         @if (Auth::user()->role == 1 || Auth::user()->role == 0)
-          <li class="treeview">
+          <li class="treeview active">
               <a href="#">
                 <i class="fa fa-cog fa-lg"></i>&nbsp;&nbsp;&nbsp; 
                 <span>Maintenance</span>
                 <span class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span>
               </a>
-              <ul class="treeview-menu" style="display: none">
+              <ul class="treeview-menu">
                   {{--  Admin Menu  --}}
                   <li class="{{request()->routeIs('admin.student.information') ? 'active' : '' }}">
                     <a href="{{ route('admin.student.information') }}"><i class="fa fa-circle-o"></i>&nbsp;&nbsp;&nbsp; <span>Class Rooms</span></a>
@@ -279,25 +279,13 @@
                   <li class="{{request()->routeIs('admin.maintenance.date_remarks_for_class_card') ? 'active' : '' }}">
                     <a href="{{ route('admin.maintenance.date_remarks_for_class_card') }}"><i class="fa fa-circle-o"></i>&nbsp;&nbsp;&nbsp; <span>Date of Remarks</span></a>
                   </li>
+                  <li class="{{request()->routeIs('admin.maintenance.registration_button') ? 'active' : '' }}">
+                    <a href="{{ route('admin.maintenance.registration_button') }}"><i class="fa fa-circle-o"></i>&nbsp;&nbsp;&nbsp; <span>Registration Button</span></a>
+                  </li>
                   <li class="{{request()->routeIs('admin.maintenance.school_year') ? 'active' : '' }}">
                     <a href="{{ route('admin.maintenance.school_year') }}">
                       <i class="fa fa-circle-o"></i>&nbsp;&nbsp;&nbsp; <span>School Year</span>
-                      <span class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span>
-                    </a>
-                    <ul class="treeview-menu" style="display: block">
-                      <li class="{{request()->routeIs('admin.maintenance.school_year') ? 'active' : '' }}">
-                        <a href="{{ route('admin.maintenance.school_year') }}">
-                          <i class="fa fa-circle-o"></i>&nbsp;&nbsp;&nbsp; <span>Add School Year</span>
-                        </a>
-                      </li>
-                      <li class="{{request()->routeIs('admin.maintenance.school_year_settings') ? 'active' : '' }}">
-                        <a href="{{ route('admin.maintenance.school_year_settings')}}">
-                          <i class="fa fa-circle-o"></i>&nbsp;&nbsp;&nbsp; <span>School Year Setting</span>
-                        </a>
-                      </li>
-                      {{-- <li><a href=""><i class="fa fa-circle-o"></i>&nbsp;&nbsp;&nbsp; <span>Student</span></a></li>
-                      <li><a href=""><i class="fa fa-circle-o"></i>&nbsp;&nbsp;&nbsp; <span>Registrar</span></a></li> --}}
-                    </ul>
+                    </a>                    
                   </li>
                   <li class="{{request()->routeIs('admin.maintenance.semester') ? 'active' : '' }}">
                     <a href="{{ route('admin.maintenance.semester') }}"><i class="fa fa-circle-o"></i>&nbsp;&nbsp;&nbsp; <span>Semester</span></a>

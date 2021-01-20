@@ -400,50 +400,50 @@
             });
 
 
-            $('body').on('click', '.js-btn_drop_student', function (e) {
-                e.preventDefault();
-                var enrollment_id = $(this).data('id');
-                var student_id = $(this).data('student_id');
+            // $('body').on('click', '.js-btn_drop_student', function (e) {
+            //     e.preventDefault();
+            //     var enrollment_id = $(this).data('id');
+            //     var student_id = $(this).data('student_id');
                 
-                alertify.defaults.transition = "slide";
-                alertify.defaults.theme.ok = "btn btn-primary btn-flat";
-                alertify.defaults.theme.cancel = "btn btn-danger btn-flat";
-                alertify.confirm('Confirmation', 'Are you sure you want to drop this student?', function(){                    
+            //     alertify.defaults.transition = "slide";
+            //     alertify.defaults.theme.ok = "btn btn-primary btn-flat";
+            //     alertify.defaults.theme.cancel = "btn btn-danger btn-flat";
+            //     alertify.confirm('Confirmation', 'Are you sure you want to drop this student?', function(){                    
                     
-                    $.ajax({
-                        url         : "{{ route('registrar.student_enrollment.drop', $id) }}",
-                        type        : 'POST',
-                        data        : { 
-                            _token : '{{ csrf_token() }}', enrollment_id : enrollment_id, class_detail_id : '{{ $ClassDetail->id }}', student_id : student_id
-                        },
-                        success     : function (res) {
-                            $('.help-block').html('');
-                            if (res.res_code == 1)
-                            {
-                                show_toast_alert({
-                                    heading : 'Error',
-                                    message : res.res_msg,
-                                    type    : 'error'
-                                });
-                            }
-                            else
-                            {
-                                show_toast_alert({
-                                    heading : 'Success',
-                                    message : res.res_msg,
-                                    type    : 'success'
-                                });
+            //         $.ajax({
+            //             url         : "{{ route('registrar.student_enrollment.drop', $id) }}",
+            //             type        : 'POST',
+            //             data        : { 
+            //                 _token : '{{ csrf_token() }}', enrollment_id : enrollment_id, class_detail_id : '{{ $ClassDetail->id }}', student_id : student_id
+            //             },
+            //             success     : function (res) {
+            //                 $('.help-block').html('');
+            //                 if (res.res_code == 1)
+            //                 {
+            //                     show_toast_alert({
+            //                         heading : 'Error',
+            //                         message : res.res_msg,
+            //                         type    : 'error'
+            //                     });
+            //                 }
+            //                 else
+            //                 {
+            //                     show_toast_alert({
+            //                         heading : 'Success',
+            //                         message : res.res_msg,
+            //                         type    : 'success'
+            //                     });
 
-                                setTimeout(function() {
-                                    location.reload();
-                                }, 3000);
-                            }
-                        }
-                    });
-                }, function(){  
+            //                     setTimeout(function() {
+            //                         location.reload();
+            //                     }, 3000);
+            //                 }
+            //             }
+            //         });
+            //     }, function(){  
 
-                });
-            });
+            //     });
+            // });
 
            
 

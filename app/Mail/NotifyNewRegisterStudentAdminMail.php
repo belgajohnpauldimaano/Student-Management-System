@@ -29,6 +29,6 @@ class NotifyNewRegisterStudentAdminMail extends Mailable
      */
     public function build()
     {
-        return $this->view('mail.newly_registered')->subject('Account Activation');
+        return $this->view('mails.newly_registered')->subject('Account Activation');
     }
 }

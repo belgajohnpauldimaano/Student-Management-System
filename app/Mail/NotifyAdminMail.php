@@ -31,7 +31,7 @@ class NotifyAdminMail extends Mailable
      */
     public function build()
     {
-        return $this->view('mail.notify_admin')
+        return $this->view('mails.notify_admin')
             ->subject('Online Enrollment Confirmation');
     }
 }

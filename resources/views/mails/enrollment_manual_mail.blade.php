@@ -1,24 +1,13 @@
-<html>
-    <head>
-        <meta http-equiv=3D"Content-Type" content=3D"text/html; charset==3DUTF-8" />
-        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
-    </head>
+@extends('mails.mail_layout')
+@section ('content')
+    <p style="text-align: right;">Date: {{ $payment ? date_format(date_create($payment->created_at), 'F d, Y h:i A') : '' }}</p>
+
+    <p>Dear {{$payment->student->last_name.', '.$payment->student->first_name}}</p>
     
-    <body>
-    <div style="padding: 20px">
-        <h3 style="text-align:center; margin-bottom:10px">
-            St. John's Academy Inc.<br/>
-            Online Registration Confirmation
-        </h3>
-        <br/>
-        <p style="text-align: right;">Date: {{ $payment ? date_format(date_create($payment->created_at), 'F d, Y h:i A') : '' }}</p>
+    <p>Thank you for using online payment. Below is your payment history.</p>
 
-        <p>Dear Finance,</p>
-        
-        <p>You have received the payment of {{$payment->student->last_name.', '.$payment->student->first_name}}.</p>
-
-        <p>Student Level : {{$payment->payment_cat->stud_category->student_category.'-'.$payment->payment_cat->grade_level_id}}</p>
-        
+    <p>Student Level : {{$payment->payment_cat->stud_category->student_category.'-'.$payment->payment_cat->grade_level_id}}</p>
+    
         <table border="1" style="border-color: #666;border-collapse: collapse;width:100%; " cellpadding="5">
             <thead>
                 <th style="width: 40%">Description</th>
@@ -34,8 +23,7 @@
                     <td>₱ {{number_format($payment->payment_cat->misc_fee->misc_amt, 2)}}</td>
                 </tr>
                 <tr>
-                    @php 
-                        $other = \App\Models\TransactionOtherFee::where('student_id', $payment->student_id)
+                    @php $other = \App\Models\TransactionOtherFee::where('student_id', $payment->student_id)
                             ->where('school_year_id', $payment->school_year_id)
                             ->where('transaction_id', $payment->id)->where('isSuccess', 1)
                             ->first();
@@ -196,13 +184,4 @@
                 
             </tbody>
         </table>
-        
-        <br/>
-        {{-- <p>This is auto generated receipt. Thank you!</p> --}}
-        <br>
-        <p>
-            DISCLAIMER : The message (including the attachments) contains Confidential Information and is intended for the named recipient only. Unless you are the intended recipient (or authorized to receive for the intended recipient), you may not read, print, retain, use, copy, distribute nor disclose to anyone this message or any information contained herein. If you have received the message in error, please advise the sender immediately by reply e-mail, and destroy all copies of the original message (including the attachments).
-        </p>
-    </div>
-    </body>
-</html>
+@endsection

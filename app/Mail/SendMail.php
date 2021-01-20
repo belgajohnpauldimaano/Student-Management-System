@@ -30,7 +30,7 @@ class SendMail extends Mailable
      */
     public function build()
     {
-        return $this->view('mail.enrollment_mail')
+        return $this->view('mails.enrollment_mail')
             ->subject('Online Enrollment Confirmation');
         
     }
