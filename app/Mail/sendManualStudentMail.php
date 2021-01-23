@@ -30,7 +30,7 @@ class sendManualStudentMail extends Mailable
      */
     public function build()
     {
-        return $this->view('mail.enrollment_manual_mail')
+        return $this->view('mails.enrollment_manual_mail')
             ->subject('Manual Billing Confirmation');
         
     }

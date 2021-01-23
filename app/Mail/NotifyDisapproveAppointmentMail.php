@@ -29,7 +29,7 @@ class NotifyDisapproveAppointmentMail extends Mailable
      */
     public function build()
     {
-        return $this->view('mail.disapprove_appointment')
+        return $this->view('mails.disapprove_appointment')
             ->subject('Online Appointment Confirmation');
     }
 }

@@ -1,4 +1,4 @@
-<div class="box-body">
+
     <div class="js-data-container">
         <div class="table-responsive">
             <table class="table no-margin table-striped table-bordered">
@@ -15,11 +15,12 @@
                     @if ($Enrollment)
                         @if($findSchoolYear =='')
                             <td colspan="5" style="text-align: center; font-weight: 600">
-                                <img src="https://cdn.iconscout.com/icon/free/png-256/data-not-found-1965034-1662569.png" alt="no data"/><br/>Sorry, there is no data found.
+                                <img src="https://cdn.iconscout.com/icon/free/png-256/data-not-found-1965034-1662569.png" alt="no data"/>
+                                <br/>Sorry, there is no data found.
                             </td>
                         @endif
                         @foreach ($Enrollment as $key => $data)
-                        <?php
+                            @php
                                 $days = $data ? $data->class_schedule ? explode(';', rtrim($data->class_schedule,";")) : [] : [];
                                 $daysObj = [];
                                 $daysDisplay = '';
@@ -44,8 +45,7 @@
                                         $daysDisplay .= $day . '@' . $t[0] . '-' . $t[1] . '/';
                                     }
                                 }
-
-                            ?>
+                            @endphp
                             <tr>
                                 <td>{{ rtrim($daysDisplay, '/') }}</td>
                                 <td>{{ $data->subject_code . ' ' . $data->subject }}</td>
@@ -59,4 +59,3 @@
             </table>
         </div>
     </div>
-</div>

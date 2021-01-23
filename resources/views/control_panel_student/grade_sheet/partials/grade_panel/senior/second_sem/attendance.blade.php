@@ -1,7 +1,7 @@
 
     <p class="report-progress-left m0"  style="margin-top: 2em; margin-left: 5px"><b>ATTENDANCE RECORD</b></p>
     
-    <table style="width:100%; margin-bottom: 1em " class="table no-margin table-bordered table-striped">
+    <table style="width:100%; margin-bottom: 1em " class="table table-sm table-bordered table-striped">
         <tr>
             <th>
                 @foreach ($student_attendance2['table_header'] as $data)

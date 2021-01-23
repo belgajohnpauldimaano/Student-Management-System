@@ -24,7 +24,7 @@
                         <label for="">Article Status</label> <span class="text-muted"></span>
                         <select name="article_status" id="article_status" data-placeholder="Select article status" class="form-control">
                             <?php
-                                $status = App\Article::ARTICLE_STATUS;
+                                $status = App\Models\Article::ARTICLE_STATUS;
                                 array_shift($status);
                             ?>
                             @foreach ($status as $key => $val)
@@ -78,7 +78,7 @@
                             $article_levels = ($Article ? explode(',',$Article->level) : []);
                         ?>
                         <select name="level" id="level" style="width: 100%;" data-placeholder="Select level" class="form-control js-select2-multiple_level" multiple="multiple">
-                            @foreach (App\Article::LEVEL as $key => $val)
+                            @foreach (App\Models\Article::LEVEL as $key => $val)
                                 <option value="{{ $key }}" {{ (in_array($key, $article_levels) ? 'selected' : '') }}>
                                     {{ $val }}
                                 </option>

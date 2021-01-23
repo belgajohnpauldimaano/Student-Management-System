@@ -63,7 +63,8 @@ class EncodeRemarkController extends Controller
                     ->whereRaw('class_details.adviser_id = '. $FacultyInformation->id)
                     ->whereRaw('student_informations.gender = 1')    
                     ->where('school_years.current', '!=', 0)
-                    ->where('enrollments.class_details_id', $ClassSubjectDetail->id)   
+                    ->where('enrollments.class_details_id', $ClassSubjectDetail->id)
+                    ->whereRaw('enrollments.status = 1')
                     ->select(\DB::raw("
                         enrollments.id as e_id,
                         enrollments.attendance,
@@ -85,7 +86,8 @@ class EncodeRemarkController extends Controller
                     ->whereRaw('class_details.adviser_id = '. $FacultyInformation->id)
                     ->where('school_years.current', '!=', 0)  
                     ->where('enrollments.class_details_id', $ClassSubjectDetail->id)   
-                    ->whereRaw('student_informations.gender = 2')       
+                    ->whereRaw('student_informations.gender = 2')
+                    ->whereRaw('enrollments.status = 1')
                     ->select(\DB::raw("
                         enrollments.id as e_id,
                         enrollments.attendance,

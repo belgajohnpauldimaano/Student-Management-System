@@ -6,7 +6,7 @@
 </h4>
 
 <div class="table-responsive">
-    <table class="table no-margin table-bordered">
+    <table class="table table-sm table-hover table-bordered no-margin w-100">
         <thead>
             <tr>
                 <th style="text-align: center">Subject</th>

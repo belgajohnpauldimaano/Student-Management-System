@@ -50,6 +50,10 @@
         .text-red {
             color : #dd4b39 !important;
         }
+
+        .text-green{
+            color: green !important;
+        }
         small {
             font-size : 10px;
         }

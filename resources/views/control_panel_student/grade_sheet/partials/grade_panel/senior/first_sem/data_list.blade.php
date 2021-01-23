@@ -4,10 +4,8 @@
 <h4 style="margin-top: 20px">
     <b>First Semester</b>
 </h4>
-
-
-<div class="table-responsive">
-    <table class="table no-margin table-bordered">
+<div class="table-responsive m-auto">
+    <table class="table table-bordered table-sm table-hover">
         <thead>
             <tr>
                 <th style="text-align: center">Subject</th>

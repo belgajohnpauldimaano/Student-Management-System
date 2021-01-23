@@ -46,33 +46,19 @@
 
 @section ('content')
     <div class="row">
-        {{-- <div class="col-md-8"> --}}
-            {{-- <div class="box">
-                <div class="box-header with-border"> --}}
-                                        
-                    <form id="js-form_search">
-                        {{ csrf_field() }}
-                    </form>
-                {{-- </div>
-            </div> --}}
-            <div class="col-sm-12">
-                {{-- <div class="overlay hidden" id="js-loader-overlay"><i class="fa fa-refresh fa-spin"></i></div> --}}
-                <div id="preloader" style="display: none">
-                    <img class="preloader" src="{{ asset('img/loader.gif')}}" alt="">
-                </div>
-                {{-- <div class="box-body"> --}}
-                    <div class="js-data-container">
-                        @include('control_panel_student.online_appointment.partials.data_list')     
-                    </div>
-                </div>
-                {{-- </div>    --}}
-            {{-- </div> --}}
-        </div>
-        {{-- <div class="col-md-4 js-data-container">
-            @include('control_panel_student.online_appointment.partials.data_appointment')
-        </div> --}}
+        <form id="js-form_search">
+            {{ csrf_field() }}
+        </form>
+            
+        <div class="col-sm-12">
+            <div id="preloader" style="display: none">
+                <img class="preloader" src="{{ asset('img/loader.gif')}}" alt="">
+            </div>
+            <div class="js-data-container">
+                @include('control_panel_student.online_appointment.partials.data_list')     
+            </div>
+        </div>           
     </div>
-    
 @endsection
 
 @section ('scripts')
@@ -136,8 +122,8 @@
             var grade_lvl = $('.js-grade').val();
 
             alertify.defaults.transition = "slide";
-            alertify.defaults.theme.ok = "btn btn-primary btn-flat";
-            alertify.defaults.theme.cancel = "btn btn-danger btn-flat";
+            alertify.defaults.theme.ok = "btn btn-primary";
+            alertify.defaults.theme.cancel = "btn btn-danger";
             alertify.confirm('<i style="color: red !important" class="icon fa fa-warning"></i> Confirmation', 'You reserve to Date: <b>'+date+'</b> Time <b>'+time+'</b>?', function(){  
                 
                 if($("#email").val() == ''){ 
@@ -186,11 +172,11 @@
             });
         });
 
-            notify();
+            // notify();
 
             function notify(){               
                 
-                alertify.defaults.theme.ok = "btn btn-primary btn-flat";
+                alertify.defaults.theme.ok = "btn btn-primary";
                 alertify
                 .alert('<i style="color: red !important" class="icon fa fa-warning"></i> Reminder, Please read',"You can only reserve once in every available schedule.Please do not reserve it when you don't need it. Thank you!.", function(){
                     // alertify.message('OK');

@@ -57,12 +57,13 @@ class AdvisoryClassController extends Controller
                 ->whereRaw('student_informations.gender = 1')       
                 ->select(\DB::raw("
                     enrollments.id as e_id,
+                    enrollments.status,
                     student_informations.id,
                     users.username,
                     CONCAT(student_informations.last_name, ' ', student_informations.first_name, ' ', student_informations.middle_name) as student_name
                 "))
                 ->orderBY('student_name', 'ASC')
-                ->paginate(100);
+                ->get();
 
             $EnrollmentFemale = Enrollment::join('student_informations', 'student_informations.id', '=', 'enrollments.student_information_id')
                 ->join('class_details', 'class_details.id', '=', 'enrollments.class_details_id')
@@ -72,18 +73,24 @@ class AdvisoryClassController extends Controller
                 ->whereRaw('student_informations.gender = 2')       
                 ->select(\DB::raw("
                     enrollments.id as e_id,
+                    enrollments.status,
                     student_informations.id,
                     users.username,
                     CONCAT(student_informations.last_name, ' ', student_informations.first_name, ' ', student_informations.middle_name) as student_name
                 "))
                 ->orderBY('student_name', 'ASC')
-                ->paginate(100);
+                ->get();
 
             $ClassDetails = ClassDetail::with(['section', 'schoolYear'])
                 ->where('class_details.id', $class_id)
                 ->first();
+                
+            if($request->ajax()){            
+                return view('control_panel_faculty.class_student.partials.data_list', 
+                    compact('EnrollmentMale','EnrollmentFemale', 'ClassDetails', 'class_id'));
+            }
             
-            return view('control_panel_faculty.class_advisory.index_view_class_list', 
+            return view('control_panel_faculty.class_student.index', 
                 compact('EnrollmentMale','EnrollmentFemale', 'ClassDetails', 'class_id'))->render();
         } catch (Illuminate\Contracts\Encryption\DecryptException $e) {
             return "Invalid parameter";

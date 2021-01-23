@@ -21,6 +21,9 @@ class GradeSheetController extends Controller
     {
         $StudentInformation = StudentInformation::where('user_id', Auth::user()->id)->first();        
         $School_years = SchoolYear::where('status', 1)->get();
+        $SchoolYear = SchoolYear::where('current', 1)
+            ->where('status', 1)
+            ->first();
         
         if($request->ajax())
         {
@@ -499,7 +502,7 @@ class GradeSheetController extends Controller
                                     'GradeSheetData', 'grade_level', 'StudentInformation', 'ClassDetail',
                                     'general_avg','Enrollment','Enrollment_first_sem','Enrollment_secondsem',
                                     'GradeSheet','School_years','student_attendance1',
-                                    'student_attendance'
+                                    'student_attendance','SchoolYear'
                                 ));
                         }
                        
@@ -514,7 +517,7 @@ class GradeSheetController extends Controller
         }
         
         $GradeSheet = 0;
-        return view('control_panel_student.grade_sheet.index', compact('GradeSheet','School_years'));
+        return view('control_panel_student.grade_sheet.index', compact('GradeSheet','School_years','SchoolYear'));
         
     }
 

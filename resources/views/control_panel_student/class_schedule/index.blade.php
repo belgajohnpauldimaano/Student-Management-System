@@ -8,10 +8,18 @@
 @endsection
 
 @section ('content')
-    <div class="box">
-        <div class="overlay hidden" id="js-loader-overlay"><i class="fa fa-refresh fa-spin"></i></div>
-        @include('control_panel_student.class_schedule.partials.data_list')
-        
+    <div class="card card-default">
+        <div class="card-header">
+            <h3 class="card-title">Schedules:</h3>
+        </div>
+        <!-- /.card-header -->
+        <div class="card-body">
+            <div class="row">
+                <div class="overlay hidden" id="js-loader-overlay"><i class="fa fa-refresh fa-spin"></i></div>
+                <h3 class="card-title"> </h3>
+                @include('control_panel_student.class_schedule.partials.data_list')
+            </div>
+        </div>
     </div>
 @endsection
 

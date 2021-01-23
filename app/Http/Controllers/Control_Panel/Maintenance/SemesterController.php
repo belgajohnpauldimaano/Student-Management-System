@@ -24,7 +24,7 @@ class SemesterController extends Controller
 
     public function toggle_current_sy (Request $request)
     {
-        $Semester = Semester::where('id', $request->id)->first();
+        $Semester = Semester::whereId($request->id)->first();
         if ($Semester) 
         {
             if($request->id == 1)

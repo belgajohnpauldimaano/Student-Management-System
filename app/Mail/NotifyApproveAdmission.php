@@ -29,6 +29,6 @@ class NotifyApproveAdmission extends Mailable
      */
     public function build()
     {
-        return $this->view('mail.student_account_activation_admission')->subject('Account Activation');
+        return $this->view('mails.student_account_activation_admission')->subject('Account Activation');
     }
 }

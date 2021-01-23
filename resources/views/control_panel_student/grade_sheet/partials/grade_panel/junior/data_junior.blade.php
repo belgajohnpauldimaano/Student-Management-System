@@ -1,6 +1,6 @@
 @if($Enrollment[0]->attendance)
 <p class="report-progress-left"  style="margin-top: 2em; "><b>ATTENDANCE RECORD</b></p>
-    <table style="margin-top: 2em" class="table no-margin table-bordered table-striped">
+    <table style="margin-top: 2em" class="table table-sm table-bordered table-striped">
         <tr>
             <th></th>                                                                                     
             @foreach ($student_attendance['table_header'] as $data)

@@ -28,7 +28,7 @@ class OnlineAppointmentMail extends Mailable
      */
     public function build()
     {
-        return $this->view('mail.online_appointment_mail')
+        return $this->view('mails.online_appointment_mail')
             ->subject('Online Appointment Confirmation');
     }
 }

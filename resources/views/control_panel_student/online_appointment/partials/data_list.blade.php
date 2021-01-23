@@ -4,59 +4,58 @@
 <div class="row">
     @if($GradeSheet==0)
         <div class="col-md-12">
-            <div class="box box-danger">
-                <div class="box-header with-border">
-                <h3 class="box-title">Appointment</h3>
+            <div class="card card-default">
+                <div class="card-header">
+                    <h3 class="card-title">Appointment:</h3>
                 </div>
-                <div class="box-body">
-                <div class="col-md-12">
-                    <h4>This account maybe not updated. Please contact the administrator. Thank you</h4>
+                <!-- /.card-header -->
+                <div class="card-body">
+                    <div class="row">
+                        <h3 class="card-title">
+                            This account maybe not updated. Please contact the administrator. Thank you
+                        </h3>
+                    </div>
                 </div>
-                <br><br><br><br>
-                </div>
-                <!-- /.box-body -->
             </div>
-        </div>        
-    @else    
+        </div>
+    @else
         <div class="col-md-8">
-            <div class="box box-primary direct-chat direct-chat-primary">
-                <div class="box-header with-border">
-                    <h4><i class="far fa-calendar-check"></i> Available Schedule of Appointment for paying tuition</h4>
-                <div class="box-tools pull-right">            
-                    <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
-                    </button>                   
+            <div class="card card-default">
+                <div class="card-header">
+                    <h3 class="card-title"><i class="far fa-calendar-check"></i> Available Schedule of Appointment for paying tuition</h3>
                 </div>
-                </div>               
-                <div class="box-body">                  
-                    <div class="table-responsive">
-                        <div class="form-group col-lg-6 input-email">                        
-                            <label for="exampleInputEmail1">You are incoming Grade-level 
-                                <i style="color:red">
-                                @if($IncomingStudentCount)
-                                    {{$IncomingStudentCount->grade_level_id}}
-                                    <input type="hidden" class="js-grade" value="{{$IncomingStudentCount->grade_level_id}}">
-                                @else
-                                    {{$ClassDetail->grade_level}}
-                                    <input type="hidden" class="js-grade" value="{{$ClassDetail->grade_level}}">
-                                @endif
-                                </i>
-                            </label><br/>
-                            <label for="email">Check your Email Address</label>
-                            <input type="email" class="form-control" id="email" name="email" placeholder="your@email.com" value="{{ $StudentInformation->email }}">
-                            <div class="help-block text-left" id="js-email"></div>
-                        </div>    
-                        <table class="table table-striped table-bordered">
-                            <thead>
-                                <tr>
-                                    <th>Date</th>
-                                    <th>Time</th>
-                                    <th>Available Total Number</th>
-                                    <th>Status</th>
-                                    <th>Action</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                
+                <!-- /.card-header -->
+                <div class="card-body">
+                    <div class="row">
+                        <h3 class="card-title"> </h3>
+                        <div class="table-responsive">
+                            <div class="form-group col-lg-6 input-email">                        
+                                <label for="exampleInputEmail1">You are incoming Grade-level 
+                                    <i style="color:red">
+                                    @if($IncomingStudentCount)
+                                        {{$IncomingStudentCount->grade_level_id}}
+                                        <input type="hidden" class="js-grade" value="{{$IncomingStudentCount->grade_level_id}}">
+                                    @else
+                                        {{$ClassDetail->grade_level}}
+                                        <input type="hidden" class="js-grade" value="{{$ClassDetail->grade_level}}">
+                                    @endif
+                                    </i>
+                                </label><br/>
+                                <label for="email">Check your Email Address</label>
+                                <input type="email" class="form-control" id="email" name="email" placeholder="your@email.com" value="{{ $StudentInformation->email }}">
+                                <div class="help-block text-left" id="js-email"></div>
+                            </div>    
+                            <table class="table table-striped table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>Date</th>
+                                        <th>Time</th>
+                                        <th>Available Total Number</th>
+                                        <th>Status</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>                                    
                                     @forelse ($OnlineAppointment as $item)
                                         <tr>
                                             <td>{{ $item ? date_format(date_create($item->date), 'F d, Y') : '' }}</td>
@@ -69,7 +68,7 @@
                                                         // ->where('school_year_id', $SchoolYear->id)
                                                         // ->where('status', 1)
                                                         ->where('online_appointment_id', $item->id)->first(); 
-                        
+                            
                                                     if($Appointment){
                                                         $OnlineAppointment = \App\Models\OnlineAppointment::where('status', 1)
                                                             ->where('id', $Appointment->online_appointment_id)
@@ -112,13 +111,10 @@
                                             </td>
                                         </tr>
                                     @endforelse
-                                    
-                            </tbody>
-                        </table>
-                        
+                                </tbody>
+                            </table>                            
+                        </div>
                     </div>
-                </div>
-                <div class="box-footer">
                 </div>
             </div>
         </div>

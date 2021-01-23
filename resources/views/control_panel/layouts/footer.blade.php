@@ -1,42 +1,56 @@
 <div class="js-modal_holder"></div>
   <footer class="main-footer">
-    <div class="pull-right hidden-xs">
-      <b>Version</b> 1
-    </div>
     <strong>Copyright &copy; 2021 <a href="#">St. John's Academy Inc</a>.</strong> 
-                        
+    <div class="float-right d-none d-sm-inline-block">
+      <b>Version</b> 1.1
+    </div>                  
   </footer>
-
-  
-
 </div>
 <!-- ./wrapper -->
 
 <!-- jQuery 2.2.3 -->
-<script src="{{ asset('cms/plugins/jQuery/jquery-2.2.3.min.js') }}"></script>
+{{-- <script src="{{ asset('cms/plugins/jQuery/jquery-2.2.3.min.js') }}"></script> --}}
 
-<script src="{{ asset('cms/plugins/bootstrap-tagsinput/bootstrap-tagsinput.min.js') }}"></script>
+{{-- <script src="{{ asset('cms/plugins/bootstrap-tagsinput/bootstrap-tagsinput.min.js') }}"></script> --}}
 
 <!-- Bootstrap 3.3.6 -->
-<script src="{{ asset('cms/bootstrap/js/bootstrap.min.js') }}"></script>
+{{-- <script src="{{ asset('cms/bootstrap/js/bootstrap.min.js') }}"></script> --}}
 
-<script src="{{ asset('cms/plugins/select2/select2.min.js') }}"></script>
+<!-- jQuery -->
+<script src="{{ asset('cms-new/plugins/jquery/jquery.min.js') }}"></script>
+<!-- Bootstrap 4 -->
+<script src="{{ asset('cms-new/plugins/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+<!-- AdminLTE App -->
+{{-- <script src="{{ asset('cms-new/dist/js/adminlte.js') }}"></script> --}}
+<script src="{{ asset('cms-new/dist/js/adminlte.min.js') }}"></script>
+<script src="{{ asset('cms-new/dist/js/adminlte.min.js.map') }}"></script>
+<!-- jQuery UI 1.11.4 -->
+<script src="{{ asset('cms-new/plugins/jquery-ui/jquery-ui.min.js') }}"></script>
+
+<script src="{{ asset('cms-new/plugins/select2/js/select2.min.js') }}"></script>
+
+{{-- <script src="{{ asset('cms-new/plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js') }}"></script> --}}
+<!-- Summernote -->
+<script src="{{ asset('cms-new/plugins/summernote/summernote-bs4.min.js') }}"></script>
+<!-- overlayScrollbars -->
+<script src="{{ asset('cms-new/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js') }}"></script>
+
 
 <!-- FastClick -->
-<script src="{{ asset('cms/plugins/fastclick/fastclick.js') }}"></script>
+<script src="{{ asset('cms-new/plugins/fastclick/fastclick.js') }}"></script>
 <!-- AdminLTE App -->
-<script src="{{ asset('cms/dist/js/app.min.js') }}"></script>
+{{-- <script src="{{ asset('cms/dist/js/app.min.js') }}"></script> --}}
 <!-- Sparkline -->
-<script src="{{ asset('cms/plugins/sparkline/jquery.sparkline.min.js') }}"></script>
+<script src="{{ asset('cms-new/plugins/sparklines/sparkline.js') }}"></script>
 <!-- jvectormap -->
-<script src="{{ asset('cms/plugins/jvectormap/jquery-jvectormap-1.2.2.min.js') }}"></script>
+{{-- <script src="{{ asset('cms/plugins/jvectormap/jquery-jvectormap-1.2.2.min.js') }}"></script>
 <script src="{{ asset('cms/plugins/jvectormap/jquery-jvectormap-world-mill-en.js') }}"></script>
 <!-- SlimScroll 1.3.0 -->
 <script src="{{ asset('cms/plugins/slimScroll/jquery.slimscroll.min.js') }}"></script>
 <!-- ChartJS 1.0.1 -->
 <script src="{{ asset('cms/plugins/chartjs/Chart.min.js') }}"></script>
 
-<script src="{{ asset('cms/plugins/bootbox/bootbox.min.js') }}"></script>
+<script src="{{ asset('cms/plugins/bootbox/bootbox.min.js') }}"></script> --}}
 
 <script src="{{ asset('cms/plugins/alertifyjs/alertify.min.js') }}"></script>
 <!-- jquery-toast-plugin -->

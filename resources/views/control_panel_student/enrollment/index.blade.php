@@ -1,193 +1,18 @@
 @extends('control_panel_student.layouts.master')
 
-@section ('styles') 
-    <style>
-        .loader {
-            display: block;
-            margin: 20px auto 0;
-            vertical-align: middle;
-        }
-
-        #preloader {
-            width: 100%;
-            height: 100%;
-            top: 0;
-            right: 0;
-            bottom: 0;
-            left: 0;
-            background: rgba(255, 255, 255, 0.63);
-            z-index: 11000;
-            position: fixed;
-            display: block;
-        }
-
-        .preloader {
-            position: absolute;
-            margin: 0 auto;
-            left: 1%;
-            right: 1%;
-            top: 47%;
-            width: 100px;
-            height: 100px;
-            background: center center no-repeat none;
-            background-size: 65px 65px;
-            -webkit-border-radius: 50%;
-            -moz-border-radius: 50%;
-            -ms-border-radius: 50%;
-            -o-border-radius: 50%;
-            border-radius: 50%;
-        }
-
-         /* Styles the thumbnail */
-
-        a.lightbox img {
-            height: 150px;
-            border: 3px solid white;
-            box-shadow: 0px 0px 8px rgba(0,0,0,.3);
-            /* margin: 94px 20px 20px 20px; */
-        }
-
-        /* Styles the lightbox, removes it from sight and adds the fade-in transition */
-
-        .lightbox-target {
-            position: fixed;
-            top: -100%;
-            width: 100%;
-            background: rgba(0,0,0,.7);
-            width: 100%;
-            opacity: 0;
-            -webkit-transition: opacity .5s ease-in-out;
-            -moz-transition: opacity .5s ease-in-out;
-            -o-transition: opacity .5s ease-in-out;
-            transition: opacity .5s ease-in-out;
-            overflow: hidden;
-        }
-
-        /* Styles the lightbox image, centers it vertically and horizontally, adds the zoom-in transition and makes it responsive using a combination of margin and absolute positioning */
-
-        .lightbox-target img {
-            margin: auto;
-            /* position: absolute; */
-            top: 0;
-            left:0;
-            right:0;
-            bottom: 0;
-            max-height: 0%;
-            max-width: 0%;
-            border: 3px solid white;
-            box-shadow: 0px 0px 8px rgba(0,0,0,.3);
-            box-sizing: border-box;
-            -webkit-transition: .5s ease-in-out;
-            -moz-transition: .5s ease-in-out;
-            -o-transition: .5s ease-in-out;
-            transition: .5s ease-in-out;
-        }
-
-        /* Styles the close link, adds the slide down transition */
-
-        a.lightbox-close {
-            display: block;
-            width:50px;
-            height:50px;
-            box-sizing: border-box;
-            background: white;
-            color: black;
-            text-decoration: none;
-            position: absolute;
-            top: -80px;
-            right: 0;
-            -webkit-transition: .5s ease-in-out;
-            -moz-transition: .5s ease-in-out;
-            -o-transition: .5s ease-in-out;
-            transition: .5s ease-in-out;
-        }
-
-        /* Provides part of the "X" to eliminate an image from the close link */
-
-        a.lightbox-close:before {
-            content: "";
-            display: block;
-            height: 30px;
-            width: 1px;
-            background: black;
-            position: absolute;
-            left: 26px;
-            top:10px;
-            -webkit-transform:rotate(45deg);
-            -moz-transform:rotate(45deg);
-            -o-transform:rotate(45deg);
-            transform:rotate(45deg);
-        }
-
-        /* Provides part of the "X" to eliminate an image from the close link */
-
-        a.lightbox-close:after {
-            content: "";
-            display: block;
-            height: 30px;
-            width: 1px;
-            background: black;
-            position: absolute;
-            left: 26px;
-            top:10px;
-            -webkit-transform:rotate(-45deg);
-            -moz-transform:rotate(-45deg);
-            -o-transform:rotate(-45deg);
-            transform:rotate(-45deg);
-        }
-
-        /* Uses the :target pseudo-class to perform the animations upon clicking the .lightbox-target anchor */
-
-        .lightbox-target:target {
-            opacity: 1;
-            top: 0;
-            bottom: 0;
-            left: 0;
-            z-index: 2000;
-        }
-
-        .lightbox-target:target img {
-            max-height: 100%;
-            max-width: 100%;
-        }
-
-        .lightbox-target:target a.lightbox-close {
-            top: 0px;
-        
-        }
-
-        .overlay-paid {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            top: 0;
-            left: 0;
-            z-index: 1;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: aliceblue;
-            font-weight: 600;
-            font-size: 50px;
-            background-color: rgba(0, 0, 0, 0.5);
-            top: -20px;
-            }
-    </style>
-@endsection
-
 @section ('content_title')
-    Online/Register Payment    
+    Payment Registration
 @endsection
 
 @section ('content')    
     <div class="row" id="back_method" style="display: none;">
-        <div class="col-md-6">
+        <div class="col-md-12">
             {{-- <a href="#" style="margin-top: -1em" class="btn-info btn">
                 <i class="fas fa-info"></i>  Instructions
             </a> --}}
         </div>
-        <div class="col-md-6">
-            <button style="margin-top: -3em" class="btn-success btn pull-right">
+        <div class="col-md-12">
+            <button style="margin-top: -3em" class="btn-success btn float-right">
             <i class="fas fa-arrow-left"></i> back
             </button>
         </div>
@@ -196,7 +21,8 @@
     <div id="preloader" style="display: none">
         <img class="preloader" src="{{ asset('img/loader.gif')}}" alt="">
     </div>
-    <div class="overlay hidden" id="js-loader-overlay"><i class="fa fa-refresh fa-spin"></i></div>
+
+    {{-- <div class="overlay hidden" id="js-loader-overlay"><i class="fa fa-refresh fa-spin"></i></div> --}}
     <div class="js-data-container" style="margin-top: 10px;">
         @if($GradeSheet == 0)
             @include('control_panel_student.enrollment.partials.data_list_error')

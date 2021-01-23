@@ -59,13 +59,13 @@
                                         Re-Enroll
                                     </button>
                                 @endif
-                                <button type="button" 
+                                {{-- <button type="button" 
                                     style="margin-right:2px" 
                                     class="btn btn-success js-btn_drop_student" 
                                     data-student_id="{{$data->student_information_id}}" 
                                     data-id="{{ $data->enrollment_id }}" aria-expanded="true">
                                     Drop
-                                </button>
+                                </button> --}}
                             </div>
                         </td>
                     </tr>
@@ -129,13 +129,13 @@
                                         Re-Enroll
                                     </button>
                                 @endif
-                                <button type="button" 
+                                {{-- <button type="button" 
                                     style="margin-right:2px" 
                                     class="btn btn-success js-btn_drop_student" 
                                     data-student_id="{{$data->student_information_id}}" 
                                     data-id="{{ $data->enrollment_id }}" aria-expanded="true">
                                     Drop
-                                </button>
+                                </button> --}}
                             </div>
                         </td>
                     </tr>

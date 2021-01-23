@@ -18,10 +18,10 @@
                                             <td>{{ Carbon\Carbon::parse($data->posting_date)->format('Y-m-d') }}</td>
                                             <td>{{ str_limit($data->title, 50) }}</td>
                                             <td>
-                                                <span class="label {{ App\Article::ARTICLE_TYPE_DESIGN[$data->article_type] }}">{{ App\Article::ARTICLE_TYPE[$data->article_type] }}</span>
+                                                <span class="label {{ App\Models\Article::ARTICLE_TYPE_DESIGN[$data->article_type] }}">{{ App\Models\Article::ARTICLE_TYPE[$data->article_type] }}</span>
                                             </td> 
                                             <td>
-                                                <span class="label {{ App\Article::ARTICLE_STATUS_DESIGN[$data->status] }}">{{ App\Article::ARTICLE_STATUS[$data->status] }}</span>
+                                                <span class="label {{ App\Models\Article::ARTICLE_STATUS_DESIGN[$data->status] }}">{{ App\Models\Article::ARTICLE_STATUS[$data->status] }}</span>
                                             </td>
                                             <td>
                                                 <div class="btn-group">

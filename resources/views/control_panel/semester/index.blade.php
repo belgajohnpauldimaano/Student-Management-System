@@ -64,7 +64,7 @@
                                     type    : 'success'
                                 });
                                
-                               setTimeout(function() {
+                                setTimeout(function() {
                                     location.reload();
                                 }, 15);
                                 fetch_data();

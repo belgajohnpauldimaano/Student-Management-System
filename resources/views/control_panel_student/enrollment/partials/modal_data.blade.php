@@ -2,10 +2,10 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header" style="background-color: #fff;">
+                <h4 class="modal-title"><i class="fas fa-history"></i> Transaction History</h4>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
-                <h4 class="modal-title"><i class="fas fa-history"></i> Transaction History</h4>
             </div>
             <div class="modal-body" style="background-color: #ecf0f5;">
                 @if($hasTransaction)
@@ -121,7 +121,7 @@
                                             <a class="lightbox-close" href="#"></a>
                                         </div>
                                         
-                                        @if($transaction->payment_option != 'Credit Card/Debit Card')
+                                        @if($transaction->payment_option != 'Credit Card/Debit Card' && $transaction->payment_option != 'Walk-in')
                                             <div class="form-group" style="padding: 10px">
                                                 <label for="">Image Receipt <small>(Click to zoom)</small></label>
                                                 <a class="lightbox" href="#img_receipt{{$transaction->receipt_img}}">

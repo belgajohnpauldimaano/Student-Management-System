@@ -28,7 +28,7 @@ class NotifyDisapprovePaymentMail extends Mailable
      */
     public function build()
     {
-        return $this->view('mail.disapproved_finance')
+        return $this->view('mails.disapproved_finance')
             ->subject('Online Payment Confirmation');
     }
 }

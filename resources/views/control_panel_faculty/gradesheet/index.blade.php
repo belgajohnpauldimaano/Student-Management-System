@@ -5,6 +5,16 @@
     td.text-red{
         color: rgb(240, 13, 13) !important;
     }
+    span.text-red{
+        color: rgb(240, 13, 13) !important;
+    }
+    span.text-green{
+        color: green !important;
+    }
+
+    td.text-green{
+        color: green !important;
+    }
     
 </style>
 @endsection
@@ -14,7 +24,7 @@
 @endsection
 
 @section ('content')
-    <div class="box">        
+    <div class="box">
         @if($GradeLevel->grade_level  == 11 ||  $GradeLevel->grade_level  == 12)                    
             <div class="box-header with-border">                
                 <h3 class="box-title">Filter</h3>  
