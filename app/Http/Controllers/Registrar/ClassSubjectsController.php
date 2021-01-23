@@ -150,6 +150,8 @@ class ClassSubjectsController extends Controller
 
     public function modal_data (Request $request) 
     {
+        $sem_id = Semester::whereCurrent(1)->first()->id;
+
         $ClassSubjectDetail = NULL;
         if ($request->class_subject_details_id)
         {
@@ -228,7 +230,7 @@ class ClassSubjectsController extends Controller
                         ->first();  
                         
                     $subject_order_available = ClassSubjectDetail::where('class_details_id', $class_details_id)
-                        ->where('class_subject_order', $x)->whereStatus(1)
+                        ->where('class_subject_order', $x)->whereStatus(1)->whereSem($sem_id)
                         ->first();     
                         
                     if($subject_order_available){
@@ -258,7 +260,7 @@ class ClassSubjectsController extends Controller
             {
                 for($x = 1; $x <= 10; $x++) {                
                     $subject_order_available = ClassSubjectDetail::where('class_details_id', $class_details_id)
-                        ->where('class_subject_order', $x)->whereStatus(1)
+                        ->where('class_subject_order', $x)->whereStatus(1)->whereSem($sem_id)
                         ->first();         
                         
                     if($subject_order_available){
