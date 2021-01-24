@@ -29,7 +29,7 @@
 
 <script src="{{ asset('cms-new/plugins/select2/js/select2.min.js') }}"></script>
 
-{{-- <script src="{{ asset('cms-new/plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js') }}"></script> --}}
+<script src="{{ asset('cms-new/plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js') }}"></script>
 <!-- Summernote -->
 <script src="{{ asset('cms-new/plugins/summernote/summernote-bs4.min.js') }}"></script>
 <!-- overlayScrollbars -->
@@ -62,16 +62,16 @@
 <script>
     function loader_overlay($target_class = '') {
 		if (!$target_class) {
-			if ($('#js-loader-overlay').hasClass('hidden')) {
-				$('#js-loader-overlay').removeClass('hidden')
+			if ($('#js-loader-overlay').hasClass('d-none')) {
+				$('#js-loader-overlay').removeClass('d-none')
 			} else {
-				$('#js-loader-overlay').addClass('hidden')
+				$('#js-loader-overlay').addClass('d-none')
 			}
 		} else {
-			if ($('#' + $target_class).hasClass('hidden')) {
-				$('#' + $target_class).removeClass('hidden')
+			if ($('#' + $target_class).hasClass('d-none')) {
+				$('#' + $target_class).removeClass('d-none')
 			} else {
-				$('#' + $target_class).addClass('hidden')
+				$('#' + $target_class).addClass('d-none')
 			}
 		}
     }

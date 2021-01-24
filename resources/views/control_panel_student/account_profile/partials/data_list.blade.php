@@ -1,25 +1,43 @@
-<div class="col-sm-12 col-md-6 col-lg-4">
-    <div class="box box-primary">
-        <div class="box-header">
-            <h3 class="box-title">Personal Information</h3>
-            <div class="box-tools pull-right">
-                <button type="button" class="btn btn-flat btn-box-tool btn--update-photo" title="Change photo">
+<div class="col-sm-12 col-md-6">
+    <div class="card card-danger">
+        <div class="card-header">
+            <h3 class="card-title">Personal Information</h3>
+            <div class="card-tools">
+                <button type="button" class="btn btn-tool btn--update-photo" title="Change photo">
                     <i class="fa fa-image"></i>
                 </button>
-                <form class="hidden" id="form_user_photo_uploader">
+                <form class="d-none" id="form_user_photo_uploader">
                     <input type="file" id="user--photo" name="user_photo">
-                    <button type="submit">fsdfasd</button>
+                    <button type="submit">save</button>
                 </form>
-                <button type="button" class="btn btn-flat btn-box-tool btn--update-profile" title="Update info">
+                <button type="button" class="btn btn-tool btn--update-profile" title="Update info">
                     <i class="fa fa-wrench"></i>
                 </button>
             </div>
+            {{-- <div class="box-tools pull-right">
+                <button type="button" class="btn btn-flat btn-box-tool btn--update-photo" title="Change photo">
+                    <i class="fa fa-image"></i>
+                </button>
+                
+                <button type="button" class="btn btn-flat btn-box-tool btn--update-profile" title="Update info">
+                    <i class="fa fa-wrench"></i>
+                </button>
+            </div> --}}
+            <div class="mt-5 text-center">
+                <img class="profile-user-img img-responsive img-circle" 
+                    id="img--user_photo" src="{{ $Profile->photo ? \File::exists(public_path('/img/account/photo/'.$Profile->photo)) 
+                    ? asset('/img/account/photo/'.$Profile->photo) 
+                    : asset('/img/account/photo/blank-user.gif') 
+                    : asset('/img/account/photo/blank-user.gif') }}" 
+                    alt="User profile picture"
+                >
+                <h3 class="profile-username text-center" id="display__full_name">
+                    {{ $Profile->first_name . ' ' . $Profile->middle_name . ' ' .  $Profile->last_name }}
+                </h3>
+                <p class="text-muted text-center text-white-50">Student</p>
+            </div>
         </div>
-        <div class="overlay hidden" id="js-loader-overlay"><i class="fa fa-refresh fa-spin"></i></div>
-        <div class="box-body">
-            <img class="profile-user-img img-responsive img-circle" id="img--user_photo" src="{{ $Profile->photo ? \File::exists(public_path('/img/account/photo/'.$Profile->photo)) ? asset('/img/account/photo/'.$Profile->photo) : asset('/img/account/photo/blank-user.gif') : asset('/img/account/photo/blank-user.gif') }}" alt="User profile picture">
-            <h3 class="profile-username text-center" id="display__full_name">{{ $Profile->first_name . ' ' . $Profile->middle_name . ' ' .  $Profile->last_name }}</h3>
-            <p class="text-muted text-center">Student</p>
+        <div class="card-body">
             {{--  <div class="form-group">
                 <label for="">Department</label>
                 <div class="form-control">{{ collect(\App\FacultyInformation::DEPARTMENTS)->firstWhere('id', $Profile->department_id)['department_name'] }}</div>
@@ -79,20 +97,22 @@
     </div>
 </div>
 
-<div class="col-sm-12 col-md-6 col-lg-4">
-    <div class="box box-danger">
-        <div class="box-header">
-            <h3 class="box-title">User Account</h3>
-            <div class="box-tools pull-right">
-                <button type="button" class="btn btn-flat btn-box-tool btn-change-password" title="change password">
+<div class="col-sm-12 col-md-6">
+    <div class="card card-danger">
+        <div class="card-header">
+            <h3 class="card-title">User Account</h3>
+
+            <div class="card-tools">
+                <button type="button" class="btn btn-tool btn-change-password" title="change password">
                     <i class="fa fa-wrench"></i>
                 </button>
             </div>
         </div>
-        
-
-        <div class="overlay hidden" id="js-loader-overlay"><i class="fa fa-refresh fa-spin"></i></div>
-        <div class="box-body">
+        <!-- /.card-header -->
+        <div class="overlay d-none" id="js-loader-overlay">
+            <i class="fas fa-2x fa-sync-alt fa-spin"></i>
+        </div>
+        <div class="card-body" style="display: block;">
             <div class="form-group">
                 <label for="">Username</label>
                 <div class="form-control">{{ $User->username }}</div>
@@ -102,5 +122,6 @@
                 <div class="form-control">******</div>
             </div>
         </div>
+        <!-- /.card-body -->
     </div>
 </div>

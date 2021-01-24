@@ -1,12 +1,15 @@
 
 
 
-<h4 style="margin-top: 20px">
-    <b>First Semester</b>
-</h4>
+
 <div class="table-responsive m-auto">
-    <table class="table table-bordered table-sm table-hover">
+    <table class="table table-bordered table-sm table-hover w-100">
         <thead>
+            <tr>
+                <th class="text-center" colspan="6">
+                    <h5>First Semester</h5>
+                </th>
+            </tr>
             <tr>
                 <th style="text-align: center">Subject</th>
                 <th style="text-align: center">First Quarter</th>

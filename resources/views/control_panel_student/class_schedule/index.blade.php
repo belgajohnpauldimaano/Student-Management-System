@@ -15,7 +15,7 @@
         <!-- /.card-header -->
         <div class="card-body">
             <div class="row">
-                <div class="overlay hidden" id="js-loader-overlay"><i class="fa fa-refresh fa-spin"></i></div>
+                <div class="overlay d-none" id="js-loader-overlay"><i class="fas fa-sync"></i></div>
                 <h3 class="card-title"> </h3>
                 @include('control_panel_student.class_schedule.partials.data_list')
             </div>

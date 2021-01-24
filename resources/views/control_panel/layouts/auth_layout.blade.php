@@ -74,11 +74,11 @@
   <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
   <![endif]-->
 </head>
-<body class="hold-transition login-page" style="background-image: url('{{ asset('img/intro-banner/1.jpg') }}');">
+<body class="hold-transition login-page" style="background-image: url('{{ asset('img/intro-banner/1.jpg') }}');background-repeat: no-repeat, repeat;background-size: cover;">
 <div class="global-header__block">
   <div class="login-box m-auto" style="margin-top: 150px !important">
     <!-- /.login-logo -->
-    <div class="card card-outline card-primary">
+    <div class="card card-outline card-danger">
       <div class="card-header text-center">
         <a href="{{ route('home_page') }}" class="h2">
           <div class="row">

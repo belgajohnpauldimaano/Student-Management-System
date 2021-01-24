@@ -15,46 +15,51 @@
 @section ('content')
 
 <div class="card card-default">
-    <div class="card-header">
-        <h3 class="card-title">Grades:</h3>
+    <div class="overlay d-none" id="js-loader-overlay">
+        <i class="fas fa-2x fa-sync-alt fa-spin"></i>
     </div>
+    <div class="card-header">
+        <div class="col-8 m-auto">
+            <form id="js-form_search">
+                {{ csrf_field() }}
+                <div class="row">
+                    <div class="col-8">
+                        <h5 class="box-title">Filter</h5>
+                        {{-- <label class="control-label">- School year -</label> --}}
+                        <div class="form-group input-school_year p-0">
+                            <select name="school_year" id="school_year" class="form-control">                            
+                                <option value="0">
+                                    - Select School Year -
+                                </option>
+                                @foreach ($School_years as $item)
+                                    <option value="{{ $item->id }}">{{ $item->school_year }}</option>
+                                @endforeach      
+                            </select>
+                        </div>
+                        <div class="help-block text-red text-left" id="js-school_year"></div>      
+                    </div>
+                    <div class="col-4">
+                        <h5 class="box-title">&nbsp;</h5>
+                        <button type="submit" class="btn btn-primary">
+                            Search
+                        </button>
+                        {{-- <button type="button" class="btn btn-primary btn_clear" style="display: none">
+                            <i class="fa fa-refresh"></i> Clear
+                        </button> --}}
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    
     <!-- /.card-header -->
     <div class="card-body">
         <div class="row">
-            <div class="m-auto">
-                <form id="js-form_search">
-                    {{ csrf_field() }}                
-                    <label class="control-label">- School year -</label>
-                    <div class="form-group col-md-12 input-school_year" style="padding-right:0; padding-left: 0">
-                        <select name="school_year" id="school_year" class="form-control">                            
-                            <option value="0">
-                                - Select School Year -
-                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                            </option>
-                            @foreach ($School_years as $item)
-                                <option value="{{ $item->id }}">{{ $item->school_year }}</option>
-                            @endforeach      
-                        </select>
-                    </div>
-                    <div class="help-block text-red text-left" id="js-school_year">
-                    </div>
-                   
-                    <button type="submit" class="btn btn-success">Search</button>
-                    <button type="button" class="btn btn-primary btn_clear" style="display: none">
-                        <i class="fa fa-refresh"></i> Clear
-                    </button>                    
-                </form>
+            <div class="col-md-12">
+                <div class="js-data-container" style="margin-top: 3em">
+                    @include('control_panel_student.grade_sheet.partials.data_list')
+                </div>
             </div>
-            
-            <div class="overlay d-none" id="js-loader-overlay">
-                <i class="fas fa-3x fa-sync-alt fa-spin"></i>
-            </div>
-            <div class="">          
-                <div class="js-data-container" style="margin-top: 4em">
-                    @include('control_panel_student.grade_sheet.partials.data_list')       
-                </div>            
-            </div>
-       
         </div>
     </div>
 </div>
@@ -67,6 +72,7 @@
         function fetch_data () {
             var formData = new FormData($('#js-form_search')[0]);
             formData.append('page', page);
+            // $('#js-loader-overlay').removeClass('d-none')
             loader_overlay();
             $.ajax({
                 url : "{{ route('student.grade_sheet.index') }}",
@@ -76,6 +82,7 @@
                 contentType : false,
                 success     : function (res) {
                     loader_overlay();
+                    // $('#js-loader-overlay').addClass('d-none')
                     $('.js-data-container').html(res);
                     $('.btn_clear').removeAttr('style');
                 }

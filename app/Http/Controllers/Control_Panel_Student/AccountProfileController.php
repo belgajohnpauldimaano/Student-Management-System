@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Control_Panel_Student;
 
+use App\Models\SchoolYear;
 use Illuminate\Http\Request;
 use App\Models\StudentInformation;
 use App\Http\Controllers\Controller;
@@ -14,8 +15,11 @@ class AccountProfileController extends Controller
     {
         $User = Auth::user();
         $Profile = StudentInformation::where('user_id', $User->id)->first();
+        $SchoolYear = SchoolYear::where('current', 1)
+            ->where('status', 1)
+            ->first();  
         // $RegistrarInformation = collect(RegistrarInformation::DEPARTMENTS); 
-        return view('control_panel_student.account_profile.index', compact('User', 'Profile'));
+        return view('control_panel_student.account_profile.index', compact('User', 'Profile','SchoolYear'));
     }
 
     public function fetch_profile (Request $request)

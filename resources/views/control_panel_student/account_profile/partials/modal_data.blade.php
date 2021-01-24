@@ -5,10 +5,10 @@
                 <form id="form--change-password">
                     {{ csrf_field() }}
                     <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                         <h4 class="modal-title">
                             Change Password
                         </h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                     </div>
                     <div class="modal-body">   
                                 
@@ -41,10 +41,10 @@
                 <form id="form--update-profile">
                     {{ csrf_field() }}
                     <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                         <h4 class="modal-title">
                             Update Profile
                         </h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                     </div>
                     <div class="modal-body">   
                         {{-- <div class="form-group gender">

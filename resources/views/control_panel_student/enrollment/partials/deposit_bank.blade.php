@@ -46,7 +46,7 @@
         {{ csrf_field() }}
         <div class="row">
             <div class="col-md-6">    
-                <div class="card card-default" style="height: 572px;">
+                <div class="card card-default" style="height: 550px;">
                     <div class="card-header" style="height: 55px;">
                         <h3 class="card-title">{{$AlreadyEnrolled ? 'Registration' : 'Enrollment' }} Form:</h3>
 
@@ -167,7 +167,7 @@
                 
             </div>
             <div class="col-md-6">
-                <div class="card card-default">
+                <div class="card card-default" style="height: 550px;">
                     <div class="card-header" style="height: 55px;">
                         <h3 class="card-title"><i class="fas fa-file-upload"></i> Upload with Bank</h3>
                     </div>

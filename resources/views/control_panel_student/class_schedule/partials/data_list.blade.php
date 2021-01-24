@@ -1,7 +1,7 @@
 
-    <div class="js-data-container">
+    <div class="js-data-container col-md-12">
         <div class="table-responsive">
-            <table class="table no-margin table-striped table-bordered">
+            <table class="table table-sm no-margin table-striped table-bordered">
                 <thead>
                     <tr>
                         <th>Schedule</th>

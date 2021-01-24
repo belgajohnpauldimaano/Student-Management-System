@@ -4,7 +4,7 @@
 <div class="wrapper">
 
   <!-- Header Navbar: style can be found in header.less -->
-    <nav class="main-header navbar navbar-expand border-bottom-0 navbar-dark navbar-danger">
+  <nav class="main-header navbar navbar-expand border-bottom-0 navbar-dark navbar-danger">
       <ul class="navbar-nav">
         <li class="nav-item">
           <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
@@ -12,15 +12,7 @@
         <li class="nav-item d-none d-sm-inline-block">
           <a href="#" class="nav-link">School Year: {{ $SchoolYear->school_year }}</a>
         </li>
-        {{-- <li class="nav-item d-none d-sm-inline-block">
-          <a href="#" class="nav-link">Contact</a>
-        </li> --}}
       </ul>
-      <!-- Sidebar toggle button-->
-      {{-- <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
-        <span class="sr-only">Toggle navigation</span>
-      </a> --}}
-      <!-- Navbar Right Menu -->
       <ul class="navbar-nav ml-auto">
         <!-- Notifications Dropdown Menu -->
         <li class="nav-item dropdown">
@@ -65,7 +57,7 @@
             >
           </a>
           <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
-            <a href="#" class="dropdown-item">
+            <a href="#" class="dropdown-item bg-danger">
                 <!-- Message Start -->
                 <div class="text-center">
                   <img width="70" src="{{ \Auth::user()->get_user_data()->photo ? 
@@ -79,6 +71,11 @@
                     <small>{{ \Auth::user()->get_user_role_display() }}</small>
                   </p>
                 </div>
+            </a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href="{{ route('student.my_account.index') }}">
+              {{-- <i class="fa fa-user nav-icon"></i> --}}
+              <i class="fa fa-user mr-2"></i> My Profile
             </a>
             <div class="dropdown-divider"></div>
             <div class="p-2">
@@ -95,17 +92,28 @@
           </div>
         </li>
       </ul>
-      </nav>
+  </nav>
   {{-- </header> --}}
   <!-- Left side column. contains the logo and sidebar -->
   <aside class="main-sidebar elevation-4 sidebar-dark-danger">
     <!-- Brand Logo -->
     <a href="/" class="brand-link navbar-danger">
       <img src="{{ asset('/img/sja-logo.png') }}"  class="brand-image img-circle elevation-3" style="height: 35px; opacity: .8">
-      <span class="brand-text font-weight-light"<b>St. John's Academy Inc</b></span>
+      <span class="brand-text font-weight-bold text-white">ST. JOHN'S ACADEMY INC.</span>
     </a>
     <!-- Sidebar -->
-    <div class="sidebar" style="padding: 0px 4px;">
+    <div class="sidebar">
+      <div class="form-inline mt-2">
+        <div class="input-group" data-widget="sidebar-search">
+          <input class="form-control form-control-sidebar" type="search" placeholder="Search" aria-label="Search">
+          <div class="input-group-append">
+            <button class="btn btn-sidebar">
+              <i class="fas fa-search fa-fw"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+
       <nav class="mt-2">
         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
           <li class="nav-header">STUDENT NAVIGATION</li>
@@ -121,13 +129,16 @@
             </a>
           </li> 
           <li class="nav-item">
-            <a class="{{request()->routeIs('student.student_appointment') ? 'active' : '' }} nav-link" href="{{ route('student.student_appointment') }}"><i class="far fa-calendar-check nav-icon"></i></i> <p>Appointment for Walk in</p></a>
+            <a class="{{request()->routeIs('student.student_appointment') ? 'active' : '' }} nav-link" href="{{ route('student.student_appointment') }}">
+              <i class="far fa-calendar-check nav-icon"></i></i> <p>Appointment for Walk in</p></a>
           </li> 
           <li class="nav-item">
-            <a class="{{request()->routeIs('student.class_schedule.index') ? 'active' : '' }} nav-link" href="{{ route('student.class_schedule.index') }}"><i class="fa fa-calendar nav-icon"></i> <p>Class Schedule</p></a>
+            <a class="{{request()->routeIs('student.class_schedule.index') ? 'active' : '' }} nav-link" href="{{ route('student.class_schedule.index') }}">
+              <i class="fa fa-calendar nav-icon"></i> <p>Class Schedule</p></a>
           </li>
           <li class=" nav-item">
-            <a class="nav-link {{request()->routeIs('student.grade_sheet.index') ? 'active' : '' }}" href="{{ route('student.grade_sheet.index') }}"><i class="fa fa-file-text-o nav-icon"></i> <p>Grade Sheet</p></a>
+            <a class="nav-link {{request()->routeIs('student.grade_sheet.index') ? 'active' : '' }}" href="{{ route('student.grade_sheet.index') }}">
+              <i class="fas fa-file-alt nav-icon""></i> <p>Grade Sheet</p></a>
           </li>
           
           <li class="nav-header">CAMPUS LMS</li>
@@ -147,10 +158,12 @@
             <a class="nav-link" href=""><i class="fas fa-edit nav-icon"></i> <p>Assessment</p></a>
           </li>
 
-          <li class="nav-header">PROFILE</li>
+          {{-- <li class="nav-header">PROFILE</li>
           <li class="nav-item">
-            <a class="{{request()->routeIs('student.my_account.index') ? 'active' : '' }} nav-link" href="{{ route('student.my_account.index') }}"><i class="fa fa-user nav-icon"></i> <p>My Profile</p></a>
-          </li>
+            <a class="{{request()->routeIs('student.my_account.index') ? 'active' : '' }} nav-link" href="{{ route('student.my_account.index') }}">
+              <i class="fa fa-user nav-icon"></i> <p>My Profile</p>
+            </a>
+          </li> --}}
         </ul>
       </nav>
     </div>    
@@ -170,11 +183,11 @@
       <!-- Info boxes -->
       <div class="row">
           <div class="col-sm-12">
-          <div class="row">
-              <div class="col-sm-12">
-                  <div class="js-messages_holder" style="display:none"></div>
-              </div>
-          </div>
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="js-messages_holder" style="display:none"></div>
+                </div>
+            </div>
             @yield('content')
           </div>
       </div>

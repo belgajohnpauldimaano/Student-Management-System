@@ -2,7 +2,7 @@
     @if($GradeSheet != 0)
         @if ($grade_level >= 11)         
             
-            <h4>
+            <h5>
                 <b>Grade-level/Section : <i style="color:red">
                     @php
                         try {
@@ -14,8 +14,8 @@
                     @endphp
                 </i>
                 </b>
-            </h4>
-            
+            </h5>
+        <hr/> 
             @include('control_panel_student.grade_sheet.partials.grade_panel.senior.first_sem.data_list')
         <hr>
             @include('control_panel_student.grade_sheet.partials.grade_panel.senior.second_sem.data_list')   

@@ -47,17 +47,18 @@
 
 <script>
     function loader_overlay($target_class = '') {
+		alert('you call me')
 		if (!$target_class) {
-			if ($('#js-loader-overlay').hasClass('hidden')) {
-				$('#js-loader-overlay').removeClass('hidden')
+			if ($('#js-loader-overlay').hasClass('d-none')) {
+				$('#js-loader-overlay').removeClass('d-none')
 			} else {
-				$('#js-loader-overlay').addClass('hidden')
+				$('#js-loader-overlay').addClass('d-none')
 			}
 		} else {
-			if ($('#' + $target_class).hasClass('hidden')) {
-				$('#' + $target_class).removeClass('hidden')
+			if ($('#' + $target_class).hasClass('d-none')) {
+				$('#' + $target_class).removeClass('d-none')
 			} else {
-				$('#' + $target_class).addClass('hidden')
+				$('#' + $target_class).addClass('d-none')
 			}
 		}
     }

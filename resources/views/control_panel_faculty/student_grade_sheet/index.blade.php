@@ -8,72 +8,82 @@
 @endsection
 
 @section ('content')
-    <div class="box">
-        <div class="box-header with-border">
-            <h3 class="box-title">Search</h3>
-           
-                {{--  <div id="js-form_search" class="form-group col-sm-12 col-md-3" style="padding-right:0">
-                    <input type="text" class="form-control" name="search">
-                </div>  --}}
-                
+    <div class="card card-default">
+        <div class="overlay d-none" id="js-loader-overlay">
+            <i class="fas fa-2x fa-sync-alt fa-spin"></i>
+        </div>
+        <div class="card-header">
+            <div class="col-8 m-auto">
+                <h5 class="box-title">Filter</h5>
                 @if($ClassSubjectDetail->grade_level <= 10)
                     <form id="js-form_search">
                         {{ csrf_field() }}
-                        <div class="form-group col-sm-12 col-md-3" style="padding-right:0">
-                            <select name="search_sy" id="search_sy" class="form-control search_sy">
-                                {{-- <option value="">Select SY</option> --}}
-                                @foreach ($SchoolYear as $data)
-                                    <option value="{{ $data->id }}">{{ $data->school_year }}</option>
-                                @endforeach
-                            </select>
-                        </div> 
-                        &nbsp;
-                            <div class="form-group col-sm-12 col-md-5" style="padding-right:0">
-                                <select name="search_class_subject" id="search_class_subject" class="form-control search_class_subject">
-                                    <option value="">Select Class Subject</option>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group" style="padding-right:0">
+                                <select name="search_sy" id="search_sy" class="form-control search_sy">
+                                    {{-- <option value="">Select SY</option> --}}
+                                    @foreach ($SchoolYear as $data)
+                                        <option value="{{ $data->id }}">{{ $data->school_year }}</option>
+                                    @endforeach
                                 </select>
+                            </div> 
                             </div>
-                        &nbsp;
-                        <button type="submit" class="btn btn-flat btn-success">Search</button>
+                            <div class="col-md-8">
+                                <div class="form-group" style="padding-right:0">
+                                    <select name="search_class_subject" id="search_class_subject" class="form-control search_class_subject">
+                                        <option value="">Select Class Subject</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <button type="submit" class="btn btn-success float-right">Search</button>
+                            </div>
+                        </div>
                     </form>
                 @else
                     <form id="js-form_search1">
                         {{ csrf_field() }}
-                        <div class="form-group col-sm-12 col-md-3" style="padding-right:0">
-                            <select name="search_sy1" id="search_sy1" class="form-control search_sy">
-                                {{-- <option value="">Select SY</option> --}}
-                                @foreach ($SchoolYear as $data)
-                                    <option value="{{ $data->id }}">{{ $data->school_year }}</option>
-                                @endforeach
-                            </select>
-                        </div> 
-                        &nbsp;
-                            <div class="form-group col-sm-12 col-md-3" style="padding-right:0">
-                                <select name="search_semester" id="search_semester" class="form-control search_semester">
-                                    <option value="">Select Semester</option>
-                                </select>
+                        <div class="row">
+                            <div class="col-md-3">
+                                <div class="form-group" style="padding-right:0">
+                                    <select name="search_sy1" id="search_sy1" class="form-control search_sy">
+                                        {{-- <option value="">Select SY</option> --}}
+                                        @foreach ($SchoolYear as $data)
+                                            <option value="{{ $data->id }}">{{ $data->school_year }}</option>
+                                        @endforeach
+                                    </select>
+                                </div> 
                             </div>
-                        &nbsp;
-                            <div class="form-group col-sm-12 col-md-5" style="padding-right:0">
-                                <select name="search_class_subject_sem" id="search_class_subject_sem" class="form-control search_class_subject">
-                                    <option value="">Select Class Subject</option>
-                                </select>
+                            <div class="col-md-3">
+                                <div class="form-group" style="padding-right:0">
+                                    <select name="search_semester" id="search_semester" class="form-control search_semester">
+                                        <option value="">Select Semester</option>
+                                    </select>
+                                </div>
                             </div>
-                        &nbsp;
-                        <button type="submit" class="btn btn-flat btn-success">Search</button>
+                            <div class="col-md-6">
+                                <div class="form-group" style="padding-right:0">
+                                    <select name="search_class_subject_sem" id="search_class_subject_sem" class="form-control search_class_subject">
+                                        <option value="">Select Class Subject</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <button type="submit" class="btn btn-success float-right">Search</button>
+                            </div>
                     </form>
                 @endif
-                
-                {{--  <button type="button" class="pull-right btn btn-flat btn-danger btn-sm" id="js-button-add"><i class="fa fa-plus"></i> Add</button>  --}}
-            
-        </div>
-        <div class="overlay hidden" id="js-loader-overlay"><i class="fa fa-refresh fa-spin"></i></div>
-        <div class="box-body">
-            <div class="js-data-container">
-                {{--  @include('control_panel_faculty.student_grade_sheet_details.partials.data_list')  --}}
             </div>
         </div>
-        
+        <!-- /.card-header -->
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="js-data-container mt-2"></div>
+                </div>
+            </div>
+        </div>
     </div>
 @endsection
 

@@ -1,6 +1,6 @@
-<h4>
+<h5>
     <b> Grade-level/Section : <i style="color:red">{{$ClassDetail->grade_level.' '.$ClassDetail->section}}</i></b>
-</h4>
+</h5>
 <hr/> 
 <div class="table-responsive-sm">
     <table class="table table-bordered no-margin table-sm table-hover">

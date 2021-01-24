@@ -16,7 +16,7 @@
             <div class="card card-default">
                 {{-- <div class="overlay hidden" id="js-loader-overlay"><i class="fa fa-refresh fa-spin"></i></div> --}}
                 <div class="card-header">
-                    <h3 class="card-title">Announcement:</h3>
+                    <h3 class="card-title">Recent Activity:</h3>
                 </div>
                 <!-- /.card-header -->
                 <div class="card-body">
@@ -28,6 +28,42 @@
             </div>
         </div>
         <div class="col-md-4">
+          {{-- reminders --}}
+            <div class="card">
+              <div class="card-header">
+                <h3 class="card-title">Reminders</h3>
+
+                <div class="card-tools">
+                  <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                    <i class="fas fa-minus"></i>
+                  </button>
+                  <button type="button" class="btn btn-tool" data-card-widget="remove">
+                    <i class="fas fa-times"></i>
+                  </button>
+                </div>
+              </div>
+              <!-- /.card-header -->
+              <div class="card-body p-0">
+                <ul class="products-list product-list-in-card pl-2 pr-2">
+                  <li class="item">
+                    <div class="product-img">
+                      <img src="https://adminlte.io/themes/v3/dist/img/default-150x150.png" alt="Product Image" class="img-size-50">
+                    </div>
+                    <div class="product-info">
+                      <a href="javascript:void(0)" class="product-title">FILIPINO</a>
+                      <span class="product-description">
+                        Pang-uri
+                      </span>
+                    </div>
+                  </li>                  
+                </ul>
+              </div>
+              <!-- /.card-body -->
+              <div class="card-footer text-center">
+                <a href="javascript:void(0)" class="uppercase">View All Assignments</a>
+              </div>
+              <!-- /.card-footer -->
+            </div>
             <div class="card">
               <div class="card-header">
                 <h3 class="card-title">Recently Added Lessons</h3>
@@ -63,42 +99,7 @@
               </div>
               <!-- /.card-footer -->
             </div>
-            {{-- assignment --}}
-            <div class="card">
-              <div class="card-header">
-                <h3 class="card-title">Recently Added Assignments</h3>
-
-                <div class="card-tools">
-                  <button type="button" class="btn btn-tool" data-card-widget="collapse">
-                    <i class="fas fa-minus"></i>
-                  </button>
-                  <button type="button" class="btn btn-tool" data-card-widget="remove">
-                    <i class="fas fa-times"></i>
-                  </button>
-                </div>
-              </div>
-              <!-- /.card-header -->
-              <div class="card-body p-0">
-                <ul class="products-list product-list-in-card pl-2 pr-2">
-                  <li class="item">
-                    <div class="product-img">
-                      <img src="https://adminlte.io/themes/v3/dist/img/default-150x150.png" alt="Product Image" class="img-size-50">
-                    </div>
-                    <div class="product-info">
-                      <a href="javascript:void(0)" class="product-title">FILIPINO</a>
-                      <span class="product-description">
-                        Pang-uri
-                      </span>
-                    </div>
-                  </li>                  
-                </ul>
-              </div>
-              <!-- /.card-body -->
-              <div class="card-footer text-center">
-                <a href="javascript:void(0)" class="uppercase">View All Assignments</a>
-              </div>
-              <!-- /.card-footer -->
-            </div>
+            
 
             {{-- appointment --}}
             <div class="card">

@@ -8,11 +8,16 @@
 @endsection
 
 @section ('content')
-    <div class="box">
-        <div class="overlay hidden" id="js-loader-overlay"><i class="fa fa-refresh fa-spin"></i></div>
-        <div class="box-body">
-            <div class="js-data-container">
-                <button id="js-btn_print" class="btn btn-primary btn-flat pull-right"><i class="fa fa-file-pdf"></i> Print</button>
+    <div class="card card-default">
+        <div class="card-header">
+            <h3 class="card-title">Class Schedules</h3>
+            <button id="js-btn_print" class="btn btn-primary float-right">
+                    <i class="fa fa-file-pdf"></i> Print
+                </button>
+        </div>
+        <!-- /.card-header -->
+        <div class="card-body">
+            <div class="row">
                 <table class="table no-margin">
                     <thead>
                         <tr>
@@ -74,8 +79,8 @@
                 </table>
             </div>
         </div>
-        
     </div>
+    
 @endsection
 
 @section ('scripts')

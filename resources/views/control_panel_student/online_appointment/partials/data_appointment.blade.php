@@ -20,7 +20,7 @@
                 </div>
                 @endforeach
             @else
-                <div style="padding: 10px">
+                <div class="pt-2">
                     <h4>No Appointment</h4>
                 </div> 
             @endif

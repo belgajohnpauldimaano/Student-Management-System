@@ -12,14 +12,12 @@
   <link rel="stylesheet" href="{{ asset('cms-new/plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css') }}">
   <!-- Font Awesome -->
   {{-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css"> --}}
-
-  
     <!-- Font Awesome -->
   <link rel="stylesheet" href="{{ asset('cms-new/plugins/fontawesome-free/css/all.min.css')}}">
   <!-- Ionicons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
-  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.10/css/all.css" 
-  integrity="sha384-+d0P83n9kaQMCwj8F4RJB66tzIwOKmrdb46+porD/OvrJ+37WqIM7UoBtwHO6Nlg" crossorigin="anonymous">
+  {{-- <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.10/css/all.css" 
+  integrity="sha384-+d0P83n9kaQMCwj8F4RJB66tzIwOKmrdb46+porD/OvrJ+37WqIM7UoBtwHO6Nlg" crossorigin="anonymous"> --}}
   <!-- jvectormap -->
   {{-- <link rel="stylesheet" href="{{ asset('cms/plugins/jvectormap/jquery-jvectormap-1.2.2.css') }}"> --}}
   <!-- Theme style -->
@@ -57,7 +55,7 @@
   <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
   <![endif]-->
 
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css">
+  {{-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css"> --}}
   <link rel="stylesheet" href="{{ asset('cms-new/plugins/dropzone/min/dropzone.min.css') }}">
 
   <link href="{{ asset('cms/plugins/alertifyjs/css/alertify.min.css') }}" rel="stylesheet">
@@ -81,6 +79,10 @@
       width: 100px !important;
       height: 100px !important;
       /* border-radius: 50%; */
+    }
+
+    .search-title .text-light{
+      color:black !important;
     }
   </style>
   @yield('styles')

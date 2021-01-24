@@ -25,15 +25,15 @@
                             }
 
                         ?>
-                        <h4>Subject : <span class="text-red"><i>{{ $ClassSubjectDetail->subject }}</i></span> 
+                        <h5>Subject : <span class="text-red"><i>{{ $ClassSubjectDetail->subject }}</i></span> 
                         {{--  Time : <span class="text-red"><i>{{ strftime('%r',strtotime($ClassSubjectDetail->class_time_from)) . ' - ' . strftime('%r',strtotime($ClassSubjectDetail->class_time_to)) }}</i></span> Days : <span class="text-red"><i>{{ $ClassSubjectDetail->class_days }}</i></span>  --}}
                         Schedule : <span class="text-red"><i>{{ rtrim($daysDisplay, '/') }}</i></span>  
-                        </h4>
-                        <h4>Grade & Section : <span class="text-red"><i>{{ $ClassSubjectDetail->grade_level . ' ' .$ClassSubjectDetail->section }}</i></span></h4>
-                        <div class="pull-right">
+                        </h5>
+                        <h5>Grade & Section : <span class="text-red"><i>{{ $ClassSubjectDetail->grade_level . ' ' .$ClassSubjectDetail->section }}</i></span></h5>
+                        {{-- <div class="pull-right">
                             {{ $EnrollmentMale ? $EnrollmentMale->links() : '' }}
-                        </div>
-                        <table class="table no-margin">
+                        </div> --}}
+                        <table class="table no-margin table-sm table-hover">
                             <thead>
                                 <tr>
                                     <th>#</th>
@@ -42,8 +42,8 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td>Male</td>
+                                <tr class="bg-danger">
+                                    <td colspan="3"><b>Male</b></td>
                                 </tr>
                                 @if ($EnrollmentMale)
                                     @foreach ($EnrollmentMale as $key => $data)
@@ -54,17 +54,17 @@
                                         </tr>
                                     @endforeach
                                 @endif
-                                <tr>
-                                        <td>Female</td>
-                                    </tr>
-                                    @if ($EnrollmentFemale)
-                                        @foreach ($EnrollmentFemale as $key => $data)
-                                            <tr>
-                                                <td>{{ $key + 1 }}</td>
-                                                <td>{{ $data->username }}</td>
-                                                <td>{{ $data->student_name }}</td>
-                                            </tr>
-                                        @endforeach
-                                    @endif
+                                <tr class="bg-yellow">
+                                    <td colspan="3"><b>Female</b></td>
+                                </tr>
+                                @if ($EnrollmentFemale)
+                                    @foreach ($EnrollmentFemale as $key => $data)
+                                        <tr>
+                                            <td>{{ $key + 1 }}</td>
+                                            <td>{{ $data->username }}</td>
+                                            <td>{{ $data->student_name }}</td>
+                                        </tr>
+                                    @endforeach
+                                @endif
                             </tbody>
                         </table>
