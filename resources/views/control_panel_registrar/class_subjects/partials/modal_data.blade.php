@@ -10,19 +10,18 @@
                 <input type="hidden" name="class_details_id" value="{{ $class_details_id }}">
                 
                 <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                     <h4 class="modal-title">
                         {{ $ClassSubjectDetail ? 'Edit Class Subject' : 'Add Class Subject' }}
                     </h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                 </div>
-                <div class="modal-body">       
-                       
+                <div class="modal-body">
                     <input type="hidden" name="section_id" value="{{ $ClassDetail->section_id }}">
 
                     @if (!$ClassSubjectDetail) 
                         <div class="form-group">
                             <label>Faculty</label>
-                            <select class="form-control select2" name="faculties[]" id="faculties"  multiple="multiple" data-placeholder="Select faculty"
+                            <select class="form-control form-control-sm select2" name="faculties[]" id="faculties"  multiple="multiple" data-placeholder="Select faculty"
                                     style="width: 100%;">                                      
                                     @foreach ($FacultyInformation as $data) 
                                         <option value="{{ $data->id }}" {{ $ClassSubjectDetail ? $ClassSubjectDetail->faculty_id == $data->id ? 'selected' : '' : '' }}>{{ $data->first_name . ' ' . $data->last_name }}</option>
@@ -35,7 +34,7 @@
                     
                     <div class="form-group">
                         <label for="">Subject</label>
-                        <select name="subject" id="subject" class="form-control">
+                        <select name="subject" id="subject" class="form-control form-control-sm">
                             <option value="">Select subject</option>
                             @foreach ($SubjectDetail as $data) 
                                 <option value="{{ $data->id }}" {{ $ClassSubjectDetail ? $ClassSubjectDetail->subject_id == $data->id ? 'selected' : '' : '' }}>{{ $data->subject_code . ' ' . $data->subject }}</option>
@@ -47,7 +46,7 @@
                   
                     <div class="form-group">
                         <label for="">Order</label>
-                        <select name="order" id="order" class="form-control">
+                        <select name="order" id="order" class="form-control form-control-sm">
                            <?php echo $order_numbers; ?>
                         </select>
                         <div class="help-block text-red text-center" id="js-order">
@@ -70,7 +69,7 @@
                         }
                     ?>
                         
-                    <table class="table table-bordered">
+                    <table class="table table-bordered table-sm table-hover">
                         <tr>
                             <td>Day</td>
                             <td>Time From</td>
@@ -87,10 +86,10 @@
                                 <div class="bootstrap-timepicker">
                                     <div class="form-group">
                                         <div class="input-group">
-                                            <input type="text" class="form-control timepicker" name="subject_time_from_mon" value="{{ isset($daysObj[1]) ? $daysObj[1] ? strftime('%r',strtotime($daysObj[1]['from'])) : '' : '' }}">
+                                            <input type="text" class="form-control form-control-sm timepicker" name="subject_time_from_mon" value="{{ isset($daysObj[1]) ? $daysObj[1] ? strftime('%r',strtotime($daysObj[1]['from'])) : '' : '' }}">
 
-                                            <div class="input-group-addon">
-                                            <i class="fa fa-clock-o"></i>
+                                            <div class="input-group-prepend">
+                                               <span class="input-group-text"><i class="far fa-clock"></i></span>
                                             </div>
                                         </div>
                                     </div>
@@ -100,10 +99,11 @@
                                 <div class="bootstrap-timepicker">
                                     <div class="form-group">
                                         <div class="input-group">
-                                            <input type="text" class="form-control timepicker" name="subject_time_to_mon" value="{{ isset($daysObj[1]) ? $daysObj[1] ? strftime('%r',strtotime($daysObj[1]['to'])) : '' : '' }}">
+                                            <input type="text" class="form-control form-control-sm timepicker" name="subject_time_to_mon" value="{{ isset($daysObj[1]) ? $daysObj[1] ? strftime('%r',strtotime($daysObj[1]['to'])) : '' : '' }}">
 
-                                            <div class="input-group-addon">
-                                            <i class="fa fa-clock-o"></i>
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text"><i class="far fa-clock"></i></span>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -119,10 +119,10 @@
                                 <div class="bootstrap-timepicker">
                                     <div class="form-group">
                                         <div class="input-group">
-                                            <input type="text" class="form-control timepicker" name="subject_time_from_tue" value="{{ isset($daysObj[2]) ? $daysObj[2] ? strftime('%r',strtotime($daysObj[2]['from'])) : '': '' }}">
+                                            <input type="text" class="form-control form-control-sm timepicker" name="subject_time_from_tue" value="{{ isset($daysObj[2]) ? $daysObj[2] ? strftime('%r',strtotime($daysObj[2]['from'])) : '': '' }}">
 
-                                            <div class="input-group-addon">
-                                            <i class="fa fa-clock-o"></i>
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text"><i class="far fa-clock"></i></span>
                                             </div>
                                         </div>
                                     </div>
@@ -132,10 +132,11 @@
                                 <div class="bootstrap-timepicker">
                                     <div class="form-group">
                                         <div class="input-group">
-                                            <input type="text" class="form-control timepicker" name="subject_time_to_tue" value="{{ isset($daysObj[2]) ? $daysObj[2] ? strftime('%r',strtotime($daysObj[2]['to'])) : '': '' }}">
+                                            <input type="text" class="form-control form-control-sm timepicker" name="subject_time_to_tue" value="{{ isset($daysObj[2]) ? $daysObj[2] ? strftime('%r',strtotime($daysObj[2]['to'])) : '': '' }}">
 
-                                            <div class="input-group-addon">
-                                            <i class="fa fa-clock-o"></i>
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text"><i class="far fa-clock"></i></span>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -152,10 +153,10 @@
                                 <div class="bootstrap-timepicker">
                                     <div class="form-group">
                                         <div class="input-group">
-                                            <input type="text" class="form-control timepicker" name="subject_time_from_wed" value="{{ isset($daysObj[3]) ? $daysObj[3] ? strftime('%r',strtotime($daysObj[3]['from'])) : '' : '' }}">
+                                            <input type="text" class="form-control form-control-sm timepicker" name="subject_time_from_wed" value="{{ isset($daysObj[3]) ? $daysObj[3] ? strftime('%r',strtotime($daysObj[3]['from'])) : '' : '' }}">
 
-                                            <div class="input-group-addon">
-                                            <i class="fa fa-clock-o"></i>
+                                            <div class="input-group-prepend">
+                                              <span class="input-group-text"><i class="far fa-clock"></i></span>
                                             </div>
                                         </div>
                                     </div>
@@ -165,10 +166,11 @@
                                 <div class="bootstrap-timepicker">
                                     <div class="form-group">
                                         <div class="input-group">
-                                            <input type="text" class="form-control timepicker" name="subject_time_to_wed" value="{{ isset($daysObj[3]) ? $daysObj[3] ? strftime('%r',strtotime($daysObj[3]['to'])) : '' : '' }}">
+                                            <input type="text" class="form-control form-control-sm timepicker" name="subject_time_to_wed" value="{{ isset($daysObj[3]) ? $daysObj[3] ? strftime('%r',strtotime($daysObj[3]['to'])) : '' : '' }}">
 
-                                            <div class="input-group-addon">
-                                            <i class="fa fa-clock-o"></i>
+                                            <div class="input-group-prepend">
+                                              <span class="input-group-text"><i class="far fa-clock"></i></span>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -185,10 +187,10 @@
                                 <div class="bootstrap-timepicker">
                                     <div class="form-group">
                                         <div class="input-group">
-                                            <input type="text" class="form-control timepicker" name="subject_time_from_thur" value="{{ isset($daysObj[4]) ? $daysObj[4] ? strftime('%r',strtotime($daysObj[4]['from'])) : '' : '' }}">
+                                            <input type="text" class="form-control form-control-sm timepicker" name="subject_time_from_thur" value="{{ isset($daysObj[4]) ? $daysObj[4] ? strftime('%r',strtotime($daysObj[4]['from'])) : '' : '' }}">
 
-                                            <div class="input-group-addon">
-                                            <i class="fa fa-clock-o"></i>
+                                            <div class="input-group-prepend">
+                                              <span class="input-group-text"><i class="far fa-clock"></i></span>
                                             </div>
                                         </div>
                                     </div>
@@ -198,10 +200,11 @@
                                 <div class="bootstrap-timepicker">
                                     <div class="form-group">
                                         <div class="input-group">
-                                            <input type="text" class="form-control timepicker" name="subject_time_to_thur" value="{{ isset($daysObj[4]) ? $daysObj[4] ? strftime('%r',strtotime($daysObj[4]['to'])) : '' : '' }}">
+                                            <input type="text" class="form-control form-control-sm timepicker" name="subject_time_to_thur" value="{{ isset($daysObj[4]) ? $daysObj[4] ? strftime('%r',strtotime($daysObj[4]['to'])) : '' : '' }}">
 
-                                            <div class="input-group-addon">
-                                            <i class="fa fa-clock-o"></i>
+                                            <div class="input-group-prepend">
+                                              <span class="input-group-text"><i class="far fa-clock"></i></span>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -217,10 +220,10 @@
                                 <div class="bootstrap-timepicker">
                                     <div class="form-group">
                                         <div class="input-group">
-                                            <input type="text" class="form-control timepicker" name="subject_time_from_fri" value="{{ isset($daysObj[5]) ? $daysObj[5] ? strftime('%r',strtotime($daysObj[5]['from'])) : '' : '' }}">
+                                            <input type="text" class="form-control form-control-sm timepicker" name="subject_time_from_fri" value="{{ isset($daysObj[5]) ? $daysObj[5] ? strftime('%r',strtotime($daysObj[5]['from'])) : '' : '' }}">
 
-                                            <div class="input-group-addon">
-                                            <i class="fa fa-clock-o"></i>
+                                            <div class="input-group-prepend">
+                                              <span class="input-group-text"><i class="far fa-clock"></i></span>
                                             </div>
                                         </div>
                                     </div>
@@ -230,10 +233,11 @@
                                 <div class="bootstrap-timepicker">
                                     <div class="form-group">
                                         <div class="input-group">
-                                            <input type="text" class="form-control timepicker" name="subject_time_to_fri" value="{{ isset($daysObj[5]) ? $daysObj[5] ? strftime('%r',strtotime($daysObj[5]['to'])) : '' : '' }}">
+                                            <input type="text" class="form-control form-control-sm timepicker" name="subject_time_to_fri" value="{{ isset($daysObj[5]) ? $daysObj[5] ? strftime('%r',strtotime($daysObj[5]['to'])) : '' : '' }}">
 
-                                            <div class="input-group-addon">
-                                            <i class="fa fa-clock-o"></i>
+                                            <div class="input-group-prepend">
+                                              <span class="input-group-text"><i class="far fa-clock"></i></span>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -242,8 +246,8 @@
                     </table>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-default btn-flat" data-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary btn-flat">Save</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Save</button>
                 </div>
             </form>
         </div><!-- /.modal-content -->

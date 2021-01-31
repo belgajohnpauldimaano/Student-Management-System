@@ -7,10 +7,10 @@
                     <input type="hidden" name="id" value="{{ $SchoolYear->id }}">
                 @endif
                 <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                     <h4 class="modal-title">
                         {{ $SchoolYear ? 'Edit School Year' : 'Add School Year' }}                        
                     </h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                 </div>
                 <div class="modal-body">
                     <div class="form-group">
@@ -30,8 +30,10 @@
                     <div class="form-group">
                         <label for="">Date for Junior</label>
                         <div class="input-group date">                                
-                            <div class="input-group-addon">
-                                <i class="fa fa-calendar"></i>
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">
+                                    <i class="far fa-calendar-alt"></i>
+                                </span>
                             </div>
                              <input type="text" name="jdate" class="datepicker1 form-control pull-right" id="tbdatepicker1" placeholder="11/11/2000"
                              value="{{ $SchoolYear ? date_format(date_create($SchoolYear->j_date), 'F d, Y') : '' }}">                             
@@ -43,8 +45,10 @@
                     <div class="form-group">
                         <label for="">Date for Senior 1st Semester</label>
                         <div class="input-group date">                                    
-                            <div class="input-group-addon">
-                                <i class="fa fa-calendar"></i>
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">
+                                    <i class="far fa-calendar-alt"></i>
+                                </span>
                             </div>
                             <input type="text" name="sdate1" class="datepicker1 form-control pull-right" id="tbdatepicker2" placeholder="11/11/2000" 
                             value="{{ $SchoolYear ? date_format(date_create($SchoolYear->s_date1), 'F d, Y') : '' }}">
@@ -56,8 +60,10 @@
                     <div class="form-group">
                         <label for="">Date for Senior 2nd Semester</label>
                         <div class="input-group date">                                    
-                            <div class="input-group-addon">
-                                <i class="fa fa-calendar"></i>
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">
+                                    <i class="far fa-calendar-alt"></i>
+                                </span>
                             </div>
                             <input type="text" name="sdate2" class="datepicker1 form-control pull-right" id="tbdatepicker3" placeholder="11/11/2000" 
                             value="{{ $SchoolYear ? date_format(date_create($SchoolYear->s_date2), 'F d, Y') : '' }}">
@@ -69,8 +75,8 @@
                     
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-default btn-flat" data-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary btn-flat">Save</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Save</button>
                 </div>
             </form>
         </div><!-- /.modal-content -->

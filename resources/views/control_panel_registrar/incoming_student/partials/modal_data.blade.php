@@ -1,17 +1,17 @@
 <div class="modal fade" tabindex="-1" role="dialog">
-    <div class="modal-dialog" role="document">
+    <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="box-body">
                 <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>                            
                     <h4 style="margin-right: 5em;" class="modal-title">
                         Student Information
                     </h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                 </div>
             
                 <div class="modal-body">          
                     <div class="row">
-                        <div class="col-md-12">
+                        <div class="col-md-12 text-center">
                             <img class="profile-user-img img-responsive img-circle" id="img--user_photo" 
                             src="{{ $IncomingStudent->photo ? \File::exists(public_path('/img/account/photo/'.$IncomingStudent->photo)) ? 
                             asset('/img/account/photo/'.$IncomingStudent->photo) : 
@@ -94,13 +94,13 @@
                                         
                     
                 </div>            
-                <div class="moda-footer">
-                    <button class="btn btn-flat btn-{{ $IncomingStudent->approval ? 
+                <div class="modal-footer">
+                    <button class="btn btn-{{ $IncomingStudent->approval ? 
                         $IncomingStudent->approval =='Approved' ? 
                         'danger btn-disapprove' : 
                         'success btn-approve' : 
                         'danger btn-disapprove'}} 
-                        pull-right"
+                        float-right"
                          data-id="{{$IncomingStudent->student_id}}">
                         {{ $IncomingStudent->approval ? $IncomingStudent->approval =='Approved' ? 'Dispprove' : 'Approve' : 'Dispprove'}}
                     </button>

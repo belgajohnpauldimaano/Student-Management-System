@@ -1,39 +1,40 @@
 <div class="modal fade" tabindex="-1" role="dialog">
-    <div class="modal-dialog" role="document">
+    <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
-
-                <div class="box-body">
-                        <div class="modal-header">
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                                
-                                <h4 style="margin-right: 5em;" class="modal-title">
-                                    {{ $FacultyInformation ? 'Edit Faculty Information' : 'Add Faculty Information' }}
-                                </h4>
-        
-                                <div style="margin-top: 3em; margin-bottom: 3em" class="col-md-10 col-md-offset-1">
-                                        <center>
-                                        @if($Esignature)
-                                            <img class="profile-user-img img-responsive " id="img--user_photo" src="{{ $Esignature->e_signature ? \File::exists(public_path('/img/signature/'.$Esignature->e_signature)) ? asset('/img/signature/'.$Esignature->e_signature) : asset('/img/signature/signature.png') : asset('/img/signature/signature.png') }}" style="width:300px; height:150px;">
-                                        @else
-                                            <img class="profile-user-img img-responsive " id="img--user_photo" src="{{  asset('/img/signature/signature.png') }}" style="width:300px; height:150px;">
-                                        @endif
-                                        <h2>{{ $Esignature ? $Esignature->first_name : 'User' }}'s E-signature</h2>
-                                            <div class="box-body">
-                                                                        
-                                                <button type="button" class="btn btn-flat btn-success btn--update-photo" title="Change photo">
-                                                    browse E-signature
-                                                </button>
-                                            </center>
-                                                <form class="hidden" id="form_user_photo_uploader">
-                                                    <input type="file" id="user--photo" name="user_photo">
-                                                    <input type="hidden" name="id" value="{{ $FacultyInformation ? $FacultyInformation->id : '' }}">
-                                                    <button type="submit">fsdfasd</button>
-                                                </form>
-                                    </div>
-                            </div>
+        <div class="box-body">
+            <div class="modal-header">
+                    <h4 style="margin-right: 5em;" class="modal-title">
+                        {{ $FacultyInformation ? 'Edit Faculty Information' : 'Add Faculty Information' }}
+                    </h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    
+            </div>
+            <div class="card p-5 m-auto">
+                <div style="mt-5 mb-5 p-5" class="text-center">                            
+                        @if($Esignature)
+                            <img class="img-responsive " id="img--user_photo" 
+                            src="{{ $Esignature->e_signature ? \File::exists(public_path('/img/signature/'.$Esignature->e_signature)) 
+                            ? asset('/img/signature/'.$Esignature->e_signature) : asset('/img/signature/signature.png') 
+                            : asset('/img/signature/signature.png') }}" style="width:200px">
+                        @else
+                            <img class="img-responsive " id="img--user_photo" src="{{  asset('/img/signature/signature.png') }}" style="width:300px;">
+                        @endif
+                        <h2>{{ $Esignature ? $Esignature->first_name : 'User' }}'s E-signature</h2>
+                        <div class="box-body">
+                            <button type="button" class="btn  btn-success btn--update-photo" title="Change photo">
+                                browse E-signature
+                            </button>
+                        
+                            <form class="d-none" id="form_user_photo_uploader">
+                                <input type="file" id="user--photo" name="user_photo">
+                                <input type="hidden" name="id" value="{{ $FacultyInformation ? $FacultyInformation->id : '' }}">
+                                <button type="submit">fsdfasd</button>
+                            </form>
                         </div>
-        
-
+                    </div>
+            </div>
             <form id="js-form_subject_details">
                 {{ csrf_field() }}
                 @if ($FacultyInformation)
@@ -91,8 +92,8 @@
                     
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-default btn-flat" data-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary btn-flat">Save</button>
+                    <button type="button" class="btn btn-default " data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary ">Save</button>
                 </div>
             </form>
         </div><!-- /.modal-content -->

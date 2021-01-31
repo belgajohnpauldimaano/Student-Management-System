@@ -40,8 +40,8 @@
                     </select>
                 </div> 
                 
-                <button type="submit" class="btn btn-flat btn-success">Create</button>
-                {{--  <button type="button" class="pull-right btn btn-flat btn-danger btn-sm" id="js-button-add"><i class="fa fa-plus"></i> Add</button>  --}}
+                <button type="submit" class="btn  btn-success">Create</button>
+                {{--  <button type="button" class="pull-right btn  btn-danger btn-sm" id="js-button-add"><i class="fa fa-plus"></i> Add</button>  --}}
             </form>
         </div>
         <div class="overlay hidden" id="js-loader-overlay"><i class="fa fa-refresh fa-spin"></i></div>

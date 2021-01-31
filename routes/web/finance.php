@@ -59,8 +59,6 @@ Route::group(['prefix' => 'finance', 'middleware' => ['auth', 'userroles'], 'rol
         Route::post('modal-data', 'Finance\StudentPaymentController@modal_data')->name('finance.student_payment.modal');
         Route::post('modal-data-approved', 'Finance\StudentPaymentController@modal_data_approved')->name('finance.student_payment.modal_approved');
         Route::get('/export_excel/excel', 'Finance\StudentPaymentController@excel')->name('export_excel.excel');
-
-        
     });
 
     Route::group(['prefix' => 'summary-payment'], function () {
@@ -122,6 +120,15 @@ Route::group(['prefix' => 'finance', 'middleware' => ['auth', 'userroles'], 'rol
         Route::post('delete-transaction', 'Finance\StudentAccountController@deleteTransaction')->name('finance.delete_transaction');
 
         Route::post('delete-all-transaction', 'Finance\StudentAccountController@deleteEntireTransaction')->name('finance.delete_all_transaction');
+    });
+    // payroll
+    Route::group(['prefix' => 'faculty-payroll'], function () {
+        Route::get('', 'Finance\PayrollController@index')->name('finance.payroll');
+        Route::post('', 'Finance\PayrollController@index')->name('finance.payroll');
+        Route::post('modal-data', 'Finance\PayrollController@modal_data')->name('finance.payroll.modal');
+        // Route::post('paid', 'Finance\PayrollController@paid')->name('finance.student_acct.paid');
+        // Route::post('unpaid', 'Finance\PayrollController@unpaid')->name('finance.student_acct.unpaid');
+        // Route::post('modal-data', 'Finance\PayrollController@modal_data')->name('finance.student_acct.modal');
     });
 
     Route::group(['prefix' => 'maintenance'], function () {

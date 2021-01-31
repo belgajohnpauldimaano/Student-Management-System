@@ -8,14 +8,27 @@
 @endsection
 
 @section ('content')
-    <div class="box">
-        <div class="overlay hidden" id="js-loader-overlay"><i class="fa fa-refresh fa-spin"></i></div>
-        <div class="box-body">
-                <div class="js-data-container">
-                    @include('control_panel_faculty.student_attendance.partials.data_list') 
-                </div>      
+    <div class="card card-default">
+        <div class="overlay d-none" id="js-loader-overlay">
+            <i class="fas fa-2x fa-sync-alt fa-spin"></i>
         </div>
-    </div>
+        <div class="card-header">
+            @if($hasData == 0)
+                <h3 class="card-title">Student List of <b>Grade {{ $Semester->grade_level }} - {{ $Semester->section }}</b></h3>
+                <button class="btn btn-success float-right" id="js-btn_print" data-id=""><i class="fa fa-file-pdf"></i> Print</button>
+            @endif
+        </div>
+        <!-- /.card-header -->
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="js-data-container">
+                        @include('control_panel_faculty.student_attendance.partials.data_list') 
+                    </div>
+                </div>
+            </div>
+        </div>
+</div>
 @endsection
 
 @section ('scripts')

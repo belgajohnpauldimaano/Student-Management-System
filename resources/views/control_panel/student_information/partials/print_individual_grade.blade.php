@@ -3,10 +3,10 @@
         <div class="modal-content">
             {{--  <form id="js-form_print_student_grade">  --}}
                 <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                     <h4 class="modal-title">
                         Print Student Grade
                     </h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                 </div>
                 <div class="modal-body">
                     {{ csrf_field() }}
@@ -28,10 +28,10 @@
                     @endif
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-default btn-flat" data-dismiss="modal">Close</button>
-                    {{--  <button type="submit" class="btn btn-primary btn-flat">Save</button>  --}}
+                    <button type="button" class="btn btn-default " data-dismiss="modal">Close</button>
+                    {{--  <button type="submit" class="btn btn-primary ">Save</button>  --}}
                     @if ($Enrollment)
-                        <a class="btn btn-primary btn-flat" id="js-btn_print_student_grade">Print</a>
+                        <a class="btn btn-primary " id="js-btn_print_student_grade">Print</a>
                     @endif
                 </div>
             {{--  </form>  --}}

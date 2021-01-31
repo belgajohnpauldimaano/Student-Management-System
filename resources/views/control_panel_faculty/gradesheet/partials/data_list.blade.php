@@ -1,4 +1,4 @@
-<h4>
+<h5>
     @if(
         $quarter == '1st' && $sem == '1st'      || 
         $quarter == '3rd' && $sem == '2nd'      || 
@@ -25,11 +25,11 @@
             {{ $quarter }}
         </i>
     </span>
-</h4>
-<h4>
+</h5>
+<h5>
     Grade &amp; Section: <span class="text-red"><i>{{ $class_detail->grade->id . '-' .$class_detail->section->section }}</i></span>
     <div class="text-right" style="margin-top: -2em">
-        <button id="js-print" class="btn btn-flat btn-danger" 
+        <button id="js-print" class="btn btn-primary" 
             data-id='{{$class_detail->id}}' 
             data-sy='{{$class_detail->school_year_id}}'
             data-adviser_id='{{$class_detail->adviser_id}}'
@@ -37,7 +37,7 @@
             <i class="fas fa-file-pdf"></i> Print
         </button>
     </div>    
-</h4>
+</h5>
 
 <div>
     @if($class_detail->grade->id < 11)

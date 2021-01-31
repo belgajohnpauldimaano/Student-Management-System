@@ -5,45 +5,39 @@
 @endsection
 
 @section ('content')
-
-    <div class="col-sm-12 col-md-4">
-        <div class="info-box bg-green">
-            <span class="info-box-icon ">
-                <i class="ion ion-ios-people-outline"></i>
-            </span>
-            <div class="info-box-content">
-                <span class="info-box-text">Total Registered Students</span>
-                <span class="info-box-number">{{ $StudentInformation_all->student_count }}</span>
+    <div class="row">
+        <div class="col-sm-12 col-md-4">
+            <div class="small-box bg-green">
+                <div class="inner">
+                    <h3>{{ $StudentInformation_all->student_count }}</h3>
+                    <p>Total Registered Students</p>
+                </div>
+                <div class="icon">
+                    <i class="ion ion-ios-people-outline"></i>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-12 col-md-4">
+            <div class="small-box bg-red">
+                <div class="inner">
+                    <h3>{{ $StudentInformation_all_male->student_count }}</h3>
+                    <p>Registered Male</p>
+                </div>
+                <div class="icon">
+                    <i class="fas fa-male"></i>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-12 col-md-4">
+            <div class="small-box bg-yellow">
+                <div class="inner">
+                    <h3>{{ $StudentInformation_all_female->student_count }}</h3>
+                    <p>Registered Female</p>
+                </div>
+                <div class="icon">
+                    <i class="fas fa-female"></i>
+                </div>
             </div>
         </div>
     </div>
-
-    <div class="col-sm-12 col-md-4">
-        <div class="info-box bg-red">
-            <span class="info-box-icon">
-                {{--  <i class="ion ion-male"></i>  --}}
-                <i class="fas fa-male"></i>
-            </span>
-            <div class="info-box-content">
-                <span class="info-box-text">Registered Male</span>
-                <span class="info-box-number">{{ $StudentInformation_all_male->student_count }}</span>
-            </div>
-        </div>
-    </div>
-
-    <div class="col-sm-12 col-md-4">
-        <div class="info-box bg-yellow">
-            <span class="info-box-icon">
-                <i class="fas fa-female"></i>
-            </span>
-            <div class="info-box-content">
-                <span class="info-box-text">Registered Female</span>
-                <span class="info-box-number">{{ $StudentInformation_all_female->student_count }}</span>
-            </div>
-        </div>
-    </div>
-
-
-    
-
 @endsection

@@ -9,10 +9,13 @@
 
 @section ('content')
 @if($ClassDetail->grade_level == 11 || $ClassDetail->grade_level == 12)
-    <h4>Enroll Student</h4>
-    <div class="box">
-        <div class="box-header with-border">
-            <h2 class="box-title">Search</h3>
+    <div class="card card-default">
+        <div class="overlay d-none" id="js-loader-overlay">
+                <i class="fas fa-2x fa-sync-alt fa-spin"></i>
+            </div>
+        <div class="card-header">
+            <h6 class="box-title">Enroll Student:</h6>
+            <h6 class="box-title">Search</h6>
             <form id="js-form_search">
                 {{ csrf_field() }}
                 <div class="row">
@@ -31,23 +34,28 @@
                         <input type="text" class="form-control" name="search_ln" placeholder="Last name">
                     </div>
                     <div class="col-sm-12 col-md-2">
-                        <button type="submit" class="btn btn-block  btn-flat btn-success"><div class="fa fa-search"></div> Search</button>
+                        <button type="submit" class="btn btn-block   btn-success"><div class="fa fa-search"></div> Search</button>
                     </div>
                 </div>
             </form>
         </div>
-        <div class="overlay hidden" id="js-loader-overlay"><i class="fa fa-refresh fa-spin"></i></div>
-        <div class="box-body">
-            <div class="js-data-container">                
-                @include('control_panel_registrar.student_enrollment.partials.data_list')
+        <!-- /.card-header -->
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="js-data-container">                
+                        @include('control_panel_registrar.student_enrollment.partials.data_list')
+                    </div>
+                </div>        
             </div>
         </div>
-        
     </div>
-    <h3>Enrolled Students</h3>
-    <div class="box">
-        <div class="box-header with-border">
-            <h2 class="box-title">Search</h3>
+    <div class="card card-default">
+        <div class="overlay d-none" id="js-loader-overlay">
+                <i class="fas fa-2x fa-sync-alt fa-spin"></i>
+            </div>
+        <div class="card-header">
+            <h6 class="box-title">Enrolled Students:</h6>
             <form id="js-form_search_enrolled">
                 {{ csrf_field() }}
                 <div class="row">
@@ -66,12 +74,12 @@
                         <input type="text" class="form-control" name="search_ln" placeholder="Last name">
                     </div>
                     <div class="col-sm-12 col-md-2">
-                        <button type="submit" class="btn btn-block  btn-flat btn-success">
+                        <button type="submit" class="btn btn-block   btn-success">
                             <i class="fa fa-search"></i> Search
                         </button>
                     </div>
                     <div class="col-sm-12 col-md-1">
-                        <button type="button" class="btn btn-block  btn-flat btn-primary"  title="Print" id="js-btn_print">
+                        <button type="button" class="btn btn-block   btn-primary"  title="Print" id="js-btn_print">
                             <i class="fa fa-file-pdf"></i>
                         </button>
                     </div>
@@ -79,19 +87,25 @@
                 </div>
             </form>
         </div>
-        <div class="overlay hidden" id="js-loader-overlay-enrolled"><i class="fa fa-refresh fa-spin"></i></div>
-        <div class="box-body">
-            <div class="js-data-container-enrolled">                        
-                @include('control_panel_registrar.student_enrollment.partials.data_list_enrolled')                        
+        <!-- /.card-header -->
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="js-data-container-enrolled">                        
+                        @include('control_panel_registrar.student_enrollment.partials.data_list_enrolled')                        
+                    </div>
+                </div>
             </div>
         </div>
-        
     </div>
 @else
-    <h4>Enroll Student</h4>
-    <div class="box">
-        <div class="box-header with-border">
-            <h2 class="box-title">Search</h3>
+    <div class="card card-default">
+            <div class="overlay d-none" id="js-loader-overlay">
+                <i class="fas fa-2x fa-sync-alt fa-spin"></i>
+            </div>
+        <div class="card-header">
+            <h6 class="box-title">Enroll Student:</h6>
+            <h6 class="box-title">Search</h6>
             <form id="js-form_search">
                 {{ csrf_field() }}
                 <div class="row">
@@ -110,24 +124,30 @@
                         <input type="text" class="form-control" name="search_ln" placeholder="Last name">
                     </div>
                     <div class="col-sm-12 col-md-2">
-                        <button type="submit" class="btn btn-block  btn-flat btn-success"><div class="fa fa-search"></div> Search</button>
+                        <button type="submit" class="btn btn-block   btn-success"><div class="fa fa-search"></div> Search</button>
                     </div>
                 </div>
             </form>
         </div>
-        <div class="overlay hidden" id="js-loader-overlay"><i class="fa fa-refresh fa-spin"></i></div>
-        <div class="box-body">
-            <div class="js-data-container">                
-                @include('control_panel_registrar.student_enrollment.partials.data_list')
+        <!-- /.card-header -->
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="js-data-container">                
+                        @include('control_panel_registrar.student_enrollment.partials.data_list')
+                    </div>
+                </div>
             </div>
         </div>
-        
     </div>
-    
-    <h3>Enrolled Students</h3>
-    <div class="box">
-        <div class="box-header with-border">
-            <h2 class="box-title">Search</h3>
+
+    <div class="card card-default">
+        <div class="overlay d-none" id="js-loader-overlay">
+                <i class="fas fa-2x fa-sync-alt fa-spin"></i>
+            </div>
+        <div class="card-header">
+            <h6 class="box-title">Enrolled Students:</h6>
+            <h6 class="box-title">Search</h6>
             <form id="js-form_search_enrolled">
                 {{ csrf_field() }}
                 <div class="row">
@@ -146,37 +166,38 @@
                         <input type="text" class="form-control" name="search_ln" placeholder="Last name">
                     </div>
                     <div class="col-sm-12 col-md-2">
-                        <button type="submit" class="btn btn-block  btn-flat btn-success"><i class="fa fa-search"></i> Search</button>
+                        <button type="submit" class="btn btn-block   btn-success"><i class="fa fa-search"></i> Search</button>
                     </div>
                     <div class="col-sm-12 col-md-1">
-                        {{-- <button type="button" class="btn btn-block  btn-flat btn-primary" id="js-btn_print"><i class="fa fa-file-pdf"></i> Print</button> --}}
-                        <button type="button" class="btn btn-block  btn-flat btn-primary"  title="Print" id="js-btn_print">
+                        {{-- <button type="button" class="btn btn-block   btn-primary" id="js-btn_print"><i class="fa fa-file-pdf"></i> Print</button> --}}
+                        <button type="button" class="btn btn-block   btn-primary"  title="Print" id="js-btn_print">
                             <i class="fa fa-file-pdf"></i>
                         </button>
                     </div>
                     {{--  <div class="col-sm-12 col-md-1">
-                        <button type="button" class="btn btn-block btn-flat btn-danger btn-sm" id="js-button-add"><i class="fa fa-plus"></i> Add</button>
+                        <button type="button" class="btn btn-block  btn-danger btn-sm" id="js-button-add"><i class="fa fa-plus"></i> Add</button>
                     </div>  --}}
                 </div>
             </form>
         </div>
-        <div class="overlay hidden" id="js-loader-overlay-enrolled"><i class="fa fa-refresh fa-spin"></i></div>
-        <div class="box-body">
-            <div class="js-data-container-enrolled">                        
-                @include('control_panel_registrar.student_enrollment.partials.data_list_enrolled')                        
+        <!-- /.card-header -->
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="js-data-container-enrolled">                        
+                        @include('control_panel_registrar.student_enrollment.partials.data_list_enrolled')                        
+                    </div>
+                </div>
             </div>
-        </div>        
+        </div>
     </div>
 @endif
-
     
 @endsection
 
 @section ('scripts')
     <script src="{{ asset('cms/plugins/timepicker/bootstrap-timepicker.min.js') }}"></script>
     <script>
-        
-
         var page = 1;
         function fetch_data () {
             var formData = new FormData($('#js-form_search')[0]);
@@ -262,8 +283,8 @@
                 e.preventDefault();
                 var student_id = $(this).data('id');
                 alertify.defaults.transition = "slide";
-                alertify.defaults.theme.ok = "btn btn-primary btn-flat";
-                alertify.defaults.theme.cancel = "btn btn-danger btn-flat";
+                alertify.defaults.theme.ok = "btn btn-primary ";
+                alertify.defaults.theme.cancel = "btn btn-danger ";
                 alertify.confirm('Confirmation', 'Are you sure you want to enroll?', function(){  
                     $.ajax({
                         url         : "{{ route('registrar.student_enrollment.enroll_student', $id) }}",
@@ -303,8 +324,8 @@
                 var student_id = $(this).data('student_id');
                
                 alertify.defaults.transition = "slide";
-                alertify.defaults.theme.ok = "btn btn-primary btn-flat";
-                alertify.defaults.theme.cancel = "btn btn-danger btn-flat";
+                alertify.defaults.theme.ok = "btn btn-primary ";
+                alertify.defaults.theme.cancel = "btn btn-danger ";
                 alertify.confirm('Confirmation', 'Are you sure you want to cancel or remove this student on this section?', function(){  
                     $.ajax({
                         url         : "{{ route('registrar.student_enrollment.cancel_enroll_student', $id) }}",
@@ -373,7 +394,11 @@
             $('body').on('click', '.js-btn_re_enroll_student', function (e) {
                 e.preventDefault();
                 var enrollment_id = $(this).data('id');
-                $.ajax({
+                alertify.defaults.transition = "slide";
+                alertify.defaults.theme.ok = "btn btn-primary ";
+                alertify.defaults.theme.cancel = "btn btn-danger ";
+                alertify.confirm('Confirmation', 'Are you sure you want to re-enroll?', function(){  
+                    $.ajax({
                         url         : "{{ route('registrar.student_enrollment.re_enroll_student', $id) }}",
                         type        : 'POST',
                         data        : { _token : '{{ csrf_token() }}', enrollment_id : enrollment_id, class_detail_id : '{{ $ClassDetail->id }}' },
@@ -397,71 +422,18 @@
                             }
                         }
                     });
-            });
-
-
-            // $('body').on('click', '.js-btn_drop_student', function (e) {
-            //     e.preventDefault();
-            //     var enrollment_id = $(this).data('id');
-            //     var student_id = $(this).data('student_id');
-                
-            //     alertify.defaults.transition = "slide";
-            //     alertify.defaults.theme.ok = "btn btn-primary btn-flat";
-            //     alertify.defaults.theme.cancel = "btn btn-danger btn-flat";
-            //     alertify.confirm('Confirmation', 'Are you sure you want to drop this student?', function(){                    
+                }, function(){  
                     
-            //         $.ajax({
-            //             url         : "{{ route('registrar.student_enrollment.drop', $id) }}",
-            //             type        : 'POST',
-            //             data        : { 
-            //                 _token : '{{ csrf_token() }}', enrollment_id : enrollment_id, class_detail_id : '{{ $ClassDetail->id }}', student_id : student_id
-            //             },
-            //             success     : function (res) {
-            //                 $('.help-block').html('');
-            //                 if (res.res_code == 1)
-            //                 {
-            //                     show_toast_alert({
-            //                         heading : 'Error',
-            //                         message : res.res_msg,
-            //                         type    : 'error'
-            //                     });
-            //                 }
-            //                 else
-            //                 {
-            //                     show_toast_alert({
-            //                         heading : 'Success',
-            //                         message : res.res_msg,
-            //                         type    : 'success'
-            //                     });
-
-            //                     setTimeout(function() {
-            //                         location.reload();
-            //                     }, 3000);
-            //                 }
-            //             }
-            //         });
-            //     }, function(){  
-
-            //     });
-            // });
-
-           
-
-            $('.js-btn_re_enroll_student').click(function(){
-                var checkstr =  confirm('are you sure you want to re-enroll?');
-                if(checkstr == true){
-                // do your code
-                }else{
-                return false;
-                }
+                });
             });
-            
+
+
             $('body').on('click', '.js-btn_deactivate', function (e) {
                 e.preventDefault();
                 var id = $(this).data('id');
                 alertify.defaults.transition = "slide";
-                alertify.defaults.theme.ok = "btn btn-primary btn-flat";
-                alertify.defaults.theme.cancel = "btn btn-danger btn-flat";
+                alertify.defaults.theme.ok = "btn btn-primary ";
+                alertify.defaults.theme.cancel = "btn btn-danger ";
                 alertify.confirm('Confirmation', 'Are you sure you want to deactivate?', function(){  
                     $.ajax({
                         url         : "{{ route('registrar.class_details.deactivate_data', $id) }}",

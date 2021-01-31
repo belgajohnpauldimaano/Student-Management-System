@@ -194,7 +194,7 @@
                 <a href="javascript:void(0)" class="uppercase">View All Lessons</a>
               </div>
               <!-- /.card-footer -->
-            </div>
+            </div>.
         </div>
     </div>
 @endsection

@@ -295,8 +295,8 @@
                 var classSubjectDetailID = $('#classSubjectDetailID').val();
                 
                 alertify.defaults.transition = "slide";
-                alertify.defaults.theme.ok = "btn btn-primary btn-flat";
-                alertify.defaults.theme.cancel = "btn btn-danger btn-flat";
+                alertify.defaults.theme.ok = "btn btn-primary ";
+                alertify.defaults.theme.cancel = "btn btn-danger ";
                 alertify.confirm('Confirmation', 'Are you sure you want to save?', function(){  
                     $.ajax({
                         url         : "{{ route('faculty.student_grade_sheet.save_grade') }}",
@@ -376,8 +376,8 @@
                 e.preventDefault()
                 const id = $(this).data('id')
                 alertify.defaults.transition = "slide";
-                alertify.defaults.theme.ok = "btn btn-primary btn-flat";
-                alertify.defaults.theme.cancel = "btn btn-danger btn-flat";
+                alertify.defaults.theme.ok = "btn btn-primary ";
+                alertify.defaults.theme.cancel = "btn btn-danger ";
                 alertify.confirm('Confirmation', 'Are you sure you want to finalize?', function(){  
                     $.ajax({
                         url         : "{{ route('faculty.student_grade_sheet.finalize_grade') }}",

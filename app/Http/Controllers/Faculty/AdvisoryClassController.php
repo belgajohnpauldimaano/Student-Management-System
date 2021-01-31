@@ -30,7 +30,7 @@ class AdvisoryClassController extends Controller
     {        
         $FacultyInformation = FacultyInformation::where('user_id', Auth::user()->id)->first();
         
-       $SchoolYear = SchoolYear::where('status', 1)->where('current', 1)->first();
+        $SchoolYear = SchoolYear::where('status', 1)->where('current', 1)->first();
 
         $ClassDetail = ClassDetail::with(['section','room','schoolYear','adviserData'])
             ->whereCurrent(1)
@@ -437,7 +437,12 @@ class AdvisoryClassController extends Controller
                 "))
                 ->orderBy('class_subject_details.class_subject_order', 'ASC')
                 ->get();
-                
+
+            if($Enrollment->isEmpty()){
+                $title = 'Sorry this is not available';
+                $message = 'This semester is not ready for this function or please contact the administrator. Thank you!';
+                return view('errors._page_not_available', compact('title','message'));
+            }
             
             $GradeSheetData = [];
             $grade_level = 1;

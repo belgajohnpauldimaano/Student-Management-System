@@ -1,7 +1,7 @@
 @if($ClassSubjectDetail)                        
-    <h4><b>Year and Section: <i style="color: red">Grade:{{ $ClassSubjectDetail->grade_level }} - {{ $ClassSubjectDetail->section }}</i></b></h4>     
+    {{-- <h4><b>Year and Section: <i style="color: red">Grade:{{ $ClassSubjectDetail->grade_level }} - {{ $ClassSubjectDetail->section }}</i></b></h4>      --}}
 
-    <table class="table no-margin table-striped table-bordered">
+    <table class="table table-sm no-margin table-bordered table-hover">
         <thead>
             <tr>
                 <th style="width: 30px">#</th>
@@ -14,7 +14,7 @@
         </thead>
         <tbody>                     
             <tr>
-                <td colspan="16">
+                <td class="bg-danger" colspan="16">
                     <b>Male</b> 
                 </td>
             </tr>
@@ -26,47 +26,42 @@
                             <td>{{ $data->student_name }}</td>                            
                             <td> 
                                 @if($Semester_id == 1)                                    
-                                    <input type="text" class="form-control" name="eligible_transfer" value="{{$data->eligible_transfer}}" placeholder="none">                                     
+                                    <input type="text" class="form-control form-control-sm" name="eligible_transfer" value="{{$data->eligible_transfer}}" placeholder="none">                                     
                                 @else
-                                    <input type="text" class="form-control" name="eligible_transfer" 
-                                    value="
-                                            @if($ClassSubjectDetail->grade_level == 12)
-                                                'College'
-                                            @elseif($data->eligible_transfer)
-                                                'Grade '.($ClassSubjectDetail->grade_level + 1
-                                            @endif
-                                        "
+                                    <input type="text" class="form-control form-control-sm" name="eligible_transfer" 
                                     placeholder="Grade">                                             
                                 @endif                                 
                             </td>
                             <td>
                                 @if($ClassSubjectDetail->grade_level < 11) 
-                                    <input type="text" class="form-control" name="jlacking_units" value="{{ $data->j_lacking_unit }}" placeholder="none"> 
+                                    <input type="text" class="form-control form-control-sm" name="jlacking_units" value="{{ $data->j_lacking_unit }}" placeholder="none"> 
                                 @elseif($ClassSubjectDetail->grade_level > 10)
                                     @if($Semester_id == 1)
-                                        <input type="text" class="form-control" name="s1_lacking_units" value="{{ $data->s1_lacking_unit }}" placeholder="none"> 
+                                        <input type="text" class="form-control form-control-sm" name="s1_lacking_units" value="{{ $data->s1_lacking_unit }}" placeholder="none"> 
                                     @else
-                                        <input type="text" class="form-control" name="s2_lacking_units" value="{{ $data->s2_lacking_unit }}" placeholder="none"> 
+                                        <input type="text" class="form-control form-control-sm" name="s2_lacking_units" value="{{ $data->s2_lacking_unit }}" placeholder="none"> 
                                     @endif
                                 @endif
                             </td>
                             <td>
                                 <div class="input-group date">
-                                    <div class="input-group-addon">
-                                        <i class="fa fa-calendar"></i>
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text">
+                                            <i class="far fa-calendar-alt"></i>
+                                        </span>
                                     </div>
                                     
                                     @if($ClassSubjectDetail->grade_level < 11) 
-                                        <input type="text" name="date" disabled class="tbdatepicker form-control pull-right" 
+                                        <input type="text" name="date" disabled class="tbdatepicker form-control form-control-sm pull-right" 
                                                 id="tbdatepicker" placeholder="11/11/2000" value="{{ $DateRemarks != '' ? $DateRemarks->j_date : '' }}">
                                     @elseif($ClassSubjectDetail->grade_level > 10)
                                         @if($Semester_id == 1)
-                                            <input type="text" name="date" disabled class="tbdatepicker form-control pull-right" 
+                                            <input type="text" name="date" disabled class="tbdatepicker form-control form-control-sm pull-right" 
                                                 id="tbdatepicker" placeholder="11/11/2000" value="{{ $DateRemarks->s_date1 ? $DateRemarks->s_date1 : '' }}"
                                                 
                                             >
                                         @else
-                                            <input type="text" name="date" disabled class="tbdatepicker form-control pull-right" 
+                                            <input type="text" name="date" disabled class="tbdatepicker form-control form-control-sm pull-right" 
                                             id="tbdatepicker" placeholder="11/11/2000" value="{{ $DateRemarks->s_date2 ? $DateRemarks->s_date2 : '' }}">
                                         @endif
                                     @endif
@@ -138,7 +133,7 @@
                 @endforeach
             
             <tr>
-                <td colspan="16">
+                <td class="bg-yellow" colspan="16">
                     <b>Female</b> 
                 </td>
             </tr>
@@ -150,47 +145,42 @@
                             <td>{{ $data->student_name }}</td>                            
                             <td> 
                                 @if($Semester_id == 1)                                    
-                                    <input type="text" class="form-control" name="eligible_transfer" value="{{$data->eligible_transfer}}" placeholder="none">                                     
+                                    <input type="text" class="form-control form-control-sm" name="eligible_transfer" value="{{$data->eligible_transfer}}" placeholder="none">                                     
                                 @else
-                                    <input type="text" class="form-control" name="eligible_transfer" 
-                                    value="
-                                            @if($ClassSubjectDetail->grade_level == 12)
-                                                'College'
-                                            @elseif($data->eligible_transfer)
-                                                'Grade '.($ClassSubjectDetail->grade_level + 1
-                                            @endif
-                                        " 
-                                    placeholder="Grade">                                             
+                                    <input type="text" class="form-control form-control-sm" name="eligible_transfer" 
+                                        placeholder="Grade">                                             
                                 @endif     
                             </td>
                             <td>
                                 @if($ClassSubjectDetail->grade_level < 11) 
-                                    <input type="text" class="form-control" name="jlacking_units" value="{{ $data->j_lacking_unit }}" placeholder="none"> 
+                                    <input type="text" class="form-control form-control-sm" name="jlacking_units" value="{{ $data->j_lacking_unit }}" placeholder="none"> 
                                 @elseif($ClassSubjectDetail->grade_level > 10)
                                     @if($Semester_id == 1)
-                                        <input type="text" class="form-control" name="s1_lacking_units" value="{{ $data->s1_lacking_unit }}" placeholder="none"> 
+                                        <input type="text" class="form-control form-control-sm" name="s1_lacking_units" value="{{ $data->s1_lacking_unit }}" placeholder="none"> 
                                     @else
-                                        <input type="text" class="form-control" name="s2_lacking_units" value="{{ $data->s2_lacking_unit }}" placeholder="none"> 
+                                        <input type="text" class="form-control form-control-sm" name="s2_lacking_units" value="{{ $data->s2_lacking_unit }}" placeholder="none"> 
                                     @endif
                                 @endif
                             </td>
                             <td>
                                 <div class="input-group date">
-                                    <div class="input-group-addon">
-                                        <i class="fa fa-calendar"></i>
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text">
+                                            <i class="far fa-calendar-alt"></i>
+                                        </span>
                                     </div>
                                     
                                     @if($ClassSubjectDetail->grade_level < 11) 
-                                        <input type="text" name="date" disabled class="tbdatepicker form-control pull-right" 
+                                        <input type="text" name="date" disabled class="tbdatepicker form-control form-control-sm pull-right" 
                                                 id="tbdatepicker" placeholder="11/11/2000" value="{{ $DateRemarks != '' ? $DateRemarks->j_date : '' }}">
                                     @elseif($ClassSubjectDetail->grade_level > 10)
                                         @if($Semester_id == 1)
-                                            <input type="text" name="date" disabled class="tbdatepicker form-control pull-right" 
+                                            <input type="text" name="date" disabled class="tbdatepicker form-control form-control-sm pull-right" 
                                                 id="tbdatepicker" placeholder="11/11/2000" value="{{ $DateRemarks->s_date1 ? $DateRemarks->s_date1 : '' }}"
                                                 
                                             >
                                         @else
-                                            <input type="text" name="date" disabled class="tbdatepicker form-control pull-right" 
+                                            <input type="text" name="date" disabled class="tbdatepicker form-control form-control-sm pull-right" 
                                             id="tbdatepicker" placeholder="11/11/2000" value="{{ $DateRemarks->s_date2 ? $DateRemarks->s_date2 : '' }}">
                                         @endif
                                     @endif

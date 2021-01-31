@@ -1,14 +1,13 @@
 <div class="modal fade" tabindex="-1" role="dialog">
-    <div class="modal-dialog" role="document">
+    <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="box-body">
                 <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                        
                         <h4 style="margin-right: 5em;" class="modal-title">
                             {{ $StudentInformation ? 'Edit Student Information' : 'Add Student Information' }}
                         </h4>
-
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        
                         <div style="margin-top: 3em; margin-bottom: 3em" class="col-md-10 col-md-offset-1">
                             <center>
                                 @if ($Profile)

@@ -18,7 +18,6 @@ class CreateRegistrationButtonsTable extends Migration
             $table->string('name');
             $table->tinyInteger('is_enabled');
             $table->timestamps();
-
         });
     }
 

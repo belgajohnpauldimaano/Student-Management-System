@@ -1,13 +1,13 @@
-                        <div class="pull-right">
+                        <div class="float-right">
                             {{ $ClassSubjectDetail ? $ClassSubjectDetail->links() : '' }}
                         </div>
-                        <table class="table no-margin">
+                        <table class="table no-margin table-sm table-hover">
                             <thead>
                                 <tr>
-                                    <th>Subject Code</th>
+                                    <th style="width: 10%">Subject Code</th>
                                     <th>Subject</th>
-                                    <th style="width: 30%">Schedule</th>
-                                    <th style="width: 30%">Faculty</th>
+                                    <th style="width: 25%">Schedule</th>
+                                    <th style="width: 25%">Faculty</th>
                                     <th style="width: 15%">Actions</th>
                                 </tr>
                             </thead>
@@ -72,16 +72,16 @@
                                                         @endphp
                                                     </td>
                                                     <td>
-                                                        <div class="input-group-btn pull-left text-left">
-                                                            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="true">Action
-                                                                <span class="fa fa-caret-down"></span></button>
-                                                            <ul class="dropdown-menu">
-                                                                {{-- <li><input name="subject_title" class="form-control" value="{{ $ClassDetail->section_id }}" /></li> --}}
-                                                                <li><a href="#" class="js-btn_update" data-id="{{ $data->id }}">Edit</a></li>
-                                                                <li><a href="#" class="js-btn_update_faculty" data-id="{{ $data->id }}">Edit Faculty</a></li>
-                                                                {{--  <li><a href="#" class="js-btn_manage_subjects" data-id="{{ $data->id }}">Manage Subjects</a></li>  --}}
-                                                                <li><a href="#" class="js-btn_deactivate" data-id="{{ $data->id }}">Deactivate</a></li>
-                                                            </ul>
+                                                        <div class="btn-group">
+                                                            <button type="button" class="btn btn-danger">Action</button>
+                                                            <button type="button" class="btn btn-danger dropdown-toggle dropdown-icon" data-toggle="dropdown">
+                                                                <span class="sr-only">Toggle Dropdown</span>
+                                                            </button>
+                                                            <div class="dropdown-menu">
+                                                                <a href="#" class="dropdown-item js-btn_update" data-id="{{ $data->id }}">Edit</a>
+                                                                <a href="#" class="dropdown-item js-btn_update_faculty" data-id="{{ $data->id }}">Edit Faculty</a>
+                                                                <a href="#" class="dropdown-item js-btn_deactivate" data-id="{{ $data->id }}">Deactivate</a>
+                                                            </div>
                                                         </div>
                                                     </td>
                                                 </tr>
@@ -135,53 +135,51 @@
                                                 <td> {{ rtrim($daysDisplay, '/') }} </td>
                                                 <td>
                                                     @php 
-                                                            $teachers = \App\Models\TeacherSubject::join('faculty_informations', 'faculty_informations.id','=','teacher_subjects.faculty_id')
-                                                                ->selectRaw('
-                                                                        CONCAT(faculty_informations.last_name, " ", faculty_informations.first_name, " " ,  faculty_informations.middle_name) AS adviser_name
-                                                                    ')
-                                                                    ->where('class_subject_details_id', $data->id)
-                                                                    ->where('teacher_subjects.status', 1)
-                                                                ->get();
+                                                        $teachers = \App\Models\TeacherSubject::join('faculty_informations', 'faculty_informations.id','=','teacher_subjects.faculty_id')
+                                                            ->selectRaw('
+                                                                    CONCAT(faculty_informations.last_name, " ", faculty_informations.first_name, " " ,  faculty_informations.middle_name) AS adviser_name
+                                                                ')
+                                                                ->where('class_subject_details_id', $data->id)
+                                                                ->where('teacher_subjects.status', 1)
+                                                            ->get();
 
-                                                            $teachers_count = \App\Models\TeacherSubject::join('faculty_informations', 'faculty_informations.id','=','teacher_subjects.faculty_id')
-                                                                ->selectRaw('
-                                                                        CONCAT(faculty_informations.last_name, " ", faculty_informations.first_name, " " ,  faculty_informations.middle_name) AS adviser_name
-                                                                    ')
-                                                                    ->where('class_subject_details_id', $data->id)
-                                                                    ->where('teacher_subjects.status', 1)
-                                                                ->count();
-                                                                
-                                                            if($teachers_count > 1)
-                                                            {
-                                                                foreach ($teachers as $key => $value) {
-                                                                    echo ''.$value->adviser_name.', ';
-                                                                }   
-                                                            }
-                                                            else
-                                                            {
-                                                               echo $data->faculty_name;
-                                                            }
-                                                                                                                     
+                                                        $teachers_count = \App\Models\TeacherSubject::join('faculty_informations', 'faculty_informations.id','=','teacher_subjects.faculty_id')
+                                                            ->selectRaw('
+                                                                    CONCAT(faculty_informations.last_name, " ", faculty_informations.first_name, " " ,  faculty_informations.middle_name) AS adviser_name
+                                                                ')
+                                                                ->where('class_subject_details_id', $data->id)
+                                                                ->where('teacher_subjects.status', 1)
+                                                            ->count();
+                                                            
+                                                        if($teachers_count > 1)
+                                                        {
+                                                            foreach ($teachers as $key => $value) {
+                                                                echo '<span title="'.$value->adviser_name.'" class="badge bg-primary">'.$value->adviser_name.'</span> ,';
+                                                            }   
+                                                        }
+                                                        else
+                                                        {
+                                                           echo '<span title="'.$data->faculty_name.'" class="badge bg-primary">'.$data->faculty_name.'</span>';
+                                                        }
+                                                                                                                 
                                                     @endphp
                                                 </td>
                                                 <td>
-                                                    <div class="input-group-btn pull-left text-left">
-                                                        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="true">Action
-                                                            <span class="fa fa-caret-down"></span></button>
-                                                        <ul class="dropdown-menu">
-                                                            <li><a href="#" class="js-btn_update" data-id="{{ $data->id }}">Edit</a></li>
-                                                            <li><a href="#" class="js-btn_update_faculty" data-id="{{ $data->id }}">Edit Faculty</a></li>
-                                                            {{--  <li><a href="#" class="js-btn_manage_subjects" data-id="{{ $data->id }}">Manage Subjects</a></li>  --}}
-                                                            <li><a href="#" class="js-btn_deactivate" data-id="{{ $data->id }}">Deactivate</a></li>
-                                                        </ul>
+                                                    <div class="btn-group">
+                                                        <button type="button" class="btn btn-danger">Action</button>
+                                                        <button type="button" class="btn btn-danger dropdown-toggle dropdown-icon" data-toggle="dropdown">
+                                                            <span class="sr-only">Toggle Dropdown</span>
+                                                        </button>
+                                                        <div class="dropdown-menu">
+                                                            <a href="#" class="dropdown-item js-btn_update" data-id="{{ $data->id }}">Edit</a>
+                                                            <a href="#" class="dropdown-item js-btn_update_faculty" data-id="{{ $data->id }}">Edit Faculty</a>
+                                                            <a href="#" class="dropdown-item js-btn_deactivate" data-id="{{ $data->id }}">Deactivate</a>
+                                                        </div>
                                                     </div>
                                                 </td>
                                             </tr>
                                         @endforeach
                                     @endif
-
-                                @endif
-
-                                
+                                @endif                                
                             </tbody>
                         </table>

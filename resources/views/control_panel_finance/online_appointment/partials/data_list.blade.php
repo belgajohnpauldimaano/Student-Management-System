@@ -6,7 +6,7 @@
             {{ $appointment ? $appointment->links() : '' }}
         </div> --}}
         
-        <table class="table table-bordered" id="myTable">
+        <table class="table table-bordered table-sm table-hover" id="myTable">
             <thead>
                 <th width="4%">No.</th>
                 <th>Name</th>

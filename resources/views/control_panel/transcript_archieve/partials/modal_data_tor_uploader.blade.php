@@ -7,10 +7,10 @@
                 @endif
                 {{ csrf_field() }}
                 <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                     <h4 class="modal-title">
                         Transcript of Record Archieve
                     </h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                 </div>
                 {{--  {{ base64_decode(\decrypt('eyJpdiI6IlZsdmtpenBLYjVqRTVPSW05cENlc3c9PSIsInZhbHVlIjoiaFwvODluVmsybEg0ZFU3K1lTdjBYM2dKODZXTEM3NktjYjk5OGh2am5ldTIyWWR6M3oxQlNJeDVvQTNJeVdFRjdlbHhFZlF2UEFLbUVLVTBieEpEbXVGNWpya3dOMVl5WTRWS0w2ZGx6eGNnPSIsIm1hYyI6IjNlMzBiMDQ1NjhlNTA2ZDUwZWMxNmI4OTYwNzkxZTVhYTgzNjgxMzg5OGIyZGM1MzIxMzIyYzFlOTZhYzVmMWUifQ==')) }}  --}}
                 <div class="modal-body">
@@ -37,13 +37,13 @@
                     <div class="form-group">
                         <label for="">Upload TOR</label>
                         <button type="button" class="btn btn-primary btn-block" id="btn-upload-tor">Upload TOR</button>
-                        <input type="file" class="hidden" name="tor" id="tor">
+                        <input type="file" class="d-none" name="tor" id="tor">
                         <div class="help-block" id="msg-tor"></div>
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-default btn-flat" data-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary btn-flat">Save</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Save</button>
                 </div>
             </form>
         </div><!-- /.modal-content -->

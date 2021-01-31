@@ -7,14 +7,20 @@
     Student List ({{$ClassDetail->section}} - {{$ClassDetail->grade_level}})
 @endsection
 
-@section ('content')      
+@section ('content')
+    <div class="float-right" style="margin-top: -3em">
+        <a class="btn btn-success" href="{{ route('finance.class_details') }}">
+            <i class="fas fa-arrow-left "></i> <span>Back</span>
+        </a>
+    </div>
         
-        @if($ClassDetail->grade_level == 11 || $ClassDetail->grade_level == 12)
-            
-            {{-- <h3>Enrolled Students</h3> --}}
-            <div class="box">
-                <div class="box-header with-border">
-                    <h2 class="box-title">Search</h3>
+        {{-- @if($ClassDetail->grade_level == 11 || $ClassDetail->grade_level == 12) --}}
+            <div class="card card-default">
+                <div class="overlay d-none" id="js-loader-overlay">
+                        <i class="fas fa-2x fa-sync-alt fa-spin"></i>
+                    </div>
+                <div class="card-header">
+                    <h6 class="box-title">Search</h6>
                     <form id="js-form_search_enrolled">
                         {{ csrf_field() }}
                         <div class="row">
@@ -33,25 +39,27 @@
                                 <input type="text" class="form-control" name="search_ln" placeholder="Last name">
                             </div>
                             <div class="col-sm-12 col-md-2">
-                                <button type="submit" class="btn btn-block  btn-flat btn-success">
+                                <button type="submit" class="btn btn-block  btn-success">
                                     <i class="fa fa-search"></i> Search
                                 </button>
                             </div>
                         </div>
                     </form>
                 </div>
-                <div class="overlay hidden" id="js-loader-overlay-enrolled"><i class="fa fa-refresh fa-spin"></i></div>
-                <div class="box-body">
-                    <div class="js-data-container-enrolled">                        
-                        @include('control_panel_finance.student_list.partials.data_list_enrolled')                        
+                <!-- /.card-header -->
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="js-data-container-enrolled">                        
+                                @include('control_panel_finance.student_list.partials.data_list_enrolled')                        
+                            </div>
+                        </div>
                     </div>
                 </div>
-                
             </div>
-        @else
-
+        {{-- @else --}}
             {{-- <h3>Enrolled Students</h3> --}}
-            <div class="box">
+            {{-- <div class="box">
                 <div class="box-header with-border">
                     <h2 class="box-title">Search</h3>
                     <form id="js-form_search_enrolled">
@@ -72,7 +80,7 @@
                                 <input type="text" class="form-control" name="search_ln" placeholder="Last name">
                             </div>
                             <div class="col-sm-12 col-md-2">
-                                <button type="submit" class="btn btn-block  btn-flat btn-success"><i class="fa fa-search"></i> Search</button>
+                                <button type="submit" class="btn btn-block  btn-success"><i class="fa fa-search"></i> Search</button>
                             </div>
                         </div>
                     </form>
@@ -84,8 +92,8 @@
                     </div>
                 </div>
                 
-            </div>
-        @endif
+            </div> --}}
+        {{-- @endif --}}
         
     
 @endsection
@@ -175,8 +183,8 @@
                 e.preventDefault();
                 var student_id = $(this).data('id');
                 alertify.defaults.transition = "slide";
-                alertify.defaults.theme.ok = "btn btn-primary btn-flat";
-                alertify.defaults.theme.cancel = "btn btn-danger btn-flat";
+                alertify.defaults.theme.ok = "btn btn-primary";
+                alertify.defaults.theme.cancel = "btn btn-danger";
                 alertify.confirm('Confirmation', 'Are you sure you want to enroll?', function(){  
                     $.ajax({
                         url         : "{{ route('registrar.student_enrollment.enroll_student', $id) }}",
@@ -216,8 +224,8 @@
                 var student_id = $(this).data('student_id');
                
                 alertify.defaults.transition = "slide";
-                alertify.defaults.theme.ok = "btn btn-primary btn-flat";
-                alertify.defaults.theme.cancel = "btn btn-danger btn-flat";
+                alertify.defaults.theme.ok = "btn btn-primary";
+                alertify.defaults.theme.cancel = "btn btn-danger";
                 alertify.confirm('Confirmation', 'Are you sure you want to cancel or remove this student on this section?', function(){  
                     $.ajax({
                         url         : "{{ route('registrar.student_enrollment.cancel_enroll_student', $id) }}",
@@ -327,8 +335,8 @@
                 e.preventDefault();
                 var id = $(this).data('id');
                 alertify.defaults.transition = "slide";
-                alertify.defaults.theme.ok = "btn btn-primary btn-flat";
-                alertify.defaults.theme.cancel = "btn btn-danger btn-flat";
+                alertify.defaults.theme.ok = "btn btn-primary";
+                alertify.defaults.theme.cancel = "btn btn-danger";
                 alertify.confirm('Confirmation', 'Are you sure you want to deactivate?', function(){  
                     $.ajax({
                         url         : "{{ route('registrar.class_details.deactivate_data', $id) }}",

@@ -8,37 +8,49 @@
 @endsection
 
 @section ('content')
-    <div class="box">
-        <div class="box-header with-border">
-            <h2 class="box-title">Search</h3>
-            <form id="js-form_search">
-                {{ csrf_field() }}                
-                <div class="form-group col-md-3 input-school_year" style="padding-right:0; padding-left: 0">
-                    <input type="text" class="form-control" name="search_student" placeholder="search">
-                </div>
-                <div class="help-block text-red text-left" id="js-search_student">
-                </div>
-                &nbsp;
-                <button type="submit" class="btn btn-flat btn-success">
-                    Search
-                </button>
-                <button type="button" class="btn btn-flat btn-primary btn_clear" style="display: none">
-                    <i class="fa fa-refresh"></i> Clear
-                </button>
-                <button type="button" class="btn btn-flat btn-success pull-right"  title="Print" id="js-btn_print">
-                    <i class="fa fa-file-pdf"></i> Print
-                </button>               
-            </form>
-        </div>
-        <div class="overlay hidden" id="js-loader-overlay">
-            <i class="fa fa-refresh fa-spin"></i>
-        </div>
-        <div class="box-body">
-            <div class="js-data-container">                        
-                @include('control_panel_registrar.student_enrolled.partials.data_list')                        
+    <div class="card card-default">
+        <div class="overlay d-none" id="js-loader-overlay">
+                <i class="fas fa-2x fa-sync-alt fa-spin"></i>
+            </div>
+        <div class="card-header">
+            <div class="col-md-8 m-auto">
+            <h6 class="box-title">Search:</h6>
+                <form id="js-form_search">
+                    {{ csrf_field() }}
+                    <div class="row">
+                        <div class="col-md-8">
+                            <div class="form-group input-school_year" style="padding-right:0; padding-left: 0">
+                                <input type="text" class="form-control" name="search_student" placeholder="search">
+                            </div>
+                            <div class="help-block text-red text-left" id="js-search_student"></div>
+                        </div>
+                        <div class="col-md-4">
+                            <button type="submit" class="btn  btn-success">
+                                Search
+                            </button>
+                            <button type="button" class="btn  btn-primary btn_clear" style="display: none">
+                                <i class="fa fa-refresh"></i> Clear
+                            </button>
+                        </div>
+                    </div>
+                </form>
             </div>
         </div>
-    </div>    
+        <!-- /.card-header -->
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-12">
+                    <button type="button" class="btn btn-success float-right mb-2"  title="Print" id="js-btn_print">
+                        <i class="fa fa-file-pdf"></i> Print
+                    </button>
+                    <div class="js-data-container">
+                        @include('control_panel_registrar.student_enrolled.partials.data_list')                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+ 
 @endsection
 
 @section ('scripts')
@@ -86,8 +98,8 @@
                 // alert((type === 'drop') ? 'undrop' : 'drop')
 
                 alertify.defaults.transition = "slide";
-                alertify.defaults.theme.ok = "btn btn-primary btn-flat";
-                alertify.defaults.theme.cancel = "btn btn-danger btn-flat";                
+                alertify.defaults.theme.ok = "btn btn-primary ";
+                alertify.defaults.theme.cancel = "btn btn-danger ";                
                 alertify.confirm('Confirmation', 'Are you sure you want to '+(type == 'drop' ? 'drop' : 'undrop')+' this student?', function(){ 
                     $.ajax({
                         url         : "{{ route('student_enrolled.drop', $id) }}",

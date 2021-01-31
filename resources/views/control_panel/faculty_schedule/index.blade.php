@@ -5,22 +5,40 @@
 @endsection
 
 @section ('content')
-    <div class="box">
-        <div class="box-header with-border">
-            <h3 class="box-title">Search</h3>
-            <form id="js-form_search">
-                {{ csrf_field() }}
-                <div id="js-form_search" class="form-group col-sm-12 col-md-3" style="padding-left:0;padding-right:0">
-                    <input type="text" class="form-control" name="search">
-                </div>
-                <button type="submit" class="btn btn-flat btn-success">Search</button>
-                <button type="button" class="pull-right btn btn-flat btn-danger" id="js-btn_report_all"><i class="fa fa-download"></i> Print</button>
-            </form>
+    <div class="card card-default">
+        <div class="overlay d-none" id="js-loader-overlay">
+                <i class="fas fa-2x fa-sync-alt fa-spin"></i>
+            </div>
+        <div class="card-header">
+            <div class="col-md-8 m-auto">
+                <h5 class="box-title">Search</h5>
+                <form id="js-form_search">
+                    {{ csrf_field() }}
+                    <div class="row">
+                        <div class="col-md-8">
+                             <div id="js-form_search" class="form-group" style="padding-left:0;padding-right:0">
+                                <input type="text" class="form-control" name="search">
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <button type="submit" class=" btn btn-success">Search</button>
+                            <button type="button" class=" btn btn-danger" id="js-btn_report_all"><i class="fa fa-download"></i> Print</button>
+                        </div>
+                    </div>
+                   
+                    
+                    
+                </form>
+            </div>
         </div>
-        <div class="overlay hidden" id="js-loader-overlay"><i class="fa fa-refresh fa-spin"></i></div>
-        <div class="box-body">
-            <div class="js-data-container">
-                @include('control_panel.faculty_schedule.partials.data_list')
+        <!-- /.card-header -->
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="js-data-container">
+                        @include('control_panel.faculty_schedule.partials.data_list')
+                    </div>
+                </div>
             </div>
         </div>
     </div>

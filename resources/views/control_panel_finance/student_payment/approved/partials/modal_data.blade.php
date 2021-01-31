@@ -3,10 +3,11 @@
         <div class="modal-content">
             <div class="box-body">
                 <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>                            
-                    <h4 style="margin-right: 5em;" class="modal-title">
+                    <h4 class="modal-title">
                         Student Payment Information
                     </h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>                            
+                    
                 </div>
             
                 <div class="modal-body">                    
@@ -45,15 +46,15 @@
                         </div>
                     </div>
                                         
-                    <div class="box">
-                        <div class="box-header ">
-                            <p class="box-title">
+                    <div class="card">
+                        <div class="card-header ">
+                            <p class="card-title">
                                 Date and Time: {{ $Monthly_history ? date_format(date_create($Monthly_history->created_at), 'F d, Y h:i A') : '' }}
                             </p>
                         </div>
                         
-                        <div class="box-body no-padding">
-                            <table class="table table-bordered table-hover table-striped">
+                        <div class="card-body no-padding">
+                            <table class="table table-bordered table-hover table-sm">
                                 <tbody>
                                     <tr>
                                         <th>Description</th>
@@ -175,7 +176,7 @@
                                 </tbody>
                             </table>
                         </div>
-                        <!-- /.box-body -->
+                        <!-- /.card-body -->
                     
 
                         <div class="lightbox-target" id="img_receipt">
@@ -200,11 +201,11 @@
                         @endif
                     </div>
                 </div>            
-                <div class="moda-footer">
+                <div class="modal-footer">
                     {{-- <span class="label {{ $Monthly_history->approval ? $Monthly_history->approval =='Approved' ? 'label-success' : 'label-danger' : 'label-danger'}}">
                         {{ $Monthly_history->approval ? $Monthly_history->approval =='Approved' ? 'Approved' : 'Not yet approved' : 'Not yet approved'}}
                     </span> --}}
-                    <button class="btn btn-flat btn-{{ $Monthly_history->approval ? $Monthly_history->approval =='Approved' ? 'danger btn-disapprove' : 'success btn-approve' : 'danger btn-disapprove'}} pull-right"
+                    <button class="btn btn-{{ $Monthly_history->approval ? $Monthly_history->approval =='Approved' ? 'danger btn-disapprove' : 'success btn-approve' : 'danger btn-disapprove'}} float-right"
                          data-id="{{$Monthly_history->id}}">
                         {{ $Monthly_history->approval ? $Monthly_history->approval =='Approved' ? 'Disapprove' : 'Approve' : 'Disapprove'}}
                     </button>

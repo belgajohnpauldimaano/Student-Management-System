@@ -9,7 +9,7 @@
             <th>Grade Level</th>
             <th>Section</th>
             <th>Status</th>
-            <th>Actions</th>
+            <th width="15%">Actions</th>
         </tr>
     </thead>
     <tbody>
@@ -22,30 +22,22 @@
                     <td>{{ $data->section->section }}</td>
                     <td>{{ $data->status == 0 ? 'Inactive' : 'Active' }}</td>
                     <td>
-                        <div class="input-group-btn pull-left text-left">
-                            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="true">Action
-                                <span class="fa fa-caret-down"></span>
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-danger">Action</button>
+                            <button type="button" class="btn btn-danger dropdown-toggle dropdown-icon" data-toggle="dropdown">
+                                <span class="sr-only">Toggle Dropdown</span>
                             </button>
-                            <ul class="dropdown-menu">
-                                <li>
-                                    <a href="{{ route('faculty.advisory_class.view') }}?c={{ encrypt($data->id) }}" 
-                                        class="js-btn_view" data-id="{{ encrypt($data->id) }}">
-                                        Student List
-                                    </a>
-                                </li>
-                                {{-- <li>
-                                    <a href="{{ route('faculty.my_advisory_class.index') }}?c={{ encrypt($data->id) }}" class="js-btn_gradesheet" data-id="{{ encrypt($data->id) }}">
-                                        Grade Sheet
-                                    </a>
-                                </li> --}}
-                                 <li>
-                                    <a href="{{ route('faculty.student_gradesheet.index') }}?c={{ encrypt($data->id) }}" 
-                                        class="js-btn_gradesheet1" data-id="{{ encrypt($data->id) }}">
-                                        Grade Sheet
-                                    </a>
-                                </li>
-                            </ul>
-                        </div>
+                            <div class="dropdown-menu">
+                                <a class="dropdown-item js-btn_view" href="{{ route('faculty.advisory_class.view') }}?c={{ encrypt($data->id) }}" 
+                                    data-id="{{ encrypt($data->id) }}">
+                                    Student List
+                                </a>
+                                <a class="dropdown-item js-btn_gradesheet1" href="{{ route('faculty.student_gradesheet.index') }}?c={{ encrypt($data->id) }}" 
+                                    data-id="{{ encrypt($data->id) }}">
+                                    Grade Sheet
+                                </a>
+                            </div>
+                        </div>                        
                     </td>
                 </tr>
             @endforeach

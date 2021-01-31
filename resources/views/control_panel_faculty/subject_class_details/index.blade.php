@@ -94,8 +94,8 @@
                 e.preventDefault();
                 var id = $(this).data('id');
                 alertify.defaults.transition = "slide";
-                alertify.defaults.theme.ok = "btn btn-primary btn-flat";
-                alertify.defaults.theme.cancel = "btn btn-danger btn-flat";
+                alertify.defaults.theme.ok = "btn btn-primary ";
+                alertify.defaults.theme.cancel = "btn btn-danger ";
                 alertify.confirm('Confirmation', 'Are you sure you want to deactivate?', function(){  
                     $.ajax({
                         url         : "{{ route('registrar.class_details.deactivate_data') }}",

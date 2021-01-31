@@ -24,77 +24,96 @@
 @endsection
 
 @section ('content')
-    <div class="box">
-        @if($GradeLevel->grade_level  == 11 ||  $GradeLevel->grade_level  == 12)                    
-            <div class="box-header with-border">                
-                <h3 class="box-title">Filter</h3>  
-
-                <form id="js-form_filter">
-                    {{ csrf_field() }}
-                    <div class="form-group col-sm-12 col-md-3" style="padding-left:0;padding-right:0">
-                        <select name="search_school_year" id="search_school_year" class="form-control">
-                            @foreach ($SchoolYear as $data)
-                                <option value="{{ encrypt($data->id) }}">{{ $data->school_year }}</option>
-                            @endforeach
-                        </select>
-                    </div> 
-                    <div class="form-group col-sm-12 col-md-4" style="padding-left:0;padding-right:0">
-                        <select name="semester_grades" id="semester_grades" class="form-control">                            
-                            <option value="">Select Semester</option>
-                            <option value="1st">First Semester</option>
-                            <option value="2nd">Second Semester</option>
-                            <option value="3rd">Average</option>                      
-                        </select>
-                    </div>                
-                    <div class="form-group col-sm-12 col-md-4" style="padding-left:0;padding-right:0">
-                        <select name="quarter" id="quarter" class="form-control">
-                            <option value="">Select Class Quarter</option>
-                        </select>
-                    </div>                
-                    <button type="submit" class="btn btn-flat btn-success">Search</button>
-                </form>
+    <div class="card card-default">
+        <div class="overlay d-none" id="js-loader-overlay">
+            <i class="fas fa-2x fa-sync-alt fa-spin"></i>
+        </div>
+        <div class="card-header">
+            @if($GradeLevel->grade_level  == 11 ||  $GradeLevel->grade_level  == 12)
+                <div class="col-8 m-auto">
+                    <h5 class="box-title">Filter</h5>
+                    <form id="js-form_filter">
+                        {{ csrf_field() }}
+                        <div class="row">
+                            <div class="col-md-3">
+                                <div class="form-group" style="padding-left:0;padding-right:0">
+                                    <select name="search_school_year" id="search_school_year" class="form-control">
+                                        @foreach ($SchoolYear as $data)
+                                            <option value="{{ encrypt($data->id) }}">{{ $data->school_year }}</option>
+                                        @endforeach
+                                    </select>
+                                </div> 
+                            </div>                            
+                            <div class="col-md-3">
+                                <div class="form-group" style="padding-left:0;padding-right:0">
+                                    <select name="semester_grades" id="semester_grades" class="form-control">                            
+                                        <option value="">Select Semester</option>
+                                        <option value="1st">First Semester</option>
+                                        <option value="2nd">Second Semester</option>
+                                        <option value="3rd">Average</option>                      
+                                    </select>
+                                </div>                
+                            </div>                            
+                            <div class="col-md-6">
+                                <div class="form-group" style="padding-left:0;padding-right:0">
+                                    <select name="quarter" id="quarter" class="form-control">
+                                        <option value="">Select Class Quarter</option>
+                                    </select>
+                                </div>         
+                            </div>
+                           <div class="col-md-12">
+                                <button type="submit" class="btn btn-success float-right">Search</button>
+                           </div>
+                        </div>    
+                    </form>
+                </div>
+            @else
+                <div class="col-8 m-auto">
+                    <h5 class="box-title">Filter</h5>
+                    <form id="js-form_search">                    
+                        {{ csrf_field() }}
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group" style="padding-left:0;padding-right:0">
+                                    <select name="search_sy" id="search_sy" class="form-control">
+                                        @foreach ($SchoolYear as $data)
+                                            <option value="{{ encrypt($data->id) }}">{{ $data->school_year }}</option>
+                                        @endforeach
+                                    </select>
+                                </div> 
+                            </div>
+                            <div class="col-md-8">
+                                <div class="form-group" style="padding-left:0;padding-right:0">
+                                    <select name="quarter_grades" id="quarter_grades" class="form-control">
+                                        <option value="">Select Class Quarter</option>       
+                                        <option value="1st">First Quarter</option>
+                                        <option value="2nd">Second Quarter</option>
+                                        <option value="3rd">Third Quarter</option>
+                                        <option value="4th">Fourth Quarter</option>
+                                        <option value="">-------------------------------AVERAGE--------------------------------</option>
+                                        <option value="1st-2nd">First - Second Quarter Average</option>
+                                        <option value="1st-3rd">First - Second - Third Quarter Average</option>
+                                        <option value="1st-4th">First - Second - Third - Fourth Quarter Average</option>       
+                                    </select>
+                                </div>              
+                            </div>
+                            <div class="col-md-12">
+                                <button type="submit" class="btn btn-success float-right">Search</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            @endif
+        </div>
+        <!-- /.card-header -->
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="js-data-container"></div>
+                </div>
             </div>
-            <div class="overlay hidden" id="js-loader-overlay"><i class="fa fa-refresh fa-spin"></i></div>
-        @else
-            <div class="box-header with-border">
-                <div class="row">
-                    <div class="form-group col-sm-12">
-                        <h3 class="box-title">Filter</h3>
-                    </div>
-                </div>                   
-                <form id="js-form_search">                    
-                    {{ csrf_field() }}
-                    <div class="form-group col-sm-12 col-md-3" style="padding-left:0;padding-right:0">
-                        <select name="search_sy" id="search_sy" class="form-control">
-                            @foreach ($SchoolYear as $data)
-                                <option value="{{ encrypt($data->id) }}">{{ $data->school_year }}</option>
-                            @endforeach
-                        </select>
-                    </div> 
-                    &nbsp;
-                    <div class="form-group col-sm-12 col-md-4" style="padding-left:0;padding-right:0">
-                        <select name="quarter_grades" id="quarter_grades" class="form-control">
-                            <option value="">Select Class Quarter</option>       
-                            <option value="1st">First Quarter</option>
-                            <option value="2nd">Second Quarter</option>
-                            <option value="3rd">Third Quarter</option>
-                            <option value="4th">Fourth Quarter</option>
-                            <option value="">-------------------------------AVERAGE--------------------------------</option>
-                            <option value="1st-2nd">First - Second Quarter Average</option>
-                            <option value="1st-3rd">First - Second - Third Quarter Average</option>
-                            <option value="1st-4th">First - Second - Third - Fourth Quarter Average</option>       
-                        </select>
-                    </div>                
-                    &nbsp;
-                    <button type="submit" class="btn btn-flat btn-success">Search</button>                    
-                </form>
-            </div>
-            <div class="overlay hidden" id="js-loader-overlay"><i class="fa fa-refresh fa-spin"></i></div>
-        @endif   
-        <div class="box-body">
-            <div class="js-data-container"></div>
-        </div>                                                 
-    </div>      
+        </div>
+    </div>
 @endsection
 
 @section ('scripts')

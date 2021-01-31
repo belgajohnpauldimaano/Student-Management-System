@@ -2,13 +2,12 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
                 <div class="modal-header">
-                    <button type="button" class="close close-btn" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                    
                     <h4 class="modal-title">
                         Edit Faculty
                     </h4>
+                    <button type="button" class="close close-btn" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
                 </div>
                 <div class="modal-body">
                     <form id="js-form_faculty" enctype="multipart/form-data">
@@ -28,12 +27,12 @@
                         </div>
 
                         <button id="submit_faculty_form" style="margin-bottom: 10px" type="submit" title="delete" 
-                            class="btn btn-primary btn-flat btn-sm pull-right">
+                            class="btn btn-primary btn-sm float-right">
                                 Submit
                         </button>
                     </form>
 
-                    <table id="faculty_table" class="table table-condensed table-bordered">
+                    <table id="faculty_table" class="table table-condensed table-sm table-hover table-bordered">
                         <thead>
                             <tr>    
                                 <th class="text-center">Faculty Name</th>
@@ -51,7 +50,7 @@
                                             data-id="{{ $item->faculty_id }}" 
                                             data-subject_class_id="{{ $classSubjectDetailsId }}"
                                             class="btn btn-danger btn-sm js-btn_delete">
-                                                <i class="fa fa-trash-o"></i>
+                                                <i class="fas fa-trash"></i>
                                         </button>
                                     </td>
                                 </tr>
@@ -62,7 +61,7 @@
                                         data-id="{{ $Adviser->faculty_id }}" 
                                         data-subject_class_id="{{ $classSubjectDetailsId }}" 
                                         class="btn js-btn_delete btn-danger btn-sm">
-                                            <i class="fa fa-trash-o"></i>
+                                            <i class="fas fa-trash"></i>
                                     </button>
                                 </td>
                             @endforelse                           
@@ -71,7 +70,7 @@
                     </table>    
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-default btn-flat close-btn" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-default close-btn" data-dismiss="modal">Close</button>
                 </div>
             
         </div><!-- /.modal-content -->

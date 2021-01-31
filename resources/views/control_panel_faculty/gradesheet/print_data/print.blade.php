@@ -119,7 +119,19 @@
     @if($category == 'junior') 
         <p class="p0 m0 student-info">Quarter : <b><i>{{ $quarter }}</i></b></p>
     @else
-        <p class="p0 m0 student-info">Semester &amp; Quarter : <b><i>{{ $sem }} | {{ $quarter }}</i></b></p>
+        <p class="p0 m0 student-info">
+            Semester &amp; Quarter : <b><i>{{ $sem }} | 
+                @if($class_detail->grade->id >10)
+                    @if($sem == 2)
+                        {{ $quarter == '3rd' ? '1st' : '2nd'}}
+                    @else
+                        {{ $quarter }}
+                    @endif
+                @else
+                    {{ $quarter }}
+                @endif
+            </i></b>
+        </p>
     @endif
     <br/>
 

@@ -1,15 +1,14 @@
-<div class="col-12">       
+<div class="">       
     <h3>Payment History</h3>
     
-    <div style="margin-bottom: 10px">
-        <a class="btn btn-sm btn-success  btn-flat js-btn_print_all_transaction" title="print"
-            data-id="{{ $Transaction->id }}">
+    <div class="mb-2 float-right" style="margin-top: -3em">
+        <a class="btn btn-sm btn-success js-btn_print_all_transaction" title="print" data-id="{{ $Transaction->id }}">
             <i class="fa fa-file-pdf"></i> Print all transaction
         </a>
     </div>
     
-    <div class="table-responsive">
-        <table class="table table-bordered table-hover">
+    <div class="table-responsive  table-sm">
+        <table class="table table-bordered table-hover table-sm">
             <thead class="thead-dark">
                 <tr>
                     <th style="width: 10%">Transaction ID</th>
@@ -31,7 +30,7 @@
                         <td>{{ number_format($item->payment, 2)}}</td>
                         <td>{{ number_format($item->balance, 2) }}</td>
                         <td>
-                            <span class="label label-{{ $item->approval == "Approved" ? 'success' : 'danger' }}">{{$item->approval}}</span>
+                            <span class="badge badge-{{ $item->approval == "Approved" ? 'success' : 'danger' }}">{{$item->approval}}</span>
                         </td>
                         <td>{{ date_format(date_create($item->created_at), 'F d, Y') }}</td>
                         <td>

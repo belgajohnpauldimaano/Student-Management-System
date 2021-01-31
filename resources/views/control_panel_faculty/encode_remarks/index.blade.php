@@ -1,41 +1,36 @@
 @extends('control_panel.layouts.master')
 
 @section ('content_title')
-    Student Remarks and Print Class Card
+    Print Class Card
 @endsection
 
 @section ('content')
-
-    <div class="box">
-        <div class="overlay hidden" id="js-loader-overlay"><i class="fa fa-refresh fa-spin"></i></div>
-        <div class="box-body">
-            <div class="js-data-container1">                                                        
+    <div class="card card-default">
+        <div class="overlay d-none" id="js-loader-overlay">
+            <i class="fas fa-2x fa-sync-alt fa-spin"></i>
+        </div>
+        <div class="card-header">
+            <h3 class="card-title">
+                @if(!$hasData == 0)
+                    Student List of <b>Grade {{ $ClassSubjectDetail->grade_level }} - {{ $ClassSubjectDetail->section }}</b>
+                @endif
+            </h3>
+        </div>
+        <!-- /.card-header -->
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="js-data-container1"></div>
+                    @if($hasData == 0)
+                        @include('errors.404')
+                    @else
+                        @include('control_panel_faculty.encode_remarks.partials.data_list')
+                    @endif
+                </div>
             </div>
         </div>
-        
-        <div class="overlay hidden" id="js-loader-overlay"><i class="fa fa-refresh fa-spin"></i></div>
-        <div class="box-body">
-            <div class="js-data-container">
-                @if($hasData == 0)
-                    <section class="content">
-                        <div class="">
-                            <div class="error-content">
-                                <h3><i class="fa fa-warning text-yellow"></i> No Data Found.</h3>
-                                <p>
-                                    We could not find the page you were looking for.
-                                    Meanwhile, you may <a href="https://sja-bataan.com/faculty/dashboard">return to dashboard</a>.
-                                </p>          
-                            </div>
-                        </div>
-                    </section>
-                @else
-                    @include('control_panel_faculty.encode_remarks.partials.data_list')
-                @endif
-                                           
-            </div>
-        </div>            
-    </div>                       
-                
+    </div>
+    
 @endsection
 
 @section ('scripts')

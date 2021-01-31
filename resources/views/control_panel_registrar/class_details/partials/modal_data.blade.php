@@ -7,37 +7,13 @@
                     <input type="hidden" name="id" value="{{ $ClassDetail->id }}">
                 @endif
                 <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                     <h4 class="modal-title">
                         {{ $ClassDetail ? 'Edit Class' : 'Add Class' }}
                     </h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                 </div>
                 <div class="modal-body">                    
                     
-                    <!-- {{--  <div class="form-group">
-                        <label for="">Faculty</label>
-                        <select name="faculty" id="faculty" class="form-control">
-                            <option value="">Select faculty</option>
-                            @foreach ($FacultyInformation as $faculty) 
-                                <option value="{{ $faculty->id }}">{{ $faculty->first_name . ' ' . $faculty->last_name }}</option>
-                            @endforeach
-                        </select>
-                        <div class="help-block text-red text-center" id="js-faculty">
-                        </div>
-                    </div>  --}}
-                    
-                    {{--  <div class="form-group">
-                        <label for="">Subject</label>
-                        <select name="subject" id="subject" class="form-control">
-                            <option value="">Select subject</option>
-                            @foreach ($SubjectDetail as $data) 
-                                <option value="{{ $data->id }}">{{ $data->subject_code . ' ' . $data->subject }}</option>
-                            @endforeach
-                        </select>
-                        <div class="help-block text-red text-center" id="js-subject">
-                        </div>
-                    </div>  --}} -->
-                       
                     <div class="form-group">
                         <label for="">Grade Level</label>
                         <select name="grade_level" id="grade_level" class="form-control">

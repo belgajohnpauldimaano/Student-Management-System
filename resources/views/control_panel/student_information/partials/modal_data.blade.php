@@ -1,33 +1,34 @@
 <div class="modal fade" tabindex="-1" role="dialog">
-    <div class="modal-dialog" role="document">
+    <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="box-body">
                 <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                    
                     <h4 style="margin-right: 5em;" class="modal-title">
                         {{ $StudentInformation ? 'Edit Student Information' : 'Add Student Information' }}
                     </h4>
-
-                    <div style="margin-top: 3em; margin-bottom: 3em" class="col-md-10 col-md-offset-1">
-                        <center>
-                            @if ($Profile)
-                                <img class="profile-user-img img-responsive img-circle" id="img--user_photo" src="{{ $Profile->photo ? \File::exists(public_path('/img/account/photo/'.$Profile->photo)) ? asset('/img/account/photo/'.$Profile->photo) : asset('/img/account/photo/blank-user.gif') : asset('/img/account/photo/blank-user.gif') }}" style="width:150px; height:150px;  border-radius:50%;">
-                            @else
-                                <img class="profile-user-img img-responsive img-circle" id="img--user_photo" src="{{  asset('/img/account/photo/blank-user.png') }}" style="width:150px; height:150px;  border-radius:50%;">
-                            @endif    
-                            <h2>{{ $Profile ? $Profile->first_name : 'User' }}'s Profile</h2>
-                            <div class="box-body">
-                                <button type="button" class="btn btn-flat btn-success btn--update-photo" title="Change photo">
-                                    browse
-                                </button>
-                        </center>
-                                <form class="hidden" id="form_user_photo_uploader">
-                                    <input type="file" id="user--photo" name="user_photo">
-                                    <input type="hidden" name="id" value="{{ $StudentInformation ? $StudentInformation->id : '' }}">
-                                    <button type="submit">fsdfasd</button>
-                                </form>
-                            </div>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="card">
+                    <div style="margin-top: 3em; margin-bottom: 3em" class="text-center">                        
+                        @if ($Profile)
+                            <img class="profile-user-img img-responsive img-circle" id="img--user_photo" src="{{ $Profile->photo ? \File::exists(public_path('/img/account/photo/'.$Profile->photo)) ? asset('/img/account/photo/'.$Profile->photo) : asset('/img/account/photo/blank-user.gif') : asset('/img/account/photo/blank-user.gif') }}" style="width:150px; height:150px;  border-radius:50%;">
+                        @else
+                            <img class="profile-user-img img-responsive img-circle" id="img--user_photo" src="{{  asset('/img/account/photo/blank-user.png') }}" style="width:150px; height:150px;  border-radius:50%;">
+                        @endif    
+                        <h2>{{ $Profile ? $Profile->first_name : 'User' }}'s Profile</h2>
+                        <div class="box-body">
+                            <button type="button" class="btn btn-success btn--update-photo" title="Change photo">
+                                browse
+                            </button>
+                    
+                            <form class="d-none" id="form_user_photo_uploader">
+                                <input type="file" id="user--photo" name="user_photo">
+                                <input type="d-none" name="id" value="{{ $StudentInformation ? $StudentInformation->id : '' }}">
+                                <button type="submit">fsdfasd</button>
+                            </form>
+                        </div>
                     </div>
                 </div>
 
@@ -91,8 +92,10 @@
                             <label for="">Date of Birth <small class="text-red">Optional</small></label>
                             {{--  <input type="text" class="form-control" name="birthdate" value="{{ $StudentInformation ? $StudentInformation->birthdate : '' }}">  --}}
                             <div class="input-group date">
-                                <div class="input-group-addon">
-                                    <i class="fa fa-calendar"></i>
+                                <div class="input-group-prepend">
+                                <span class="input-group-text">
+                                    <i class="far fa-calendar-alt"></i>
+                                </span>
                                 </div>
                                 <input type="text" name="birthdate" class="form-control pull-right" id="datepicker"
                                 value="{{ $StudentInformation ? date_format(date_create($StudentInformation->birthdate), 'F d, Y') : '' }}">
@@ -125,8 +128,8 @@
                         
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-default btn-flat" data-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-primary btn-flat">Save</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Save</button>
                     </div>
                 </form>
         </div><!-- /.modal-content -->

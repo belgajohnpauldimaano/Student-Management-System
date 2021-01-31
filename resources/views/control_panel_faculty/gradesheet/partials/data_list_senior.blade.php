@@ -1,6 +1,6 @@
-<div class="table-responsive">
-    <table class="table table-condensed table-bordered table-hover">
-        <thead style="position: sticky;top: 0" class="thead-dark"> 
+<div class="table-responsive table-responsive-sm">
+    <table class="table table-sm table-bordered table-hover">
+        <thead style="position: sticky;top: 0"> 
             @if($quarter == '1st' && $sem == '1st' || $quarter == '3rd' && $sem == '2nd')
             <tr>
                 <th>#</th>
@@ -80,7 +80,7 @@
                     No Data Found
                 </th>
             @else
-                <tr>
+                <tr class="bg-danger">
                     <td colspan="
                         @if($AdvisorySubject->where('sem',2)->count()=='')
                             @if($quarter == '2nd' && $sem == '1st' || $quarter == '4th' && $sem == '2nd')
@@ -418,7 +418,7 @@
                     </tr>
                 @endforeach
                 
-                <tr>
+                <tr class="bg-yellow">
                     <td colspan="
                         @if($AdvisorySubject->where('sem',2)->count()=='')
                             @if($quarter == '2nd' && $sem == '1st' || $quarter == '4th' && $sem == '2nd')

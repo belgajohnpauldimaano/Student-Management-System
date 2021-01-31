@@ -4,7 +4,7 @@
         <p style="margin-top: -5px">{{ $StudentInformation ? $StudentInformation->user->username : '' }}</p> 
 
         <label for="">Name: </label>    
-        <p style="margin-top: -5px">{{ $StudentInformation ? $StudentInformation->last_name : '' }}, {{ $StudentInformation ? $StudentInformation->first_name : '' }} {{ $StudentInformation ? $StudentInformation->middle_name : '' }}</p>                    
+        <p style="margin-top: -5px">{{ $StudentInformation ? $StudentInformation->full_name : '' }}</p>
         
         <label for="">Gender: </label>
         <p style="margin-top: -5px">{{ $StudentInformation ? $StudentInformation->gender == 1 ? 'Male' : 'Female' : ''}}</p>
@@ -41,16 +41,16 @@
         <p style="margin-top: -5px">            
             @if($StudentInformation->finance_transaction)
                 @if($StudentInformation->finance_transaction->school_year_id == $School_year_id)
-                    <span class="label {{ $StudentInformation->finance_transaction->status == 0 ? 'label-success' : 'label-danger' }}">
+                    <span class="badge {{ $StudentInformation->finance_transaction->status == 0 ? 'badge-success' : 'badge-danger' }}">
                         {{ $StudentInformation->finance_transaction->status == 0 ? 'Paid' : 'Not-Paid' }}
                     </span>
                 @else
-                    <span class="label label-danger">
+                    <span class="badge badge-danger">
                         Not-Paid
                     </span>
                 @endif
             @else
-                <span class="label label-danger">
+                <span class="badge badge-danger">
                     Not-Paid
                 </span>
             @endif            

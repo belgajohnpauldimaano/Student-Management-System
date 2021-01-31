@@ -1,4 +1,4 @@
-<table class="table no-margin table-hover">
+<table class="table table-sm no-margin table-hover">
     <thead>
         <tr>
             <th>#</th>
@@ -9,8 +9,8 @@
         </tr>
     </thead>
     <tbody>
-        <tr>
-            <td colspan="3"><b>Male</b></td>
+        <tr class="bg-red">
+            <td colspan="5"><b>Male</b></td>
         </tr>
         @if ($EnrollmentMale)
             @foreach ($EnrollmentMale as $key => $data)
@@ -56,9 +56,8 @@
                     </td>
                 </tr>
             @endforeach
-          
-            <tr>
-                <td colspan="3"><b>Female</b></td>
+            <tr class="bg-yellow">
+                <td colspan="5"><b>Female</b></td>
             </tr>
             @foreach ($EnrollmentFemale as $key => $data)
                 <tr>

@@ -1,7 +1,7 @@
-                        <div class="pull-right">
+                        <div class="float-right">
                             {{ $RegistrarInformation ? $RegistrarInformation->links() : '' }}
                         </div>
-                        <table class="table no-margin">
+                        <table class="table table-sm table-hover no-margin">
                             <thead>
                                 <tr>
                                     <th>Name</th>
@@ -18,24 +18,28 @@
                                             <td>{{ $data->user->username }}</td>
                                             {{--  <td> {{ \App\RegistrarInformation::DEPARTMENTS[$data->department_id]['department_name'] }} {{ $data->department_id }}</td>  --}}
                                             {{--  <td>{{ $data->current == 1 ? 'Yes' : 'No' }}</td>  --}}
-                                            <td>{{ $data->status == 1 ? 'Active' : 'Inactive' }}</td>
                                             <td>
-                                                <div class="input-group-btn pull-left text-left">
-                                                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="true">Action
-                                                        <span class="fa fa-caret-down"></span></button>
-                                                    <ul class="dropdown-menu">
-                                                        <li><a href="#" class="js-btn_update_sy" data-id="{{ $data->id }}">Edit</a></li>
+                                                <span class="badge badge-{{ $data->status == 1 ? 'success' : 'danger' }}">
+                                                    {{ $data->status == 1 ? 'Active' : 'Inactive' }}
+                                                </span>
+                                            </td>
+                                            <td>
+                                                <div class="btn-group">
+                                                    <button type="button" class="btn btn-danger">Action</button>
+                                                    <button type="button" class="btn btn-danger dropdown-toggle dropdown-icon" data-toggle="dropdown">
+                                                        <span class="sr-only">Toggle Dropdown</span>
+                                                    </button>
+                                                    <div class="dropdown-menu">
+                                                        <a href="#" class="dropdown-item js-btn_update_sy" data-id="{{ $data->id }}">Edit</a>
                                                         @if($isAdmin->role == 1)
-                                                        <li>
-                                                            <a href="#" class="js-btn_reset_pw" data-id="{{ $data->id }}" data-type="registrar">
+                                                        <a href="#" class="dropdown-item js-btn_reset_pw" data-id="{{ $data->id }}" data-type="registrar">
                                                                 Reset Password
                                                             </a>
-                                                        </li>
-                                                        <li>
-                                                            <a href="#" class="js-btn_deactivate" data-id="{{ $data->id }}">Deactivate</a>
-                                                        </li>
+                                                        <a href="#" class="dropdown-item js-btn_deactivate" data-id="{{ $data->id }}">
+                                                            Deactivate
+                                                        </a>
                                                         @endif
-                                                    </ul>>
+                                                    </div>
                                                 </div>
                                             </td>
                                         </tr>

@@ -1,10 +1,10 @@
 <div class="table-responsive">
-    <div class="pull-right">
-        <div class="pull-right">
+    <div class="float-right">
+        <div class="float-right">
             {{ $OnlineAppointment ? $OnlineAppointment->links() : '' }}
         </div>          
     </div>
-    <table class="table no-margin">
+    <table class="table table-sm table-hover no-margin">
         <thead>
             <tr>
                 <th width="15%">Date and Time</th>
@@ -18,7 +18,7 @@
         </thead>
         <tbody> 
             @if ($OnlineAppointment)
-                @foreach ($OnlineAppointment as $data)
+                @forelse ($OnlineAppointment as $data)
                     <tr>
                         <td>{{ $data ? date_format(date_create($data->date), 'F d, Y h:i A') : '' }}</td>
                         {{-- <td>{{ $data->time}}</td> --}}
@@ -38,7 +38,11 @@
                             </div>
                         </td>
                     </tr>
-                @endforeach
+                @empty
+                    <tr>
+                        <th class="text-center" colspan="5">No Data Available</th>
+                    </tr>
+                @endforelse
             @endif
         </tbody>
     </table>

@@ -128,46 +128,57 @@ class UserProfileController extends Controller
     {
         $User = Auth::user();
         $Profile = FacultyInformation::where('user_id', $User->id)->first();
-        $FacultyEducation = FacultyEducation::where('faculty_id', $Profile->id)->get();
+        
+        try {
+            $FacultyEducation = FacultyEducation::where('faculty_id', $Profile->id)->get();
 
-        $data = '
-        ';
-
-        if ($FacultyEducation) 
-        {
-            foreach ($FacultyEducation as $educ) 
+            $data = '';
+            if (!$FacultyEducation->isEmpty()) 
             {
-                
-                $data .= '
+                foreach ($FacultyEducation as $educ) 
+                {
+                    $data .= '
+                        <tr>
+                            <td>'. $educ->course .'</td>
+                            <td>'. $educ->school .'</td>
+                            <td>'. $educ->from . ' / ' . $educ->to  .'</td>
+                            <td>'. $educ->awards .'</td>
+                            <td>
+                                <div class="btn-group">
+                                    <button type="button" class="btn btn-danger">Action</button>
+                                    <button type="button" class="btn btn-danger dropdown-toggle dropdown-icon" data-toggle="dropdown">
+                                        <span class="sr-only">Toggle Dropdown</span>
+                                    </button>
+                                    <ul class="dropdown-menu">
+                                        <a href="#" class="dropdown-item js-btn_educ_edit" data-id="'. $educ->id .'">Edit</a>
+                                        <a href="#" class="dropdown-item js-btn_educ_delete" data-id="'. $educ->id .'">Delete</a>
+                                    </ul>
+                                </div>
+                            </td>
+                        </tr>
+                    ';
+                }
+            } 
+            else 
+            {
+                $data = '
+                    <tr>
+                        <th class="text-center" colspan="5">No record found</th>
+                    </tr>
+                ';
+            }
+
+            return $data;
+        } catch (\Throwable $th) {
+            $data = '
                 <tr>
-                    <td>'. $educ->course .'</td>
-                    <td>'. $educ->school .'</td>
-                    <td>'. $educ->from . ' / ' . $educ->to  .'</td>
-                    <td>'. $educ->awards .'</td>
-                    <td>
-                        
-                        <div class="input-group-btn pull-left text-left">
-                        <button type="button" class="btn btn-xs btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="true">Action
-                            <span class="fa fa-caret-down"></span></button>
-                            <ul class="dropdown-menu">
-                                <li><a href="#" class="js-btn_educ_edit" data-id="'. $educ->id .'">Edit</a></li>
-                                <li><a href="#" class="js-btn_educ_delete" data-id="'. $educ->id .'">Delete</a></li>
-                            </ul>
-                        </div>
-                    </td>
+                    <th class="text-center" colspan="5">No record found</th>
                 </tr>
             ';
-            }
-        } 
-        else 
-        {
-            $data = '
-            <tr>
-                <td colspan="4">No record found</td>
-            </tr>
-            ';
+
+            return $data;
         }
-        return $data;
+        
     }
     public function educational_attainment_save (Request $request) 
     {
@@ -234,53 +245,64 @@ class UserProfileController extends Controller
         $Profile = FacultyInformation::where('user_id', $User->id)->first();
         $FacultySeminar = FacultySeminar::where('faculty_id', $Profile->id)->get();
 
-        $seminars_trainings = '';
-        if ($FacultySeminar)
-        {
-            foreach ($FacultySeminar as $data) 
+        try {
+            //code...
+            $seminars_trainings = '';
+            if (!$FacultySeminar->isEmpty())
             {
-                $type = '';
-                if ($data->type == 1)
+                foreach ($FacultySeminar as $data) 
                 {
-                    $type = 'Local';
+                    $type = '';
+                    if ($data->type == 1)
+                    {
+                        $type = 'Local';
+                    }
+                    else if ($data->type == 2)
+                    {
+                        $type = 'National';
+                    }
+                    else if ($data->type == 3)
+                    {
+                        $type = 'International';
+                    }
+                    $seminars_trainings .= '
+                        <tr>
+                            <td>'. $data->title .'</td>
+                            <td>'. $data->date_from . ' / ' . $data->date_to  .'</td>
+                            <td>'. $data->venue .'</td>
+                            <td>'. $data->sponsor .'</td>
+                            <td>'. $data->facilitator .'</td>
+                            <td>' . $type .'</td>
+                            <td>
+                                <div class="btn-group">
+                                    <button type="button" class="btn btn-danger">Action</button>
+                                    <button type="button" class="btn btn-danger dropdown-toggle dropdown-icon" data-toggle="dropdown">
+                                        <span class="sr-only">Toggle Dropdown</span>
+                                    </button>
+                                    <ul class="dropdown-menu">
+                                        <a href="#" class="dropdown-item btn-trainings_seminars" data-id="'. $data->id .'">Edit</a>
+                                        <a href="#" class="dropdown-item btn-seminar_delete" data-id="'. base64_encode($data->id) .'">Delete</a>
+                                    </ul>
+                                </div>
+                            </td>
+                        </tr>
+                    ';
                 }
-                else if ($data->type == 2)
-                {
-                    $type = 'National';
-                }
-                else if ($data->type == 3)
-                {
-                    $type = 'International';
-                }
-                $seminars_trainings .= '
-                    <tr>
-                        <td>'. $data->title .'</td>
-                        <td>'. $data->date_from . ' / ' . $data->date_to  .'</td>
-                        <td>'. $data->venue .'</td>
-                        <td>'. $data->sponsor .'</td>
-                        <td>'. $data->facilitator .'</td>
-                        <td>' . $type .'</td>
-                        <td>
-                            <div class="input-group-btn pull-left text-left">
-                                <button type="button" class="btn btn-xs btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="true">Action
-                                <span class="fa fa-caret-down"></span></button>
-                                <ul class="dropdown-menu">
-                                    <li><a href="#" class="btn-trainings_seminars" data-id="'. $data->id .'">Edit</a></li>
-                                    <li><a href="#" class="btn-seminar_delete" data-id="'. base64_encode($data->id) .'">Delete</a></li>
-                                </ul>
-                            </div>
-                        </td>
-                    </tr>
-                ';
+                
+                return $seminars_trainings;
             }
-            
-            return $seminars_trainings;
-        }
-        else 
-        {
+            else 
+            {
+                $seminars_trainings = '
+                <tr>
+                    <th class="text-center" colspan="7">No record found</th>
+                </tr>';
+                return $seminars_trainings;
+            }
+        } catch (\Throwable $th) {
             $seminars_trainings = '
             <tr>
-                <td colspan="7">no record found</td>
+                <th class="text-center" colspan="7">No record found</th>
             </tr>';
             return $seminars_trainings;
         }

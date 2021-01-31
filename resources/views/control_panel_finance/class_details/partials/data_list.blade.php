@@ -1,8 +1,8 @@
 <div class="table-responsive table-hover">  
-    <div class="pull-right">
+    <div class="float-right">
         {{ $ClassDetail ? $ClassDetail->links() : '' }}
     </div>
-    <table class="table no-margin table-hover">
+    <table class="table no-margin table-sm table-hover">
         <thead>
             <tr>
                 <th>School Year</th>
@@ -29,7 +29,7 @@
                             </span>
                         </td>
                         <td>
-                            <a class="btn btn-flat btn-primary" 
+                            <a class="btn btn-primary" 
                                 href="{{ route('finance.student_list', encrypt($data->id)) }}?school_year={{ encrypt($data->schoolyearid) }}" 
                             >
                                 <i class="fas fa-eye"></i> View List

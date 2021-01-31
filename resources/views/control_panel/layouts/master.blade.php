@@ -9,7 +9,7 @@
           <li class="nav-item">
             <a class="nav-link" data-widget="pushmenu"
             href="#" role="button">
-              <i class="fas fa-bars"></i></a>
+              <i class="fas fa-bars text-lg"></i></a>
           </li>
           <li class="nav-item d-none d-sm-inline-block">
             {{-- <a href="#" class="nav-link">School Year: {{ $SchoolYear->school_year }}</a> --}}
@@ -23,32 +23,34 @@
           <li class="nav-item">
             <a class="nav-link" data-widget="fullscreen"
             href="#" role="button">            
-              <i class="fas fa-expand-arrows-alt"></i>
+              <i class="fas fa-expand-arrows-alt text-lg"></i>
             </a>
           </li>
-          <li class="nav-item dropdown">
+          <li class="nav-item dropdown user user-menu">
             <a class="nav-link" data-toggle="dropdown"
             href="#">
-              <img style="width: 30px; margin-top: -5px;"
+              <img style="width: 30px ;margin-top: -8px;"
                 src="{{ \Auth::user()->get_user_data()->photo ? 
                   \File::exists(public_path('/img/account/photo/'. 
                   \Auth::user()->get_user_data()->photo)) ? asset('/img/account/photo/'. 
                   \Auth::user()->get_user_data()->photo) : asset('/img/account/photo/blank-user.gif') : 
-                  asset('/img/account/photo/blank-user.gif') }}" class="img-circle elevation-2" alt="User Image"
+                  asset('/img/account/photo/blank-user.gif') }}" class="user-image elevation-2" alt="User Image"
               >
+              <span class="hidden-xs">{{ \Auth::user()->get_user_data()->full_name }}</span>
             </a>
             <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
               <a href="#" class="dropdown-item">
                   <!-- Message Start -->
                   <div class="text-center">
-                    <img width="70" src="{{ \Auth::user()->get_user_data()->photo ? 
+                    <img style="width: 100px; margin-top: -5px;" src="{{ \Auth::user()->get_user_data()->photo ? 
                     \File::exists(public_path('/img/account/photo/'. 
                     \Auth::user()->get_user_data()->photo)) ? asset('/img/account/photo/'. 
                     \Auth::user()->get_user_data()->photo) : asset('/img/account/photo/blank-user.gif') : 
-                    asset('/img/account/photo/blank-user.gif') }}" class="img-circle elevation-2" alt="User Image"
+                    asset('/img/account/photo/blank-user.gif') }}" class="profile-user-img img-responsive img-circle elevation-2" alt="User Image"
                     >
                     <br/>
                     <p>
+                      {{ \Auth::user()->get_user_data()->full_name }}<br/>
                       <small>{{ \Auth::user()->get_user_role_display() }}</small>
                     </p>
                   </div>
@@ -75,7 +77,7 @@
                   <a href="{{ route('logout') }}"
                     onclick="event.preventDefault();
                               document.getElementById('logout-form').submit();"
-                    class="btn btn-primary btn-block">
+                    class="btn btn-danger btn-block">
                     Logout
                   </a>
                   <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
@@ -375,7 +377,7 @@
               <li class="nav-item">
                 <a class="nav-link {{request()->routeIs('faculty.dashboard') ? 'active' : '' }}"
                    href="{{ route('faculty.dashboard') }}">
-                  <i class="fa fa-home fa-fw fa-lg"></i> Dashboard
+                  <i class="fa fa-home fa-lg"></i> <p>Dashboard</p>
                 </a>
               </li>
               <li class="nav-item">
@@ -395,8 +397,6 @@
                   <i class="far fa-edit fa-lg"></i> <p>Encode Student Grades</p>
                 </a>
               </li>
-              
-              
               {{-- <li class="nav-item"><a href="{{ route('faculty.DataStudent') }}">
                   <i class="far fa-circle nav-icon fa-1x"></i> <p>Make Data for GradeSheet</p>
                 </a>
@@ -451,32 +451,31 @@
               <li class="nav-item">
                 <a class="nav-link {{request()->routeIs('admission.dashboard') ? 'active' : '' }}"
                    href="{{ route('admission.dashboard') }}">
-                  <i class="fa fa-home fa-fw fa-lg"></i> Dashboard
+                  <i class="fa fa-home fa-fw fa-lg"></i> <p>Dashboard</p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="#" class="nav-link
-                  {{
-                    request()->routeIs('admission.incoming_student') ? 'active menu-open' : '' || 
-                    request()->routeIs('admission.Approved') ? 'active menu-open' : '' || 
-                    request()->routeIs('admission.Disapproved') ? 'active menu-open' : ''
-                  }}
-                ">
-                  <i class="fas fa-users fa-lg"></i>
-                    <p>Incoming Student</p>
-                  <i class="fas fa-angle-left right"></i>
-                  <span class="{{$IncomingStudentCount == 0 ? '' : 'badge badge-info'}} right">{{$IncomingStudentCount == 0 ? '' : $IncomingStudentCount}}</span>
-                  {{-- <span class="nav-link {{$IncomingStudentCount == 0 ? '' : 'label label-danger'}} pull-right">
-                    {{$IncomingStudentCount == 0 ? '' : $IncomingStudentCount}}
-                  </span> --}}
-                </a>
-                <ul class="nav nav-treeview 
-                  {{
-                    request()->routeIs('admission.incoming_student') ? 'd-block' : '' || 
-                    request()->routeIs('admission.Approved') ? 'd-block' : '' || 
-                    request()->routeIs('admission.Disapproved') ? 'd-block' : ''
-                  }}
-                ">
+                  <a href="#" class="nav-link
+                    {{
+                      request()->routeIs('admission.incoming_student') ? 'active menu-open' : '' || 
+                      request()->routeIs('admission.Approved') ? 'active menu-open' : '' || 
+                      request()->routeIs('admission.Disapproved') ? 'active menu-open' : ''
+                    }}
+                  ">
+                    <i class="fas fa-users fa-lg"></i>
+                      <span class="{{$IncomingStudentCount == 0 ? '' : 'badge badge-info'}} right">
+                        {{$IncomingStudentCount == 0 ? '' : $IncomingStudentCount}}
+                      </span>
+                      <p>Incoming Student</p>
+                    <i class="fas fa-angle-left right"></i>
+                  </a>
+                  <ul class="nav nav-treeview 
+                    {{
+                      request()->routeIs('admission.incoming_student') ? 'd-block' : '' || 
+                      request()->routeIs('admission.Approved') ? 'd-block' : '' || 
+                      request()->routeIs('admission.Disapproved') ? 'd-block' : ''
+                    }}
+                  ">
                     {{--  Admin Menu  --}}
                     <li class="nav-item">
                       <a class="nav-link {{request()->routeIs('admission.incoming_student') ? 'active' : '' }}"
@@ -514,7 +513,7 @@
               <li class="nav-item">
                   <a href="#" class="nav-link
                     {{
-                      request()->routeIs('admin.student.information') ? 'active menu-open' : '' ||
+                      request()->routeIs('admin.maintenance.classrooms') ? 'active menu-open' : '' ||
                       request()->routeIs('admin.maintenance.date_remarks_for_class_card') ? 'active menu-open' : '' ||
                       request()->routeIs('admin.maintenance.registration_button') ? 'active menu-open' : '' ||
                       request()->routeIs('admin.maintenance.school_year') ? 'active menu-open' : '' ||
@@ -532,7 +531,7 @@
                   </a>
                   <ul class="nav nav-treeview 
                     {{
-                        request()->routeIs('admin.student.information') ? 'd-block' : '' ||
+                        request()->routeIs('admin.maintenance.classrooms') ? 'd-block' : '' ||
                         request()->routeIs('admin.maintenance.date_remarks_for_class_card') ? 'd-block' : '' ||
                         request()->routeIs('admin.maintenance.registration_button') ? 'd-block' : '' ||
                         request()->routeIs('admin.maintenance.school_year') ? 'd-block' : '' ||
@@ -546,8 +545,8 @@
                   ">
                       {{--  Admin Menu  --}}
                       <li class="nav-item">
-                        <a class="nav-link {{request()->routeIs('admin.student.information') ? 'active' : '' }}"
-                           href="{{ route('admin.student.information') }}">
+                        <a class="nav-link {{request()->routeIs('admin.maintenance.classrooms') ? 'active' : '' }}"
+                           href="{{ route('admin.maintenance.classrooms') }}">
                           <i class="far fa-circle nav-icon fa-1x"></i> <p>Class Rooms</p>
                         </a>
                       </li>
@@ -700,6 +699,12 @@
                   <i class="far fa-calendar-check fa-lg"></i> <p>Online Appointment</p>
                 </a>
               </li>
+              <li class="nav-item">
+                <a class="nav-link {{request()->routeIs('finance.payroll') ? 'active' : '' }}"
+                   href="{{ route('finance.payroll') }}">
+                  <i class="fas fa-file-invoice fa-lg"></i> <p>Faculty Payroll</p>
+                </a>
+              </li>
 
               {{-- <li class="nav-item"><a href="{{ route('registrar.class_details') }}">
                   <i class="fa fa-list-alt fa-lg "></i> <p>Report</p>
@@ -827,7 +832,7 @@
     <div class="content-header">
       <div class="container-fluid">
         <div class="row mb-2">
-          <div class="col-sm-6">
+          <div class="col-sm-12">
             <h1 class="m-0">
               @yield('content_title')
             </h1>

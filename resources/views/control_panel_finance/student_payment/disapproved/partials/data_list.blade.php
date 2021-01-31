@@ -1,9 +1,9 @@
                                                 
 <div class="table-responsive">                  
-    <div class="pull-right">
+    <div class="float-right">
         {{ $Disapproved ? $Disapproved->links() : '' }}
     </div>
-    <table class="table no-margin table-bordered table-striped">
+    <table class="table no-margin table-bordered table-hover table-sm">
         <thead>
             <tr>
                 <th>No.</th>
@@ -62,7 +62,7 @@
                     @endphp
                     <td>{{number_format($incoming_bal,2)}}</td>
                     <td>
-                        <span class="label label-danger">
+                        <span class="badge badge-danger">
                             Disapproved
                         </span>
                     </td>

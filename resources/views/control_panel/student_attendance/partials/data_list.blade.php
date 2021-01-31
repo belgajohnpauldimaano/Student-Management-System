@@ -1,7 +1,7 @@
-                        <div class="pull-right">
+                        <div class="float-right">
                             {{ $attendance ? $attendance->links() : '' }}
                         </div>
-                        <table class="table no-margin table-hover">
+                        <table class="table table-sm no-margin table-hover">
                             <thead>
                                 <tr>
                                     <th>School Year</th>
@@ -55,22 +55,22 @@
                                             </span>
                                         </td>                                                                                
                                         <td width="15%">
-                                            <div class="input-group-btn pull-left text-left">
-                                                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="true">Action
-                                                    <span class="fa fa-caret-down"></span></button>
-                                                    <ul class="dropdown-menu">
-                                                        <li>
-                                                            <a href="#" class="js-btn_apply" 
-                                                                data-id="{{ $item['id'] }}"
-                                                                data-sy="{{ $item['school_year_id'] }}"
-                                                                data-school_year="{{ $item['school_year'] }}"
-                                                                data-toggle_title="{{ ( $item['is_applied'] == '1' ? 'Not Apply' : 'Apply' ) }}">
-                                                                {{ ( $item['is_applied'] == '1' ? 'Not Apply' : 'Apply' ) }}
-                                                            </a>
-                                                        </li>
-                                                        <li><a href="#" class="js-btn_update_sy" data-id="{{ $item['id'] }}">Edit</a></li>
-                                                        <li><a href="#" class="js-btn_deactivate" data-id="{{ $item['id'] }}">Deactivate</a></li>
-                                                    </ul>
+                                            <div class="btn-group">
+                                                <button type="button" class="btn btn-danger">Action</button>
+                                                <button type="button" class="btn btn-danger dropdown-toggle dropdown-icon" data-toggle="dropdown">
+                                                    <span class="sr-only">Toggle Dropdown</span>
+                                                </button>
+                                                <div class="dropdown-menu">
+                                                    <a href="#" class="js-btn_apply dropdown-item" 
+                                                        data-id="{{ $item['id'] }}"
+                                                        data-sy="{{ $item['school_year_id'] }}"
+                                                        data-school_year="{{ $item['school_year'] }}"
+                                                        data-toggle_title="{{ ( $item['is_applied'] == '1' ? 'Not Apply' : 'Apply' ) }}">
+                                                        {{ ( $item['is_applied'] == '1' ? 'Not Apply' : 'Apply' ) }}
+                                                    </a>
+                                                    <a href="#" class="dropdown-item js-btn_update_sy" data-id="{{ $item['id'] }}">Edit</a>
+                                                    <a href="#" class="dropdown-item js-btn_deactivate" data-id="{{ $item['id'] }}">Deactivate</a>
+                                                </div>
                                             </div>
                                         </td>
                                     </tr>

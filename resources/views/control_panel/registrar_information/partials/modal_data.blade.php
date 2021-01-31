@@ -7,10 +7,10 @@
                     <input type="hidden" name="id" value="{{ $RegistrarInformation->id }}">
                 @endif
                 <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                     <h4 class="modal-title">
                         {{ $RegistrarInformation ? 'Edit Registrar Information' : 'Add Registrar Information' }}
                     </h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                 </div>
                 <div class="modal-body">
                     <div class="form-group">

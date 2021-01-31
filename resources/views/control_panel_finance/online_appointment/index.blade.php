@@ -9,36 +9,40 @@
 @endsection
 
 @section ('content')
-    <div class="box">
-        <div class="box-header with-border">
-            <div class="form-group col-sm-12">
-                <h3 class="box-title">Filter</h3>
+    <div class="card card-default">
+        <div class="overlay d-none" id="js-loader-overlay">
+                <i class="fas fa-2x fa-sync-alt fa-spin"></i>
             </div>
-            <form id="js-form_search">
-                {{ csrf_field() }}    
-                {{-- <div class="form-group col-sm-12 col-md-3" style="padding-right:0">
-                    <select name="js_status" id="js_status" class="form-control js_status">
-                        <option value="">--Select Status--</option>
-                        <option value="1"> Active</option>
-                        <option value="0"> Inactive</option>
-                    </select>
-                </div>              --}}
-                <div class="form-group col-sm-12 col-md-3" style="padding-right:0">
-                    <select name="js_date" id="js_date" class="form-control js_date">
-                        <option value="">Select Date and time</option>
-                        @foreach ($date_time as $data)
-                            <option value="{{ $data->id }}"> {{ $data ? date_format(date_create($data->date), 'F d, Y h:i A') : '' }}</option>
-                        @endforeach
-                    </select>
-                </div> 
-                &nbsp;
-                <button type="submit" class="btn btn-flat btn-success"><i class="fas fa-search"></i> Search</button>
-            </form>
+        <div class="card-header">
+            <div class="col-md-8 m-auto">
+                <form id="js-form_search">
+                    {{ csrf_field() }}
+                    <div class="row">
+                        <div class="col-md-8">
+                            <div class="form-group" style="padding-right:0">
+                                <select name="js_date" id="js_date" class="form-control js_date">
+                                    <option value="">Select Date and time</option>
+                                    @foreach ($date_time as $data)
+                                        <option value="{{ $data->id }}"> {{ $data ? date_format(date_create($data->date), 'F d, Y h:i A') : '' }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <button type="submit" class="btn btn-success"><i class="fas fa-search"></i> Search</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
         </div>
-        <div class="overlay hidden" id="js-loader-overlay"><i class="fa fa-refresh fa-spin"></i></div>
-        <div class="box-body">            
-            <div class="js-data-container"></div>            
-        </div>        
+        <!-- /.card-header -->
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="js-data-container"></div>
+                </div>
+            </div>
+        </div>
     </div>
 @endsection
 
@@ -93,8 +97,8 @@
                 var rows= $('#myTable tbody tr').length;
 
                 alertify.defaults.transition = "slide";
-                alertify.defaults.theme.ok = "btn btn-primary btn-flat";
-                alertify.defaults.theme.cancel = "btn btn-danger btn-flat";
+                alertify.defaults.theme.ok = "btn btn-primary";
+                alertify.defaults.theme.cancel = "btn btn-danger";
                 alertify.confirm('Confirmation', 'Are you sure you want the status done?', function(){  
                     $.ajax({
                         url         : "{{ route('finance.online_appointment.done') }}",
@@ -146,8 +150,8 @@
                 var rows= $('#myTable tbody tr').length;
 
                 alertify.defaults.transition = "slide";
-                alertify.defaults.theme.ok = "btn btn-primary btn-flat";
-                alertify.defaults.theme.cancel = "btn btn-danger btn-flat";
+                alertify.defaults.theme.ok = "btn btn-primary";
+                alertify.defaults.theme.cancel = "btn btn-danger";
                 alertify.confirm('Confirmation', 'Are you sure you want it to disapprove?', function(){  
                     $.ajax({
                         url         : "{{ route('finance.online_appointment.disapprove') }}",
@@ -194,8 +198,8 @@
                 var id = $(this).data('id');
 
                 alertify.defaults.transition = "slide";
-                alertify.defaults.theme.ok = "btn btn-primary btn-flat";
-                alertify.defaults.theme.cancel = "btn btn-danger btn-flat";
+                alertify.defaults.theme.ok = "btn btn-primary";
+                alertify.defaults.theme.cancel = "btn btn-danger";
                 alertify.confirm('Confirmation', 'Are you sure you want the entire schedule deactivated? This schedule will not appear to the student online appointment panel.', function(){  
                     $.ajax({
                         url         : "{{ route('finance.online_appointment.deactivate_date') }}",

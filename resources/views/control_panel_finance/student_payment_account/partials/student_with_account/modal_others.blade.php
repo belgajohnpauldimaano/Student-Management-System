@@ -1,14 +1,15 @@
 <div class="modal fade" tabindex="-1" role="dialog">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
-            <div class="box-body">
+            <div class="">
                 <div class="modal-header">
-                    <button type="button" class="close btn-close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>                            
                     <h4 style="margin-right: 5em;" class="modal-title">
                         Edit Others
                     </h4>
+                    <button type="button" class="close btn-close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>                            
+                    
                 </div>
                 <form  id="js-update_other">
                     {{ csrf_field() }}
@@ -59,8 +60,8 @@
                                             
                     </div>
                     <div class="modal-footer">                        
-                        <button type="submit" class="btn btn-primary btn-flat pull-right">Update</button>
-                        <button type="button" class="btn btn-default btn-flat btn-close pull-left" data-dismiss="modal">Close</button>                       
+                        <button type="submit" class="btn btn-primary pull-right">Update</button>
+                        <button type="button" class="btn btn-default btn-close pull-left" data-dismiss="modal">Close</button>                       
                     </div>  
                 </form>  
             </div>   

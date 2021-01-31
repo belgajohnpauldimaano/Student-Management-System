@@ -37,6 +37,15 @@ class DashboardController extends Controller
             ->where('status', 1)
             ->first();
 
+        $finance = DB::table('finance_informations')
+            ->select(DB::raw('COUNT(id) as finance_count'))
+            ->where('status', 1)
+            ->first();
+        $admission = DB::table('admission_informations')
+            ->select(DB::raw('COUNT(id) as admission_count'))
+            ->where('status', 1)
+            ->first();
+
         $rooms = DB::table('rooms')
             ->select(DB::raw('COUNT(id) as rooms_count'))
             ->where('status', 1)
@@ -47,7 +56,9 @@ class DashboardController extends Controller
         'StudentInformation_all_female',
         'registrar',
         'faculty',
-        'rooms'
+        'rooms',
+        'finance',
+        'admission'
         ));
     }
 }

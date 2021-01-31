@@ -69,7 +69,8 @@
   <link rel="stylesheet" href="{{ asset('cms/plugins/timepicker/jquery.timepicker.css') }}" />
   <link rel="stylesheet" href="{{ asset('cms/plugins/datetimepicker/datetimepicker.css') }}">
   <link rel="stylesheet" href="{{ asset('cms/style.css') }}">
-
+  
+  
   <style>
     .profile-user-img {
       margin: 0 auto;

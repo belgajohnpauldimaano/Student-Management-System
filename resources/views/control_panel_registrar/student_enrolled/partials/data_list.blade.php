@@ -2,7 +2,7 @@
         {{ $Enrollment ? $Enrollment->links() : '' }}
     </div>
 
-    <table class="table no-margin table-hover">
+    <table class="table table-sm table-hover no-margin table-hover">
         <thead>
             <tr>
                 <th>No.</th>
@@ -19,7 +19,7 @@
                 <td>{{ $data->student->user->username }}</td>
                 <td>{{ $data->student->full_name }}</td>
                 <td>
-                    <span class="label label-@if($data->status == 1)success @elseif($data->status == 0)danger @elseif($data->status == 2)warning @endif">
+                    <span class="badge badge-@if($data->status == 1)success @elseif($data->status == 0)danger @elseif($data->status == 2)warning @endif">
                         @if($data->status == 0) 
                             Inactive
                         @endif

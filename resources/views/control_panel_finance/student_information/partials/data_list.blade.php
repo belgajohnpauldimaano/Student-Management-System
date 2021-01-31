@@ -1,8 +1,8 @@
 <div class="table-responsive">      
-    <div class="pull-right">
+    <div class="float-right">
         {{ $StudentInformation ? $StudentInformation->links() : '' }}
     </div>
-    <table class="table no-margin table-hover">
+    <table class="table no-margin table-hover table-sm">
         <thead>
             <tr>
                 <th>Name</th>
@@ -30,7 +30,7 @@
                                 if($sub){
                                     echo number_format($sub->balance, 2);
                                 }else{
-                                    echo '<span class="label label-warning">
+                                    echo '<span class="badge badge-warning">
                                         None
                                     </span> ';
                                 }
@@ -39,7 +39,7 @@
                             @if($data->student_balance)
                                 {{ number_format($data->student_balance->balance, 2) }}
                             @else
-                                <span class="label label-warning">
+                                <span class="badge badge-warning">
                                     None
                                 </span> 
                             @endif
@@ -51,24 +51,24 @@
                                 $sub_sy =  $transactionSchoolYear->where('student_id', $data->id)
                                     ->where('school_year_id', $sy_transaction)->first();
                                 if($sub_sy){
-                                    echo '<span class="label ';
-                                        echo $sub_sy->status == 0 ? 'label-success' : 'label-danger';
+                                    echo '<span class="badge ';
+                                        echo $sub_sy->status == 0 ? 'badge-success' : 'badge-danger';
                                         echo '">';
                                     echo $sub_sy->status == 0 ? 'Paid' : 'Not-Paid';
                                     echo '</span>';
                                 }else{
-                                    echo '<span class="label label-warning">
+                                    echo '<span class="badge badge-warning">
                                         None
                                     </span> ';
                                 }
                             @endphp
                         @else
                             @if($data->transactions)
-                                <span class="label {{ $data->transactions->status == 0 ? 'label-success' : 'label-danger' }}">
+                                <span class="badge {{ $data->transactions->status == 0 ? 'badge-success' : 'badge-danger' }}">
                                     {{ $data->transactions->status == 0 ? 'Paid' : 'Not-Paid' }}
                                 </span>
                             @else
-                                <span class="label label-danger">
+                                <span class="badge badge-danger">
                                     Not-Paid
                                 </span>
                             @endif   
@@ -80,12 +80,12 @@
                         </span>
                     </td>
                     <td>
-                        <div class="input-group-btn pull-left text-left">
+                        <div class="input-group-btn float-left text-left">
                             @if(!$Transaction)
                                 <a href="{{ route('finance.student_payment_account') }}?c={{ encrypt($data->id) }}&school_year={{ $sy_transaction }}&class_details={{ $data->class_details_id }}"
-                                    class="btn btn-flat btn-primary btn-sm"
+                                    class="btn btn-primary btn-sm"
                                 >
-                                    Account
+                                    <i class="far fa-user"></i> Account
                                 </a>
                             @endif                                                    
                         </div>

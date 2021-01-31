@@ -1,7 +1,7 @@
 <div class="pull-right">
     {{ $StudentInformation ? $StudentInformation->links() : '' }}
 </div>
-<table class="table no-margin">
+<table class="table no-margin table-sm table-hover">
     <thead>
         <tr>
             <th>Student Number</th>
@@ -16,7 +16,7 @@
                     <td>{{ $data->username }}</td>
                     <td>{{ $data->full_name }}</td>
                     <td>
-                        <div class="input-group-btn pull-left text-left">
+                        <div class="input-group-btn float-left text-left">
                             <button type="button" class="btn btn-primary js-btn_enroll_student" data-id="{{ $data->id }}" aria-expanded="true">
                                 Enroll
                             </button>

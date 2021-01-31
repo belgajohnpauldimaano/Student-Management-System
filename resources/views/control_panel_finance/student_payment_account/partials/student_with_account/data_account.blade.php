@@ -1,25 +1,30 @@
 
     @include('control_panel_finance.student_payment_account.partials.student_with_account.data_status')
     
-    <div style="margin-botton: 100px">
-        <button type="button" class="pull-right btn btn-flat btn-primary btn-md" data-id="{{ $StudentInformation->id }}" id="js-button-payment">
-            <i class="fas fa-plus"></i> Add Payment
-        </button>        
-            
-        <div class="nav-tabs-custom" id="transaction-history"  style="; margin-top: 20px">
-            <ul class="nav nav-tabs transaction-history">
-                <li class="active">
-                    <a href="#history" data-toggle="tab">Transaction(s)</a>
-                </li>
-                <li>
-                    <a href="#others-history" data-toggle="tab">Other(s)</a>
-                </li>
-                <li>
-                    <a href="#discount-history" data-toggle="tab">Discount(s)</a>
-                </li>
-            </ul>
-            <div class="tab-content">
-                <div class="active tab-pane" id="history">
+    
+
+    <div>
+        <div class="card mt-5">
+              <div class="card-header">
+                <ul class="nav nav-pills">
+                    <li class="nav-item">
+                        <a href="#history" class="nav-link active" data-toggle="tab">Transaction(s)</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#others-history" data-toggle="tab">Other(s)</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#discount-history" data-toggle="tab">Discount(s)</a>
+                    </li>
+                </ul>
+                <button type="button" class="float-right btn btn-primary btn-md" style="margin-top: -2.3em"
+                    data-id="{{ $StudentInformation->id }}" id="js-button-payment">
+                    <i class="fas fa-plus"></i> Add Payment
+                </button>
+              </div><!-- /.card-header -->
+              <div class="card-body">
+                <div class="tab-content">
+                  <div class="active tab-pane" id="history">
                     @include('control_panel_finance.student_payment_account.partials.student_with_account.data_history')   
                 </div>
                 
@@ -29,10 +34,10 @@
                     <div class="row">
                         @if($AccountOthers)                            
                             <!-- /.box-header -->
-                            <div class="box-body no-padding">
-                                <table class="table table-striped table-bordered">
+                            <div class="col-md-12 no-padding">
+                                <table class="table table-sm table-hover table-striped table-bordered">
                                     <tbody>
-                                        <tr>
+                                        <tr class="thead-dark">
                                             <th style="width: 10px">#</th>
                                             <th>Transaction ID</th>
                                             <th>OR No.</th>
@@ -43,7 +48,6 @@
                                             <th style="width:15%">Action</th>
                                         </tr>
                                         @if($grade_level_id < 13)
-                                            
                                             @forelse ($others as $key => $data)
                                                 <tr>
                                                     <td>{{$key+1}}.)</td>
@@ -52,12 +56,11 @@
                                                     <td>{{$data->other_name}}</td>
                                                     <td>{{$data->item_qty}}</td>
                                                     <td>{{number_format($data->item_price, 2)}}</td>
-                                                    <td><span class="label bg-green">Paid</span></td>
+                                                    <td><span class="badge bg-green">Paid</span></td>
                                                     <td>
                                                         <a class="btn btn-sm btn-primary btn-other-edit " title="edit" data-id="{{ $data->id }}">
                                                             <i class="far fa-edit"></i>
                                                         </a>
-
                                                         <a class="btn btn-sm btn-success js-btn_print_other " title="print"
                                                             data-syid="{{ $data->school_year_id }}"
                                                             data-studid="{{ $data->student_id }}"
@@ -66,7 +69,6 @@
                                                         >
                                                             <i class="fa fa-file-pdf"></i>
                                                         </a>
-
                                                         <a class="btn btn-sm btn-danger btn-delete " title="delete" data-id="{{ $data->id }}"  data-category="other">
                                                             <i class="far fa-trash-alt"></i>
                                                         </a>
@@ -97,9 +99,9 @@
 
                 <div class="tab-pane" id="discount-history">
                     <h3>Discount/Subsidy History</h3>
-                    <table class="table table-bordered table-hover table-striped" style="margin-top: 20px">
+                    <table class="table table-sm table-bordered table-hover table-striped" style="margin-top: 20px">
                         <thead>
-                            <tr>
+                            <tr class="thead-dark">
                                 <th  style="width: 15%">Transaction ID</th>
                                 <th  style="width: 15%">OR Number</th>
                                 <th  style="width: 15%">Name</th>
@@ -137,6 +139,11 @@
                 </div>
                 
             </div>
-        </div>
+                </div>
+                <!-- /.tab-content -->
+              </div><!-- /.card-body -->
+            </div>
+            
+        
                        
     </div>

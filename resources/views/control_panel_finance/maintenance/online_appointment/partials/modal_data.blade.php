@@ -7,19 +7,19 @@
                     <input type="hidden" name="id" value="{{ $OnlineAppointment->id }}">
                 @endif
                 <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title">
+                     <h4 class="modal-title">
                         {{ $OnlineAppointment ? 'Edit Online Appointment' : 'Add Online Appointment' }}
                     </h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                 </div>
                 <div class="modal-body">
                     <div class="form-group">
                         <label for="">Date</label>
                         <div class="input-group date">
-                            <div class="input-group-addon">
-                                <i class="fa fa-calendar"></i>
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"><i class="far fa-calendar-alt"></i></span>
                             </div>
-                            <input type="text" name="date" class="form-control pull-right" 
+                            <input type="text" name="date" class="form-control float-right" 
                             data-date-format="yyyy-mm-dd hh:ii" id="datetimepicker" 
                             value="{{ $OnlineAppointment ? $OnlineAppointment->date : '' }}">
                         </div>
@@ -60,8 +60,8 @@
                     
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-default btn-flat" data-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary btn-flat">Save</button>
+                    <button type="button" class="btn btn-default " data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary ">Save</button>
                 </div>
             </form>
         </div><!-- /.modal-content -->

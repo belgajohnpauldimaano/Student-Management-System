@@ -5,11 +5,17 @@
 @endsection
 
 @section ('content')
-    <div class="row">
-        <div class="col-md-6">
-            <div div class="box">
-                <div class="overlay hidden" id="js-loader-overlay"><i class="fa fa-refresh fa-spin"></i></div>
-                <div class="box-header with-border">
+    <div class="card card-default col-md-6">
+        <div class="overlay d-none" id="js-loader-overlay">
+                <i class="fas fa-2x fa-sync-alt fa-spin"></i>
+            </div>
+        <div class="card-header">
+            <h3 class="card-title">Note: <i class="text-red">This is the control button to show and hide the registration button in our home page.</i></h3>
+        </div>
+        <!-- /.card-header -->
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-12">
                     <div class="js-data-container">
                         @include('control_panel.registration_button.partials.data_list')
                     </div>
@@ -17,10 +23,10 @@
             </div>
         </div>
     </div>
-    
 @endsection
 
 @section ('scripts')
+    <script src="{{ asset('cms-new/plugins/bootstrap-switch/js/bootstrap-switch.min.js')}}"></script>
     <script>
         function fetch_data () {            
             loader_overlay();
@@ -37,13 +43,42 @@
             });
         }
 
+        // $('body').on('switchChange.bootstrapSwitch','.switch',function () {
+        //     alert('Done')
+        // });
+
+        $("input[data-bootstrap-switch]").each(function(){
+            $(this).bootstrapSwitch('state', $(this).prop('checked'));
+            
+        });
+
+        let name;
+        $('.registration_button').bootstrapSwitch('state');
+        $('.registration_button').on('switchChange.bootstrapSwitch',function () {
+            var check = $('.bootstrap-switch-on');
+            if (check.length > 0) {
+                name='enable';
+                 $('.registration_button').val(name);
+                console.log(name)
+            } else {
+                name='disable';
+                $('.registration_button').val(name);
+                console.log(name)
+                
+            }
+        });
+        
+
+        // $('#registration_button').bootstrapSwitch('state', !data, true);
+        
+
         $('body').on('submit', '#js-registration_button', function (e) {
             e.preventDefault();
-                var formData = new FormData($(this)[0]);
-                var name = $('input[name=registration_button]:checked', '#js-registration_button').val();
+                let formData = new FormData($(this)[0]);
+                // let name = $('input[name=registration_button]:checked', '#js-registration_button').val();
                 alertify.defaults.transition = "slide";
-                alertify.defaults.theme.ok = "btn btn-primary btn-flat";
-                alertify.defaults.theme.cancel = "btn btn-danger btn-flat";
+                alertify.defaults.theme.ok = "btn btn-primary";
+                alertify.defaults.theme.cancel = "btn btn-danger";
                 alertify.confirm('Confirmation', 'Are you sure you want to '+name+' ?', function(){
                     
                     $.ajax({
@@ -70,10 +105,10 @@
                                     type    : 'success'
                                 });
                                
-                                setTimeout(function() {
-                                    location.reload();
-                                }, 500);
-                                fetch_data();
+                                // setTimeout(function() {
+                                //     location.reload();
+                                // }, 500);
+                                // fetch_data();
                             }
                         }
                     });                    
@@ -88,8 +123,8 @@
                 var id = $(this).data('id');
                 var toggle_title = $(this).data('toggle_title');
                 alertify.defaults.transition = "slide";
-                alertify.defaults.theme.ok = "btn btn-primary btn-flat";
-                alertify.defaults.theme.cancel = "btn btn-danger btn-flat";
+                alertify.defaults.theme.ok = "btn btn-primary";
+                alertify.defaults.theme.cancel = "btn btn-danger";
                 alertify.confirm('Confirmation', 'Are you sure you want to '+toggle_title+' ?', function(){  
                     $.ajax({
                         url         : "{{ route('admin.maintenance.semester.toggle_current_sy') }}",

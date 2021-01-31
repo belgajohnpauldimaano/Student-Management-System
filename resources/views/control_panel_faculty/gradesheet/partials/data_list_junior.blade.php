@@ -1,6 +1,6 @@
-<div class="table-responsive ">
-    <table class="table table-condensed table-bordered table-hover">
-        <thead style="position: sticky;top: 0" class="thead-dark"> 
+<div class="table-responsive  table-responsive-sm">
+    <table class="table table-sm table-bordered table-hover">
+        <thead style="position: sticky;top: 0"> 
             @if($quarter == '1st' || $quarter == '2nd' || $quarter == '3rd' || $quarter == '4th')
             <tr>
                 <th>#</th>
@@ -36,7 +36,7 @@
             @endif
         </thead>
         <tbody>            
-            <tr>
+            <tr class="bg-danger">
                 <td colspan="13">
                     <b>Male</b>
                 </td>
@@ -303,10 +303,10 @@
                     </td>
                 </tr>
             @endforeach
-            <tr>
-            <td colspan="13">
-                <b>Female</b>
-            </td>
+            <tr class="bg-yellow">
+                <td colspan="13">
+                    <b>Female</b>
+                </td>
             </tr>
             @foreach ($Grade_sheet_females as $key => $item)
                 @php 

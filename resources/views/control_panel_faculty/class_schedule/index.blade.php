@@ -18,7 +18,7 @@
         <!-- /.card-header -->
         <div class="card-body">
             <div class="row">
-                <table class="table no-margin">
+                <table class="table table-hover table-sm no-margin">
                     <thead>
                         <tr>
                              <th>Days and Time</th>

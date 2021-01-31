@@ -1,21 +1,9 @@
 
        
 @if($hasData == 1)
-    <section class="content">
-        <div class="">
-            <div class="error-content">
-                <h3><i class="fa fa-warning text-yellow"></i> No Data Found.</h3>
-                <p>
-                    We could not find the page you were looking for.
-                    Meanwhile, you may <a href="https://sja-bataan.com/faculty/dashboard">return to dashboard</a>.
-                </p>          
-            </div>
-        </div>
-    </section>
+    @include('errors.404')
 @else
-    <button class="btn btn-flat btn-danger pull-right" id="js-btn_print" data-id=""><i class="fa fa-file-pdf"></i> Print</button>
-    <br/><br/>
-    <table class="table no-margin table-striped table-bordered">
+    <table class="table table-sm no-margin table-bordered table-hover">
         <thead>
             <tr>
                 <th style="width: 30px">#</th>
@@ -42,7 +30,7 @@
                     <input type="hidden" id="enroll_id" name="enroll_id" value="{{  $data['e_id'] }}" />
                     <input type="hidden" id="class_id" name="class_id" value="{{ encrypt($class_id) }}" />
                     
-                    <table class="table">
+                    <table class="table table-sm">
                         <tr>
                             <th>
                                 <i style="font-size: 16px; color: red">Title</i>
@@ -58,7 +46,7 @@
                                 
                                 @foreach ($data['attendance_data']->days_of_school as $key => $item)
                                     <th style="">
-                                        <input type="text" class="form-control days_of_school"  min="0" max="30" id="days_of_school{{ $key }}" name="days_of_school[]"  value="{{ $item ? $item : '' }}" />
+                                        <input type="text" class="form-control form-control-sm days_of_school"  min="0" max="30" id="days_of_school{{ $key }}" name="days_of_school[]"  value="{{ $item ? $item : '' }}" />
                                     </th>                                                                        
                                 @endforeach
                                 <th class="days_of_school_total">
@@ -71,7 +59,7 @@
                                 </th>
                                 @foreach ($data['attendance_data']->days_present as $key => $item)
                                     <th style="">
-                                        <input type="text" class="form-control days_present" min="0" max="30" id="days_present{{ $key }}" name="days_present[]" value="{{ $item ? $item : '' }}" />    
+                                        <input type="text" class="form-control form-control-sm days_present" min="0" max="30" id="days_present{{ $key }}" name="days_present[]" value="{{ $item ? $item : '' }}" />    
                                     </th>
                                 @endforeach
                                 <th class="days_present_total">
@@ -84,7 +72,7 @@
                                 </th>
                                 @foreach ($data['attendance_data']->days_absent as $key => $item)
                                     <th style="">
-                                        <input type="text" class="form-control days_absent" min="0" max="30" id="days_present{{ $key }}" name="days_absent[]" value="{{ $item ? $item : '' }}" />    
+                                        <input type="text" class="form-control form-control-sm days_absent" min="0" max="30" id="days_present{{ $key }}" name="days_absent[]" value="{{ $item ? $item : '' }}" />    
                                     </th>
                                 @endforeach
                                 <th class="days_absent_total">
@@ -97,7 +85,7 @@
                                 </th>
                                 @foreach ($data['attendance_data']->times_tardy as $key => $item)
                                     <th style="">
-                                        <input type="text" class="form-control times_tardy" min="0" max="30" id="days_present{{ $key }}" name="times_tardy[]" value="{{ $item ? $item : '' }}" />    
+                                        <input type="text" class="form-control form-control-sm times_tardy" min="0" max="30" id="days_present{{ $key }}" name="times_tardy[]" value="{{ $item ? $item : '' }}" />    
                                     </th>
                                 @endforeach
                                 <th class="times_tardy_total">
@@ -105,7 +93,7 @@
                                 </th>
                             </tr>
                         </table>
-                        <button type="submit" id="btn_save1" class="btn btn-primary btn-flat pull-right">Save</button>
+                        <button type="submit" id="btn_save1" class="btn btn-primary float-right">Save</button>
                 </form>
             </td>
         </tr>
@@ -135,7 +123,7 @@
                     <input type="hidden" id="enroll_id" name="enroll_id" value="{{  $data['e_id'] }}" />
                     <input type="hidden" id="class_id" name="class_id" value="{{ encrypt($class_id) }}" />
                     
-                    <table class="table">
+                    <table class="table table-sm">
                         <tr>
                             <th>
                                 <i style="font-size: 16px; color: red">Title</i>
@@ -151,7 +139,7 @@
                                 
                                 @foreach ($data['attendance_data']->days_of_school as $key => $item)
                                     <th style="">
-                                        <input type="text" class="form-control days_of_school"  min="0" max="30" id="days_of_school{{ $key }}" name="days_of_school[]"  value="{{ $item ? $item : '' }}" />
+                                        <input type="text" class="form-control form-control-sm days_of_school"  min="0" max="30" id="days_of_school{{ $key }}" name="days_of_school[]"  value="{{ $item ? $item : '' }}" />
                                     </th>                                                                        
                                 @endforeach
                                 <th class="days_of_school_total">
@@ -164,7 +152,7 @@
                                 </th>
                                 @foreach ($data['attendance_data']->days_present as $key => $item)
                                     <th style="">
-                                        <input type="text" class="form-control days_present" min="0" max="30" id="days_present{{ $key }}" name="days_present[]" value="{{ $item ? $item : '' }}" />    
+                                        <input type="text" class="form-control form-control-sm days_present" min="0" max="30" id="days_present{{ $key }}" name="days_present[]" value="{{ $item ? $item : '' }}" />    
                                     </th>
                                 @endforeach
                                 <th class="days_present_total">
@@ -177,7 +165,7 @@
                                 </th>
                                 @foreach ($data['attendance_data']->days_absent as $key => $item)
                                     <th style="">
-                                        <input type="text" class="form-control days_absent" min="0" max="30" id="days_present{{ $key }}" name="days_absent[]" value="{{ $item ? $item : '' }}" />    
+                                        <input type="text" class="form-control form-control-sm days_absent" min="0" max="30" id="days_present{{ $key }}" name="days_absent[]" value="{{ $item ? $item : '' }}" />    
                                     </th>
                                 @endforeach
                                 <th class="days_absent_total">
@@ -190,7 +178,7 @@
                                 </th>
                                 @foreach ($data['attendance_data']->times_tardy as $key => $item)
                                     <th style="">
-                                        <input type="text" class="form-control times_tardy" min="0" max="30" id="days_present{{ $key }}" name="times_tardy[]" value="{{ $item ? $item : '' }}" />    
+                                        <input type="text" class="form-control form-control-sm times_tardy" min="0" max="30" id="days_present{{ $key }}" name="times_tardy[]" value="{{ $item ? $item : '' }}" />    
                                     </th>
                                 @endforeach
                                 <th class="times_tardy_total">
@@ -198,7 +186,7 @@
                                 </th>
                             </tr>
                         </table>
-                        <button type="submit" id="btn_save1" class="btn btn-primary btn-flat pull-right">Save</button>
+                        <button type="submit" id="btn_save1" class="btn btn-primary float-right">Save</button>
                 </form>
             </td>
         </tr>

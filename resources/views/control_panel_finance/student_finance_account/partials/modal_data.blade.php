@@ -3,12 +3,11 @@
         <div class="modal-content">
             <div class="box-body">
                 <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>                            
-                        <h4 style="margin-right: 5em;" class="modal-title">
-                            Student Payment Account Information
-                        </h4>
+                    <h4 style="margin-right: 5em;" class="modal-title">
+                        Student Payment Account Information
+                    </h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                 </div>
-            
                 <div class="modal-body">                    
                     <div class="row">                        
                         <div class="col-md-6">
@@ -51,7 +50,7 @@
                         </div>
                         
                         <div class="box-body no-padding">
-                            <table class="table table-bordered table-striped table-hover">
+                            <table class="table table-bordered table-sm table-hover">
                                 <tbody>
                                     <tr>
                                         <th style="width: 50%">Description</th>
@@ -119,7 +118,7 @@
                             </div>
                                 
                             <div class="box-body no-padding">
-                                <table class="table table-bordered table-striped table-hover">
+                                <table class="table table-bordered table-sm table-hover">
                                     <tbody>
                                         <tr>
                                             <th style="width: 50%">Description</th>
@@ -177,7 +176,7 @@
                                                          
                 </div>
                 <div class="modal-footer">
-                    <button class="btn btn-flat  btn-{{ $Modal_data->status ? $Modal_data->status == 0 ? 'danger btn-unpaid' : 'success btn-paid' : 'danger btn-unpaid'}} pull-right" data-id="{{$Modal_data->id}}">
+                    <button class="btn btn-{{ $Modal_data->status ? $Modal_data->status == 0 ? 'danger btn-unpaid' : 'success btn-paid' : 'danger btn-unpaid'}} pull-right" data-id="{{$Modal_data->id}}">
                         {{ $Modal_data->status ? $Modal_data->status == 0 ? 'Unpaid' : 'Paid' : 'Unpaid'}}
                     </button>
                 </div>    

@@ -45,14 +45,14 @@
                         </div>
                     </div>
                                         
-                    <div class="box">
-                        <div class="box-header ">
-                            <p class="box-title">
+                    <div class="card">
+                        <div class="card-header ">
+                            <p class="card-title">
                                 Date and Time: {{ $Monthly_history ? date_format(date_create($Monthly_history->created_at), 'F d, Y h:i A') : '' }}
                             </p>
                         </div>
                         
-                        <div class="box-body no-padding">
+                        <div class="card-body no-padding">
                             <table class="table table-bordered table-hover table-striped">
                                 <tbody>
                                     <tr>

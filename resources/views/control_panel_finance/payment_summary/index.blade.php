@@ -126,13 +126,23 @@
 @endsection
 
 @section ('content')
-    <div class="box">
-        <div class="overlay hidden" id="js-loader-overlay"><i class="fa fa-refresh fa-spin"></i></div>
-        <div class="box-body">            
-            <div class="js-data-container">
-                @include('control_panel_finance.payment_summary.partials.data_list')       
-            </div>            
-        </div>        
+    <div class="card card-default">
+        <div class="overlay d-none" id="js-loader-overlay">
+                <i class="fas fa-2x fa-sync-alt fa-spin"></i>
+            </div>
+        <div class="card-header">
+            <h3 class="card-title">Summary:</h3>
+        </div>
+        <!-- /.card-header -->
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="js-data-container">
+                        @include('control_panel_finance.payment_summary.partials.data_list')       
+                    </div>     
+                </div>
+            </div>
+        </div>
     </div>
 @endsection
 
@@ -218,8 +228,8 @@
             const date_from = $('#date_from').val();
             const date_to = $('#date_to').val()
             if(total == 0){
-                alertify.defaults.theme.ok = "btn btn-primary btn-flat";                
-                alertify.defaults.theme.cancel = "btn btn-danger btn-flat";
+                alertify.defaults.theme.ok = "btn btn-primary ";                
+                alertify.defaults.theme.cancel = "btn btn-danger ";
                 alertify.confirm('<i style="color: red" class="fas fa-question-circle"></i> Warning', 
                      'SORRY THERE IS NO DATA AVAILABLE', function(){                     
                          // location.reload();

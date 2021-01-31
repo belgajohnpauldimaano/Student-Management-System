@@ -37,6 +37,8 @@ class ClassAttendanceController extends Controller
             '))
             ->first();
 
+        // return json_encode($Semester);
+
         try {
             
             $class_id = ClassDetail::where('adviser_id', $FacultyInformation->id)

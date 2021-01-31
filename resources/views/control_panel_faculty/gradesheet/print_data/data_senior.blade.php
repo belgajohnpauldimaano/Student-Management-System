@@ -1,5 +1,5 @@
-<div class="table-responsive">
-    <table class="table table-condensed table-bordered table-hover">
+<div class="table-responsive table-responsive-sm">
+    <table class="table table-sm table-bordered table-hover">
         <thead style="position: sticky;top: 0" class="thead-dark"> 
             @if($quarter == '1st' && $sem == '1st' || $quarter == '3rd' && $sem == '2nd')
             <tr>

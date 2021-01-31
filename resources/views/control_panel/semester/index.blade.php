@@ -5,15 +5,25 @@
 @endsection
 
 @section ('content')
-    <div class="box">
-   
-        <div class="overlay hidden" id="js-loader-overlay"><i class="fa fa-refresh fa-spin"></i></div>
-        <div class="box-header with-border">
-            <div class="js-data-container">
-                @include('control_panel.semester.partials.data_list')
+    <div class="card card-default">
+        <div class="overlay d-none" id="js-loader-overlay">
+                <i class="fas fa-2x fa-sync-alt fa-spin"></i>
+            </div>
+        <div class="card-header">
+            <h3 class="card-title">Semester List</h3>
+        </div>
+        <!-- /.card-header -->
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="js-data-container">
+                        @include('control_panel.semester.partials.data_list')
+                    </div>
+                </div>
             </div>
         </div>
     </div>
+
 @endsection
 
 @section ('scripts')
@@ -39,8 +49,8 @@
                 var id = $(this).data('id');
                 var toggle_title = $(this).data('toggle_title');
                 alertify.defaults.transition = "slide";
-                alertify.defaults.theme.ok = "btn btn-primary btn-flat";
-                alertify.defaults.theme.cancel = "btn btn-danger btn-flat";
+                alertify.defaults.theme.ok = "btn btn-primary ";
+                alertify.defaults.theme.cancel = "btn btn-danger ";
                 alertify.confirm('Confirmation', 'Are you sure you want to '+toggle_title+' ?', function(){  
                     $.ajax({
                         url         : "{{ route('admin.maintenance.semester.toggle_current_sy') }}",

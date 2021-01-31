@@ -5,71 +5,76 @@
 @endsection
 
 @section ('content')
-    <div class="input-group pull-right" style="margin-top: -3em">
-        <a class="btn btn-danger btn-flat" href="{{ route('finance.class_details') }}">
+    <div class="float-right" style="margin-top: -3em">
+        <a class="btn btn-danger" href="{{ route('finance.class_details') }}">
             <i class="far fa-list-alt fa-lg"></i> <span>Switch View</span>
         </a>
     </div>
     {{-- <br/> --}}
-    <div class="box">
-        <div class="box-header with-border">            
-            <div class="row">                
+    <div class="card card-default">
+        <div class="overlay d-none" id="js-loader-overlay">
+            <i class="fas fa-2x fa-sync-alt fa-spin"></i>
+        </div>
+        <div class="card-header">
+            <div class="col-md-12">
                 <form id="js-form_search">
                     {{ csrf_field() }}
-                    <div class="col-md-3">
-                        <label class="control-label">- School year -</label>                                            
-                        <div class="input-school_year">
-                            <select name="school_year" id="school_year" class="form-control ">                            
-                                <option value="0">
-                                    - School Year -
-                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                </option>
-                                @foreach ($School_years as $item)
-                                    <option value="{{ $item->id }}">{{ $item->school_year }}</option>
-                                @endforeach      
-                            </select>
+                    <div class="row">
+                        <div class="col-md-2">
+                            <label class="control-label">- School year -</label>
+                            <div class="input-school_year">
+                                <select name="school_year" id="school_year" class="form-control ">
+                                    <option value="0">
+                                        - School Year -
+                                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                    </option>
+                                    @foreach ($School_years as $item)
+                                        <option value="{{ $item->id }}">{{ $item->school_year }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="help-block text-red text-left" id="js-school_year">
+                            </div>
                         </div>
-                        <div class="help-block text-red text-left" id="js-school_year">
+                        <div class="col-md-4">
+                            <label class="control-label">- Section -</label>
+                            <div class="form-group" style="padding-right:0">
+                                <select name="section_list" id="section_list" class="form-control section_list">
+                                    <option value="">Section</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <label class="control-label">Search</label>
+                            <div class="input-school_year">
+                                <div id="js-form_search" class="form-group " style="padding-left:0;padding-right:0">
+                                    <input placeholder="first name or last name" type="text" class="form-control" name="search">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <label class="control-label">&nbsp;</label>
+                            <div class="form-group input-school_year">
+                                <button type="submit" class="btn btn-success">Search</button>
+                                <button type="button" class="float-right btn btn-danger  btn_clear" style="display: none">
+                                    <i class="fa fa-refresh"></i> Clear
+                                </button>
+                            </div>
                         </div>
                     </div>
-                    <div class="col-md-3">
-                        <label class="control-label">- Section -</label> 
-                        <div class="form-group" style="padding-right:0">
-                            <select name="section_list" id="section_list" class="form-control section_list">
-                                <option value="">Section</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="col-md-3">
-                        <label class="control-label">Search</label>
-                        <div class="input-group input-school_year col-md-12">
-                            <div id="js-form_search" class="form-group " style="padding-left:0;padding-right:0">
-                                <input placeholder="first name or last name" type="text" class="form-control" name="search">
-                            </div>                              
-                        </div>
-                     </div>  
-                     <div class="col-md-3">
-                        <label class="control-label">&nbsp;</label>
-                        <div class="input-group input-school_year">
-                            <button type="submit" class="btn btn-flat btn-success">Search</button>
-                            <button type="button" class="btn btn-flat btn-primary pull-right btn_clear" style="display: none">
-                                <i class="fa fa-refresh"></i> Clear
-                            </button>
-                        </div>
-                     </div> 
-                     
-                     
                 </form>
             </div>
         </div>
-        <div class="overlay hidden" id="js-loader-overlay"><i class="fa fa-refresh fa-spin"></i></div>
-        <div class="box-body">
-            
-            <div class="js-data-container">
-                @include('control_panel_finance.student_information.partials.data_list')       
+        <!-- /.card-header -->
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="js-data-container">
+                        @include('control_panel_finance.student_information.partials.data_list')
+                    </div>
+                </div>
             </div>
-            
-        </div>        
+        </div>
     </div>
 @endsection
 
@@ -319,7 +324,7 @@
 
            
             function error(){
-                alertify.defaults.theme.ok = "btn btn-primary btn-flat";
+                alertify.defaults.theme.ok = "btn btn-primary";
                 alertify
                 .alert("Please save first before your print it.", function(){
                     // alertify.message('OK');
@@ -407,8 +412,8 @@
                 e.preventDefault();
                 var id = $(this).data('id');
                 alertify.defaults.transition = "slide";
-                alertify.defaults.theme.ok = "btn btn-primary btn-flat";
-                alertify.defaults.theme.cancel = "btn btn-danger btn-flat";
+                alertify.defaults.theme.ok = "btn btn-primary";
+                alertify.defaults.theme.cancel = "btn btn-danger";
                 alertify.confirm('Confirmation', 'Are you sure you want to deactivate?', function(){  
                     $.ajax({
                         url         : "{{ route('admin.student.information.deactivate_data') }}",

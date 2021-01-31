@@ -1,9 +1,8 @@
-<div class="table-responsive">                    
-    <div class="pull-right">
+<div class="table-responsive">
+    <div class="float-right">
         {{ $NotyetApproved ? $NotyetApproved->links() : '' }}
-    </div>  
-                            
-    <table class="table no-margin table-bordered table-striped">
+    </div>
+    <table class="table no-margin table-bordered table-hover table-sm">
         <thead>
             <tr>
                 <th>No.</th>
@@ -63,7 +62,7 @@
                         @endphp
                     <td>{{number_format($incoming_bal,2)}}</td>
                     <td>
-                        <span class="label {{ $data->approval ? $data->approval =='Approved' ? 'label-success' : 'label-danger' : 'label-danger'}}">
+                        <span class="badge {{ $data->approval ? $data->approval =='Approved' ? 'badge-success' : 'badge-danger' : 'badge-danger'}}">
                         {{ $data->approval ? $data->approval =='Approved' ? 'Approved' : 'Not yet approved' : 'Not yet approved'}}
                         </span>
                     </td>
@@ -77,4 +76,3 @@
         </tbody>
     </table>
 </div>
-                                

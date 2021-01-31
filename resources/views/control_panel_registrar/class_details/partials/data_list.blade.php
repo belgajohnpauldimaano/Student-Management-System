@@ -1,7 +1,7 @@
-<div class="pull-right">
+<div class="float-right">
     {{ $ClassDetail ? $ClassDetail->links() : '' }}
 </div>
-<table class="table no-margin table-hover">
+<table class="table no-margin table-sm table-hover">
     <thead>
         <tr>
             <th>School Year</th>
@@ -23,22 +23,24 @@
                     <td>{{ $data->section->section }}</td>
                     <td>{{ $data->adviserData->full_name }}</td>
                     <td>
-                        <span class="label label-{{ $data->status == 1 ? 'success' : 'danger' }}">
+                        <span class="badge badge-{{ $data->status == 1 ? 'success' : 'danger' }}">
                             {{ $data->status == 1 ? 'Active' : 'Inactive' }}
                         </span>
                     </td>
                     <td width="17%">
-                        <div class="input-group-btn pull-left text-left">
-                            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="true">Action
-                                <span class="fa fa-caret-down"></span></button>
-                            <ul class="dropdown-menu">
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-danger">Action</button>
+                            <button type="button" class="btn btn-danger dropdown-toggle dropdown-icon" data-toggle="dropdown">
+                                <span class="sr-only">Toggle Dropdown</span>
+                            </button>
+                            <div class="dropdown-menu">
                                 <input type="hidden" name="school_year_id" value="{{ $data->schoolyearid }}">                                
-                                <li><a href="#" class="js-btn_update" data-id="{{ $data->id }}">Edit</a></li>
-                                <li><a href="{{ route('registrar.class_subjects', $data->id) }}" data-id="{{ $data->id }}">Manage Subjects</a></li>
-                                <li><a href="{{ route('registrar.student_enrollment', $data->id) }}" data-id="{{ $data->id }}">Enroll Student</a></li>
-                                <li><a href="{{ route('registrar.student_enrolled_list', $data->id) }}" data-id="{{ $data->id }}">Student List Enrolled</a></li>
-                                <li><a href="#" class="js-btn_deactivate" data-id="{{ $data->id }}">Deactivate</a></li>
-                            </ul>
+                                <a href="#" class="dropdown-item js-btn_update" data-id="{{ $data->id }}">Edit</a>
+                                <a href="{{ route('registrar.class_subjects', $data->id) }}" class="dropdown-item" data-id="{{ $data->id }}">Manage Subjects</a>
+                                <a href="{{ route('registrar.student_enrollment', $data->id) }}" class="dropdown-item" data-id="{{ $data->id }}">Enroll Student</a>
+                                <a href="{{ route('registrar.student_enrolled_list', $data->id) }}" class="dropdown-item" data-id="{{ $data->id }}">Student List Enrolled</a>
+                                <a href="#" class="dropdown-item js-btn_deactivate" class="dropdown-item" data-id="{{ $data->id }}">Deactivate</a>
+                            </div>
                         </div>
                     </td>
                 </tr>

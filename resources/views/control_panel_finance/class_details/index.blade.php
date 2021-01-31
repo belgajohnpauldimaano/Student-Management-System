@@ -9,42 +9,52 @@
 
 @section ('content')
 
-    <div class="input-group pull-right" style="margin-top: -3em">
-        <a class="btn btn-danger btn-flat" href="{{ route('finance.student_account') }}">
+    <div class="float-right" style="margin-top: -3em">
+        <a class="btn btn-danger" href="{{ route('finance.student_account') }}">
             <i class="far fa-list-alt fa-lg"></i> <span>Switch View</span>
         </a>
     </div>
-   
 
-    <div class="box">
-        <div class="box-header with-border">        
-            <div class="row">  
-            <form id="js-form_search">
-                {{ csrf_field() }}
-               
-                <div class="form-group col-md-3">
-                    <h3 class="box-title">Search</h3><br/>
-                    <select name="sy_search" id="sy_search" class="form-control">
-                        <option value="">Select School Year</option>
-                        @foreach ($SchoolYear as $data)
-                            <option value="{{ $data->id }}">{{ $data->school_year }}</option>
-                        @endforeach
-                    </select>
-                </div>&nbsp;</h3><br/>
-                <div id="js-form_search" class="form-group col-md-3" style="padding-left:0;padding-right:0">
-                    <input type="text" class="form-control" name="search">
+    <div class="card card-default">
+        <div class="overlay d-none" id="js-loader-overlay">
+                <i class="fas fa-2x fa-sync-alt fa-spin"></i>
+            </div>
+        <div class="card-header">
+            <div class="col-md-8 m-auto">
+                <h6 class="box-title">Search</h6>
+                <form id="js-form_search">
+                    {{ csrf_field() }}
+                    <div class="row">
+                        <div class="col-md-4">                            
+                            <select name="sy_search" id="sy_search" class="form-control">
+                                <option value="">Select School Year</option>
+                                @foreach ($SchoolYear as $data)
+                                    <option value="{{ $data->id }}">{{ $data->school_year }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <div id="js-form_search" class="form-group" style="padding-left:0;padding-right:0">
+                                <input type="text" class="form-control" name="search">
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <button type="submit" class="btn btn-success">Search</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <!-- /.card-header -->
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="js-data-container">
+                        @include('control_panel_finance.class_details.partials.data_list')
+                    </div>
                 </div>
-                <button type="submit" class="btn btn-flat btn-success">Search</button>
-            </form>
             </div>
         </div>
-        <div class="overlay hidden" id="js-loader-overlay"><i class="fa fa-refresh fa-spin"></i></div>
-        <div class="box-body">
-            <div class="js-data-container">
-                @include('control_panel_finance.class_details.partials.data_list')
-            </div>
-        </div>
-        
     </div>
 @endsection
 
@@ -133,8 +143,8 @@
                 e.preventDefault();
                 var id = $(this).data('id');
                 alertify.defaults.transition = "slide";
-                alertify.defaults.theme.ok = "btn btn-primary btn-flat";
-                alertify.defaults.theme.cancel = "btn btn-danger btn-flat";
+                alertify.defaults.theme.ok = "btn btn-primary";
+                alertify.defaults.theme.cancel = "btn btn-danger";
                 alertify.confirm('Confirmation', 'Are you sure you want to deactivate?', function(){  
                     $.ajax({
                         url         : "{{ route('registrar.class_details.deactivate_data') }}",

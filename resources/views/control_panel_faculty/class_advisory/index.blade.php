@@ -1,16 +1,29 @@
 @extends('control_panel.layouts.master')
 
-@section ('styles') 
+@section ('styles')
+<style>
+    .dropdown-menu .show1{
+        position: absolute;
+        transform: translate3d(-65px, 35px, 0px) !important;
+        top: 0px;
+        left: 0px;
+        will-change: transform;
+    }
+    
+</style>
 @endsection
 
 @section ('content_title')
-    Class Details
+    Advisory Class Details
 @endsection
 
 @section ('content')
-    <div class="box">
-        <div class="box-header with-border">
-            {{--  <h3 class="box-title">Search</h3>  --}}
+    <div class="card card-default">
+        <div class="overlay d-none" id="js-loader-overlay">
+            <i class="fas fa-2x fa-sync-alt fa-spin"></i>
+        </div>
+        <div class="card-header">
+            Class Advisory
             <form id="js-form_search">
                 {{ csrf_field() }}
                 {{--  <div class="form-group col-sm-12 col-md-3">
@@ -24,18 +37,22 @@
                 <div id="js-form_search" class="form-group col-sm-12 col-md-3" style="padding-left:0;padding-right:0">
                     <input type="text" class="form-control" name="search">
                 </div>
-                <button type="submit" class="btn btn-flat btn-success">Search</button>
-                <button type="button" class="pull-right btn btn-flat btn-danger btn-sm" id="js-button-add"><i class="fa fa-plus"></i> Add</button>  --}}
+                <button type="submit" class="btn  btn-success">Search</button>
+                <button type="button" class="pull-right btn  btn-danger btn-sm" id="js-button-add"><i class="fa fa-plus"></i> Add</button>  --}}
             </form>
         </div>
-        <div class="overlay hidden" id="js-loader-overlay"><i class="fa fa-refresh fa-spin"></i></div>
-        <div class="box-body">
-            <div class="js-data-container">
-                @include('control_panel_faculty.class_advisory.partials.data_list')
+        <!-- /.card-header -->
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="js-data-container">
+                        @include('control_panel_faculty.class_advisory.partials.data_list')
+                    </div>
+                </div>
             </div>
         </div>
-        
     </div>
+    
 @endsection
 
 @section ('scripts')
@@ -120,8 +137,8 @@
                 e.preventDefault();
                 var id = $(this).data('id');
                 alertify.defaults.transition = "slide";
-                alertify.defaults.theme.ok = "btn btn-primary btn-flat";
-                alertify.defaults.theme.cancel = "btn btn-danger btn-flat";
+                alertify.defaults.theme.ok = "btn btn-primary ";
+                alertify.defaults.theme.cancel = "btn btn-danger ";
                 alertify.confirm('Confirmation', 'Are you sure you want to deactivate?', function(){  
                     $.ajax({
                         url         : "{{ route('registrar.class_details.deactivate_data') }}",

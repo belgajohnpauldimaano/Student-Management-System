@@ -1,7 +1,7 @@
 <div class="pull-right">
     {{ $IncomingStudent ? $IncomingStudent->links() : '' }}
 </div>                             
-<table class="table no-margin table-bordered table-striped">
+<table class="table no-margin table-sm table-hover">
     <thead>
         <tr>
             <th>Name</th>
@@ -18,7 +18,7 @@
                 <td>{{$item->student_type == '1' ? 'Transferee' : 'Freshman'}}</td>
                 <td>Grade {{$item->grade_level_id}}</td>
                 <td>
-                    <span class="label label-{{$item->approval ? $item->approval == 'Approved' ? 'success' : 'danger' : 'danger'}}">
+                    <span class="badge badge-{{$item->approval ? $item->approval == 'Approved' ? 'success' : 'danger' : 'danger'}}">
                         {{$item->approval}}
                     </span>
                 </td>

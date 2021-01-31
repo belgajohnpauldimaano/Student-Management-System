@@ -8,24 +8,33 @@
 @endsection
 
 @section ('content')
-    <div class="box">
-        {{-- <div class="box-header with-border"> --}}
+    <div class="card card-default">
+        <div class="overlay d-none" id="js-loader-overlay">
+                <i class="fas fa-2x fa-sync-alt fa-spin"></i>
+            </div>
+        <div class="card-header">
+            <h3 class="card-title">Student List of <b>Grade {{ $ClassDetails->grade_level }} - {{ $ClassDetails->section->section }}</b></h3>
+            {{-- <div class="box-header with-border"> --}}
             {{-- <h3 class="box-title">Search</h3> --}}
             <form id="js-form_search">
                 {{-- {{ csrf_field() }}
                 <div id="js-form_search" class="form-group col-sm-12 col-md-3" style="padding-left:0;padding-right:0">
                     <input type="text" class="form-control" name="search">
                 </div>                
-                <button type="submit" class="btn btn-flat btn-success">Search</button> --}}
+                <button type="submit" class="btn  btn-success">Search</button> --}}
             </form>
         {{-- </div> --}}
-        <div class="overlay hidden" id="js-loader-overlay"><i class="fa fa-refresh fa-spin"></i></div>
-        <div class="box-body">
-            <div class="js-data-container">
-                @include('control_panel_faculty.class_student.partials.data_list')
+        </div>
+        <!-- /.card-header -->
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="js-data-container">
+                        @include('control_panel_faculty.class_student.partials.data_list')
+                    </div>
+                </div>
             </div>
         </div>
-        
     </div>
 @endsection
 
@@ -58,8 +67,8 @@
                 {{ $class_id }}
 
                 alertify.defaults.transition = "slide";
-                alertify.defaults.theme.ok = "btn btn-primary btn-flat";
-                alertify.defaults.theme.cancel = "btn btn-danger btn-flat";                
+                alertify.defaults.theme.ok = "btn btn-primary ";
+                alertify.defaults.theme.cancel = "btn btn-danger ";                
                 alertify.confirm('Confirmation', 'Are you sure you want to '+(type == 'drop' ? 'drop' : 'undrop')+' this student?', function(){ 
                     $.ajax({
                         url         : "{{ route('student_enrolled.drop', $class_id) }}",
@@ -117,8 +126,8 @@
                 e.preventDefault();
                 var id = $(this).data('id');
                 alertify.defaults.transition = "slide";
-                alertify.defaults.theme.ok = "btn btn-primary btn-flat";
-                alertify.defaults.theme.cancel = "btn btn-danger btn-flat";
+                alertify.defaults.theme.ok = "btn btn-primary ";
+                alertify.defaults.theme.cancel = "btn btn-danger ";
                 alertify.confirm('Confirmation', 'Are you sure you want to deactivate?', function(){  
                     $.ajax({
                         url         : "{{ route('registrar.class_details.deactivate_data') }}",

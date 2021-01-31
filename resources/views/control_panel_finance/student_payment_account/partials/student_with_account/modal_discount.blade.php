@@ -3,12 +3,13 @@
         <div class="modal-content">
             <div class="box-body">
                 <div class="modal-header">
-                    <button type="button" class="close btn-close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>                            
                     <h4 style="margin-right: 5em;" class="modal-title">
                         Edit Discount/Subsidy
                     </h4>
+                    <button type="button" class="close btn-close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>                            
+                    
                 </div>
                 <form  id="js-update_discount">
                     {{ csrf_field() }}
@@ -20,11 +21,10 @@
                                     @foreach ($DiscountFee as $item)         
                                         <label>                      
                                             @php 
-                                                $hasAlreadyDiscount = \App\Models\TransactionDiscount::where('student_id', $TransactionDiscount->student_id)
+                                                $hasAlreadyDiscount = \App\Models\TransactionDiscount::whereId($TransactionDiscount->id)->where('student_id', $TransactionDiscount->student_id)
                                                     ->where('school_year_id', $SchoolYear->id)->where('discount_type', $item->disc_type)
                                                     ->where('isSuccess', 1)
                                                     ->first();
-                                                
                                             @endphp
                                             <input type="radio" 
                                                 {{$hasAlreadyDiscount ? 'checked' : ''  }} 
@@ -34,7 +34,6 @@
                                                 data-type="{{$item->disc_type}}" 
                                                 data-fee="{{$item->disc_amt}}"
                                             >
-                                            
                                                 {{$item->disc_type}} ({{number_format($item->disc_amt, 2)}})
                                              
                                         </label> 
@@ -45,8 +44,8 @@
                                             
                     </div>
                     <div class="modal-footer">                        
-                        <button type="submit" class="btn btn-primary btn-flat pull-right">Update</button>
-                        <button type="button" class="btn btn-default btn-flat btn-close pull-left" data-dismiss="modal">Close</button>                       
+                        <button type="submit" class="btn btn-primary pull-right">Update</button>
+                        <button type="button" class="btn btn-default btn-close pull-left" data-dismiss="modal">Close</button>                       
                     </div>  
                 </form>  
             </div>   

@@ -2,10 +2,10 @@
     <a href="{{ route('export_excel.excel') }}" class="btn btn-success mb-1">
         <i class="fas fa-file-excel"></i> Export to Excel
     </a>
-    <div class="pull-right">
+    <div class="float-right">
         {{ $Approved ? $Approved->links() : '' }}
     </div>
-    <table class="table no-margin table-bordered table-striped">
+    <table class="table no-margin table-bordered table-sm table-hover">
         <thead>
             <tr>
                 <th>No.</th>
@@ -58,7 +58,7 @@
                     <td>{{number_format($data->payment,2)}}</td>
                     <td>{{number_format($data->balance,2)}}</td>
                     <td>
-                        <span class="label {{ $data->approval ? $data->approval =='Approved' ? 'label-success' : 'label-danger' : 'label-danger'}}">
+                        <span class="badge {{ $data->approval ? $data->approval =='Approved' ? 'badge-success' : 'badge-danger' : 'label-danger'}}">
                         {{ $data->approval ? $data->approval =='Approved' ? 'Approved' : 'Not yet approved' : 'Not yet approved'}}
                         </span>
                     </td>

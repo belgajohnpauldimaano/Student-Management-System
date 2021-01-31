@@ -629,10 +629,11 @@ class StudentAccountController extends Controller
 
             $SchoolYear = SchoolYear::where('status', 1)
             ->where('current', 1)->first();
-        
-            $DiscountFee = DiscountFee::where('current', 1)->where('status', 1)->where('apply_to', 1)->get();
-
             $TransactionDiscount = TransactionDiscount::where('id', $request->id)->first();
+            
+            $DiscountFee = DiscountFee::where('current', 1)->where('status', 1)->get();
+            
+            // return json_encode($TransactionDiscount);
 
         }
 
