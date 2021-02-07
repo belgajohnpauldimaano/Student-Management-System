@@ -67,8 +67,6 @@ class UserProfileController extends Controller
         $destinationPath = public_path('/img/account/photo/');
         $request->user_photo->move($destinationPath, $name);
 
-
-
         $User = Auth::user();
         $Profile = FacultyInformation::where('user_id', $User->id)->first();
 
@@ -222,6 +220,7 @@ class UserProfileController extends Controller
         $FacultyEducation->save();
         return response()->json(['res_code' => 0, 'res_msg' => 'Educational attainment successfully added.']);
     }
+    
     public function educational_attainment_fetch_by_id (Request $request)
     {
         if ($request->educ_id) {

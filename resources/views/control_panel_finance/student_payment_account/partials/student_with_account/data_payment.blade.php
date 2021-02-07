@@ -1,8 +1,8 @@
 <form id="js-form_payment_transaction">
     {{ csrf_field() }} 
     @if ($StudentInformation)
-        <input type="hidden" name="id" value="{{ $StudentInformation->id }}">
-        <input type="hidden" id='stud_status' name="stud_status" value="1">
+        <input type="text" name="id" value="{{ $StudentInformation->id }}">
+        <input type="text" id='stud_status' name="stud_status" value="1">
         <input type="hidden" name="no_months_paid" value="{{$Transaction->no_month_paid}}" />                    
     @endif
 
@@ -18,7 +18,8 @@
                     <div class="card-body">                            
                         <div class="form-group">
                             <label for="">Email Address </label>
-                            <input type="text" placeholder="email@address.com" class="form-control form-control-sm" name="email" id="email" value="{{ $StudentInformation ? $StudentInformation->email : ''}}">
+                            <input type="text" placeholder="email@address.com" class="form-control form-control-sm" name="email" id="email" 
+                            value="{{ $StudentInformation ? $StudentInformation->email : ''}}">
                             <div class="help-block text-red text-left" id="js-email"></div>
                         </div>                
                         <div class="form-group">
@@ -127,13 +128,15 @@
                                     <i class="fas fa-save"></i> Save
                                 </button>
                                 <button type="button" 
-                                        class="btn btn-danger js-btn_print" 
+                                        class="btn btn-danger js-btn_print d-none" 
                                         data-syid="{{$School_year_id->id}}"
                                         data-studid="{{ $StudentInformation->id }}"
                                 >
                                     <i class="fa fa-file-pdf"></i> Print
                                 </button>
                             </div>  
+
+                            
                         </div>   
                     </div>                        
                 </div>

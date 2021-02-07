@@ -46,7 +46,7 @@ class StudentGradeSheetController extends Controller
             
     }
 
-   public function listQuarterSem (Request $request)
+    public function listQuarterSem (Request $request)
     {
         $FacultyInformation = FacultyInformation::where('user_id', Auth::user()->id)->first(); 
         

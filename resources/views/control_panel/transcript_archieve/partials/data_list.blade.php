@@ -21,7 +21,6 @@
                                                 <span class="badge badge-{{ $data->file_name ? 'success' : 'danger' }}">
                                                     {{ $data->file_name ? 'Available' : 'Not Available' }}
                                                 </span>
-                                                
                                             </td>
                                             <td>
                                                 <div class="btn-group">

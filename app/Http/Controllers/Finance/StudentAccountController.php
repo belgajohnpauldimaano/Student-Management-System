@@ -179,6 +179,7 @@ class StudentAccountController extends Controller
 
     public function save_data (Request $request)
     {
+        
         $School_year_id = SchoolYear::where('status', 1)
                 ->where('current', 1)->first()->id;
 
@@ -318,88 +319,109 @@ class StudentAccountController extends Controller
         }
         else
         {
-            $School_year_id = SchoolYear::where('status', 1)
-                ->where('current', 1)->first()->id;
-
-            $rules = [
-                // 'months' => 'required',
-                'or_number_payment' => 'required',
-                'payment_bill' => 'required',      
-            ];
-
-            $Validator = \Validator($request->all(), $rules);
-
-            if ($Validator->fails())
-            {
-                return response()->json(['res_code' => 1, 'res_msg' 
-                    => 'Please fill all required fields.', 'res_error_msg' 
-                    => $Validator->getMessageBag()]);
-            }  
             
-           
-            $Transaction = Transaction::where('school_year_id', $School_year_id)
-                ->where('student_id', $request->id)->first();
+            // $School_year_id = SchoolYear::where('status', 1)
+            //     ->where('current', 1)->first()->id;
+            //  try {
+              
+                
+                $rules = [
+                    // 'months' => 'required',
+                    'or_number_payment' => 'required',
+                    'payment_bill' => 'required',      
+                ];
 
-            $recent_balance =  TransactionMonthPaid::where('school_year_id', $School_year_id)
-                ->where('transaction_id', $Transaction->id)
-                ->orderBY('id', 'DESC')
-                ->where('approval', 'Approved')
-                ->where('isSuccess', 1)
-                ->first();
+                $Validator = \Validator($request->all(), $rules);
 
-            $total_bal = $recent_balance->balance - $request->payment_bill;
-            
-            $TransactionMonthsPaid = new TransactionMonthPaid();
-            $TransactionMonthsPaid->or_no = $request->or_number_payment; //ok
-            $TransactionMonthsPaid->transaction_id = $Transaction->id; //ok
-            $TransactionMonthsPaid->student_id = $request->id;//ok
-            $TransactionMonthsPaid->school_year_id = $School_year_id;//ok 
-            $TransactionMonthsPaid->payment = $request->payment_bill;//ok
-            $TransactionMonthsPaid->email = $request->email ? $request->email : '';
-            $TransactionMonthsPaid->balance = $total_bal;
-            $TransactionMonthsPaid->number = 'NA';
-            $TransactionMonthsPaid->payment_option = 'Walk-in';
-            $TransactionMonthsPaid->approval = 'Approved';
-            $TransactionMonthsPaid->isSuccess = 1;
-            $TransactionMonthsPaid->save();
-
-
-            $total_disc = 0;
-            if(!empty($request->_discount)){
-                foreach($request->_discount as $get_data){
-
-                    $DiscountFee = DiscountFee::where('id', $get_data)
-                        ->where('current', 1)
-                        ->where('status', 1)
-                        ->first();
-                    
-                    $total_disc += $DiscountFee->disc_amt;
-
-                    $DiscountFeeSave = new TransactionDiscount();
-                    $DiscountFeeSave->student_id = $request->id;
-                    $DiscountFeeSave->discount_type = $DiscountFee->disc_type;
-                    $DiscountFeeSave->discount_amt = $DiscountFee->disc_amt;
-                    $DiscountFeeSave->transaction_month_paid_id = $TransactionMonthsPaid->id;
-                    $DiscountFeeSave->school_year_id = $School_year_id;
-                    $DiscountFeeSave->isSuccess = 1;
-                    $DiscountFeeSave->save();
+                if ($Validator->fails())
+                {
+                    return response()->json(['res_code' => 1, 'res_msg' 
+                        => 'Please fill all required fields.', 'res_error_msg' 
+                        => $Validator->getMessageBag()]);
                 }
-            }    
-            
-            if($total_disc)
-            {
-                $total_balance = ($recent_balance->balance - $total_disc);
+                
+                $Transaction = Transaction::whereSchoolYearId($School_year_id)
+                    ->where('student_id', $request->id)->first();
 
-                $Transaction_month_paid_balance = 
-                    TransactionMonthPaid::where('id', $TransactionMonthsPaid->id)
+                $recent_balance =  TransactionMonthPaid::whereSchoolYearId($School_year_id)
+                    ->where('student_id', $request->id)
+                    ->where('approval', 'Approved')
+                    ->where('isSuccess', 1)
+                    ->orderBY('id', 'DESC')
                     ->first();
-    
-                if($Transaction_month_paid_balance ){
-                    $Transaction_month_paid_balance->balance = $total_balance;
-                    $Transaction_month_paid_balance->isSuccess = 1;
-                    $Transaction_month_paid_balance->save();
+
+                $total_bal = $recent_balance->balance - $request->payment_bill;
+                
+                // $TransactionMonthsPaid = TransactionMonthPaid::create([
+                //     'or_no'             => $request->or_number_payment, //ok
+                //     'transaction_id'    => $Transaction->id, //ok
+                //     'student_id'        => $request->id,//ok
+                //     'school_year_id'    => $School_year_id,//ok 
+                //     'payment'           => $request->payment_bill,//ok
+                //     'email'             => $request->email ? $request->email : '',
+                //     'balance'           => $total_bal,
+                //     'number'            => 'NA',
+                //     'payment_option'    => 'Walk-in',
+                //     'approval'          => 'Approved',
+                //     'isSuccess'         => 1,
+                // ]);
+
+                $TransactionMonthsPaid = new TransactionMonthPaid;
+                $TransactionMonthsPaid->or_no = $request->or_number_payment; //ok
+                $TransactionMonthsPaid->transaction_id = $Transaction->id; //ok
+                $TransactionMonthsPaid->student_id = $request->id;//ok
+                $TransactionMonthsPaid->school_year_id = $School_year_id;//ok 
+                $TransactionMonthsPaid->payment = $request->payment_bill;//ok
+                $TransactionMonthsPaid->email = $request->email ? $request->email : '';
+                $TransactionMonthsPaid->balance = $total_bal;
+                $TransactionMonthsPaid->number = 'NA';
+                $TransactionMonthsPaid->payment_option = 'Walk-in';
+                $TransactionMonthsPaid->approval = 'Approved';
+                $TransactionMonthsPaid->isSuccess = 1;
+                $TransactionMonthsPaid->save();
+
+
+                $total_disc = 0;
+                if(!empty($request->_discount)){
+                    foreach($request->_discount as $get_data){
+
+                        $DiscountFee = DiscountFee::where('id', $get_data)
+                            ->where('current', 1)
+                            ->where('status', 1)
+                            ->first();
+                        
+                        $total_disc += $DiscountFee->disc_amt;
+
+                        $DiscountFeeSave = new TransactionDiscount();
+                        $DiscountFeeSave->student_id = $request->id;
+                        $DiscountFeeSave->discount_type = $DiscountFee->disc_type;
+                        $DiscountFeeSave->discount_amt = $DiscountFee->disc_amt;
+                        $DiscountFeeSave->transaction_month_paid_id = $TransactionMonthsPaid->id;
+                        $DiscountFeeSave->school_year_id = $School_year_id;
+                        $DiscountFeeSave->isSuccess = 1;
+                        $DiscountFeeSave->save();
+                    }
+                }    
+                
+                if($total_disc !=0 )
+                {
+                    $total_balance = ($recent_balance->balance - $total_disc);
+
+                    $Transaction_month_paid_balance = 
+                        TransactionMonthPaid::where('id', $TransactionMonthsPaid->id)
+                        ->first();
+        
+                    if($Transaction_month_paid_balance ){
+                        $Transaction_month_paid_balance->balance = $total_balance;
+                        $Transaction_month_paid_balance->isSuccess = 1;
+                        $Transaction_month_paid_balance->save();
+                    }
                 }
-            }
+            // } catch(\Illuminate\Database\QueryException $ex){ 
+            //     dd($ex->getMessage()); 
+            //     return json_encode($ex->getMessage());
+            // // Note any method of class PDOException can be called on $ex.
+            // }
             
 
             if($request->email)

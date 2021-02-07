@@ -35,7 +35,6 @@
                                                         <a href="#" class="dropdown-item js-btn_toggle_current" data-id="{{ $data->id }}" data-toggle_title="{{ ( $data->current ? 'Remove from current active' : 'Add to current active' ) }}">
                                                             {{ ( $data->current ? 'Remove from current Active' : 'Add to current Active' ) }}
                                                         </a>
-                                                        
                                                     </div>
                                                 </div>
                                             </td>

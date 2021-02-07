@@ -20,7 +20,7 @@
                             <select class="form-control select2" name="faculty[]" id="faculty"  multiple="multiple"
                                 data-placeholder="Select faculty"
                                 style="width: 100%;">
-                                    @php echo $faculties; @endphp
+                                    <?php echo $faculties; ?>
                             </select>
                             <div class="help-block text-red text-center" id="js-faculty">
                             </div>
@@ -39,35 +39,33 @@
                                 <th class="text-center">Action</th>
                             </tr>
                         </thead>
-                        <tbody>
-                            @if($TeacherSubjects->count() > 0 )                        
-                                @forelse ($TeacherSubjects as $key => $item)
-                                    
-                                    <tr>
-                                        <td class="text-left">
-                                            {{ $item->faculty->fullname }}
-                                        </td>
-                                        <td class="text-center">
-                                            <button type="button" title="delete" 
-                                                data-id="{{ $item->faculty_id }}" 
-                                                data-subject_class_id="{{ $classSubjectDetailsId }}"
-                                                class="btn btn-danger btn-sm js-btn_delete">
-                                                    <i class="fas fa-trash"></i>
-                                            </button>
-                                        </td>
-                                    </tr>
-                                @empty
-                                    <td>{{ $Adviser->faculty->fullname }}</td>
+                        <tbody>                        
+                            @forelse ($TeacherSubjects as $key => $item)
+                                
+                                <tr>
+                                    <td class="text-left">
+                                        {{ $item->faculty->fullname }}
+                                    </td>
                                     <td class="text-center">
                                         <button type="button" title="delete" 
-                                            data-id="{{ $Adviser->faculty_id }}" 
-                                            data-subject_class_id="{{ $classSubjectDetailsId }}" 
-                                            class="btn js-btn_delete btn-danger btn-sm">
+                                            data-id="{{ $item->faculty_id }}" 
+                                            data-subject_class_id="{{ $classSubjectDetailsId }}"
+                                            class="btn btn-danger btn-sm js-btn_delete">
                                                 <i class="fas fa-trash"></i>
                                         </button>
                                     </td>
-                                @endforelse
-                            @endif                           
+                                </tr>
+                            @empty
+                                <td>{{ $Adviser->faculty->fullname }}</td>
+                                <td class="text-center">
+                                    <button type="button" title="delete" 
+                                        data-id="{{ $Adviser->faculty_id }}" 
+                                        data-subject_class_id="{{ $classSubjectDetailsId }}" 
+                                        class="btn js-btn_delete btn-danger btn-sm">
+                                            <i class="fas fa-trash"></i>
+                                    </button>
+                                </td>
+                            @endforelse                           
                         </tbody>
                         <tfoot></tfoot>
                     </table>    

@@ -115,20 +115,20 @@ Route::group(['prefix' => 'finance', 'middleware' => ['auth', 'userroles'], 'rol
         Route::get('print-enrollment-bill', 'Finance\StudentAccountController@print_enrollment_bill')->name('finance.print_enrollment_bill');
         Route::get('print-other', 'Finance\StudentAccountController@print_other')->name('finance.student_payment_account.other');
         Route::get('print-all-transaction', 'Finance\StudentAccountController@print_all_transaction')->name('finance.print_all_transaction');
-
         Route::post('delete-data', 'Finance\StudentAccountController@data_delete')->name('finance.data_delete');
         Route::post('delete-transaction', 'Finance\StudentAccountController@deleteTransaction')->name('finance.delete_transaction');
-
         Route::post('delete-all-transaction', 'Finance\StudentAccountController@deleteEntireTransaction')->name('finance.delete_all_transaction');
     });
+
     // payroll
     Route::group(['prefix' => 'faculty-payroll'], function () {
         Route::get('', 'Finance\PayrollController@index')->name('finance.payroll');
         Route::post('', 'Finance\PayrollController@index')->name('finance.payroll');
         Route::post('modal-data', 'Finance\PayrollController@modal_data')->name('finance.payroll.modal');
-        // Route::post('paid', 'Finance\PayrollController@paid')->name('finance.student_acct.paid');
-        // Route::post('unpaid', 'Finance\PayrollController@unpaid')->name('finance.student_acct.unpaid');
-        // Route::post('modal-data', 'Finance\PayrollController@modal_data')->name('finance.student_acct.modal');
+        Route::post('employee-list', 'Finance\PayrollController@employee_list')->name('finance.payroll.employee_list');
+        Route::post('save-data', 'Finance\PayrollController@save')->name('finance.payroll.save');
+        Route::post('download-payroll', 'Finance\PayrollController@download_payroll')->name('finance.payroll.download_payroll');
+        Route::post('deactivate-data', 'Finance\PayrollController@deactivate_data')->name('finance.payroll.deactivate_data');
     });
 
     Route::group(['prefix' => 'maintenance'], function () {

@@ -750,7 +750,7 @@
                      }, function(){  
                 });
             }
-
+            //save transaction 
             $('body').on('submit', '#js-form_payment_transaction', function (e) {
                 e.preventDefault();
                 // if(final_total >= 0 || less_total >= 0)
@@ -777,8 +777,8 @@
                                     $('#js-' + err).html('<code> '+ res.res_error_msg[err] +' </code>');
                                 }
                             }
-                            else
-                            {
+                            
+                            if(res.res_code == 0){
                                 // $('.js-modal_holder .modal').modal('hide');
                                 show_toast_alert({
                                     heading : 'Success',
@@ -797,7 +797,6 @@
                                 disable = true;
                                 btnSaveDisabled();
                                 displayDone();
-
                                 fetch_data();
                             }
                         }

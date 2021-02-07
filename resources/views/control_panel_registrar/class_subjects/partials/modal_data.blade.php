@@ -22,7 +22,7 @@
                         <div class="form-group">
                             <label>Faculty</label>
                             <select class="form-control form-control-sm select2" name="faculties[]" id="faculties"  multiple="multiple" data-placeholder="Select faculty"
-                                    style="width: 100%;">                                      
+                                    style="width: 100%;">
                                     @foreach ($FacultyInformation as $data) 
                                         <option value="{{ $data->id }}" {{ $ClassSubjectDetail ? $ClassSubjectDetail->faculty_id == $data->id ? 'selected' : '' : '' }}>{{ $data->first_name . ' ' . $data->last_name }}</option>
                                     @endforeach

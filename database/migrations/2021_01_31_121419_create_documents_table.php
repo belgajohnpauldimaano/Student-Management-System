@@ -18,7 +18,7 @@ class CreateDocumentsTable extends Migration
             $table->text('path_name');
             $table->string('type');
             $table->text('documentable_type');
-            $table->morphs('documentable_id');
+            $table->morphs('documentable');
             $table->timestamps();
         });
     }

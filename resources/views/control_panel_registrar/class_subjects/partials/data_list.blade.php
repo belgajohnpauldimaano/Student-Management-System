@@ -57,19 +57,11 @@
                                                     {{--  <td>{{ $data->class_days }}</td>  --}}
                                                     <td>{{ rtrim($daysDisplay, '/') }}</td>
                                                     <td>
-                                                        @php 
-                                                            $teachers = \App\Models\TeacherSubject::join('faculty_informations', 'faculty_informations.id','=','teacher_subjects.faculty_id')
-                                                                ->selectRaw('
-                                                                        CONCAT(faculty_informations.last_name, " ", faculty_informations.first_name, " " ,  faculty_informations.middle_name) AS adviser_name
-                                                                    ')
-                                                                    ->where('class_subject_details_id', $data->id)
-                                                                    ->where('teacher_subjects.status', 1)
-                                                                ->get();
-                                                            
-                                                            foreach ($teachers as $key => $value) {
-                                                                echo ''.$value->adviser_name.'</br>';
-                                                            }
-                                                        @endphp
+                                                        @foreach ($data->teachersData as $teacherData)
+                                                            <span title="{{ $teacherData->faculty->full_name }}" class="badge bg-primary">
+                                                                {{ $teacherData->faculty->full_name }}
+                                                            </span>
+                                                        @endforeach
                                                     </td>
                                                     <td>
                                                         <div class="btn-group">
@@ -134,7 +126,12 @@
                                                 {{--  <td>{{ $data->class_days }}</td>  --}}
                                                 <td> {{ rtrim($daysDisplay, '/') }} </td>
                                                 <td>
-                                                    @php 
+                                                    @foreach ($data->teachersData as $teacherData)
+                                                        <span title="{{ $teacherData->faculty->full_name }}" class="badge bg-primary">
+                                                            {{ $teacherData->faculty->full_name }}
+                                                        </span>
+                                                    @endforeach
+                                                    {{-- @php 
                                                         $teachers = \App\Models\TeacherSubject::join('faculty_informations', 'faculty_informations.id','=','teacher_subjects.faculty_id')
                                                             ->selectRaw('
                                                                     CONCAT(faculty_informations.last_name, " ", faculty_informations.first_name, " " ,  faculty_informations.middle_name) AS adviser_name
@@ -162,7 +159,7 @@
                                                            echo '<span title="'.$data->faculty_name.'" class="badge bg-primary">'.$data->faculty_name.'</span>';
                                                         }
                                                                                                                  
-                                                    @endphp
+                                                    @endphp --}}
                                                 </td>
                                                 <td>
                                                     <div class="btn-group">

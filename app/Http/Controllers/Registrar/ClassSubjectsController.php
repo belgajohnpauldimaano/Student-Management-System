@@ -26,7 +26,7 @@ class ClassSubjectsController extends Controller
         {
             $ClassSubjectDetail = ClassSubjectDetail::join('subject_details', 'subject_details.id', '=' ,'class_subject_details.subject_id')
                 ->join('class_details', 'class_details.id', '=' ,'class_subject_details.class_details_id')
-                ->join('faculty_informations', 'faculty_informations.id', '=' ,'class_subject_details.faculty_id')
+                ->leftjoin('faculty_informations', 'faculty_informations.id', '=' ,'class_subject_details.faculty_id')
                 ->selectRaw("
                     class_subject_details.id,
                     class_details.school_year_id,
@@ -49,7 +49,7 @@ class ClassSubjectsController extends Controller
         {
             $ClassSubjectDetail = ClassSubjectDetail::join('subject_details', 'subject_details.id', '=' ,'class_subject_details.subject_id')
                 ->join('class_details', 'class_details.id', '=' ,'class_subject_details.class_details_id')
-                ->join('faculty_informations', 'faculty_informations.id', '=' ,'class_subject_details.faculty_id')
+                ->leftjoin('faculty_informations', 'faculty_informations.id', '=' ,'class_subject_details.faculty_id')
                 ->selectRaw("
                     class_subject_details.id,
                     class_details.school_year_id,
@@ -71,7 +71,7 @@ class ClassSubjectsController extends Controller
 
         $ClassSubjectDetail1 = ClassSubjectDetail::join('subject_details', 'subject_details.id', '=' ,'class_subject_details.subject_id')
             ->join('class_details', 'class_details.id', '=' ,'class_subject_details.class_details_id')
-            ->join('faculty_informations', 'faculty_informations.id', '=' ,'class_subject_details.faculty_id')
+            ->leftjoin('faculty_informations', 'faculty_informations.id', '=' ,'class_subject_details.faculty_id')
             ->selectRaw("
                 class_subject_details.id,
                 class_details.school_year_id,
@@ -299,16 +299,27 @@ class ClassSubjectsController extends Controller
             return response()->json(['res_code' => 1, 'res_msg' => 'Please fill all required fields.', 'res_error_msg' => $Validator->getMessageBag()]);
         }
 
-        foreach($request->faculty as $faculty_id)
-        {
-            $TeacherSubject = new TeacherSubject();
-            $TeacherSubject->class_subject_details_id = $request->id;
-            $TeacherSubject->faculty_id = $faculty_id;
-            
-            $TeacherSubject->save();
+            // $Teacher_exists = ClassSubjectDetail::whereId($request->id)->first();
+                
+            $x = NULL;
+            foreach($request->faculty as $faculty_id)
+            {
+                $x = $faculty_id;
+                $TeacherSubject = new TeacherSubject();
+                $TeacherSubject->class_subject_details_id = $request->id;
+                $TeacherSubject->faculty_id = $faculty_id;
+                $TeacherSubject->save();
 
-            return response()->json(['res_code' => 0, 'res_msg' => 'Data successfully saved.']);
-        }
+                
+            }
+
+            $Teacher_exists = ClassSubjectDetail::where('id', $request->id)->update([
+                'faculty_id'    => $x,
+                'status'        => 1
+            ]);
+
+            return response()->json(['res_code' => 0, 'res_msg' => 'Data successfully saved.'], 200);
+
     }
 
     public function deleteDataFaculty(Request $request)
@@ -316,28 +327,34 @@ class ClassSubjectsController extends Controller
         $faculty_id = $request->faculty_id;
         $class_subject_details_id = $request->subject_class_id;
 
+        // return json_encode(['faculty' => $faculty_id, 'class_subject_details_id'=>$class_subject_details_id]);
+
         try {
             
             if($faculty_id && $class_subject_details_id)
             {
                 $Teacher_exists = ClassSubjectDetail::where('id', $class_subject_details_id)
-                    ->where('faculty_id', $faculty_id)->first();
+                    ->where('faculty_id', $faculty_id)->update([
+                        'faculty_id' => 0
+                    ]);
                 
-                if($Teacher_exists)
-                {
-                    $Teacher_exists->faculty_id = 0;
-                    $Teacher_exists->save();
-                }
+                // if($Teacher_exists)
+                // {
+                //     $Teacher_exists->faculty_id = 0;
+                //     $Teacher_exists->save();
+                // }
 
                 $TeacherSubject = TeacherSubject::where('faculty_id', $faculty_id)
                     ->where('class_subject_details_id', $class_subject_details_id)
-                    ->first();
+                    ->update([
+                        'status' => 0
+                    ]);
 
-                if($TeacherSubject)
-                {
-                    $TeacherSubject->status = 0;
-                    $TeacherSubject->save();
-                }
+                // if($TeacherSubject)
+                // {
+                //     $TeacherSubject->status = 0;
+                //     $TeacherSubject->save();
+                // }
                 return response()->json(['res_code' => 0, 'res_msg' => 'Data successfully deleted.'.$faculty_id.' '.$class_subject_details_id]);
             }
         } catch (\Throwable $th) {

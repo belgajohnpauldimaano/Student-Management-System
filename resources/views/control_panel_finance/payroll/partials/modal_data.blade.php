@@ -1,7 +1,7 @@
 <div class="modal fade" tabindex="-1" role="dialog">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
-            <form id="js-form_tuition_fee">
+            <form id="js-form_payroll">
                 {{ csrf_field() }}
                 @if ($payroll)
                     <input type="hidden" name="id" value="{{ $payroll->id }}">
@@ -15,40 +15,43 @@
                 <div class="modal-body">
                     <div class="form-group">
                         <label for="">Date of Payroll</label>
-                        <input type="number" class="form-control" name="tuition_fee" value="{{ $payroll ? $payroll->tuition_amt : '' }}">
-                        <div class="help-block text-red text-center" id="js-tuition_fee">
+                        <div class="input-group date">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">
+                                    <i class="far fa-calendar-alt"></i>
+                                </span>
+                            </div>
+                            <input type="text" name="payroll_date" class="form-control pull-right" id="datepicker"
+                                value="{{ $payroll ? date_format(date_create($payroll->payroll_date), 'F d, Y') : '' }}">
+                                
                         </div>
+                        <div class="help-block text-red text-center" id="js-payroll_date"></div>
                     </div>
 
                     <div class="form-group">
                         <label for="">Employee Type</label>
-                        <select name="grades" id="grades" class="form-control">
+                        <select name="emp_category" id="emp_category" class="form-control">
                             {{-- <option value="">Select Employee Name</option> --}}
                             <option value="1">Faculty</option>
                             <option value="2">Admission</option>
                             <option value="3">Finance</option>
                             <option value="4">Registrar</option>
                         </select>
-                        <div class="help-block text-red text-center" id="js-gradelvl">
+                        <div class="help-block text-red text-center" id="js-emp_category">
                         </div>
                     </div>
 
                     <div class="form-group">
                         <label for="">Employee Name</label>
-                        <select name="grades" id="grades" class="form-control">
-                            <option value="">Select Employee Name</option>
-                            <option value="1">Elementary</option>
-                            <option value="2">Highschool</option>
-                            <option value="3">College</option>
+                        <select name="employee_name" id="employee_name" class="form-control select2" style="width: 100%;">
+                                <option value="0">Select Employee</option>
+                            @foreach ($emp_data as $data)
+                                <option value="{{ $payroll ? ($payroll->employee_id == $data->id ? 'selected' : '') : $data->id }}" {{ $payroll ? ($payroll->employee_id == $data->id ? 'selected' : '') : $data->id }}>
+                                    {{ $data->full_name }}
+                                </option>
+                            @endforeach
                         </select>
-                        <div class="help-block text-red text-center" id="js-gradelvl">
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="">Tuition fee</label>
-                        <input type="number" class="form-control" name="tuition_fee" value="{{ $payroll ? $payroll->tuition_amt : '' }}">
-                        <div class="help-block text-red text-center" id="js-tuition_fee">
+                        <div class="help-block text-red text-center" id="js-employee_name">
                         </div>
                     </div>
 
@@ -57,21 +60,30 @@
                         <div class="input-group">
                             <div class="custom-file">
                                 <input type="file" class="custom-file-input" name="payroll" id="payroll">
-                                <label class="custom-file-label" id="btn-upload-tor" for="payroll">Choose file</label>
+                                <label class="custom-file-label" id="btn-upload-payroll" for="payroll">
+                                    {{-- @forelse ($payroll->documents as $item)
+                                      {{ decrypt($item->path_name)}}
+                                    @empty
+                                        Choose file
+                                    @endforelse --}}
+                                    Choose file
+                                </label>
                             </div>
                             {{-- <div class="input-group-append">
                                 <span class="input-group-text">Upload</span>
-                            </div> --}}
+                            </div> --}}                           
                         </div>
+                         <div class="help-block text-red text-center" id="js-payroll"></div>
                     </div>
 
                     <div class="form-group">
-                        <label for="">Set as Current Tuition Fee</label>
-                        <select name="current_sy" id="current_sy" class="form-control">
-                            <option value="1" {{ $payroll ? ($payroll->current == 0 ? 'selected' : '')  : 'selected' }}>Yes</option>
-                            <option value="0" {{ $payroll ? ($payroll->current == 0 ? 'selected' : '')  : '' }}>No</option>
+                        <label for="">Set as Active</label>
+                        
+                        <select name="active" id="active" class="form-control">
+                            <option value="1" {{ $payroll ? ($payroll->status == 1 ? 'selected' : '')  : 'selected' }}>Yes</option>
+                            <option value="0" {{ $payroll ? ($payroll->status == 0 ? 'selected' : '')  : '' }}>No</option>
                         </select>
-                        <div class="help-block text-red text-center" id="js-current_sy">
+                        <div class="help-block text-red text-center" id="js-active">
                         </div>
                     </div>
                 </div>

@@ -1,5 +1,8 @@
 @extends('control_panel.layouts.master')
 
+@section('styles')
+    {{-- <link rel="stylesheet" href="{{ asset('cms-new/plugins/select2/css/select2.min.css') }}"> --}}
+@endsection
 @section ('content_title')
     Payroll
 @endsection
@@ -16,9 +19,14 @@
                     {{ csrf_field() }}
                     <div class="row">
                         <div class="col-md-8">
-                            <div id="js-form_search" class="form-group" style="padding-left:0;padding-right:0">
+                            {{-- <div id="js-form_search" class="form-group" style="padding-left:0;padding-right:0">
                                 <input type="text" class="form-control" name="search">
-                            </div>
+                            </div> --}}                            
+                            <select name="search" id="search" class="form-control">
+                                @foreach ($payroll_dates as $data)
+                                    <option value="{{ $data->payroll_date }}">{{ $data->payroll_date }}</option>
+                                @endforeach
+                            </select>
                         </div>
                         <div class="col-md-4">
                             <button type="submit" class="btn btn-success">Search</button>
@@ -44,7 +52,8 @@
 @endsection
 
 @section ('scripts')
-    <script src="crm-new/plugins/dropzone/min/dropzone.min.js"></script>
+    <script src="{{ asset('cms/plugins/datepicker/bootstrap-datepicker.js') }}"></script>
+    <script src="{{ asset('cms-new/plugins/select2/js/select2.full.min.js') }}"></script>
     <script>
         
         var page = 1;
@@ -66,6 +75,19 @@
         }
         
         $(function () {
+            
+            $('body').on('click', '#btn-upload-paroll', function (e) {
+                e.preventDefault()
+                $('#payroll').click()
+            })
+            $('body').on('change', '#payroll', function(e) {
+                const val = e.target.value.split('\\')
+                if (val.length > 1) {
+                    $('#btn-upload-payroll').text(val[val.length - 1])
+                } else {
+                    $('#btn-upload-paryoll').text('Choose file')
+                }
+            })
             $('body').on('click', '#js-button-add, .js-btn_update_sy', function (e) {
                 e.preventDefault();
                 {{--  loader_overlay();  --}}
@@ -77,28 +99,41 @@
                     success : function (res) {
                         $('.js-modal_holder').html(res);
                         $('.js-modal_holder .modal').modal({ backdrop : 'static' });
+
                         
-                        $('body').on('click', '#btn-upload-paroll', function (e) {
-                            e.preventDefault()
-                            $('#payroll').click()
+                        if(!id){
+                            $("#datepicker").datepicker().datepicker("setDate", new Date());
+                        }
+                        else{
+                            $('#datepicker').datepicker(("setDate", new Date()));
+                        }
+                        
+
+                        $('.select2').select2()
+
+                        // get the data of employee
+                        $('body').on('change', '#emp_category', function () {
+                            $.ajax({
+                                url : "{{ route('finance.payroll.employee_list') }}",
+                                type : 'POST',
+                                data        : {_token: '{{ csrf_token() }}', emp_category: $('#emp_category').val()},
+                                success     : function (res) {
+
+                                    $('#employee_name').html(res);
+                                }
+                            })
                         })
-                        $('body').on('change', '#payroll', function(e) {
-                            const val = e.target.value.split('\\')
-                            if (val.length > 1) {
-                                $('#btn-upload-paroll').text(val[val.length - 1])
-                            } else {
-                                $('#btn-upload-paroll').text('Upload Payroll')
-                            }
-                        })
+                        
+                        
                     }
                 });
             });
-
-            $('body').on('submit', '#js-form_tuition_fee', function (e) {
+            
+            $('body').on('submit', '#js-form_payroll', function (e) {
                 e.preventDefault();
                 var formData = new FormData($(this)[0]);
                 $.ajax({
-                    url         : "{{ route('finance.maintenance.tuition_fee.save_data') }}",
+                    url         : "{{ route('finance.payroll.save') }}",
                     type        : 'POST',
                     data        : formData,
                     processData : false,
@@ -121,6 +156,34 @@
                 });
             });
 
+            $('body').on('click', '.js-btn_download', function (e) {
+                e.preventDefault();
+                var id = $(this).data('id');
+                var file = $(this).data('file');
+                $.ajax({
+                    url : "{{ route('finance.payroll.download_payroll') }}",
+                    type : 'POST',
+                    data : { _token : '{{ csrf_token() }}', id : id, file_name: file },
+                    success : function (res) {
+                        if (res.res_code == 1) {
+                            show_toast_alert({
+                                heading : 'Error',
+                                message : res.res_msg,
+                                type    : 'error'
+                            });
+                        } else {
+                            show_toast_alert({
+                                heading : 'Success',
+                                message : res.res_msg,
+                                type    : 'success'
+                            });
+                            console.log(res)
+                            window.location = res.file_path;
+                        }
+                    }
+                });
+            });
+
             $('body').on('submit', '#js-form_search', function (e) {
                 e.preventDefault();
                 fetch_data();
@@ -130,6 +193,7 @@
                 page = $(this).attr('href').split('=')[1];
                 fetch_data();
             });
+
             $('body').on('click', '.js-btn_deactivate', function (e) {
                 e.preventDefault();
                 var id = $(this).data('id');
@@ -138,7 +202,7 @@
                 alertify.defaults.theme.cancel = "btn btn-danger ";
                 alertify.confirm('Confirmation', 'Are you sure you want to deactivate?', function(){  
                     $.ajax({
-                        url         : "{{ route('finance.maintenance.tuition_fee.deactivate_data') }}",
+                        url         : "{{ route('finance.payroll.deactivate_data') }}",
                         type        : 'POST',
                         data        : { _token : '{{ csrf_token() }}', id : id },
                         success     : function (res) {
@@ -163,7 +227,7 @@
                             }
                         }
                     });
-                }, function(){  
+                }, function(){
 
                 });
             });

@@ -9,4 +9,8 @@ use Illuminate\Database\Eloquent\Model;
 class ClassSubjectDetail extends Model
 {
     use HasGradeSheet, HasUser;
+
+    public function teachersData(){
+        return $this->hasMany(TeacherSubject::class, 'class_subject_details_id', 'id')->whereStatus(1);
+    }
 }

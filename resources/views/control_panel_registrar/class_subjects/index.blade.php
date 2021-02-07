@@ -121,7 +121,7 @@
                                         output += '<tr>';
                                         output += '<td>' + value.name +'</td>';
                                         output += '<td class="text-center">'+
-                                                  '<button data-id="' + value.id +'" data-subject_class_id="'+class_subject_details_id+'" type="button" title="delete" class="btn js-btn_delete btn-danger btn-sm"><i class="fa fa-trash-o"></i></button></td>';
+                                                  '<button data-id="' + value.id +'" data-subject_class_id="'+class_subject_details_id+'" type="button" title="delete" class="btn js-btn_delete btn-danger btn-sm"><i class="fas fa-trash"></i></button></td>';
                                          
                                         $('#faculty_table tfoot').html(output);
                                     });                                    
@@ -167,6 +167,7 @@
                                     message : res.res_msg,
                                     type    : 'success'
                                 });
+                                
                             }
                         }
                     });
