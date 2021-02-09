@@ -209,7 +209,7 @@
                         <div class="form-group col-lg-12 input-bank_image ">
                             <img id="image-receipt" style="cursor: pointer; padding-top: 20px" src="images/avatar.png" width="200">
                             <br/>
-                            <label for="bank_image">Image of receipt deposit slip</label>                        
+                            <label for="bank_image">Image of receipt deposit slip</label><br/>                       
                             <input type="file" id="bank_image" name="bank_image" src="" onchange="readImageURL(this);" accept="*/image">
                             <div class="help-block text-left" id="js-bank_image"></div>
                         </div>

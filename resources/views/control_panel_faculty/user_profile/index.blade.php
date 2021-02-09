@@ -120,6 +120,38 @@
                     }
                 })
             })
+
+            $('body').on('click', '.js-btn_download', function (e) {
+                e.preventDefault();
+                var id = $(this).data('id');
+                var file = $(this).data('file');
+                $.ajax({
+                    url : "{{ route('finance.payroll.download_payroll') }}",
+                    type : 'POST',
+                    headers: {
+                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        	},
+                    data : { _token : '{{ csrf_token() }}', id : id},
+                    success : function (res) {
+                        if (res.res_code == 1) {
+                            show_toast_alert({
+                                heading : 'Error',
+                                message : res.res_msg,
+                                type    : 'error'
+                            });
+                        } else {
+                            show_toast_alert({
+                                heading : 'Success',
+                                message : res.res_msg,
+                                type    : 'success'
+                            });
+                            console.log(res)
+                            // window.location = res.file_path;
+                        }
+                    }
+                });
+            });
+            
             $('body').on('submit', '#form--update-profile', function (e) {
                 e.preventDefault();
                 var formData = new FormData($(this)[0]);

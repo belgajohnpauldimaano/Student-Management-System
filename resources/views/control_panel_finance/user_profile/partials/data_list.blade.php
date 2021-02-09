@@ -1,4 +1,4 @@
-<div class="col-sm-12 col-md-6">
+<div class="col-sm-12 col-md-4">
     <div class="card card-danger">
         <div class="card-header">
             <h3 class="card-title">Personal Information</h3>
@@ -58,7 +58,53 @@
     </div>
 </div>
 
-<div class="col-sm-12 col-md-6">
+<div class="col-sm-12 col-md-8">
+    <div class="card card-danger">
+        <div class="card-header">
+            <h3 class="card-title">Payroll</h3>
+        </div> 
+        <div class="overlay d-none" id="js-loader-overlay-trainings_seminars">
+            <i class="fas fa-2x fa-sync-alt fa-spin"></i>
+        </div>
+        <div class="overlay d-none" id="js-loader-overlay-trainings_seminars"><i class="fa fa-refresh fa-spin"></i></div>
+        <div class="card-body">
+            <table class="table table-sm table-bordered table-condensed">
+                <tr>
+                    <th style="width: 30%">Payroll Date</th>
+                    <th>Files</th>
+                    <th>Action</th>
+                </tr>
+                <tbody>
+                    @forelse ($payroll as $item)
+                        <tr>
+                            <td>{{  $item ? date_format(date_create($item->payroll_date), 'F d, Y') : ''  }}</td>
+                            <td>
+                                @foreach ($item->documents as $data)
+                                    <a href="">
+                                        {{ decrypt($data->path_name) }}
+                                    </a>
+                                @endforeach
+                            </td>
+                            <td>
+                                @foreach ($item->documents as $data)
+                                    <a href="{{ asset('data/payroll/'.decrypt($data->path_name)) }}" class="btn btn-primary btn-sm">
+                                        Download
+                                    </a>
+                                 @endforeach
+                            </td>
+                        </tr>
+                    @empty
+                        <tr>
+                            <th class="text-center" colspan="3"> No Data Available</th>
+                        </tr>
+                    @endforelse
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div class="col-sm-12 col-md-4">
     <div class="card card-danger">
         <div class="card-header">
             <h3 class="card-title">User Account</h3>

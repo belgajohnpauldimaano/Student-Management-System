@@ -1,5 +1,4 @@
 {{-- <h4>Enrollment</h4> --}}
-
 <div class="row" id="selector_payment">
   <div class="col-md-8 m-auto">
     <div class="card card-default">

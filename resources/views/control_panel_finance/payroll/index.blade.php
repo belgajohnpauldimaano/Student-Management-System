@@ -14,7 +14,7 @@
             </div>
         <div class="card-header">
             <div class="col-md-8 m-auto">
-                <h6 class="box-title">Search</h6>
+                <h6 class="box-title">Filter</h6>
                 <form id="js-form_search">
                     {{ csrf_field() }}
                     <div class="row">
@@ -23,6 +23,7 @@
                                 <input type="text" class="form-control" name="search">
                             </div> --}}                            
                             <select name="search" id="search" class="form-control">
+                                <option value="">Select Date</option>
                                 @foreach ($payroll_dates as $data)
                                     <option value="{{ $data->payroll_date }}">{{ $data->payroll_date }}</option>
                                 @endforeach
@@ -88,9 +89,12 @@
                     $('#btn-upload-paryoll').text('Choose file')
                 }
             })
+
+            $('.select2').select2()
+
             $('body').on('click', '#js-button-add, .js-btn_update_sy', function (e) {
                 e.preventDefault();
-                {{--  loader_overlay();  --}}
+                
                 var id = $(this).data('id'); 
                 $.ajax({
                     url : "{{ route('finance.payroll.modal') }}",

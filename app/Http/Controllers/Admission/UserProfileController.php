@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admission;
 
+use App\Models\Payroll;
 use Illuminate\Http\Request;
 use App\Traits\hasIncomingStudents;
 use App\Http\Controllers\Controller;
@@ -18,8 +19,8 @@ class UserProfileController extends Controller
         $User = Auth::user();
         $Profile = AdmissionInformation::where('user_id', $User->id)->first();
         $IncomingStudentCount = $this->IncomingStudentCount();
-        
-        return view('control_panel_admission.user_profile.index', compact('User', 'Profile','IncomingStudentCount'));
+        $payroll = Payroll::whereEmployeeId($Profile->id)->whereStatus(1)->orderBy('payroll_date','DESC')->get();
+        return view('control_panel_admission.user_profile.index', compact('User', 'Profile','IncomingStudentCount','payroll'));
     }
     public function fetch_profile (Request $request)
     {

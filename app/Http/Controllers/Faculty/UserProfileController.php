@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Faculty;
 
+use App\Models\Payroll;
 use Illuminate\Http\Request;
 use App\Models\FacultySeminar;
 use App\Models\FacultyEducation;
@@ -17,7 +18,8 @@ class UserProfileController extends Controller
         $User = Auth::user();
         $Profile = FacultyInformation::where('user_id', $User->id)->first();
         $FacultyInformation = collect(FacultyInformation::DEPARTMENTS);
-        return view('control_panel_faculty.user_profile.index', compact('User', 'Profile', 'FacultyInformation'));
+        $payroll = Payroll::whereEmployeeId($Profile->id)->whereStatus(1)->orderBy('payroll_date','DESC')->get();
+        return view('control_panel_faculty.user_profile.index', compact('User', 'Profile', 'FacultyInformation', 'payroll'));
     }
     public function fetch_profile (Request $request)
     {

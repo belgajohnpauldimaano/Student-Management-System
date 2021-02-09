@@ -702,7 +702,7 @@
               <li class="nav-item">
                 <a class="nav-link {{request()->routeIs('finance.payroll') ? 'active' : '' }}"
                    href="{{ route('finance.payroll') }}">
-                  <i class="fas fa-file-invoice fa-lg"></i> <p>Faculty Payroll</p>
+                  <i class="fas fa-file-invoice fa-lg"></i> <p>Employee Payroll</p>
                 </a>
               </li>
 

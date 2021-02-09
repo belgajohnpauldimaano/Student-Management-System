@@ -22,7 +22,7 @@
                                 </span>
                             </div>
                             <input type="text" name="payroll_date" class="form-control pull-right" id="datepicker"
-                                value="{{ $payroll ? date_format(date_create($payroll->payroll_date), 'F d, Y') : '' }}">
+                                value="{{ $payroll ? $payroll->payroll_date : '' }}">
                                 
                         </div>
                         <div class="help-block text-red text-center" id="js-payroll_date"></div>
@@ -32,10 +32,10 @@
                         <label for="">Employee Type</label>
                         <select name="emp_category" id="emp_category" class="form-control">
                             {{-- <option value="">Select Employee Name</option> --}}
-                            <option value="1">Faculty</option>
-                            <option value="2">Admission</option>
-                            <option value="3">Finance</option>
-                            <option value="4">Registrar</option>
+                            <option value="1" {{ $payroll ? ($payroll->employee_type == 1 ? 'selected' : '')  : '' }}>Faculty</option>
+                            <option value="2" {{ $payroll ? ($payroll->employee_type == 2 ? 'selected' : '')  : '' }}>Admission</option>
+                            <option value="3" {{ $payroll ? ($payroll->employee_type == 3 ? 'selected' : '')  : '' }}>Finance</option>
+                            <option value="4" {{ $payroll ? ($payroll->employee_type == 4 ? 'selected' : '')  : '' }}>Registrar</option>
                         </select>
                         <div class="help-block text-red text-center" id="js-emp_category">
                         </div>

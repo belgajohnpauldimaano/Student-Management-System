@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Registrar;
 
+use App\Models\Payroll;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\RegistrarInformation;
@@ -13,8 +14,8 @@ class UserProfileController extends Controller
     {
         $User = Auth::user();
         $Profile = RegistrarInformation::where('user_id', $User->id)->first();
-        // $RegistrarInformation = collect(RegistrarInformation::DEPARTMENTS);
-        return view('control_panel_registrar.user_profile.index', compact('User', 'Profile'));
+        $payroll = Payroll::whereEmployeeId($Profile->id)->whereStatus(1)->orderBy('payroll_date','DESC')->get();
+        return view('control_panel_registrar.user_profile.index', compact('User', 'Profile','payroll'));
     }
     public function fetch_profile (Request $request)
     {

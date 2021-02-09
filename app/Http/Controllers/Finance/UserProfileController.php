@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Finance;
 
+use App\Models\Payroll;
 use Illuminate\Http\Request;
 use App\Traits\hasNotYetApproved;
 use App\Models\FinanceInformation;
@@ -17,8 +18,9 @@ class UserProfileController extends Controller
         $User = Auth::user();
         $Profile = FinanceInformation::where('user_id', $User->id)->first();
         $NotyetApprovedCount = $this->notYetApproved();
+        $payroll = Payroll::whereEmployeeId($Profile->id)->whereStatus(1)->orderBy('payroll_date','DESC')->get();
         // $RegistrarInformation = collect(\AFinanceformation::DEPARTMENTS);
-        return view('control_panel_finance.user_profile.index', compact('User', 'Profile','NotyetApprovedCount'));
+        return view('control_panel_finance.user_profile.index', compact('User', 'Profile','NotyetApprovedCount','payroll'));
     }
     public function fetch_profile (Request $request)
     {
