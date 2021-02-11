@@ -12,6 +12,9 @@
                 <div class="card-header">
                     <h3 class="card-title">ACTIVITY:</h3>
                 </div>
+                <div class="overlay d-none" id="js-overlay-create">
+                    <i class="fas fa-2x fa-sync-alt fa-spin"></i>
+                </div>
                 <!-- /.card-header -->
                 <div class="card-body">
                     <div class="row">
@@ -89,11 +92,10 @@
             $('#summernote').summernote({
                   toolbar: [
                     ['style', ['style']],
-                        ['font', ['bold', 'italic', 'underline', 'clear']],
+                    ['font', ['bold', 'italic', 'underline', 'clear']],
                     ['para', ['ul']],
                     ['insert', ['table','link', 'picture', 'video']],
-                     ['view', ['fullscreen', 'help']
-                  
+                    ['view', ['fullscreen', 'help']
                   ],
                   // ['codeview']
                   ],
@@ -109,7 +111,11 @@
             $('body').on('click', '.js-modal', function (e) {
                 e.preventDefault();
 
+                // if($('#js-overlay-create').hasClass('overlay')){
+                //   $('#js-overlay-create').addClass('d-none')
+                // }
                 let type = $(this).data('type');
+                fetchCreateAssessment();
 
                 if ($('#js-editor').hasClass('d-none')) {
                     $('#js-editor').removeClass('d-none')
@@ -119,20 +125,6 @@
                     $('#js-editor').addClass('d-none')
                     $('.js-create-editor').removeClass('d-none')
                 }
-                
-                // $.ajax({
-                //     url : "{{ route('finance.home.modal_data') }}",
-                //     type : 'POST',
-                //     data : { _token : '{{ csrf_token() }}', type : type },
-                //     success : function (res) {
-                //         $('.js-modal_holder').html(res);
-                //         $('.js-modal_holder .modal').modal({ backdrop : 'static' });
-
-                //         $('.select2').select2();
-                //         $('#summernote').summernote();
-
-                //     }
-                // });
             });
 
             $('body').on('click', '.js-close-editor', function (e) {
@@ -148,6 +140,27 @@
                     $('.js-create-editor').removeClass('d-none')
                 }
             });
+
+            function fetchCreateAssessment(){
+              $.ajax({
+                  url : "{{ route('faculty.assessment.create') }}",
+                  type : 'get',
+                  data : {_token : '{{ csrf_token() }}'},
+                  success     : function (res) {
+                      
+                      // loader_overlay('js-overlay-create');
+                      
+                      let dataSections = "";
+                      $.each(res.section, function(i){
+                          dataSections += '<option val="'+res.section.id+'">' + res.section[i].section+'-'+ res.section[i].grade_level + ' '+ res.section[i].subject +'</option>';
+                      })
+                      $('#js-section_subjects').html(dataSections);
+                      $('#js-category_type').val('assessment');
+                  }
+              });
+            }
+
+            
 
         })
     </script>

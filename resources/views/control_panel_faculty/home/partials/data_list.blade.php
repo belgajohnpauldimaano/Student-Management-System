@@ -12,43 +12,38 @@
         <i class="fas fa-bullhorn fa-lg text-danger"></i> Add Announcement
     </a>
 </div>
-
 <div id="js-editor" class="d-none fadeIn">
+
     <div class="pb-3">
         <button type="button" class="close js-close-editor" title="close this editor">
             <span aria-hidden="true">×</span>
         </button>
-        <h4>Create <span id="js-title_type"></span></h4>
+        <h5>Create <span id="js-title_type"></span></h5>
     </div>
     <div class="form-group form-group-sm w-100">
-        <label>Section</label>
-        <select class="select2" multiple="multiple" data-placeholder="Select a State" style="width: 100%;">
-            <option>Alabama</option>
-            <option>Alaska</option>
-            <option>California</option>
-            <option>Delaware</option>
-            <option>Tennessee</option>
-            <option>Texas</option>
-            <option>Washington</option>
+        <label>Section and Subject</label>
+        <select id="js-section_subjects" class="select2" data-placeholder="Select a State" style="width: 100%;">
         </select>
     </div>
-    <div class="form-group form-group-sm w-100">
+    <input type="hidden" name="category_type" id="js-category_type">
+    {{-- <div class="form-group form-group-sm w-100">
         <label>Subject</label>
         <select class="form-control select2" style="width: 100%;">
             <option>Announcement</option>
             <option>Lesson</option>
             <option>Assessment</option>
         </select>
-    </div>
-    <div class="form-group form-group-sm w-100">
+    </div> --}}
+    {{-- <div class="form-group form-group-sm w-100">
         <label>Category</label>
         <select class="form-control select2" style="width: 100%;">
             <option>Ungraded</option>
             <option>Performance Task</option>
             <option>Lesson</option>
             <option>Assessment</option>
+            <option>Assignment</option>
         </select>
-    </div>
+    </div> --}}
     <div class="form-group form-group-sm w-100">
         <label>Post Status</label>
         <select class="form-control select2" style="width: 100%;">

@@ -28,12 +28,13 @@ route::get('autologin/{id}', function(Request $request){
     $user = User::whereId($id)->first();
 
     if($user->role == 4 ){
-        return redirect('/faculty/dashboard');
+        return redirect('/faculty/home');
     }
 
     if($user->role == 5 ){
         return redirect('/student/dashboard');
-    }    
+    }
+    
 })->name('autologin');
 
 include 'web/front-end.php';

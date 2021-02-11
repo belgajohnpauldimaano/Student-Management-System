@@ -7,6 +7,7 @@ Route::group(['prefix' => 'faculty', 'middleware' => 'auth', 'roles' => ['admin'
     Route::group(['prefix' => 'home'], function () {
         Route::post('', 'Faculty\HomeController@index')->name('faculty.home');
         Route::get('', 'Faculty\HomeController@index')->name('faculty.home');
+        Route::get('create-assessment', 'Faculty\HomeController@createAssessment')->name('faculty.assessment.create');
         Route::post('modal-data', 'Faculty\HomeController@modal_data')->name('finance.home.modal_data');
     });
 

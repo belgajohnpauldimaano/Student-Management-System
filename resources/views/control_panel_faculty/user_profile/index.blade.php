@@ -18,12 +18,9 @@
 @section ('scripts')
     <script src="{{ asset('cms/plugins/datepicker/bootstrap-datepicker.js')}}"></script>
     <script>
-        
-
         $('#birthday').datepicker({
             autoclose: true
         })
-        
         $('.date_picker_input').datepicker({
             autoclose: true
         })
@@ -249,7 +246,6 @@
                         $('#img--user_photo').attr('src', e.target.result);
                         
                         var formData = new FormData($('#form_user_photo_uploader')[0]);
-                        {{--  formData.append('user_photo', $('#user--photo'));  --}}
                         formData.append('_token', '{{ csrf_token() }}');
                         console.log(formData)
                         $.ajax({
