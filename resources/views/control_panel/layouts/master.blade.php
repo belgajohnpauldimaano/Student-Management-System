@@ -375,9 +375,15 @@
             {{--  Faculty Menu  --}}
             @if (Auth::user()->role == 4)
               <li class="nav-item">
+                <a class="nav-link {{request()->routeIs('faculty.home') ? 'active' : '' }}"
+                   href="{{ route('faculty.home') }}">
+                  <i class="fa fa-home fa-fw fa-lg"></i> <p>Home</p>
+                </a>
+              </li>
+              <li class="nav-item">
                 <a class="nav-link {{request()->routeIs('faculty.dashboard') ? 'active' : '' }}"
                    href="{{ route('faculty.dashboard') }}">
-                  <i class="fa fa-home fa-lg"></i> <p>Dashboard</p>
+                  <i class="fas fa-tachometer-alt fa-lg"></i> <p>Dashboard</p>
                 </a>
               </li>
               <li class="nav-item">

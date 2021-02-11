@@ -55,7 +55,7 @@
 @endsection
 
 @section ('scripts')
-<script src="{{ asset('cms-new/plugins/summernote/summernote-bs4.min.js') }}"></script>
+    <script src="{{ asset('cms-new/plugins/summernote/summernote-bs4.min.js') }}"></script>
     {{--  <script src="http://loc.student-management-system/cms/plugins/datepicker/bootstrap-datepicker.js"></script>  --}}
     <script src="{{ asset('cms/plugins/datepicker/bootstrap-datepicker.js') }}"></script>
     <script src="{{ asset('cms/plugins/iCheck/icheck.min.js') }}"></script>
