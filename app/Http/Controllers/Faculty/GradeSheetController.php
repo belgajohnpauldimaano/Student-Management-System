@@ -32,7 +32,7 @@ class GradeSheetController extends Controller
     {
         $FacultyInformation = FacultyInformation::where('user_id', \Auth::user()->id)->first();
         // return json_encode(['FacultyInformation' => $FacultyInformation, 'Auth' => \Auth::user()]);
-        $SchoolYear = SchoolYear::where('status', 1)->where('current', 1)->orderBy('current', 'ASC')->orderBy('school_year', 'ASC')->get();
+        $SchoolYear = SchoolYear::where('status', 1)->where('current', 1)->orderBy('current', 'ASC')->orderBy('school_year', 'DESC')->get();
 
 
         $faculty_id = TeacherSubject::join('class_subject_details','class_subject_details.id', '=', 'teacher_subjects.class_subject_details_id')

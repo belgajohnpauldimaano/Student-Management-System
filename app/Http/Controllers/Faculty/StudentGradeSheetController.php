@@ -23,7 +23,7 @@ class StudentGradeSheetController extends Controller
     {
         $FacultyInformation = FacultyInformation::where('user_id', Auth::user()->id)->first();
         
-        $SchoolYear  = SchoolYear::where('status', 1)->where('current', 1)->orderBy('current', 'ASC')->orderBy('school_year', 'ASC')->get();
+        $SchoolYear  = SchoolYear::where('status', 1)->where('current', 1)->orderBy('current', 'ASC')->orderBy('school_year', 'DESC')->get();
         $class_id = Crypt::decrypt($request->c);        
         $GradeLevel = ClassSubjectDetail::join('class_details', 'class_details.id', '=', 'class_subject_details.class_details_id')            
             ->join('rooms','rooms.id', '=', 'class_details.room_id')

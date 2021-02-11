@@ -445,8 +445,8 @@
                 </a>
               </li>
               <li class="nav-item">
-                <a class="nav-link"
-                   href="">
+                <a class="nav-link {{request()->routeIs('faculty.assessment') ? 'active' : '' }}"
+                   href="{{ route('faculty.assessment') }}">
                   <i class="fas fa-user-clock fa-lg"></i> <p>Assessment</p>
                 </a>
               </li>

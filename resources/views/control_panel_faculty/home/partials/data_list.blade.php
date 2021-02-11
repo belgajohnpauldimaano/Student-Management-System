@@ -1,20 +1,24 @@
-<div class="">
-   <a class="btn js-modal" data-type="lesson">
-     <i class="fas fa-edit fa-lg text-success"></i> Add Lesson
-   </a>
-   <a class="btn js-modal" data-type="assignment">
-     <i class="fas fa-book fa-lg text-primary"></i> Add Assignment
-   </a>
-   <a class="btn js-modal" data-type="announcement">
-     <i class="fas fa-bullhorn fa-lg text-danger"></i> Add Announcement
-   </a>
+<div class="js-create-editor">
+    <a class="btn js-modal" data-type="Lesson">
+        <i class="fas fa-edit fa-lg text-success"></i> Add Lesson
+    </a>
+    <a class="btn js-modal" data-type="Assignment">
+        <i class="fas fa-book fa-lg text-primary"></i> Add Assignment
+    </a>
+    <a class="btn js-modal" data-type="Assessment">
+        <i class="far fa-sticky-note fa-lg text-info"></i> Add Assessment
+    </a>
+    <a class="btn js-modal" data-type="Announcement">
+        <i class="fas fa-bullhorn fa-lg text-danger"></i> Add Announcement
+    </a>
 </div>
 
-<div class="mt-3">
+<div id="js-editor" class="d-none fadeIn">
     <div class="pb-3">
-        <button type="button" class="close" title="close this editor">
+        <button type="button" class="close js-close-editor" title="close this editor">
             <span aria-hidden="true">×</span>
         </button>
+        <h4>Create <span id="js-title_type"></span></h4>
     </div>
     <div class="form-group form-group-sm w-100">
         <label>Section</label>
@@ -68,21 +72,15 @@
             <div class="custom-file">
                 <input type="file" class="custom-file-input form-control form-control-sm" name="payroll" id="payroll">
                 <label class="custom-file-label" id="btn-upload-payroll" for="payroll">
-                    {{-- @forelse ($payroll->documents as $item)
-                      {{ decrypt($item->path_name)}}
-                    @empty
-                        Choose file
-                    @endforelse --}}
-                    Choose file
+                   Choose file
                 </label>
             </div>
-            {{-- <div class="input-group-append">
-                <span class="input-group-text">Upload</span>
-            </div> --}}                           
         </div>
-        <div class="help-block text-red text-center" id="js-payroll"></div>        
+        <div class="help-block text-red text-center" id="js-payroll"></div>
     </div>
     <div class="form-group">
         <button type="button" class="btn btn-primary float-right">Create</button>
     </div>
 </div>
+
+

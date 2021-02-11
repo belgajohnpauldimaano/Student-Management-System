@@ -9,6 +9,12 @@ Route::group(['prefix' => 'faculty', 'middleware' => 'auth', 'roles' => ['admin'
         Route::get('', 'Faculty\HomeController@index')->name('faculty.home');
         Route::post('modal-data', 'Faculty\HomeController@modal_data')->name('finance.home.modal_data');
     });
+
+    Route::group(['prefix' => 'assessment'], function () {
+        Route::post('', 'Faculty\AssessmentController@index')->name('faculty.assessment');
+        Route::get('', 'Faculty\AssessmentController@index')->name('faculty.assessment');
+        Route::post('modal-data', 'Faculty\AssessmentController@modal_data')->name('finance.assessment.modal_data');
+    });
     
     Route::group(['prefix' => 'subject-class'], function() {
         Route::get('', 'Faculty\SubjectClassController@index')->name('faculty.subject_class');

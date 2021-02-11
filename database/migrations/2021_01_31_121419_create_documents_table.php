@@ -17,7 +17,7 @@ class CreateDocumentsTable extends Migration
             $table->bigIncrements('id');
             $table->text('path_name');
             $table->string('type');
-            $table->text('documentable_type');
+            // $table->text('documentable_type');
             $table->morphs('documentable');
             $table->timestamps();
         });
