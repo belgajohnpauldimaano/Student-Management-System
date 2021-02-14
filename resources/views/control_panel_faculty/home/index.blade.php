@@ -84,10 +84,15 @@
 @endsection
 @section('scripts')
     <script src="{{ asset('cms-new/plugins/summernote/summernote-bs4.min.js') }}"></script>
+    <script src="{{ asset('cms/plugins/datetimepicker/datetimepicker.js') }}"></script>
     <script>
         $(function () {
             // Summernote
             $('.select2').select2();
+            $('#publishdatetime, #expdatetime').datetimepicker({
+                autoclose: true,
+                format: 'yyyy-mm-dd hh:ii'
+            })
             // $('#summernote').summernote()
             $('#summernote').summernote({
                   toolbar: [
@@ -110,10 +115,10 @@
 
             $('body').on('click', '.js-modal', function (e) {
                 e.preventDefault();
-
                 // if($('#js-overlay-create').hasClass('overlay')){
                 //   $('#js-overlay-create').addClass('d-none')
                 // }
+                let dataSections = "";
                 let type = $(this).data('type');
                 fetchCreateAssessment();
 
@@ -141,7 +146,7 @@
                 }
             });
 
-            function fetchCreateAssessment(){
+            function fetchCreateAssessment(dataSections){
               $.ajax({
                   url : "{{ route('faculty.assessment.create') }}",
                   type : 'get',

@@ -44,24 +44,94 @@
             <option>Assignment</option>
         </select>
     </div> --}}
-    <div class="form-group form-group-sm w-100">
+    <div class="form-group">
+        <label for="summernote">Instructions</label>
+        <textarea id="summernote" rows="2"></textarea>
+    </div>
+    <div class="form-group">
+        <div class="row">
+            <div class="col-md-4">
+                <label for="">Date Time will publish: </label>
+                {{--  <input type="text" class="form-control" name="birthdate" value="{{ $StudentInformation ? $StudentInformation->birthdate : '' }}">  --}}
+                <div class="input-group date">
+                    <div class="input-group-prepend">
+                    <span class="input-group-text">
+                        <i class="far fa-calendar-alt"></i>
+                    </span>
+                    </div>
+                    <input type="text" name="publish-date-time" class="form-control form-control-sm pull-right"  
+                    data-date-format="yyyy-mm-dd hh:ii" id="publishdatetime" >
+                </div>
+                <div class="help-block text-red text-center" id="js-publish-date-time">
+                </div>
+            </div>
+            <div class="col-md-4">
+                <label for="">Date Time expiration: </label>
+                {{--  <input type="text" class="form-control" name="birthdate" value="{{ $StudentInformation ? $StudentInformation->birthdate : '' }}">  --}}
+                <div class="input-group date">
+                    <div class="input-group-prepend">
+                    <span class="input-group-text">
+                        <i class="far fa-calendar-alt"></i>
+                    </span>
+                    </div>
+                    <input type="text" name="exp-date-time" class="form-control form-control-sm pull-right" 
+                    data-date-format="yyyy-mm-dd hh:ii" id="expdatetime" >
+                </div>
+                <div class="help-block text-red text-center" id="js-exp-date-time">
+                </div>
+            </div>
+        </div>
+    </div>
+    {{-- <div class="form-group form-group-sm w-100">
         <label>Post Status</label>
         <select class="form-control select2" style="width: 100%;">
             <option selected="selected">Published</option>
             <option>Draft</option>
             <option>Archived</option>
         </select>
-    </div>
-    <div class="form-group form-group-sm w-100">
-        <label for="">Post Title</label>
+    </div> --}}
+    {{-- <div class="form-group form-group-sm w-100">
+        <label for="">Assessment Title</label>
             <input type="text" class="form-control form-control-sm" name="title" value="">
             <div class="help-block text-red text-center" id="title-error">
         </div>
+    </div> --}}
+    <div class="row">
+        <div class="col-md-4">
+            <div class="form-group form-group-sm w-100">
+                <label>Attempt Limit</label>
+                <select class="form-control form-control-sm" style="width: 100%;">
+                    @for ($x = 1; $x < 11; $x++)
+                        <option>{{ $x }}</option>
+                    @endfor
+                </select>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="form-group form-group-sm w-100">
+                <label>Randomize Order</label>
+                <select class="form-control select2" style="width: 100%;">
+                    <option selected="selected">Yes</option>
+                    <option>No</option>
+                </select>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="form-group form-group-sm w-100">
+                <label>View Submissions</label>
+                <select class="form-control select2" style="width: 100%;">
+                    <option>Yes with answers</option>
+                    <option>Yes</option>
+                    <option>No</option>
+                </select>
+            </div>
+        </div>
     </div>
-    <div class="form-group">
-        <textarea id="summernote" rows="2"></textarea>
-    </div>
-    <div class="form-group">
+    
+    
+    
+    
+    {{-- <div class="form-group">
         <label for="exampleInputFile">Upload File <i class="text-red"><small>Note: pptx, word and excel file can upload only</small></i></label>
         <div class="input-group">
             <div class="custom-file">
@@ -72,7 +142,7 @@
             </div>
         </div>
         <div class="help-block text-red text-center" id="js-payroll"></div>
-    </div>
+    </div> --}}
     <div class="form-group">
         <button type="button" class="btn btn-primary float-right">Create</button>
     </div>
