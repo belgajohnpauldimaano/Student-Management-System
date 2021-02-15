@@ -1,4 +1,16 @@
 <div class="table-responsive">
+    <h5 class="mb-3">
+        Class Subject: <span class="text-red"><i>{{ $ClassSubjectDetail->subject->subject }}</i></span>
+        <div class="text-right" style="margin-top: -1em">
+            <button id="js-print" class="btn btn-primary" 
+                {{-- data-id='{{$class_detail->id}}' 
+                data-sy='{{$class_detail->school_year_id}}'
+                data-adviser_id='{{$class_detail->adviser_id}}' --}}
+            >
+                <i class="fas fa-file-pdf"></i> Edit Color
+            </button>
+        </div>    
+    </h5>
     <div class="float-right">
         {{-- {{ $DiscountFee ? $DiscountFee->links() : '' }} --}}
     </div>
@@ -6,8 +18,9 @@
         <thead>
             <tr>
                 <th>Name</th>
-                <th>Date Time will publish</th>
-                <th>Date Time expiration</th>
+                <th>Due Date</th>
+                <th>Submissions</th>
+                <th>Category</th>
                 <th>Period</th>
                 <th>Status</th>
                 <th>Actions</th>

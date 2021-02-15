@@ -3,7 +3,8 @@
 @if($hasData == 1)
     @include('errors.404')
 @else
-    <table class="table table-sm no-margin table-bordered table-hover">
+<div class="table-responsive  table-responsive-sm" style="height: 600px;">
+    <table class="table table-sm table-head-fixed table-bordered table-hover">
         <thead>
             <tr>
                 <th style="width: 30px">#</th>
@@ -199,6 +200,7 @@
         @endforelse
         
     </table>
+</div>
 @endif
                 
 

@@ -1,5 +1,5 @@
-<div class="js-data-container1">
-<table class="table table-sm no-margin table-hover table-bordered">
+<div class="js-data-container1 table-responsive  table-responsive-sm"  style="height: 500px;">
+<table class="table table-sm no-margin table-head-fixed table-hover table-bordered">
     <thead>
         <tr>
             <th style="width: 30px">#</th>

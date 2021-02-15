@@ -1,7 +1,7 @@
 @extends('control_panel.layouts.master')
 
 @section ('content_title')
-    Assessment
+    Assessment | {{ $ClassSubjectDetail->classDetail->grade->id . '-' .$ClassSubjectDetail->classDetail->section->section }}
 @endsection
 
 @section ('content')
@@ -15,13 +15,14 @@
                 <form id="js-form_search">
                     {{ csrf_field() }}
                     <div class="row">
-                        <div class="col-md-10">
+                        <div class="col-md-9">
                             <div id="js-form_search" class="form-group" style="padding-left:0;padding-right:0">
                                 <input type="text" class="form-control" name="search">
                             </div>
                         </div>
-                        <div class="col-md-2">
+                        <div class="col-md-3">
                             <button type="submit" class="btn btn-success">Search</button>
+                            <button type="button" class="btn btn-danger" id="js-button-add"><i class="fa fa-plus"></i> Add</button>
                         </div>
                     </div>
                 </form>
@@ -32,26 +33,8 @@
             <div class="row">
                 <div class="col-md-12">
                     <div class="js-data-container">
-                        <div class="row" id="js-assessment-subject-container">
-                            @foreach ($ClassSubjectDetail as $item)
-                                <div class="col-md-3">
-                                    <a href="{{ route('faculty.assessment_subject', encrypt($item->id)) }}" class="small-box bg-primary btn js-assessment-subject">
-                                        <div class="inner" style="height: 150px;">
-                                            <h4>{{ $item->section }} {{ $item->grade_level }}</h4>
 
-                                            <p>{{ $item->subject }}</p>
-                                        </div>
-                                        <div class="icon">
-                                            <i class="fas fa-users"></i>
-                                        </div>
-                                        {{-- <a href="#" class="small-box-footer">
-                                            More info <i class="fas fa-arrow-circle-right"></i>
-                                        </a> --}}
-                                    </a>
-                                </div>
-                            @endforeach
-                        </div>
-                        {{-- @include('control_panel_faculty.assessment.partials.data_list') --}}
+                        @include('control_panel_faculty.assessment_per_subject.partials.data_list')
                     </div>
                 </div>
             </div>
@@ -60,6 +43,8 @@
 @endsection
 
 @section ('scripts')
+    <script src="{{ asset('cms-new/plugins/summernote/summernote-bs4.min.js') }}"></script>
+    <script src="{{ asset('cms/plugins/datetimepicker/datetimepicker.js') }}"></script>
     <script>
         
         var page = 1;
@@ -67,8 +52,9 @@
             var formData = new FormData($('#js-form_search')[0]);
             formData.append('page', page);
             loader_overlay();
+            
             $.ajax({
-                url : "{{ route('finance.maintenance.disc_fee') }}",
+                url : "{{ route('faculty.assessment_subject', $ClassSubjectDetail->id) }}",
                 type : 'POST',
                 data : formData,
                 processData : false,
@@ -82,7 +68,7 @@
         $(function () {
 
             $('.js-assessment-subject').click(function (){
-                // $('#js-assessment-subject-container').addClass('d-none');
+                $('#js-assessment-subject-container').addClass('d-none');
             });
 
             $('body').on('click', '#js-button-add, .js-btn_update_sy', function (e) {
@@ -90,12 +76,36 @@
                 {{--  loader_overlay();  --}}
                 var id = $(this).data('id');
                 $.ajax({
-                    url : "{{ route('finance.maintenance.disc_fee.modal_data') }}",
+                    url : "{{ route('finance.assessment_subject.modal_data', $ClassSubjectDetail->id) }}",
                     type : 'POST',
                     data : { _token : '{{ csrf_token() }}', id : id },
                     success : function (res) {
                         $('.js-modal_holder').html(res);
                         $('.js-modal_holder .modal').modal({ backdrop : 'static' });
+                        $('.select2').select2();
+                        $('#publishdatetime, #expdatetime').datetimepicker({
+                            autoclose: true,
+                            format: 'yyyy-mm-dd hh:ii'
+                        })
+                        // $('#summernote').summernote()
+                        $('#summernote').summernote({
+                            toolbar: [
+                                ['style', ['style']],
+                                ['font', ['bold', 'italic', 'underline', 'clear']],
+                                ['para', ['ul']],
+                                ['insert', ['table','link', 'video']],
+                                ['view', ['fullscreen', 'help']
+                            ],
+                            // ['codeview']
+                            ],
+                            height: 100,
+                            codemirror: {
+                            theme: 'monokai'
+                            },
+                            placeholder: 'write here...',
+                            spellCheck: true
+                        });
+
                     }
                 });
             });

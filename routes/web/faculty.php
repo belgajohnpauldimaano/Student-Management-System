@@ -16,6 +16,12 @@ Route::group(['prefix' => 'faculty', 'middleware' => 'auth', 'roles' => ['admin'
         Route::get('', 'Faculty\AssessmentController@index')->name('faculty.assessment');
         Route::post('modal-data', 'Faculty\AssessmentController@modal_data')->name('finance.assessment.modal_data');
     });
+
+    Route::group(['prefix' => 'assessment/subject/{class_subject_details_id}', 'middleware' => 'auth'], function () {
+        Route::post('', 'Faculty\AssessmentSubjectController@index')->name('faculty.assessment_subject');
+        Route::get('', 'Faculty\AssessmentSubjectController@index')->name('faculty.assessment_subject');
+        Route::post('modal-data', 'Faculty\AssessmentSubjectController@modal')->name('finance.assessment_subject.modal_data');
+    });
     
     Route::group(['prefix' => 'subject-class'], function() {
         Route::get('', 'Faculty\SubjectClassController@index')->name('faculty.subject_class');
