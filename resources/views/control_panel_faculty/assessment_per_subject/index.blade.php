@@ -22,7 +22,9 @@
                         </div>
                         <div class="col-md-3">
                             <button type="submit" class="btn btn-success">Search</button>
-                            <button type="button" class="btn btn-danger" id="js-button-add"><i class="fa fa-plus"></i> Add</button>
+                            <a href="{{ route('faculty.assessment_subject.create', encrypt($ClassSubjectDetail->id)) }}" type="button" class="btn btn-danger">
+                                <i class="fa fa-plus"></i> Create
+                            </a>
                         </div>
                     </div>
                 </form>
@@ -33,7 +35,6 @@
             <div class="row">
                 <div class="col-md-12">
                     <div class="js-data-container">
-
                         @include('control_panel_faculty.assessment_per_subject.partials.data_list')
                     </div>
                 </div>
@@ -76,7 +77,7 @@
                 {{--  loader_overlay();  --}}
                 var id = $(this).data('id');
                 $.ajax({
-                    url : "{{ route('finance.assessment_subject.modal_data', $ClassSubjectDetail->id) }}",
+                    url : "{{ route('faculty.assessment_subject.modal_data', $ClassSubjectDetail->id) }}",
                     type : 'POST',
                     data : { _token : '{{ csrf_token() }}', id : id },
                     success : function (res) {
@@ -93,7 +94,7 @@
                                 ['style', ['style']],
                                 ['font', ['bold', 'italic', 'underline', 'clear']],
                                 ['para', ['ul']],
-                                ['insert', ['table','link', 'video']],
+                                ['insert', ['table','link', 'video', 'picture']],
                                 ['view', ['fullscreen', 'help']
                             ],
                             // ['codeview']

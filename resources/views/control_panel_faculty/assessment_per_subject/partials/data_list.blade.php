@@ -1,32 +1,44 @@
 <div class="table-responsive">
     <h5 class="mb-3">
         Class Subject: <span class="text-red"><i>{{ $ClassSubjectDetail->subject->subject }}</i></span>
-        <div class="text-right" style="margin-top: -1em">
-            <button id="js-print" class="btn btn-primary" 
-                {{-- data-id='{{$class_detail->id}}' 
+        {{-- <div class="text-right" style="margin-top: -1em">
+            <button id="js-print" class="btn btn-primary btn-sm" 
+                data-id='{{$class_detail->id}}' 
                 data-sy='{{$class_detail->school_year_id}}'
-                data-adviser_id='{{$class_detail->adviser_id}}' --}}
+                data-adviser_id='{{$class_detail->adviser_id}}'
             >
-                <i class="fas fa-file-pdf"></i> Edit Color
+                <i class="far fa-edit"></i> Edit
             </button>
-        </div>    
+        </div>     --}}
     </h5>
     <div class="float-right">
         {{-- {{ $DiscountFee ? $DiscountFee->links() : '' }} --}}
     </div>
-    <table class="table table-sm table-hover no-margin">
+    <table class="table table-sm table-hover">
         <thead>
             <tr>
-                <th>Name</th>
-                <th>Due Date</th>
-                <th>Submissions</th>
-                <th>Category</th>
+                <th>Assessment Name</th>
                 <th>Period</th>
+                <th>Date Publish</th>
+                <th>Date Expiration</th>
                 <th>Status</th>
                 <th>Actions</th>
             </tr>
         </thead>
         <tbody>
+            <tr>
+                <td>
+                    <a class="btn" href="">
+                        <i class="far fa-file fa-2x"></i> sample assessment
+                    </a>
+                </td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            
             {{-- @if ($DiscountFee)
                 @foreach ($DiscountFee as $data)
                     <tr>

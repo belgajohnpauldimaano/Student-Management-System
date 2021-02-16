@@ -1,5 +1,5 @@
 <div class="modal fade" tabindex="-1" role="dialog">
-    <div class="modal-dialog " role="document">
+    <div class="modal-dialog modal-xl" role="document">
         <div class="modal-content">
             <form id="js-form_disc_fee">
                 {{ csrf_field() }}
@@ -80,6 +80,10 @@
                             <option>4th quarter</option>
                             @endif
                         </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="summernote">Instructions</label>
+                        <textarea id="summernote" rows="2"></textarea>
                     </div>
 
                 </div>

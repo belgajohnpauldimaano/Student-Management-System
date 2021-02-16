@@ -1,0 +1,171 @@
+<form id="js-assessment-form">
+    {{ csrf_field() }}
+    @if ($ClassSubjectDetail)
+        <input type="hidden" name="id" value="{{ $ClassSubjectDetail->id }}">
+    @endif
+    <div>
+        <div class="form-group">
+            <div class="row">
+                <div class="col-md-9">
+                    <label for="">Title</label>
+                    <input type="text" class="form-control form-control-sm" name="title" value="">
+                    <div class="help-block text-red" id="js-title">
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group form-group-sm w-100">
+                        <label>Exam Period</label>
+                        <select class="form-control form-control-sm" name="exam_period" style="width: 100%;">
+                            <option value="1">Prelims</option>
+                            <option value="2">Midterms</option>
+                            <option value="3">Finals</option>
+                        </select>
+                    </div>
+                    <div class="help-block text-red" id="js-exam_period">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="row">
+                <div class="col-md-3">
+                    <label for="">Publish Date and Time: </label>
+                    <div class="input-group date">
+                        <div class="input-group-prepend">
+                        <span class="input-group-text">
+                            <i class="far fa-calendar-alt"></i>
+                        </span>
+                        </div>
+                        <input type="text" name="publish_date_time" class="form-control form-control-sm pull-right"  
+                        data-date-format="yyyy-mm-dd hh:ii" id="publishdatetime" >
+                    </div>
+                    <div class="help-block text-red" id="js-publish_date_time">
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <label for="">Expiry Date and Time: </label>
+                    <div class="input-group date">
+                        <div class="input-group-prepend">
+                        <span class="input-group-text">
+                            <i class="far fa-calendar-alt"></i>
+                        </span>
+                        </div>
+                        <input type="text" name="exp_date_time" class="form-control form-control-sm pull-right" 
+                        data-date-format="yyyy-mm-dd hh:ii" id="expdatetime" >
+                    </div>
+                    <div class="help-block text-red" id="js-exp_date_time">
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    @if($ClassSubjectDetail->classDetail->grade->id > 10)
+                    <div class="form-group form-group-sm w-100">
+                        <label>Semester Period:</label>
+                        <select class="form-control form-control-sm" name="semester_period" style="width: 100%;">
+                            <option value="1">1st semester</option>
+                            <option value="2">2nd semester</option>
+                        </select>
+                    </div>
+                    <div class="help-block text-red" id="js-semester_period"></div>
+                    @endif
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group form-group-sm w-100">
+                        <label>Quarter Period:</label>
+                        <select class="form-control form-control-sm" name="quarter_period" style="width: 100%;">
+                            <option value="1">1st quarter</option>
+                            <option value="2">2nd quarter</option>
+                            @if($ClassSubjectDetail->classDetail->grade->id < 11)
+                            <option value="3">3rd quarter</option>
+                            <option value="4">4th quarter</option>
+                            @endif
+                        </select>
+                        <div class="help-block text-red" id="js-quarter_period"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="row">
+                <div class="col-md-12">
+                    <label for="summernote">Instructions</label>
+                    <textarea name="instructions" id="summernote"></textarea>
+                    <div class="help-block text-red" id="js-instructions"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <hr/>
+
+    <div class="form-group">
+         <h5>Assessment Settings</h5>
+        <div class="row mt-3">
+            <div class="col-md-4">
+                <label for="">Questions are randomly ordered:</label>
+                <div class="form-group clearfix">
+                    <div class="icheck-danger d-inline">
+                        <input type="radio" name="randomly_ordered" checked id="randomly_ordered_yes" value="1">
+                        <label for="randomly_ordered_yes">
+                            Yes
+                        </label>
+                    </div>
+                    <div class="icheck-danger d-inline">
+                        <input type="radio" name="randomly_ordered" id="randomly_ordered_no" value="0">
+                        <label for="randomly_ordered_no">
+                            No
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <label for="">Time Limit: <small class="text-red"><i>eg. 60 mins</i></small></label>                
+                <input type="number" class="form-control form-control-sm" name="time_limit" value="">
+                <div class="help-block text-red" id="js-time_limit"></div>
+            </div>
+            <div class="col-md-3">
+                <label for="">Total Item:</label>                
+                <input type="number" class="form-control form-control-sm" name="total_item" value="">
+                <div class="help-block text-red" id="js-total_item"></div>
+            </div>
+        </div>
+        <hr/>
+        <h5>Student Settings</h5>
+        <div class="row mt-3">
+            <div class="col-md-4">
+                <label for="">Students can view results after submission:</label>
+                <div class="form-group clearfix">
+                    <div class="icheck-primary d-inline">
+                        <input type="radio" name="view_results" checked id="view_results_no" value="0">
+                        <label for="view_results_no">
+                            No
+                        </label>
+                    </div>
+                    <div class="icheck-primary d-inline">
+                        <input type="radio" name="view_results" id="view_results_yes" value="1">
+                        <label for="view_results_yes">
+                            Yes
+                        </label>
+                    </div>
+                    <div class="icheck-primary d-inline">
+                        <input type="radio" name="view_results" id="view_results_yes_answers" value="2">
+                        <label for="view_results_yes_answers">
+                            Yes with correct answers
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <label for="">Number of submission attempts of student:</label>
+                <select class="form-control form-control-sm col-md-9" name="attempts" style="width: 100%;">
+                    @for ($x = 1; $x < 11; $x++) 
+                        <option>{{ $x }}</option>
+                    @endfor
+                </select>
+                <div class="help-block text-red" id="js-attempts"></div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="modal-footer">
+        <button type="submit" class="btn btn-primary">Save</button>
+    </div>
+</form>
