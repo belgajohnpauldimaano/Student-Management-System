@@ -6,9 +6,14 @@
 
 @section ('content')
     <div class="card card-default">
+        <div class="col-md-12">
+            <a href="{{ route('faculty.assessment') }}" style="margin-top: -3em" class="btn-success btn float-right">
+                <i class="fas fa-arrow-left"></i> back
+            </a>
+        </div>
         <div class="overlay d-none" id="js-loader-overlay">
-                <i class="fas fa-2x fa-sync-alt fa-spin"></i>
-            </div>
+            <i class="fas fa-2x fa-sync-alt fa-spin"></i>
+        </div>
         <div class="card-header">
             <div class="col-md-8 m-auto">
                 <h6 class="box-title">Search</h6>
@@ -110,6 +115,24 @@
                     }
                 });
             });
+
+
+            $('body').on('click', '.js-btn_view', function (e) {
+                e.preventDefault();
+                // alert('je;;')
+                var id = $(this).data('id');
+                // alert(id)
+                $.ajax({
+                    url : "{{ route('faculty.assessment_subject.edit', $ClassSubjectDetail->id) }}",
+                    type : 'POST',
+                    data : { _token : '{{ csrf_token() }}', id : id },
+                    success : function (res) {
+                        var loc = window.location;
+                        window.location = loc.protocol+"//"+loc+"/faculty/home";
+                    }
+                });
+            });
+
 
             $('body').on('submit', '#js-form_disc_fee', function (e) {
                 e.preventDefault();

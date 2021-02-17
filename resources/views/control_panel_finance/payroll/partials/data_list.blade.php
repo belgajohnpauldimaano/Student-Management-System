@@ -18,8 +18,7 @@
                                         <tr>
                                             <td>{{  $data ? date_format(date_create($data->payroll_date), 'F d, Y') : ''  }}</td>
                                             <td>
-                                                {{ $data->employee_user_type }}
-                                                                          
+                                                {{ $data->employee_user_type }}                                                                          
                                             </td>
                                             <td>
                                                 {!! $data->employee_type_badge !!}

@@ -19,11 +19,14 @@ class AssessmentSubjectController extends Controller
     {
         $id = Crypt::decrypt($request->class_subject_details_id);
         $ClassSubjectDetail = $this->subjectDetails($id);
+
+        $Assessment = Assessment::orderBY('id', 'desc')->paginate(10);
+        
         if($request->ajax())
         {
-            return view('control_panel_faculty.assessment_per_subject.partials.data_list', compact('ClassSubjectDetail'));
+            return view('control_panel_faculty.assessment_per_subject.partials.data_list', compact('ClassSubjectDetail','Assessment'));
         }
-        return view('control_panel_faculty.assessment_per_subject.index', compact('ClassSubjectDetail'));
+        return view('control_panel_faculty.assessment_per_subject.index', compact('ClassSubjectDetail','Assessment'));
     }
 
     public function modal(Request $request){
@@ -39,7 +42,24 @@ class AssessmentSubjectController extends Controller
         $id = Crypt::decrypt($request->class_subject_details_id);
         $ClassSubjectDetail = $this->subjectDetails($id);
         
-        return view('control_panel_faculty.assessment_per_subject.create_assessment', compact('ClassSubjectDetail'))->render();
+        return view('control_panel_faculty.assessment_per_subject._index', compact('ClassSubjectDetail'))->render();
+    }
+
+    public function edit(Request $request){
+
+        // return json_encode('hello');
+
+        // $id = Crypt::decrypt($request->id);
+        // $Assessment = Assessment::whereId($id)->first();
+        // $ClassSubjectDetail = $this->subjectDetails($Assessment->class_subject_details_id);
+        // $Assessment = Assessment::orderBY('id', 'desc')->paginate(10);
+
+        $id = $request->class_subject_details_id;
+        $ClassSubjectDetail = $this->subjectDetails($id);
+
+        return response()->json(['res_code' => 1, 'res_msg' => 'Error in saving photo']);
+        
+        // return view('control_panel_faculty.assessment_per_subject._index', compact('ClassSubjectDetail'))->render();
     }
     
     public function save(Request $request){
@@ -62,7 +82,7 @@ class AssessmentSubjectController extends Controller
             return response()->json(['res_code' => 1, 'res_msg' => 'Please fill all required fields.', 'res_error_msg' => $Validator->getMessageBag()]);
         }
 
-        $ClassSubjectDetail = $request->id;
+        $ClassSubjectDetail = $request->class_subject_details_id;
 
         $Assessment = Assessment::create([
             'class_subject_details_id'  =>  $ClassSubjectDetail,

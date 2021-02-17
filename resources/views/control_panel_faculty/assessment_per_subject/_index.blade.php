@@ -16,9 +16,15 @@
         </div>
         <div class="card-header p-2">
             <ul class="nav nav-pills">
-                <li class="nav-item"><a class="nav-link active" href="#setup" data-toggle="tab">Setup</a></li>
-                <li class="nav-item"><a class="nav-link" href="#questions" data-toggle="tab">Questions</a></li>
-                <li class="nav-item"><a class="nav-link" href="#grading" data-toggle="tab">Grading</a></li>
+                <li class="nav-item">
+                  <a class="nav-link active" href="#setup" data-toggle="tab">Setup</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="#questions" data-toggle="tab">Questions</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="#grading" data-toggle="tab">Grading</a>
+                </li>
                 <li class="nav-item ml-auto dropdown">
                     <a class="nav-link bg-danger dropdown-toggle" data-toggle="dropdown" href="#">
                       <i class="fas fa-cog"></i> Action <span class="caret"></span>
@@ -241,7 +247,7 @@
                 {{--  loader_overlay();  --}}
                 var id = $(this).data('id');
                 $.ajax({
-                    url : "{{ route('faculty.assessment_subject.modal_data', $ClassSubjectDetail->id) }}",
+                    url : "{{ route('faculty.assessment_subject.edit', $ClassSubjectDetail->id) }}",
                     type : 'POST',
                     data : { _token : '{{ csrf_token() }}', id : id },
                     success : function (res) {

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Traits\HasAssessments;
 use Illuminate\Database\Eloquent\Model;
 
 class Assessment extends Model
@@ -23,4 +24,6 @@ class Assessment extends Model
         'assessment_time',
         'attempt_limit'
     ];
+
+    use HasAssessments;
 }

@@ -22,6 +22,8 @@ Route::group(['prefix' => 'faculty', 'middleware' => 'auth', 'roles' => ['admin'
         Route::get('', 'Faculty\AssessmentSubjectController@index')->name('faculty.assessment_subject');
         Route::post('modal-data', 'Faculty\AssessmentSubjectController@modal')->name('faculty.assessment_subject.modal_data');
         Route::get('create-assessment', 'Faculty\AssessmentSubjectController@create')->name('faculty.assessment_subject.create');
+        Route::get('edit-assessment', 'Faculty\AssessmentSubjectController@edit')->name('faculty.assessment_subject.edit');
+        Route::post('edit-assessment', 'Faculty\AssessmentSubjectController@edit')->name('faculty.assessment_subject.edit');
         Route::post('save-data', 'Faculty\AssessmentSubjectController@save')->name('faculty.assessment_subject.save_data');
     });
     

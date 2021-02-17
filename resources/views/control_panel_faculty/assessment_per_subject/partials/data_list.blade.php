@@ -12,13 +12,13 @@
         </div>     --}}
     </h5>
     <div class="float-right">
-        {{-- {{ $DiscountFee ? $DiscountFee->links() : '' }} --}}
+        {{ $Assessment ? $Assessment->links() : '' }}
     </div>
     <table class="table table-sm table-hover">
         <thead>
             <tr>
                 <th>Assessment Name</th>
-                <th>Period</th>
+                <th>Exam Period</th>
                 <th>Date Publish</th>
                 <th>Date Expiration</th>
                 <th>Status</th>
@@ -26,19 +26,57 @@
             </tr>
         </thead>
         <tbody>
-            <tr>
-                <td>
-                    <a class="btn" href="">
-                        <i class="far fa-file fa-2x"></i> sample assessment
-                    </a>
-                </td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-            </tr>
-            
+            @forelse ($Assessment as $item)
+                <tr>
+                    <td class="align-middle">
+                        <a class="btn" href="">
+                            <i class="far fa-file"></i> {{ $item->title }}
+                        </a>
+                    </td>
+                    <td class="align-middle" style="width: 11%">
+                        {!! $item->exam_period_badge !!}
+                    </td>
+                    <td class="align-middle" style="width: 15%">
+                        {{ $item->date_time_publish }}
+                    </td>
+                    <td class="align-middle" style="width: 15%">
+                        {{ $item->date_time_expiration }}
+                    </td>
+                    <td class="align-middle" style="width: 5%">
+                        {!! $item->exam_status_badge !!}
+                    </td>
+                    <td class="align-middle" style="width: 11%">
+                        <div class="btn-group btn-group-sm">
+                            <button type="button" class="btn btn-danger"><i class="fas fa-cog"></i> Action</button>
+                            <button type="button" class="btn btn-danger dropdown-toggle dropdown-icon" data-toggle="dropdown">
+                                <span class="sr-only">Toggle Dropdown</span>
+                            </button>
+                            <div class="dropdown-menu dropdown-menu-right">
+                                {{-- {{ route('faculty.assessment_subject.edit', encrypt($item->id)) }} --}}
+                                <a href="#" class="dropdown-item js-btn_view" data-id="{{ $item->id }}">
+                                    <i class="far fa-eye"></i> View
+                                </a>
+                                <a href="#" class="dropdown-item" data-id="{{ $item->id }}">
+                                    <i class="far fa-check-square"></i> Publish
+                                </a>
+                                <a href="#" class="dropdown-item js-btn_deactivate" data-id="{{ $item->id }}">
+                                    <i class="fas fa-archive"></i> Archive
+                                </a>
+                                {{-- <a href="#" class="dropdown-item js-btn_toggle_current" data-id="{{ $data->id }}" data-toggle_title="{{ ( $data->current ? 'Remove from current active' : 'Add to current active' ) }}">
+                                    {{ ( $data->current ? 'Remove from current Active' : 'Add to current Active' ) }}
+                                </a> --}}
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            @empty
+                <tr>
+                    <th colspan="6">
+                        No Record Found
+                    </th>
+                </tr>
+            @endforelse
+
             {{-- @if ($DiscountFee)
                 @foreach ($DiscountFee as $data)
                     <tr>

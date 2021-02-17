@@ -63,12 +63,9 @@ class StudentController extends Controller
 
     public function change_my_photo (Request $request)
     {
-        
         $name = time().'.'.$request->user_photo->getClientOriginalExtension();
         $destinationPath = public_path('/img/account/photo/');
         $request->user_photo->move($destinationPath, $name);
-
-
 
     //    / $User = \Auth::user();
         if($request->id)

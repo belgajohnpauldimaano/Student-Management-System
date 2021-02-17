@@ -102,7 +102,6 @@ trait HasUser{
 
         if($this->employee_type == 4){
             return '<span class="badge bg-orange">Registrar</span>';
-        }
-        
+        }        
     }
 }

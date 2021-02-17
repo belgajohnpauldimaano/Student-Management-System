@@ -30,8 +30,7 @@
             @include('control_panel_student.enrollment.partials.data_list')
         @endif
     </div>
-    
-    
+
 @endsection
 
 @section ('scripts')

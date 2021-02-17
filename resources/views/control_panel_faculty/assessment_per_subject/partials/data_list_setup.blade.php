@@ -1,7 +1,7 @@
 <form id="js-assessment-form">
     {{ csrf_field() }}
     @if ($ClassSubjectDetail)
-        <input type="hidden" name="id" value="{{ $ClassSubjectDetail->id }}">
+        <input type="hidden" name="class_subject_details_id" value="{{ $ClassSubjectDetail->id }}">
     @endif
     <div>
         <div class="form-group">
