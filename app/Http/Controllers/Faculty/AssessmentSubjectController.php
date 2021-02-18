@@ -39,27 +39,20 @@ class AssessmentSubjectController extends Controller
 
     public function create(Request $request){
 
+        $Assessment=null;
         $id = Crypt::decrypt($request->class_subject_details_id);
         $ClassSubjectDetail = $this->subjectDetails($id);
         
-        return view('control_panel_faculty.assessment_per_subject._index', compact('ClassSubjectDetail'))->render();
+        return view('control_panel_faculty.assessment_per_subject._index', compact('ClassSubjectDetail','Assessment'))->render();
     }
 
     public function edit(Request $request){
 
-        // return json_encode('hello');
-
-        // $id = Crypt::decrypt($request->id);
-        // $Assessment = Assessment::whereId($id)->first();
-        // $ClassSubjectDetail = $this->subjectDetails($Assessment->class_subject_details_id);
-        // $Assessment = Assessment::orderBY('id', 'desc')->paginate(10);
-
-        $id = $request->class_subject_details_id;
-        $ClassSubjectDetail = $this->subjectDetails($id);
-
-        return response()->json(['res_code' => 1, 'res_msg' => 'Error in saving photo']);
+        $id = Crypt::decrypt($request->class_subject_details_id);
+        $Assessment = Assessment::whereId($id)->first();
+        $ClassSubjectDetail = $this->subjectDetails($Assessment->class_subject_details_id);
         
-        // return view('control_panel_faculty.assessment_per_subject._index', compact('ClassSubjectDetail'))->render();
+        return view('control_panel_faculty.assessment_per_subject._index', compact('ClassSubjectDetail','Assessment'))->render();
     }
     
     public function save(Request $request){
@@ -84,6 +77,24 @@ class AssessmentSubjectController extends Controller
 
         $ClassSubjectDetail = $request->class_subject_details_id;
 
+        if ($request->id)
+        {
+            $Assessment = Assessment::whereId($request->id)->first();
+            $Assessment->title                  = $request->title;
+            $Assessment->instructions           =  $request->instructions;
+            $Assessment->period                 =  $request->exam_period;
+            $Assessment->date_time_publish      =  $request->publish_date_time;
+            $Assessment->date_time_expiration   =  $request->exp_date_time;
+            $Assessment->semester               =  $request->semester_period ? $request->semester_period : '';
+            $Assessment->quarter                =  $request->quarter_period;
+            $Assessment->randomly_ordered       =  $request->randomly_ordered;
+            $Assessment->time_limit             =  $request->time_limit;
+            $Assessment->total_items            =  $request->total_item;
+            $Assessment->student_view_result    =  $request->view_results;
+            $Assessment->attempt_limit          =  $request->attempts;
+            $Assessment->save();
+        }
+
         $Assessment = Assessment::create([
             'class_subject_details_id'  =>  $ClassSubjectDetail,
             'title'                     =>  $request->title,
@@ -91,13 +102,13 @@ class AssessmentSubjectController extends Controller
             'period'                    =>  $request->exam_period,
             'date_time_publish'         =>  $request->publish_date_time,
             'date_time_expiration'      =>  $request->exp_date_time,
-            'semester'                  =>  $request->semester_period,
+            'semester'                  =>  $request->semester_period ? $request->semester_period : '',
             'quarter'                   =>  $request->quarter_period,
             'randomly_ordered'          =>  $request->randomly_ordered,
             'time_limit'                =>  $request->time_limit,
             'total_items'               =>  $request->total_item,
             'student_view_result'       =>  $request->view_results,
-            'student_no_attempts'       =>  $request->attempts,
+            'attempt_limit'             =>  $request->attempts,
         ]);
         
         return response()->json(['res_code' => 0, 'res_msg' => 'Assessment successfully saved.']);

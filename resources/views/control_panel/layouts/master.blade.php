@@ -550,8 +550,7 @@
                         request()->routeIs('admin.maintenance.strand') ? 'd-block' : '' ||
                         request()->routeIs('admin.maintenance.student_attendance') ? 'd-block' : '' ||
                         request()->routeIs('admin.maintenance.subjects') ? 'd-block' : '' ||
-                        request()->routeIs('admin.maintenance.section_details') ? 'd-block' : '' 
-                        
+                        request()->routeIs('admin.maintenance.section_details') ? 'd-block' : ''
                       }}
                   ">
                       {{--  Admin Menu  --}}

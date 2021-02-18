@@ -1,7 +1,7 @@
 @extends('control_panel.layouts.master')
 
 @section ('content_title')
-    Create Assessment | {{ $ClassSubjectDetail->classDetail->grade->id . '-' .$ClassSubjectDetail->classDetail->section->section }}
+  {{ $Assessment != null ? 'Edit' : 'Create' }} Assessment | {{ $ClassSubjectDetail->classDetail->grade->id . '-' .$ClassSubjectDetail->classDetail->section->section }}
 @endsection
 
 @section ('content')
@@ -259,7 +259,7 @@
                 });
             });
 
-            $('body').on('submit', '#js-assessment-form', function (e) {
+            $('body').on('submit', '#js-assessment-create-form, #js-assessment-update-form', function (e) {
                 e.preventDefault();
                 var formData = new FormData($(this)[0]);
                 $.ajax({
