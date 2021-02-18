@@ -15,7 +15,8 @@ class CreateQuestionAnswersTable extends Migration
     {
         Schema::create('question_answers', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->Integer('answer_options_id');
+            $table->Integer('question_id');
+            $table->String('correct_option_answer');
             $table->Integer('order_number')->nullable();
             $table->timestamps();
         });

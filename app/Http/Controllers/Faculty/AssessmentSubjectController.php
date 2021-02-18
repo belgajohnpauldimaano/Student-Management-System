@@ -93,27 +93,28 @@ class AssessmentSubjectController extends Controller
             $Assessment->student_view_result    =  $request->view_results;
             $Assessment->attempt_limit          =  $request->attempts;
             $Assessment->save();
-        }
+            return response()->json(['res_code' => 0, 'res_msg' => 'Assessment successfully updated.']);
+        }else{
 
-        $Assessment = Assessment::create([
-            'class_subject_details_id'  =>  $ClassSubjectDetail,
-            'title'                     =>  $request->title,
-            'instructions'              =>  $request->instructions,
-            'period'                    =>  $request->exam_period,
-            'date_time_publish'         =>  $request->publish_date_time,
-            'date_time_expiration'      =>  $request->exp_date_time,
-            'semester'                  =>  $request->semester_period ? $request->semester_period : '',
-            'quarter'                   =>  $request->quarter_period,
-            'randomly_ordered'          =>  $request->randomly_ordered,
-            'time_limit'                =>  $request->time_limit,
-            'total_items'               =>  $request->total_item,
-            'student_view_result'       =>  $request->view_results,
-            'attempt_limit'             =>  $request->attempts,
-        ]);
-        
-        return response()->json(['res_code' => 0, 'res_msg' => 'Assessment successfully saved.']);
-        
-        return redirect()->route('control_panel_faculty.assessment_per_subject.index');
+            $Assessment = Assessment::create([
+                'class_subject_details_id'  =>  $ClassSubjectDetail,
+                'title'                     =>  $request->title,
+                'instructions'              =>  $request->instructions,
+                'period'                    =>  $request->exam_period,
+                'date_time_publish'         =>  $request->publish_date_time,
+                'date_time_expiration'      =>  $request->exp_date_time,
+                'semester'                  =>  $request->semester_period ? $request->semester_period : '',
+                'quarter'                   =>  $request->quarter_period,
+                'randomly_ordered'          =>  $request->randomly_ordered,
+                'time_limit'                =>  $request->time_limit,
+                'total_items'               =>  $request->total_item,
+                'student_view_result'       =>  $request->view_results,
+                'attempt_limit'             =>  $request->attempts,
+            ]);
+            
+            return response()->json(['res_code' => 0, 'res_msg' => 'Assessment successfully saved.']);
+        }
+        // return redirect()->route('control_panel_faculty.assessment_per_subject.index');
 
     }
 }

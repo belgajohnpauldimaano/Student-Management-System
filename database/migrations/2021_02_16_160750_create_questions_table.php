@@ -15,7 +15,7 @@ class CreateQuestionsTable extends Migration
     {
         Schema::create('questions', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->integer('assessments_id');
+            $table->integer('assessment_id');
             $table->string('question_type');
             $table->Text('question_title');
             $table->tinyInteger('status')->default('1')->comment('1 is active - 0 is enactive');
