@@ -21,9 +21,9 @@
                     <div class="form-group form-group-sm w-100">
                         <label>Exam Period</label>
                         <select class="form-control form-control-sm" name="exam_period" style="width: 100%;">
-                            <option value="1" {{ $Assessment != null ? ($Assessment->period == 1 ? 'selected' : '') : '' }}>Prelims</option>
-                            <option value="2" {{ $Assessment != null ? ($Assessment->period == 2 ? 'selected' : '') : '' }}>Midterms</option>
-                            <option value="3" {{ $Assessment != null ? ($Assessment->period == 3 ? 'selected' : '') : '' }}>Finals</option>
+                            <option value="1" {{ $Assessment != null ? ($Assessment->period == 1 ? 'selected' : '') : '' }}>Prelim</option>
+                            <option value="2" {{ $Assessment != null ? ($Assessment->period == 2 ? 'selected' : '') : '' }}>Midterm</option>
+                            <option value="3" {{ $Assessment != null ? ($Assessment->period == 3 ? 'selected' : '') : '' }}>Final</option>
                         </select>
                     </div>
                     <div class="help-block text-red" id="js-exam_period">
@@ -61,8 +61,8 @@
                     <div class="help-block text-red" id="js-exp_date_time">
                     </div>
                 </div>
+                @if($ClassSubjectDetail->classDetail->grade->id > 10)
                 <div class="col-md-3">
-                    @if($ClassSubjectDetail->classDetail->grade->id > 10)
                     <div class="form-group form-group-sm w-100">
                         <label>Semester Period:</label>
                         <select class="form-control form-control-sm" name="semester_period" style="width: 100%;">
@@ -71,8 +71,8 @@
                         </select>
                     </div>
                     <div class="help-block text-red" id="js-semester_period"></div>
-                    @endif
                 </div>
+                @endif
                 <div class="col-md-3">
                     <div class="form-group form-group-sm w-100">
                         <label>Quarter Period:</label>
@@ -86,15 +86,6 @@
                         </select>
                         <div class="help-block text-red" id="js-quarter_period"></div>
                     </div>
-                </div>
-            </div>
-        </div>
-        <div class="form-group">
-            <div class="row">
-                <div class="col-md-12">
-                    <label for="summernote">Instructions</label>
-                    <textarea name="instructions" id="summernote">{!! ($Assessment != null ? $Assessment->instructions : '') !!}</textarea>
-                    <div class="help-block text-red" id="js-instructions"></div>
                 </div>
             </div>
         </div>
@@ -121,12 +112,12 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-3">
+            <div class="col-md-4">
                 <label for="">Time Limit: <small class="text-red"><i>eg. 60 mins</i></small></label>                
                 <input type="number" class="form-control form-control-sm" name="time_limit" value="{{ ($Assessment != null ? ($Assessment->time_limit) : '') }}">
                 <div class="help-block text-red" id="js-time_limit"></div>
             </div>
-            <div class="col-md-3">
+            <div class="col-md-4">
                 <label for="">Total Item:</label>                
                 <input type="number" class="form-control form-control-sm" name="total_item" value="{{ ($Assessment != null ? ($Assessment->total_items) : '') }}">
                 <div class="help-block text-red" id="js-total_item"></div>
@@ -160,13 +151,22 @@
             </div>
             <div class="col-md-4">
                 <label for="">Number of submission attempts of student:</label>
-                <select class="form-control form-control-sm col-md-9" name="attempts" style="width: 100%;">
+                <select class="form-control form-control-sm" name="attempts" style="width: 100%;">
                     @for ($x = 1; $x < 11; $x++) 
                         <option value="{{ $x }}" {{ ($Assessment != null ? ($Assessment->attempt_limit == $x ? 'selected' : '') : '') }}>{{ $x }}</option>
                     @endfor
                 </select>
                 <div class="help-block text-red" id="js-attempts"></div>
             </div>
+            {{-- <div class="col-md-4">
+                <label for="">Number of question in every page:</label>
+                <select class="form-control form-control-sm" name="attempts" style="width: 100%;">
+                    <option>1</option>
+                    <option></option>
+                    <option></option>
+                </select>
+                <div class="help-block text-red" id="js-attempts"></div>
+            </div> --}}
         </div>
     </div>
     

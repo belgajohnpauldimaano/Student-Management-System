@@ -17,10 +17,13 @@
         <div class="card-header p-2">
             <ul class="nav nav-pills">
                 <li class="nav-item">
-                  <a class="nav-link " href="#setup" data-toggle="tab">Setup</a>
+                  <a class="nav-link " href="#setup" data-toggle="tab">Settings</a>
                 </li>
                 <li class="nav-item">
-                  <a class="nav-link active" href="#questions" data-toggle="tab">Items</a>
+                  <a class="nav-link active" href="#instruction" data-toggle="tab">Instruction</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link " href="#questions" data-toggle="tab">Question</a>
                 </li>
                 <li class="nav-item">
                   <a class="nav-link" href="#grading" data-toggle="tab">Grading</a>
@@ -44,8 +47,12 @@
                     @include('control_panel_faculty.assessment_per_subject.partials.data_list_setup')
                 </div>
                 <!-- /.tab-pane -->
-                <div class="active tab-pane" id="questions">
-                    @include('control_panel_faculty.assessment_per_subject.partials.data_list_questions')
+                <div class="active tab-pane" id="instruction">
+                    @include('control_panel_faculty.assessment_per_subject.partials.data_list_instruction')
+                </div>
+
+                <div class="tab-pane" id="questions">
+                    @include('control_panel_faculty.assessment_per_subject.partials.data_list_question')
                 </div>
                 <!-- /.tab-pane -->
                 <div class="tab-pane" id="grading">
@@ -138,7 +145,7 @@
                 ['style', ['style']],
                 ['font', ['bold', 'italic', 'underline', 'clear']],
                 ['para', ['ul']],
-                ['insert', ['table','link']],
+                ['insert', ['table','link','picture']],
                 ['view', ['fullscreen', 'help']
             ],
             // ['codeview']
@@ -254,6 +261,99 @@
                     }
                 });
             });
+            // save instruction
+            $('body').on('submit', '#js-instruction-form', function (e) {
+                e.preventDefault();
+                var formData = new FormData($(this)[0]);
+                $.ajax({
+                    url         : "{{ route('faculty.instruction.save_data', $ClassSubjectDetail->id) }}",
+                    type        : 'POST',
+                    data        : formData,
+                    processData : false,
+                    contentType : false,
+                    success     : function (res) {
+                        $('.help-block').html('');
+                        if (res.res_code == 1)
+                        {
+                            for (var err in res.res_error_msg)
+                            {
+                                $('#js-' + err).html('<code> '+ res.res_error_msg[err] +' </code>');
+                            }
+                        }
+                        else
+                        {
+                            show_toast_alert({
+                                heading : 'Success',
+                                message : res.res_msg,
+                                type    : 'success'
+                            });
+                            // fetch_data();
+                        }
+                    }
+                });
+            });
+
+            $('select[name="question_type"]').change(function(e){
+                e.preventDefault();
+                examType();
+            })
+
+            $('#btn-question-type-selected').click(function(e){
+                e.preventDefault();
+                examType();
+            })
+
+            function examType(){
+                let question_type = $('select[name="question_type"]').val();
+                if(question_type){
+                    $('#btn-question-type-selected').addClass('d-none')    
+                    $('#js-head-type').removeClass('d-none');
+                    $('#js-question').removeClass('d-none');
+                    let point_item = `<label for="points_per_question">Points this question:</label>
+                                    <input type="number" class="form-control form-control-sm" id="points_per_question" name="points_per_question" value="1">`;
+
+                    // alert('ayaw')
+                    if(question_type==1){
+                        $('#exam_type_title').text('Multiple Choice');
+                        $('#js_question_type').val(1);
+                        $('#js-multiple-choice').removeClass('d-none')
+                        $('#js-true-false').addClass('d-none')
+                        $('.js-points').html(point_item);
+                    }
+                    if(question_type==2){
+                        $('#exam_type_title').text('True/False');
+                        $('#js_question_type').val(2);
+                        $('#js-multiple-choice').addClass('d-none')
+                        $('#js-true-false').removeClass('d-none')
+                        $('.js-points').html(point_item);
+                    }
+                    if(question_type==3){
+                        $('#exam_type_title').text('Matching');
+                        $('#js_question_type').val(3);
+                        $('#js-multiple-choice').addClass('d-none')
+                        $('#js-true-false').addClass('d-none')
+                    }
+                    if(question_type==4){
+                        $('#exam_type_title').text('Ordering');
+                        $('#js_question_type').val(4);
+                        $('#js-multiple-choice').addClass('d-none')
+                        $('#js-true-false').addClass('d-none')
+                    }
+                    if(question_type==5){
+                        $('#exam_type_title').text('Fill in the Blank Text');
+                        $('#js_question_type').val(5);
+                        $('#js-multiple-choice').addClass('d-none')
+                        $('#js-true-false').addClass('d-none')
+                    }
+                    if(question_type==6){
+                        $('#exam_type_title').text('Short Answer/Essay');
+                        $('#js_question_type').val(6);
+                        $('#js-multiple-choice').addClass('d-none')
+                        $('#js-true-false').addClass('d-none')
+                    }
+                    
+                }
+            }
 
 
             $('body').on('submit', '#js-form_search', function (e) {

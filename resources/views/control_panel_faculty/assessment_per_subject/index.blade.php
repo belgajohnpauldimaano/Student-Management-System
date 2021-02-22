@@ -27,7 +27,10 @@
                         </div>
                         <div class="col-md-3">
                             <button type="submit" class="btn btn-success">Search</button>
-                            <a href="{{ route('faculty.assessment_subject.create', encrypt($ClassSubjectDetail->id)) }}" type="button" class="btn btn-danger">
+                            {{-- <a href="{{ route('faculty.assessment_subject.create', encrypt($ClassSubjectDetail->id)) }}" type="button" class="btn btn-danger">
+                                <i class="fa fa-plus"></i> Create
+                            </a> --}}
+                            <a href="#" type="button" class="btn btn-danger" id="js-button-add">
                                 <i class="fa fa-plus"></i> Create
                             </a>
                         </div>
@@ -73,19 +76,21 @@
         }
         $(function () {
 
-            $('.js-assessment-subject').click(function (){
-                $('#js-assessment-subject-container').addClass('d-none');
-            });
+            // $('.js-assessment-subject').click(function (){
+            //     $('#js-assessment-subject-container').addClass('d-none');
+            // });
 
             $('body').on('click', '#js-button-add, .js-btn_update_sy', function (e) {
                 e.preventDefault();
-                {{--  loader_overlay();  --}}
+                
+                loader_overlay();
                 var id = $(this).data('id');
                 $.ajax({
                     url : "{{ route('faculty.assessment_subject.modal_data', $ClassSubjectDetail->id) }}",
                     type : 'POST',
                     data : { _token : '{{ csrf_token() }}', id : id },
                     success : function (res) {
+                        $('#js-loader-overlay').addClass('d-none')
                         $('.js-modal_holder').html(res);
                         $('.js-modal_holder .modal').modal({ backdrop : 'static' });
                         $('.select2').select2();
@@ -117,22 +122,63 @@
             });
 
 
-            $('body').on('click', '.js-btn_view', function (e) {
+            // $('body').on('click', '.js-btn_view', function (e) {
+            //     e.preventDefault();
+            //     // alert('je;;')
+            //     var id = $(this).data('id');
+            //     // alert(id)
+            //     $.ajax({
+            //         url : "{{ route('faculty.assessment_subject.edit', $ClassSubjectDetail->id) }}",
+            //         type : 'POST',
+            //         data : { _token : '{{ csrf_token() }}', id : id },
+            //         success : function (res) {
+            //             var loc = window.location;
+            //             window.location = loc.protocol+"//"+loc+"/faculty/home";
+            //         }
+            //     });
+            // });
+            // save assessment setup
+            $('body').on('submit', '#js-assessment-create-form', function (e) {
                 e.preventDefault();
-                // alert('je;;')
-                var id = $(this).data('id');
-                // alert(id)
+                var formData = new FormData($(this)[0]);
+                loader_overlay();
                 $.ajax({
-                    url : "{{ route('faculty.assessment_subject.edit', $ClassSubjectDetail->id) }}",
-                    type : 'POST',
-                    data : { _token : '{{ csrf_token() }}', id : id },
-                    success : function (res) {
-                        var loc = window.location;
-                        window.location = loc.protocol+"//"+loc+"/faculty/home";
+                    url         : "{{ route('faculty.assessment_subject.save_data', $ClassSubjectDetail->id) }}",
+                    type        : 'POST',
+                    data        : formData,
+                    processData : false,
+                    contentType : false,
+                    success     : function (res) {
+                        $('.help-block').html('');
+                        if (res.res_code == 1)
+                        {
+                            for (var err in res.res_error_msg)
+                            {
+                                $('#js-' + err).html('<code> '+ res.res_error_msg[err] +' </code>');
+                            }
+                        }
+                        else
+                        {
+                            loader_overlay();
+                            show_toast_alert({
+                                heading : 'Success',
+                                message : res.res_msg,
+                                type    : 'success'
+                            });
+                            // var loc = window.location;
+                            let slug = res.data;
+                            let url = "{{ route('faculty.assessment_subject.edit', ":slug") }}";
+                            url = url.replace(':slug', slug);
+                            window.location.href=url;
+                            $('#js-loader-overlay').addClass('d-none')
+                            $("#create-assessment-modal").modal('hide');
+
+                           
+                            // fetch_data();
+                        }
                     }
                 });
             });
-
 
             $('body').on('submit', '#js-form_disc_fee', function (e) {
                 e.preventDefault();

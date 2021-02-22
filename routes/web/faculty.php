@@ -33,8 +33,9 @@ Route::group(['prefix' => 'faculty', 'middleware' => 'auth', 'roles' => ['admin'
             Route::get('', 'QuestionController@index')->name('faculty.question');
             // Route::post('modal-data', 'QuestionController@modal_data')->name('faculty.assessment.modal_data');
             Route::post('save-data', 'QuestionController@save')->name('faculty.question.save_data');
+            Route::post('save-instruction', 'AssessmentInstructionController@saveInstruction')->name('faculty.instruction.save_data');
         });
-        
+               
         Route::group(['prefix' => 'subject-class'], function() {
             Route::get('', 'SubjectClassController@index')->name('faculty.subject_class');
             Route::post('list-class-subject-details', 'SubjectClassController@list_class_subject_details')->name('faculty.subject_class.list_class_subject_details');

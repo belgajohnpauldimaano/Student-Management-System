@@ -7,7 +7,7 @@
 @section ('content')
     <div class="card card-default">
         <div class="col-md-12">
-            <a href="{{ route('faculty.assessment_subject.edit', encrypt($ClassSubjectDetail->id) ) }}" style="margin-top: -3em" class="btn-success btn float-right">
+            <a href="{{ route('faculty.assessment_subject.edit', encrypt($Assessment->id) ) }}" style="margin-top: -3em" class="btn-success btn float-right">
                 <i class="fas fa-arrow-left"></i> back
             </a>
         </div>
@@ -41,33 +41,83 @@
             <div class="row">
                 <div class="col-md-12">
                     <div class="js-data-container">
-                        {{-- <table class="table table-condensed table-hover">
-                            <tbody> --}}
-                                <ol>
-                                    @forelse ($questions as $key => $item)
-                                        <tr>                                        
-                                            <li> {!! $item->question_title !!}</li>                                                
-                                                @foreach ($item->options as $key => $data)
-                                                    <div class="form-group clearfix">
-                                                        <div class="icheck-danger d-inline">
-                                                            <input type="radio" name="options_answer[{{ $item->id }}]" id="option-{{ $data->id }}" value="{{ $data->order_number }}">
-                                                            <label for="option-{{ $data->id }}">
-                                                                {{ $data->option_title }}
-                                                            </label>
+                        <table class="table table-condensed table-hover">
+                            <tbody>
+                                {{-- <ol> --}}
+                                    @forelse ($instructions as $key => $data)
+                                        <tr>
+                                            <td style="width: 7%"><b>Part {{ $key+1 }}:</b></td>
+                                            <td colspan="2">{!! $data->instructions !!}</td>
+                                            <td>
+                                                <div class="btn-group btn-group-sm">
+                                                    <button type="button" class="btn btn-danger"><i class="fas fa-cog"></i> Action</button>
+                                                    <button type="button" class="btn btn-danger dropdown-toggle dropdown-icon" data-toggle="dropdown">
+                                                        <span class="sr-only">Toggle Dropdown</span>
+                                                    </button>
+                                                    <div class="dropdown-menu dropdown-menu-right">                                                                
+                                                        <a href="{{ route('faculty.assessment_subject.edit', encrypt($data->id)) }}" class="dropdown-item" data-id="{{ $data->id }}">
+                                                            <i class="far fa-eye"></i> Edit
+                                                        </a>
+                                                        <a href="#" class="dropdown-item" data-id="{{ $data->id }}">
+                                                            <i class="far fa-check-square"></i> Publish
+                                                        </a>
+                                                        <a href="#" class="dropdown-item js-btn_deactivate" data-id="{{ $data->id }}">
+                                                            <i class="fas fa-archive"></i> Archive
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            @foreach ($data->questions as $item)
+                                                <tr>
+                                                    <td></td>
+                                                    <td style="width: 5%">{{ $key+1 }}.)</td>
+                                                    <td> 
+                                                        {!! $item->question_title !!} 
+                                                        <i class="text-red">
+                                                            <small>({{ $item->answerMultipleChoice->points_per_question }} point {{ $item->answerMultipleChoice->points_per_question > 1 ? 's' : '' }} )</small>
+                                                        </i>
+                                                        @foreach ($item->options as $key => $data)
+                                                            <div class="form-group clearfix mt-3">
+                                                                <div class="icheck-{{ $item->answerMultipleChoice->correct_option_answer == $key+1 ? 'success' : 'danger' }} d-inline">
+                                                                    <input type="radio" {{ $item->answerMultipleChoice->correct_option_answer == $key+1 ? 'checked' : '' }} name="options_answer[{{ $item->id }}]" id="option-{{ $data->id }}" value="{{ $data->order_number }}">
+                                                                    <label for="option-{{ $data->id }}">
+                                                                        {{ $data->option_title }}
+                                                                    </label>
+                                                                </div>
+                                                            </div>
+                                                        @endforeach
+                                                    </td>
+                                                    <td>
+                                                        <div class="btn-group btn-group-sm">
+                                                            <button type="button" class="btn btn-success"><i class="fas fa-cog"></i> Action</button>
+                                                            <button type="button" class="btn btn-success dropdown-toggle dropdown-icon" data-toggle="dropdown">
+                                                                <span class="sr-only">Toggle Dropdown</span>
+                                                            </button>
+                                                            <div class="dropdown-menu dropdown-menu-right">                                                                
+                                                                <a href="{{ route('faculty.assessment_subject.edit', encrypt($item->id)) }}" class="dropdown-item" data-id="{{ $item->id }}">
+                                                                    <i class="far fa-eye"></i> Edit
+                                                                </a>
+                                                                <a href="#" class="dropdown-item" data-id="{{ $item->id }}">
+                                                                    <i class="far fa-check-square"></i> Publish
+                                                                </a>
+                                                                <a href="#" class="dropdown-item js-btn_deactivate" data-id="{{ $item->id }}">
+                                                                    <i class="fas fa-archive"></i> Archive
+                                                                </a>
+                                                            </div>
                                                         </div>
-                                                    </div>    
-                                                                                                   
-                                                @endforeach
+                                                    </td>
+                                                </tr>
+                                            @endforeach
+                                        
                                         </tr>
-                                        <hr/>
                                     @empty
-                                    <tr>
-                                        <th class="text-center">Record Not Found</th>
-                                    </tr>
+                                        <tr>
+                                            <th class="text-center">Record Not Found</th>
+                                        </tr>
                                     @endforelse
-                                </ol>
-                            {{-- </tbody>
-                        </table> --}}
+                                {{-- </ol> --}}
+                            </tbody>
+                        </table>
                         
                         {{-- @include('control_panel_faculty.assessment_per_subject.partials.data_list') --}}
                     </div>

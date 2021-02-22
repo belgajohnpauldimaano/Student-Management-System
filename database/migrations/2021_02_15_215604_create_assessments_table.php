@@ -17,7 +17,7 @@ class CreateAssessmentsTable extends Migration
             $table->bigIncrements('id');
             $table->integer('class_subject_details_id');
             $table->string('title');
-            $table->Text('instructions');
+            // $table->Text('instructions');
             $table->dateTime('date_time_publish');
             $table->dateTime('date_time_expiration');
             $table->integer('total_items')->nullable();
