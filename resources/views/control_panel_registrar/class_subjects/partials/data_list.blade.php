@@ -8,6 +8,7 @@
                                     <th>Subject</th>
                                     <th style="width: 25%">Schedule</th>
                                     <th style="width: 25%">Faculty</th>
+                                    <th>Order</th>
                                     <th style="width: 15%">Actions</th>
                                 </tr>
                             </thead>
@@ -63,6 +64,7 @@
                                                             </span>
                                                         @endforeach
                                                     </td>
+                                                    <td>{{ $data->class_subject_order }}</td>
                                                     <td>
                                                         <div class="btn-group">
                                                             <button type="button" class="btn btn-danger">Action</button>
@@ -131,36 +133,8 @@
                                                             {{ $teacherData->faculty->full_name }}
                                                         </span>
                                                     @endforeach
-                                                    {{-- @php 
-                                                        $teachers = \App\Models\TeacherSubject::join('faculty_informations', 'faculty_informations.id','=','teacher_subjects.faculty_id')
-                                                            ->selectRaw('
-                                                                    CONCAT(faculty_informations.last_name, " ", faculty_informations.first_name, " " ,  faculty_informations.middle_name) AS adviser_name
-                                                                ')
-                                                                ->where('class_subject_details_id', $data->id)
-                                                                ->where('teacher_subjects.status', 1)
-                                                            ->get();
-
-                                                        $teachers_count = \App\Models\TeacherSubject::join('faculty_informations', 'faculty_informations.id','=','teacher_subjects.faculty_id')
-                                                            ->selectRaw('
-                                                                    CONCAT(faculty_informations.last_name, " ", faculty_informations.first_name, " " ,  faculty_informations.middle_name) AS adviser_name
-                                                                ')
-                                                                ->where('class_subject_details_id', $data->id)
-                                                                ->where('teacher_subjects.status', 1)
-                                                            ->count();
-                                                            
-                                                        if($teachers_count > 1)
-                                                        {
-                                                            foreach ($teachers as $key => $value) {
-                                                                echo '<span title="'.$value->adviser_name.'" class="badge bg-primary">'.$value->adviser_name.'</span> ,';
-                                                            }   
-                                                        }
-                                                        else
-                                                        {
-                                                           echo '<span title="'.$data->faculty_name.'" class="badge bg-primary">'.$data->faculty_name.'</span>';
-                                                        }
-                                                                                                                 
-                                                    @endphp --}}
                                                 </td>
+                                                <td>{{ $data->class_subject_order }}</td>
                                                 <td>
                                                     <div class="btn-group">
                                                         <button type="button" class="btn btn-danger">Action</button>

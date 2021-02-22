@@ -242,7 +242,7 @@ class ClassSubjectsController extends Controller
                             }
 
                             else if($subject_order_available->class_subject_order == $x ){
-                                $item = 'disabled style="color: red;"';
+                                $item = ' style="color: red;"';
                                 $order_numbers .= '<option value="'.$x.'" '.$item.'>'.$x.'</option>';
                             }
 
@@ -266,7 +266,7 @@ class ClassSubjectsController extends Controller
                     if($subject_order_available){
                         try {
                             if($subject_order_available->class_subject_order == $x){
-                                $item = 'disabled style="color: red;"';
+                                $item = ' style="color: red;"';
                             }
                             $order_numbers .= '<option value="'.$x.'" '.$item.'>'.$x.'</option>';
                         } catch (\Throwable $th) {
