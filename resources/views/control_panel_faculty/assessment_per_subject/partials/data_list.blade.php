@@ -29,7 +29,7 @@
             @forelse ($Assessment as $item)
                 <tr>
                     <td class="align-middle">
-                        <a class="btn btn-link" href="{{ route('faculty.assessment_subject.edit', encrypt($item->id)) }}">
+                        <a class="btn btn-link" href="{{ route('faculty.assessment_subject.edit', [encrypt($item->id),'tab' => 'setup']) }}">
                             <i class="far fa-file"></i> {{ $item->title }}
                         </a>
                     </td>
@@ -53,7 +53,7 @@
                             </button>
                             <div class="dropdown-menu dropdown-menu-right">
                                 {{-- {{ route('faculty.assessment_subject.edit', encrypt($item->id)) }} --}}
-                                <a href="{{ route('faculty.assessment_subject.edit', encrypt($item->id)) }}" class="dropdown-item" data-id="{{ $item->id }}">
+                                <a href="{{ route('faculty.assessment_subject.edit', [encrypt($item->id),'tab' => 'setup']) }}" class="dropdown-item" data-id="{{ $item->id }}">
                                     <i class="far fa-eye"></i> View
                                 </a>
                                 <a href="#" class="dropdown-item" data-id="{{ $item->id }}">

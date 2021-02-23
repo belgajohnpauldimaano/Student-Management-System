@@ -20,7 +20,7 @@
   <link rel="stylesheet" href="{{ asset('cms-new/dist/css/adminlte.min.css') }}">
   <!-- iCheck -->
   {{-- <link rel="stylesheet" href="{{ asset('cms/plugins/iCheck/square/blue.css') }}"> --}}
-
+<link rel="stylesheet" href="{{ asset('cms/style.css') }}">
   <link href="{{ asset('img/sja-logo.png') }}" rel=icon>
   <style>
         .loader {

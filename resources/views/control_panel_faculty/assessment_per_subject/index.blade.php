@@ -138,6 +138,7 @@
             //     });
             // });
             // save assessment setup
+            
             $('body').on('submit', '#js-assessment-create-form', function (e) {
                 e.preventDefault();
                 var formData = new FormData($(this)[0]);
@@ -170,6 +171,7 @@
                             let url = "{{ route('faculty.assessment_subject.edit', ":slug") }}";
                             url = url.replace(':slug', slug);
                             window.location.href=url;
+                            
                             $('#js-loader-overlay').addClass('d-none')
                             $("#create-assessment-modal").modal('hide');
 

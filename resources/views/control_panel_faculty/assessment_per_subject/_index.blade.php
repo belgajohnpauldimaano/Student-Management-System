@@ -17,13 +17,13 @@
         <div class="card-header p-2">
             <ul class="nav nav-pills">
                 <li class="nav-item">
-                  <a class="nav-link " href="#setup" data-toggle="tab">Settings</a>
+                  <a class="nav-link nav-setup {{ $tab ? $tab == 'setup' ? 'active' : '' : '' }}" href="{{ route('faculty.assessment_subject.edit', [encrypt($Assessment->id), 'tab' => 'setup']) }}" >Settings</a>
                 </li>
                 <li class="nav-item">
-                  <a class="nav-link active" href="#instruction" data-toggle="tab">Instruction</a>
+                  <a class="nav-link {{ $tab ? $tab == 'instruction' ? 'active' : '' : '' }}" href="{{ route('faculty.assessment_subject.edit', [encrypt($Assessment->id), 'tab' => 'instruction']) }}">Instruction</a>
                 </li>
                 <li class="nav-item">
-                  <a class="nav-link " href="#questions" data-toggle="tab">Question</a>
+                  <a class="nav-link {{ $tab ? $tab == 'questions' ? 'active' : '' : '' }}" href="{{ route('faculty.assessment_subject.edit', [encrypt($Assessment->id), 'tab' => 'questions']) }}">Question</a>
                 </li>
                 <li class="nav-item">
                   <a class="nav-link" href="#grading" data-toggle="tab">Grading</a>
@@ -43,15 +43,15 @@
         </div>
         <div class="card-body">
             <div class="tab-content">
-                <div class=" tab-pane" id="setup">
+                <div class="tab-setup {{ $tab ? $tab == 'setup' ? 'active' : '' : '' }} tab-pane" id="setup">
                     @include('control_panel_faculty.assessment_per_subject.partials.data_list_setup')
                 </div>
                 <!-- /.tab-pane -->
-                <div class="active tab-pane" id="instruction">
+                <div class="{{ $tab ? $tab == 'instruction' ? 'active' : '' : '' }} tab-pane" id="instruction">
                     @include('control_panel_faculty.assessment_per_subject.partials.data_list_instruction')
                 </div>
 
-                <div class="tab-pane" id="questions">
+                <div class="{{ $tab ? $tab == 'questions' ? 'active' : '' : '' }} tab-pane" id="questions">
                     @include('control_panel_faculty.assessment_per_subject.partials.data_list_question')
                 </div>
                 <!-- /.tab-pane -->
@@ -117,6 +117,8 @@
     <script src="{{ asset('cms-new/dist/js/pages/dashboard.js') }}"></script>
     <script>
         $('.select2').select2();
+        // $('.tab-setup').addClass('active')
+        // $('.nav-setup').addClass('active')
         $('#publishdatetime, #expdatetime').datetimepicker({
             autoclose: true,
             format: 'yyyy-mm-dd hh:ii'

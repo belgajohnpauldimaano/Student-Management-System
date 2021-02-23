@@ -29,9 +29,9 @@ class AssessmentSubjectController extends Controller
         
         if($request->ajax())
         {
-            return view('control_panel_faculty.assessment_per_subject.partials.data_list', compact('ClassSubjectDetail','Assessment','semester'));
+            return view('control_panel_faculty.assessment_per_subject.partials.data_list', compact('ClassSubjectDetail','Assessment','semester','tab'));
         }
-        return view('control_panel_faculty.assessment_per_subject.index', compact('ClassSubjectDetail','Assessment','semester'));
+        return view('control_panel_faculty.assessment_per_subject.index', compact('ClassSubjectDetail','Assessment','semester','tab'));
     }
 
     public function modal(Request $request){
@@ -39,7 +39,8 @@ class AssessmentSubjectController extends Controller
         $id = $request->class_subject_details_id;
         $ClassSubjectDetail = $this->subjectDetails($id);
         
-        return view('control_panel_faculty.assessment_per_subject.partials.modal_data', compact('ClassSubjectDetail'))->render();
+        return view('control_panel_faculty.assessment_per_subject.partials.modal_data', 
+            compact('ClassSubjectDetail'))->render();
     }
 
     public function create(Request $request){
@@ -48,17 +49,21 @@ class AssessmentSubjectController extends Controller
         $id = Crypt::decrypt($request->class_subject_details_id);
         $ClassSubjectDetail = $this->subjectDetails($id);
         
-        return view('control_panel_faculty.assessment_per_subject._index', compact('ClassSubjectDetail','Assessment'))->render();
+        return view('control_panel_faculty.assessment_per_subject._index', 
+            compact('ClassSubjectDetail','Assessment'))->render();
     }
 
     public function edit(Request $request){
 
+        $tab = $request->tab ? $request->tab : 'setup';
+        $instruction=null;
         $id = Crypt::decrypt($request->class_subject_details_id);
         $Assessment = Assessment::whereId($id)->first();
         // return json_encode($Assessment);
         $ClassSubjectDetail = $this->subjectDetails($Assessment->class_subject_details_id);
         
-        return view('control_panel_faculty.assessment_per_subject._index', compact('ClassSubjectDetail','Assessment'))->render();
+        return view('control_panel_faculty.assessment_per_subject._index', 
+            compact('ClassSubjectDetail','Assessment','instruction','tab'))->render();
     }
     
     public function save(Request $request){
@@ -87,10 +92,17 @@ class AssessmentSubjectController extends Controller
 
         try {
             //code...
-            
+           
             if ($request->id)
             {
                 $Assessment = Assessment::whereId($request->id)->first();
+            }
+            else{
+                $Assessment = new Assessment;
+                $Assessment->class_subject_details_id = $ClassSubjectDetail;
+            }
+
+            // return json_encode(['tab' => 'setup']);
                 $Assessment->title                  = $request->title;
                 // $Assessment->instructions           =  $request->instructions;
                 $Assessment->period                 =  $request->exam_period;
@@ -104,32 +116,24 @@ class AssessmentSubjectController extends Controller
                 $Assessment->student_view_result    =  $request->view_results;
                 $Assessment->attempt_limit          =  $request->attempts;
                 $Assessment->save();
-                return response()->json(['res_code' => 0, 'res_msg' => 'Assessment successfully updated.']);
                 
-            }else{
+                // $tab = 'active';
 
-                $Assessment = Assessment::create([
-                    'class_subject_details_id'  =>  $ClassSubjectDetail,
-                    'title'                     =>  $request->title,
-                    // 'instructions'              =>  $request->instructions,
-                    'period'                    =>  $request->exam_period,
-                    'date_time_publish'         =>  $request->publish_date_time,
-                    'date_time_expiration'      =>  $request->exp_date_time,
-                    'semester'                  =>  $request->semester_period ? $request->semester_period : $semester,
-                    'quarter'                   =>  $request->quarter_period,
-                    'randomly_ordered'          =>  $request->randomly_ordered,
-                    'time_limit'                =>  $request->time_limit,
-                    'total_items'               =>  $request->total_item,
-                    'student_view_result'       =>  $request->view_results,
-                    'attempt_limit'             =>  $request->attempts,
-                ]);
-                
-                return response()->json([
-                    'res_code'  => 0,
-                    'res_msg'   => 'Assessment successfully saved.',
-                    'data'      => encrypt($Assessment->id)
-                ],200);
-            }
+                if ($request->id)
+                {
+                    return response()->json([
+                        'res_code' => 0, 'res_msg' => 'Assessment successfully updated.'
+                    ],200);
+
+                }else{
+                    return response()->json([
+                        'res_code'  => 0,
+                        'res_msg'   => 'Assessment successfully saved.',
+                        'data'      => encrypt($Assessment->id),
+                        // 'tab'       => $tab
+                    ],201);
+                }
+            
         } catch (\Throwable $th) {
             return response()->json([
                     'res_code'  => 1,
