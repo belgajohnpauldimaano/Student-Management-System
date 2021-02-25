@@ -7,7 +7,7 @@
 @section ('content')
     <div class="card card-default">
         <div class="col-md-12">
-            <a href="{{ route('faculty.assessment_subject.edit', encrypt($Assessment->id) ) }}" style="margin-top: -3em" class="btn-success btn float-right">
+            <a href="{{ route('faculty.assessment_subject.edit', [encrypt($Assessment->id), 'tab' => 'questions'] ) }}" style="margin-top: -3em" class="btn-success btn float-right">
                 <i class="fas fa-arrow-left"></i> back
             </a>
         </div>
@@ -77,7 +77,7 @@
                                                                 <span class="sr-only">Toggle Dropdown</span>
                                                             </button>
                                                             <div class="dropdown-menu dropdown-menu-right">                                                                
-                                                                <a href="{{ route('faculty.assessment_subject.edit', encrypt($item->id)) }}" class="dropdown-item" data-id="{{ $item->id }}">
+                                                                <a href="{{ route('faculty.assessment_subject.edit', [encrypt($Assessment->id), 'tab' => 'questions']) }}" class="dropdown-item">
                                                                     <i class="far fa-eye"></i> Edit
                                                                 </a>
                                                                 <a href="#" class="dropdown-item" data-id="{{ $item->id }}">

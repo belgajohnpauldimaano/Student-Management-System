@@ -23,11 +23,12 @@ class QuestionController extends Controller
     public function index(Request $request){
         $id = Crypt::decrypt($request->class_subject_details_id);
         $Assessment = Assessment::whereId($id)->first();
-        // $questions = Question::whereAssessmentId($Assessment->id)->get();
         $ClassSubjectDetail = $this->subjectDetails($Assessment->class_subject_details_id);
-        $instructions = Instruction::orderBY('order_number', 'Asc')->whereInstructionableId($Assessment->id)->get();
+        $instructions = Instruction::orderBY('order_number', 'Asc')
+            ->whereInstructionableId($Assessment->id)->get();
         
-        return view('control_panel_faculty.assessment_per_subject._question', compact('ClassSubjectDetail','Assessment','instructions'));
+        return view('control_panel_faculty.assessment_per_subject._question', 
+            compact('ClassSubjectDetail','Assessment','instructions'));
     }
 
     public function save(Request $request){

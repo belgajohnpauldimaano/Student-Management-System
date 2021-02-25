@@ -63,7 +63,7 @@
             loader_overlay();
             
             $.ajax({
-                url : "{{ route('faculty.assessment_subject', $ClassSubjectDetail->id) }}",
+                url : "{{ route('faculty.assessment_subject', encrypt($ClassSubjectDetail->id) ) }}",
                 type : 'POST',
                 data : formData,
                 processData : false,

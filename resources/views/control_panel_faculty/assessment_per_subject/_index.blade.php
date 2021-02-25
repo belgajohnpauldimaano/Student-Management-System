@@ -171,7 +171,7 @@
             loader_overlay();
             
             $.ajax({
-                url : "{{ route('faculty.assessment_subject', $ClassSubjectDetail->id) }}",
+                url : "{{ route('faculty.assessment_subject', encrypt($ClassSubjectDetail->id) ) }}",
                 type : 'POST',
                 data : formData,
                 processData : false,
@@ -268,7 +268,7 @@
                 e.preventDefault();
                 var formData = new FormData($(this)[0]);
                 $.ajax({
-                    url         : "{{ route('faculty.instruction.save_data', $ClassSubjectDetail->id) }}",
+                    url         : "{{ route('faculty.instruction.save_data', encrypt($ClassSubjectDetail->id) ) }}",
                     type        : 'POST',
                     data        : formData,
                     processData : false,
@@ -289,6 +289,11 @@
                                 message : res.res_msg,
                                 type    : 'success'
                             });
+
+                            let slug = res.data;
+                            let url = "{{ route('faculty.question', ":slug") }}";
+                            url = url.replace(':slug', slug);
+                            window.location.href=url;
                             // fetch_data();
                         }
                     }

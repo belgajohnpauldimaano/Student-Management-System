@@ -37,28 +37,45 @@ class AssessmentInstructionController extends Controller
             return response()->json(['res_code' => 1, 'res_msg' => 'Please fill all required fields.', 'res_error_msg' => $Validator->getMessageBag()]);
         }
 
-        // try {
+        $id = $request->instruction_id;
 
-            if($request->instruction_id){
-                $instruction = Instruction::whereId($request->id)->first();
+        try {
+
+            if($id){
+                $instruction = Instruction::find($id);
             }
             else{
                 $instruction = new Instruction();
+                $instruction->instructionable_id    =   $request->assessment_id;
             }
-            $instruction->question_type         =   $request->instructions_type;
-            $instruction->instructions          =   $request->instruction;
-            $instruction->order_number          =   $request->part_number;
-            $instruction->instructionable_id    =   $request->assessment_id;
-            $instruction->instructionable_type  =   'App\Models\Assessment';
-            $instruction->type                  =   'Assessment';
-            $instruction->save();
+                $instruction->question_type         =   $request->instructions_type;
+                $instruction->instructions          =   $request->instruction;
+                $instruction->order_number          =   $request->part_number;
+                $instruction->instructionable_type  =   'App\Models\Assessment';
+                $instruction->type                  =   'Assessment';
+                $instruction->save();
 
-        // } catch (\Throwable $th) {
-        //     return response()->json([
-        //             'res_code'  => 1,
-        //             'res_msg'   => 'Something went wrong.',
-        //     ]);
-        // }
+            if ($id){
+                // return json_encode($instruction->instructionable_id);
+                return response()->json([
+                    'res_code'  => 0,
+                    'res_msg'   =>
+                    'Question data successfully updated.',
+                    'data'      => encrypt($instruction->instructionable_id),
+                ],200);
+            }else{
+                return response()->json([
+                    'res_code'  => 0,
+                    'res_msg'   => 'Question data successfully saved.'
+                ],201);
+            }
+
+        } catch (\Throwable $th) {
+            return response()->json([
+                    'res_code'  => 1,
+                    'res_msg'   => 'Something went wrong.',
+            ]);
+        }
 
     }
 }
