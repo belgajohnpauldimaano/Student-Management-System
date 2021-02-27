@@ -1,3 +1,10 @@
+<div class="float-right" style="margin-top: -.5em">
+    @if($Assessment != null)
+        <a href="{{ route('faculty.question', [encrypt($Assessment->id), 'tab' => 'questions'] ) }}" class="btn btn-info">
+            <i class="far fa-eye fa-lg"></i> Preview
+        </a>
+    @endif
+</div>
 <h5>Instructions</h5>
 
 <div class="mt-2">

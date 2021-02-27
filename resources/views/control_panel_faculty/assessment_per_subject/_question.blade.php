@@ -76,8 +76,8 @@
                                                             <button type="button" class="btn btn-success dropdown-toggle dropdown-icon" data-toggle="dropdown">
                                                                 <span class="sr-only">Toggle Dropdown</span>
                                                             </button>
-                                                            <div class="dropdown-menu dropdown-menu-right">                                                                
-                                                                <a href="{{ route('faculty.assessment_subject.edit', [encrypt($Assessment->id), 'tab' => 'questions']) }}" class="dropdown-item">
+                                                            <div class="dropdown-menu dropdown-menu-right">
+                                                                <a href="{{ route('faculty.question.edit', [encrypt($item->id), 'tab' => 'questions']) }}" class="dropdown-item">
                                                                     <i class="far fa-eye"></i> Edit
                                                                 </a>
                                                                 <a href="#" class="dropdown-item" data-id="{{ $item->id }}">
@@ -91,7 +91,6 @@
                                                     </td>
                                                 </tr>
                                             @endforeach
-                                        
                                         </tr>
                                     @empty
                                         <tr>
@@ -101,8 +100,6 @@
                                 {{-- </ol> --}}
                             </tbody>
                         </table>
-                        
-                        {{-- @include('control_panel_faculty.assessment_per_subject.partials.data_list') --}}
                     </div>
                 </div>
             </div>

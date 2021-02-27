@@ -17,7 +17,7 @@
         <div class="card-header p-2">
             <ul class="nav nav-pills">
                 <li class="nav-item">
-                  <a class="nav-link nav-setup {{ $tab ? $tab == 'setup' ? 'active' : '' : '' }}" href="{{ route('faculty.assessment_subject.edit', [encrypt($Assessment->id), 'tab' => 'setup']) }}" >Settings</a>
+                  <a class="nav-link {{ $tab ? $tab == 'setup' ? 'active' : '' : '' }}" href="{{ route('faculty.assessment_subject.edit', [encrypt($Assessment->id), 'tab' => 'setup']) }}" >Settings</a>
                 </li>
                 <li class="nav-item">
                   <a class="nav-link {{ $tab ? $tab == 'instruction' ? 'active' : '' : '' }}" href="{{ route('faculty.assessment_subject.edit', [encrypt($Assessment->id), 'tab' => 'instruction']) }}">Instruction</a>

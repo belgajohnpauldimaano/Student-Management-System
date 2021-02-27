@@ -28,4 +28,17 @@ trait HasAssessments{
             return '<span class="badge bg-warning">Archive</span>';
         }
     }
+
+    public function getQuestionAttribute(){
+        $question_type = [
+            '', 
+            'Multiple Choice', 
+            'True/False' ,
+            'Matching',
+            'Ordering',
+            'Fill in the Blank Text',
+            'Short Answer/Essay'
+        ];
+        return $question_type[$this->question_type];
+    }
 }
