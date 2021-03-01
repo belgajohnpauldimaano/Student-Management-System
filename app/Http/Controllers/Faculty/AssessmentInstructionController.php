@@ -39,13 +39,13 @@ class AssessmentInstructionController extends Controller
 
         $id = $request->instruction_id;
 
-        try {
+        // try {
 
             if($id){
                 $instruction = Instruction::find($id);
             }
             else{
-                $instruction = new Instruction();
+                $instruction = new Instruction;
                 $instruction->instructionable_id    =   $request->assessment_id;
             }
                 $instruction->question_type         =   $request->instructions_type;
@@ -66,16 +66,17 @@ class AssessmentInstructionController extends Controller
             }else{
                 return response()->json([
                     'res_code'  => 0,
-                    'res_msg'   => 'Question data successfully saved.'
+                    'res_msg'   => 'Question data successfully saved.',
+                    'data'      => encrypt($instruction->instructionable_id),
                 ],201);
             }
 
-        } catch (\Throwable $th) {
-            return response()->json([
-                    'res_code'  => 1,
-                    'res_msg'   => 'Something went wrong.',
-            ]);
-        }
+        // } catch (\Throwable $th) {
+        //     return response()->json([
+        //             'res_code'  => 1,
+        //             'res_msg'   => 'Something went wrong.',
+        //     ]);
+        // }
 
     }
 }

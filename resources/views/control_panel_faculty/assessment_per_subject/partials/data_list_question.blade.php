@@ -147,6 +147,12 @@
                 <div id="js-true-false" class="d-none">
                     <div class="form-group pl-3 pr-3">
                         <div class="row">
+                            <div class="col-md-12 pb-2">
+                                <a href="{{ route('faculty.question.archiveIndex', [encrypt($Assessment->id), 'tab' => 'questions'] ) }}" 
+                                    class="btn-primary btn btn-sm">
+                                    <i class="fas fa-cog"></i> Change the default text for true and false
+                                </a>
+                            </div>
                             <div class="col-md-3">
                                 <div class="form-group">
                                     <label for="true">Text for "true": *</label>

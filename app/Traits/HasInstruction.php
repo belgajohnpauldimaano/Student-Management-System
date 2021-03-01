@@ -22,6 +22,6 @@ trait HasInstruction{
 
     public function questions(){
         return $this->hasMany(Question::class, 'assessment_id', 'instructionable_id')
-            ->whereQuestionType($this->question_type);
+            ->whereQuestionType($this->question_type)->where('status', 1);
     }
 }

@@ -32,10 +32,15 @@ Route::group(['prefix' => 'faculty', 'middleware' => 'auth', 'roles' => ['admin'
             Route::post('', 'QuestionController@index')->name('faculty.question');
             Route::get('', 'QuestionController@index')->name('faculty.question');
             Route::get('edit-question', 'QuestionController@edit')->name('faculty.question.edit');
+            Route::get('archive', 'QuestionController@archiveIndex')->name('faculty.question.archiveIndex');
+            Route::post('move-archive', 'QuestionController@archive')->name('faculty.question.archive');
+            Route::post('data-delete', 'QuestionController@softDelete')->name('faculty.question.delete');
+            Route::post('move-active', 'QuestionController@active')->name('faculty.question.active');
             // Route::post('modal-data', 'QuestionController@modal_data')->name('faculty.assessment.modal_data');
             Route::post('save-data', 'QuestionController@save')->name('faculty.question.save_data');
             Route::post('save-instruction', 'AssessmentInstructionController@saveInstruction')->name('faculty.instruction.save_data');
             Route::get('edit-assessment-instruction', 'AssessmentInstructionController@edit')->name('faculty.instruction.edit');
+           
         });
                
         Route::group(['prefix' => 'subject-class'], function() {

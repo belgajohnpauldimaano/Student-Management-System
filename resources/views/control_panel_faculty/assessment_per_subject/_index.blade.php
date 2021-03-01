@@ -26,7 +26,7 @@
                   <a class="nav-link {{ $tab ? $tab == 'questions' ? 'active' : '' : '' }}" href="{{ route('faculty.assessment_subject.edit', [encrypt($Assessment->id), 'tab' => 'questions']) }}">Question</a>
                 </li>
                 <li class="nav-item">
-                  <a class="nav-link" href="#grading" data-toggle="tab">Grading</a>
+                  <a class="nav-link" href="#grading" data-toggle="tab">Monitoring</a>
                 </li>
                 <li class="nav-item ml-auto dropdown">
                     <a class="nav-link bg-danger dropdown-toggle" data-toggle="dropdown" href="#">
@@ -258,6 +258,7 @@
                                 message : res.res_msg,
                                 type    : 'success'
                             });
+                            $('#js-question-form')[0].reset();
                             // fetch_data();
                         }
                     }
@@ -266,6 +267,7 @@
             // save instruction
             $('body').on('submit', '#js-instruction-form', function (e) {
                 e.preventDefault();
+                
                 var formData = new FormData($(this)[0]);
                 $.ajax({
                     url         : "{{ route('faculty.instruction.save_data', encrypt($ClassSubjectDetail->id) ) }}",
@@ -294,6 +296,8 @@
                             let url = "{{ route('faculty.question', ":slug") }}";
                             url = url.replace(':slug', slug);
                             window.location.href=url;
+
+                            
                             // fetch_data();
                         }
                     }

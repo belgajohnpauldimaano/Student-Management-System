@@ -25,10 +25,23 @@ class QuestionController extends Controller
         $Assessment = Assessment::whereId($id)->first();
         $ClassSubjectDetail = $this->subjectDetails($Assessment->class_subject_details_id);
         $instructions = Instruction::orderBY('order_number', 'Asc')
-            ->whereInstructionableId($Assessment->id)->get();
+            ->whereInstructionableId($Assessment->id)->where('status', 1)->get();
         
         return view('control_panel_faculty.assessment_per_subject._question', 
             compact('ClassSubjectDetail','Assessment','instructions'));
+    }
+
+    public function archiveIndex(Request $request){
+        $id = Crypt::decrypt($request->class_subject_details_id);
+        $Assessment = Assessment::whereId($id)->first();
+        $ClassSubjectDetail = $this->subjectDetails($Assessment->class_subject_details_id);
+        
+        $Question = Question::orderBY('id', 'ASC')
+            ->whereAssessmentId($Assessment->id)->where('status', 2)->get();
+
+        // return json_encode($Assessment->id);
+        return  view('control_panel_faculty.assessment_per_subject._archive',
+            compact('Question','Assessment','ClassSubjectDetail'));
     }
 
     public function edit(Request $request){
@@ -75,7 +88,7 @@ class QuestionController extends Controller
             }
             
             DB::beginTransaction();
-            // try {
+            try {
 
                 if($question_id)
                 {
@@ -130,11 +143,55 @@ class QuestionController extends Controller
 
                 DB::commit();
                 return response()->json(['res_code' => 0, 'res_msg' => 'Question successfully saved.']);
-            // } catch (\Throwable $th) {
-            //     DB::rollBack();
-            //     return response()->json(['res_code' => 1, 'res_msg' => 'Something went wrong.']);
-            // }
+            } catch (\Throwable $th) {
+                DB::rollBack();
+                return response()->json(['res_code' => 1, 'res_msg' => 'Something went wrong.'], 402);
+            }
         }
         
     }
+
+    public function archive(Request $request)
+    {
+        try {
+            $question = Question::find($request->id);
+            $question->status = 2;
+            $question->save();
+            
+            return response()->json(['res_code' => 0, 'res_msg' => 'Question successfully moved to archive.', 'data' => $question ]);
+        } catch (\Throwable $th) {
+            return response()->json(['res_code' => 1, 'res_msg' => 'This action something went wrong.' ], 402);
+        }
+        
+    }
+
+    public function softDelete(Request $request)
+    {
+        try {
+            $question = Question::find($request->id);
+            $question->status = 0;
+            $question->save();
+            
+            return response()->json(['res_code' => 0, 'res_msg' => 'Question successfully deleted.', 'data' => $question ]);
+        } catch (\Throwable $th) {
+            return response()->json(['res_code' => 1, 'res_msg' => 'This action something went wrong.' ], 402);
+        }
+        
+    }
+
+    public function active(Request $request)
+    {
+        try {
+            $question = Question::find($request->id);
+            $question->status = 1;
+            $question->save();
+            
+            return response()->json(['res_code' => 0, 'res_msg' => 'Question successfully activated.', 'data' => $question ]);
+        } catch (\Throwable $th) {
+            return response()->json(['res_code' => 1, 'res_msg' => 'This action something went wrong.' ], 402);
+        }
+        
+    }
+
+    
 }

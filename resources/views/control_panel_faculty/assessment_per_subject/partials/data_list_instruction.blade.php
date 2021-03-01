@@ -13,6 +13,9 @@
         @if($instruction != null)
             <input type="hidden" name="instruction_id" value="{{ $instruction->id }}">
         @endif
+        @if($Assessment != null)
+            <input type="hidden" name="assessment_id" value="{{ $Assessment->id }}">
+        @endif
         <div class="form-group">
             <div class="row">
                 <div class="col-md-12">

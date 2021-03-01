@@ -7,7 +7,7 @@
 @section ('content')
     <div class="card card-default">
         <div class="col-md-12">
-            <a href="{{ route('faculty.assessment_subject.edit', [encrypt($Assessment->id), 'tab' => 'questions'] ) }}" style="margin-top: -3em" class="btn-success btn float-right">
+            <a href="{{ route('faculty.question', [encrypt($Assessment->id), 'tab' => 'questions'] ) }}" style="margin-top: -3em" class="btn-success btn float-right">
                 <i class="fas fa-arrow-left"></i> back
             </a>
         </div>
@@ -16,10 +16,7 @@
         </div>
         <div class="card-header">
             <div class="">
-                <a href="{{ route('faculty.question.archiveIndex', [encrypt($Assessment->id), 'tab' => 'questions'] ) }}" style="margin-top: 0em" class="btn-primary btn float-right">
-                    <i class="fas fa-archive"></i> Archived
-                </a>
-                <h5 class="box-title">Questions for Subject: <span class="text-red"><i>{{ $ClassSubjectDetail->subject->subject }}</i></span></h5>
+                <h5 class="box-title">Archived Question: <span class="text-red"><i>{{ $ClassSubjectDetail->subject->subject }}</i></span></h5>
             </div>
         </div>
         <!-- /.card-header -->
@@ -30,78 +27,51 @@
                         <p>Time: {{ $Assessment->time_limit }} mins</p>
                         <table class="table table-condensed table-hover">
                             <tbody>
-                                {{-- <ol> --}}
-                                    @forelse ($instructions as $key => $data)
-                                        <tr>
-                                            <td style="width: 7%"><b>Part {{ $key+1 }}:</b></td>
-                                            <td colspan="2">{!! $data->instructions !!}</td>
-                                            <td>
-                                                <div class="btn-group btn-group-sm">
-                                                    <button type="button" class="btn btn-danger"><i class="fas fa-cog"></i> Action</button>
-                                                    <button type="button" class="btn btn-danger dropdown-toggle dropdown-icon" data-toggle="dropdown">
-                                                        <span class="sr-only">Toggle Dropdown</span>
-                                                    </button>
-                                                    <div class="dropdown-menu dropdown-menu-right">
-                                                        <a href="{{ route('faculty.instruction.edit',  [encrypt($data->id), 'tab' => 'instruction']) }}" class="dropdown-item" data-id="{{ $data->id }}">
-                                                            <i class="far fa-eye"></i> Edit
-                                                        </a>
-                                                        <a href="#" class="dropdown-item" data-id="{{ $data->id }}">
-                                                            <i class="far fa-check-square"></i> Publish
-                                                        </a>
-                                                        <a href="#" class="dropdown-item js-btn_deactivate" data-id="{{ $data->id }}">
-                                                            <i class="fas fa-archive"></i> Archive
-                                                        </a>
+                                @forelse ($Question as $key => $item)
+                                    <tr>
+                                        <td></td>
+                                        <td style="width: 5%">{{ $key+1 }}.)</td>
+                                        <td> 
+                                            {!! $item->question_title !!} 
+                                            <i class="text-red">
+                                                <small>({{ $item->answerMultipleChoice->points_per_question }} point {{ $item->answerMultipleChoice->points_per_question > 1 ? 's' : '' }} )</small>
+                                            </i>
+                                            @foreach ($item->options as $key => $data)
+                                                <div class="form-group clearfix mt-3">
+                                                    <div class="icheck-{{ $item->answerMultipleChoice->correct_option_answer == $key+1 ? 'success' : 'danger' }} d-inline">
+                                                        <input type="radio" {{ $item->answerMultipleChoice->correct_option_answer == $key+1 ? 'checked' : '' }} name="options_answer[{{ $item->id }}]" id="option-{{ $data->id }}" value="{{ $data->order_number }}">
+                                                        <label for="option-{{ $data->id }}">
+                                                            {{ $data->option_title }}
+                                                        </label>
                                                     </div>
                                                 </div>
-                                            </td>
-                                            @foreach ($data->questions as $key => $item)
-                                                <tr>
-                                                    <td></td>
-                                                    <td style="width: 5%">{{ $key+1 }}.)</td>
-                                                    <td> 
-                                                        {!! $item->question_title !!} 
-                                                        <i class="text-red">
-                                                            <small>({{ $item->answerMultipleChoice->points_per_question }} point {{ $item->answerMultipleChoice->points_per_question > 1 ? 's' : '' }} )</small>
-                                                        </i>
-                                                        @foreach ($item->options as $key => $data)
-                                                            <div class="form-group clearfix mt-3">
-                                                                <div class="icheck-{{ $item->answerMultipleChoice->correct_option_answer == $key+1 ? 'success' : 'danger' }} d-inline">
-                                                                    <input type="radio" {{ $item->answerMultipleChoice->correct_option_answer == $key+1 ? 'checked' : '' }} name="options_answer[{{ $item->id }}]" id="option-{{ $data->id }}" value="{{ $data->order_number }}">
-                                                                    <label for="option-{{ $data->id }}">
-                                                                        {{ $data->option_title }}
-                                                                    </label>
-                                                                </div>
-                                                            </div>
-                                                        @endforeach
-                                                    </td>
-                                                    <td>
-                                                        <div class="btn-group btn-group-sm">
-                                                            <button type="button" class="btn btn-success"><i class="fas fa-cog"></i> Action</button>
-                                                            <button type="button" class="btn btn-success dropdown-toggle dropdown-icon" data-toggle="dropdown">
-                                                                <span class="sr-only">Toggle Dropdown</span>
-                                                            </button>
-                                                            <div class="dropdown-menu dropdown-menu-right">
-                                                                <a href="{{ route('faculty.question.edit', [encrypt($item->id), 'tab' => 'questions']) }}" class="dropdown-item">
-                                                                    <i class="far fa-eye"></i> Edit
-                                                                </a>
-                                                                <a href="#" class="dropdown-item js-btn_archived" data-id="{{ $item->id }}">
-                                                                    <i class="fas fa-archive"></i> Move to Archive
-                                                                </a>
-                                                                <a href="#" class="dropdown-item js-btn_delete" data-id="{{ $item->id }}">
-                                                                    <i class="fas fa-trash"></i> Delete
-                                                                </a>
-                                                            </div>
-                                                        </div>
-                                                    </td>
-                                                </tr>
                                             @endforeach
-                                        </tr>
-                                    @empty
-                                        <tr>
-                                            <th class="text-center">Record Not Found</th>
-                                        </tr>
-                                    @endforelse
-                                {{-- </ol> --}}
+                                        </td>
+                                        <td>
+                                            <div class="btn-group btn-group-sm">
+                                                <button type="button" class="btn btn-success"><i class="fas fa-cog"></i> Action</button>
+                                                <button type="button" class="btn btn-success dropdown-toggle dropdown-icon" data-toggle="dropdown">
+                                                    <span class="sr-only">Toggle Dropdown</span>
+                                                </button>
+                                                <div class="dropdown-menu dropdown-menu-right">
+                                                    <a href="{{ route('faculty.question.edit', [encrypt($item->id), 'tab' => 'questions']) }}" class="dropdown-item">
+                                                        <i class="far fa-eye"></i> Edit
+                                                    </a>
+                                                    <a href="#" class="dropdown-item js-btn_active" data-id="{{ $item->id }}">
+                                                        <i class="fas fa-archive"></i> Move as Active Question
+                                                    </a>
+                                                    <a href="#" class="dropdown-item js-btn_delete" data-id="{{ $item->id }}">
+                                                        <i class="fas fa-trash"></i> Delete
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                @empty
+                                    <tr>
+                                        <th class="text-center">Record Not Found</th>
+                                    </tr>
+                                @endforelse
                             </tbody>
                         </table>
                     </div>
@@ -234,15 +204,15 @@
                 fetch_data();
             });
 
-            $('body').on('click', '.js-btn_archived', function (e) {
+            $('body').on('click', '.js-btn_active', function (e) {
                 e.preventDefault();
                 var id = $(this).data('id');
                 alertify.defaults.transition = "slide";
                 alertify.defaults.theme.ok = "btn btn-primary ";
                 alertify.defaults.theme.cancel = "btn btn-danger ";
-                alertify.confirm('Confirmation', 'Are you sure you want to move this to archive?', function(){  
+                alertify.confirm('Confirmation', 'Are you sure you want to move this as active?', function(){  
                     $.ajax({
-                        url         : "{{ route('faculty.question.archive', $ClassSubjectDetail->id) }}",
+                        url         : "{{ route('faculty.question.active', $ClassSubjectDetail->id) }}",
                         type        : 'POST',
                         data        : { _token : '{{ csrf_token() }}', id : id },
                         success     : function (res) {

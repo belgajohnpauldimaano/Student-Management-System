@@ -20,6 +20,7 @@ class CreateInstructionsTable extends Migration
             $table->Integer('order_number');
             $table->string('type')->comment('assessment or quiz or assignment');
             $table->morphs('instructionable');
+            $table->tinyInteger('status')->default(1)->comment('0 is soft deleted 2 is archived 1 is active');
             $table->timestamps();
         });
     }
