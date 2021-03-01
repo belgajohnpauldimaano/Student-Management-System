@@ -475,21 +475,48 @@ class AdvisoryClassController extends Controller
                     $grade = $StudentEnrolledSubject->firstWhere('class_subject_details_id', $item->class_subject_details_id);
                     
                     $sum = 0;
-                    $first  = $grade->fir_g > 0 ? $grade->fir_g : 0;
-                    $second = $grade->sec_g > 0 ? $grade->sec_g : 0;
-                    $third  = $grade->thi_g > 0 ? $grade->thi_g : 0;
-                    $fourth = $grade->fou_g > 0 ? $grade->fou_g : 0;
-                    
-                    $sum += $grade->fir_g > 0 ? $grade->fir_g : 0;
-                    $sum += $grade->sec_g > 0 ? $grade->sec_g : 0;
-                    $sum += $grade->thi_g > 0 ? $grade->thi_g : 0;
-                    $sum += $grade->fou_g > 0 ? $grade->fou_g : 0;
+                    if($grade_level < 11)
+                    {
+                        $first  = $grade->fir_g > 0 ? $grade->fir_g : 0;
+                        $second = $grade->sec_g > 0 ? $grade->sec_g : 0;
+                        $third  = $grade->thi_g > 0 ? $grade->thi_g : 0;
+                        $fourth = $grade->fou_g > 0 ? $grade->fou_g : 0;
+                        
+                        $sum += $grade->fir_g > 0 ? $grade->fir_g : 0;
+                        $sum += $grade->sec_g > 0 ? $grade->sec_g : 0;
+                        $sum += $grade->thi_g > 0 ? $grade->thi_g : 0;
+                        $sum += $grade->fou_g > 0 ? $grade->fou_g : 0;
 
-                    $divisor = 0;
-                    $divisor += $first  > 0 ? 1 : 0;
-                    $divisor += $second > 0 ? 1 : 0;
-                    $divisor += $third  > 0 ? 1 : 0;
-                    $divisor += $fourth > 0 ? 1 : 0;
+                        $divisor = 0;
+                        $divisor += $first  > 0 ? 1 : 0;
+                        $divisor += $second > 0 ? 1 : 0;
+                        $divisor += $third  > 0 ? 1 : 0;
+                        $divisor += $fourth > 0 ? 1 : 0;
+                    }
+                    
+
+                    if($grade_level > 10){
+
+                        if($semester == 1){
+                            $first = $grade['fir_g'] > 0 ? $grade['fir_g'] : 0;
+                            $second = $grade['sec_g'] > 0 ? $grade['sec_g'] : 0;
+
+                            $sum += $grade['fir_g'] > 0 ? $grade['fir_g'] : 0;
+                            $sum += $grade['sec_g'] > 0 ? $grade['sec_g'] : 0;
+                        }
+
+                        if($semester == 2){
+                            $first = $grade['thi_g'] > 0 ? $grade['thi_g'] : 0;
+                            $second = $grade['fou_g'] > 0 ? $grade['fou_g'] : 0;
+
+                            $sum += $grade['thi_g'] > 0 ? $grade['thi_g'] : 0;
+                            $sum += $grade['fou_g'] > 0 ? $grade['fou_g'] : 0;
+                        }
+                        
+                        $divisor = 0;
+                        $divisor += $first > 0 ? 1 : 0;
+                        $divisor += $second > 0 ? 1 : 0;
+                    }
 
                     $final = 0;
                     if ($divisor != 0) 
@@ -506,30 +533,84 @@ class AdvisoryClassController extends Controller
                         }
                     }
                     
-                    $data = [
-                        'enrollment_id'     =>  $item->enrollment_id,
-                        'grade_level'       =>  $item->grade_level,
-                        'class_days'        =>  $item->class_days,
-                        'class_time_from'   =>  $item->class_time_from,
-                        'class_time_to'     =>  $item->class_time_to,
-                        'faculty_name'      =>  $item->faculty_name,
-                        'subject_id'        =>  $item->subject_id,
-                        'subject_code'      =>  $item->subject_code,
-                        'subject'           =>  $item->subject,
-                        'room_code'         =>  $item->room_code,
-                        'section'           =>  $item->section,
-                        'grade_id'          =>  $grade->id,
-                        'fir_g'             =>  $grade->fir_g,
-                        'sec_g'             =>  $grade->sec_g,
-                        'thi_g'             =>  $grade->thi_g,
-                        'fou_g'             =>  $grade->fou_g,
-                        'final_g'           =>  round($final),
-                        'grade_status'      =>  $grade_status,
-                        'divisor'           =>  $divisor,
-                        'eligible_transfer' =>  $item->eligible_transfer,
-                        'lacking_unit'      =>  $lacking_unit,
-                        
-                    ];
+                    if($grade_level > 10){
+
+                        if($semester == 1){
+                            $data = [
+                                'enrollment_id'     =>  $item->enrollment_id,
+                                'grade_level'       =>  $item->grade_level,
+                                'class_days'        =>  $item->class_days,
+                                'class_time_from'   =>  $item->class_time_from,
+                                'class_time_to'     =>  $item->class_time_to,
+                                'faculty_name'      =>  $item->faculty_name,
+                                'subject_id'        =>  $item->subject_id,
+                                'subject_code'      =>  $item->subject_code,
+                                'subject'           =>  $item->subject,
+                                'room_code'         =>  $item->room_code,
+                                'section'           =>  $item->section,
+                                'grade_id'          =>  $grade['id'] ,
+                                'fir_g'             =>  $grade['fir_g'],
+                                'sec_g'             =>  $grade['sec_g'],
+                                'final_g'           =>  round($final),
+                                'grade_status'      =>  $grade_status,
+                                'divisor'           =>  $divisor,
+                                'eligible_transfer' =>  $item->eligible_transfer,
+                                'lacking_unit'      =>  $lacking_unit,
+                            ];
+                        }
+
+                        if($semester == 2){
+                            $data = [
+                                'enrollment_id'     =>  $item->enrollment_id,
+                                'grade_level'       =>  $item->grade_level,
+                                'class_days'        =>  $item->class_days,
+                                'class_time_from'   =>  $item->class_time_from,
+                                'class_time_to'     =>  $item->class_time_to,
+                                'faculty_name'      =>  $item->faculty_name,
+                                'subject_id'        =>  $item->subject_id,
+                                'subject_code'      =>  $item->subject_code,
+                                'subject'           =>  $item->subject,
+                                'room_code'         =>  $item->room_code,
+                                'section'           =>  $item->section,
+                                'grade_id'          =>  $grade['id'] ,
+                                'thi_g'             =>  $grade['thi_g'],
+                                'fou_g'             =>  $grade['fou_g'],
+                                'final_g'           =>  round($final),
+                                'grade_status'      =>  $grade_status,
+                                'divisor'           =>  $divisor,
+                                'eligible_transfer' =>  $item->eligible_transfer,
+                                'lacking_unit'      =>  $lacking_unit,
+                            ];
+                        }
+                    }
+
+                    if($grade_level < 11)
+                    {
+                        $data = [
+                            'enrollment_id'     =>  $item->enrollment_id,
+                            'grade_level'       =>  $item->grade_level,
+                            'class_days'        =>  $item->class_days,
+                            'class_time_from'   =>  $item->class_time_from,
+                            'class_time_to'     =>  $item->class_time_to,
+                            'faculty_name'      =>  $item->faculty_name,
+                            'subject_id'        =>  $item->subject_id,
+                            'subject_code'      =>  $item->subject_code,
+                            'subject'           =>  $item->subject,
+                            'room_code'         =>  $item->room_code,
+                            'section'           =>  $item->section,
+                            'grade_id'          =>  $grade->id,
+                            'fir_g'             =>  $grade->fir_g,
+                            'sec_g'             =>  $grade->sec_g,
+                            'thi_g'             =>  $grade->thi_g,
+                            'fou_g'             =>  $grade->fou_g,
+                            'final_g'           =>  round($final),
+                            'grade_status'      =>  $grade_status,
+                            'divisor'           =>  $divisor,
+                            'eligible_transfer' =>  $item->eligible_transfer,
+                            'lacking_unit'      =>  $lacking_unit,
+                            
+                        ];
+                    }
                     return $data;
                 });
 
@@ -704,6 +785,7 @@ class AdvisoryClassController extends Controller
                     }
 
                 }
+                
                 if($Enrollment[0]->grade_level < 11)
                 {
                     $attendance_data = json_decode($Enrollment[0]->attendance);

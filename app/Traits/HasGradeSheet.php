@@ -58,6 +58,11 @@ trait HasGradeSheet{
         return $this->hasOne(SubjectDetail::class, 'id','subject_id');
     }
 
+    public function classSubject()
+    {        
+        return $this->hasOne(SubjectDetail::class, 'id','subject_id')->whereStatus(1);
+    }
+
     public function enrollment()
     {        
         return $this->hasOne(Enrollment::class, 'id','enrollments_id');

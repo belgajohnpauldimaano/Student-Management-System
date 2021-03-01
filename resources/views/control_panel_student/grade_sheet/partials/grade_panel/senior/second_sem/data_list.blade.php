@@ -20,7 +20,14 @@
                 @forelse($Enrollment_secondsem as $key => $data)
                     <tr>
                         <td>
-                            {{$data['subject']->subject}}
+                            @php
+                                try {
+                                    echo $data['subject']['subject'];
+                                } catch (\Throwable $th) {
+                                    echo $data['subject'];
+                                }
+                            @endphp
+                            
                         </td>                        
                         <td style="text-align: center">
                             {{round($data['thi_g'])}}

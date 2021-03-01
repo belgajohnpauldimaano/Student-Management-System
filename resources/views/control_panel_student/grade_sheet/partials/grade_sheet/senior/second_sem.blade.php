@@ -23,7 +23,7 @@
                         <td style="text-align: center !important">{{ round($data->final_g) }}</td>
                         <td style="text-align: center !important"><strong>{{ $data->final_g >= 75 ? 'Passed' : 'Failed' }}</strong></td>
                     @else
-                        @if ($data->thi_g == 0 && $data->fou_g == 0 || $data->thi_g == 0 && $data->fou_g == 0)
+                        @if ($data->thi_g == 0 && $data->fou_g == 0 && $data->thi_g == 0 && $data->fou_g == 0)
                             <td></td>
                         @else
                             <td></td>
@@ -43,14 +43,15 @@
                 <b>
                     @if($data->thi_g == 0 && $data->fou_g == 0)
                         
-                    @else
+                    @elseif($data->thi_g != 0 && $data->fou_g != 0)
                         {{ $general_avg && $general_avg >= 0 ? round($general_avg) : '' }}
                     @endif
                 </b>
             </td>
             @if($data->thi_g == 0 && $data->fou_g == 0)                    
                 <td></td>
-            @else
+                <td></td>
+            @elseif($data->thi_g != 0 && $data->fou_g != 0)
                 @if($general_avg < 75 && $general_avg > 74) 
                     <td style="color:'green';"><strong>Passed</strong></td>
                     @elseif($general_avg < 75) 
@@ -58,6 +59,8 @@
                 @else 
                     <td><center><strong>{{ $data->final_g >= 75 ? 'Passed' : 'Failed' }}</strong></center></td>
                 @endif
+            @else
+                <td></td>
             @endif                                    
         </tr>
     </tbody>
@@ -69,7 +72,9 @@
             <b>FINAL AVERAGE:</b> 
         </td>
         <td style="width: 100px; text-align: center">
-            <b>{{round($general_avg, 0)}}</b>
+            @if($data->thi_g != 0 && $data->fou_g != 0)
+                <b>{{round($general_avg, 0)}}</b>
+            @endif
         </td>
         
     </tfoot>

@@ -1,6 +1,6 @@
 
     @if($GradeSheet != 0)
-        @if ($grade_level >= 11)         
+        @if ($ClassDetail->grade_level >= 11)         
             
             <h5>
                 <b>Grade-level/Section : <i style="color:red">

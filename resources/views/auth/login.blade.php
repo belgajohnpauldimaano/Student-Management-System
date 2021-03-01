@@ -12,7 +12,7 @@
     <form id="js-login" action="{{ route('login') }}" method="post">
         {{ csrf_field() }}
         <div class="input-group mb-3 has-feedback {{ $errors->has('username') ? ' has-error' : '' }}">
-            <input type="username" name="username" class="form-control username" placeholder="username" value="{{ old('username') }}" required autofocus>
+            <input type="username" name="username" class="form-control form-control-sm username" placeholder="username" value="{{ old('username') }}" required autofocus>
             <div class="input-group-append">
                 <div class="input-group-text">
                     <span class="fas fa-envelope"></span>
@@ -27,7 +27,7 @@
         </div>
 
         <div class="input-group mb-3 has-feedback{{ $errors->has('password') ? ' has-error' : '' }}">
-            <input type="password" name="password" class="form-control password" placeholder="Password" required>
+            <input type="password" name="password" class="form-control form-control-sm password" placeholder="Password" required>
             <div class="input-group-append">
                 <div class="input-group-text">
                 <span class="fas fa-lock"></span>
@@ -43,7 +43,7 @@
         
         <div class="row">
             <div class="col-12">
-                <button type="submit" class="btn btn-danger btn-block btn-login">Sign In</button>
+                <button type="submit" class="btn btn-sm btn-danger btn-block btn-login">Sign In</button>
             </div>        
         </div>
     </form>
