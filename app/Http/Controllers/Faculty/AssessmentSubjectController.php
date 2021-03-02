@@ -25,7 +25,7 @@ class AssessmentSubjectController extends Controller
         $id = Crypt::decrypt($request->class_subject_details_id);
         $ClassSubjectDetail = $this->subjectDetails($id);
         $semester = $this->semester();
-        $Assessment = Assessment::orderBY('id', 'desc')->paginate(10);
+        $Assessment = Assessment::orderBY('id', 'desc')->where('exam_status', '!=', 2)->paginate(10);
         
         if($request->ajax())
         {

@@ -10,6 +10,9 @@
                 <i class="far fa-edit"></i> Edit
             </button>
         </div>     --}}
+        <a href="" class="btn-primary btn btn-sm float-right">
+            <i class="fas fa-archive"></i> Archived
+        </a>
     </h5>
     <div class="float-right">
         {{ $Assessment ? $Assessment->links() : '' }}
@@ -56,11 +59,11 @@
                                 <a href="{{ route('faculty.assessment_subject.edit', [encrypt($item->id),'tab' => 'setup']) }}" class="dropdown-item" data-id="{{ $item->id }}">
                                     <i class="far fa-eye"></i> View
                                 </a>
-                                <a href="#" class="dropdown-item" data-id="{{ $item->id }}">
-                                    <i class="far fa-check-square"></i> Publish
+                                <a href="#" class="dropdown-item js-{{ $item->exam_status == 1 ? 'btn-Unpublish' : 'btn-publish' }}" data-id="{{ $item->id }}" data-type="{{ $item->exam_status == 1 ? 'unpublish' : 'publish' }}">
+                                    <i class="far fa-check-square"></i> {{ $item->exam_status == 1 ? 'Mark as Unpublish' : 'Mark as  Publish' }}
                                 </a>
-                                <a href="#" class="dropdown-item js-btn_deactivate" data-id="{{ $item->id }}">
-                                    <i class="fas fa-archive"></i> Archive
+                                <a href="#" class="dropdown-item js-btn_archived" data-id="{{ $item->id }}">
+                                    <i class="fas fa-archive"></i> Move as Archive
                                 </a>
                                 {{-- <a href="#" class="dropdown-item js-btn_toggle_current" data-id="{{ $data->id }}" data-toggle_title="{{ ( $data->current ? 'Remove from current active' : 'Add to current active' ) }}">
                                     {{ ( $data->current ? 'Remove from current Active' : 'Add to current Active' ) }}

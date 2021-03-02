@@ -16,6 +16,8 @@ Route::group(['prefix' => 'faculty', 'middleware' => 'auth', 'roles' => ['admin'
             Route::post('', 'AssessmentController@index')->name('faculty.assessment');
             Route::get('', 'AssessmentController@index')->name('faculty.assessment');
             Route::post('modal-data', 'AssessmentController@modal_data')->name('faculty.assessment.modal_data');
+            Route::post('move-archive', 'AssessmentController@archive')->name('faculty.assessment.archive');
+            Route::post('move-published', 'AssessmentController@publish')->name('faculty.assessment.publish');
         });
         // assessment per subject
         Route::group(['prefix' => 'assessment/subject/{class_subject_details_id}', 'middleware' => 'auth'], function () {

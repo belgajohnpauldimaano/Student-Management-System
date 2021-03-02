@@ -1370,7 +1370,7 @@
                         <div class="contact-email">
                             <i class="ion-ios-email-outline"></i>
                             <h3>Email</h3>
-                            <p><a href="mailto:info@sja-bataan.com">info@sja-bataan.com</a></p>
+                            <p><a href="mailto:inquiry@sja-bataan.com">inquiry@sja-bataan.com</a></p>
                         </div>
                     </div>
                 </div>

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Faculty;
 
+use App\Models\Assessment;
 use App\Models\SchoolYear;
 use Illuminate\Http\Request;
 use App\Models\ClassSubjectDetail;
@@ -47,5 +48,35 @@ class AssessmentController extends Controller
         // return json_encode($ClassSubjectDetail);
         
         return view('control_panel_faculty.assessment.index', compact('ClassSubjectDetail'));
+    }
+
+    public function archive(Request $request)
+    {
+        try {
+            
+            $assessment = Assessment::find($request->id);
+            $assessment->exam_status = 2;
+            $assessment->save();
+            
+            return response()->json(['res_code' => 0, 'res_msg' => 'Assessment successfully moved to archive.', 'data' => $assessment ]);
+        } catch (\Throwable $th) {
+            return response()->json(['res_code' => 1, 'res_msg' => 'This action something went wrong.' ], 402);
+        }
+        
+    }
+
+    public function publish(Request $request)
+    {
+        try {
+            
+            $assessment = Assessment::find($request->id);
+            $assessment->exam_status = ($request->type == 'publish' ? 1 : 0);
+            $assessment->save();
+            
+            return response()->json(['res_code' => 0, 'res_msg' => 'Assessment successfully moved to '.$request->type == 'publish' ? 'published' : 'unpublished'.'.', 'data' => $assessment ]);
+        } catch (\Throwable $th) {
+            return response()->json(['res_code' => 1, 'res_msg' => 'This action something went wrong.' ], 402);
+        }
+        
     }
 }

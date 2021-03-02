@@ -76,10 +76,6 @@
         }
         $(function () {
 
-            // $('.js-assessment-subject').click(function (){
-            //     $('#js-assessment-subject-container').addClass('d-none');
-            // });
-
             $('body').on('click', '#js-button-add, .js-btn_update_sy', function (e) {
                 e.preventDefault();
                 
@@ -122,23 +118,6 @@
             });
 
 
-            // $('body').on('click', '.js-btn_view', function (e) {
-            //     e.preventDefault();
-            //     // alert('je;;')
-            //     var id = $(this).data('id');
-            //     // alert(id)
-            //     $.ajax({
-            //         url : "{{ route('faculty.assessment_subject.edit', $ClassSubjectDetail->id) }}",
-            //         type : 'POST',
-            //         data : { _token : '{{ csrf_token() }}', id : id },
-            //         success : function (res) {
-            //             var loc = window.location;
-            //             window.location = loc.protocol+"//"+loc+"/faculty/home";
-            //         }
-            //     });
-            // });
-            // save assessment setup
-            
             $('body').on('submit', '#js-assessment-create-form', function (e) {
                 e.preventDefault();
                 var formData = new FormData($(this)[0]);
@@ -182,33 +161,127 @@
                 });
             });
 
-            $('body').on('submit', '#js-form_disc_fee', function (e) {
+            $('body').on('click', '.js-btn_archived', function (e) {
                 e.preventDefault();
-                var formData = new FormData($(this)[0]);
-                $.ajax({
-                    url         : "{{ route('finance.maintenance.disc_fee.save_data') }}",
-                    type        : 'POST',
-                    data        : formData,
-                    processData : false,
-                    contentType : false,
-                    success     : function (res) {
-                        $('.help-block').html('');
-                        if (res.res_code == 1)
-                        {
-                            for (var err in res.res_error_msg)
+                var id = $(this).data('id');
+                alertify.defaults.transition = "slide";
+                alertify.defaults.theme.ok = "btn btn-primary ";
+                alertify.defaults.theme.cancel = "btn btn-danger ";
+                alertify.confirm('Confirmation', 'Are you sure you want to move this to archive?', function(){  
+                    $.ajax({
+                        url         : "{{ route('faculty.assessment.archive') }}",
+                        type        : 'POST',
+                        data        : { _token : '{{ csrf_token() }}', id : id },
+                        success     : function (res) {
+                            $('.help-block').html('');
+                            if (res.res_code == 1)
                             {
-                                $('#js-' + err).html('<code> '+ res.res_error_msg[err] +' </code>');
+                                show_toast_alert({
+                                    heading : 'Error',
+                                    message : res.res_msg,
+                                    type    : 'error'
+                                });
+                            }
+                            else
+                            {
+                                show_toast_alert({
+                                    heading : 'Success',
+                                    message : res.res_msg,
+                                    type    : 'success'
+                                });
+                                $('.js-modal_holder .modal').modal('hide');
+                                fetch_data();
+                                // location.reload();
+                                // $(this).closest("tr").remove();
                             }
                         }
-                        else
-                        {
-                            $('.js-modal_holder .modal').modal('hide');
-                            fetch_data();
-                        }
-                    }
+                    });
+                }, function(){  
+
                 });
             });
 
+            $('body').on('click', '.js-btn-publish, .js-btn-Unpublish', function (e) {
+                e.preventDefault();
+                let id = $(this).data('id');
+                let type = $(this).data('type');
+                alertify.defaults.transition = "slide";
+                alertify.defaults.theme.ok = "btn btn-primary ";
+                alertify.defaults.theme.cancel = "btn btn-danger ";
+                alertify.confirm('Confirmation', 'Are you sure you want to mark this as "'+type+'"?', function(){  
+                    $.ajax({
+                        url         : "{{ route('faculty.assessment.publish') }}",
+                        type        : 'POST',
+                        data        : { _token : '{{ csrf_token() }}', id : id, type : type },
+                        success     : function (res) {
+                            $('.help-block').html('');
+                            if (res.res_code == 1)
+                            {
+                                show_toast_alert({
+                                    heading : 'Error',
+                                    message : res.res_msg,
+                                    type    : 'error'
+                                });
+                            }
+                            else
+                            {
+                                show_toast_alert({
+                                    heading : 'Success',
+                                    message : res.res_msg,
+                                    type    : 'success'
+                                });
+                                $('.js-modal_holder .modal').modal('hide');
+                                fetch_data();
+                                // location.reload();
+                            }
+                        }
+                    });
+                }, function(){  
+
+                });
+            });
+
+            $('body').on('click', '.js-btn_delete', function (e) {
+                e.preventDefault();
+                var id = $(this).data('id');
+                alertify.defaults.transition = "slide";
+                alertify.defaults.theme.ok = "btn btn-primary ";
+                alertify.defaults.theme.cancel = "btn btn-danger ";
+                alertify.confirm('Confirmation', 'Are you sure you want to delete this question?', function(){  
+                    $.ajax({
+                        url         : "{{ route('faculty.question.delete', $ClassSubjectDetail->id) }}",
+                        type        : 'POST',
+                        data        : { _token : '{{ csrf_token() }}', id : id },
+                        success     : function (res) {
+                            $('.help-block').html('');
+                            if (res.res_code == 1)
+                            {
+                                show_toast_alert({
+                                    heading : 'Error',
+                                    message : res.res_msg,
+                                    type    : 'error'
+                                });
+                            }
+                            else
+                            {
+                                show_toast_alert({
+                                    heading : 'Success',
+                                    message : res.res_msg,
+                                    type    : 'success'
+                                });
+                                $('.js-modal_holder .modal').modal('hide');
+
+                                fetch_data();
+                                // location.reload();
+                                // fetch_data();
+                            }
+                        }
+                    });
+                }, function(){  
+
+                });
+            });
+            
             $('body').on('submit', '#js-form_search', function (e) {
                 e.preventDefault();
                 fetch_data();
