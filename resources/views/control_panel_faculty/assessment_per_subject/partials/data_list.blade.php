@@ -1,19 +1,5 @@
-<div class="table-responsive">
-    <h5 class="mb-3">
-        Subject: <span class="text-red"><i>{{ $ClassSubjectDetail->subject->subject }}</i></span>
-        {{-- <div class="text-right" style="margin-top: -1em">
-            <button id="js-print" class="btn btn-primary btn-sm" 
-                data-id='{{$class_detail->id}}' 
-                data-sy='{{$class_detail->school_year_id}}'
-                data-adviser_id='{{$class_detail->adviser_id}}'
-            >
-                <i class="far fa-edit"></i> Edit
-            </button>
-        </div>     --}}
-        <a href="" class="btn-primary btn btn-sm float-right">
-            <i class="fas fa-archive"></i> Archived
-        </a>
-    </h5>
+
+<div class="table-responsive" style="height: 350px;">
     <div class="float-right">
         {{ $Assessment ? $Assessment->links() : '' }}
     </div>
@@ -55,16 +41,23 @@
                                 <span class="sr-only">Toggle Dropdown</span>
                             </button>
                             <div class="dropdown-menu dropdown-menu-right">
-                                {{-- {{ route('faculty.assessment_subject.edit', encrypt($item->id)) }} --}}
+                               
                                 <a href="{{ route('faculty.assessment_subject.edit', [encrypt($item->id),'tab' => 'setup']) }}" class="dropdown-item" data-id="{{ $item->id }}">
                                     <i class="far fa-eye"></i> View
                                 </a>
-                                <a href="#" class="dropdown-item js-{{ $item->exam_status == 1 ? 'btn-Unpublish' : 'btn-publish' }}" data-id="{{ $item->id }}" data-type="{{ $item->exam_status == 1 ? 'unpublish' : 'publish' }}">
-                                    <i class="far fa-check-square"></i> {{ $item->exam_status == 1 ? 'Mark as Unpublish' : 'Mark as  Publish' }}
+                                <a href="#" class="dropdown-item js-btn-publish" data-id="{{ $item->id }}" data-type="{{ $item->exam_status == 1 ? 'unpublish' : 'publish' }}">
+                                    <i class="far fa-check-square"></i> Move to {{ $item->exam_status == 1 ? 'Unpublish' : 'Publish' }}
                                 </a>
-                                <a href="#" class="dropdown-item js-btn_archived" data-id="{{ $item->id }}">
-                                    <i class="fas fa-archive"></i> Move as Archive
-                                </a>
+                                @if($tab == 'archived')
+                                    <a href="#" class="dropdown-item js-btn-publish" data-id="{{ $item->id }}" data-type="{{ $item->exam_status == 1 ? 'unpublish' : 'publish' }}">
+                                        <i class="far fa-check-square"></i> Move to Unpublish
+                                    </a>
+                                @else
+                                    <a href="#" class="dropdown-item js-btn_archived" data-id="{{ $item->id }}">
+                                        <i class="fas fa-archive"></i> Move as Archive
+                                    </a>
+                                @endif
+                               
                                 {{-- <a href="#" class="dropdown-item js-btn_toggle_current" data-id="{{ $data->id }}" data-toggle_title="{{ ( $data->current ? 'Remove from current active' : 'Add to current active' ) }}">
                                     {{ ( $data->current ? 'Remove from current Active' : 'Add to current Active' ) }}
                                 </a> --}}

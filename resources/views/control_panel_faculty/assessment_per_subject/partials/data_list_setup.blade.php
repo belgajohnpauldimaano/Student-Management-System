@@ -158,6 +158,15 @@
                 </select>
                 <div class="help-block text-red" id="js-attempts"></div>
             </div>
+            <div class="col-md-4">
+                <label for="">Assessment Status</label>
+                <select class="form-control form-control-sm" name="exam_status" style="width: 100%;">
+                    <option value="0" {{ $Assessment != null ? $Assessment->exam_status == 0 ? 'selected' : '' : '' }}>Unpublished</option>
+                    <option value="1" {{ $Assessment != null ? $Assessment->exam_status == 1 ? 'selected' : '' : '' }}>Published</option>
+                    <option value="2" {{ $Assessment != null ? $Assessment->exam_status == 2 ? 'selected' : '' : '' }}>Archived</option>
+                </select>
+                <div class="help-block text-red" id="js-exam_status"></div>
+            </div>
             {{-- <div class="col-md-4">
                 <label for="">Number of question in every page:</label>
                 <select class="form-control form-control-sm" name="attempts" style="width: 100%;">

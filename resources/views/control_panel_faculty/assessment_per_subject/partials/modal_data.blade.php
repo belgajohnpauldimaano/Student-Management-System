@@ -162,13 +162,22 @@
                                 </div>
                             </div>
                             <div class="col-md-4">
-                                <label for="">Number of submission attempts of student:</label>
+                                <label for="">Number of attempts of student:</label>
                                 <select class="form-control form-control-sm" name="attempts" style="width: 100%;">
                                     @for ($x = 1; $x < 11; $x++) 
                                         <option value="{{ $x }}">{{ $x }}</option>
                                     @endfor
                                 </select>
                                 <div class="help-block text-red" id="js-attempts"></div>
+                            </div>
+                            <div class="col-md-4">
+                                <label for="">Assessment Status</label>
+                                <select class="form-control form-control-sm" name="exam_status" style="width: 100%;">
+                                    <option value="0">Unpublished</option>
+                                    <option value="1">Published</option>
+                                    <option value="2">Archived</option>
+                                </select>
+                                <div class="help-block text-red" id="js-exam_status"></div>
                             </div>
                             {{-- <div class="col-md-4">
                                 <label for="">Number of question in every page:</label>

@@ -35,7 +35,7 @@
                         <div class="row" id="js-assessment-subject-container">
                             @foreach ($ClassSubjectDetail as $item)
                                 <div class="col-md-3">
-                                    <a href="{{ route('faculty.assessment_subject', encrypt($item->id)) }}" class="small-box bg-primary btn js-assessment-subject">
+                                    <a href="{{ route('faculty.assessment_subject', [encrypt($item->id), 'tab' => 'unpublished'] ) }}" class="small-box bg-primary btn js-assessment-subject">
                                         <div class="inner" style="height: 150px;">
                                             <h4>{{ $item->section }} {{ $item->grade_level }}</h4>
 

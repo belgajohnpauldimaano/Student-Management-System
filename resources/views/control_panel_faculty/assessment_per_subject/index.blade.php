@@ -5,7 +5,7 @@
 @endsection
 
 @section ('content')
-    <div class="card card-default">
+    <div class="card">
         <div class="col-md-12">
             <a href="{{ route('faculty.assessment') }}" style="margin-top: -3em" class="btn-success btn float-right">
                 <i class="fas fa-arrow-left"></i> back
@@ -14,41 +14,86 @@
         <div class="overlay d-none" id="js-loader-overlay">
             <i class="fas fa-2x fa-sync-alt fa-spin"></i>
         </div>
+        <div class="card-header p-2">
+            <h5 class="float-right pt-2 pr-2">
+                Subject: <span class="text-red"><i>{{ $ClassSubjectDetail->subject->subject }}</i></span>
+            </h5>
+            <ul class="nav nav-pills">
+                <li class="nav-item">
+                    <a class="nav-link {{ $tab ? $tab == 'unpublished' ? 'active' : '' : '' }}" href="{{ route('faculty.assessment_subject', [encrypt($ClassSubjectDetail->id), 'tab' => 'unpublished']) }}" >
+                        Unpublished
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link {{ $tab ? $tab == 'published' ? 'active' : '' : '' }}" href="{{ route('faculty.assessment_subject', [encrypt($ClassSubjectDetail->id), 'tab' => 'published']) }}" >
+                        Published
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link {{ $tab ? $tab == 'archived' ? 'active' : '' : '' }}" href="{{ route('faculty.assessment_subject', [encrypt($ClassSubjectDetail->id), 'tab' => 'archived']) }}" >
+                        Archived
+                    </a>
+                </li>
+            </ul>
+        </div>
         <div class="card-header">
-            <div class="col-md-8 m-auto">
-                <h6 class="box-title">Search</h6>
-                <form id="js-form_search">
-                    {{ csrf_field() }}
-                    <div class="row">
-                        <div class="col-md-9">
-                            <div id="js-form_search" class="form-group" style="padding-left:0;padding-right:0">
-                                <input type="text" class="form-control" name="search">
+                <div class="col-md-8 m-auto">
+                    <h6 class="box-title">Search</h6>
+                    <form id="js-form_search">
+                        {{ csrf_field() }}
+                        <div class="row">
+                            <div class="col-md-9">
+                                <div id="js-form_search" class="form-group" style="padding-left:0;padding-right:0">
+                                    <input type="text" class="form-control form-control" name="search">
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <button type="submit" class="btn btn-success">Search</button>
+                                <a href="#" type="button" class="btn btn-danger" id="js-button-add">
+                                    <i class="fa fa-plus"></i> Create
+                                </a>
                             </div>
                         </div>
-                        <div class="col-md-3">
-                            <button type="submit" class="btn btn-success">Search</button>
-                            {{-- <a href="{{ route('faculty.assessment_subject.create', encrypt($ClassSubjectDetail->id)) }}" type="button" class="btn btn-danger">
-                                <i class="fa fa-plus"></i> Create
-                            </a> --}}
-                            <a href="#" type="button" class="btn btn-danger" id="js-button-add">
-                                <i class="fa fa-plus"></i> Create
-                            </a>
-                        </div>
-                    </div>
-                </form>
-            </div>
-        </div>
-        <!-- /.card-header -->
-        <div class="card-body">
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="js-data-container">
-                        @include('control_panel_faculty.assessment_per_subject.partials.data_list')
-                    </div>
+                    </form>
                 </div>
             </div>
-        </div>
+        <div class="card-body">
+            <div class="tab-content">
+                <div class="{{ $tab ? $tab == 'unpublished' ? 'active' : '' : '' }} tab-pane">                    
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="js-data-container">
+                                @include('control_panel_faculty.assessment_per_subject.partials.data_list')
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- /.tab-pane -->
+                <div class="{{ $tab ? $tab == 'published' ? 'active' : '' : '' }} tab-pane">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="js-data-container">
+                                @include('control_panel_faculty.assessment_per_subject.partials.data_list')
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- /.tab-pane -->
+                <div class="{{ $tab ? $tab == 'archived' ? 'active' : '' : '' }} tab-pane">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="js-data-container">
+                                @include('control_panel_faculty.assessment_per_subject.partials.data_list')
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            <!-- /.tab-pane -->
+            </div>
+            <!-- /.tab-content -->
+        </div><!-- /.card-body -->
     </div>
+    
 @endsection
 
 @section ('scripts')
@@ -163,6 +208,7 @@
 
             $('body').on('click', '.js-btn_archived', function (e) {
                 e.preventDefault();
+                var self = $(this);
                 var id = $(this).data('id');
                 alertify.defaults.transition = "slide";
                 alertify.defaults.theme.ok = "btn btn-primary ";
@@ -190,9 +236,9 @@
                                     type    : 'success'
                                 });
                                 $('.js-modal_holder .modal').modal('hide');
-                                fetch_data();
+                                // fetch_data();
                                 // location.reload();
-                                // $(this).closest("tr").remove();
+                                self.closest('tr').remove();
                             }
                         }
                     });
@@ -201,14 +247,15 @@
                 });
             });
 
-            $('body').on('click', '.js-btn-publish, .js-btn-Unpublish', function (e) {
+            $('body').on('click', '.js-btn-publish', function (e) {
                 e.preventDefault();
+                var self = $(this);
                 let id = $(this).data('id');
                 let type = $(this).data('type');
                 alertify.defaults.transition = "slide";
                 alertify.defaults.theme.ok = "btn btn-primary ";
                 alertify.defaults.theme.cancel = "btn btn-danger ";
-                alertify.confirm('Confirmation', 'Are you sure you want to mark this as "'+type+'"?', function(){  
+                alertify.confirm('Confirmation', 'Are you sure you want to mark this as '+type+'?', function(){  
                     $.ajax({
                         url         : "{{ route('faculty.assessment.publish') }}",
                         type        : 'POST',
@@ -230,8 +277,9 @@
                                     message : res.res_msg,
                                     type    : 'success'
                                 });
-                                $('.js-modal_holder .modal').modal('hide');
-                                fetch_data();
+                               
+                                // fetch_data();
+                                self.closest('tr').remove();
                                 // location.reload();
                             }
                         }

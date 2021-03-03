@@ -73,7 +73,7 @@ class AssessmentController extends Controller
             $assessment->exam_status = ($request->type == 'publish' ? 1 : 0);
             $assessment->save();
             
-            return response()->json(['res_code' => 0, 'res_msg' => 'Assessment successfully moved to '.$request->type == 'publish' ? 'published' : 'unpublished'.'.', 'data' => $assessment ]);
+            return response()->json(['res_code' => 0, 'res_msg' => 'Assessment successfully moved to '.$request->type == 'publish' ? 'unpublished' : 'published']);
         } catch (\Throwable $th) {
             return response()->json(['res_code' => 1, 'res_msg' => 'This action something went wrong.' ], 402);
         }

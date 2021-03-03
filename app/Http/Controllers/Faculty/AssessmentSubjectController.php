@@ -22,10 +22,26 @@ class AssessmentSubjectController extends Controller
     
     public function index(Request $request)
     {
+        $tab = $request->tab;
+
         $id = Crypt::decrypt($request->class_subject_details_id);
         $ClassSubjectDetail = $this->subjectDetails($id);
         $semester = $this->semester();
-        $Assessment = Assessment::orderBY('id', 'desc')->where('exam_status', '!=', 2)->paginate(10);
+        $query = Assessment::orderBY('id', 'desc');
+        
+        if($tab == 'unpublished'){
+            $query->where('exam_status', 0);
+        }
+
+        if($tab == 'published'){
+            $query->where('exam_status', 1);
+        }
+
+        if($tab == 'archived'){
+            $query->where('exam_status', 2);
+        }
+        
+        $Assessment = $query->paginate(10);
         
         if($request->ajax())
         {
@@ -115,6 +131,7 @@ class AssessmentSubjectController extends Controller
                 $Assessment->total_items            =  $request->total_item;
                 $Assessment->student_view_result    =  $request->view_results;
                 $Assessment->attempt_limit          =  $request->attempts;
+                $Assessment->exam_status            =  $request->exam_status;
                 $Assessment->save();
                 
                 // $tab = 'active';

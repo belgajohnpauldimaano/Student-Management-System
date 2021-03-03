@@ -10,7 +10,7 @@
             <i class="fas fa-2x fa-sync-alt fa-spin"></i>
         </div>
         <div class="col-md-12">
-            <a href="{{ route('faculty.assessment_subject', encrypt($ClassSubjectDetail->id)) }}" style="margin-top: -3em" class="btn-success btn float-right">
+            <a href="{{ route('faculty.assessment_subject', [encrypt($ClassSubjectDetail->id), 'tab' => $Assessment->assessment_status ] ) }}" style="margin-top: -3em" class="btn-success btn float-right">
                 <i class="fas fa-arrow-left"></i> back
             </a>
         </div>
@@ -33,10 +33,18 @@
                       <i class="fas fa-cog"></i> Action <span class="caret"></span>
                     </a>
                     <div class="dropdown-menu dropdown-menu-right">
-                      {{-- <a class="dropdown-item" tabindex="-1" href="#">Edit</a> --}}
-                      <a class="dropdown-item" tabindex="-1" href="#">Unpublish</a>
-                      <a class="dropdown-item" tabindex="-1" href="#">Print Assessment</a>
-                      <a class="dropdown-item" tabindex="-1" href="#">Delete</a>
+                        <a href="#" class="dropdown-item js-btn-publish" data-id="{{ $Assessment->id }}" data-type="{{ $Assessment->exam_status == 1 ? 'unpublish' : 'publish' }}">
+                            <i class="far fa-check-square"></i> Move to {{ $Assessment->exam_status == 1 ? 'Unpublish' : 'Publish' }}
+                        </a>
+                        @if($tab == 'archived')
+                            <a href="#" class="dropdown-item js-btn-publish" data-id="{{ $Assessment->id }}" data-type="{{ $Assessment->exam_status == 1 ? 'unpublish' : 'publish' }}">
+                                <i class="far fa-check-square"></i> Move to Unpublish
+                            </a>
+                        @else
+                            <a href="#" class="dropdown-item js-btn_archived" data-id="{{ $Assessment->id }}">
+                                <i class="fas fa-archive"></i> Move as Archive
+                            </a>
+                        @endif
                     </div>
                 </li>
             </ul>
@@ -56,52 +64,7 @@
                 </div>
                 <!-- /.tab-pane -->
                 <div class="tab-pane" id="grading">
-                    <form class="form-horizontal">
-                      <div class="form-group row">
-                        <label for="inputName" class="col-sm-2 col-form-label">Name</label>
-                        <div class="col-sm-10">
-                          <input type="email" class="form-control" id="inputName" placeholder="Name">
-                        </div>
-                      </div>
-                      <div class="form-group row">
-                        <label for="inputEmail" class="col-sm-2 col-form-label">Email</label>
-                        <div class="col-sm-10">
-                          <input type="email" class="form-control" id="inputEmail" placeholder="Email">
-                        </div>
-                      </div>
-                      <div class="form-group row">
-                        <label for="inputName2" class="col-sm-2 col-form-label">Name</label>
-                        <div class="col-sm-10">
-                          <input type="text" class="form-control" id="inputName2" placeholder="Name">
-                        </div>
-                      </div>
-                      <div class="form-group row">
-                        <label for="inputExperience" class="col-sm-2 col-form-label">Experience</label>
-                        <div class="col-sm-10">
-                          <textarea class="form-control" id="inputExperience" placeholder="Experience"></textarea>
-                        </div>
-                      </div>
-                      <div class="form-group row">
-                        <label for="inputSkills" class="col-sm-2 col-form-label">Skills</label>
-                        <div class="col-sm-10">
-                          <input type="text" class="form-control" id="inputSkills" placeholder="Skills">
-                        </div>
-                      </div>
-                      <div class="form-group row">
-                        <div class="offset-sm-2 col-sm-10">
-                          <div class="checkbox">
-                            <label>
-                              <input type="checkbox"> I agree to the <a href="#">terms and conditions</a>
-                            </label>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="form-group row">
-                        <div class="offset-sm-2 col-sm-10">
-                          <button type="submit" class="btn btn-danger">Submit</button>
-                        </div>
-                      </div>
-                    </form>
+                    
                 </div>
                 <!-- /.tab-pane -->
             </div>
@@ -304,6 +267,89 @@
                 });
             });
 
+            $('body').on('click', '.js-btn_archived', function (e) {
+                e.preventDefault();
+                var self = $(this);
+                var id = $(this).data('id');
+                alertify.defaults.transition = "slide";
+                alertify.defaults.theme.ok = "btn btn-primary ";
+                alertify.defaults.theme.cancel = "btn btn-danger ";
+                alertify.confirm('Confirmation', 'Are you sure you want to move this to archive?', function(){  
+                    $.ajax({
+                        url         : "{{ route('faculty.assessment.archive') }}",
+                        type        : 'POST',
+                        data        : { _token : '{{ csrf_token() }}', id : id },
+                        success     : function (res) {
+                            $('.help-block').html('');
+                            if (res.res_code == 1)
+                            {
+                                show_toast_alert({
+                                    heading : 'Error',
+                                    message : res.res_msg,
+                                    type    : 'error'
+                                });
+                            }
+                            else
+                            {
+                                show_toast_alert({
+                                    heading : 'Success',
+                                    message : res.res_msg,
+                                    type    : 'success'
+                                });
+                                $('.js-modal_holder .modal').modal('hide');
+                                // fetch_data();
+                                location.reload();
+                                // self.closest('tr').remove();
+                            }
+                        }
+                    });
+                }, function(){  
+
+                });
+            });
+
+            $('body').on('click', '.js-btn-publish', function (e) {
+                e.preventDefault();
+                var self = $(this);
+                let id = $(this).data('id');
+                let type = $(this).data('type');
+                alertify.defaults.transition = "slide";
+                alertify.defaults.theme.ok = "btn btn-primary ";
+                alertify.defaults.theme.cancel = "btn btn-danger ";
+                alertify.confirm('Confirmation', 'Are you sure you want to mark this as '+type+'?', function(){  
+                    $.ajax({
+                        url         : "{{ route('faculty.assessment.publish') }}",
+                        type        : 'POST',
+                        data        : { _token : '{{ csrf_token() }}', id : id, type : type },
+                        success     : function (res) {
+                            $('.help-block').html('');
+                            if (res.res_code == 1)
+                            {
+                                show_toast_alert({
+                                    heading : 'Error',
+                                    message : res.res_msg,
+                                    type    : 'error'
+                                });
+                            }
+                            else
+                            {
+                                show_toast_alert({
+                                    heading : 'Success',
+                                    message : res.res_msg,
+                                    type    : 'success'
+                                });
+                               
+                                // fetch_data();
+                                // self.closest('tr').remove();
+                                location.reload();
+                            }
+                        }
+                    });
+                }, function(){  
+
+                });
+            });
+
             $('select[name="question_type"]').change(function(e){
                 e.preventDefault();
                 examType();
@@ -329,6 +375,7 @@
                         $('#js_question_type').val(1);
                         $('#js-multiple-choice').removeClass('d-none')
                         $('#js-true-false').addClass('d-none')
+                        $('#js-match').addClass('d-none')
                         $('.js-points').html(point_item);
                     }
                     if(question_type==2){
@@ -336,6 +383,7 @@
                         $('#js_question_type').val(2);
                         $('#js-multiple-choice').addClass('d-none')
                         $('#js-true-false').removeClass('d-none')
+                        $('#js-match').addClass('d-none')
                         $('.js-points').html(point_item);
                     }
                     if(question_type==3){
@@ -343,24 +391,29 @@
                         $('#js_question_type').val(3);
                         $('#js-multiple-choice').addClass('d-none')
                         $('#js-true-false').addClass('d-none')
+                        $('#js-match').removeClass('d-none')
+                        $('.js-points').html(point_item);
                     }
                     if(question_type==4){
                         $('#exam_type_title').text('Ordering');
                         $('#js_question_type').val(4);
                         $('#js-multiple-choice').addClass('d-none')
                         $('#js-true-false').addClass('d-none')
+                        $('#js-match').addClass('d-none')
                     }
                     if(question_type==5){
                         $('#exam_type_title').text('Fill in the Blank Text');
                         $('#js_question_type').val(5);
                         $('#js-multiple-choice').addClass('d-none')
                         $('#js-true-false').addClass('d-none')
+                        $('#js-match').addClass('d-none')
                     }
                     if(question_type==6){
                         $('#exam_type_title').text('Short Answer/Essay');
                         $('#js_question_type').val(6);
                         $('#js-multiple-choice').addClass('d-none')
                         $('#js-true-false').addClass('d-none')
+                        $('#js-match').addClass('d-none')
                     }
                     
                 }

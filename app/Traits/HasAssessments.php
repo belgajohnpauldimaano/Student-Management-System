@@ -41,4 +41,14 @@ trait HasAssessments{
         ];
         return $question_type[$this->question_type];
     }
+
+    public function getAssessmentStatusAttribute()
+    {
+        $route_type = [
+            'unpublished', 
+            'published', 
+            'archived' 
+        ];
+        return $route_type[$this->exam_status];
+    }
 }

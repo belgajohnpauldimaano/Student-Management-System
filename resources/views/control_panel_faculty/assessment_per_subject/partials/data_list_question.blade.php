@@ -143,6 +143,66 @@
                             </div>
                         </div>
                     </div>
+                    {{-- matching type --}}
+                    <div id="js-match" class="d-none">
+                        <div class="form-group">
+                            <table class="table">
+                                <thead>
+                                    <tr class="text-center">
+                                        <th>Question</th>
+                                        <th>Answer</th>
+                                    </tr>
+                                </thead>
+                            </table>
+                            <ul class="todo-list" data-widget="todo-list">
+                                <li>
+                                    <div class="input-group">
+                                        <span class="handle mt-1">
+                                            <i class="fas fa-ellipsis-v"></i>
+                                            <i class="fas fa-ellipsis-v"></i>
+                                        </span>                       
+                                        <input type="text" class="form-control form-control-sm" name="options[]">
+                                        &nbsp;&nbsp;&nbsp;&nbsp;
+                                        <input type="text" class="form-control form-control-sm" name="answer[]">
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="input-group">
+                                        <span class="handle mt-1">
+                                            <i class="fas fa-ellipsis-v"></i>
+                                            <i class="fas fa-ellipsis-v"></i>
+                                        </span>                       
+                                        <input type="text" class="form-control form-control-sm" name="options[]">
+                                        &nbsp;&nbsp;&nbsp;&nbsp;
+                                        <input type="text" class="form-control form-control-sm" name="answer[]">
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="input-group">
+                                        <span class="handle mt-1">
+                                            <i class="fas fa-ellipsis-v"></i>
+                                            <i class="fas fa-ellipsis-v"></i>
+                                        </span>                       
+                                        <input type="text" class="form-control form-control-sm" name="options[]">
+                                        &nbsp;&nbsp;&nbsp;&nbsp;
+                                        <input type="text" class="form-control form-control-sm" name="answer[]">
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="input-group">
+                                        <span class="handle mt-1">
+                                            <i class="fas fa-ellipsis-v"></i>
+                                            <i class="fas fa-ellipsis-v"></i>
+                                        </span>                       
+                                        <input type="text" class="form-control form-control-sm" name="options[]">
+                                        &nbsp;&nbsp;&nbsp;&nbsp;
+                                        <input type="text" class="form-control form-control-sm" name="answer[]">
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                        <hr>
+                    </div>
                 </div>
                 <div id="js-true-false" class="d-none">
                     <div class="form-group pl-3 pr-3">
