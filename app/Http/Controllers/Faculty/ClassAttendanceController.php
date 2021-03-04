@@ -23,13 +23,19 @@ class ClassAttendanceController extends Controller
         $FacultyInformation = FacultyInformation::where('user_id', Auth::user()->id)->first();
         $school_year = SchoolYear::whereCurrent(1)->whereStatus(1)->first();
         $sem = Semester::whereCurrent(1)->first();
+
+        $has_schoolyear = ClassDetail::whereStatus(1)
+            ->whereAdviserId($FacultyInformation->id)
+            ->whereSchoolYearId($school_year->id)
+            ->first();
+
+        // return json_encode($has_schoolyear);
         
-        $Semester = ClassSubjectDetail::join('class_details', 'class_details.id', '=', 'class_subject_details.class_details_id')
+        $query = ClassSubjectDetail::join('class_details', 'class_details.id', '=', 'class_subject_details.class_details_id')
             ->join('section_details', 'section_details.id', '=', 'class_details.section_id')
             ->where('class_details.adviser_id', $FacultyInformation->id)
             ->where('class_details.school_year_id', $school_year->id)
             ->where('class_details.status', 1)
-            ->where('class_subject_details.sem', $sem->id)
             ->select(\DB::raw('
                     section_details.section,
                     class_details.id,
@@ -37,8 +43,14 @@ class ClassAttendanceController extends Controller
                     class_details.grade_level,
                     class_subject_details.status as grading_status,
                     class_subject_details.sem
-            '))
-            ->first();
+            '));
+
+        if($has_schoolyear->grade_level > 10)
+        {
+            $query->where('class_subject_details.sem', $sem->id);
+        }
+        
+        $Semester = $query->first();
 
         // return json_encode($Semester);
 

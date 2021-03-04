@@ -56,7 +56,7 @@ return [
     */
 
     'from' => [
-        'address' => env('MAIL_FROM_ADDRESS', 'info@sja-bataan.com'),
+        'address' => env('MAIL_FROM_ADDRESS', 'inquiry@sja-bataan.com'),
         'name' => env('MAIL_FROM_NAME', 'SJAI Admin'),
     ],
 

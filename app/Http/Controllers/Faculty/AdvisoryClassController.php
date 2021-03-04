@@ -111,18 +111,18 @@ class AdvisoryClassController extends Controller
             $enrollment_id = Crypt::decrypt($request->enr);
             
             $Enrollment = Enrollment::join('student_informations', 'student_informations.id', '=', 'enrollments.student_information_id')
-            ->join('class_details', 'class_details.id', '=', 'enrollments.class_details_id')
-            ->join('users', 'users.id', '=', 'student_informations.user_id')
-            ->whereRaw('enrollments.class_details_id = '. $class_id)
-            ->whereRaw('class_details.adviser_id = '. $FacultyInformation->id)
-            ->whereRaw('enrollments.id = '. $enrollment_id)
-            ->select(\DB::raw("
-                enrollments.id as e_id,
-                student_informations.id,
-                CONCAT(student_informations.last_name, ', ', student_informations.first_name, ' ', student_informations.middle_name) as student_name,
-                attendance
-            "))
-            ->first();
+                ->join('class_details', 'class_details.id', '=', 'enrollments.class_details_id')
+                ->join('users', 'users.id', '=', 'student_informations.user_id')
+                ->whereRaw('enrollments.class_details_id = '. $class_id)
+                ->whereRaw('class_details.adviser_id = '. $FacultyInformation->id)
+                ->whereRaw('enrollments.id = '. $enrollment_id)
+                ->select(\DB::raw("
+                    enrollments.id as e_id,
+                    student_informations.id,
+                    CONCAT(student_informations.last_name, ', ', student_informations.first_name, ' ', student_informations.middle_name) as student_name,
+                    attendance
+                "))
+                ->first();
 
             $ClassDetails = ClassDetail::join('section_details', 'section_details.id', '=', 'class_details.section_id')
             ->join('school_years', 'school_years.id', '=', 'class_details.school_year_id')
