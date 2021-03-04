@@ -3,6 +3,7 @@ namespace App\Traits;
 
 use Storage;
 use App\Models\Assessment;
+use App\Models\QuestionAnswer;
 
 trait HasAssessments{
     public function getExamPeriodBadgeAttribute(){
@@ -50,5 +51,10 @@ trait HasAssessments{
             'archived' 
         ];
         return $route_type[$this->exam_status];
+    }
+
+    public function getAnswerAttribute(){
+    
+        return QuestionAnswer::where('question_id', $this->question_id)->where('order_number', $this->order_number)->first();
     }
 }

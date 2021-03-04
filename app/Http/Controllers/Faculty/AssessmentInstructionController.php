@@ -39,7 +39,7 @@ class AssessmentInstructionController extends Controller
 
         $id = $request->instruction_id;
 
-        // try {
+        try {
 
             if($id){
                 $instruction = Instruction::find($id);
@@ -71,12 +71,12 @@ class AssessmentInstructionController extends Controller
                 ],201);
             }
 
-        // } catch (\Throwable $th) {
-        //     return response()->json([
-        //             'res_code'  => 1,
-        //             'res_msg'   => 'Something went wrong.',
-        //     ]);
-        // }
+        } catch (\Throwable $th) {
+            return response()->json([
+                    'res_code'  => 1,
+                    'res_msg'   => 'Something went wrong.',
+            ]);
+        }
 
     }
 }

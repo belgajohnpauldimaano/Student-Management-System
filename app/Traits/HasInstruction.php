@@ -16,6 +16,10 @@ trait HasInstruction{
         return $this->hasOne(QuestionAnswer::class, 'question_id');
     }
 
+    public function answerMatching(){
+        return $this->hasMany(QuestionAnswer::class, 'question_id');
+    }
+
     public function options(){
         return $this->hasMany(AnswerOption::class, 'question_id')->orderBy('order_number', 'ASC');
     }

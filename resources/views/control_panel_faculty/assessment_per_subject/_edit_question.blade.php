@@ -42,6 +42,31 @@
                                 <div class="help-block text-red" id="js-question"></div>
                             </div>
                         </div>
+                         @if($Question->question_type == 3)
+                            <table class="table">
+                                <thead>
+                                    <tr class="text-center">
+                                        <th>Question</th>
+                                        <th>Answer</th>
+                                    </tr>
+                                </thead>
+                            </table>
+                            @foreach ($Question->options as $key => $data)
+                                <ul class="todo-list" data-widget="todo-list">
+                                    <li>
+                                        <div class="input-group">
+                                            <span class="handle mt-1">
+                                                <i class="fas fa-ellipsis-v"></i>
+                                                <i class="fas fa-ellipsis-v"></i>
+                                            </span>                       
+                                            <input type="text" class="form-control form-control-sm" name="options[]" value="{{ $data->option_title }}">
+                                            &nbsp;&nbsp;&nbsp;&nbsp;
+                                            <input type="text" class="form-control form-control-sm" name="matching_answer[]" value="{{ $data->answer->correct_option_answer }}">
+                                        </div>
+                                    </li>
+                                </ul>
+                            @endforeach
+                        @else
                         <div id="js-multiple-choice">
                             <table class="table table-condensed">
                                 <thead>
@@ -73,22 +98,23 @@
                                     @endforeach
                                 </tbody>
                             </table>
-                            <div class="row">
-                                <div class="col-md-2">
-                                    <label for="points_per_question">Points this question:</label>
-                                </div>
-                                <div class="col-md-2">
-                                    <input 
-                                        type="number" 
-                                        class="form-control form-control-sm" 
-                                        id="points_per_question" 
-                                        name="points_per_question" 
-                                        value="{{ $Question->answerMultipleChoice->points_per_question }}"
-                                    >
-                                </div>
-                                <div class="col-md-3">
-                                    <small><i>Note: 0 point value for this question is not valid. </i></small>
-                                </div>
+                        </div>
+                        @endif
+                        <div class="row mt-3">
+                            <div class="col-md-2">
+                                <label for="points_per_question">Points per question:</label>
+                            </div>
+                            <div class="col-md-2">
+                                <input 
+                                    type="number" 
+                                    class="form-control form-control-sm" 
+                                    id="points_per_question" 
+                                    name="points_per_question" 
+                                    value="{{ $Question->answerMultipleChoice->points_per_question }}"
+                                >
+                            </div>
+                            <div class="col-md-3">
+                                <small><i>Note: 0 point value for this question is not valid. </i></small>
                             </div>
                         </div>
                     </div>

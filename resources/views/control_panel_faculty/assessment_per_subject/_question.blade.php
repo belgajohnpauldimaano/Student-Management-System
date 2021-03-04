@@ -60,19 +60,68 @@
                                                     <td style="width: 5%">{{ $key+1 }}.)</td>
                                                     <td> 
                                                         {!! $item->question_title !!} 
-                                                        <i class="text-red">
-                                                            <small>({{ $item->answerMultipleChoice->points_per_question }} point {{ $item->answerMultipleChoice->points_per_question > 1 ? 's' : '' }} )</small>
-                                                        </i>
-                                                        @foreach ($item->options as $key => $data)
-                                                            <div class="form-group clearfix mt-3">
-                                                                <div class="icheck-{{ $item->answerMultipleChoice->correct_option_answer == $key+1 ? 'success' : 'danger' }} d-inline">
-                                                                    <input type="radio" {{ $item->answerMultipleChoice->correct_option_answer == $key+1 ? 'checked' : '' }} name="options_answer[{{ $item->id }}]" id="option-{{ $data->id }}" value="{{ $data->order_number }}">
-                                                                    <label for="option-{{ $data->id }}">
-                                                                        {{ $data->option_title }}
-                                                                    </label>
+                                                        
+                                                        @if($data->question_type == 3)
+                                                            <div class="row">
+                                                                <div class="col-md-12">
+                                                                    <hr>
+                                                                    <p><b>List of option: <i class="text-red">(drag it to List of your answer)</i></b></p>
+                                                                    <div class="row">
+                                                                        @foreach ($item->answerMatching as $key => $data)
+                                                                            <section class="connectedSortable">
+                                                                                <div class="col-md-12">
+                                                                                    <div class="card">
+                                                                                        <div class="card-header">
+                                                                                            <h3 class="card-title">
+                                                                                                {{ $data->correct_option_answer }}
+                                                                                            </h3>
+                                                                                            <input type="hidden" name="match_options[{{ $item->id }}]" value="{{ $data->correct_option_answer }}">
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </section>
+                                                                        @endforeach
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-6">
+                                                                    <p><b>List of question:</b></p>
+                                                                    <ol>
+                                                                    @foreach ($item->options as $key => $data)
+                                                                        <div class="form-group clearfix mt-3">
+                                                                            <li>
+                                                                                {{ $data->option_title }}<br/>
+                                                                                <i class="text-red">
+                                                                                    <small>({{ $item->answerMultipleChoice->points_per_question }} point {{ $item->answerMultipleChoice->points_per_question > 1 ? 's' : '' }} )</small>
+                                                                                </i>
+                                                                            </li>
+                                                                        </div>
+                                                                    @endforeach
+                                                                    </ol>
+                                                                </div>
+                                                                <div class="col-md-6">
+                                                                    <p><b>List of your answer:</b></p>
+                                                                    <section class="connectedSortable">
+                                                                        @foreach ($item->answerMatching as $key => $data)
+                                                                            <div></div>
+                                                                        @endforeach
+                                                                    </section>
                                                                 </div>
                                                             </div>
-                                                        @endforeach
+                                                        @else
+                                                            <i class="text-red">
+                                                                <small>({{ $item->answerMultipleChoice->points_per_question }} point {{ $item->answerMultipleChoice->points_per_question > 1 ? 's' : '' }} )</small>
+                                                            </i>
+                                                            @foreach ($item->options as $key => $data)
+                                                                <div class="form-group clearfix mt-3">
+                                                                    <div class="icheck-{{ $item->answerMultipleChoice->correct_option_answer == $key+1 ? 'success' : 'danger' }} d-inline">
+                                                                        <input type="radio" {{ $item->answerMultipleChoice->correct_option_answer == $key+1 ? 'checked' : '' }} name="options_answer[{{ $item->id }}]" id="option-{{ $data->id }}" value="{{ $data->order_number }}">
+                                                                        <label for="option-{{ $data->id }}">
+                                                                            {{ $data->option_title }}
+                                                                        </label>
+                                                                    </div>
+                                                                </div>
+                                                            @endforeach
+                                                        @endif
                                                     </td>
                                                     <td>
                                                         <div class="btn-group btn-group-sm">
@@ -112,6 +161,7 @@
 @endsection
 
 @section ('scripts')
+<script src="{{ asset('cms-new/dist/js/pages/dashboard.js') }}"></script>
     <script src="{{ asset('cms-new/plugins/summernote/summernote-bs4.min.js') }}"></script>
     <script src="{{ asset('cms/plugins/datetimepicker/datetimepicker.js') }}"></script>
     <script>

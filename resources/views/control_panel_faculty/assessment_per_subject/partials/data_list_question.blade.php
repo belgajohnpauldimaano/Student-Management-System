@@ -15,7 +15,7 @@
         <option value="2">True/False</option>
         <option value="3">Matching</option>
         <option value="4">Ordering</option>
-        <option value="5">Fill in the Blank Text</option>
+        <option value="5">Fill in the Blank Text or Identification</option>
         <option value="6">Short Answer/Essay</option>
     </select>
     <div class="help-block text-red" id="js-question_type"></div>
@@ -32,7 +32,7 @@
         @if($Assessment != null)
             <input type="hidden" name="id" value="{{ $Assessment->id }}">
         @endif
-        
+
         <div class="card">
             <div id="js-head-type" class="d-none">
                 <div class="card-header">
@@ -43,18 +43,19 @@
                     <div class="card-tools"></div>
                 </div>
             </div>
-            
+
             <!-- /.card-header -->
             <div id="js-question" class="d-none">
                 <div class="card-body">
                     <input type="hidden" id="js_question_type" name="js_question_type">
 
                     <div class="form-group">
-                        <label for="summernote">Question</label>
+                        <label for="summernote">Question Setup</label>
                         <textarea name="question" class="js-question_setup"></textarea>
                         <div class="help-block text-red" id="js-question"></div>
                     </div>
-                    
+
+                    {{-- multiple-choice --}}
                     <div id="js-multiple-choice" class="d-none">
                         <div class="form-group">
                             <p>Options</p>
@@ -64,7 +65,7 @@
                                         <span class="handle mt-1">
                                             <i class="fas fa-ellipsis-v"></i>
                                             <i class="fas fa-ellipsis-v"></i>
-                                        </span>                       
+                                        </span>
                                         <input type="text" class="form-control form-control-sm" name="options[]">
                                         &nbsp;&nbsp;&nbsp;
                                         <div class="icheck-danger d-inline">
@@ -81,7 +82,7 @@
                                         <span class="handle mt-1">
                                             <i class="fas fa-ellipsis-v"></i>
                                             <i class="fas fa-ellipsis-v"></i>
-                                        </span>                       
+                                        </span>
                                         <input type="text" class="form-control form-control-sm" name="options[]">
                                         &nbsp;&nbsp;&nbsp;
                                         <div class="icheck-danger d-inline">
@@ -98,7 +99,7 @@
                                         <span class="handle mt-1">
                                             <i class="fas fa-ellipsis-v"></i>
                                             <i class="fas fa-ellipsis-v"></i>
-                                        </span>                       
+                                        </span>
                                         <input type="text" class="form-control form-control-sm" name="options[]">
                                         &nbsp;&nbsp;&nbsp;
                                         <div class="icheck-danger d-inline">
@@ -115,7 +116,7 @@
                                         <span class="handle mt-1">
                                             <i class="fas fa-ellipsis-v"></i>
                                             <i class="fas fa-ellipsis-v"></i>
-                                        </span>                       
+                                        </span>
                                         <input type="text" class="form-control form-control-sm" name="options[]">
                                         &nbsp;&nbsp;&nbsp;
                                         <div class="icheck-danger d-inline">
@@ -143,6 +144,7 @@
                             </div>
                         </div>
                     </div>
+
                     {{-- matching type --}}
                     <div id="js-match" class="d-none">
                         <div class="form-group">
@@ -154,53 +156,69 @@
                                     </tr>
                                 </thead>
                             </table>
-                            <ul class="todo-list" data-widget="todo-list">
-                                <li>
+                            <ul class="todo-list" id="match" data-widget="todo-list">
+                                <li class="li-row">
                                     <div class="input-group">
                                         <span class="handle mt-1">
                                             <i class="fas fa-ellipsis-v"></i>
                                             <i class="fas fa-ellipsis-v"></i>
-                                        </span>                       
+                                        </span>
                                         <input type="text" class="form-control form-control-sm" name="matching_options[]">
                                         &nbsp;&nbsp;&nbsp;&nbsp;
                                         <input type="text" class="form-control form-control-sm" name="matching_answer[]">
+                                        <div class="tools p-1">
+                                            <i class="fas fa-times-circle fa-lg delete-match-item"></i>
+                                        </div>
                                     </div>
                                 </li>
-                                <li>
+                                <li class="li-row">
                                     <div class="input-group">
                                         <span class="handle mt-1">
                                             <i class="fas fa-ellipsis-v"></i>
                                             <i class="fas fa-ellipsis-v"></i>
-                                        </span>                       
+                                        </span>
                                         <input type="text" class="form-control form-control-sm" name="matching_options[]">
                                         &nbsp;&nbsp;&nbsp;&nbsp;
                                         <input type="text" class="form-control form-control-sm" name="matching_answer[]">
+                                        <div class="tools p-1">
+                                            <i class="fas fa-times-circle fa-lg delete-match-item"></i>
+                                        </div>
                                     </div>
                                 </li>
-                                <li>
+                                <li class="li-row">
                                     <div class="input-group">
                                         <span class="handle mt-1">
                                             <i class="fas fa-ellipsis-v"></i>
                                             <i class="fas fa-ellipsis-v"></i>
-                                        </span>                       
+                                        </span>
                                         <input type="text" class="form-control form-control-sm" name="matching_options[]">
                                         &nbsp;&nbsp;&nbsp;&nbsp;
                                         <input type="text" class="form-control form-control-sm" name="matching_answer[]">
+                                        <div class="tools p-1">
+                                            <i class="fas fa-times-circle fa-lg delete-match-item"></i>
+                                        </div>
                                     </div>
                                 </li>
-                                <li>
+                                <li class="li-row">
                                     <div class="input-group">
                                         <span class="handle mt-1">
                                             <i class="fas fa-ellipsis-v"></i>
                                             <i class="fas fa-ellipsis-v"></i>
-                                        </span>                       
+                                        </span>
                                         <input type="text" class="form-control form-control-sm" name="matching_options[]">
                                         &nbsp;&nbsp;&nbsp;&nbsp;
                                         <input type="text" class="form-control form-control-sm" name="matching_answer[]">
+                                        <div class="tools p-1">
+                                            <i class="fas fa-times-circle fa-lg delete-match-item"></i>
+                                        </div>
                                     </div>
                                 </li>
                             </ul>
                         </div>
+                        <button type="button" class="btn btn-sm btn-outline-danger" id="btn-add-option-match">
+                            <i class="fas fa-plus"></i> Add Option
+                        </button>
+                        <hr>
                         <div class="col-md-3">
                             <div class="form-group">
                                <div class='js-points'></div>
@@ -208,13 +226,112 @@
                         </div>
                         <hr>
                     </div>
+
+                    {{-- ordering --}}
+                    <div id="js-ordering" class="d-none">
+                        <div class="form-group">
+                            <p>Options: <i class="text-red"><small>This options is auto random in student panel, please re-order it from top to last</small></i></p>
+                            <ul class="todo-list" id="ordering" data-widget="todo-list">
+                                <li class="li-row">
+                                    <div class="input-group">
+                                        <span class="handle mt-1">
+                                            <i class="fas fa-ellipsis-v"></i>
+                                            <i class="fas fa-ellipsis-v"></i>
+                                        </span>
+                                        <input type="text" class="form-control form-control-sm" name="ordering_option[]">
+                                        &nbsp;&nbsp;
+                                        <div class="tools p-1">
+                                            <i class="fas fa-times-circle fa-lg delete-ordering-item"></i>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="li-row">
+                                    <div class="input-group">
+                                        <span class="handle mt-1">
+                                            <i class="fas fa-ellipsis-v"></i>
+                                            <i class="fas fa-ellipsis-v"></i>
+                                        </span>
+                                        <input type="text" class="form-control form-control-sm" name="ordering_option[]">
+                                        &nbsp;&nbsp;
+                                        <div class="tools p-1">
+                                            <i class="fas fa-times-circle fa-lg delete-ordering-item"></i>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="li-row">
+                                    <div class="input-group">
+                                        <span class="handle mt-1">
+                                            <i class="fas fa-ellipsis-v"></i>
+                                            <i class="fas fa-ellipsis-v"></i>
+                                        </span>
+                                        <input type="text" class="form-control form-control-sm" name="ordering_option[]">
+                                        &nbsp;&nbsp;
+                                        <div class="tools p-1">
+                                            <i class="fas fa-times-circle fa-lg delete-ordering-item"></i>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="li-row">
+                                    <div class="input-group">
+                                        <span class="handle mt-1">
+                                            <i class="fas fa-ellipsis-v"></i>
+                                            <i class="fas fa-ellipsis-v"></i>
+                                        </span>
+                                        <input type="text" class="form-control form-control-sm" name="ordering_option[]">
+                                        &nbsp;&nbsp;
+                                        <div class="tools p-1">
+                                            <i class="fas fa-times-circle fa-lg delete-ordering-item"></i>
+                                        </div>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                        <button type="button" class="btn btn-sm btn-outline-danger" id="btn-add-option-ordering">
+                            <i class="fas fa-plus"></i> Add Option
+                        </button>
+                        <hr>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                               <div class='js-points'></div>
+                            </div>
+                        </div>
+                        <hr>
+                    </div>
+
+                    {{-- fill in the blanks or identification --}}
+                    <div id="js-identification" class="d-none">
+                        <div class="row" id="identification">
+                            <textarea id='js-question_field' class="d-none" size="75"></textarea>
+                            <div class="col-md-9">
+                                <label for="answer_identification">Answer:</label>
+                                <input type="number" class="form-control form-control-sm" id="answer_identification" name="answer_identification">
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                <div class='js-points'></div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <button type="button" class="btn btn-sm btn-outline-danger" id="btn-add-option-identification">
+                            <i class="fas fa-plus"></i> Add Question
+                        </button>
+                        <hr>
+                        
+                        <hr>
+                    </div>
                 </div>
+
+
+
+                {{-- true or false --}}
                 <div id="js-true-false" class="d-none">
                     <div class="form-group pl-3 pr-3">
                         <div class="row">
                             <div class="col-md-12 pb-2">
                                 <a href="{{ route('faculty.question.archiveIndex', [encrypt($Assessment->id), 'tab' => 'questions'] ) }}" 
-                                    class="btn-primary btn btn-sm">
+                                    class="btn-outline-primary btn btn-sm">
                                     <i class="fas fa-cog"></i> Change the default text for true and false
                                 </a>
                             </div>
@@ -244,7 +361,7 @@
                             </div>
                         </div>
                     </div>
-                   
+
                 </div>
                 <div class="card-footer clearfix">
                     <button type="submit" class="btn btn-primary float-right">
@@ -252,9 +369,6 @@
                     </button>
                 </div>
             </div>
-            
         </div>
-        
-                
     </form>
 </div>

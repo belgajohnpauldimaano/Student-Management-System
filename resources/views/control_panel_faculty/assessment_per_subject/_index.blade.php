@@ -350,12 +350,12 @@
                 });
             });
 
-            $('select[name="question_type"]').change(function(e){
+            $(document).on('change', 'select[name="question_type"]', function(e){
                 e.preventDefault();
                 examType();
             })
 
-            $('#btn-question-type-selected').click(function(e){
+            $(document).on('click', '#btn-question-type-selected', function(e){
                 e.preventDefault();
                 examType();
             })
@@ -383,14 +383,85 @@
                     </div>
                 </li>`);                
             })
-
             
             $(document).on('click', '.delete-multiple-item', function(){
                 $(this).closest('.li-row').remove();
-                
+            })
+
+            
+            $('#btn-add-option-match').click(function(e){
+                e.preventDefault();
+                btn++;
+                $('#match').append(`<li class="li-row">
+                                    <div class="input-group">
+                                        <span class="handle mt-1">
+                                            <i class="fas fa-ellipsis-v"></i>
+                                            <i class="fas fa-ellipsis-v"></i>
+                                        </span>
+                                        <input type="text" class="form-control form-control-sm" name="matching_options[]">
+                                        &nbsp;&nbsp;&nbsp;&nbsp;
+                                        <input type="text" class="form-control form-control-sm" name="matching_answer[]">
+                                        <div class="tools p-1">
+                                            <i class="fas fa-times-circle fa-lg delete-match-item"></i>
+                                        </div>
+                                    </div>
+                                </li>`);                
+            })
+            
+            $(document).on('click', '.delete-match-item', function(){
+                $(this).closest('#match .li-row').remove();
+            })
+
+            $('#btn-add-option-ordering').click(function(e){
+                e.preventDefault();
+                btn++;
+                $('#ordering').append(`<li class="li-row">
+                                    <div class="input-group">
+                                        <span class="handle mt-1">
+                                            <i class="fas fa-ellipsis-v"></i>
+                                            <i class="fas fa-ellipsis-v"></i>
+                                        </span>
+                                        <input type="text" class="form-control form-control-sm" name="ordering_option[]">
+                                        &nbsp;&nbsp;
+                                        <div class="tools p-1">
+                                            <i class="fas fa-times-circle fa-lg delete-ordering-item"></i>
+                                        </div>
+                                    </div>
+                                </li>`);                
+            })
+            
+            $(document).on('click', '.delete-ordering-item', function(){
+                $(this).closest('#ordering .li-row').remove();
+            })
+
+           $('#btn-add-option-identification').click(function(e){
+                e.preventDefault();
+                var newProd = $('#js-question_field')
+                        .clone()
+                        .removeClass('d-none')
+                        .removeAttr('id')
+                        .appendTo('#js-question_setup');
+                $('#js-question_setup').append(newProd);
+                $(newProd).summernote();
+
+                $('#identification').append(`
+                            <div class="col-md-9">
+                                <label for="answer_identification">Answer:</label>
+                                <input type="number" class="form-control form-control-sm" id="answer_identification" name="answer_identification">
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                <div class='js-points'></div>
+                                </div>
+                            </div>`);                
+            })
+            
+            $(document).on('click', '.delete-ordering-item', function(){
+                $(this).closest('#ordering .li-row').remove();
             })
 
             function examType(){
+                loader_overlay();
                 let question_type = $('select[name="question_type"]').val();
                 if(question_type){
                     $('#btn-question-type-selected').addClass('d-none')    
@@ -398,7 +469,10 @@
                     $('#js-question').removeClass('d-none');
                     let point_item = `<label for="points_per_question">Points this question:</label>
                                     <input type="number" class="form-control form-control-sm" id="points_per_question" name="points_per_question" value="1">`;
-
+                    setTimeout(function(){
+                        $('#js-loader-overlay').addClass('d-none')
+                    },1000);
+                    
                     // alert('ayaw')
                     if(question_type==1){
                         $('#exam_type_title').text('Multiple Choice');
@@ -406,6 +480,7 @@
                         $('#js-multiple-choice').removeClass('d-none')
                         $('#js-true-false').addClass('d-none')
                         $('#js-match').addClass('d-none')
+                        $('#js-ordering').addClass('d-none')
                         $('.js-points').html(point_item);
                     }
                     if(question_type==2){
@@ -414,6 +489,7 @@
                         $('#js-multiple-choice').addClass('d-none')
                         $('#js-true-false').removeClass('d-none')
                         $('#js-match').addClass('d-none')
+                        $('#js-ordering').addClass('d-none')
                         $('.js-points').html(point_item);
                     }
                     if(question_type==3){
@@ -422,6 +498,7 @@
                         $('#js-multiple-choice').addClass('d-none')
                         $('#js-true-false').addClass('d-none')
                         $('#js-match').removeClass('d-none')
+                        $('#js-ordering').addClass('d-none')
                         $('.js-points').html(point_item);
                     }
                     if(question_type==4){
@@ -430,6 +507,7 @@
                         $('#js-multiple-choice').addClass('d-none')
                         $('#js-true-false').addClass('d-none')
                         $('#js-match').addClass('d-none')
+                        $('#js-ordering').removeClass('d-none')
                         $('.js-points').html(point_item);
                     }
                     if(question_type==5){
@@ -438,6 +516,8 @@
                         $('#js-multiple-choice').addClass('d-none')
                         $('#js-true-false').addClass('d-none')
                         $('#js-match').addClass('d-none')
+                        $('#js-ordering').addClass('d-none')
+                        $('#js-identification').removeClass('d-none')
                         $('.js-points').html(point_item);
                     }
                     if(question_type==6){
@@ -446,6 +526,7 @@
                         $('#js-multiple-choice').addClass('d-none')
                         $('#js-true-false').addClass('d-none')
                         $('#js-match').addClass('d-none')
+                        $('#js-ordering').addClass('d-none')
                         $('.js-points').html(point_item);
                     }
                     

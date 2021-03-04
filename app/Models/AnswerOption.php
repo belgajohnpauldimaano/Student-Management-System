@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Traits\HasAssessments;
 use Illuminate\Database\Eloquent\Model;
 
 class AnswerOption extends Model
@@ -11,4 +12,6 @@ class AnswerOption extends Model
         'option_title',
         'order_number'
     ];
+
+    use HasAssessments;
 }

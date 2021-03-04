@@ -111,15 +111,31 @@ class QuestionController extends Controller
                         ]);
                     }
 
-                    foreach($request->options_answer as $data){
-                        if($data)
-                        {
-                            $questionAnswer = QuestionAnswer::find($request->answer_option_id);
-                            $questionAnswer->correct_option_answer  =   $data;
-                            $questionAnswer->points_per_question    =   $request->points_per_question;
-                            $questionAnswer->save();
+                    if($question_type == 3)
+                    {
+                        foreach($correct_answer as $key => $data){
+                            if($data)
+                            {
+                                $questionAnswer = QuestionAnswer::whereQuestionId($question_id)->whereOrderNumber($key+1)->first();
+                                $questionAnswer->correct_option_answer  =   $data;
+                                $questionAnswer->points_per_question    =   $request->points_per_question;
+                                $questionAnswer->save();
+                            }
                         }
                     }
+                    else
+                    {
+                        foreach($request->options_answer as $data){
+                            if($data)
+                            {
+                                $questionAnswer = QuestionAnswer::find($request->answer_option_id);
+                                $questionAnswer->correct_option_answer  =   $data;
+                                $questionAnswer->points_per_question    =   $request->points_per_question;
+                                $questionAnswer->save();
+                            }
+                        }
+                    }
+                    
                     DB::commit();
                     return response()->json(['res_code' => 0, 'res_msg' => 'Question successfully saved.']);
                 }
