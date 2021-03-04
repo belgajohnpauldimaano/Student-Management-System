@@ -157,7 +157,6 @@
                             placeholder: 'write here...',
                             spellCheck: true
                         });
-
                     }
                 });
             });

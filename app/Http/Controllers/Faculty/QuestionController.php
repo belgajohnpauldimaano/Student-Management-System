@@ -79,16 +79,24 @@ class QuestionController extends Controller
             $answer_options = [];
             if($question_type == 1){
                 $options = $request->options;
-                $correct_answer = $request->options_answer;
+                $correct_answer = $request->multiple_answer;
             }
+
+            // return json_encode($options);
 
             if($question_type == 2){
                 $options = $request->true_or_false_options ? $request->true_or_false_options : $request->options;
                 $correct_answer = $request->true_or_false_options_answer ? $request->true_or_false_options_answer : $request->options_answer;
             }
+
+            $answer_for_matching = [];
+            if($question_type == 3){
+                $options = $request->matching_options ? $request->matching_options : $request->options;
+                $correct_answer = $request->matching_answer ? $request->matching_answer : $request->options_answer;
+            }
             
             DB::beginTransaction();
-            try {
+            // try {
 
                 if($question_id)
                 {
@@ -101,7 +109,6 @@ class QuestionController extends Controller
                         $Teacher_exists = AnswerOption::whereQuestionId($question_id)->whereOrderNumber($key+1)->update([
                             'option_title'    => $data,
                         ]);
-                        
                     }
 
                     foreach($request->options_answer as $data){
@@ -113,7 +120,6 @@ class QuestionController extends Controller
                             $questionAnswer->save();
                         }
                     }
-
                     DB::commit();
                     return response()->json(['res_code' => 0, 'res_msg' => 'Question successfully saved.']);
                 }
@@ -134,19 +140,35 @@ class QuestionController extends Controller
                     }
                     AnswerOption::insert($answer_options);
 
-                    $questionAnswer = new QuestionAnswer;
-                    $questionAnswer->question_id            =   $question->id;
-                    $questionAnswer->correct_option_answer  =   $correct_answer;
-                    $questionAnswer->points_per_question    =   $request->points_per_question;
-                    $questionAnswer->save();
+                    if($question_type == 3)
+                    {
+                        foreach($correct_answer as $key => $data){
+                            array_push($answer_for_matching, [
+                                'question_id'           => $question->id,
+                                'correct_option_answer' => $data,
+                                'order_number'          => ($key + 1),
+                                'points_per_question'   => $request->points_per_question
+                            ]);
+                        }
+                        QuestionAnswer::insert($answer_for_matching);
+                    }
+                    else
+                    {
+                        $questionAnswer = new QuestionAnswer;
+                        $questionAnswer->question_id            =   $question->id;
+                        $questionAnswer->correct_option_answer  =   $correct_answer;
+                        $questionAnswer->points_per_question    =   $request->points_per_question;
+                        $questionAnswer->save();
+                    }
+                    
                 }
 
                 DB::commit();
                 return response()->json(['res_code' => 0, 'res_msg' => 'Question successfully saved.']);
-            } catch (\Throwable $th) {
-                DB::rollBack();
-                return response()->json(['res_code' => 1, 'res_msg' => 'Something went wrong.'], 402);
-            }
+            // } catch (\Throwable $th) {
+            //     DB::rollBack();
+            //     return response()->json(['res_code' => 1, 'res_msg' => 'Something went wrong.'], 402);
+            // }
         }
         
     }

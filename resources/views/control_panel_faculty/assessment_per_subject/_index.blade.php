@@ -360,6 +360,36 @@
                 examType();
             })
 
+            // add button
+            let btn=4;
+            $('#btn-add-option-multiple').click(function(e){
+                e.preventDefault();
+                btn++;
+                $('#multiple-choice').append(`<li class="li-row">
+                    <div class="input-group">
+                        <span class="handle mt-1">
+                            <i class="fas fa-ellipsis-v"></i>
+                            <i class="fas fa-ellipsis-v"></i>
+                        </span>                       
+                        <input type="text" class="form-control form-control-sm" name="options[]">
+                        &nbsp;&nbsp;&nbsp;
+                        <div class="icheck-danger d-inline">
+                            <input type="radio" name="multiple_answer" id="options`+btn+`" value="`+btn+`">
+                            <label for="options`+btn+`"></label>
+                        </div>
+                        <div class="tools p-1">
+                            <i class="fas fa-times-circle fa-lg delete-multiple-item"></i>
+                        </div>
+                    </div>
+                </li>`);                
+            })
+
+            
+            $(document).on('click', '.delete-multiple-item', function(){
+                $(this).closest('.li-row').remove();
+                
+            })
+
             function examType(){
                 let question_type = $('select[name="question_type"]').val();
                 if(question_type){
@@ -400,6 +430,7 @@
                         $('#js-multiple-choice').addClass('d-none')
                         $('#js-true-false').addClass('d-none')
                         $('#js-match').addClass('d-none')
+                        $('.js-points').html(point_item);
                     }
                     if(question_type==5){
                         $('#exam_type_title').text('Fill in the Blank Text');
@@ -407,6 +438,7 @@
                         $('#js-multiple-choice').addClass('d-none')
                         $('#js-true-false').addClass('d-none')
                         $('#js-match').addClass('d-none')
+                        $('.js-points').html(point_item);
                     }
                     if(question_type==6){
                         $('#exam_type_title').text('Short Answer/Essay');
@@ -414,6 +446,7 @@
                         $('#js-multiple-choice').addClass('d-none')
                         $('#js-true-false').addClass('d-none')
                         $('#js-match').addClass('d-none')
+                        $('.js-points').html(point_item);
                     }
                     
                 }

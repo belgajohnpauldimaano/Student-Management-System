@@ -27,7 +27,7 @@ class AssessmentSubjectController extends Controller
         $id = Crypt::decrypt($request->class_subject_details_id);
         $ClassSubjectDetail = $this->subjectDetails($id);
         $semester = $this->semester();
-        $query = Assessment::orderBY('id', 'desc');
+        $query = Assessment::whereClassSubjectDetailsId($id)->orderBY('id', 'desc');
         
         if($tab == 'unpublished'){
             $query->where('exam_status', 0);

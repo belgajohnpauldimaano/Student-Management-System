@@ -16,7 +16,7 @@
         <option value="3">Matching</option>
         <option value="4">Ordering</option>
         <option value="5">Fill in the Blank Text</option>
-        <option value="6">Short Answer/Essay</option>        
+        <option value="6">Short Answer/Essay</option>
     </select>
     <div class="help-block text-red" id="js-question_type"></div>
     <div class="mt-1 float-right">
@@ -26,7 +26,7 @@
     </div>
 </div>
 
-<div id="multiple-choice mt-5" >
+<div id="multiple-choice mt-3" >
     <form id="js-question-form">
         {{ csrf_field() }}
         @if($Assessment != null)
@@ -58,83 +58,83 @@
                     <div id="js-multiple-choice" class="d-none">
                         <div class="form-group">
                             <p>Options</p>
-                            <ul class="todo-list" data-widget="todo-list">
-                                <li>
+                            <ul class="todo-list" id="multiple-choice" data-widget="todo-list">
+                                <li class="li-row">
                                     <div class="input-group">
                                         <span class="handle mt-1">
                                             <i class="fas fa-ellipsis-v"></i>
                                             <i class="fas fa-ellipsis-v"></i>
                                         </span>                       
                                         <input type="text" class="form-control form-control-sm" name="options[]">
+                                        &nbsp;&nbsp;&nbsp;
+                                        <div class="icheck-danger d-inline">
+                                            <input type="radio" name="multiple_answer" id="options1" value="1">
+                                            <label for="options1"></label>
+                                        </div>
+                                        <div class="tools p-1">
+                                            <i class="fas fa-times-circle fa-lg delete-multiple-item"></i>
+                                        </div>
                                     </div>
                                 </li>
-                                <li>
+                                <li class="li-row">
                                     <div class="input-group">
                                         <span class="handle mt-1">
                                             <i class="fas fa-ellipsis-v"></i>
                                             <i class="fas fa-ellipsis-v"></i>
                                         </span>                       
                                         <input type="text" class="form-control form-control-sm" name="options[]">
+                                        &nbsp;&nbsp;&nbsp;
+                                        <div class="icheck-danger d-inline">
+                                            <input type="radio" name="multiple_answer" id="options2" value="2">
+                                            <label for="options2"></label>
+                                        </div>
+                                        <div class="tools p-1">
+                                            <i class="fas fa-times-circle fa-lg delete-multiple-item"></i>
+                                        </div>
                                     </div>
                                 </li>
-                                <li>
+                                <li class="li-row">
                                     <div class="input-group">
                                         <span class="handle mt-1">
                                             <i class="fas fa-ellipsis-v"></i>
                                             <i class="fas fa-ellipsis-v"></i>
                                         </span>                       
                                         <input type="text" class="form-control form-control-sm" name="options[]">
+                                        &nbsp;&nbsp;&nbsp;
+                                        <div class="icheck-danger d-inline">
+                                            <input type="radio" name="multiple_answer" id="options3" value="3">
+                                            <label for="options3"></label>
+                                        </div>
+                                        <div class="tools p-1">
+                                            <i class="fas fa-times-circle fa-lg delete-multiple-item"></i>
+                                        </div>
                                     </div>
                                 </li>
-                                <li>
+                                <li class="li-row">
                                     <div class="input-group">
                                         <span class="handle mt-1">
                                             <i class="fas fa-ellipsis-v"></i>
                                             <i class="fas fa-ellipsis-v"></i>
                                         </span>                       
                                         <input type="text" class="form-control form-control-sm" name="options[]">
+                                        &nbsp;&nbsp;&nbsp;
+                                        <div class="icheck-danger d-inline">
+                                            <input type="radio" name="multiple_answer" id="options4" value="4">
+                                            <label for="options4"></label>
+                                        </div>
+                                        <div class="tools p-1">
+                                            <i class="fas fa-times-circle fa-lg delete-multiple-item"></i>
+                                        </div>
                                     </div>
                                 </li>
                             </ul>
                         </div>
+                        <button type="button" class="btn btn-sm btn-outline-danger" id="btn-add-option-multiple">
+                            <i class="fas fa-plus"></i> Add Option
+                        </button>
                         <hr>
                         <div class="form-group">
                             <div class="row">
-                                <div class="col-md-6">
-                                    <p><b>Correct Answer</b></p>
-                                    <div class="form-group clearfix">
-                                        <div class="icheck-danger d-inline">
-                                            <input type="radio" name="options_answer" id="optionsA" value="1">
-                                            <label for="optionsA">
-                                                1
-                                            </label>
-                                        </div>
-                                    </div>
-                                    <div class="form-group clearfix">
-                                        <div class="icheck-danger d-inline">
-                                            <input type="radio" name="options_answer" id="optionsB" value="2">
-                                            <label for="optionsB">
-                                                2
-                                            </label>
-                                        </div>
-                                    </div>
-                                    <div class="form-group clearfix">
-                                        <div class="icheck-danger d-inline">
-                                            <input type="radio" name="options_answer" id="optionsC" value="3">
-                                            <label for="optionsC">
-                                                3
-                                            </label>
-                                        </div>
-                                    </div>
-                                    <div class="form-group clearfix">
-                                        <div class="icheck-danger d-inline">
-                                            <input type="radio" name="options_answer" id="optionsD" value="4">
-                                            <label for="optionsD">
-                                                4
-                                            </label>
-                                        </div>
-                                    </div>
-                                </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <div class='js-points'></div>
@@ -161,9 +161,9 @@
                                             <i class="fas fa-ellipsis-v"></i>
                                             <i class="fas fa-ellipsis-v"></i>
                                         </span>                       
-                                        <input type="text" class="form-control form-control-sm" name="options[]">
+                                        <input type="text" class="form-control form-control-sm" name="matching_options[]">
                                         &nbsp;&nbsp;&nbsp;&nbsp;
-                                        <input type="text" class="form-control form-control-sm" name="answer[]">
+                                        <input type="text" class="form-control form-control-sm" name="matching_answer[]">
                                     </div>
                                 </li>
                                 <li>
@@ -172,9 +172,9 @@
                                             <i class="fas fa-ellipsis-v"></i>
                                             <i class="fas fa-ellipsis-v"></i>
                                         </span>                       
-                                        <input type="text" class="form-control form-control-sm" name="options[]">
+                                        <input type="text" class="form-control form-control-sm" name="matching_options[]">
                                         &nbsp;&nbsp;&nbsp;&nbsp;
-                                        <input type="text" class="form-control form-control-sm" name="answer[]">
+                                        <input type="text" class="form-control form-control-sm" name="matching_answer[]">
                                     </div>
                                 </li>
                                 <li>
@@ -183,9 +183,9 @@
                                             <i class="fas fa-ellipsis-v"></i>
                                             <i class="fas fa-ellipsis-v"></i>
                                         </span>                       
-                                        <input type="text" class="form-control form-control-sm" name="options[]">
+                                        <input type="text" class="form-control form-control-sm" name="matching_options[]">
                                         &nbsp;&nbsp;&nbsp;&nbsp;
-                                        <input type="text" class="form-control form-control-sm" name="answer[]">
+                                        <input type="text" class="form-control form-control-sm" name="matching_answer[]">
                                     </div>
                                 </li>
                                 <li>
@@ -194,12 +194,17 @@
                                             <i class="fas fa-ellipsis-v"></i>
                                             <i class="fas fa-ellipsis-v"></i>
                                         </span>                       
-                                        <input type="text" class="form-control form-control-sm" name="options[]">
+                                        <input type="text" class="form-control form-control-sm" name="matching_options[]">
                                         &nbsp;&nbsp;&nbsp;&nbsp;
-                                        <input type="text" class="form-control form-control-sm" name="answer[]">
+                                        <input type="text" class="form-control form-control-sm" name="matching_answer[]">
                                     </div>
                                 </li>
                             </ul>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                               <div class='js-points'></div>
+                            </div>
                         </div>
                         <hr>
                     </div>
@@ -242,7 +247,7 @@
                    
                 </div>
                 <div class="card-footer clearfix">
-                    <button type="submit" class="btn btn-danger float-right">
+                    <button type="submit" class="btn btn-primary float-right">
                         <i class="fas fa-save"></i> Save
                     </button>
                 </div>

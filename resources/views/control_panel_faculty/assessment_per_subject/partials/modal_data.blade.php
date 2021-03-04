@@ -3,7 +3,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title">
-                    Create and Setup Assessment
+                    <i class="far fa-edit"></i> Create and Setup Assessment
                 </h4>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
             </div>
@@ -68,8 +68,8 @@
                                     <div class="form-group form-group-sm w-100">
                                         <label>Semester Period:</label>
                                         <select class="form-control form-control-sm" name="semester_period" style="width: 100%;">
-                                            <option value="1" {{ $semester != null ? ($semester == 1 ? 'selected' : '') : '' }}>1st semester</option>
-                                            <option value="2" {{ $semester != null ? ($semester == 2 ? 'selected' : '') : '' }}>2nd semester</option>
+                                            <option value="1" >1st semester</option>
+                                            <option value="2" >2nd semester</option>
                                         </select>
                                     </div>
                                     <div class="help-block text-red" id="js-semester_period"></div>
