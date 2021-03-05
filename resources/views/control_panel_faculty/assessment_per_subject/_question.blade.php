@@ -54,7 +54,7 @@
                                                     </div>
                                                 </div>
                                             </td>
-                                            @foreach ($data->questions as $key => $item)
+                                            @forelse ($data->questions as $key => $item)
                                                 <tr>
                                                     <td></td>
                                                     <td style="width: 5%">{{ $key+1 }}.)</td>
@@ -143,7 +143,15 @@
                                                         </div>
                                                     </td>
                                                 </tr>
-                                            @endforeach
+                                             @empty
+                                                <tr>
+                                                    <th colspan="4" class="text-center">
+                                                        <a class="btn btn-outline-primary" href="{{ route('faculty.assessment_subject.edit', [encrypt($Assessment->id), 'tab' => 'questions', 'question' => $data->question_type]) }}">
+                                                            Add Question
+                                                        </a>
+                                                    </th>
+                                                </tr>
+                                            @endforelse
                                         </tr>
                                     @empty
                                         <tr>

@@ -15,12 +15,13 @@ class AssessmentInstructionController extends Controller
     public function edit(Request $request)
     {
         $tab = $request->tab;
+        $question = $request->question;
         $id= Crypt::decrypt($request->class_subject_details_id);
         $instruction = Instruction::find($id);
         $Assessment = Assessment::whereId($instruction->instructionable_id)->first();
         $ClassSubjectDetail = ClassSubjectDetail::whereId($Assessment->class_subject_details_id)->first();
         // return json_encode($Assessment);
-        return view('control_panel_faculty.assessment_per_subject._index', compact('Assessment','ClassSubjectDetail','instruction','tab'))->render();
+        return view('control_panel_faculty.assessment_per_subject._index', compact('Assessment','ClassSubjectDetail','instruction','tab','question'))->render();
     }
     
     public function saveInstruction(Request $request){

@@ -80,6 +80,19 @@ class QuestionController extends Controller
             if($question_type == 1){
                 $options = $request->options;
                 $correct_answer = $request->multiple_answer;
+                
+                $rules = [
+                    'question'              => 'required',
+                    'points_per_question'   => 'required',
+                    'multiple_answer'         => 'required',
+                ];
+                
+                $Validator = \Validator($request->all(), $rules);
+
+                if ($Validator->fails())
+                {
+                    return response()->json(['res_code' => 1, 'res_msg' => 'Please fill all required fields.', 'res_error_msg' => $Validator->getMessageBag()]);
+                }
             }
 
             // return json_encode($options);

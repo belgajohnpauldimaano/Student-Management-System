@@ -72,14 +72,20 @@ class AssessmentSubjectController extends Controller
     public function edit(Request $request){
 
         $tab = $request->tab ? $request->tab : 'setup';
+        $question = $request->question;
         $instruction=null;
         $id = Crypt::decrypt($request->class_subject_details_id);
         $Assessment = Assessment::whereId($id)->first();
         // return json_encode($Assessment);
         $ClassSubjectDetail = $this->subjectDetails($Assessment->class_subject_details_id);
+        if($request->ajax())
+        {
+             return view('control_panel_faculty.assessment_per_subject.partials.data_list_question', 
+                compact('ClassSubjectDetail','Assessment','instruction','tab','question'))->render();
+        }
         
         return view('control_panel_faculty.assessment_per_subject._index', 
-            compact('ClassSubjectDetail','Assessment','instruction','tab'))->render();
+            compact('ClassSubjectDetail','Assessment','instruction','tab','question'))->render();
     }
     
     public function save(Request $request){

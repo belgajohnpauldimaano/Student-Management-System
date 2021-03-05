@@ -105,14 +105,13 @@
             spellCheck: true
         });
 
-        $('.js-question_setup').summernote({
+        $('.js-question_setup, .js-question_identification').summernote({
             toolbar: [
                 ['style', ['style']],
                 ['font', ['bold', 'italic', 'underline', 'clear']],
                 ['para', ['ul']],
                 ['insert', ['table','link','picture']],
-                ['view', ['fullscreen', 'help']
-            ],
+                ['view', ['fullscreen', 'help']],
             // ['codeview']
             ],
             height: 50,
@@ -209,6 +208,7 @@
                         $('.help-block').html('');
                         if (res.res_code == 1)
                         {
+                            alert('error')
                             for (var err in res.res_error_msg)
                             {
                                 $('#js-' + err).html('<code> '+ res.res_error_msg[err] +' </code>');
@@ -221,7 +221,7 @@
                                 message : res.res_msg,
                                 type    : 'success'
                             });
-                            $('#js-question-form')[0].reset();
+                            // $('#js-question-form')[0].reset();
                             // fetch_data();
                         }
                     }
@@ -258,9 +258,7 @@
                             let slug = res.data;
                             let url = "{{ route('faculty.question', ":slug") }}";
                             url = url.replace(':slug', slug);
-                            window.location.href=url;
-
-                            
+                            window.location.href=url;                            
                             // fetch_data();
                         }
                     }
@@ -436,24 +434,43 @@
 
            $('#btn-add-option-identification').click(function(e){
                 e.preventDefault();
-                var newProd = $('#js-question_field')
-                        .clone()
-                        .removeClass('d-none')
-                        .removeAttr('id')
-                        .appendTo('#js-question_setup');
-                $('#js-question_setup').append(newProd);
-                $(newProd).summernote();
-
-                $('#identification').append(`
+               
+                $('#identification').append(`<hr/>
+                            <div class="form-group col-md-12" id="js-question_identification">
+                                <label for="summernote">Question Setup</label>
+                                <textarea name="question_identification[]" class="js-question_identification"></textarea>
+                                <div class="help-block text-red" id="js-question_identification"></div>
+                            </div>
                             <div class="col-md-9">
                                 <label for="answer_identification">Answer:</label>
                                 <input type="number" class="form-control form-control-sm" id="answer_identification" name="answer_identification">
                             </div>
                             <div class="col-md-3">
                                 <div class="form-group">
-                                <div class='js-points'></div>
+                                <div class='js-points'><label for="points_per_question">Points this question:</label>
+                                    <input type="number" class="form-control form-control-sm" id="points_per_question" name="points_per_question" value="1"></div>
                                 </div>
-                            </div>`);                
+                            </div>`);
+
+                // var div = $('<div>').appendTo($("#js-question_field"));
+                // div.class('js-question_setup').summernote();
+                $(".js-question_identification").summernote({
+                    toolbar: [
+                        ['style', ['style']],
+                        ['font', ['bold', 'italic', 'underline', 'clear']],
+                        ['para', ['ul']],
+                        ['insert', ['table','link','picture']],
+                        ['view', ['fullscreen', 'help']],
+                    // ['codeview']
+                    ],
+                    height: 50,
+                    codemirror: {
+                    theme: 'monokai'
+                    },
+                    placeholder: 'Write here...',
+                    spellCheck: true,
+                    
+                });
             })
             
             $(document).on('click', '.delete-ordering-item', function(){
@@ -464,71 +481,18 @@
                 loader_overlay();
                 let question_type = $('select[name="question_type"]').val();
                 if(question_type){
-                    $('#btn-question-type-selected').addClass('d-none')    
-                    $('#js-head-type').removeClass('d-none');
-                    $('#js-question').removeClass('d-none');
-                    let point_item = `<label for="points_per_question">Points this question:</label>
-                                    <input type="number" class="form-control form-control-sm" id="points_per_question" name="points_per_question" value="1">`;
+                    $('#btn-question-type-selected').addClass('d-none')
                     setTimeout(function(){
                         $('#js-loader-overlay').addClass('d-none')
                     },1000);
-                    
-                    // alert('ayaw')
-                    if(question_type==1){
-                        $('#exam_type_title').text('Multiple Choice');
-                        $('#js_question_type').val(1);
-                        $('#js-multiple-choice').removeClass('d-none')
-                        $('#js-true-false').addClass('d-none')
-                        $('#js-match').addClass('d-none')
-                        $('#js-ordering').addClass('d-none')
-                        $('.js-points').html(point_item);
-                    }
-                    if(question_type==2){
-                        $('#exam_type_title').text('True/False');
-                        $('#js_question_type').val(2);
-                        $('#js-multiple-choice').addClass('d-none')
-                        $('#js-true-false').removeClass('d-none')
-                        $('#js-match').addClass('d-none')
-                        $('#js-ordering').addClass('d-none')
-                        $('.js-points').html(point_item);
-                    }
-                    if(question_type==3){
-                        $('#exam_type_title').text('Matching');
-                        $('#js_question_type').val(3);
-                        $('#js-multiple-choice').addClass('d-none')
-                        $('#js-true-false').addClass('d-none')
-                        $('#js-match').removeClass('d-none')
-                        $('#js-ordering').addClass('d-none')
-                        $('.js-points').html(point_item);
-                    }
-                    if(question_type==4){
-                        $('#exam_type_title').text('Ordering');
-                        $('#js_question_type').val(4);
-                        $('#js-multiple-choice').addClass('d-none')
-                        $('#js-true-false').addClass('d-none')
-                        $('#js-match').addClass('d-none')
-                        $('#js-ordering').removeClass('d-none')
-                        $('.js-points').html(point_item);
-                    }
-                    if(question_type==5){
-                        $('#exam_type_title').text('Fill in the Blank Text');
-                        $('#js_question_type').val(5);
-                        $('#js-multiple-choice').addClass('d-none')
-                        $('#js-true-false').addClass('d-none')
-                        $('#js-match').addClass('d-none')
-                        $('#js-ordering').addClass('d-none')
-                        $('#js-identification').removeClass('d-none')
-                        $('.js-points').html(point_item);
-                    }
-                    if(question_type==6){
-                        $('#exam_type_title').text('Short Answer/Essay');
-                        $('#js_question_type').val(6);
-                        $('#js-multiple-choice').addClass('d-none')
-                        $('#js-true-false').addClass('d-none')
-                        $('#js-match').addClass('d-none')
-                        $('#js-ordering').addClass('d-none')
-                        $('.js-points').html(point_item);
-                    }
+
+                    let url = "{{ route('faculty.assessment_subject.edit', encrypt($Assessment->id))}}?tab=questions&question="+question_type+"";
+                    // url = url.replace(':slug', slug);
+                    window.location.href=url;
+                    // $('#js-head-type').removeClass('d-none');
+                    // $('#js-question').removeClass('d-none');
+                    // let point_item = `<label for="points_per_question">Points this question:</label>
+                    //                 <input type="number" class="form-control form-control-sm" id="points_per_question" name="points_per_question" value="1">`;
                     
                 }
             }
@@ -543,6 +507,7 @@
                 page = $(this).attr('href').split('=')[1];
                 fetch_data();
             });
+
             $('body').on('click', '.js-btn_deactivate', function (e) {
                 e.preventDefault();
                 var id = $(this).data('id');
