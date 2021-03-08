@@ -144,7 +144,7 @@ class IncomingStudentController extends Controller
         $SchoolYear = SchoolYear::where('current', 1)
         ->where('status', 1)
         ->first(); 
-
+        
         if($request->ajax()){      
 
             $IncomingStudentCount = $this->IncomingStudentCount();               

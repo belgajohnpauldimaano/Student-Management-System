@@ -59,7 +59,7 @@
             </div>
         <div class="card-body">
             <div class="tab-content">
-                <div class="{{ $tab ? $tab == 'unpublished' ? 'active' : '' : '' }} tab-pane">                    
+                {{-- <div class="{{ $tab ? $tab == 'unpublished' ? 'active' : '' : '' }} tab-pane">                     --}}
                     <div class="row">
                         <div class="col-md-12">
                             <div class="js-data-container">
@@ -67,8 +67,8 @@
                             </div>
                         </div>
                     </div>
-                </div>
-                <!-- /.tab-pane -->
+                {{-- </div> --}}
+                {{-- <!-- /.tab-pane -->
                 <div class="{{ $tab ? $tab == 'published' ? 'active' : '' : '' }} tab-pane">
                     <div class="row">
                         <div class="col-md-12">
@@ -87,7 +87,7 @@
                             </div>
                         </div>
                     </div>
-                </div>
+                </div> --}}
             <!-- /.tab-pane -->
             </div>
             <!-- /.tab-content -->

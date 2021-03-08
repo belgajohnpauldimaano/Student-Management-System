@@ -42,7 +42,7 @@
                                 <div class="help-block text-red" id="js-question"></div>
                             </div>
                         </div>
-                         @if($Question->question_type == 3)
+                        @if($Question->question_type == 3)
                             <table class="table">
                                 <thead>
                                     <tr class="text-center">
@@ -51,8 +51,32 @@
                                     </tr>
                                 </thead>
                             </table>
+                            <ul class="todo-list" data-widget="todo-list">
                             @foreach ($Question->options as $key => $data)
-                                <ul class="todo-list" data-widget="todo-list">
+                                <li>
+                                    <div class="input-group">
+                                        <span class="handle mt-1">
+                                            <i class="fas fa-ellipsis-v"></i>
+                                            <i class="fas fa-ellipsis-v"></i>
+                                        </span>
+                                        <input type="text" class="form-control form-control-sm" name="options[]" value="{{ $data->option_title }}">
+                                        &nbsp;&nbsp;&nbsp;&nbsp;
+                                        <input type="text" class="form-control form-control-sm" name="matching_answer[]" value="{{ $data->answer->correct_option_answer }}">
+                                    </div>
+                                </li>
+                            @endforeach
+                            </ul>
+                        @elseif($Question->question_type == 4)
+                            <table class="table">
+                                <thead>
+                                    <tr class="text-center">
+                                        <th>Question</th>
+                                        <th>Answer</th>
+                                    </tr>
+                                </thead>
+                            </table>
+                            <ul class="todo-list" data-widget="todo-list">
+                                @foreach ($Question->options as $key => $data)
                                     <li>
                                         <div class="input-group">
                                             <span class="handle mt-1">
@@ -60,12 +84,10 @@
                                                 <i class="fas fa-ellipsis-v"></i>
                                             </span>                       
                                             <input type="text" class="form-control form-control-sm" name="options[]" value="{{ $data->option_title }}">
-                                            &nbsp;&nbsp;&nbsp;&nbsp;
-                                            <input type="text" class="form-control form-control-sm" name="matching_answer[]" value="{{ $data->answer->correct_option_answer }}">
                                         </div>
                                     </li>
-                                </ul>
-                            @endforeach
+                                @endforeach
+                            </ul>
                         @else
                         <div id="js-multiple-choice">
                             <table class="table table-condensed">
@@ -167,10 +189,11 @@
                     $('.help-block').html('');
                     if (res.res_code == 1)
                     {
-                        for (var err in res.res_error_msg)
-                        {
-                            $('#js-' + err).html('<code> '+ res.res_error_msg[err] +' </code>');
-                        }
+                        show_toast_alert({
+                            heading : 'Error',
+                            message : res.res_msg,
+                            type    : 'error'
+                        });
                     }
                     else
                     {

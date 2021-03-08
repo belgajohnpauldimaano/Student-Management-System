@@ -9,7 +9,9 @@
                                     <th>Gender</th>
                                     <th>Parent/Guardian</th>
                                     <th>Address</th>
+                                    @if($isAdmin->role == 1)
                                     <th>Login URL <i style="color: red">(use other browser)</i></th>
+                                    @endif
                                     <th>Status</th>
                                     <th>Actions</th>
                                 </tr>
@@ -24,7 +26,9 @@
                                             {{-- <td>{{ $data->birthdate ? date_format(date_create($data->birthdate), 'F d, Y') : '' }}</td> --}}
                                             <td>{{ $data->guardian }}</td>
                                             <td>{{ $data->c_address }}</td>
-                                            <td  width="5%">{{ $data->loginlink }}</td>
+                                            @if($isAdmin->role == 1)
+                                                <td  width="5%">{{ $data->loginlink }}</td>
+                                            @endif
                                             <td>
                                                 <span class="badge badge-{{ $data->status == 1 ? 'success' : 'danger' }}">
                                                     {{ $data->status == 1 ? 'Active' : 'Inactive' }}

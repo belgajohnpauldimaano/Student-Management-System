@@ -37,9 +37,9 @@
                                             <td colspan="2">{!! $data->instructions !!}</td>
                                             <td>
                                                 <div class="btn-group btn-group-sm">
-                                                    <button type="button" class="btn btn-danger"><i class="fas fa-cog"></i> Action</button>
+                                                    {{-- <button type="button" class="btn btn-danger"><i class="fas fa-cog"></i></button> --}}
                                                     <button type="button" class="btn btn-danger dropdown-toggle dropdown-icon" data-toggle="dropdown">
-                                                        <span class="sr-only">Toggle Dropdown</span>
+                                                        <span class="sr-only">Toggle Dropdown</span><i class="fas fa-cog"></i>
                                                     </button>
                                                     <div class="dropdown-menu dropdown-menu-right">
                                                         <a href="{{ route('faculty.instruction.edit',  [encrypt($data->id), 'tab' => 'instruction']) }}" class="dropdown-item" data-id="{{ $data->id }}">
@@ -54,7 +54,7 @@
                                                     </div>
                                                 </div>
                                             </td>
-                                            @forelse ($data->questions as $key => $item)
+                                            @foreach ($data->questions as $key => $item)
                                                 <tr>
                                                     <td></td>
                                                     <td style="width: 5%">{{ $key+1 }}.)</td>
@@ -67,13 +67,13 @@
                                                                     <hr>
                                                                     <p><b>List of option: <i class="text-red">(drag it to List of your answer)</i></b></p>
                                                                     <div class="row">
-                                                                        @foreach ($item->answerMatching as $key => $data)
+                                                                        @foreach ($item->answerMatching as $key => $match)
                                                                             <section class="connectedSortable">
                                                                                 <div class="col-md-12">
                                                                                     <div class="card">
                                                                                         <div class="card-header">
                                                                                             <h3 class="card-title">
-                                                                                                {{ $data->correct_option_answer }}
+                                                                                                {{ $match->correct_option_answer }}
                                                                                             </h3>
                                                                                             <input type="hidden" name="match_options[{{ $item->id }}]" value="{{ $data->correct_option_answer }}">
                                                                                         </div>
@@ -86,10 +86,10 @@
                                                                 <div class="col-md-6">
                                                                     <p><b>List of question:</b></p>
                                                                     <ol>
-                                                                    @foreach ($item->options as $key => $data)
+                                                                    @foreach ($item->options as $key => $option)
                                                                         <div class="form-group clearfix mt-3">
                                                                             <li>
-                                                                                {{ $data->option_title }}<br/>
+                                                                                {{ $option->option_title }}<br/>
                                                                                 <i class="text-red">
                                                                                     <small>({{ $item->answerMultipleChoice->points_per_question }} point {{ $item->answerMultipleChoice->points_per_question > 1 ? 's' : '' }} )</small>
                                                                                 </i>
@@ -98,25 +98,46 @@
                                                                     @endforeach
                                                                     </ol>
                                                                 </div>
-                                                                <div class="col-md-6">
+                                                                <div class="col-md-6 ui-sortable-placeholder sort-highlight">
                                                                     <p><b>List of your answer:</b></p>
+                                                                    
                                                                     <section class="connectedSortable">
-                                                                        @foreach ($item->answerMatching as $key => $data)
-                                                                            <div></div>
+                                                                        @foreach ($item->answerMatching as $key => $match)
+                                                                            <div class=""></div>
                                                                         @endforeach
                                                                     </section>
+                                                                    
+                                                                </div>
+                                                            </div>
+                                                        @elseif($data->question_type == 4)
+                                                            <div class="row">
+                                                                <hr>
+                                                                <p><b>List of option: <i class="text-red">(drag it to List of your answer)</i></b></p>
+                                                                <div class="col-md-12 connectedSortable">
+                                                                    @foreach ($item->answerMatching as $key => $match)
+                                                                            <section class="">
+                                                                                <div class="card">
+                                                                                    <div class="card-header">
+                                                                                        <h3 class="card-title">
+                                                                                            {{ $match->correct_option_answer }}
+                                                                                        </h3>
+                                                                                        <input type="hidden" name="match_options[{{ $item->id }}]" value="{{ $data->correct_option_answer }}">
+                                                                                    </div>
+                                                                                </div>
+                                                                            </section>
+                                                                    @endforeach
                                                                 </div>
                                                             </div>
                                                         @else
                                                             <i class="text-red">
                                                                 <small>({{ $item->answerMultipleChoice->points_per_question }} point {{ $item->answerMultipleChoice->points_per_question > 1 ? 's' : '' }} )</small>
                                                             </i>
-                                                            @foreach ($item->options as $key => $data)
+                                                            @foreach ($item->options as $key => $option)
                                                                 <div class="form-group clearfix mt-3">
                                                                     <div class="icheck-{{ $item->answerMultipleChoice->correct_option_answer == $key+1 ? 'success' : 'danger' }} d-inline">
-                                                                        <input type="radio" {{ $item->answerMultipleChoice->correct_option_answer == $key+1 ? 'checked' : '' }} name="options_answer[{{ $item->id }}]" id="option-{{ $data->id }}" value="{{ $data->order_number }}">
-                                                                        <label for="option-{{ $data->id }}">
-                                                                            {{ $data->option_title }}
+                                                                        <input type="radio" {{ $item->answerMultipleChoice->correct_option_answer == $key+1 ? 'checked' : '' }} name="options_answer[{{ $item->id }}]" id="option-{{ $option->id }}" value="{{ $option->order_number }}">
+                                                                        <label for="option-{{ $option->id }}">
+                                                                            {{ $option->option_title }}
                                                                         </label>
                                                                     </div>
                                                                 </div>
@@ -125,9 +146,9 @@
                                                     </td>
                                                     <td>
                                                         <div class="btn-group btn-group-sm">
-                                                            <button type="button" class="btn btn-success"><i class="fas fa-cog"></i> Action</button>
+                                                            {{-- <button type="button" class="btn btn-success"><i class="fas fa-cog"></i></button> --}}
                                                             <button type="button" class="btn btn-success dropdown-toggle dropdown-icon" data-toggle="dropdown">
-                                                                <span class="sr-only">Toggle Dropdown</span>
+                                                                <i class="fas fa-cog"></i><span class="sr-only">Toggle Dropdown</span>
                                                             </button>
                                                             <div class="dropdown-menu dropdown-menu-right">
                                                                 <a href="{{ route('faculty.question.edit', [encrypt($item->id), 'tab' => 'questions']) }}" class="dropdown-item">
@@ -143,15 +164,14 @@
                                                         </div>
                                                     </td>
                                                 </tr>
-                                             @empty
-                                                <tr>
-                                                    <th colspan="4" class="text-center">
-                                                        <a class="btn btn-outline-primary" href="{{ route('faculty.assessment_subject.edit', [encrypt($Assessment->id), 'tab' => 'questions', 'question' => $data->question_type]) }}">
-                                                            Add Question
-                                                        </a>
-                                                    </th>
-                                                </tr>
-                                            @endforelse
+                                            @endforeach
+                                        </tr>
+                                        <tr>
+                                            <th colspan="4" class="text-center">
+                                                <a class="btn btn-outline-primary" href="{{ route('faculty.assessment_subject.edit', [encrypt($Assessment->id), 'tab' => 'questions', 'question' => $data->question_type]) }}">
+                                                    <i class="fas fa-plus"></i> Add Question
+                                                </a>
+                                            </th>
                                         </tr>
                                     @empty
                                         <tr>
@@ -255,33 +275,7 @@
             });
 
 
-            $('body').on('submit', '#js-form_disc_fee', function (e) {
-                e.preventDefault();
-                var formData = new FormData($(this)[0]);
-                $.ajax({
-                    url         : "{{ route('finance.maintenance.disc_fee.save_data') }}",
-                    type        : 'POST',
-                    data        : formData,
-                    processData : false,
-                    contentType : false,
-                    success     : function (res) {
-                        $('.help-block').html('');
-                        if (res.res_code == 1)
-                        {
-                            for (var err in res.res_error_msg)
-                            {
-                                $('#js-' + err).html('<code> '+ res.res_error_msg[err] +' </code>');
-                            }
-                        }
-                        else
-                        {
-                            $('.js-modal_holder .modal').modal('hide');
-                            fetch_data();
-                        }
-                    }
-                });
-            });
-
+            
             $('body').on('submit', '#js-form_search', function (e) {
                 e.preventDefault();
                 fetch_data();

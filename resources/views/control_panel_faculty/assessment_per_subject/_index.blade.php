@@ -60,7 +60,12 @@
                 </div>
 
                 <div class="{{ $tab ? $tab == 'questions' ? 'active' : '' : '' }} tab-pane" id="questions">
+                    {{-- <form id="js-form_search">
+                        {{ csrf_field() }}
+                    </form> --}}
+                    
                     @include('control_panel_faculty.assessment_per_subject.partials.data_list_question')
+                    
                 </div>
                 <!-- /.tab-pane -->
                 <div class="tab-pane" id="grading">
@@ -71,7 +76,6 @@
             <!-- /.tab-content -->
         </div><!-- /.card-body -->
     </div>
-    
 @endsection
 
 @section ('scripts')
@@ -126,6 +130,7 @@
         $('.js-answer_option').summernote({
           airMode: true
         });
+
         var page = 1;
         function fetch_data () {
             var formData = new FormData($('#js-form_search')[0]);
@@ -133,7 +138,8 @@
             loader_overlay();
             
             $.ajax({
-                url : "{{ route('faculty.assessment_subject', encrypt($ClassSubjectDetail->id) ) }}",
+                
+                url : "{{ route('faculty.assessment_subject.edit',encrypt($Assessment->id))}}",
                 type : 'POST',
                 data : formData,
                 processData : false,
@@ -151,7 +157,7 @@
                 {{--  loader_overlay();  --}}
                 var id = $(this).data('id');
                 $.ajax({
-                    url : "{{ route('faculty.assessment_subject.edit', $ClassSubjectDetail->id) }}",
+                    url : "{{ route('faculty.assessment_subject.edit', [$ClassSubjectDetail->id, 'tab' => $tab] ) }}",
                     type : 'POST',
                     data : { _token : '{{ csrf_token() }}', id : id },
                     success : function (res) {
@@ -176,10 +182,11 @@
                         $('.help-block').html('');
                         if (res.res_code == 1)
                         {
-                            for (var err in res.res_error_msg)
-                            {
-                                $('#js-' + err).html('<code> '+ res.res_error_msg[err] +' </code>');
-                            }
+                            show_toast_alert({
+                                heading : 'Error',
+                                message : res.res_msg,
+                                type    : 'error'
+                            });
                         }
                         else
                         {
@@ -208,11 +215,15 @@
                         $('.help-block').html('');
                         if (res.res_code == 1)
                         {
-                            alert('error')
                             for (var err in res.res_error_msg)
                             {
                                 $('#js-' + err).html('<code> '+ res.res_error_msg[err] +' </code>');
                             }
+                            show_toast_alert({
+                                heading : 'Error',
+                                message : res.res_msg,
+                                type    : 'error'
+                            });
                         }
                         else
                         {
@@ -221,7 +232,8 @@
                                 message : res.res_msg,
                                 type    : 'success'
                             });
-                            // $('#js-question-form')[0].reset();
+                            
+                           location.reload();
                             // fetch_data();
                         }
                     }
@@ -242,10 +254,11 @@
                         $('.help-block').html('');
                         if (res.res_code == 1)
                         {
-                            for (var err in res.res_error_msg)
-                            {
-                                $('#js-' + err).html('<code> '+ res.res_error_msg[err] +' </code>');
-                            }
+                            show_toast_alert({
+                                heading : 'Error',
+                                message : res.res_msg,
+                                type    : 'error'
+                            });
                         }
                         else
                         {
@@ -428,29 +441,45 @@
                                 </li>`);                
             })
             
-            $(document).on('click', '.delete-ordering-item', function(){
+            $(document).on('click', '.delete-ordering-item', function(e){
+                e.preventDefault();
                 $(this).closest('#ordering .li-row').remove();
             })
 
            $('#btn-add-option-identification').click(function(e){
                 e.preventDefault();
                
-                $('#identification').append(`<hr/>
-                            <div class="form-group col-md-12" id="js-question_identification">
-                                <label for="summernote">Question Setup</label>
+                $('#identification').append(`<div class="identification col-md-12">
+                            <div class="col-md-12">
+                                <hr>
+                            </div>
+                            <div class="form-group" id="js-question_identification">
+                                <div class="float-right">
+                                    <button type="button" class="btn btn-sm btn-outline-danger btn-delete-entire-identification">
+                                        <i class="fas fa-trash"></i> Delete
+                                    </button>
+                                </div>
+                                <label class="mt-3" for="summernote">Question Setup</label>
                                 <textarea name="question_identification[]" class="js-question_identification"></textarea>
                                 <div class="help-block text-red" id="js-question_identification"></div>
                             </div>
-                            <div class="col-md-9">
-                                <label for="answer_identification">Answer:</label>
-                                <input type="number" class="form-control form-control-sm" id="answer_identification" name="answer_identification">
-                            </div>
-                            <div class="col-md-3">
-                                <div class="form-group">
-                                <div class='js-points'><label for="points_per_question">Points this question:</label>
-                                    <input type="number" class="form-control form-control-sm" id="points_per_question" name="points_per_question" value="1"></div>
+                            <div class="row">
+                                <div class="col-md-9">
+                                    <label for="identification_answer">Answer:</label>
+                                    <input type="text" class="form-control form-control-sm" id="identification_answer" name="identification_answer[]">
+                                    <div class="help-block text-red" id="js-identification_answer"></div>
                                 </div>
-                            </div>`);
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <div class='js-points'>
+                                            <label for="points_per_question">Points this question:</label>
+                                            <input type="number" class="form-control form-control-sm" id="points_per_question" name="points_per_question[]" value="1">
+                                            <div class="help-block text-red" id="js-points_per_question"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>`);
 
                 // var div = $('<div>').appendTo($("#js-question_field"));
                 // div.class('js-question_setup').summernote();
@@ -473,8 +502,9 @@
                 });
             })
             
-            $(document).on('click', '.delete-ordering-item', function(){
-                $(this).closest('#ordering .li-row').remove();
+            $(document).on('click', '.btn-delete-entire-identification', function(e){
+                e.preventDefault();
+                $(this).closest('#identification .identification').remove();
             })
 
             function examType(){
@@ -489,14 +519,10 @@
                     let url = "{{ route('faculty.assessment_subject.edit', encrypt($Assessment->id))}}?tab=questions&question="+question_type+"";
                     // url = url.replace(':slug', slug);
                     window.location.href=url;
-                    // $('#js-head-type').removeClass('d-none');
-                    // $('#js-question').removeClass('d-none');
-                    // let point_item = `<label for="points_per_question">Points this question:</label>
-                    //                 <input type="number" class="form-control form-control-sm" id="points_per_question" name="points_per_question" value="1">`;
+                    
                     
                 }
             }
-
 
             $('body').on('submit', '#js-form_search', function (e) {
                 e.preventDefault();
