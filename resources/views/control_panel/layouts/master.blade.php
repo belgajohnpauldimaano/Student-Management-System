@@ -158,7 +158,7 @@
                   <i class="fa fa-info-circle fa-lg"></i> <p>Student Information</p>
                 </a>
               </li>
-              <li class="nav-item">
+              {{-- <li class="nav-item">
                 <a href="#" class="nav-link 
                   {{
                     request()->routeIs('admission.incoming_student') ? 'active menu-open' : '' || 
@@ -177,7 +177,7 @@
                     request()->routeIs('admission.Disapproved') ? 'd-block' : ''
                   }}
                 ">
-                    {{--  Admin Menu  --}}
+                    
                     <li class="nav-item">
                       <a class="nav-link {{request()->routeIs('admission.incoming_student') ? 'active' : '' }}"
                          href="{{ route('admission.incoming_student')}}">
@@ -197,6 +197,12 @@
                       </a>
                     </li>
                 </ul>
+              </li> --}}
+              <li class="nav-item">
+                <a class="nav-link {{request()->routeIs('admission.incoming') ? 'active' : '' }}"
+                   href="{{ route('admission.incoming', ['tab' => 'not-yet-approved']) }}">
+                  <i class="fa fa-info-circle fa-lg"></i> <p>Incoming Student</p>
+                </a>
               </li>
               <li class="nav-item">
                 <a class="nav-link {{request()->routeIs('registrar.class_details') ? 'active' : '' }}"
@@ -291,10 +297,16 @@
                   <i class="fa fa-home fa-fw fa-lg"></i> <p>Dashboard</p>
                 </a>
               </li>
-              <li class="nav-item">
+              {{-- <li class="nav-item">
                 <a class="nav-link {{request()->routeIs('admission.incoming_student') ? 'active' : '' }}"
                    href="{{ route('admission.incoming_student') }}">
                   <i class="fas fa-users fa-lg"></i> <p>Incoming Student</p>
+                </a>
+              </li> --}}
+              <li class="nav-item">
+                <a class="nav-link {{request()->routeIs('admission.incoming') ? 'active' : '' }}"
+                   href="{{ route('admission.incoming', ['tab' => 'not-yet-approved']) }}">
+                  <i class="fa fa-info-circle fa-lg"></i> <p>Incoming Student</p>
                 </a>
               </li>
               <li class="nav-item">
