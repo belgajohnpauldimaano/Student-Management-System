@@ -79,9 +79,9 @@
                         });                        
             
                         // fetch_data ();
-                        setTimeout(function() {
-                            location.reload();
-                        }, 1000);
+                        // setTimeout(function() {
+                        //     location.reload();
+                        // }, 1000);
                     }
                 }
             });

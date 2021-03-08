@@ -2,10 +2,10 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header" style="background-color: #fff;">
-                <h4 class="modal-title"><i class="fas fa-history"></i> Transaction History</h4>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
+                <h4 class="modal-title"><i class="fas fa-history"></i> Transaction History</h4>
             </div>
             <div class="modal-body" style="background-color: #ecf0f5;">
                 @if($hasTransaction)
@@ -148,7 +148,7 @@
         </div>
         <!-- /.modal-content -->
         <div class="modal-footer" style="background-color: #fff;">
-            <button type="button" class="btn btn-default btn-flat" data-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
         </div>
     </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->

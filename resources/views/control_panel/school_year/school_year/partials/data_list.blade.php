@@ -5,6 +5,7 @@
     <thead>
         <tr>
             <th>School Year</th>
+            <th>Apply To</th>
             <th>Current</th>
             <th>Status</th>
             <th>Actions</th>
@@ -15,7 +16,12 @@
             @foreach ($SchoolYear as $data)
                 <tr>
                     <td>{{ $data->school_year }}</td>
-                    <td>{{ $data->current == 1 ? 'Yes' : 'No' }}</td>
+                    <td>{{ $data->apply_type }}</td>
+                    <td>
+                        <span class="badge badge-{{ $data->current == 1 ? 'success' : 'danger' }}">
+                            {{ $data->current == 1 ? 'Yes' : 'No' }}
+                        </span>
+                    </td>
                     <td>
                         <span class="badge badge-{{ $data->status == 1 ? 'success' : 'danger' }}">
                             {{ $data->status == 1 ? 'Active' : 'Inactive' }}
@@ -27,7 +33,7 @@
                             <button type="button" class="btn btn-danger dropdown-toggle dropdown-icon" data-toggle="dropdown">
                                 <span class="sr-only">Toggle Dropdown</span>
                             </button>
-                            <div class="dropdown-menu">
+                            <div class="dropdown-menu dropdown-menu-right">
                                 <a href="#" class="dropdown-item js-btn_update_sy" data-id="{{ $data->id }}">Edit</a>
                                 <a href="#" class="dropdown-item js-btn_toggle_current" data-id="{{ $data->id }}" data-toggle_title="{{ ( $data->current ? 'Remove from current active' : 'Add to current active' ) }}">{{ ( $data->current ? 'Remove from current Active' : 'Add to current Active' ) }}</a>
                             </div>

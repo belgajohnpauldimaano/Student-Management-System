@@ -21,6 +21,17 @@
                         </div>
                     </div>
                     <div class="form-group">
+                        <label for="">Apply to</label>
+                        <select name="apply_to" id="apply_to" class="form-control">
+                            <option value="1">Admin Only</option>
+                            <option value="2">Admin | Registration for Enrollment</option>
+                            <option value="3">Admin | Registration for Enrollment | Payment</option>
+                            {{-- <option value="4">Faculty Only</option> --}}
+                        </select>
+                        <div class="help-block text-red text-center" id="js-apply_to">
+                        </div>
+                    </div>
+                    <div class="form-group">
                         <label for="">Set as Current School Year</label>
                         <select name="current_sy" id="current_sy" class="form-control">
                             <option value="1" {{ $SchoolYear ? ($SchoolYear->current == 0 ? 'selected' : '')  : '' }}>Yes</option>

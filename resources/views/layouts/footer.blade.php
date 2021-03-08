@@ -88,6 +88,14 @@
             $('.btn--update-photo').click(function(){
                 $('.btn-upload-photo').click();
             })
+
+            $('.btn-enroll').click(function(){
+                $('#js-registration').modal({
+                    backdrop: 'static',
+                    keyboard: false
+                })
+            })
+            
            
             $('body').on('submit', '#js-registration_form', function (e) {
                 e.preventDefault();

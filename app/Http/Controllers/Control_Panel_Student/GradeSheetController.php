@@ -452,8 +452,9 @@ class GradeSheetController extends Controller
 
                             $Enrollment_secondsem = $Enrollment_secondsem->map(function($item, $key) use ($StudentEnrolledSubject, $grade_level, $grade_status){
             
-                                $grade = $StudentEnrolledSubject->firstWhere('subject_id', $item->subject_id);
-                                // $grade = $StudentEnrolledSubject->where('class_subject_details_id', $item->class_subject_details_id)->first();                              
+                                // $grade = $StudentEnrolledSubject->firstWhere('subject_id', $item->subject_id)
+                                // ->where('class_subject_details_id', $item->class_subject_details_id);
+                                $grade = $StudentEnrolledSubject->where('class_subject_details_id', $item->class_subject_details_id)->first();                              
                                 
                                 // return json_encode($grade['class_subject_details_id']);
                                 $subject = ClassSubjectDetail::where('id', $grade['class_subject_details_id'])                                        
@@ -477,6 +478,7 @@ class GradeSheetController extends Controller
                                     $final = $sum / $divisor;
                                 }
                                 $data = [
+                                    'student_enrolled'  =>  $item->studentEnrolledSubject,
                                     'enrollment_id'     =>  $item->enrollment_id,
                                     'grade_level'       =>  $item->grade_level,
                                     'class_days'        =>  $item->class_days,

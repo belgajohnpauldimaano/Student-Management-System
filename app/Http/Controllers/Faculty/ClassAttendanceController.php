@@ -528,6 +528,7 @@ class ClassAttendanceController extends Controller
     {
         $class_id = ClassDetail::whereId(Crypt::decrypt($request->class_id))->first();
         $school_year = SchoolYear::whereCurrent(1)->whereStatus(1)->first();
+        $sem = Semester::whereCurrent(1)->first();
         $FacultyInformation = FacultyInformation::where('user_id', Auth::user()->id)->first();
 
         $Semester = ClassSubjectDetail::join('class_details', 'class_details.id', '=', 'class_subject_details.class_details_id')
@@ -535,6 +536,7 @@ class ClassAttendanceController extends Controller
             ->where('class_details.adviser_id', $FacultyInformation->id)
             ->where('class_details.school_year_id', $class_id->school_year_id)
             ->where('class_details.status', 1)
+            ->where('class_subject_details.sem', $sem->id)
             ->select(\DB::raw('
                     section_details.section,
                     class_details.id,
@@ -544,7 +546,7 @@ class ClassAttendanceController extends Controller
                     class_subject_details.sem
             '))
             ->first();
-        // return json_encode($school_year->school_year);
+        // return json_encode($Semester);
         try {            
             if('2020-2021' == $school_year->school_year){
                 if($class_id->grade_level > 10)
@@ -784,6 +786,8 @@ class ClassAttendanceController extends Controller
             // return json_encode($attendance_data);
 
             $Enrollment = Enrollment::whereId($enrollment_id)->first();
+
+            // return json_encode($Enrollment);
             
             if($class_id->grade_level < 11)
             {

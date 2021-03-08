@@ -43,9 +43,7 @@
 </head>
 
 <body>
-    @php
-        $registration = \App\Models\RegistrationButton::whereId(1)->first()->is_enabled;
-    @endphp
+    
     <header id="header">
         <div class="container-fluid">
             <div id="logo" class="pull-left">
@@ -107,7 +105,9 @@
                     </li>
                     @if($registration == 1)
                         <li class="menu">
-                            <a class="btn-enroll" data-toggle="modal" data-target="#js-registration"  href="#"><i class="fas fa-mouse-pointer"></i> Registration</a>
+                            <a class="btn-enroll" data-toggle="modal" data-target="#js-registration"  href="#">
+                                <i class="fas fa-mouse-pointer"></i> Registration
+                            </a>
                         </li>
                     @endif
                     <li class="menu">

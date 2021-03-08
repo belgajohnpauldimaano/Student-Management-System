@@ -210,7 +210,15 @@
         </td>                
     </tr>
     <tr style="margin-top: .5em">
-        <td colspan="3" style="border: 0">Lacking units in:____<u> {{ $GradeSheetData[0]->lacking_unit }} </u>____</td>                
+        <td colspan="3" style="border: 0">Lacking units in:____<u> 
+            @php
+                try {
+                    echo $GradeSheetData[0]->lacking_unit;
+                } catch (\Throwable $th) {
+                    echo '_____';
+                }
+            @endphp
+            </u>____</td>                
     </tr>    
     <tr style="margin-top: .5em">
         @if($DateRemarks)

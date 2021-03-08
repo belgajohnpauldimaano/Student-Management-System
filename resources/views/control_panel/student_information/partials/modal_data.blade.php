@@ -42,62 +42,62 @@
                     <div class="modal-body">
                         <div class="form-group">
                             <label for="">Username</label>
-                            <input type="text" class="form-control" name="username" value="{{ $StudentInformation ? $StudentInformation->user->username : '' }}">
+                            <input type="text" class="form-control form-control-sm" name="username" value="{{ $StudentInformation ? $StudentInformation->user->username : '' }}">
                             <div class="help-block text-red text-center" id="js-username">
                             </div>
                         </div>
                         <div class="form-group">
                             <label for="">First name</label>
-                            <input type="text" class="form-control" name="first_name" value="{{ $StudentInformation ? $StudentInformation->first_name : '' }}">
+                            <input type="text" class="form-control form-control-sm" name="first_name" value="{{ $StudentInformation ? $StudentInformation->first_name : '' }}">
                             <div class="help-block text-red text-center" id="js-first_name">
                             </div>
                         </div>
                         <div class="form-group">
                             <label for="">Middle name</label>
-                            <input type="text" class="form-control" name="middle_name" value="{{ $StudentInformation ? $StudentInformation->middle_name : '' }}">
+                            <input type="text" class="form-control form-control-sm" name="middle_name" value="{{ $StudentInformation ? $StudentInformation->middle_name : '' }}">
                             <div class="help-block text-red text-center" id="js-middle_name">
                             </div>
                         </div>
                         <div class="form-group">
                             <label for="">Last name</label>
-                            <input type="text" class="form-control" name="last_name" value="{{ $StudentInformation ? $StudentInformation->last_name : '' }}">
+                            <input type="text" class="form-control form-control-sm" name="last_name" value="{{ $StudentInformation ? $StudentInformation->last_name : '' }}">
                             <div class="help-block text-red text-center" id="js-last_name">
                             </div>
                         </div>
                         <div class="form-group">
                                 <label for="">Parent/Guardian</label>
-                                <input type="text" class="form-control" name="guardian" value="{{ $StudentInformation ? $StudentInformation->guardian : '' }}">
+                                <input type="text" class="form-control form-control-sm" name="guardian" value="{{ $StudentInformation ? $StudentInformation->guardian : '' }}">
                                 <div class="help-block text-red text-center" id="js-guardian">
                                 </div>
                         </div>
                         <div class="form-group">
                             <label for="">Address <small class="text-red">Optional</small></label>
-                            <input type="text" class="form-control" name="address" value="{{ $StudentInformation ? $StudentInformation->c_address : '' }}">
+                            <input type="text" class="form-control form-control-sm" name="address" value="{{ $StudentInformation ? $StudentInformation->c_address : '' }}">
                             <div class="help-block text-red text-center" id="js-address">
                             </div>
                         </div>
                         <div class="form-group">
                             <label for="">Age June</label>
-                            <input type="text" class="form-control" name="age_june" value="{{ $StudentInformation ? $StudentInformation->age_june : '' }}">
+                            <input type="text" class="form-control form-control-sm" name="age_june" value="{{ $StudentInformation ? $StudentInformation->age_june : '' }}">
                             <div class="help-block text-red text-center" id="js-age_june">
                             </div>
                         </div>
                         <div class="form-group">
                             <label for="">Age May</label>
-                            <input type="text" class="form-control" name="age_may" value="{{ $StudentInformation ? $StudentInformation->age_may : '' }}">
+                            <input type="text" class="form-control form-control-sm" name="age_may" value="{{ $StudentInformation ? $StudentInformation->age_may : '' }}">
                             <div class="help-block text-red text-center" id="js-age_may">
                             </div>
                         </div>
                         <div class="form-group">
                             <label for="">Date of Birth <small class="text-red">Optional</small></label>
-                            {{--  <input type="text" class="form-control" name="birthdate" value="{{ $StudentInformation ? $StudentInformation->birthdate : '' }}">  --}}
+                            {{--  <input type="text" class="form-control form-control-sm" name="birthdate" value="{{ $StudentInformation ? $StudentInformation->birthdate : '' }}">  --}}
                             <div class="input-group date">
                                 <div class="input-group-prepend">
                                 <span class="input-group-text">
                                     <i class="far fa-calendar-alt"></i>
                                 </span>
                                 </div>
-                                <input type="text" name="birthdate" class="form-control pull-right" id="datepicker"
+                                <input type="text" name="birthdate" class="form-control form-control-sm pull-right" id="datepicker"
                                 value="{{ $StudentInformation ? date_format(date_create($StudentInformation->birthdate), 'F d, Y') : '' }}">
                             </div>
                             <div class="help-block text-red text-center" id="js-birthdate">
@@ -105,7 +105,7 @@
                         </div>
                         <div class="form-group">
                             <label for="">Gender </label>
-                            <select name="gender" id="gender" class="form-control">
+                            <select name="gender" id="gender" class="form-control form-control-sm">
                                 <option value="">Select gender</option>
                                 <option value="1" {{ $StudentInformation ? $StudentInformation->gender == 1 ? 'selected' : '' : '' }}>Male</option>
                                 <option value="2" {{ $StudentInformation ? $StudentInformation->gender == 2 ? 'selected' : '' : '' }}>Female</option>
@@ -118,7 +118,7 @@
                             @if ($StudentInformation->id)
                                 <div class="form-group">
                                     <label for="">Email address</label>
-                                    <input type="text" class="form-control" name="email" value="{{ $StudentInformation ? $StudentInformation->email : '' }}">
+                                    <input type="text" class="form-control form-control-sm" name="email" value="{{ $StudentInformation ? $StudentInformation->email : '' }}">
                                     <div class="help-block text-red text-center" id="js-email">
                                     </div>
                                 </div>

@@ -100,7 +100,8 @@ class SchoolYearController extends Controller
     public function save_data (Request $request) 
     {
         $rules = [
-            'school_year' => 'required'           
+            'school_year'   => 'required',
+            'apply_to'      => 'required'
         ];
 
         $Validator = \Validator($request->all(), $rules);
@@ -114,6 +115,7 @@ class SchoolYearController extends Controller
         {
             $SchoolYear = SchoolYear::where('id', $request->id)->first();
             $SchoolYear->school_year = $request->school_year;
+            $SchoolYear->apply_to = $request->apply_to;
             $SchoolYear->current = $request->current_sy;
             $SchoolYear->save();
             return response()->json(['res_code' => 0, 'res_msg' => 'Data successfully saved.']);
@@ -121,6 +123,7 @@ class SchoolYearController extends Controller
 
         $SchoolYear = new SchoolYear();
         $SchoolYear->school_year = $request->school_year;
+        $SchoolYear->apply_to = $request->apply_to;
         $SchoolYear->current = $request->current_sy;
         $SchoolYear->save();
         return response()->json(['res_code' => 0, 'res_msg' => 'Data successfully saved.']);

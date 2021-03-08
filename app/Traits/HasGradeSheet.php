@@ -11,6 +11,7 @@ use App\Models\ClassSubjectDetail;
 use App\Models\FacultyInformation;
 use App\Models\StudentInformation;
 use Illuminate\Support\Facades\Auth;
+use App\Models\StudentEnrolledSubject;
 
 trait HasGradeSheet{   
 
@@ -39,7 +40,7 @@ trait HasGradeSheet{
 
     public function section()
     {        
-        return $this->hasOne(SectionDetail::class, 'id','section_id')
+        return $this->belongsTo(SectionDetail::class, 'class_details')
             ->whereStatus(1);
     }
     
@@ -87,6 +88,10 @@ trait HasGradeSheet{
     public function strand()
     {
         return $this->hasOne(Strand::class, 'id','strand_id');
+    }
+
+    public function studentEnrolledSubject(){
+        return $this->hasOne(StudentEnrolledSubject::class, 'class_subject_details_id', 'class_subject_details_id');
     }
    
 }

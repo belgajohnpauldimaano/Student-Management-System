@@ -380,7 +380,7 @@ class AdvisoryClassController extends Controller
                 ->whereSchoolYearId($SchoolYear->id)
                 ->whereId(Crypt::decrypt($request->cid))
                 ->first();
-            // return json_encode($ClassDetail->id);
+            // return json_encode($ClassDetail);
 
             $Signatory = ClassDetail::with('student_enrollment')
                 ->where('school_year_id', $SchoolYear->id)
@@ -400,7 +400,7 @@ class AdvisoryClassController extends Controller
             //     })
             //     ->get();
 
-            $Enrollment = Enrollment::join('class_details', 'class_details.id', '=', 'enrollments.class_details_id')
+            $query = Enrollment::join('class_details', 'class_details.id', '=', 'enrollments.class_details_id')
                 ->join('class_subject_details', 'class_subject_details.class_details_id', '=', 'class_details.id')
                 ->join('rooms', 'rooms.id', '=', 'class_details.room_id')
                 ->join('faculty_informations', 'faculty_informations.id', '=', 'class_subject_details.faculty_id')
@@ -408,7 +408,6 @@ class AdvisoryClassController extends Controller
                 ->join('subject_details', 'subject_details.id', '=', 'class_subject_details.subject_id')
                 ->where('student_information_id', $StudentInformation->id)
                 ->where('class_subject_details.status', 1)
-                ->where('class_subject_details.sem', $semester)
                 ->where('enrollments.status', 1)
                 ->where('class_details.status', 1)
                 ->where('class_details.school_year_id', $SchoolYear->id)
@@ -434,8 +433,13 @@ class AdvisoryClassController extends Controller
                     rooms.room_code,
                     section_details.section,
                     class_details.school_year_id as school_year_id
-                "))
-                ->orderBy('class_subject_details.class_subject_order', 'ASC')
+                "));
+
+                if($ClassDetail->grade_level > 10){
+                    $query->where('class_subject_details.sem', $semester);
+                }
+               
+                $Enrollment = $query->orderBy('class_subject_details.class_subject_order', 'ASC')
                 ->get();
 
             if($Enrollment->isEmpty()){
@@ -532,7 +536,11 @@ class AdvisoryClassController extends Controller
                             $lacking_unit = $item->s2_lacking_unit;
                         }
                     }
-                    
+
+                    if($grade_level < 11){
+                        $lacking_unit = $item->lacking_unit;
+                    }
+
                     if($grade_level > 10){
 
                         if($semester == 1){

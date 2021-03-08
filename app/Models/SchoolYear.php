@@ -11,4 +11,15 @@ class SchoolYear extends Model
     {
         return $this->hasOne(User::class, 'school_year_id', 'id');
     }
+
+    public function getApplyTypeAttribute()
+    {
+        $apply_type = [
+            '',
+            'Admin Only', 
+            'Admin | Registration for Enrollment', 
+            'Admin | Registration for Enrollment | Payment' 
+        ];
+        return $apply_type[$this->apply_to];
+    }
 }

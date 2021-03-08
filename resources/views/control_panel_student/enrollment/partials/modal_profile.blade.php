@@ -2,10 +2,10 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">            
                 <div class="modal-header">
-                    <button type="button" class="close" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                     <h4 class="modal-title">
                         Update Demographic Profile
                     </h4>
+                    <button type="button" class="close" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                 </div>
                 
                 <div class="modal-body">
@@ -18,8 +18,8 @@
                             asset('/img/account/photo/blank-user.gif') }}" 
                             alt="User profile picture"
                         />
-                        
-                        <button type="button" style="margin-top: 5px" class="btn btn-flat btn-success btn--update-photo" title="Change photo">
+                        <br/>
+                        <button type="button" style="margin-top: 5px" class="btn btn-success btn--update-photo" title="Change photo">
                             browse
                         </button>
 
@@ -105,8 +105,8 @@
                         </div>
                 </div>
                 <div class="modal-footer">
-                    {{-- <button type="button" class="btn btn-default btn-flat" data-dismiss="modal">Close</button> --}}
-                    <button type="submit" class="btn btn-primary btn-flat">Save</button>
+                    {{-- <button type="button" class="btn btn-default " data-dismiss="modal">Close</button> --}}
+                    <button type="submit" class="btn btn-primary ">Save</button>
                 </div>
             </form>
         </div><!-- /.modal-content -->
