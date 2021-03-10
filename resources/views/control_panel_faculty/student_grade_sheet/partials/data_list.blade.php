@@ -26,7 +26,7 @@
 @endphp
 
 <h5>
-    Subject : <span class="text-red"><i>{{ $ClassSubjectDetail->subject }}</i></span>
+    Subject : <span class="text-red"><i>{{ $ClassSubjectDetail->id }} {{ $ClassSubjectDetail->subject }}</i></span>
     Schedule : <span class="text-red"><i>{{ rtrim($daysDisplay, '/') }}</i></span>
     <br/>
     Grade & Section : <span class="text-red"><i>{{ $ClassSubjectDetail->grade_level . ' ' .$ClassSubjectDetail->section }}</i></span>

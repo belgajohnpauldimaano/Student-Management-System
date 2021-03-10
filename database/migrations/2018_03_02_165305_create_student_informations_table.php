@@ -20,9 +20,22 @@ class CreateStudentInformationsTable extends Migration
             $table->string('last_name');
             $table->string('address');
             $table->dateTime('birthdate');
+            $table->text('c_address')->nullable();
+            $table->text('p_address')->nullable();
+            $table->string('age_june')->nullable();
+            $table->string('age_may')->nullable();
+            $table->string('guardian',300)->nullable();
+            $table->string('father_name')->nullable();
+            $table->string('mother_name')->nullable();
+            $table->string('photo')->nullable();
+            $table->string('contact_number')->nullable();
+            $table->string('email')->nullable();
+            $table->string('email')->nullable();
             $table->tinyInteger('gender')->nullable();
+            $table->integer('user_id')->unsigned();
             $table->tinyInteger('current')->default('1');
             $table->tinyInteger('status')->default('1');
+            $table->tinyInteger('isEsc')->default('0');
             $table->timestamps();
         });
     }

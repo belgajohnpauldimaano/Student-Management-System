@@ -21,6 +21,23 @@
                         </div>
                     </div>
                 </div>
+                <div class="col-md-4">
+                    <label for="">Answer is case sensitive:</label>
+                    <div class="form-group clearfix">
+                        <div class="icheck-danger d-inline">
+                            <input type="radio" name="case_sensitive" id="case_sensitive_yes" value="1">
+                            <label for="case_sensitive_yes">
+                                Yes
+                            </label>
+                        </div>
+                        <div class="icheck-danger d-inline">
+                            <input type="radio" name="case_sensitive" id="case_sensitive_no" value="0">
+                            <label for="case_sensitive_no">
+                                No
+                            </label>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

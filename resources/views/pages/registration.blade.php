@@ -3,7 +3,7 @@
       <div class="modal-content">
         <div class="modal-header">
             <h5 class="modal-title text-black" id="js-registration">
-                <i class="fas fa-edit"></i>  ST. John's Academy Inc Registration
+                <i class="fas fa-edit"></i>  Student Application Form
             </h5>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
@@ -11,9 +11,70 @@
         </div>
         <form id="js-registration_form">
             {{ csrf_field() }}
-            <div class="modal-body">
-                <div class="form-row mb-5" align="center">
-                    <div class="col-md-12">
+            <div class="modal-body ">
+                <div class="form-row mb-5 ">
+                    <div class="col-md-8">
+                        <div class="form-group input-sy">
+                            <h4 for="sy"><small>SY:</small> <b>
+                                @php
+                                try {
+                                    echo $school_year->school_year;
+                                } catch (\Throwable $th) {
+                                    echo '';
+                                }
+                                @endphp
+                                </b>
+                            </h4>
+                            <input type="hidden" class="form-control form-control-sm" id="sy" name="sy" 
+                            value="
+                            @php 
+                                try {
+                                    echo $school_year->id;
+                                } catch (\Throwable $th) {
+                                    echo '';
+                                }
+                            @endphp">
+                            <div class="help-block text-red text-left" id="js-sy">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="form-group input-reg_type">
+                                <label for="">Registration type</label>
+                                <select name="reg_type" id="reg_type" class="form-control form-control-sm">
+                                    <option value="">--Select--</option>
+                                    <option value="1">Transferee</option>
+                                    <option value="2">Freshman</option>
+                                </select>
+                                <div class="help-block text-red text-left" id="js-reg_type">
+                                </div>
+                            </div>
+                            
+                        </div>
+                        <div class="form-group">
+                            <div class="form-group input-grade_lvl">
+                                <label for="">I am Incoming</label>
+                                <select name="grade_lvl" id="grade_lvl" class="form-control form-control-sm">
+                                    <option value="">--Select--</option>
+                                    <option value="7">Grade 7</option>
+                                    <option value="8">Grade 8</option>
+                                    <option value="9">Grade 9</option>
+                                    <option value="10">Grade 10</option>
+                                    <option value="11">Grade 11</option>
+                                    <option value="12">Grade 12</option>
+                                </select>
+                                <div class="help-block text-red text-left" id="js-grade_lvl">
+                                </div>
+                            </div>
+                        </div>
+                         <div class="form-group input-lrn">
+                            <label for="lrn">LRN</label>
+                            <input type="number" class="form-control form-control-sm" id="lrn" name="lrn" placeholder="01234567890">
+                            <div class="help-block text-red text-left" id="js-lrn">
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="col-md-4 text-center">
                         <img class="profile-user-img img-responsive img-circle" id="img--user_photo" src="{{  asset('/img/account/photo/blank-user.gif') }}" 
                         style="width:150px; height:150px;  border-radius:50%;">
                         <br/><br/>
@@ -27,70 +88,36 @@
                          <input type="hidden" id="default-img" value={{asset('/img/account/photo/blank-user.gif')}} />   
                          <div class="help-block text-red text-center" id="js-student_img">
                         </div>
+                    </div>
+                    <div class="form-group col-md-4 input-fb_acct">
+                        <label for="">FB/Messenger Account</label>
+                        <input type="text" class="form-control form-control-sm" id="fb_acct" name="fb_acct">
+                        <div class="help-block text-red text-left" id="js-fb_acct">
+                        </div>
                     </div>                                
                 </div>                                
 
+                <h6 style="margin-bottom: -.5em">PERSONAL DATA <i>(Note: Kindly write all information inside the box.)</i></h6>
+                <hr>
                 <div class="form-row">
-                    <div class="form-group col-md-4 input-lrn">
-                        <label for="lrn">Student LRN</label>
-                        <input type="number" class="form-control form-control-sm" id="lrn" name="lrn" placeholder="01234567890">
-                        <div class="help-block text-red text-left" id="js-lrn">
-                        </div>
-                        
-                    </div>
-                    <div class="form-group col-md-4">
-                        <div class="form-group input-reg_type">
-                            <label for="">Registration type</label>
-                            <select name="reg_type" id="reg_type" class="form-control form-control-sm">
-                                <option value="">--Select--</option>
-                                <option value="1">Transferee</option>
-                                <option value="2">Freshman</option>
-                            </select>
-                            <div class="help-block text-red text-left" id="js-reg_type">
-                            </div>
-                        </div>
-                        
-                    </div>
-                    <div class="form-group col-md-4">
-                        <div class="form-group input-grade_lvl">
-                            <label for="">Incoming Grade level</label>
-                            <select name="grade_lvl" id="grade_lvl" class="form-control form-control-sm">
-                                <option value="">--Select--</option>
-                                <option value="7">Grade 7</option>
-                                <option value="8">Grade 8</option>
-                                <option value="9">Grade 9</option>
-                                <option value="10">Grade 10</option>
-                                <option value="11">Grade 11</option>
-                                <option value="12">Grade 12</option>
-                            </select>
-                            <div class="help-block text-red text-left" id="js-grade_lvl">
-                            </div>
-                        </div>
-                        
-                    </div>
-                </div>
-
-                <div class="form-row">
-                    <div class="form-group col-md-4 input-first_name">
-                        <label for="">First name</label>
-                        <input type="text" class="form-control form-control-sm" id="first_name" name="first_name">
-                        <div class="help-block text-red text-left" id="js-first_name">
-                        </div>
-                        
-                    </div>
-                    <div class="form-group col-md-4 input-middle_name">
-                        <label for="">Middle name</label>
-                        <input type="text" class="form-control form-control-sm" id="middle_name" name="middle_name">
-                        <div class="help-block text-red text-left" id="js-middle_name">
-                        </div>
-                        
-                    </div>
-                    <div class="form-group col-md-4 input-last_name">
-                        <label for="">Last name</label>
+                     <div class="form-group col-md-4 input-last_name">
+                        <label for="">Last Name</label>
                         <input type="text" class="form-control form-control-sm" id="last_name" name="last_name">
                         <div class="help-block text-red text-left" id="js-last_name">
                         </div>
                         
+                    </div>
+                    <div class="form-group col-md-4 input-first_name">
+                        <label for="">Given Name</label>
+                        <input type="text" class="form-control form-control-sm" id="first_name" name="first_name">
+                        <div class="help-block text-red text-left" id="js-first_name">
+                        </div>
+                    </div>
+                    <div class="form-group col-md-4 input-middle_name">
+                        <label for="">Middle Name</label>
+                        <input type="text" class="form-control form-control-sm" id="middle_name" name="middle_name">
+                        <div class="help-block text-red text-left" id="js-middle_name">
+                        </div>
                     </div>
                 </div>
                 <div class="form-row">

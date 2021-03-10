@@ -28,9 +28,14 @@ class ClassAttendanceController extends Controller
             ->whereAdviserId($FacultyInformation->id)
             ->whereSchoolYearId($school_year->id)
             ->first();
-
         // return json_encode($has_schoolyear);
-        
+
+        if(empty($has_schoolyear)){
+            $hasData = 1;
+            return view('control_panel_faculty.student_attendance.index', 
+                compact('hasData'))->render();
+        }
+            
         $query = ClassSubjectDetail::join('class_details', 'class_details.id', '=', 'class_subject_details.class_details_id')
             ->join('section_details', 'section_details.id', '=', 'class_details.section_id')
             ->where('class_details.adviser_id', $FacultyInformation->id)
