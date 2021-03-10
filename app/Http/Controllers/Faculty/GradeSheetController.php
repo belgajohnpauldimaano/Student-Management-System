@@ -142,6 +142,7 @@ class GradeSheetController extends Controller
             ->whereRaw('class_details.current = 1')
             ->whereRaw('class_details.status != 0')
             ->whereRaw('student_informations.gender = 1')
+            ->where('enrollments.status',1)
             ->select(\DB::raw("
                 student_informations.id,
                 class_details.id as class_details_id,
@@ -179,6 +180,7 @@ class GradeSheetController extends Controller
             ->whereRaw('class_details.current = 1')
             ->whereRaw('class_details.status != 0')
             ->whereRaw('student_informations.gender = 2')
+            ->where('enrollments.status',1)
             ->select(\DB::raw("
                 student_informations.id,
                 class_details.id as class_details_id,
@@ -279,6 +281,7 @@ class GradeSheetController extends Controller
                     ->whereRaw('class_details.current = 1')
                     ->whereRaw('class_details.status != 0')
                     ->whereRaw('student_informations.gender = 1')
+                    ->where('enrollments.status',1)
                     ->select(\DB::raw("
                         student_informations.id,
                         class_details.id as class_details_id,
@@ -314,6 +317,7 @@ class GradeSheetController extends Controller
                     ->whereRaw('class_details.current = 1')
                     ->whereRaw('class_details.status != 0')
                     ->whereRaw('student_informations.gender = 2')
+                    ->where('enrollments.status',1)
                     ->select(\DB::raw("
                         student_informations.id,
                         class_details.id as class_details_id,
@@ -599,6 +603,7 @@ class GradeSheetController extends Controller
             ->whereRaw('class_details.current = 1')
             ->whereRaw('class_details.status != 0')
             ->whereRaw('student_informations.gender = 1')
+            ->where('enrollments.status',1)
             ->select(\DB::raw("
                 student_informations.id,
                 class_details.id as class_details_id,
@@ -636,6 +641,7 @@ class GradeSheetController extends Controller
             ->whereRaw('class_details.current = 1')
             ->whereRaw('class_details.status != 0')
             ->whereRaw('student_informations.gender = 2')
+            ->where('enrollments.status',1)
             ->select(\DB::raw("
                 student_informations.id,
                 class_details.id as class_details_id,
@@ -714,76 +720,76 @@ class GradeSheetController extends Controller
         }
         // return json_encode(['FacultyInformation' => $FacultyInformation, 'req' => $request->all()]);
         $EnrollmentMale = Enrollment::join('class_subject_details', 'class_subject_details.class_details_id', '=', 'enrollments.class_details_id')
-                    ->join('class_details', 'class_details.id', '=', 'class_subject_details.class_details_id')
-                    ->join('student_informations', 'student_informations.id', '=', 'enrollments.student_information_id')
-                    ->leftJoin('teacher_subjects', 'teacher_subjects.class_subject_details_id', '=', 'class_subject_details.id')
-                    ->join('student_enrolled_subjects', function ($join) {
-                        $join->on('student_enrolled_subjects.enrollments_id', '=', 'enrollments.id');
-                    })
-                    ->where($faculty, $FacultyInformation->id)
-                    ->whereRaw('class_subject_details.id = '. $request->search_class_subject_sem)
-                    ->whereRaw('student_enrolled_subjects.class_subject_details_id = '. $request->search_class_subject_sem)
-                    
-                    ->whereRaw('class_details.current = 1')
-                    ->whereRaw('class_details.status != 0')
-                    ->whereRaw('student_informations.gender = 1')
-                    ->select(\DB::raw("
-                        student_informations.id,
-                        class_details.id as class_details_id,
-                        CONCAT(student_informations.last_name, ', ', student_informations.first_name, ' ', student_informations.middle_name) as student_name,
-                        student_enrolled_subjects.id as student_enrolled_subject_id,
-                        enrollments.id as enrollment_id,
-                        student_enrolled_subjects.fir_g,
-                        student_enrolled_subjects.fir_g_status,
-                        student_enrolled_subjects.sec_g,
-                        student_enrolled_subjects.sec_g_status,
-                        student_enrolled_subjects.thi_g,
-                        student_enrolled_subjects.thi_g_status,
-                        student_enrolled_subjects.fou_g,
-                        student_enrolled_subjects.fou_g_status,
-                        student_enrolled_subjects.fin_g,
-                        student_enrolled_subjects.fin_g_status,
-                        class_subject_details.status as grading_status 
-                    "))
-                    ->orderBy('student_informations.gender', 'ASC')
-                    ->orderBy('student_name', 'ASC')
-                    ->get();
+            ->join('class_details', 'class_details.id', '=', 'class_subject_details.class_details_id')
+            ->join('student_informations', 'student_informations.id', '=', 'enrollments.student_information_id')
+            ->leftJoin('teacher_subjects', 'teacher_subjects.class_subject_details_id', '=', 'class_subject_details.id')
+            ->join('student_enrolled_subjects', function ($join) {
+                $join->on('student_enrolled_subjects.enrollments_id', '=', 'enrollments.id');
+            })
+            ->where($faculty, $FacultyInformation->id)
+            ->whereRaw('class_subject_details.id = '. $request->search_class_subject_sem)
+            ->whereRaw('student_enrolled_subjects.class_subject_details_id = '. $request->search_class_subject_sem)
+            ->where('enrollments.status',1)
+            ->whereRaw('class_details.current = 1')
+            ->whereRaw('class_details.status != 0')
+            ->whereRaw('student_informations.gender = 1')
+            ->select(\DB::raw("
+                student_informations.id,
+                class_details.id as class_details_id,
+                CONCAT(student_informations.last_name, ', ', student_informations.first_name, ' ', student_informations.middle_name) as student_name,
+                student_enrolled_subjects.id as student_enrolled_subject_id,
+                enrollments.id as enrollment_id,
+                student_enrolled_subjects.fir_g,
+                student_enrolled_subjects.fir_g_status,
+                student_enrolled_subjects.sec_g,
+                student_enrolled_subjects.sec_g_status,
+                student_enrolled_subjects.thi_g,
+                student_enrolled_subjects.thi_g_status,
+                student_enrolled_subjects.fou_g,
+                student_enrolled_subjects.fou_g_status,
+                student_enrolled_subjects.fin_g,
+                student_enrolled_subjects.fin_g_status,
+                class_subject_details.status as grading_status 
+            "))
+            ->orderBy('student_informations.gender', 'ASC')
+            ->orderBy('student_name', 'ASC')
+            ->get();
 
         $EnrollmentFemale = Enrollment::join('class_subject_details', 'class_subject_details.class_details_id', '=', 'enrollments.class_details_id')
-                    ->join('class_details', 'class_details.id', '=', 'class_subject_details.class_details_id')
-                    ->join('student_informations', 'student_informations.id', '=', 'enrollments.student_information_id')
-                    ->leftJoin('teacher_subjects', 'teacher_subjects.class_subject_details_id', '=', 'class_subject_details.id')
-                    ->join('student_enrolled_subjects', function ($join) {
-                        $join->on('student_enrolled_subjects.enrollments_id', '=', 'enrollments.id');
-                    })
-                    ->where($faculty, $FacultyInformation->id)
-                    ->whereRaw('class_subject_details.id = '. $request->search_class_subject_sem)
-                    ->whereRaw('student_enrolled_subjects.class_subject_details_id = '. $request->search_class_subject_sem)
-                    
-                    ->whereRaw('class_details.current = 1')
-                    ->whereRaw('class_details.status != 0')
-                    ->whereRaw('student_informations.gender = 2')
-                    ->select(\DB::raw("
-                        student_informations.id,
-                        class_details.id as class_details_id,
-                        CONCAT(student_informations.last_name, ', ', student_informations.first_name, ' ', student_informations.middle_name) as student_name,
-                        student_enrolled_subjects.id as student_enrolled_subject_id,
-                        enrollments.id as enrollment_id,
-                        student_enrolled_subjects.fir_g,
-                        student_enrolled_subjects.fir_g_status,
-                        student_enrolled_subjects.sec_g,
-                        student_enrolled_subjects.sec_g_status,
-                        student_enrolled_subjects.thi_g,
-                        student_enrolled_subjects.thi_g_status,
-                        student_enrolled_subjects.fou_g,
-                        student_enrolled_subjects.fou_g_status,
-                        student_enrolled_subjects.fin_g,
-                        student_enrolled_subjects.fin_g_status,
-                        class_subject_details.status as grading_status 
-                    "))
-                    ->orderBy('student_informations.gender', 'ASC')
-                    ->orderBy('student_name', 'ASC')
-                    ->get();
+            ->join('class_details', 'class_details.id', '=', 'class_subject_details.class_details_id')
+            ->join('student_informations', 'student_informations.id', '=', 'enrollments.student_information_id')
+            ->leftJoin('teacher_subjects', 'teacher_subjects.class_subject_details_id', '=', 'class_subject_details.id')
+            ->join('student_enrolled_subjects', function ($join) {
+                $join->on('student_enrolled_subjects.enrollments_id', '=', 'enrollments.id');
+            })
+            ->where($faculty, $FacultyInformation->id)
+            ->whereRaw('class_subject_details.id = '. $request->search_class_subject_sem)
+            ->whereRaw('student_enrolled_subjects.class_subject_details_id = '. $request->search_class_subject_sem)
+            ->where('enrollments.status',1)
+            ->whereRaw('class_details.current = 1')
+            ->whereRaw('class_details.status != 0')
+            ->whereRaw('student_informations.gender = 2')
+            ->select(\DB::raw("
+                student_informations.id,
+                class_details.id as class_details_id,
+                CONCAT(student_informations.last_name, ', ', student_informations.first_name, ' ', student_informations.middle_name) as student_name,
+                student_enrolled_subjects.id as student_enrolled_subject_id,
+                enrollments.id as enrollment_id,
+                student_enrolled_subjects.fir_g,
+                student_enrolled_subjects.fir_g_status,
+                student_enrolled_subjects.sec_g,
+                student_enrolled_subjects.sec_g_status,
+                student_enrolled_subjects.thi_g,
+                student_enrolled_subjects.thi_g_status,
+                student_enrolled_subjects.fou_g,
+                student_enrolled_subjects.fou_g_status,
+                student_enrolled_subjects.fin_g,
+                student_enrolled_subjects.fin_g_status,
+                class_subject_details.status as grading_status 
+            "))
+            ->orderBy('student_informations.gender', 'ASC')
+            ->orderBy('student_name', 'ASC')
+            ->get();
                     
         $ClassSubjectDetail = ClassSubjectDetail::join('class_details', 'class_details.id', '=', 'class_subject_details.class_details_id')
             ->join('subject_details', 'subject_details.id', '=', 'class_subject_details.subject_id')
@@ -816,7 +822,6 @@ class GradeSheetController extends Controller
         }
 
         $semester = $request->search_semester;
-        
 
         return view('control_panel_faculty.student_grade_sheet.partials.print_senior', 
             compact('EnrollmentFemale', 'EnrollmentMale', 'ClassSubjectDetail', 'FacultyInformation','semester'));
