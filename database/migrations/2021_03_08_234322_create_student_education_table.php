@@ -21,10 +21,10 @@ class CreateStudentEducationTable extends Migration
             $table->text('school_address');
             $table->integer('last_sy_attended');
             $table->float('gw_average');
-            $table->integer('incoming_grade');
-            $table->string('strand');
-            $table->integer('esc_grantee');
-            $table->tinyInteger('is_transfereee')->comment('1 yes 0 is no');
+            // $table->string('incoming_grade');
+            $table->integer('strand');
+            // $table->integer('esc_grantee');
+            $table->tinyInteger('is_transferee')->comment('1 yes 0 is no');
             $table->timestamps();
         });
     }

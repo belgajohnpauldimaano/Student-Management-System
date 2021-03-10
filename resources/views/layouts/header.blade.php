@@ -43,7 +43,10 @@
 </head>
 
 <body>
-    
+    @php
+        $registration = App\Models\RegistrationButton::whereId(1)->first()->is_enabled;
+    @endphp
+
     <header id="header">
         <div class="container-fluid">
             <div id="logo" class="pull-left">

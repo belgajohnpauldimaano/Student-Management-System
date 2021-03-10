@@ -405,7 +405,7 @@ class EnrollmentController extends Controller
             $payment = Transaction::find($Enrollment->transaction_id);
             try{
                 \Mail::to($request->bank_email)->send(new SendMail($payment));
-                \Mail::to('info@sja-bataan.com')->cc('finance@sja-bataan.com')->send(new NotifyAdminMail($payment));
+                \Mail::to('inquiry@sja-bataan.com')->cc('finance@sja-bataan.com')->send(new NotifyAdminMail($payment));
             }catch(\Exception $e){
                 \Log::error($e->getMessage());
             }
@@ -615,7 +615,7 @@ class EnrollmentController extends Controller
         try{
             $payment = Transaction::find($Enrollment->transaction_id);
             \Mail::to($request->gcash_email)->send(new SendMail($payment));
-            \Mail::to('info@sja-bataan.com')->cc('finance@sja-bataan.com')->send(new NotifyAdminMail($payment));
+            \Mail::to('inquiry@sja-bataan.com')->cc('finance@sja-bataan.com')->send(new NotifyAdminMail($payment));
         }catch(\Exception $e){
             \Log::error($e->getMessage());
         }

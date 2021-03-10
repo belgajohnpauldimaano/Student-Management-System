@@ -77,14 +77,14 @@
     <script src="{{ asset('cms/plugins/alertifyjs/alertify.min.js') }}"></script>
     <script src="{{ asset('cms/plugins/datepicker/bootstrap-datepicker.js') }}"></script>
     <link rel="stylesheet" href="{{ asset('cms/plugins/datepicker/datepicker3.css') }}">
-    <script>
-        $('#birthday').datepicker({
-            autoclose: true
-        })
-    </script>
+    
+    <script src="https://cdn.jsdelivr.net/npm/signature_pad@2.3.2/dist/signature_pad.min.js"></script>
+
     @yield('scripts')
+    
     <script>
         $(function () {
+
             $('.btn--update-photo').click(function(){
                 $('.btn-upload-photo').click();
             })
@@ -95,7 +95,10 @@
                     keyboard: false
                 })
             })
-            
+
+            $('#birthday').datepicker({
+                autoclose: true
+            })
            
             $('body').on('submit', '#js-registration_form', function (e) {
                 e.preventDefault();
@@ -665,6 +668,45 @@
         //         $('#waiting_feb2020 tbody').append(passer_table);
         // });
 
+            // signature for application
+            // var signaturePad = new SignaturePad(document.getElementById('signature-pad'), {
+            //     backgroundColor: 'rgba(255, 255, 255, 0)',
+            //     penColor: 'rgb(0, 0, 0)'
+            // });
+
+            // var saveButton = document.getElementById('save');
+            // var cancelButton = document.getElementById('clear');
+
+            // saveButton.addEventListener('click', function(event) {
+            //     var data = signaturePad.toDataURL();
+            //     console.log(data);
+            // });
+
+            // cancelButton.addEventListener('click', function(event) {
+            //     signaturePad.clear();
+            // });
+
+            // var  terms = $('#terms').val();
+            // if( terms != 1){  
+                $("#terms").change(function() {
+                    if(this.checked) {
+                        $(".btn-submit-registration").prop('disabled', false);
+                    }else{
+                        $(".btn-submit-registration").prop('disabled', true);
+                    }                        
+                });  
+            // } 
+
+        
+        // $("input[name='grade_level']").change(function() {
+        //     // alert()
+        //     let g_level = $("input[name='grade_level']").val();
+        //     if(g_level === '11'){
+        //         $('.div-strand').removeClass('d-none');
+        //     }else{
+        //         $('.div-strand').addClass('d-none');
+        //     }
+        // });  
         
     
 
