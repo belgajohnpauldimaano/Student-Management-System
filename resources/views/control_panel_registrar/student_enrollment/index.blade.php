@@ -11,8 +11,8 @@
 @if($ClassDetail->grade_level == 11 || $ClassDetail->grade_level == 12)
     <div class="card card-default">
         <div class="overlay d-none" id="js-loader-overlay">
-                <i class="fas fa-2x fa-sync-alt fa-spin"></i>
-            </div>
+            <i class="fas fa-2x fa-sync-alt fa-spin"></i>
+        </div>
         <div class="card-header">
             <h6 class="box-title">Enroll Student:</h6>
             <h6 class="box-title">Search</h6>
@@ -51,7 +51,7 @@
         </div>
     </div>
     <div class="card card-default">
-        <div class="overlay d-none" id="js-loader-overlay">
+        <div class="overlay d-none" id="js-loader-overlay-enrolled">
                 <i class="fas fa-2x fa-sync-alt fa-spin"></i>
             </div>
         <div class="card-header">
@@ -142,7 +142,7 @@
     </div>
 
     <div class="card card-default">
-        <div class="overlay d-none" id="js-loader-overlay">
+        <div class="overlay d-none" id="js-loader-overlay-enrolled">
                 <i class="fas fa-2x fa-sync-alt fa-spin"></i>
             </div>
         <div class="card-header">
@@ -218,7 +218,7 @@
         var page_enrolled = 1;
         function fetch_data_enrolled() {   
               
-            $('#js-loader-overlay-enrolled').removeClass('hidden')
+            $('#js-loader-overlay-enrolled').removeClass('d-none')
             var formData = new FormData($('#js-form_search_enrolled')[0]);
             formData.append('page', page_enrolled);
             $.ajax({
@@ -228,7 +228,7 @@
                 processData : false,
                 contentType : false,
                 success     : function (res) {
-                    $('#js-loader-overlay-enrolled').addClass('hidden')
+                    $('#js-loader-overlay-enrolled').addClass('d-none')
                     $('.js-data-container-enrolled').html(res);
                 }
             });
@@ -362,8 +362,11 @@
                 });
             });
             
+            
             $('body').on('click', '.js-btn_re_enroll_all_student', function (e) {
-                 e.preventDefault();
+                e.preventDefault();
+
+                $('#js-loader-overlay-enrolled').removeClass('d-none')
                 var enrollment_ids = `{{ $Enrollment_ids ? $Enrollment_ids : '' }}`;
                 $.ajax({
                         url         : "{{ route('registrar.student_enrollment.re_enroll_student_all', $id) }}",
@@ -381,6 +384,7 @@
                             }
                             else
                             {
+                                $('#js-loader-overlay-enrolled').addClass('d-none')
                                 show_toast_alert({
                                     heading : 'Success',
                                     message : res.res_msg,

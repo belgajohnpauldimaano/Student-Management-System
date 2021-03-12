@@ -3,14 +3,15 @@
 namespace App\Http\Controllers\Registrar;
 
 use App\Models\User;
+use App\Models\Semester;
 use App\Models\Enrollment;
 use App\Models\SchoolYear;
 use App\Models\ClassDetail;
 use App\Models\Transaction;
-use App\Models\StudentInformation;
 use Illuminate\Http\Request;
-use App\Models\StudentEnrolledSubject;
+use App\Models\StudentInformation;
 use App\Http\Controllers\Controller;
+use App\Models\StudentEnrolledSubject;
 
 class StudentEnrollmentController extends Controller
 {
@@ -279,10 +280,9 @@ class StudentEnrollmentController extends Controller
     {
         $StudentInformation = StudentInformation::where('id', $request->student_id)->first();
         $ClassDetail = ClassDetail::with('class_subjects')->where('id', $id)->first();
-
+        $Semester = Semester::whereCurrent(1)->first()->id;
         // $ClassDetail = \App\ClassDetail::with('class_subjects')->get();
-        // return response()->json(['res_code' => 1, 'res_msg' => 'There is a problem in enrolling student.', 'ClassDetail' => $ClassDetail]);
-
+        // return response()->json(['res_code' => 1, 'res_msg' => 'There is a problem in enrolling student.', 'ClassDetail' => $ClassDetail]);        
 
         $Enrollment = new Enrollment();
         $Enrollment->student_information_id = $StudentInformation->id;
@@ -299,6 +299,9 @@ class StudentEnrollmentController extends Controller
                     $StudentEnrolledSubject->enrollments_id = $Enrollment->id;
                     $StudentEnrolledSubject->class_subject_details_id = $data->id;
                     // $StudentEnrolledSubject->student_information_id = $StudentInformation->id;
+                    if($ClassDetail->grade_level > 10){
+                        $StudentEnrolledSubject->sem = $Semester;
+                    }
                     $StudentEnrolledSubject->save();
                 }
             }
@@ -316,6 +319,8 @@ class StudentEnrollmentController extends Controller
     public function re_enroll_student (Request $request, $id)
     {
         $ClassDetail = ClassDetail::with('class_subjects')->where('id', $id)->first();
+        $Semester = Semester::whereCurrent(1)->first()->id;
+        
         $StudentEnrolledSubject_list = [];
         if ($ClassDetail->class_subjects)
         {
@@ -328,10 +333,14 @@ class StudentEnrollmentController extends Controller
             {
                 
                 $StudentEnrolledSubject = StudentEnrolledSubject::where('enrollments_id', $request->enrollment_id)
-                ->where('class_subject_details_id', $class_subject->id)
-                ->first();
+                    ->where('class_subject_details_id', $class_subject->id)
+                    ->first();
                 if ($StudentEnrolledSubject) {
                     $StudentEnrolledSubject_list[] = $StudentEnrolledSubject;
+                    // if($ClassDetail->grade_level > 10){
+                    //     $StudentEnrolledSubject->sem = $Semester;
+                    // }
+                    // $StudentEnrolledSubject->save();
                 } 
                 else 
                 {
@@ -339,6 +348,9 @@ class StudentEnrollmentController extends Controller
                     $newStudentEnrolledSubject->class_subject_details_id = $class_subject->id;
                     $newStudentEnrolledSubject->subject_id = $class_subject->subject_id;
                     $newStudentEnrolledSubject->enrollments_id = $request->enrollment_id;
+                    // if($ClassDetail->grade_level > 10){
+                    //     $newStudentEnrolledSubject->sem = $Semester;
+                    // }
                     $newStudentEnrolledSubject->save();
                     $StudentEnrolledSubject_list[] = $newStudentEnrolledSubject;
                 }
@@ -371,6 +383,7 @@ class StudentEnrollmentController extends Controller
     {
         $ClassDetail = ClassDetail::with('class_subjects')->where('id', $id)->first();
         $enrollment_ids = explode('@', $request->enrollment_ids);
+        $Semester = Semester::whereCurrent(1)->first()->id;
         array_pop($enrollment_ids);
 
         $StudentEnrolledSubject_list = [];
@@ -384,9 +397,14 @@ class StudentEnrollmentController extends Controller
                     $StudentEnrolledSubject = StudentEnrolledSubject::where('enrollments_id', $enrollment_id)
                         ->where('class_subject_details_id', $class_subject->id)
                         ->first();
-                    
+
                     if ($StudentEnrolledSubject) {
                         $StudentEnrolledSubject_list[] = $StudentEnrolledSubject;
+                        // if($ClassDetail->grade_level > 10){
+                        //     $StudentEnrolledSubject->sem = $Semester;
+                        // }
+                        // $StudentEnrolledSubject->save();
+                        // echo $StudentEnrolledSubject;
                     } 
                     else 
                     {
@@ -394,14 +412,21 @@ class StudentEnrollmentController extends Controller
                         $newStudentEnrolledSubject->class_subject_details_id = $class_subject->id;
                         $newStudentEnrolledSubject->subject_id = $class_subject->subject_id;
                         $newStudentEnrolledSubject->enrollments_id = $enrollment_id;
+                        // if($ClassDetail->grade_level > 10){
+                        //     $newStudentEnrolledSubject->sem = $Semester;
+                        // }
                         $newStudentEnrolledSubject->save();
                         $StudentEnrolledSubject_list[] = $newStudentEnrolledSubject;
                     }
                     // if ($StudentEnrolledSubject[$key]) 
                     // {
+                    //     echo 'this';
                     //     $StudentEnrolledSubject_tmp = $StudentEnrolledSubject[$key];
                     //     $StudentEnrolledSubject_tmp->class_subject_details_id = $class_subject->id;
                     //     $StudentEnrolledSubject_tmp->subject_id = $class_subject->subject_id;
+                    //     if($ClassDetail->grade_level > 10){
+                    //         $StudentEnrolledSubject_tmp->sem = $Semester;
+                    //     }
                     //     $StudentEnrolledSubject_tmp->save();
                     //     $StudentEnrolledSubject_list[] = $StudentEnrolledSubject_tmp;
                     // }

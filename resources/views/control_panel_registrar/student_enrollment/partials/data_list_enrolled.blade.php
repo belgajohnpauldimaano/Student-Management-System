@@ -20,7 +20,7 @@
                     <tr>
                         <td> {{ $key + 1 }}.</td>
                         <td>{{ $data->username }}</td>
-                        <td>{{ ucwords(strtolower($data->full_name)) }}</td>
+                        <td>{{ ucwords(($data->full_name)) }}</td>
                         <td>
                             <div class="input-group-btn btn-sm float-left text-left">
                                 @if($ClassDetail->grade_level == 11 || $ClassDetail->grade_level == 12)

@@ -4,19 +4,23 @@ namespace App\Http\Controllers\Registrar;
 
 use App\Models\Room;
 use App\Models\Strand;
+use App\Traits\HasUser;
 use App\Models\GradeLevel;
 use App\Models\SchoolYear;
 use App\Models\ClassDetail;
+use Illuminate\Http\Request;
 use App\Models\SectionDetail;
 use App\Models\SubjectDetail;
 use App\Models\FacultyInformation;
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
 class ClassListController extends Controller
-{
+{    
+    use HasUser;
     public function index (Request $request) 
     {
+        $isAdmin = $this->isAdmin();
+
         $SchoolYear = SchoolYear::where('status', 1)->where('current', 1)->first();
 
         $ClassDetail = ClassDetail::with(['section','room','schoolYear','adviserData'])
@@ -33,13 +37,14 @@ class ClassListController extends Controller
 
         if ($request->ajax())
         {            
-            return view('control_panel_registrar.class_details.partials.data_list', compact('ClassDetail'))->render();
+            return view('control_panel_registrar.class_details.partials.data_list', compact('ClassDetail','isAdmin','SchoolYear'))->render();
         }
 
         $SchoolYear = SchoolYear::where('status', 1)->orderBy('school_year', 'DESC')->get();
 
-        return view('control_panel_registrar.class_details.index', compact('ClassDetail', 'SchoolYear'));
+        return view('control_panel_registrar.class_details.index', compact('ClassDetail', 'SchoolYear','isAdmin'));
     }
+    
     public function modal_data (Request $request) 
     {
         $ClassDetail = NULL;

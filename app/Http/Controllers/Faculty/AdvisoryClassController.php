@@ -442,6 +442,9 @@ class AdvisoryClassController extends Controller
                 $Enrollment = $query->orderBy('class_subject_details.class_subject_order', 'ASC')
                 ->get();
 
+
+                // return json_encode($Enrollment);
+
             if($Enrollment->isEmpty()){
                 $title = 'Sorry this is not available';
                 $message = 'This semester is not ready for this function or please contact the administrator. Thank you!';
@@ -470,26 +473,25 @@ class AdvisoryClassController extends Controller
                 $StudentEnrolledSubject = StudentEnrolledSubject::where('enrollments_id', $Enrollment[0]->enrollment_id)->get();                
 
                 $grade_level = $Enrollment[0]->grade_level;
-           
+                // return json_encode($grade_level);
                 // return json_encode(['a' => $StudentEnrolledSubject->count(), 'b' => $Enrollment->count(), 'StudentEnrolledSubject'=> $StudentEnrolledSubject, 'Enrollment' => $Enrollment]);
                 $GradeSheetData = $Enrollment->map(function ($item, $key) use ($StudentEnrolledSubject, $grade_level, $grade_status, $semester) {
                     // $grade = $StudentEnrolledSubject->firstWhere('subject_id', $item->subject_id);
-                    
                     // return json_encode($class_subject_details);
                     $grade = $StudentEnrolledSubject->firstWhere('class_subject_details_id', $item->class_subject_details_id);
                     
                     $sum = 0;
                     if($grade_level < 11)
                     {
-                        $first  = $grade->fir_g > 0 ? $grade->fir_g : 0;
-                        $second = $grade->sec_g > 0 ? $grade->sec_g : 0;
-                        $third  = $grade->thi_g > 0 ? $grade->thi_g : 0;
-                        $fourth = $grade->fou_g > 0 ? $grade->fou_g : 0;
+                        $first  = $grade['fir_g'] > 0 ? $grade['fir_g'] : 0;
+                        $second = $grade['sec_g'] > 0 ? $grade['sec_g'] : 0;
+                        $third  = $grade['thi_g'] > 0 ? $grade['thi_g'] : 0;
+                        $fourth = $grade['fou_g'] > 0 ? $grade['fou_g'] : 0;
                         
-                        $sum += $grade->fir_g > 0 ? $grade->fir_g : 0;
-                        $sum += $grade->sec_g > 0 ? $grade->sec_g : 0;
-                        $sum += $grade->thi_g > 0 ? $grade->thi_g : 0;
-                        $sum += $grade->fou_g > 0 ? $grade->fou_g : 0;
+                        $sum += $grade['fir_g'] > 0 ? $grade['fir_g'] : 0;
+                        $sum += $grade['sec_g'] > 0 ? $grade['sec_g'] : 0;
+                        $sum += $grade['thi_g'] > 0 ? $grade['thi_g'] : 0;
+                        $sum += $grade['fou_g'] > 0 ? $grade['fou_g'] : 0;
 
                         $divisor = 0;
                         $divisor += $first  > 0 ? 1 : 0;
@@ -606,11 +608,11 @@ class AdvisoryClassController extends Controller
                             'subject'           =>  $item->subject,
                             'room_code'         =>  $item->room_code,
                             'section'           =>  $item->section,
-                            'grade_id'          =>  $grade->id,
-                            'fir_g'             =>  $grade->fir_g,
-                            'sec_g'             =>  $grade->sec_g,
-                            'thi_g'             =>  $grade->thi_g,
-                            'fou_g'             =>  $grade->fou_g,
+                            'grade_id'          =>  $grade['id'],
+                            'fir_g'             =>  $grade['fir_g'],
+                            'sec_g'             =>  $grade['sec_g'],
+                            'thi_g'             =>  $grade['thi_g'],
+                            'fou_g'             =>  $grade['fou_g'],
                             'final_g'           =>  round($final),
                             'grade_status'      =>  $grade_status,
                             'divisor'           =>  $divisor,

@@ -251,7 +251,7 @@ class GradeSheetController extends Controller
                                             'faculty_name'      =>  $item->faculty_name,
                                             'subject_id'        =>  $item->subject_id,
                                             'subject_code'      =>  $item->subject_code,
-                                            'subject'           =>  $item->subject,
+                                            'subject'           =>  $item->classSubject->subject, //$item->subject,
                                             'room_code'         =>  $item->room_code,
                                             'section'           =>  $item->section,
                                             'grade_id'          =>  $grade->id,
@@ -345,12 +345,17 @@ class GradeSheetController extends Controller
                                 $StudentEnrolledSubject = StudentEnrolledSubject::where('enrollments_id', $Enrollment_first_sem[0]->enrollment_id)
                                     ->where('sem', 1)
                                     ->get();
+
+
+                                // return json_encode($StudentEnrolledSubject);
                                 
 
                                 $Enrollment_first_sem = $Enrollment_first_sem->map(function($item, $key) use ($StudentEnrolledSubject, $grade_level, $grade_status){
                 
                                     // $grade = $StudentEnrolledSubject->firstWhere('subject_id', $item->subject_id);
-                                    $grade = $StudentEnrolledSubject->where('class_subject_details_id', $item->class_subject_details_id)->where('sem', 1)->first();
+                                    $grade = $StudentEnrolledSubject->where('subject_id', $item->subject_id)->where('sem', 1)->first();
+                                    
+                                    // return json_encode($grade);
                                     $subject = ClassSubjectDetail::where('id', $grade->class_subject_details_id)                                        
                                         ->orderBY('class_subject_order', 'ASC')->first();
                                     $sum = 0;
@@ -391,6 +396,8 @@ class GradeSheetController extends Controller
                                     ];
                                     return $data;
                                 });
+
+                            // return json_encode($Enrollment_first_sem);
                             
                             $Enrollment_secondsem = Enrollment::join('class_details', 'class_details.id', '=', 'enrollments.class_details_id')
                                 ->join('class_subject_details', 'class_subject_details.class_details_id', '=', 'class_details.id')
