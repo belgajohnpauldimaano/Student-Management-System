@@ -11,6 +11,7 @@ use App\Mail\InformationEmail;
 use App\Models\IncomingStudent;
 use App\Models\StudentEducation;
 use App\Models\StudentInformation;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
@@ -23,11 +24,11 @@ class RegistrationController extends Controller
     {
         $rules = [
             'lrn'               => 'required',
-            'grade_lvl'         => 'required',
+            'grade_level'       => 'required',
             'first_name'        => 'required',
             'middle_name'       => 'required',
             'last_name'         => 'required',
-            'email'             => 'email|required',
+            'student_email'     => 'email|required',
             'phone'             => 'required',            
             'guardian'          => 'required',
             'address'           => 'required',
@@ -51,103 +52,127 @@ class RegistrationController extends Controller
             'last_sy_attended'  => 'required',
             'gwa'               => 'required',
         ];
-        
-        
-        // $Validator = \Validator($request->all(), $rules);
 
-        // if ($Validator->fails())
-        // {
-        //     return response()->json(['res_code' => 1, 'res_msg' => 'Please fill all required fields.', 'res_error_msg' => $Validator->getMessageBag()]);
-        // }
+        if($request->grade_level == 11)
+        {
+            $rules = [
+                'strand' => 'required',
+            ];
+        }
+        
+        $Validator = \Validator($request->all(), $rules);
 
-        // try{
+        if ($Validator->fails())
+        {
+            return response()->json(['res_code' => 1, 'res_msg' => 'Please fill all required fields.', 'res_error_msg' => $Validator->getMessageBag()]);
+        }
+
+        
+
+        $again = 0;
+        DB::beginTransaction();
+        try{
 
             $SchoolYear = SchoolYear::where('current', 1)
                 ->where('status', 1)
                 ->orderBY('id', 'DESC')
                 ->first();
 
-            $checkUser = User::where('username', $request->lrn)->first();
-            if ($checkUser) 
-            {
-                return response()->json([
-                    'res_code' => 1,'res_msg' => 
-                    'LRN already used. Please contact the administrator to confirm it. Thank you'
-                    ]);
+
+            if($again == 0){
+                $checkUser = User::where('username', $request->lrn)->first();
+                if ($checkUser) 
+                {
+                    return response()->json([
+                        'res_code' => 1,'res_msg' => 
+                        'LRN already used. Please contact the administrator to confirm it. Thank you'
+                        ]);
+                }
             }
             
-            $User = new User();
-            $User->username = 'na';
-            $User->password = bcrypt($request->first_name . '.' . $request->last_name);
-            $User->role     = 5;
-            $User->status = 0;
-            $User->save();
-
-            $StudentInformation                 = new StudentInformation();
-            $StudentInformation->first_name     = $request->first_name;
-            $StudentInformation->middle_name    = $request->middle_name;
-            $StudentInformation->last_name      = $request->last_name;
-            $StudentInformation->c_address      = $request->address;
-            $StudentInformation->p_address      = $request->p_address;
-            $StudentInformation->birthdate      = date('Y-m-d', strtotime($request->birthdate));
-            $StudentInformation->gender         = $request->gender;
-            $StudentInformation->guardian       = $request->guardian;
-            $StudentInformation->mother_name    = $request->mother_name;
-            $StudentInformation->father_name    = $request->father_name;            
-            $StudentInformation->user_id        = $User->id;
-            $StudentInformation->email          = $request->student_email;
-            $StudentInformation->contact_number = $request->phone;
-            $StudentInformation->religion       = $request->religion;
-            $StudentInformation->citizenship    = $request->citizenship;
-            $StudentInformation->citizenship    = $request->citizenship;
-            $StudentInformation->isEsc          = $request->is_esc;
-            $imageName = time().'.'.$request->student_img->getClientOriginalExtension();
-            $request->student_img->move(public_path('img/account/photo/'), $imageName);
-            $StudentInformation->photo = $imageName;
-            // $StudentInformation->status = 0;    
-            $StudentInformation->save();
-
-            $StudentEducation = new StudentEducation();
-            $StudentEducation->student_information_id   = $StudentInformation->id;
-            $StudentEducation->school_name              = $request->school_name;
-            $StudentEducation->school_type              = $request->school_type;
-            $StudentEducation->school_address           = $request->school_address;
-            $StudentEducation->last_sy_attended         = $request->last_sy_attended;
-            $StudentEducation->gw_average               = $request->gwa;
-            // $StudentEducation->incoming_grade           = $request->grade_level;
-            $StudentEducation->strand                   = $request->strand;
-            $transfer = 2;
-            if($request->grade_level == 7 || $request->grade_level == 11)
+            if($again == 1)
             {
-                $transfer =1;
-            }
-            $StudentEducation->is_transfereee           = $transfer;
-            $StudentEducation->save();
 
-            $Incoming_student = new IncomingStudent();
-            $Incoming_student->student_id = $StudentInformation->id;
-            $Incoming_student->school_year_id = $SchoolYear->id;
-            $Incoming_student->grade_level_id = $request->grade_level;
-            $Incoming_student->student_type = $transfer;
-            $Incoming_student->save();
+           
+                $User = new User();
+                $User->username = $request->lrn;
+                $User->password = bcrypt($request->first_name . '.' . $request->last_name);
+                $User->role     = 5;
+                $User->status = 0;
+                $User->save();
 
-            $User = User::find($User->id);
-            $User->username = $request->lrn;
-            $User->save();
+                $StudentInformation                 = new StudentInformation();
+                $StudentInformation->first_name     = $request->first_name;
+                $StudentInformation->middle_name    = $request->middle_name;
+                $StudentInformation->last_name      = $request->last_name;
+                $StudentInformation->c_address      = $request->address;
+                $StudentInformation->p_address      = $request->p_address;
+                $StudentInformation->birthdate      = date('Y-m-d', strtotime($request->birthdate));
+                $StudentInformation->gender         = $request->gender;
+                $StudentInformation->guardian       = $request->guardian;
+                $StudentInformation->mother_name    = $request->mother_name;
+                $StudentInformation->father_name    = $request->father_name;            
+                $StudentInformation->user_id        = $User->id;
+                $StudentInformation->email          = $request->student_email;
+                $StudentInformation->contact_number = $request->phone;
+                $StudentInformation->religion       = $request->religion;
+                $StudentInformation->citizenship    = $request->citizenship;
+                $StudentInformation->citizenship    = $request->citizenship;
+                $StudentInformation->isEsc          = $request->is_esc;
+                $imageName = time().'.'.$request->student_img->getClientOriginalExtension();
+                $request->student_img->move(public_path('img/account/photo/'), $imageName);
+                $StudentInformation->photo = $imageName;
+                // $StudentInformation->status = 0;    
+                $StudentInformation->save();
 
-            $NewStudent = IncomingStudent::find($Incoming_student->id);
-                // Mail::to($request->student_email)->send(new NotifyNewRegisterStudentMail($NewStudent));
-                // Mail::to('admission@sja-bataan.com')->cc('inquiry@sja-bataan.com')->send(new NotifyNewRegisterStudentAdminMail($NewStudent));
+                $StudentEducation = new StudentEducation();
+                $StudentEducation->student_information_id   = $StudentInformation->id;
+                $StudentEducation->school_name              = $request->school_name;
+                $StudentEducation->school_type              = $request->school_type;
+                $StudentEducation->school_address           = $request->school_address;
+                $StudentEducation->last_sy_attended         = $request->last_sy_attended;
+                $StudentEducation->gw_average               = $request->gwa;
+                // $StudentEducation->incoming_grade           = $request->grade_level;
+                $StudentEducation->strand                   = $request->grade_level == 11 ? $request->strand : 'NA';
+                $transfer = 2;
+                if($request->grade_level == 7 || $request->grade_level == 11)
+                {
+                    $transfer =1;
+                }
+                $StudentEducation->is_transferee           = $transfer;
+                $StudentEducation->save();
 
-            // dd($request->all());
-            return response()->json(['res_code' => 0, 'res_msg' => 'You have successfuly registered!']);
-        // }
-        // catch(\Exception $e){
-        //     // do task when error
-        //        // insert query
-        //     Log::error($e->getMessage());
-        //     return response()->json(['res_code' => 1, 'res_msg' => $e->getMessage()]);
-        // }
+                $Incoming_student = new IncomingStudent();
+                $Incoming_student->student_id = $StudentInformation->id;
+                $Incoming_student->school_year_id = $SchoolYear->id;
+                $Incoming_student->grade_level_id = $request->grade_level;
+                $Incoming_student->student_type = $transfer;
+                $Incoming_student->save();
+
+                // $StudentInformation = StudentInformation::find()
+
+                $User = User::find($User->id);
+                $User->username = $request->lrn;
+                $User->save();
+
+                DB::commit();
+                
+                $NewStudent = IncomingStudent::find($Incoming_student->id);
+                    Mail::to($request->student_email)->send(new NotifyNewRegisterStudentMail($NewStudent));
+                    Mail::to('admission@sja-bataan.com')->cc('inquiry@sja-bataan.com')->send(new NotifyNewRegisterStudentAdminMail($NewStudent));
+                
+                // dd($request->all());
+                return response()->json(['res_code' => 0, 'res_msg' => 'You have successfuly registered!']);
+             }
+        }
+        catch(\Exception $e){
+            // do task when error
+            // insert query
+            Log::error($e->getMessage());
+            DB::rollBack();
+            $again = 1;
+            return response()->json(['res_code' => 1, 'res_msg' => 'Please check all fields and submit again.']);
+        }
     }   
     
     public function send_email(Request $request)

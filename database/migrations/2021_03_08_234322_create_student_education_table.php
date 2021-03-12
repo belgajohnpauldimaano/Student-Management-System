@@ -19,7 +19,7 @@ class CreateStudentEducationTable extends Migration
             $table->text('school_name');
             $table->string('school_type')->comment('private or public');
             $table->text('school_address');
-            $table->integer('last_sy_attended');
+            $table->string('last_sy_attended');
             $table->float('gw_average');
             // $table->string('incoming_grade');
             $table->integer('strand');

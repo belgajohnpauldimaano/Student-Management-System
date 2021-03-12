@@ -35,16 +35,16 @@ class AddStudentInformationsTable extends Migration
     public function down()
     {
         Schema::table('student_informations', function (Blueprint $table) {
-            $table->dropIfExists('religion');
-            $table->dropIfExists('citizenship');
-            $table->dropIfExists('fb_acct');
-            $table->dropIfExists('place_of_birth');
-            $table->dropIfExists('father_occupation');
-            $table->dropIfExists('father_fb_acct');
-            $table->dropIfExists('mother_occupation');
-            $table->dropIfExists('mother_fb_acct');
-            $table->dropIfExists('guardian_fb_acct');
-            $table->dropIfExists('no_siblings');
+            $table->dropColumn('religion');
+            $table->dropColumn('citizenship');
+            $table->dropColumn('fb_acct');
+            $table->dropColumn('place_of_birth');
+            $table->dropColumn('father_occupation');
+            $table->dropColumn('father_fb_acct');
+            $table->dropColumn('mother_occupation');
+            $table->dropColumn('mother_fb_acct');
+            $table->dropColumn('guardian_fb_acct');
+            $table->dropColumn('no_siblings');
         });
     }
 }

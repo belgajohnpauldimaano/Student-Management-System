@@ -7,7 +7,7 @@ Route::get('/home', 'HomeController@index')->name('home');
 Route::get('/transcript-of-record', 'TranscriptOfRecordController@tor')->name('tor');
 
 Route::group(['middleware' => ['guest']], function () {
-    Route::post('/save', 'RegistrationController@store')->name('registration.store');
+    Route::post('/registration/save', 'RegistrationController@store')->name('registration.store');
     Route::post('send-email', 'RegistrationController@send_email')->name('inquiry.email');
 });
 

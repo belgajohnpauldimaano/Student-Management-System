@@ -9,10 +9,13 @@
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
-        <form id="js-registration_form">
-            {{ csrf_field() }}
+        <form id="js-registration_form" method="post">
+            {{-- {{ csrf_field() }}
+            @csrf --}}
+            <input type="hidden" name="_token" value="{{csrf_token()}}">
             <div class="modal-body" style="color: black!important">
-                <div class="form-row mb-5 ">
+              
+              <div class="form-row mb-5 ">
                     <div class="col-lg-8 d-flex flex-column justify-content-center align-items-stretch  order-2 order-lg-1">
                     {{-- <div class="col-md-8"> --}}
                         <div class="form-group input-sy">
@@ -47,11 +50,11 @@
                                 <div class="form-group input-grade_lvl col-md-6">
                                     <label for="">I am Incoming</label>
                                     <br/>
-                                    <div class="form-check form-check-inline">
+                                    <div class="form-check ">
                                         <input class="form-check-input" type="radio" name="grade_level" id="js-transferee_level7" value="7">
                                         <label class="form-check-label" for="js-transferee_level7">Grade 7</label>
                                     </div>
-                                    <div class="form-check form-check-inline">
+                                    <div class="form-check ">
                                         <input class="form-check-input" type="radio" name="grade_level" id="js-transferee_level11" value="11">
                                         <label class="form-check-label" for="js-transferee_level11">Grade 11</label>
                                     </div>                                
@@ -82,7 +85,7 @@
                                     <label class="form-check-label" for="js-grade_level9">Grade 9</label>
                                 </div>
                                 <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="grade_level" id="js-grade_level10" value="10">
+                                    <input class="form-check-input" type="radio" name="grade_level" id="grade_level10" value="10">
                                     <label class="form-check-label" for="js-grade_level10">Grade 10</label>
                                 </div>
                             </div>
@@ -261,9 +264,9 @@
                         <div class="help-block text-red text-left" id="js-last_sy_attended">
                         </div>
                     </div>
-                    <div class="form-group col-md-2 input-gwa">
+                    <div class="form-group col-md-4 input-gwa">
                         <label for="">Average (GWA):</label>
-                        <input type="text" class="form-control form-control-sm" id="gwa" name="gwa">
+                        <input type="text" class="form-control form-control-sm col-md-3" id="gwa" name="gwa">
                         <div class="help-block text-red text-left" id="js-gwa">
                         </div>
                     </div>
