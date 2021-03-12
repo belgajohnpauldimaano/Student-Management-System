@@ -19,6 +19,11 @@ class StudentController extends Controller
 {
     use hasIncomingStudents, HasUser;
     
+
+    private function student($request)
+    {
+        return StudentInformation::where('id', $request->id)->first();
+    }
     public function index (Request $request) 
     {
         $IncomingStudentCount = $this->IncomingStudentCount();
@@ -117,7 +122,7 @@ class StudentController extends Controller
 
         if ($request->id)
         {
-            $StudentInformation = StudentInformation::where('id', $request->id)->first();
+            $StudentInformation = $this->student($request->id);
             
             $User = User::where('username', $request->username)->where('id', '!=', $StudentInformation->user_id)->first();
             if ($User) 
@@ -172,7 +177,7 @@ class StudentController extends Controller
     }
     public function deactivate_data (Request $request) 
     {
-        $StudentInformation = StudentInformation::where('id', $request->id)->first();
+        $StudentInformation = $this->student($request->id);
 
         if ($StudentInformation)
         {
@@ -192,7 +197,7 @@ class StudentController extends Controller
 
     public function activate_data (Request $request) 
     {
-        $StudentInformation = StudentInformation::where('id', $request->id)->first();
+        $StudentInformation = $this->student($request->id);
 
         if ($StudentInformation)
         {
@@ -224,6 +229,7 @@ class StudentController extends Controller
                 school_years.school_year AS sy
                 ')
             ->get();
+            
         $student_id = $request->id;        
         
         return view('control_panel.student_information.partials.print_individual_grade', compact('Enrollment', 'student_id'));
@@ -300,9 +306,7 @@ class StudentController extends Controller
 
                 // return json_encode($Enrollment);
 
-                if($semester==1 || $semester==2) 
-                {
-                      $Enrollment = Enrollment::join('class_details', 'class_details.id', '=', 'enrollments.class_details_id')
+                $query = Enrollment::join('class_details', 'class_details.id', '=', 'enrollments.class_details_id')
                         ->join('class_subject_details', 'class_subject_details.class_details_id', '=', 'class_details.id')
                         ->join('rooms', 'rooms.id', '=', 'class_details.room_id')
                         ->join('faculty_informations', 'faculty_informations.id', '=', 'class_subject_details.faculty_id')
@@ -313,7 +317,6 @@ class StudentController extends Controller
                         ->where('enrollments.status', 1)
                         ->where('class_details.status', 1)
                         ->where('class_details.school_year_id', $ClassDetail->school_year_id)
-                        ->where('class_subject_details.sem', $semester)
                         ->select(\DB::raw("
                             enrollments.id as enrollment_id,
                             enrollments.j_lacking_unit,
@@ -337,50 +340,14 @@ class StudentController extends Controller
                             section_details.section,
                             class_details.school_year_id as school_year_id
                         "))
-                        ->orderBy('class_subject_details.class_subject_order', 'ASC')
-                        ->get();    
-                        
-                        // return json_encode($Enrollment);
-                }
-                else
-                {
-                    $Enrollment = Enrollment::join('class_details', 'class_details.id', '=', 'enrollments.class_details_id')
-                    ->join('class_subject_details', 'class_subject_details.class_details_id', '=', 'class_details.id')
-                    ->join('rooms', 'rooms.id', '=', 'class_details.room_id')
-                    ->join('faculty_informations', 'faculty_informations.id', '=', 'class_subject_details.faculty_id')
-                    ->join('section_details', 'section_details.id', '=', 'class_details.section_id')
-                    ->join('subject_details', 'subject_details.id', '=', 'class_subject_details.subject_id')
-                    ->where('student_information_id', $StudentInformation->id)
-                    ->where('class_subject_details.status', '!=', 0)
-                    ->where('enrollments.status', 1)
-                    ->where('class_details.status', 1)
-                    ->where('class_details.school_year_id', $ClassDetail->school_year_id)
-                    ->select(\DB::raw("
-                        enrollments.id as enrollment_id,
-                        enrollments.j_lacking_unit,
-                        enrollments.s1_lacking_unit,
-                        enrollments.s2_lacking_unit,
-                        enrollments.eligible_transfer,
-                        enrollments.attendance,
-                        enrollments.attendance_first,enrollments.attendance_second,
-                        class_details.grade_level,
-                        class_subject_details.id as class_subject_details_id,
-                        class_subject_details.class_days,
-                        class_subject_details.class_time_from,
-                        class_subject_details.class_time_to,
-                        class_subject_details.status as grade_status,
-                        CONCAT(faculty_informations.last_name, ', ', faculty_informations.first_name, ' ', faculty_informations.middle_name) as faculty_name,
-                        faculty_informations.e_signature,
-                        subject_details.id AS subject_id,
-                        subject_details.subject_code,
-                        subject_details.subject,
-                        rooms.room_code,
-                        section_details.section,
-                        class_details.school_year_id as school_year_id
-                    "))
-                    ->orderBy('class_subject_details.class_subject_order', 'ASC')
-                    ->get();
-                }
+                        ->orderBy('class_subject_details.class_subject_order', 'ASC');
+
+                        if($semester==1 || $semester==2) 
+                        {
+                            $query->where('class_subject_details.sem', $semester);
+                        }
+
+                    $Enrollment = $query->get();
 
                 $SchoolYear = SchoolYear::whereId($ClassDetail->school_year_id)
                     ->first();

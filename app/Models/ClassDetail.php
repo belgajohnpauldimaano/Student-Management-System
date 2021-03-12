@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Traits\HasUser;
+use App\Models\Semester;
 use App\Models\SectionDetail;
 use App\Traits\HasGradeSheet;
 use App\Traits\HasSchoolYear;
@@ -15,7 +16,10 @@ class ClassDetail extends Model
     
     public function class_subjects ()
     {
-        return $this->hasMany(ClassSubjectDetail::class, 'class_details_id')->where('status', '!=', 0);
+        $semester = Semester::whereCurrent(1)->first()->id;
+        return $this->hasMany(ClassSubjectDetail::class, 'class_details_id')
+            ->where('status', '!=', 0)
+            ->where('sem', $semester);
     }
 
     public function section (){

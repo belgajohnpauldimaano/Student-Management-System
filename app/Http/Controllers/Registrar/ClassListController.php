@@ -37,7 +37,7 @@ class ClassListController extends Controller
 
         if ($request->ajax())
         {            
-            return view('control_panel_registrar.class_details.partials.data_list', compact('ClassDetail','isAdmin','SchoolYear'))->render();
+            return view('control_panel_registrar.class_details.partials.data_list', compact('ClassDetail','isAdmin'))->render();
         }
 
         $SchoolYear = SchoolYear::where('status', 1)->orderBy('school_year', 'DESC')->get();

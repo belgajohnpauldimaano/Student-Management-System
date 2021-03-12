@@ -325,7 +325,7 @@ class StudentEnrollmentController extends Controller
         if ($ClassDetail->class_subjects)
         {
             $StudentEnrolledSubject = StudentEnrolledSubject::where('enrollments_id', $request->enrollment_id)
-                // ->where('subject_id', $class_subject->subject_id)
+                ->where('subject_id', $class_subject->subject_id)
                 ->get();
                 
             // return json_encode(['ClassDetail' => $ClassDetail, 'StudentEnrolledSubject' => $StudentEnrolledSubject, 'class_subjects' => $ClassDetail->class_subjects]);
@@ -333,42 +333,28 @@ class StudentEnrollmentController extends Controller
             {
                 
                 $StudentEnrolledSubject = StudentEnrolledSubject::where('enrollments_id', $request->enrollment_id)
-                    ->where('class_subject_details_id', $class_subject->id)
-                    ->first();
+                    ->where('class_subject_details_id', $class_subject->id)->first();
+                    
                 if ($StudentEnrolledSubject) {
                     $StudentEnrolledSubject_list[] = $StudentEnrolledSubject;
-                    // if($ClassDetail->grade_level > 10){
-                    //     $StudentEnrolledSubject->sem = $Semester;
-                    // }
-                    // $StudentEnrolledSubject->save();
+                    if($ClassDetail->grade_level > 10){
+                        $StudentEnrolledSubject->sem = $class_subject->sem;
+                    }
+                    $StudentEnrolledSubject->save();
                 } 
                 else 
                 {
                     $newStudentEnrolledSubject = new StudentEnrolledSubject();
-                    $newStudentEnrolledSubject->class_subject_details_id = $class_subject->id;
-                    $newStudentEnrolledSubject->subject_id = $class_subject->subject_id;
-                    $newStudentEnrolledSubject->enrollments_id = $request->enrollment_id;
-                    // if($ClassDetail->grade_level > 10){
-                    //     $newStudentEnrolledSubject->sem = $Semester;
-                    // }
+                    $newStudentEnrolledSubject->class_subject_details_id    = $class_subject->id;
+                    $newStudentEnrolledSubject->subject_id                  = $class_subject->subject_id;
+                    $newStudentEnrolledSubject->enrollments_id              = $request->enrollment_id;
+                    if($ClassDetail->grade_level > 10){
+                        $newStudentEnrolledSubject->sem                     = $class_subject->sem;
+                    }
                     $newStudentEnrolledSubject->save();
                     $StudentEnrolledSubject_list[] = $newStudentEnrolledSubject;
                 }
-                // if ($StudentEnrolledSubject[$key]) 
-                // {
-                //     $StudentEnrolledSubject_tmp = $StudentEnrolledSubject[$key];
-                //     $StudentEnrolledSubject_tmp->class_subject_details_id = $class_subject->id;
-                //     $StudentEnrolledSubject_tmp->subject_id = $class_subject->subject_id;
-                //     $StudentEnrolledSubject_tmp->save();
-                //     $StudentEnrolledSubject_list[] = $StudentEnrolledSubject_tmp;
-                // }
-
-                // $StudentEnrolledSubject = \App\StudentEnrolledSubject::where('enrollments_id', $request->enrollment_id)
-                //     ->where('subject_id', $class_subject->subject_id)
-                //     ->first();
-                // $StudentEnrolledSubject->class_subject_details_id = $class_subject->id;
-                // $StudentEnrolledSubject->save();
-                // $StudentEnrolledSubject_list[] = $StudentEnrolledSubject;
+                
             }
             
             // return json_encode(['ClassDetail' => $ClassDetail, 'StudentEnrolledSubject_list' => $StudentEnrolledSubject_list, 'StudentEnrolledSubject' => $StudentEnrolledSubject, 'class_subjects' => $ClassDetail->class_subjects]);
@@ -381,10 +367,13 @@ class StudentEnrollmentController extends Controller
 
     public function re_enroll_student_all (Request $request, $id)
     {
+        // $semester = Semester::whereCurrent(1)->first()->id;
         $ClassDetail = ClassDetail::with('class_subjects')->where('id', $id)->first();
+        
         $enrollment_ids = explode('@', $request->enrollment_ids);
-        $Semester = Semester::whereCurrent(1)->first()->id;
         array_pop($enrollment_ids);
+
+        // return json_encode($ClassDetail);
 
         $StudentEnrolledSubject_list = [];
         if ($ClassDetail->class_subjects)
@@ -400,10 +389,10 @@ class StudentEnrollmentController extends Controller
 
                     if ($StudentEnrolledSubject) {
                         $StudentEnrolledSubject_list[] = $StudentEnrolledSubject;
-                        // if($ClassDetail->grade_level > 10){
-                        //     $StudentEnrolledSubject->sem = $Semester;
-                        // }
-                        // $StudentEnrolledSubject->save();
+                        if($ClassDetail->grade_level > 10){
+                            $StudentEnrolledSubject->sem = $class_subject->sem;
+                        }
+                        $StudentEnrolledSubject->save();
                         // echo $StudentEnrolledSubject;
                     } 
                     else 
@@ -412,24 +401,13 @@ class StudentEnrollmentController extends Controller
                         $newStudentEnrolledSubject->class_subject_details_id = $class_subject->id;
                         $newStudentEnrolledSubject->subject_id = $class_subject->subject_id;
                         $newStudentEnrolledSubject->enrollments_id = $enrollment_id;
-                        // if($ClassDetail->grade_level > 10){
-                        //     $newStudentEnrolledSubject->sem = $Semester;
-                        // }
+                        if($ClassDetail->grade_level > 10){
+                            $newStudentEnrolledSubject->sem = $class_subject->sem;
+                        }
                         $newStudentEnrolledSubject->save();
                         $StudentEnrolledSubject_list[] = $newStudentEnrolledSubject;
                     }
-                    // if ($StudentEnrolledSubject[$key]) 
-                    // {
-                    //     echo 'this';
-                    //     $StudentEnrolledSubject_tmp = $StudentEnrolledSubject[$key];
-                    //     $StudentEnrolledSubject_tmp->class_subject_details_id = $class_subject->id;
-                    //     $StudentEnrolledSubject_tmp->subject_id = $class_subject->subject_id;
-                    //     if($ClassDetail->grade_level > 10){
-                    //         $StudentEnrolledSubject_tmp->sem = $Semester;
-                    //     }
-                    //     $StudentEnrolledSubject_tmp->save();
-                    //     $StudentEnrolledSubject_list[] = $StudentEnrolledSubject_tmp;
-                    // }
+                    
                 }
             }
             return response()->json(['res_code' => 0, 'res_msg' => 'Successfully re-enrolled.']);

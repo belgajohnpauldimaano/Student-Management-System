@@ -20,6 +20,7 @@
                 @forelse($Enrollment_secondsem as $key => $data)
                     <tr>
                         <td>
+                            {{-- {{ $data['enrollment_id'] }} --}}
                             @php
                                 try {
                                     echo $data['subject']['subject'];

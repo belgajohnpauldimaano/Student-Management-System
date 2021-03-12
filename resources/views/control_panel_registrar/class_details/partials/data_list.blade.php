@@ -10,7 +10,7 @@
             <th>Section</th>
             <th>Adviser</th>
             @if($isAdmin->role == 1)
-            <th width="10%">Login URL <i style="color: red">(use other browser)</i></th>
+                <th width="10%">Login URL <i style="color: red">(use other browser)</i></th>
             @endif
             <th>Status</th>
             <th>Actions</th>
