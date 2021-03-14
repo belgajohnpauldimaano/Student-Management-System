@@ -136,11 +136,11 @@
                         
                             <label for="previous_balance">Current Balance Fee</label>         
                             @if($AlreadyEnrolled)    
-                                <input type="hidden" class="form-control" value="{{$AlreadyEnrolled->balance}}" id="bank_previous_balance" name="bank_previous_balance">
+                                <input type="hidden" class="form-control form-control-sm" value="{{$AlreadyEnrolled->balance}}" id="bank_previous_balance" name="bank_previous_balance">
                                 <p>₱ {{number_format($AlreadyEnrolled->balance,2)}}</p> 
                             @else
                                 @if($Tuition)
-                                    <input type="hidden" class="form-control" value="{{$sum_total_item}}" id="bank_previous_balance" name="bank_previous_balance">  
+                                    <input type="hidden" class="form-control form-control-sm" value="{{$sum_total_item}}" id="bank_previous_balance" name="bank_previous_balance">  
                                     <p>₱ {{number_format($Tuition ? $sum_total_item : '', 2)}}</p> 
                                 @endif       
                             @endif  
@@ -148,13 +148,13 @@
 
                         <div class="form-group col-lg-12 input-bank_phone">
                             <label for="phone">Phone number</label>
-                            <input type="text" class="form-control" id="bank_phone" name="bank_phone" placeholder="+639000000000" value="{{ $StudentInformation->contact_number ? $StudentInformation->contact_number : '+639' }}">
+                            <input type="text" class="form-control form-control-sm" id="bank_phone" name="bank_phone" placeholder="+639000000000" value="{{ $StudentInformation->contact_number ? $StudentInformation->contact_number : '+639' }}">
                             <div class="help-block text-left" id="js-bank_phone"></div>
                         </div>  
 
                         <div class="form-group col-lg-12 input-bank_email">
                             <label for="bank_email">Email Address</label>
-                            <input type="email" class="form-control" id="bank_email" name="bank_email" placeholder="your@email.com" value="{{ $StudentInformation->email }}">
+                            <input type="email" class="form-control form-control-sm" id="bank_email" name="bank_email" placeholder="your@email.com" value="{{ $StudentInformation->email }}">
                             <div class="help-block text-left" id="js-bank_email"></div>
                         </div>
                     </div>
@@ -175,7 +175,7 @@
                     <div class="card-body">                                    
                         <div class="form-group col-lg-12 input-bank" style="margin-top: 10px">
                             <label for="bank">Bank Name</label>               
-                            <select name="bank" id="bank" class="form-control" style="width: 100%;">
+                            <select name="bank" id="bank" class="form-control form-control-sm" style="width: 100%;">
                                 <option selected value="">--Choose bank--</option> 
                                 <option  value="PNB">
                                     PNB
@@ -195,13 +195,13 @@
             
                         <div class="form-group col-lg-12 input-bank_transaction_id">
                             <label for="bank_transaction_id">Transaction Number</label>
-                            <input type="text" class="form-control" id="bank_transaction_id" name="bank_transaction_id" placeholder="">
+                            <input type="text" class="form-control form-control-sm" id="bank_transaction_id" name="bank_transaction_id" placeholder="">
                             <div class="help-block text-left" id="js-bank_transaction_id"></div>
                         </div>
                     
                         <div class="form-group col-lg-12 input-bank_pay_fee">
                             <label for="bank_pay_fee">Enter your payment fee</label>
-                            <input type="number" class="form-control" id="bank_pay_fee" name="bank_pay_fee" placeholder="0.00">
+                            <input type="number" class="form-control form-control-sm" id="bank_pay_fee" name="bank_pay_fee" placeholder="0.00">
                             <input type="hidden" id="bank_balance" name="bank_balance">
                             <div class="help-block text-left" id="js-bank_pay_fee"></div>
                         </div> 

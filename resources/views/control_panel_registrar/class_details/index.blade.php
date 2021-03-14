@@ -13,15 +13,15 @@
                 <i class="fas fa-2x fa-sync-alt fa-spin"></i>
             </div>
         <div class="card-header">
-            <div class="col-md-8 m-auto">
+            <div class="col-md-10 m-auto">
                 <h6 class="box-title">Search</h6>
                 
                     <form id="js-form_search">
                         {{ csrf_field() }}
                         <div class="row">
-                            <div class="col-md-3">
+                            <div class="col-md-2">
                                 <div class="form-group">
-                                    <select name="sy_search" id="sy_search" class="form-control">
+                                    <select name="sy_search" id="sy_search" class="form-control form-control-sm">
                                         {{-- <option value="">Select School Year</option> --}}
                                         @foreach ($SchoolYear as $data)
                                             <option value="{{ $data->id }}">{{ $data->school_year }}</option>
@@ -29,12 +29,12 @@
                                     </select>
                                 </div>
                             </div>
-                            <div class="col-md-5">
+                            <div class="col-md-7">
                                 <div id="js-form_search" class="form-group">
-                                    <input type="text" class="form-control" name="search" placeholder="section">
+                                    <input type="text" class="form-control form-control-sm" name="search" placeholder="section">
                                 </div>
                             </div>
-                            <div class="col-md-4">
+                            <div class="col-md-3">
                                 <button type="submit" class="btn btn-success">Search</button>
                                 <button type="button" class="btn btn-danger" id="js-button-add"><i class="fa fa-plus"></i> Add</button>
                             </div>

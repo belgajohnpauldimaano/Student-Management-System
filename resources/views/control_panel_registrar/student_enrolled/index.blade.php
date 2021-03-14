@@ -20,7 +20,7 @@
                     <div class="row">
                         <div class="col-md-8">
                             <div class="form-group input-school_year" style="padding-right:0; padding-left: 0">
-                                <input type="text" class="form-control" name="search_student" placeholder="search">
+                                <input type="text" class="form-control form-control-sm" name="search_student" placeholder="search">
                             </div>
                             <div class="help-block text-red text-left" id="js-search_student"></div>
                         </div>

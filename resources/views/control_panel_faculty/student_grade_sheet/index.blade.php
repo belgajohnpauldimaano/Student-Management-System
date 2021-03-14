@@ -21,7 +21,7 @@
                         <div class="row">
                             <div class="col-md-4">
                                 <div class="form-group" style="padding-right:0">
-                                <select name="search_sy" id="search_sy" class="form-control form-control-sm search_sy">
+                                <select name="search_sy" id="search_sy" class="form-control form-control-sm form-control form-control-sm-sm search_sy">
                                     {{-- <option value="">Select SY</option> --}}
                                     @foreach ($SchoolYear as $data)
                                         <option value="{{ $data->id }}">{{ $data->school_year }}</option>
@@ -31,7 +31,7 @@
                             </div>
                             <div class="col-md-8">
                                 <div class="form-group" style="padding-right:0">
-                                    <select name="search_class_subject" id="search_class_subject" class="form-control form-control-sm search_class_subject">
+                                    <select name="search_class_subject" id="search_class_subject" class="form-control form-control-sm form-control form-control-sm-sm search_class_subject">
                                         <option value="">Select Class Subject</option>
                                     </select>
                                 </div>
@@ -47,7 +47,7 @@
                         <div class="row">
                             <div class="col-md-3">
                                 <div class="form-group" style="padding-right:0">
-                                    <select name="search_sy1" id="search_sy1" class="form-control form-control-sm search_sy">
+                                    <select name="search_sy1" id="search_sy1" class="form-control form-control-sm form-control form-control-sm-sm search_sy">
                                         {{-- <option value="">Select SY</option> --}}
                                         @foreach ($SchoolYear as $data)
                                             <option value="{{ $data->id }}">{{ $data->school_year }}</option>
@@ -57,14 +57,14 @@
                             </div>
                             <div class="col-md-3">
                                 <div class="form-group" style="padding-right:0">
-                                    <select name="search_semester" id="search_semester" class="form-control form-control-sm search_semester">
+                                    <select name="search_semester" id="search_semester" class="form-control form-control-sm form-control form-control-sm-sm search_semester">
                                         <option value="">Select Semester</option>
                                     </select>
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group" style="padding-right:0">
-                                    <select name="search_class_subject_sem" id="search_class_subject_sem" class="form-control form-control-sm search_class_subject">
+                                    <select name="search_class_subject_sem" id="search_class_subject_sem" class="form-control form-control-sm form-control form-control-sm-sm search_class_subject">
                                         <option value="">Select Class Subject</option>
                                     </select>
                                 </div>

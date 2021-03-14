@@ -32,7 +32,7 @@
                 {{ csrf_field() }}
                                 
                 <div class="form-group col-sm-12 col-md-3" style="padding-right:0">
-                    <select name="search_sy" id="search_sy" class="form-control">
+                    <select name="search_sy" id="search_sy" class="form-control form-control-sm">
                         <option value="">Select SY</option>
                         @foreach ($SchoolYear as $data)
                             <option value="{{ $data->id }}">{{ $data->section }} {{ $data->grade_level }}</option>

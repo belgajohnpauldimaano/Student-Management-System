@@ -14,11 +14,11 @@
             <form id="js-form_search">
                 {{ csrf_field() }}
                 {{--  <div id="js-form_search" class="form-group col-sm-12 col-md-3" style="padding-right:0">
-                    <input type="text" class="form-control" name="search">
+                    <input type="text" class="form-control form-control-sm" name="search">
                 </div>  --}}
                 
                 <div id="js-form_search" class="form-group col-sm-12 col-md-3" style="padding-right:0">
-                    <select name="search_sy" id="search_sy" class="form-control">
+                    <select name="search_sy" id="search_sy" class="form-control form-control-sm">
                         <option value="">Select SY</option>
                         @foreach ($SchoolYear as $data)
                             <option value="{{ $data->id }}">{{ $data->school_year }}</option>
@@ -27,7 +27,7 @@
                 </div> 
                 &nbsp;
                 <div id="js-form_search" class="form-group col-sm-12 col-md-5" style="padding-right:0">
-                    <select name="search_class_subject" id="search_class_subject" class="form-control">
+                    <select name="search_class_subject" id="search_class_subject" class="form-control form-control-sm">
                         <option value="">Select Class Subject</option>
                     </select>
                 </div>

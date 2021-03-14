@@ -20,7 +20,7 @@
                         <div class="col-4">
                             <h5 class="box-title">Filter</h5>
                             <div id="js-form_search" class="form-group">
-                                <select name="search_sy" id="search_sy" class="form-control">
+                                <select name="search_sy" id="search_sy" class="form-control form-control-sm">
                                     <option value="">Select SY</option>
                                     @foreach ($SchoolYear as $data)
                                         <option value="{{ $data->id }}">{{ $data->school_year }}</option>
@@ -31,7 +31,7 @@
                         <div class="col-8">
                             <h5 class="box-title">&nbsp;</h5>
                             <div id="js-form_search" class="form-group">
-                                <select name="search_class_subject" id="search_class_subject" class="form-control">
+                                <select name="search_class_subject" id="search_class_subject" class="form-control form-control-sm">
                                     <option value="">Select Class Subject</option>
                                 </select>
                             </div>

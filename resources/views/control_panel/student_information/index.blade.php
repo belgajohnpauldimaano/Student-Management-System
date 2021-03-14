@@ -17,7 +17,7 @@
                     <div class="row">
                         <div class="col-md-8">
                              <div id="js-form_search" class="form-group" style="padding-left:0;padding-right:0">
-                                <input type="text" class="form-control" name="search">
+                                <input type="text" class="form-control form-control-sm" name="search">
                             </div> 
                         </div>
                         <div class="col-md-4">

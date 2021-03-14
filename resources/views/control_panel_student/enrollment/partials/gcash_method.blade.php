@@ -136,11 +136,11 @@
 
                             <label for="previous_balance">Current Balance Fee</label>  
                             @if($AlreadyEnrolled)    
-                                <input type="hidden" class="form-control" value="{{$AlreadyEnrolled->balance}}" id="gcash_previous_balance" name="gcash_previous_balance">
+                                <input type="hidden" class="form-control form-control-sm" value="{{$AlreadyEnrolled->balance}}" id="gcash_previous_balance" name="gcash_previous_balance">
                                 <p>₱ {{number_format($AlreadyEnrolled->balance,2)}}</p> 
                             @else
                                 @if($Tuition)
-                                    <input type="hidden" class="form-control" value="{{$sum_total_item}}" id="gcash_previous_balance" name="gcash_previous_balance">  
+                                    <input type="hidden" class="form-control form-control-sm" value="{{$sum_total_item}}" id="gcash_previous_balance" name="gcash_previous_balance">  
                                     <p>₱ {{number_format($Tuition ? $sum_total_item : '', 2)}}</p> 
                                 @endif      
                             @endif            
@@ -149,12 +149,12 @@
 
                         <div class="form-group col-lg-12 input-gcash_phone">
                             <label for="phone">Phone number</label>
-                            <input type="text" class="form-control" id="gcash_phone" name="gcash_phone" placeholder="+639000000000" value="{{ $StudentInformation->contact_number ? $StudentInformation->contact_number : '+639' }}">
+                            <input type="text" class="form-control form-control-sm" id="gcash_phone" name="gcash_phone" placeholder="+639000000000" value="{{ $StudentInformation->contact_number ? $StudentInformation->contact_number : '+639' }}">
                             <div class="help-block text-left" id="js-gcash_phone"></div>
                         </div>  
                         <div class="form-group col-lg-12 input-gcash_email">
                             <label for="gcash_email">Email Address</label>
-                            <input type="email" class="form-control" id="gcash_email" name="gcash_email" placeholder="your@email.com" value="{{ $StudentInformation->email }}">
+                            <input type="email" class="form-control form-control-sm" id="gcash_email" name="gcash_email" placeholder="your@email.com" value="{{ $StudentInformation->email }}">
                             <div class="help-block text-left" id="js-gcash_email"></div>
                         </div>
                     </div>
@@ -175,7 +175,7 @@
                     <div class="card-body">                                    
                         <div class="form-group col-lg-12" style="margin-top: 10px">
                         <label for="Gcash">Gcash Name</label>               
-                            <select name="Gcash" id="Gcash" class="form-control" style="width: 100%;">
+                            <select name="Gcash" id="Gcash" class="form-control form-control-sm" style="width: 100%;">
                                 <option  selected value="Gcash">
                                     GCASH
                                 </option>   
@@ -184,13 +184,13 @@
                 
                         <div class="form-group col-lg-12 input-gcash_transaction_id">
                             <label for="gcash_transaction_id">Transaction Number</label>
-                            <input type="text" class="form-control" id="gcash_transaction_id" name="gcash_transaction_id" placeholder="">
+                            <input type="text" class="form-control form-control-sm" id="gcash_transaction_id" name="gcash_transaction_id" placeholder="">
                             <div class="help-block text-left" id="js-gcash_transaction_id"></div>
                         </div>
                         
                         <div class="form-group col-lg-12 input-gcash_pay_fee">
                             <label for="gcash_pay_fee">Enter your payment fee</label>
-                            <input type="number" class="form-control" id="gcash_pay_fee" name="gcash_pay_fee" placeholder="0.00">
+                            <input type="number" class="form-control form-control-sm" id="gcash_pay_fee" name="gcash_pay_fee" placeholder="0.00">
                             <input type="hidden" id="gcash_balance" name="gcash_balance">
                             <div class="help-block text-left" id="js-gcash_pay_fee"></div>
                         </div> 

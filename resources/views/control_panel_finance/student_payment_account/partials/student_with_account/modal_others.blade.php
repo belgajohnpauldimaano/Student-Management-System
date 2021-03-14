@@ -20,7 +20,7 @@
                             <div class="col-md-12">
                                 <div class="form-group">
                                     <label for="">Transaction ID</label>
-                                    <input type="text" disabled class="form-control"  value="{{ $TransactionOthers->transaction_id }}">
+                                    <input type="text" disabled class="form-control form-control-sm"  value="{{ $TransactionOthers->transaction_id }}">
                                     {{-- <div class="help-block text-red text-center" id="js-payment_option"></div> --}}
                                 </div>
                             </div>
@@ -28,7 +28,7 @@
                             <div class="col-md-12">
                                 <div class="form-group">
                                     <label for="">OR Number</label>
-                                    <input type="text" placeholder="00000000000" class="form-control" name="or_no" value="{{ $TransactionOthers->or_no }}">
+                                    <input type="text" placeholder="00000000000" class="form-control form-control-sm" name="or_no" value="{{ $TransactionOthers->or_no }}">
                                     <div class="help-block text-red text-center" id="js-or_no"></div>
                                 </div>
                             </div>
@@ -36,7 +36,7 @@
                             <div class="col-md-12">
                                 <div class="form-group">
                                     <label for="">Description</label>
-                                    <input  type="text" class="form-control" name="other_name" id="other_name" value="{{ $TransactionOthers->other_name }}">
+                                    <input  type="text" class="form-control form-control-sm" name="other_name" id="other_name" value="{{ $TransactionOthers->other_name }}">
                                     <div class="help-block text-red text-center" id="js-other_name"></div>
                                 </div>
                             </div>   
@@ -44,7 +44,7 @@
                             <div class="col-md-12">
                                 <div class="form-group">
                                     <label for="">Qty</label>
-                                    <input placeholder="0.00" type="number" class="form-control" name="item_qty" id="item_qty" value="{{ $TransactionOthers->item_qty }}">
+                                    <input placeholder="0.00" type="number" class="form-control form-control-sm" name="item_qty" id="item_qty" value="{{ $TransactionOthers->item_qty }}">
                                     <div class="help-block text-red text-center" id="js-item_qty"></div>
                                 </div>
                             </div>   
@@ -52,7 +52,7 @@
                             <div class="col-md-12">
                                 <div class="form-group">
                                     <label for="">Price</label>
-                                    <input placeholder="0.00" type="number" class="form-control" name="item_price" id="item_price" value="{{ $TransactionOthers->item_price }}">
+                                    <input placeholder="0.00" type="number" class="form-control form-control-sm" name="item_price" id="item_price" value="{{ $TransactionOthers->item_price }}">
                                     <div class="help-block text-red text-center" id="js-item_price"></div>
                                 </div>
                             </div> 

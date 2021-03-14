@@ -10,7 +10,7 @@
                     <div class="card-body">
                         <div class="form-group">
                             <label for="">Enter O.R. # </label>
-                            <input type="text" placeholder="00000000000" class="form-control" name="or_number_others" id="or_number_others" value="">
+                            <input type="text" placeholder="00000000000" class="form-control form-control-sm" name="or_number_others" id="or_number_others" value="">
                             <div class="help-block text-red text-left" id="js-or_number_others"></div>
                         </div>
                         <table id="others_item" class="table table-striped table-bordered table-hover table-sm">
@@ -26,7 +26,7 @@
                                     <tr>
                                         <th><span style="display:none" class="item-id">{{ $item->id }}</span><span class="item-description">{{$item->other_fee_name}}  (₱ {{ number_format($item->other_fee_amt, 2) }})</span><span class="item-price" style="display:none">{{ $item->other_fee_amt }}</span></th>
                                         <td>
-                                            <input type="number" name="qty" class="form-control item-qty" value="" />
+                                            <input type="number" name="qty" class="form-control form-control-sm item-qty" value="" />
                                         </td>
                                         <td class="pull-right">
                                             <button type="button" class="btn btn-sm btn-primary js-btnAdd">

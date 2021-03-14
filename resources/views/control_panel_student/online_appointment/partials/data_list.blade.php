@@ -42,7 +42,7 @@
                                     </i>
                                 </label><br/>
                                 <label for="email">Check your Email Address</label>
-                                <input type="email" class="form-control" id="email" name="email" placeholder="your@email.com" value="{{ $StudentInformation->email }}">
+                                <input type="email" class="form-control form-control-sm" id="email" name="email" placeholder="your@email.com" value="{{ $StudentInformation->email }}">
                                 <div class="help-block text-left" id="js-email"></div>
                             </div>    
                             <table class="table table-striped table-bordered table-sm">

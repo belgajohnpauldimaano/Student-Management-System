@@ -23,7 +23,7 @@
                                 @php
                                     use App\Models\SchoolYear;
                                     $school_year_list =  SchoolYear::where('status', 1)->orderby('id', 'desc')->get();
-                                    $strand =  App\Models\Strand::where('status', 1)->orderby('strand', 'desc')->get();
+                                    
                                     $school_year =  SchoolYear::where('apply_to','!=',1)->first();
                                     try {
                                         echo $school_year->school_year;
@@ -50,26 +50,16 @@
                                 <div class="form-group input-grade_lvl col-md-6">
                                     <label for="">I am Incoming</label>
                                     <br/>
-                                    <div class="form-check ">
-                                        <input class="form-check-input" type="radio" name="grade_level" id="js-transferee_level7" value="7">
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input grade_level" type="radio" name="grade_level" id="js-transferee_level7" value="7">
                                         <label class="form-check-label" for="js-transferee_level7">Grade 7</label>
                                     </div>
-                                    <div class="form-check ">
-                                        <input class="form-check-input" type="radio" name="grade_level" id="js-transferee_level11" value="11">
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input grade_level" type="radio" name="grade_level" id="js-transferee_level11" value="11">
                                         <label class="form-check-label" for="js-transferee_level11">Grade 11</label>
                                     </div>                                
                                 </div>
-                                <div class="form-group col-md-6 div-strand">
-                                    <label for="">Strand </label>&nbsp;
-                                    <select name="strand" id="strand" class="form-control form-control-sm">
-                                        <option value="0">Select Strand</option>
-                                        @foreach ($strand as $item)
-                                            <option value="{{ $item->id }}">{{ $item->strand }}</option>
-                                        @endforeach
-                                    </select>
-                                    <div class="help-block text-red text-left" id="js-strand">
-                                    </div>
-                                </div>
+                                <div class="form-group col-md-6" id="div-strand"></div>
                             </div>
                         </div>
                         <div class="form-group">
@@ -77,17 +67,18 @@
                                 <label for="">Transferee</label>
                                 <br/>
                                 <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="grade_level" id="js-grade_level8" value="8">
+                                    <input class="form-check-input grade_level" type="radio" name="grade_level" id="js-grade_level8" value="8">
                                     <label class="form-check-label" for="js-grade_level8">Grade 8</label>
                                 </div>
                                 <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="grade_level" id="js-grade_level9" value="8">
+                                    <input class="form-check-input grade_level" type="radio" name="grade_level" id="js-grade_level9" value="8">
                                     <label class="form-check-label" for="js-grade_level9">Grade 9</label>
                                 </div>
                                 <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="grade_level" id="grade_level10" value="10">
+                                    <input class="form-check-input grade_level" type="radio" name="grade_level" id="js-grade_level10" value="10">
                                     <label class="form-check-label" for="js-grade_level10">Grade 10</label>
                                 </div>
+                                <div class="help-block text-red text-left" id="js-grade_level"></div>
                             </div>
                         </div>
 
@@ -112,15 +103,17 @@
 
                     </div>
                     
-                    <div class="col-lg-4 align-items-stretch order-1 order-lg-2 text-center">
-                        <img class="profile-user-img img-responsive img-circle" id="img--user_photo" src="{{  asset('/img/account/photo/blank-user.gif') }}" 
-                        style="width:150px; height:150px;  border-radius:50%;">
+                    <div class="col-lg-4 align-items-stretch order-1 order-lg-2 text-center" style="border: 2px dashed #ccc">
+
+                        <p class="mt-2" ><i><small>Kindly upload Passport Size 2x2 with name tag</small></i></p>
+                        <img class="mt-0 profile-user-img img-responsive img-circle" id="img--user_photo" src="{{  asset('/img/account/photo/blank-user.gif') }}" 
+                        style="width:150px; height:150px;  border-radius:50%; ">
                         <br/><br/>
                         <button type="button" class="btn btn-sm btn-flat btn-primary btn--update-photo" title="Change photo">
                             Upload a photo
                         </button> 
                         <br/>
-                        <p style="color:red"><i>Kindly upload Passport Size 2x2 with name tag</i></p>
+                        
                         <input type="file" class="btn-upload-photo" style="display: none" id="student_img" name="student_img" src=""
                          onchange="readImageURL(this);" accept="*/image">
                          <input type="hidden" id="default-img" value={{asset('/img/account/photo/blank-user.gif')}} />   
@@ -231,7 +224,7 @@
                         <div class="help-block text-red text-left" id="js-school_name">
                         </div>
                     </div>
-                    <div class="form-group col-md-3 text-right input-grade_lvl">
+                    <div class="form-group col-md-3 text-right input-school_type">
                         <label for="">&nbsp;</label>
                         <br/>
                         <div class="form-check form-check-inline">
@@ -273,7 +266,7 @@
                     <div class="form-group col-md-9 text-right input-gwa">
                         <label for="">For <b>TRANSFEREE</b>: <i>If from private school, are you an ESC grantee?</i></label>
                     </div>
-                    <div class="form-group col-md-3 text-right input-grade_lvl">
+                    <div class="form-group col-md-3 text-right input-is_esc">
                         <div class="form-check form-check-inline">
                             <input class="form-check-input" type="radio" name="is_esc" id="js-yes" value="1">
                             <label class="form-check-label" for="js-yes">Yes</label>
@@ -352,6 +345,7 @@
                      <div class="form-group col-md-4 input-no_siblings">
                         <label for="">No. of your siblings (do not include yourself)</label>
                         <select name="no_siblings" id="no_siblings" class="form-control form-control-sm">
+                            <option value="0">Select No. of your siblings</option>
                             @for ( $x = 1 ; $x < 15; $x++)
                                <option>{{ $x }}</option>
                             @endfor

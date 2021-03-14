@@ -21,18 +21,18 @@
                         {{ csrf_field() }}
                         <div class="row">
                             <div id="js-form_search" class="form-group col-sm-12 col-md-3" style="">
-                                <input type="text" class="form-control" name="search_student_id" placeholder="Student ID">
+                                <input type="text" class="form-control form-control-sm" name="search_student_id" placeholder="Student ID">
                             </div>
                         </div>
                         <div class="row">
                             <div id="js-form_search" class="form-group col-sm-12 col-md-3" style="">
-                                <input type="text" class="form-control" name="search_fn" placeholder="First name">
+                                <input type="text" class="form-control form-control-sm" name="search_fn" placeholder="First name">
                             </div>
                             <div id="js-form_search" class="form-group col-sm-12 col-md-3" style="">
-                                <input type="text" class="form-control" name="search_mn" placeholder="Middle name">
+                                <input type="text" class="form-control form-control-sm" name="search_mn" placeholder="Middle name">
                             </div>
                             <div id="js-form_search" class="form-group col-sm-12 col-md-3" style="">
-                                <input type="text" class="form-control" name="search_ln" placeholder="Last name">
+                                <input type="text" class="form-control form-control-sm" name="search_ln" placeholder="Last name">
                             </div>
                             <div class="col-sm-12 col-md-2">
                                 <button type="submit" class="btn btn-block  btn-flat btn-success"><div class="fa fa-search"></div> Search</button>
@@ -57,18 +57,18 @@
                         {{ csrf_field() }}
                         <div class="row">
                             <div id="js-form_search" class="form-group col-sm-12 col-md-3" style="">
-                                <input type="text" class="form-control" name="search_student_id" placeholder="Student ID">
+                                <input type="text" class="form-control form-control-sm" name="search_student_id" placeholder="Student ID">
                             </div>
                         </div>
                         <div class="row">
                             <div id="js-form_search" class="form-group col-sm-12 col-md-3" style="">
-                                <input type="text" class="form-control" name="search_fn" placeholder="First name">
+                                <input type="text" class="form-control form-control-sm" name="search_fn" placeholder="First name">
                             </div>
                             <div id="js-form_search" class="form-group col-sm-12 col-md-3" style="">
-                                <input type="text" class="form-control" name="search_mn" placeholder="Middle name">
+                                <input type="text" class="form-control form-control-sm" name="search_mn" placeholder="Middle name">
                             </div>
                             <div id="js-form_search" class="form-group col-sm-12 col-md-3" style="">
-                                <input type="text" class="form-control" name="search_ln" placeholder="Last name">
+                                <input type="text" class="form-control form-control-sm" name="search_ln" placeholder="Last name">
                             </div>
                             <div class="col-sm-12 col-md-2">
                                 <button type="submit" class="btn btn-block  btn-flat btn-success"><i class="fa fa-search"></i> Search</button>
@@ -99,18 +99,18 @@
                         {{ csrf_field() }}
                         <div class="row">
                             <div id="js-form_search" class="form-group col-sm-12 col-md-3" style="">
-                                <input type="text" class="form-control" name="search_student_id" placeholder="Student ID">
+                                <input type="text" class="form-control form-control-sm" name="search_student_id" placeholder="Student ID">
                             </div>
                         </div>
                         <div class="row">
                             <div id="js-form_search" class="form-group col-sm-12 col-md-3" style="">
-                                <input type="text" class="form-control" name="search_fn" placeholder="First name">
+                                <input type="text" class="form-control form-control-sm" name="search_fn" placeholder="First name">
                             </div>
                             <div id="js-form_search" class="form-group col-sm-12 col-md-3" style="">
-                                <input type="text" class="form-control" name="search_mn" placeholder="Middle name">
+                                <input type="text" class="form-control form-control-sm" name="search_mn" placeholder="Middle name">
                             </div>
                             <div id="js-form_search" class="form-group col-sm-12 col-md-3" style="">
-                                <input type="text" class="form-control" name="search_ln" placeholder="Last name">
+                                <input type="text" class="form-control form-control-sm" name="search_ln" placeholder="Last name">
                             </div>
                             <div class="col-sm-12 col-md-2">
                                 <button type="submit" class="btn btn-block  btn-flat btn-success"><div class="fa fa-search"></div> Search</button>
@@ -135,18 +135,18 @@
                         {{ csrf_field() }}
                         <div class="row">
                             <div id="js-form_search" class="form-group col-sm-12 col-md-3" style="">
-                                <input type="text" class="form-control" name="search_student_id" placeholder="Student ID">
+                                <input type="text" class="form-control form-control-sm" name="search_student_id" placeholder="Student ID">
                             </div>
                         </div>
                         <div class="row">
                             <div id="js-form_search" class="form-group col-sm-12 col-md-3" style="">
-                                <input type="text" class="form-control" name="search_fn" placeholder="First name">
+                                <input type="text" class="form-control form-control-sm" name="search_fn" placeholder="First name">
                             </div>
                             <div id="js-form_search" class="form-group col-sm-12 col-md-3" style="">
-                                <input type="text" class="form-control" name="search_mn" placeholder="Middle name">
+                                <input type="text" class="form-control form-control-sm" name="search_mn" placeholder="Middle name">
                             </div>
                             <div id="js-form_search" class="form-group col-sm-12 col-md-3" style="">
-                                <input type="text" class="form-control" name="search_ln" placeholder="Last name">
+                                <input type="text" class="form-control form-control-sm" name="search_ln" placeholder="Last name">
                             </div>
                             <div class="col-sm-12 col-md-2">
                                 <button type="submit" class="btn btn-block  btn-flat btn-success"><i class="fa fa-search"></i> Search</button>

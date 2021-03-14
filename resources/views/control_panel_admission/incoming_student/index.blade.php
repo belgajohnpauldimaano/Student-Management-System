@@ -15,7 +15,7 @@
             <form id="js-form_search">
                 {{ csrf_field() }}
                 <div id="js-form_search" class="form-group col-sm-12 col-md-3" style="padding-left:0;padding-right:0">
-                    <input type="text" class="form-control" name="search">
+                    <input type="text" class="form-control form-control-sm" name="search">
                 </div>                
                 <button type="submit" class="btn btn-flat btn-success">Search</button>
             </form>

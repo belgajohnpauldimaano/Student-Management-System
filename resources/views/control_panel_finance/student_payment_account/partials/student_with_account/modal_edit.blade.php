@@ -20,7 +20,7 @@
                             <div class="col-md-12">
                                 <div class="form-group">
                                     <label for="">Payment Option</label>
-                                    <input type="text" disabled class="form-control"  value="{{ $TransactionMonthPaid->payment_option }}">
+                                    <input type="text" disabled class="form-control form-control-sm"  value="{{ $TransactionMonthPaid->payment_option }}">
                                     <div class="help-block text-red text-center" id="js-payment_option"></div>
                                 </div>
                             </div>
@@ -28,7 +28,7 @@
                             <div class="col-md-12">
                                 <div class="form-group">
                                     <label for="">OR Number</label>
-                                    <input type="text" placeholder="00000000000" class="form-control" name="or_number" value="{{ $TransactionMonthPaid->or_no }}">
+                                    <input type="text" placeholder="00000000000" class="form-control form-control-sm" name="or_number" value="{{ $TransactionMonthPaid->or_no }}">
                                     <div class="help-block text-red text-center" id="js-or_number"></div>
                                 </div>
                             </div>
@@ -37,7 +37,7 @@
                                 <div class="form-group">
                                     <label for="">Payment</label>
                                     <input type="hidden" id="payment_history" value="{{ $TransactionMonthPaid->payment }}">
-                                    <input placeholder="0.00" type="text" class="form-control" name="payment" id="payment" value="{{ $TransactionMonthPaid->payment }}">
+                                    <input placeholder="0.00" type="text" class="form-control form-control-sm" name="payment" id="payment" value="{{ $TransactionMonthPaid->payment }}">
                                     <div class="help-block text-red text-center" id="js-payment"></div>
                                 </div>
                             </div>   
@@ -45,7 +45,7 @@
                             <div class="col-md-12">
                                 <div class="form-group">
                                     <label for="">Balance</label>
-                                    <input placeholder="0.00" type="text" class="form-control" name="balance" id="balance" value="{{ $TransactionMonthPaid->balance }}">
+                                    <input placeholder="0.00" type="text" class="form-control form-control-sm" name="balance" id="balance" value="{{ $TransactionMonthPaid->balance }}">
                                     <div class="help-block text-red text-center" id="js-balance"></div>
                                 </div>
                             </div> 
@@ -57,7 +57,7 @@
                                         <div class="input-group-addon">
                                             <i class="fa fa-calendar"></i>
                                         </div>
-                                        <input type="text" name="date_created" class="form-control pull-right" id="datepicker"
+                                        <input type="text" name="date_created" class="form-control form-control-sm pull-right" id="datepicker"
                                         value="{{ $TransactionMonthPaid ? date_format(date_create($TransactionMonthPaid->created_at), 'F d, Y ') : '' }}">
                                     </div>
                                     <div class="help-block text-red text-center" id="js-date_created">

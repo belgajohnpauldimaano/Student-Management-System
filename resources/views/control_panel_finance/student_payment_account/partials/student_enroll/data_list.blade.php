@@ -15,7 +15,7 @@
                             <div class="input-group-addon">
                                 <i class="fa fa-calendar"></i>
                             </div>
-                            <input type="text" name="date_created" class="form-control pull-right" id="date" >
+                            <input type="text" name="date_created" class="form-control form-control-sm pull-right" id="date" >
                         </div>
                         <div class="help-block text-red text-center" id="js-date_created">
                         </div>
@@ -24,18 +24,18 @@
                     <input type="hidden" name="id" value="{{ $StudentInformation->id }}">
                     <div class="form-group">
                         <label for="">Email Address </label>
-                        <input type="text" placeholder="email@address.com" class="form-control" name="email" id="email" value="{{ $StudentInformation ? $StudentInformation->email : ''}}">
+                        <input type="text" placeholder="email@address.com" class="form-control form-control-sm" name="email" id="email" value="{{ $StudentInformation ? $StudentInformation->email : ''}}">
                         <div class="help-block text-red text-left" id="js-email"></div>
                     </div>
                     <div class="form-group">
                         <label for="">O.R. # </label>
-                        <input type="text" placeholder="00000000000" class="form-control" name="or_number" id="or_number" value="">
+                        <input type="text" placeholder="00000000000" class="form-control form-control-sm" name="or_number" id="or_number" value="">
                         <div class="help-block text-red text-left" id="js-or_number"></div>
                     </div>            
                     <div class="form-group">
                         <label for="">Student Category</label>
                         
-                        <select name="payment_category" id="payment_category" class="form-control">
+                        <select name="payment_category" id="payment_category" class="form-control form-control-sm">
                             <option value="">Select Student Category</option>  
                             @if($grade_level_id < 13)                                  
                                 @foreach($PaymentCategory as $p_cat)
@@ -75,7 +75,7 @@
                     </div>
                     <div class="form-group">
                         <label for="">Payment </label>
-                        <input placeholder="0.00" type="number" class="form-control" name="payment" id="payment" value="">
+                        <input placeholder="0.00" type="number" class="form-control form-control-sm" name="payment" id="payment" value="">
                         <div class="help-block text-red text-left" id="js-payment"></div>
                     </div>
                     <div class="form-group">

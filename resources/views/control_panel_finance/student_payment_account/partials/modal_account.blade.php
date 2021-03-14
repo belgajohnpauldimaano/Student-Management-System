@@ -90,7 +90,7 @@
                         <div class="col-md-3">
                             <div class="form-group">
                                 <label>Month(s):</label>
-                                <select class="form-control select2" name="months[]" multiple="multiple" data-placeholder="Select month(s)" style="width: 100%;">
+                                <select class="form-control form-control-sm select2" name="months[]" multiple="multiple" data-placeholder="Select month(s)" style="width: 100%;">
                                     <option value="">Select months</option>
                                     <option value="1" >June</option>
                                     <option value="2" >July</option>
@@ -108,7 +108,7 @@
                         <div class="col-md-3 col-sm-3">
                             <div class="form-group">
                                 <label for="">O.R. # </label>
-                                <input type="text" placeholder="00000000000" class="form-control" name="or_number" id="or_number" value="">
+                                <input type="text" placeholder="00000000000" class="form-control form-control-sm" name="or_number" id="or_number" value="">
                                 <div class="help-block text-red text-center" id="js-or_number"></div>
                             </div>
                         </div>
@@ -116,14 +116,14 @@
                         <div class="col-md-3 col-sm-3">
                             <div class="form-group">
                                 <label for="">Payment </label>
-                                <input placeholder="0.00" type="number" class="form-control" name="payment" id="payment" value="">
+                                <input placeholder="0.00" type="number" class="form-control form-control-sm" name="payment" id="payment" value="">
                                 <div class="help-block text-red text-center" id="js-payment"></div>
                             </div>
                         </div>   
                         <div class="col-md-3 col-sm-3">
                             <div class="form-group">
                                 <label>Other(s)</label>
-                                <select class="form-control select2" name="others[]" multiple="multiple" data-placeholder="Select Other" style="width: 100%;">
+                                <select class="form-control form-control-sm select2" name="others[]" multiple="multiple" data-placeholder="Select Other" style="width: 100%;">
                                         <option>Select Others</option>
                                         @foreach ($OtherFee as $otherfee)                                        
                                             <option value="{{ $otherfee->id }}">{{ $otherfee->other_fee_name }} {{ number_format($otherfee->other_fee_amt) }}</option>

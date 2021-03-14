@@ -37,7 +37,7 @@
                         <div class="row">
                             <div class="col-md-3">
                                 <div class="form-group" style="padding-left:0;padding-right:0">
-                                    <select name="search_school_year" id="search_school_year" class="form-control">
+                                    <select name="search_school_year" id="search_school_year" class="form-control form-control-sm">
                                         @foreach ($SchoolYear as $data)
                                             <option value="{{ encrypt($data->id) }}">{{ $data->school_year }}</option>
                                         @endforeach
@@ -46,7 +46,7 @@
                             </div>                            
                             <div class="col-md-3">
                                 <div class="form-group" style="padding-left:0;padding-right:0">
-                                    <select name="semester_grades" id="semester_grades" class="form-control">                            
+                                    <select name="semester_grades" id="semester_grades" class="form-control form-control-sm">                            
                                         <option value="">Select Semester</option>
                                         <option value="1st">First Semester</option>
                                         <option value="2nd">Second Semester</option>
@@ -56,7 +56,7 @@
                             </div>                            
                             <div class="col-md-6">
                                 <div class="form-group" style="padding-left:0;padding-right:0">
-                                    <select name="quarter" id="quarter" class="form-control">
+                                    <select name="quarter" id="quarter" class="form-control form-control-sm">
                                         <option value="">Select Class Quarter</option>
                                     </select>
                                 </div>         
@@ -75,7 +75,7 @@
                         <div class="row">
                             <div class="col-md-4">
                                 <div class="form-group" style="padding-left:0;padding-right:0">
-                                    <select name="search_sy" id="search_sy" class="form-control">
+                                    <select name="search_sy" id="search_sy" class="form-control form-control-sm">
                                         @foreach ($SchoolYear as $data)
                                             <option value="{{ encrypt($data->id) }}">{{ $data->school_year }}</option>
                                         @endforeach
@@ -84,7 +84,7 @@
                             </div>
                             <div class="col-md-8">
                                 <div class="form-group" style="padding-left:0;padding-right:0">
-                                    <select name="quarter_grades" id="quarter_grades" class="form-control">
+                                    <select name="quarter_grades" id="quarter_grades" class="form-control form-control-sm">
                                         <option value="">Select Class Quarter</option>       
                                         <option value="1st">First Quarter</option>
                                         <option value="2nd">Second Quarter</option>

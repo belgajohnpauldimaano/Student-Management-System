@@ -19,7 +19,7 @@
                 @endif
                 
                   <div class="form-group col-lg-8 m-auto" id="form_method">
-                      <select name="payment_category" id="payment_category" class="form-control">    
+                      <select name="payment_category" id="payment_category" class="form-control form-control-sm">    
                         <option value="0" selected>
                             --Select--
                         </option>

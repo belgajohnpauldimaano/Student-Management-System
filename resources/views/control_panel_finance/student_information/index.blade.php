@@ -23,7 +23,7 @@
                         <div class="col-md-2">
                             <label class="control-label">- School year -</label>
                             <div class="input-school_year">
-                                <select name="school_year" id="school_year" class="form-control ">
+                                <select name="school_year" id="school_year" class="form-control form-control-sm ">
                                     <option value="0">
                                         - School Year -
                                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -39,7 +39,7 @@
                         <div class="col-md-4">
                             <label class="control-label">- Section -</label>
                             <div class="form-group" style="padding-right:0">
-                                <select name="section_list" id="section_list" class="form-control section_list">
+                                <select name="section_list" id="section_list" class="form-control form-control-sm section_list">
                                     <option value="">Section</option>
                                 </select>
                             </div>
@@ -48,7 +48,7 @@
                             <label class="control-label">Search</label>
                             <div class="input-school_year">
                                 <div id="js-form_search" class="form-group " style="padding-left:0;padding-right:0">
-                                    <input placeholder="first name or last name" type="text" class="form-control" name="search">
+                                    <input placeholder="first name or last name" type="text" class="form-control form-control-sm" name="search">
                                 </div>
                             </div>
                         </div>

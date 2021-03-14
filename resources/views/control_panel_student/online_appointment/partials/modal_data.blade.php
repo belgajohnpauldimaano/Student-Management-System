@@ -16,7 +16,7 @@
                     
                     <div class="form-group">
                         <label for="">Section</label>
-                        <select name="section" id="section" class="form-control">
+                        <select name="section" id="section" class="form-control form-control-sm">
                             <option value="">Select section</option>
                             @foreach ($SectionDetail as $data) 
                                 <option value="{{ $data->id }}" {{ $ClassDetail ? $ClassDetail->section_id == $data->id ? 'selected' : '' : '' }}>{{ $data->section }}</option>
@@ -28,7 +28,7 @@
                                  
                     <div class="form-group">
                         <label for="">Room</label>
-                        <select name="room" id="room" class="form-control">
+                        <select name="room" id="room" class="form-control form-control-sm">
                             <option value="">Select room</option>
                             @foreach ($Room as $data) 
                                 <option value="{{ $data->id }}" {{ $ClassDetail ? $ClassDetail->room_id == $data->id ? 'selected' : '' : '' }}>{{ $data->room_code }}</option>
@@ -40,7 +40,7 @@
                             
                     <div class="form-group">
                         <label for="">School Year</label>
-                        <select name="school_year" id="school_year" class="form-control">
+                        <select name="school_year" id="school_year" class="form-control form-control-sm">
                             <option value="">Select school year</option>
                             @foreach ($SchoolYear as $data) 
                                 <option value="{{ $data->id }}" {{ $ClassDetail ? $ClassDetail->school_year_id == $data->id ? 'selected' : '' : '' }}>{{ $data->school_year }}</option>
@@ -55,7 +55,7 @@
                         <label>Time</label>
 
                         <div class="input-group">
-                            <input type="text" class="form-control timepicker">
+                            <input type="text" class="form-control form-control-sm timepicker">
 
                             <div class="input-group-addon">
                             <i class="fa fa-clock-o"></i>
