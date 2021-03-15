@@ -11,4 +11,9 @@ class IncomingStudent extends Model
     {
         return $this->hasOne(StudentInformation::class, 'id', 'student_id');
     }
+
+    public function studentEmail()
+    {
+        return $this->hasOne(StudentInformation::class, 'id','student_id');
+    }
 }

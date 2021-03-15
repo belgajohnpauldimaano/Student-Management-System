@@ -2,9 +2,11 @@
 
 namespace App\Providers;
 
+use App\Models\SchoolYear;
+use App\Models\IncomingStudent;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\ServiceProvider;
-use App\Models\SchoolYear;
+use App\Observers\IncomingStudentObserver;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -16,9 +18,7 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
         Schema::defaultStringLength(191);  
-        // $SchoolYear = SchoolYear::where('current', 1)
-        //     ->where('status', 1)
-        //     ->first();  
+        IncomingStudent::observe(IncomingStudentObserver::class);
     }
 
     /**

@@ -4,21 +4,22 @@ namespace App\Mail;
 
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
+use App\Models\IncomingStudent;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
 class NotifyNewRegisterStudentMail extends Mailable
 {
     use Queueable, SerializesModels;
-    public $NewStudent;
+    public $payload;
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct($NewStudent)
+    public function __construct(IncomingStudent $payload)
     {
-        $this->NewStudent = $NewStudent;
+        $this->payload = $payload;
     }
 
     /**
@@ -28,6 +29,6 @@ class NotifyNewRegisterStudentMail extends Mailable
      */
     public function build()
     {
-        return $this->view('mails.newly_registered')->subject('Account Activation');
+        return $this->view('mails.newly_registered', compact('payload'))->subject('Account Activation');
     }
 }

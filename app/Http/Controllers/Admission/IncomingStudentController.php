@@ -36,6 +36,7 @@ class IncomingStudentController extends Controller
                 incoming_students.grade_level_id, 
                 incoming_students.student_type, 
                 incoming_students.approval,
+                incoming_students.id,
                 users.username, 
                 users.status as user_status
             ')
@@ -61,7 +62,7 @@ class IncomingStudentController extends Controller
                 $tab = 'disapproved';
             }
 
-        $IncomingStudent = $query->paginate(10);
+        $IncomingStudent = $query->orderBY('id', 'desc')->paginate(10);
 
         if($request->ajax()){
             return view('control_panel_admission.incoming.partials.data_list', compact('IncomingStudent','IncomingStudentCount','tab'))->render();

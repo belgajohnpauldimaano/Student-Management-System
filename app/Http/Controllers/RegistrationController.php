@@ -69,30 +69,26 @@ class RegistrationController extends Controller
 
         
 
-        $again = 0;
+        // $again = 0;
         DB::beginTransaction();
         try{
 
-            $SchoolYear = SchoolYear::where('current', 1)
-                ->where('status', 1)
-                ->orderBY('id', 'DESC')
-                ->first();
+                $SchoolYear = SchoolYear::where('current', 1)
+                    ->where('status', 1)
+                    ->orderBY('id', 'DESC')
+                    ->first();
 
-
-            if($again == 0){
+            // if($again == 0){
                 $checkUser = User::where('username', $request->lrn)->first();
                 if ($checkUser) 
                 {
+                    // DB::rollBack();
                     return response()->json([
                         'res_code' => 1,'res_msg' => 
                         'LRN already used. Please contact the administrator to confirm it. Thank you'
                         ]);
                 }
-            }
-            
-            if($again == 1)
-            {
-
+            // }else{
            
                 $User = new User();
                 $User->username = $request->lrn;
@@ -133,7 +129,7 @@ class RegistrationController extends Controller
                 $StudentEducation->last_sy_attended         = $request->last_sy_attended;
                 $StudentEducation->gw_average               = $request->gwa;
                 // $StudentEducation->incoming_grade           = $request->grade_level;
-                $StudentEducation->strand                   = $request->grade_level == 11 ? $request->strand : 'NA';
+                $StudentEducation->strand                   = $request->grade_level == 11 ? $request->strand : '0';
                 $transfer = 2;
                 if($request->grade_level == 7 || $request->grade_level == 11)
                 {
@@ -150,27 +146,22 @@ class RegistrationController extends Controller
                 $Incoming_student->save();
 
                 // $StudentInformation = StudentInformation::find()
-
-                $User = User::find($User->id);
-                $User->username = $request->lrn;
-                $User->save();
-
+                
                 DB::commit();
                 
-                $NewStudent = IncomingStudent::find($Incoming_student->id);
-                    Mail::to($request->student_email)->send(new NotifyNewRegisterStudentMail($NewStudent));
-                    Mail::to('admission@sja-bataan.com')->cc('inquiry@sja-bataan.com')->send(new NotifyNewRegisterStudentAdminMail($NewStudent));
+                // $NewStudent = IncomingStudent::find($Incoming_student->id);
                 
                 // dd($request->all());
                 return response()->json(['res_code' => 0, 'res_msg' => 'You have successfuly registered!']);
-             }
+            //  }
         }
         catch(\Exception $e){
             // do task when error
             // insert query
-            Log::error($e->getMessage());
             DB::rollBack();
-            $again = 1;
+            Log::error($e->getMessage());
+            
+            // $again = 1;
             return response()->json(['res_code' => 1, 'res_msg' => 'Please check all fields and submit again.']);
         }
     }   

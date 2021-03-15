@@ -71,8 +71,7 @@ trait HasGradeSheet{
 
     public function student()
     {        
-        return $this->hasOne(StudentInformation::class, 'id','student_information_id')
-            ->orderBY('last_name', 'ASC');
+        return $this->hasOne(StudentInformation::class, 'id','student_information_id')->orderBy('last_name')->whereStatus(1);
     }
 
     public function student_enrollment()
@@ -93,5 +92,4 @@ trait HasGradeSheet{
     public function studentEnrolledSubject(){
         return $this->hasOne(StudentEnrolledSubject::class, 'class_subject_details_id', 'class_subject_details_id');
     }
-   
 }

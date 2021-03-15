@@ -17,15 +17,35 @@ class StudentEnrolledListController extends Controller
             ->first();
         // return json_encode($ClassDetail);
 
-        $Enrollment = Enrollment::with(['student','user'])
-            ->whereHas('student', function($q) use ($request) {
-                $q->where('first_name', 'like', '%'.$request->search_student.'%');
-                $q->orWhere('middle_name', 'like', '%'.$request->search_student.'%');
-                $q->orWhere('last_name', 'like', '%'.$request->search_student.'%');
-            })
-            ->whereClassDetailsId($id)
-            ->where('status','!=',0)
-            ->paginate(70);
+        // $Enrollment = Enrollment::with(['student:first_name,middle_name,last_name,id,user_id','user'])
+        //     ->whereHas('student', function($q) use ($request) {
+        //         $q->where('first_name', 'like', '%'.$request->search_student.'%');
+        //         $q->orWhere('middle_name', 'like', '%'.$request->search_student.'%');
+        //         $q->orWhere('last_name', 'like', '%'.$request->search_student.'%');
+        //     })
+        //     ->select('enrollments.student_information_id', 'enrollments.status')
+        //     ->whereClassDetailsId($id)
+        //     ->where('status','!=',0)
+        //     ->paginate(70);
+
+        $Enrollment = Enrollment::join('student_informations', 'student_informations.id', '=', 'enrollments.student_information_id')
+                ->join('users', 'users.id', '=', 'student_informations.user_id')
+                ->where(function ($q) use ($request) {
+                    $q->where('first_name', 'like', '%'.$request->search_student.'%');
+                    $q->orWhere('middle_name', 'like', '%'.$request->search_student.'%');
+                    $q->orWhere('last_name', 'like', '%'.$request->search_student.'%');
+                })
+                ->selectRaw("
+                    student_informations.id,
+                    users.username,student_informations.user_id,
+                    enrollments.id,enrollments.student_information_id,enrollments.status
+                ")
+                ->where('class_details_id', $id)
+                ->orderByRaw('student_informations.last_name')
+                ->where('enrollments.status', 1)
+                ->paginate(70);
+
+        // return json_encode($Enrollment);
 
         if($request->ajax()){
             

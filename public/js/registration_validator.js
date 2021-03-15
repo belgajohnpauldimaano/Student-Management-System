@@ -18,6 +18,30 @@ $("#terms").change(function() {
     }                        
 });
 
+
+
+// $(document).on("change", "input[name='grade_level']", function (e) {
+$("input[name='grade_level']").change(function(e) {
+  e.preventDefault();
+    let gradeLvl =  $(this).val();
+  
+    $('#div-strand').empty();
+    if(gradeLvl == '11')
+    {
+      $.ajax({
+          url : "/fetch-strand",
+          type : 'POST',
+          data: {
+              '_token' : $('input[name=_token]').val()
+          },
+          success     : function (res) {
+            $('#div-strand').html(res);
+          }
+      });
+      
+    }
+});
+
 function readImageURL(input) {
     if (input.files && input.files[0]) {
         var reader = new FileReader();
@@ -30,25 +54,6 @@ function readImageURL(input) {
         reader.readAsDataURL(input.files[0]);
     }
 }
-
-$(document).on("change","input[name='grade_level']", function(e) {
-  e.preventDefault();
-    let gradeLvl =  $(this).val();
-  
-    $('#div-strand').empty();
-    if(gradeLvl == '11')
-    {
-      $.ajax({
-          url : "{{ route('fetch.strand') }}",
-          type : 'POST',
-          data : {_token : '{{ csrf_token() }}'},
-          success     : function (res) {
-            $('#div-strand').html(res);
-          }
-      });
-      
-    }
-});  
 $('body').on('submit', '#js-registration_form', function (e) {
     e.preventDefault();
     validate_form();    
@@ -312,31 +317,48 @@ validate_form();
                 $('#fb_acct').keyup(function (){
                     check_fb_acct();
                 })
+                $('#fb_acct').focusin(function (){
+                    check_fb_acct();
+                })
                 // 
                 $('#place_of_birth').keyup(function (){
+                    check_place_of_birth();
+                })
+                $('#place_of_birth').focusin(function (){
                     check_place_of_birth();
                 })
 
                 $('#age').keyup(function (){
                     check_input_age();
                 })
+                 $('#age').focusin(function (){
+                    check_input_age();
+                })
 
                 $('#religion').keyup(function (){
+                    check_religion();
+                })
+                $('#religion').focusin(function (){
                     check_religion();
                 })
 
                 $('#citizenship').keyup(function (){
                     check_citizenship();
                 })
+                $('#citizenship').focusin(function (){
+                    check_citizenship();
+                })
 
                 $('#school_name').keyup(function (){
+                    check_school_name();
+                })
+                $('#school_name').focusin(function (){
                     check_school_name();
                 })
 
                 $("input[name='school_type']").change(function (){
                     check_school_type();
                 })
-
                 $("input[name='school_type']").focusin(function (){
                     check_school_type();
                 })
@@ -344,28 +366,49 @@ validate_form();
                 $('#school_address').keyup(function (){
                     check_school_address();
                 })
+                $('#school_address').focusin(function (){
+                    check_school_address();
+                })
 
                 $('#last_sy_attended').keyup(function (){
+                    check_last_sy_attended();
+                })
+                $('#last_sy_attended').focusin(function (){
                     check_last_sy_attended();
                 })
 
                 $('#gwa').keyup(function (){
                     check_gwa();
                 })
+                $('#gwa').focusin(function (){
+                    check_gwa();
+                })
 
                 $('#father_occupation').keyup(function (){
+                    check_father_occupation();
+                })
+                $('#father_occupation').focusin(function (){
                     check_father_occupation();
                 })
 
                 $('#mother_occupation').keyup(function (){
                     check_mother_occupation();
                 })
+                $('#mother_occupation').focusin(function (){
+                    check_mother_occupation();
+                })
 
                 $('#father_fb_acct').keyup(function (){
                     check_father_fb_acct();
                 })
+                 $('#father_fb_acct').focusin(function (){
+                    check_father_fb_acct();
+                })
 
                 $('#mother_fb_acct').keyup(function (){
+                    check_mother_fb_acct();
+                })
+                 $('#mother_fb_acct').focusin(function (){
                     check_mother_fb_acct();
                 })
 
@@ -379,6 +422,11 @@ validate_form();
                 });
                 
                 $('#guardian_fb_acct').keyup(function (){
+                    check_guardian_fb_acct();
+                })
+
+                
+                $('#guardian_fb_acct').focusin(function (){
                     check_guardian_fb_acct();
                 })
                 
