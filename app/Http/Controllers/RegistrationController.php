@@ -113,7 +113,14 @@ class RegistrationController extends Controller
                 $StudentInformation->contact_number = $request->phone;
                 $StudentInformation->religion       = $request->religion;
                 $StudentInformation->citizenship    = $request->citizenship;
-                $StudentInformation->citizenship    = $request->citizenship;
+                $StudentInformation->fb_acct        = $request->fb_acct;
+                $StudentInformation->father_occupation = $request->father_occupation;
+                $StudentInformation->mother_occupation = $request->mother_occupation;
+                $StudentInformation->father_fb_acct = $request->father_fb_acct;
+                $StudentInformation->mother_fb_acct = $request->mother_fb_acct;
+                $StudentInformation->place_of_birth = $request->place_of_birth;
+                $StudentInformation->guardian_fb_acct = $request->guardian_fb_acct;
+                $StudentInformation->no_siblings = $request->no_siblings;
                 $StudentInformation->isEsc          = $request->is_esc;
                 $imageName = time().'.'.$request->student_img->getClientOriginalExtension();
                 $request->student_img->move(public_path('img/account/photo/'), $imageName);
@@ -130,10 +137,10 @@ class RegistrationController extends Controller
                 $StudentEducation->gw_average               = $request->gwa;
                 // $StudentEducation->incoming_grade           = $request->grade_level;
                 $StudentEducation->strand                   = $request->grade_level == 11 ? $request->strand : '0';
-                $transfer = 2;
+                $transfer = 1;
                 if($request->grade_level == 7 || $request->grade_level == 11)
                 {
-                    $transfer =1;
+                    $transfer = 2;
                 }
                 $StudentEducation->is_transferee           = $transfer;
                 $StudentEducation->save();

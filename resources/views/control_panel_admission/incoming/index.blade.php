@@ -110,9 +110,10 @@
         $('body').on('click', '.btn-approve', function (e) {
                 e.preventDefault();
                 var id = $(this).data('id');
-                alertify.defaults.theme.ok = "btn btn-primary btn-flat";
-                alertify.defaults.theme.cancel = "btn btn-danger btn-flat";
+                alertify.defaults.theme.ok = "btn btn-primary";
+                alertify.defaults.theme.cancel = "btn btn-danger";
                 alertify.confirm('Confirmation', 'Are you sure you want to approve?', function(){  
+                    loader_overlay();
                     $.ajax({
                         url         : "{{ route('admission.incoming.approve') }}",
                         type        : 'POST',
@@ -129,6 +130,7 @@
                             }
                             else
                             {
+                                loader_overlay();
                                 show_toast_alert({
                                     heading : 'Success',
                                     message : res.res_msg,
@@ -147,9 +149,10 @@
             $('body').on('click', '.btn-disapprove', function (e) {
                 e.preventDefault();
                 var id = $(this).data('id');
-                alertify.defaults.theme.ok = "btn btn-primary btn-flat";
-                alertify.defaults.theme.cancel = "btn btn-danger btn-flat";
+                alertify.defaults.theme.ok = "btn btn-primary";
+                alertify.defaults.theme.cancel = "btn btn-danger";
                 alertify.confirm('Confirmation', 'Are you sure you want to disapprove?', function(){  
+                    loader_overlay();
                     $.ajax({
                         url         : "{{ route('admission.incoming.disapprove') }}",
                         type        : 'POST',
@@ -171,6 +174,7 @@
                                     message : res.res_msg,
                                     type    : 'success'
                                 });
+                                loader_overlay();
                                 $('.js-modal_holder .modal').modal('hide');
                                 fetch_data();
                             }

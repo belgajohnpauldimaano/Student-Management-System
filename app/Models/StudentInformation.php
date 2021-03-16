@@ -46,6 +46,12 @@ class StudentInformation extends Model
     {        
         return $this->hasMany(TransactionDiscount::class, 'transaction_month_paid_id', 'id' );
     }
+    
+    public function incomingStudent()
+    {
+        return $this->hasOne(IncomingStudent::class, 'student_id', 'id');
+    }
+
 
     // public function student(){
     //     return $this->belongsTo(StudentInformation::class);

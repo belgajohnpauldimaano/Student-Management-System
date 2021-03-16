@@ -80,34 +80,41 @@ class IncomingStudentController extends Controller
         $IncomingStudent = NULL;
         if ($request->id)
         {
-            $IncomingStudent = StudentInformation::join('incoming_students','incoming_students.student_id', '=' ,'student_informations.id')    
-                ->join('users', 'users.id', '=', 'student_informations.user_id')                                   
-                ->selectRaw('
-                    CONCAT(student_informations.last_name, ", ", student_informations.first_name, " " ,  student_informations.middle_name) AS student_name,
-                    student_informations.birthdate,
-                    student_informations.gender,
-                    student_informations.photo,
-                    student_informations.guardian,
-                    student_informations.mother_name,
-                    student_informations.father_name,
-                    student_informations.email,
-                    student_informations.contact_number,
-                    student_informations.c_address,
-                    student_informations.p_address,
-                    student_informations.guardian,
-                    student_informations.status as student_informations_status,
-                    student_informations.id as student_id,
-                    incoming_students.grade_level_id, 
-                    incoming_students.student_type, 
-                    incoming_students.approval,
-                    users.username, 
-                    users.status as user_status
-                ')
-                ->where('student_informations.id', $request->id)
-                // ->where('student_informations.status', 0)
-                ->where('incoming_students.school_year_id', $SchoolYear->id)            
-                // ->where('users.status', 0)         
+            $IncomingStudent = StudentInformation::with(['incomingStudent','user'])
+                ->whereHas('incomingStudent', function($q) use ($SchoolYear) {
+                    $q->where('school_year_id', $SchoolYear->id);
+                })
+                ->whereId($request->id)
+                // ->where('status','!=',0)
                 ->first();
+            // $IncomingStudent = StudentInformation::join('incoming_students','incoming_students.student_id', '=' ,'student_informations.id')    
+            //     ->join('users', 'users.id', '=', 'student_informations.user_id')                                   
+            //     ->selectRaw('
+            //         CONCAT(student_informations.last_name, ", ", student_informations.first_name, " " ,  student_informations.middle_name) AS student_name,
+            //         student_informations.birthdate,
+            //         student_informations.gender,
+            //         student_informations.photo,
+            //         student_informations.guardian,
+            //         student_informations.mother_name,
+            //         student_informations.father_name,
+            //         student_informations.email,
+            //         student_informations.contact_number,
+            //         student_informations.c_address,
+            //         student_informations.p_address,
+            //         student_informations.guardian,
+            //         student_informations.status as student_informations_status,
+            //         student_informations.id as student_id,
+            //         incoming_students.grade_level_id, 
+            //         incoming_students.student_type, 
+            //         incoming_students.approval,
+            //         users.username, 
+            //         users.status as user_status
+            //     ')
+            //     ->where('student_informations.id', $request->id)
+            //     // ->where('student_informations.status', 0)
+            //     ->where('incoming_students.school_year_id', $SchoolYear->id)            
+            //     // ->where('users.status', 0)         
+            //     ->first();
         }
         return view('control_panel_admission.incoming.partials.modal_data', compact('IncomingStudent'))->render();
     }
