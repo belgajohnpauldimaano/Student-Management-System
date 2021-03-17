@@ -16,7 +16,16 @@
             @foreach ($SchoolYear as $data)
                 <tr>
                     <td>{{ $data->school_year }}</td>
-                    <td>{{ $data->apply_type }}</td>
+                    <td>
+                        @foreach (json_decode($data['apply_to'], true) as $key => $item)
+                            <div class="icheck-primary d-inline">
+                                <input type="checkbox" name="apply_to_{{ $item['apply_name'] }}" onclick="this.checked=!this.checked;" id="checkboxPrimary4" {{ $item['is_apply'] == true ? 'checked' : ''}}>
+                                <label for="checkboxPrimary4" class="text-capitalize">
+                                    {{ $item['apply_name'] }}
+                                </label>
+                            </div>
+                        @endforeach
+                    </td>
                     <td>
                         <span class="badge badge-{{ $data->current == 1 ? 'success' : 'danger' }}">
                             {{ $data->current == 1 ? 'Yes' : 'No' }}

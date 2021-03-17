@@ -22,14 +22,56 @@
                     </div>
                     <div class="form-group">
                         <label for="">Apply to</label>
-                        <select name="apply_to" id="apply_to" class="form-control">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <!-- checkbox -->
+                                
+                                <div class="form-group clearfix">
+                                    @if($SchoolYear)
+                                        @foreach (json_decode($SchoolYear['apply_to'], true) as $key => $item)
+                                            <div class="icheck-primary d-inline">
+                                                <input type="checkbox" name="apply_to_{{ $item['apply_name'] }}" id="checkboxPrimary{{ $key }}" {{ $item['is_apply'] == true ? 'checked' : ''}} value="1">
+                                                <label for="checkboxPrimary{{ $key }}" class="text-capitalize">
+                                                    {{ $item['apply_name'] }}
+                                                </label>
+                                            </div>
+                                        @endforeach
+                                    @else
+                                        <div class="icheck-primary d-inline">
+                                            <input type="checkbox" name="apply_to_admin" id="checkboxPrimary4" value="1">
+                                            <label for="checkboxPrimary4">
+                                                Admin
+                                            </label>
+                                        </div>
+                                        <div class="icheck-primary d-inline">
+                                            <input type="checkbox" name="apply_to_faculty" id="checkboxPrimary2" value="1">
+                                            <label for="checkboxPrimary2">
+                                                Faculty
+                                            </label>
+                                        </div>
+                                        <div class="icheck-primary d-inline">
+                                            <input type="checkbox" name="apply_to_finance" id="checkboxPrimary3" value="1">
+                                            <label for="checkboxPrimary3">
+                                                Finance
+                                            </label>
+                                        </div>
+                                        <div class="icheck-primary d-inline">
+                                            <input type="checkbox" name="apply_to_registration" id="checkboxPrimary1" value="1">
+                                            <label for="checkboxPrimary1">
+                                                Registration
+                                            </label>
+                                        </div>
+                                    @endif
+                                </div>
+                            </div>
+                        {{-- <select name="apply_to" id="apply_to" class="form-control">
                             <option value="1">Admin Only</option>
                             <option value="2">Admin | Registration for Enrollment</option>
                             <option value="3">Admin | Registration for Enrollment | Payment</option>
-                            {{-- <option value="4">Faculty Only</option> --}}
-                        </select>
-                        <div class="help-block text-red text-center" id="js-apply_to">
-                        </div>
+                            
+                        </select> --}}
+                        {{-- <div class="help-block text-red text-center" id="js-apply_to">
+                        </div> --}}
                     </div>
                     <div class="form-group">
                         <label for="">Set as Current School Year</label>

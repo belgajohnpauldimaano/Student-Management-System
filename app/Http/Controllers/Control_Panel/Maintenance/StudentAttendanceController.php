@@ -255,16 +255,11 @@ class StudentAttendanceController extends Controller
             if($request->id)
             {
                 $student_attendance = StudentAttendance::whereId($request->id)->first();
-                $student_attendance->junior_attendance = json_encode($attendance_data);
-                $student_attendance->s1_attendance = json_encode($s1_data);
-                $student_attendance->s2_attendance = json_encode($s2_data);
-                $student_attendance->school_year_id = $request->school_year;
-                $student_attendance->save();
-
-                return response()->json(['res_code' => 0, 'res_msg' => 'Attendance successfully saved.']);
             }
-
-            $student_attendance = new StudentAttendance();
+            else{
+                $student_attendance = new StudentAttendance();
+            }
+            
             $student_attendance->junior_attendance = json_encode($attendance_data);
             $student_attendance->s1_attendance = json_encode($s1_data);
             $student_attendance->s2_attendance = json_encode($s2_data);

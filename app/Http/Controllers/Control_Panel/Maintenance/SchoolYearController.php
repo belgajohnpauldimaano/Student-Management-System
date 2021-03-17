@@ -101,7 +101,7 @@ class SchoolYearController extends Controller
     {
         $rules = [
             'school_year'   => 'required',
-            'apply_to'      => 'required'
+            // 'apply_to'      => 'required'
         ];
 
         $Validator = \Validator($request->all(), $rules);
@@ -111,19 +111,39 @@ class SchoolYearController extends Controller
             return response()->json(['res_code' => 1, 'res_msg' => 'Please fill all required fields.', 'res_error_msg' => $Validator->getMessageBag()]);
         }
 
-        if ($request->id)
-        {
-            $SchoolYear = SchoolYear::where('id', $request->id)->first();
-            $SchoolYear->school_year = $request->school_year;
-            $SchoolYear->apply_to = $request->apply_to;
-            $SchoolYear->current = $request->current_sy;
-            $SchoolYear->save();
-            return response()->json(['res_code' => 0, 'res_msg' => 'Data successfully saved.']);
-        }
+        // foreach ($request->apply_to as $i => $d)
+        // {
+        //     $apply_name = ['Admin', 'Faculty', 'Finance' ,'Registration' ];
+        //     $apply_to[$i] = $d;
+        // }
 
-        $SchoolYear = new SchoolYear();
+        $apply_to = array(
+            [
+                "apply_name" => "admin",
+                "is_apply"   => $request->apply_to_admin == 1 ? true : false,
+            ],
+            [
+                "apply_name" => "faculty",
+                "is_apply"   => $request->apply_to_faculty == 1 ? true : false,
+            ],
+            [
+                "apply_name" => "finance",
+                "is_apply"   => $request->apply_to_finance == 1 ? true : false,
+            ],
+            [
+                "apply_name" => "registration",
+                "is_apply"   => $request->apply_to_registration == 1 ? true : false,
+            ]
+        );
+
+        // return json_encode($apply_to);
+        if ($request->id){
+            $SchoolYear = SchoolYear::where('id', $request->id)->first();
+        }else{
+            $SchoolYear = new SchoolYear();
+        }
         $SchoolYear->school_year = $request->school_year;
-        $SchoolYear->apply_to = $request->apply_to;
+        $SchoolYear->apply_to = json_encode($apply_to);
         $SchoolYear->current = $request->current_sy;
         $SchoolYear->save();
         return response()->json(['res_code' => 0, 'res_msg' => 'Data successfully saved.']);
