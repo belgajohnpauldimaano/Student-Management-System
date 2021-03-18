@@ -4,6 +4,19 @@ $('.btn--update-photo').click(function(){
 
 getSchoolYear();
 
+function getModal() {
+    
+    $('.btn-enroll').click(function (e) {
+        e.preventDefault();
+        
+        $('#js-registration').modal({
+            backdrop: 'static',
+            keyboard: false
+        })
+    })
+}
+
+
 function getSchoolYear()
 {
     $.ajax({
@@ -44,17 +57,6 @@ function getSchoolYear()
 }
 
 
-function getModal() {
-    
-    $('.btn-enroll').click(function (e) {
-        e.preventDefault();
-        
-        $('#js-registration').modal({
-            backdrop: 'static',
-            keyboard: false
-        })
-    })
-}
 
 $('#birthday').datepicker({
     autoclose: true

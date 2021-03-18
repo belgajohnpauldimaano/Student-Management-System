@@ -118,6 +118,7 @@ h6 {
 #header #logo h1 a:hover {
   color: #fff;
   padding-left: 10px;
+  text-decoration: none;
   border-left: 4px solid #ff0101;
 }
 
@@ -415,7 +416,7 @@ h6 {
 /* Nav Meu Styling */
 .nav-menu a {
   padding: 0 8px 10px 8px;
-  text-decoration: none;
+  text-decoration: none !important;
   display: inline-block;
   color: #fff;
   font-family: "Montserrat", sans-serif;
@@ -1767,4 +1768,8 @@ Center vertical */
   -ms-border-radius: 50%;
   -o-border-radius: 50%;
   border-radius: 50%;
+}
+
+.btn-faq {
+  color: #007bff !important;
 }

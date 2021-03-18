@@ -35,11 +35,10 @@
     <!-- Global site tag (gtag.js) - Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-GRDQMJRGKQ"></script>
     <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-
-    gtag('config', 'G-GRDQMJRGKQ');
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-GRDQMJRGKQ');
     </script>
 </head>
 
@@ -47,9 +46,6 @@
     <div id="preloader" class="d-none">
         <img class="preloader" src="{{ asset('img/loader.gif')}}" alt="">
     </div>
-    @php
-        $registration = App\Models\RegistrationButton::whereId(1)->first()->is_enabled;
-    @endphp
 
     <header id="header">
         <div class="container-fluid">
@@ -72,13 +68,7 @@
                             <li><a href="{{ route('administration_offices') }}">Administration & Offices</a></li>
                             <li><a href="{{ route('faculty_staff') }}">Faculty and Staff</a></li>
                         </ul>
-                    </li>
-                    {{-- <li class="menu-has-children"><a href="#">Academic</a>
-                        <ul>
-                            <li><a href="{{ route('junior_high') }}">Junior High</a></li>
-                            <li><a href="{{ route('senior_high') }}">Senior High</a></li>
-                        </ul>
-                    </li> --}}
+                    </li>                    
                     <li class="menu-has-children"><a href="#">Students</a>
                         <ul>
                             <li><a href="{{ route('students_organizations') }}">Students Organizations</a></li>
@@ -87,32 +77,17 @@
                             <li><a href="{{ route('students_council') }}">Students Council</a></li>
                             <li><a href="{{ route('students_handbook') }}">Students Handbook</a></li>
                         </ul>
-                    </li>
-                    {{-- <li class="menu-has-children"><a href="#">Facilities</a>
-                        <ul>
-                            <li><a href="#">Alumni Association</a></li>
-                            <li><a href="#">Alumni Achievers</a></li>
-                            <li><a href="#">Stay Connected</a></li>
-                        </ul>
-                    </li> --}}
+                    </li>                    
                     <li class="menu"><a href="{{ route('facilities') }}">Facilities</a></li>
-                    {{-- <li class="menu-has-children"><a href="#">Alumni</a>
-                        <ul>
-                            <li><a href="#">Alumni Association</a></li>
-                            <li><a href="#">Alumni Achievers</a></li>
-                            <li><a href="#">Stay Connected</a></li>
-                        </ul>
-                    </li> --}}
-
                     <li class="menu-has-children"><a href="#">FAQs</a>
                         <ul>
                             <li><a href="{{route('pages.faqs')}}">Frequently Asked Questions</a></li>
                             <li><a href="{{ route('pages.faqs_on_distance_learning') }}">Frequently Asked Questions on Distance Learning</a></li>
                         </ul>
                     </li>
-                    @if($registration == 1)
+                    @if($data == 1)
                         <li class="menu">
-                            <a class="btn-enroll" data-toggle="modal" data-target="#js-registration"  href="#">
+                            <a class="btn-enroll" data-toggle="modal" data-target="#js-registration"  href="#" data-toggle="modal" data-backdrop="static" data-keyboard="false">
                                 <i class="fas fa-mouse-pointer"></i> Registration
                             </a>
                         </li>

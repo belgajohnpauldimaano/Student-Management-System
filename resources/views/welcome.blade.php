@@ -96,7 +96,7 @@
                 </header> --}}
                 <div class="row about-cols">
                     <div class="col-md-4 wow fadeInUp">
-                        <div class="about-col" style="height: 26.5em !important">
+                        <div class="about-col" style="height: 30em !important">
                             <div class="img">
                                 <img src="{{ asset('img/mission.jpg') }}" alt="" class="img-fluid">
                                 <div class="icon"><i class="ion-ios-speedometer-outline"></i></div>
@@ -111,7 +111,7 @@
                         </div>
                     </div>
                     <div class="col-md-4 wow fadeInUp" data-wow-delay="0.1s">
-                        <div class="about-col" style="height: 26.5em !important">
+                        <div class="about-col" style="height: 30em !important">
                             <div class="img">
                                 <img src="{{ asset('img/history.jpg') }}" alt="" class="img-fluid">
                                 <div class="icon"><i class="ion-ios-list-outline"></i></div>
@@ -123,7 +123,7 @@
                         </div>
                     </div>
                     <div class="col-md-4 wow fadeInUp" data-wow-delay="0.2s">
-                        <div class="about-col" style="height: 26.5em !important">
+                        <div class="about-col" style="height: 30em !important">
                             <div class="img">
                                 <img src="{{ asset('img/vision.jpg') }}" alt="" class="img-fluid">
                                 <div class="icon"><i class="ion-ios-eye-outline"></i></div>
