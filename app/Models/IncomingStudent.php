@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 class IncomingStudent extends Model
 {
     use HasSchoolYear;
+    
     public function student()
     {
         return $this->hasOne(StudentInformation::class, 'id', 'student_id');
@@ -18,5 +19,13 @@ class IncomingStudent extends Model
     {
         return $this->hasOne(StudentInformation::class, 'id','student_id');
     }
+
+    protected $fillable = [
+        'student_id', 
+        'school_year_id', 
+        'grade_level_id',
+        'student_type',
+        'approval',
+    ];
 
 }

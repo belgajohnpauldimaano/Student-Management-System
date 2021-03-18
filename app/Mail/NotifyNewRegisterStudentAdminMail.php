@@ -18,7 +18,7 @@ class NotifyNewRegisterStudentAdminMail extends Mailable
      *
      * @return void
      */
-    public function __construct(IncomingStudent $payload)
+    public function __construct($payload)
     {
         $this->payload = $NewStudent;
     }
@@ -30,6 +30,6 @@ class NotifyNewRegisterStudentAdminMail extends Mailable
      */
     public function build()
     {
-        return $this->view('mails.newly_registered', compact('payload'))->subject('Account Activation');
+        return $this->view('mails.newly_registered')->subject('Account Activation');
     }
 }

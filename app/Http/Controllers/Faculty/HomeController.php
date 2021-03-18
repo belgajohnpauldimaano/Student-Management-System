@@ -12,14 +12,7 @@ class HomeController extends Controller
 {
     public function index(){
         
-        return view('control_panel_faculty.home.index',
-            compact(
-                'StudentInformation_tagged_student',
-                'StudentInformation_tagged_student_male',
-                'StudentInformation_tagged_student_female',
-                'ClassSubjectDetail_count','SchoolYear'
-                )
-        );
+        return view('control_panel_faculty.home.index');
     }
 
     public function modal_data(Request $request){

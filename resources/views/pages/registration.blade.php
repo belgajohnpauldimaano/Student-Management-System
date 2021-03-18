@@ -10,38 +10,15 @@
           </button>
         </div>
         <form id="js-registration_form" method="post">
-            {{-- {{ csrf_field() }}
-            @csrf --}}
-            <input type="hidden" name="_token" value="{{csrf_token()}}">
+            {{ csrf_field() }}
             <div class="modal-body" style="color: black!important">
               
               <div class="form-row mb-5 ">
                     <div class="col-lg-8 d-flex flex-column justify-content-center align-items-stretch  order-2 order-lg-1">
                     {{-- <div class="col-md-8"> --}}
                         <div class="form-group input-sy">
-                            <h4 for="sy"><small>SY:</small> <b>
-                                @php
-                                    use App\Models\SchoolYear;
-                                    $school_year_list =  SchoolYear::where('status', 1)->orderby('id', 'desc')->get();
-                                    
-                                    $school_year =  SchoolYear::where('apply_to','!=',1)->first();
-                                    try {
-                                        echo $school_year->school_year;
-                                    } catch (\Throwable $th) {
-                                        echo '';
-                                    }
-                                @endphp
-                                </b>
-                            </h4>
-                            <input type="hidden" class="form-control form-control-sm" id="sy" name="sy"
-                            value="
-                            @php 
-                                try {
-                                    echo $school_year->id;
-                                } catch (\Throwable $th) {
-                                    echo '';
-                                }
-                            @endphp">
+                            <div id="js_sy"></div>
+                            <input type="hidden" class="form-control form-control-sm" id="sy" name="sy" value="">
                             <div class="help-block text-red text-left" id="js-sy">
                             </div>
                         </div>
@@ -247,12 +224,6 @@
                     <div class="form-group col-md-4 input-last_sy_attended">
                         <label for="">Last School Year Attended:</label>
                         <select name="last_sy_attended" id="last_sy_attended" class="form-control form-control-sm">
-                            @foreach ($school_year_list as $sy)
-                                <option>{{ $sy->school_year }}</option>
-                            @endforeach
-                            @for ( $x = 8 -1 ; $x >= 0; $x--)
-                               <option>201{{ $x }}-201{{ $x+1 }}</option>
-                            @endfor
                         </select>
                         <div class="help-block text-red text-left" id="js-last_sy_attended">
                         </div>
@@ -346,7 +317,7 @@
                         <label for="">No. of your siblings (do not include yourself)</label>
                         <select name="no_siblings" id="no_siblings" class="form-control form-control-sm">
                             <option value="0">Select No. of your siblings</option>
-                            @for ( $x = 1 ; $x < 15; $x++)
+                            @for ( $x = 0 ; $x < 15; $x++)
                                <option>{{ $x }}</option>
                             @endfor
                         </select>

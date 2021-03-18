@@ -81,13 +81,16 @@
     <!-- Bootstrap 4 -->
     {{-- <script src="{{ asset('cms-new/plugins/jquery/jquery.min.js') }}"></script>
     <script src="{{ asset('cms-new/plugins/bootstrap/js/bootstrap.bundle.min.js') }}"></script> --}}
+    
     <!-- jquery-validation -->
     <script src="{{ asset('cms-new/plugins/jquery-validation/jquery.validate.min.js') }}"></script>
     <script src="{{ asset('cms-new/plugins/jquery-validation/additional-methods.min.js') }}"></script>
-    <script src="{{ asset('js/registration_validator.js') }}"></script>
+    <script src="{{ asset('js/app.js') }}"></script>
+    <script src="{{ asset('js/cryptojs-aes.min.js') }}"></script>
+    <script src="{{ asset('js/cryptojs-aes-format.js') }}"></script>
     
     {{-- <script src="https://cdn.jsdelivr.net/npm/signature_pad@2.3.2/dist/signature_pad.min.js"></script> --}}
-
+    
     @yield('scripts')
     
     <script>

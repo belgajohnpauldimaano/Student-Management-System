@@ -14,9 +14,6 @@ use App\Models\StudentInformation;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Mail;
-use App\Mail\NotifyNewRegisterStudentMail;
-use App\Mail\NotifyNewRegisterStudentAdminMail;
 
 class RegistrationController extends Controller
 {
@@ -37,7 +34,7 @@ class RegistrationController extends Controller
             'gender'            => 'required',            
             'mother_name'       => 'required',
             'father_name'       => 'required',
-            'student_img'       => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'student_img'       => 'required|image|mimes:jpg,png,jpeg,gif,svg|max:2048',
             'is_esc'            => 'required',
             'religion'          => 'required',
             'citizenship'       => 'required',

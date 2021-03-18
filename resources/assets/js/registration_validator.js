@@ -126,7 +126,10 @@ $('body').on('submit', '#js-registration_form', function (e) {
         )
         {
             $.ajax({
-                    type        : 'POST',
+                    type: 'POST',
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
                     url         : "/registration/save",
                     data        : formData,
                     processData : false,
@@ -135,10 +138,6 @@ $('body').on('submit', '#js-registration_form', function (e) {
                         $('.help-block').html('');
                         if (res.res_code == 1)
                         {
-                            for (var err in res.res_error_msg)
-                            {
-                                $('#js-' + err).html('<code> '+ res.res_error_msg[err] +' </code>');
-                            }
                             alertify.alert('<i style="color: red" class="fas fa-exclamation-triangle fa-lg"></i> Reminder',
                                 ''+res.res_msg+'', function(){
                                     $('.input-lrn').addClass('has-error');
@@ -161,10 +160,6 @@ $('body').on('submit', '#js-registration_form', function (e) {
                 }); 
         }else{
 
-            for (var err in res.res_error_msg)
-                            {
-                                $('#js-' + err).html('<code> '+ res.res_error_msg[err] +' </code>');
-                            }
                 alertify.alert('<i style="color: red" class="fas fa-exclamation-circle"></i> Error',"Please fill out all fields! Thank you", function(){   
                     check_lrn();  
                     check_regtype();  

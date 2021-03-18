@@ -10,6 +10,7 @@
     "require": {
         "php": ">=7.1.3",
         "barryvdh/laravel-dompdf": "^0.8.2",
+        "brainfoolong/cryptojs-aes-php": "^2.1",
         "fideloper/proxy": "~4.0",
         "guzzlehttp/guzzle": "~6.0",
         "laravel/framework": "5.8.*",
