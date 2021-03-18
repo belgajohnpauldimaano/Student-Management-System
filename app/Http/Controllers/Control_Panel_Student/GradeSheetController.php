@@ -124,232 +124,294 @@ class GradeSheetController extends Controller
                 return '<div class="box-body"><div class="row"><table class="table"><tbody><tr><th style="text-align:center"><img src="https://cdn.iconscout.com/icon/free/png-256/data-not-found-1965034-1662569.png" alt="no data"/><br/>Sorry, there is no data found.</th></tr></tbody></table></div></div>';
             }            
 
-            if($has_schoolyear->id){        
-                if ($StudentInformation) 
-                {
-                    try{
-                        $school_year = SchoolYear::whereId($request->school_year)->first();
+            try{
+                if($has_schoolyear->id){        
+                    if ($StudentInformation) 
+                    {
+                        try{
+                            $school_year = SchoolYear::whereId($request->school_year)->first();
 
-                        if('2020-2021' == $school_year->school_year)
-                        {
-                            
-                            $table_header1 = [
-                                ['key' => 'Aug',],
-                                ['key' => 'Sep',],
-                                ['key' => 'Oct',],
-                                ['key' => 'Nov',],
-                                ['key' => 'Dec',],
-                                ['key' => 'total']
-                            ];
-                            
-                            $table_header2 = [
-                                ['key' => 'Jan',],
-                                ['key' => 'Feb',],
-                                ['key' => 'Mar',],
-                                ['key' => 'Apr',],
-                                ['key' => 'total']
-                            ]; 
-                        
-                            $table_header = [
-                                ['key' => 'Aug',],
-                                ['key' => 'Sep',],
-                                ['key' => 'Oct',],
-                                ['key' => 'Nov',],
-                                ['key' => 'Dec',],
-                                ['key' => 'Jan',],
-                                ['key' => 'Feb',],
-                                ['key' => 'Mar',],
-                                ['key' => 'Apr',],
-                                ['key' => 'total'],
-                            ];      
-                            
-                        }
-                        else
-                        {
-                            
-                            $table_header1 = [
-                                ['key' => 'Jun',],
-                                ['key' => 'Jul',],
-                                ['key' => 'Aug',],
-                                ['key' => 'Sep',],
-                                ['key' => 'Oct',],
-                                ['key' => 'total'],
-                            ];      
-                            
-                            $table_header2 = [
-                                ['key' => 'Nov',],
-                                ['key' => 'Dec',],
-                                ['key' => 'Jan',],
-                                ['key' => 'Feb',],
-                                ['key' => 'Mar',],
-                                ['key' => 'Apr',],
-                                ['key' => 'total'],
-                            ];      
-                               
-                            $table_header = [
-                                ['key' => 'Jun',],
-                                ['key' => 'Jul',],
-                                ['key' => 'Aug',],
-                                ['key' => 'Sep',],
-                                ['key' => 'Oct',],
-                                ['key' => 'Nov',],
-                                ['key' => 'Dec',],
-                                ['key' => 'Jan',],
-                                ['key' => 'Feb',],
-                                ['key' => 'Mar',],
-                                ['key' => 'Apr',],
-                                ['key' => 'total'],
-                            ];      
-                            
-                        }
-
-                        $ClassDetail = [];
-                        if($has_schoolyear->classDetail->grade_level < 11)
-                        {
-                            $Enrollment = $this->enrollment($request, $has_schoolyear, $sem = null);
-                            
-                            // return json_encode($Enrollment);
-                            if ($Enrollment)
-                            {       
-                                $ClassDetail = $this->classDetail($Enrollment);
-                            }
-                            // return json_encode($Enrollment[0]->attendance);
-
-                            try {
-                                if ($Enrollment[0]->attendance) {
-                                    $attendance_data = json_decode($Enrollment[0]->attendance);
-                                    $student_attendance = [
-                                        'attendance_data'       => $attendance_data,
-                                        'table_header'          => $table_header,
-                                        'days_of_school_total'  => array_sum($attendance_data->days_of_school),
-                                        'days_present_total'    => array_sum($attendance_data->days_present),
-                                        'days_absent_total'     => array_sum($attendance_data->days_absent),
-                                        'times_tardy_total'     => array_sum($attendance_data->times_tardy),
-                                    ];
-                                }
-                            } catch (\Throwable $th) {
-                                $student_attendance = '';
-                            }
-
-                            $grade_status = $Enrollment[0]->grade_status;
-                        
-                            $GradeSheetData = [];
-                            $grade_level = 1;
-                            $sub_total = 0;
-                            $general_avg = 0;
-                            $subj_count = 0;
-                            
-                            // return json_encode(['Enrollment' => $Enrollment,'StudentInformation' => $StudentInformation, 'SchoolYear' => $SchoolYear]);
-                            if($StudentInformation && count($Enrollment)>0)
+                            if('2020-2021' == $school_year->school_year)
                             {
-                                if ($has_schoolyear->classDetail->grade_level < 11)
-                                {
-                                    $StudentEnrolledSubject = StudentEnrolledSubject::where('enrollments_id', $Enrollment[0]->enrollment_id)
-                                        ->get();
-                                    $grade_level = $Enrollment[0]->grade_level;
-                                    // return json_encode(['StudentEnrolledSubject'=> $StudentEnrolledSubject]);
-
-                                        $GradeSheetData = $Enrollment->map(function ($item, $key) use ($StudentEnrolledSubject, $grade_level, $grade_status) {
-                                            // $grade = $StudentEnrolledSubject->firstWhere('subject_id', $item->subject_id);
-                                            $grade = $StudentEnrolledSubject->firstWhere('class_subject_details_id', $item->class_subject_details_id);
-                                            $sum = 0;
-                                            $first = $grade->fir_g > 0 ? $grade->fir_g : 0;
-                                            $second = $grade->sec_g > 0 ? $grade->sec_g : 0;
-                                            $third = $grade->thi_g > 0 ? $grade->thi_g : 0;
-                                            $fourth = $grade->fou_g > 0 ? $grade->fou_g : 0;
-                                            
-                                            
-                                            $sum += $grade->fir_g > 0 ? $grade->fir_g : 0;
-                                            $sum += $grade->sec_g > 0 ? $grade->sec_g : 0;
-                                            $sum += $grade->thi_g > 0 ? $grade->thi_g : 0;
-                                            $sum += $grade->fou_g > 0 ? $grade->fou_g : 0;
-                                            
-                    
-                                            $divisor = 0;
-                                            $divisor += $first > 0 ? 1 : 0;
-                                            $divisor += $second > 0 ? 1 : 0;
-                                            $divisor += $third > 0 ? 1 : 0;
-                                            $divisor += $fourth > 0 ? 1 : 0;
-                    
-                                            $final = 0;
-                                            if ($divisor != 0) 
-                                            {
-                                                $final = $sum / $divisor;
-                                            }
-
-                                            return $data = $this->returnData($item, $grade, $final, $grade_status, $divisor, $subject=null);
-                                            
-                                        });
-                                        for ($i=0; $i<count($GradeSheetData); $i++)
-                                        {
-                                            if ($GradeSheetData[$i]['final_g'] > 0 && $GradeSheetData[$i]['grade_status'] == 2) 
-                                            {
-                                                $subj_count++;
-                                                $sub_total +=  $GradeSheetData[$i]['final_g'];
-                                            }
-                                        }
-                                        if ($subj_count > 0) 
-                                        {
-                                            $general_avg = $sub_total / $subj_count;
-                                        }
-                                }
+                                
+                                $table_header1 = [
+                                    ['key' => 'Aug',],
+                                    ['key' => 'Sep',],
+                                    ['key' => 'Oct',],
+                                    ['key' => 'Nov',],
+                                    ['key' => 'Dec',],
+                                    ['key' => 'total']
+                                ];
+                                
+                                $table_header2 = [
+                                    ['key' => 'Jan',],
+                                    ['key' => 'Feb',],
+                                    ['key' => 'Mar',],
+                                    ['key' => 'Apr',],
+                                    ['key' => 'total']
+                                ]; 
+                            
+                                $table_header = [
+                                    ['key' => 'Aug',],
+                                    ['key' => 'Sep',],
+                                    ['key' => 'Oct',],
+                                    ['key' => 'Nov',],
+                                    ['key' => 'Dec',],
+                                    ['key' => 'Jan',],
+                                    ['key' => 'Feb',],
+                                    ['key' => 'Mar',],
+                                    ['key' => 'Apr',],
+                                    ['key' => 'total'],
+                                ];      
+                                
+                            }
+                            else
+                            {
+                                
+                                $table_header1 = [
+                                    ['key' => 'Jun',],
+                                    ['key' => 'Jul',],
+                                    ['key' => 'Aug',],
+                                    ['key' => 'Sep',],
+                                    ['key' => 'Oct',],
+                                    ['key' => 'total'],
+                                ];      
+                                
+                                $table_header2 = [
+                                    ['key' => 'Nov',],
+                                    ['key' => 'Dec',],
+                                    ['key' => 'Jan',],
+                                    ['key' => 'Feb',],
+                                    ['key' => 'Mar',],
+                                    ['key' => 'Apr',],
+                                    ['key' => 'total'],
+                                ];      
+                                
+                                $table_header = [
+                                    ['key' => 'Jun',],
+                                    ['key' => 'Jul',],
+                                    ['key' => 'Aug',],
+                                    ['key' => 'Sep',],
+                                    ['key' => 'Oct',],
+                                    ['key' => 'Nov',],
+                                    ['key' => 'Dec',],
+                                    ['key' => 'Jan',],
+                                    ['key' => 'Feb',],
+                                    ['key' => 'Mar',],
+                                    ['key' => 'Apr',],
+                                    ['key' => 'total'],
+                                ];      
+                                
                             }
 
-                            $GradeSheetData = json_decode(json_encode($GradeSheetData));
-                        }
-                        
-                        if($has_schoolyear->classDetail->grade_level > 10){
-                                        
-                                // $Enrollment_first_sem = 
-                                $Enrollment_first_sem = $this->enrollment($request, $has_schoolyear, $sem = 1);
-
-                                if ($Enrollment_first_sem)
-                                {
-                                    $Enrollment = $Enrollment_first_sem;
+                            $ClassDetail = [];
+                            if($has_schoolyear->classDetail->grade_level < 11)
+                            {
+                                $Enrollment = $this->enrollment($request, $has_schoolyear, $sem = null);
+                                
+                                // return json_encode($Enrollment);
+                                if ($Enrollment)
+                                {       
                                     $ClassDetail = $this->classDetail($Enrollment);
                                 }
-                                // return json_encode($Enrollment_first_sem);
-                                $grade_status = $Enrollment_first_sem[0]->grade_status;
+                                // return json_encode($Enrollment[0]->attendance);
+
                                 try {
-                                    if($Enrollment_first_sem[0]){
-                                        $attendance_data1 = json_decode($Enrollment_first_sem[0]->attendance_first);
-                                        $student_attendance1 = [
-                                            'attendance_data'   => $attendance_data1,
-                                            'table_header'      => $table_header1,
-                                            'days_of_school_total' => array_sum($attendance_data1->days_of_school),
-                                            'days_present_total' => array_sum($attendance_data1->days_present),
-                                            'days_absent_total' => array_sum($attendance_data1->days_absent),
-                                            'times_tardy_total' => array_sum($attendance_data1->times_tardy),
+                                    if ($Enrollment[0]->attendance) {
+                                        $attendance_data = json_decode($Enrollment[0]->attendance);
+                                        $student_attendance = [
+                                            'attendance_data'       => $attendance_data,
+                                            'table_header'          => $table_header,
+                                            'days_of_school_total'  => array_sum($attendance_data->days_of_school),
+                                            'days_present_total'    => array_sum($attendance_data->days_present),
+                                            'days_absent_total'     => array_sum($attendance_data->days_absent),
+                                            'times_tardy_total'     => array_sum($attendance_data->times_tardy),
                                         ];
-                                    }else{
-                                        $attendance_data1 = '';
                                     }
                                 } catch (\Throwable $th) {
-                                    $attendance_data1 = '';
+                                    $student_attendance = '';
                                 }
 
-                                $StudentEnrolledSubject = StudentEnrolledSubject::where('enrollments_id', $Enrollment_first_sem[0]->enrollment_id)
-                                    ->where('sem', 1)
-                                    ->get();
+                                $grade_status = $Enrollment[0]->grade_status;
+                            
+                                $GradeSheetData = [];
+                                $grade_level = 1;
+                                $sub_total = 0;
+                                $general_avg = 0;
+                                $subj_count = 0;
+                                
+                                // return json_encode(['Enrollment' => $Enrollment,'StudentInformation' => $StudentInformation, 'SchoolYear' => $SchoolYear]);
+                                if($StudentInformation && count($Enrollment)>0)
+                                {
+                                    if ($has_schoolyear->classDetail->grade_level < 11)
+                                    {
+                                        $StudentEnrolledSubject = StudentEnrolledSubject::where('enrollments_id', $Enrollment[0]->enrollment_id)
+                                            ->get();
+                                        $grade_level = $Enrollment[0]->grade_level;
+                                        // return json_encode(['StudentEnrolledSubject'=> $StudentEnrolledSubject]);
 
-                                // return json_encode($StudentEnrolledSubject);
+                                            $GradeSheetData = $Enrollment->map(function ($item, $key) use ($StudentEnrolledSubject, $grade_level, $grade_status) {
+                                                // $grade = $StudentEnrolledSubject->firstWhere('subject_id', $item->subject_id);
+                                                $grade = $StudentEnrolledSubject->firstWhere('class_subject_details_id', $item->class_subject_details_id);
+                                                $sum = 0;
+                                                $first = $grade->fir_g > 0 ? $grade->fir_g : 0;
+                                                $second = $grade->sec_g > 0 ? $grade->sec_g : 0;
+                                                $third = $grade->thi_g > 0 ? $grade->thi_g : 0;
+                                                $fourth = $grade->fou_g > 0 ? $grade->fou_g : 0;
+                                                
+                                                
+                                                $sum += $grade->fir_g > 0 ? $grade->fir_g : 0;
+                                                $sum += $grade->sec_g > 0 ? $grade->sec_g : 0;
+                                                $sum += $grade->thi_g > 0 ? $grade->thi_g : 0;
+                                                $sum += $grade->fou_g > 0 ? $grade->fou_g : 0;
+                                                
+                        
+                                                $divisor = 0;
+                                                $divisor += $first > 0 ? 1 : 0;
+                                                $divisor += $second > 0 ? 1 : 0;
+                                                $divisor += $third > 0 ? 1 : 0;
+                                                $divisor += $fourth > 0 ? 1 : 0;
+                        
+                                                $final = 0;
+                                                if ($divisor != 0) 
+                                                {
+                                                    $final = $sum / $divisor;
+                                                }
+
+                                                return $data = $this->returnData($item, $grade, $final, $grade_status, $divisor, $subject=null);
+                                                
+                                            });
+                                            for ($i=0; $i<count($GradeSheetData); $i++)
+                                            {
+                                                if ($GradeSheetData[$i]['final_g'] > 0 && $GradeSheetData[$i]['grade_status'] == 2) 
+                                                {
+                                                    $subj_count++;
+                                                    $sub_total +=  $GradeSheetData[$i]['final_g'];
+                                                }
+                                            }
+                                            if ($subj_count > 0) 
+                                            {
+                                                $general_avg = $sub_total / $subj_count;
+                                            }
+                                    }
+                                }
+
+                                $GradeSheetData = json_decode(json_encode($GradeSheetData));
+                            }
+                            
+                            if($has_schoolyear->classDetail->grade_level > 10){
+                                            
+                                    // $Enrollment_first_sem = 
+                                    $Enrollment_first_sem = $this->enrollment($request, $has_schoolyear, $sem = 1);
+
+                                    if ($Enrollment_first_sem)
+                                    {
+                                        $Enrollment = $Enrollment_first_sem;
+                                        $ClassDetail = $this->classDetail($Enrollment);
+                                    }
+                                    // return json_encode($Enrollment_first_sem);
+                                    $grade_status = $Enrollment_first_sem[0]->grade_status;
+                                    try {
+                                        if($Enrollment_first_sem[0]){
+                                            $attendance_data1 = json_decode($Enrollment_first_sem[0]->attendance_first);
+                                            $student_attendance1 = [
+                                                'attendance_data'   => $attendance_data1,
+                                                'table_header'      => $table_header1,
+                                                'days_of_school_total' => array_sum($attendance_data1->days_of_school),
+                                                'days_present_total' => array_sum($attendance_data1->days_present),
+                                                'days_absent_total' => array_sum($attendance_data1->days_absent),
+                                                'times_tardy_total' => array_sum($attendance_data1->times_tardy),
+                                            ];
+                                        }else{
+                                            $attendance_data1 = '';
+                                        }
+                                    } catch (\Throwable $th) {
+                                        $attendance_data1 = '';
+                                    }
+
+                                    $StudentEnrolledSubject = StudentEnrolledSubject::where('enrollments_id', $Enrollment_first_sem[0]->enrollment_id)
+                                        ->where('sem', 1)
+                                        ->get();
+
+                                    // return json_encode($StudentEnrolledSubject);
+                                    
+
+                                    $Enrollment_first_sem = $Enrollment_first_sem->map(function($item, $key) use ($StudentEnrolledSubject, $grade_status){
+                    
+                                        // $grade = $StudentEnrolledSubject->firstWhere('subject_id', $item->subject_id);
+                                        $grade = $StudentEnrolledSubject->where('subject_id', $item->subject_id)->where('sem', 1)->first();
+                                        
+                                        // return json_encode($grade);
+                                        $subject = ClassSubjectDetail::where('id', $grade->class_subject_details_id)                                        
+                                            ->orderBY('class_subject_order', 'ASC')->first();
+                                        $sum = 0;
+
+                                        $first = $grade->fir_g > 0 ? $grade->fir_g : 0;
+                                        $second = $grade->sec_g > 0 ? $grade->sec_g : 0;
+
+                                        $sum += $grade->fir_g > 0 ? $grade->fir_g : 0;
+                                        $sum += $grade->sec_g > 0 ? $grade->sec_g : 0;
+                                    
+                                        $divisor = 0;
+                                        $divisor += $first > 0 ? 1 : 0;
+                                        $divisor += $second > 0 ? 1 : 0;
+                                        
+                                        $final = 0;
+                                        if ($divisor != 0) 
+                                        {
+                                            $final = $sum / $divisor;
+                                        }
+                                        
+                                        return $data = $this->returnData($item, $grade, $final, $grade_status, $divisor, $subject);
+                                    });
+
+                                // return json_encode($Enrollment_first_sem);
+                                
+                                $Enrollment_secondsem = $this->enrollment($request, $has_schoolyear, $sem = 2);
                                 
 
-                                $Enrollment_first_sem = $Enrollment_first_sem->map(function($item, $key) use ($StudentEnrolledSubject, $grade_status){
+                                $grade_status = $Enrollment_secondsem[0]->grade_status;
+
+                                try {
+                                    if($Enrollment_secondsem[0]){
+                                        $attendance_data2 = json_decode($Enrollment_secondsem[0]->attendance_second);
+                                        $student_attendance2 = [
+                                            'attendance_data'   => $attendance_data2,
+                                            'table_header'      => $table_header2,
+                                            'days_of_school_total' => array_sum($attendance_data2->days_of_school),
+                                            'days_present_total' => array_sum($attendance_data2->days_present),
+                                            'days_absent_total' => array_sum($attendance_data2->days_absent),
+                                            'times_tardy_total' => array_sum($attendance_data2->times_tardy),
+                                        ];
+                                    }else{
+                                        $attendance_data2 = '';
+                                    }
+                                } catch (\Throwable $th) {
+                                    $attendance_data2 = '';
+                                }
+
+                                $StudentEnrolledSubject = StudentEnrolledSubject::where('enrollments_id', $Enrollment_secondsem[0]->enrollment_id)
+                                    ->get();
+                                        
+                                // return json_encode($StudentEnrolledSubject->class_subject_details_id);
+
+                                $Enrollment_secondsem = $Enrollment_secondsem->map(function($item, $key) use ($StudentEnrolledSubject, $grade_status){
                 
-                                    // $grade = $StudentEnrolledSubject->firstWhere('subject_id', $item->subject_id);
-                                    $grade = $StudentEnrolledSubject->where('subject_id', $item->subject_id)->where('sem', 1)->first();
+                                    // $grade = $StudentEnrolledSubject->firstWhere('subject_id', $item->subject_id)
+                                    // ->where('class_subject_details_id', $item->class_subject_details_id);
+                                    $grade = $StudentEnrolledSubject->where('class_subject_details_id', $item->class_subject_details_id)->first();                              
                                     
-                                    // return json_encode($grade);
-                                    $subject = ClassSubjectDetail::where('id', $grade->class_subject_details_id)                                        
-                                        ->orderBY('class_subject_order', 'ASC')->first();
+                                    // return json_encode($grade['class_subject_details_id']);
+                                    $subject = ClassSubjectDetail::where('id', $grade['class_subject_details_id'])                                        
+                                        ->orderBY('class_subject_order', 'ASC')->first();                               
+                                    // return $item->classSubject->subject;
                                     $sum = 0;
 
-                                    $first = $grade->fir_g > 0 ? $grade->fir_g : 0;
-                                    $second = $grade->sec_g > 0 ? $grade->sec_g : 0;
+                                    $first = $grade['thi_g'] > 0 ? $grade['thi_g'] : 0;
+                                    $second = $grade['fou_g'] > 0 ? $grade['fou_g'] : 0;
 
-                                    $sum += $grade->fir_g > 0 ? $grade->fir_g : 0;
-                                    $sum += $grade->sec_g > 0 ? $grade->sec_g : 0;
+                                    $sum += $grade['thi_g'] > 0 ? $grade['thi_g'] : 0;
+                                    $sum += $grade['fou_g'] > 0 ? $grade['fou_g'] : 0;
                                 
                                     $divisor = 0;
                                     $divisor += $first > 0 ? 1 : 0;
@@ -360,141 +422,44 @@ class GradeSheetController extends Controller
                                     {
                                         $final = $sum / $divisor;
                                     }
-                                    // $data = [
-                                    //     'enrollment_id'     =>  $item->enrollment_id,
-                                    //     'grade_level'       =>  $item->grade_level,
-                                    //     'class_days'        =>  $item->class_days,
-                                    //     'class_time_from'   =>  $item->class_time_from,
-                                    //     'class_time_to'     =>  $item->class_time_to,
-                                    //     'faculty_name'      =>  $item->faculty_name,
-                                    //     'subject_id'        =>  $item->subject_id,
-                                    //     'subject_code'      =>  $item->subject_code,
-                                    //     'subject'           =>  $subject->subject,
-                                    //     'room_code'         =>  $item->room_code,
-                                    //     'section'           =>  $item->section,
-                                    //     'grade_id'          =>  $grade->id,
-                                    //     'fir_g'             =>  $grade->fir_g,
-                                    //     'sec_g'             =>  $grade->sec_g,
-                                    //     'final_g'           =>  $final,
-                                    //     'grade_status'      =>  $grade_status,
-                                    //     'divisor'           =>  $divisor,
-                                    // ];
-                                    // return $data;
-                                    return $data = $this->returnData($item, $grade, $final, $grade_status, $divisor, $subject);
-                                });
-
-                            // return json_encode($Enrollment_first_sem);
-                            
-                            $Enrollment_secondsem = $this->enrollment($request, $has_schoolyear, $sem = 2);
-                            
-
-                            $grade_status = $Enrollment_secondsem[0]->grade_status;
-
-                            try {
-                                if($Enrollment_secondsem[0]){
-                                    $attendance_data2 = json_decode($Enrollment_secondsem[0]->attendance_second);
-                                    $student_attendance2 = [
-                                        'attendance_data'   => $attendance_data2,
-                                        'table_header'      => $table_header2,
-                                        'days_of_school_total' => array_sum($attendance_data2->days_of_school),
-                                        'days_present_total' => array_sum($attendance_data2->days_present),
-                                        'days_absent_total' => array_sum($attendance_data2->days_absent),
-                                        'times_tardy_total' => array_sum($attendance_data2->times_tardy),
-                                    ];
-                                }else{
-                                    $attendance_data2 = '';
-                                }
-                            } catch (\Throwable $th) {
-                                $attendance_data2 = '';
-                            }
-
-                            $StudentEnrolledSubject = StudentEnrolledSubject::where('enrollments_id', $Enrollment_secondsem[0]->enrollment_id)
-                                ->get();
                                     
-                            // return json_encode($StudentEnrolledSubject->class_subject_details_id);
-
-                            $Enrollment_secondsem = $Enrollment_secondsem->map(function($item, $key) use ($StudentEnrolledSubject, $grade_status){
-            
-                                // $grade = $StudentEnrolledSubject->firstWhere('subject_id', $item->subject_id)
-                                // ->where('class_subject_details_id', $item->class_subject_details_id);
-                                $grade = $StudentEnrolledSubject->where('class_subject_details_id', $item->class_subject_details_id)->first();                              
-                                
-                                // return json_encode($grade['class_subject_details_id']);
-                                $subject = ClassSubjectDetail::where('id', $grade['class_subject_details_id'])                                        
-                                    ->orderBY('class_subject_order', 'ASC')->first();                               
-                                // return $item->classSubject->subject;
-                                $sum = 0;
-
-                                $first = $grade['thi_g'] > 0 ? $grade['thi_g'] : 0;
-                                $second = $grade['fou_g'] > 0 ? $grade['fou_g'] : 0;
-
-                                $sum += $grade['thi_g'] > 0 ? $grade['thi_g'] : 0;
-                                $sum += $grade['fou_g'] > 0 ? $grade['fou_g'] : 0;
-                               
-                                $divisor = 0;
-                                $divisor += $first > 0 ? 1 : 0;
-                                $divisor += $second > 0 ? 1 : 0;
-                                
-                                $final = 0;
-                                if ($divisor != 0) 
-                                {
-                                    $final = $sum / $divisor;
-                                }
-                                // $data = [
-                                //     'student_enrolled'  =>  $item->studentEnrolledSubject,
-                                //     'enrollment_id'     =>  $item['enrollment_id'],
-                                //     'grade_level'       =>  $item->grade_level,
-                                //     'class_days'        =>  $item->class_days,
-                                //     'class_time_from'   =>  $item->class_time_from,
-                                //     'class_time_to'     =>  $item->class_time_to,
-                                //     'faculty_name'      =>  $item->faculty_name,
-                                //     'subject_id'        =>  $item->subject_id,
-                                //     'subject_code'      =>  $item->subject_code,
-                                //     'subject'           =>  $item->classSubject->subject,
-                                //     'room_code'         =>  $item->room_code,
-                                //     'section'           =>  $item->section,
-                                //     'grade_id'          =>  $grade['id'],
-                                //     'thi_g'             =>  $grade['thi_g'],
-                                //     'fou_g'             =>  $grade['fou_g'],
-                                //     'final_g'           =>  $final,
-                                //     'grade_status'      =>  $grade_status,
-                                //     'divisor'           =>  $divisor,
-                                // ];
-                                // return $data;
-                                return $data = $this->returnData($item, $grade, $final, $grade_status, $divisor, $subject = null);
-                            });
-                        }
-                        // return json_encode($Enrollment_secondsem);
+                                    return $data = $this->returnData($item, $grade, $final, $grade_status, $divisor, $subject = null);
+                                });
+                            }
+                            // return json_encode($Enrollment_secondsem);
+                            
+                            $GradeSheet = 1;
+                            
+                            try {
+                                return view('control_panel_student.grade_sheet.partials.data_list', 
+                                compact(
+                                        'GradeSheetData', 'grade_level', 'StudentInformation', 'ClassDetail',
+                                        'general_avg','Enrollment','Enrollment_first_sem','Enrollment_secondsem',
+                                        'GradeSheet','School_years','student_attendance1','student_attendance2',
+                                        'student_attendance'
+                                    ));
+                            } catch (\Throwable $th) {
+                                return view('control_panel_student.grade_sheet.partials.data_list', 
+                                compact(
+                                        'GradeSheetData', 'grade_level', 'StudentInformation', 'ClassDetail',
+                                        'general_avg','Enrollment','Enrollment_first_sem','Enrollment_secondsem',
+                                        'GradeSheet','School_years','student_attendance1',
+                                        'student_attendance','SchoolYear'
+                                    ));
+                            }
                         
-                        $GradeSheet = 1;
-                        
-                        try {
-                            return view('control_panel_student.grade_sheet.partials.data_list', 
-                            compact(
-                                    'GradeSheetData', 'grade_level', 'StudentInformation', 'ClassDetail',
-                                    'general_avg','Enrollment','Enrollment_first_sem','Enrollment_secondsem',
-                                    'GradeSheet','School_years','student_attendance1','student_attendance2',
-                                    'student_attendance'
-                                ));
-                        } catch (\Throwable $th) {
-                            return view('control_panel_student.grade_sheet.partials.data_list', 
-                            compact(
-                                    'GradeSheetData', 'grade_level', 'StudentInformation', 'ClassDetail',
-                                    'general_avg','Enrollment','Enrollment_first_sem','Enrollment_secondsem',
-                                    'GradeSheet','School_years','student_attendance1',
-                                    'student_attendance','SchoolYear'
-                                ));
+                            // return json_encode(['GradeSheetData' => $GradeSheetData,]);
+                        }catch(\Exception $e){                
+                            return '<div class="box-body"><div class="row"><table class="table"><tbody><tr><th style="text-align:center"><img src="https://cdn.iconscout.com/icon/free/png-256/data-not-found-1965034-1662569.png" alt="no data"/><br/>Sorry, there is no data found.</th></tr></tbody></table></div></div>';
                         }
-                       
-                        // return json_encode(['GradeSheetData' => $GradeSheetData,]);
-                    }catch(\Exception $e){                
-                        return '<div class="box-body"><div class="row"><table class="table"><tbody><tr><th style="text-align:center"><img src="https://cdn.iconscout.com/icon/free/png-256/data-not-found-1965034-1662569.png" alt="no data"/><br/>Sorry, there is no data found.</th></tr></tbody></table></div></div>';
-                    }
-                }else{
-                    echo "Invalid request";
-                }                    
-                      
-            }
+                    }else{
+                        echo "Invalid request";
+                    }                    
+                        
+                }
+            }catch(\Exception $e){
+                return '<div class="box-body"><div class="row"><table class="table"><tbody><tr><th style="text-align:center"><img src="https://cdn.iconscout.com/icon/free/png-256/data-not-found-1965034-1662569.png" alt="no data"/><br/>Sorry, there is no data found.</th></tr></tbody></table></div></div>';
+            }    
         }
         $GradeSheet = 0;
         return view('control_panel_student.grade_sheet.index', compact('GradeSheet','School_years','SchoolYear'));
