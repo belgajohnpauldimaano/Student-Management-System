@@ -6,6 +6,6 @@
     <p>
         Email from: {{$email->email}}<br/>
         Subject: {{$email->subject}}<br/>
-        Message: {{$email->message}}
+        Message: {{$email->msg}}
     </p>        
 @endsection

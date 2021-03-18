@@ -68,8 +68,6 @@ $("#terms").change(function (e) {
     }                        
 });
 
-
-
 // $(document).on("change", "input[name='grade_level']", function (e) {
 $("input[name='grade_level']").change(function(e) {
   e.preventDefault();
@@ -92,18 +90,15 @@ $("input[name='grade_level']").change(function(e) {
     }
 });
 
+
+$(document).on("change", "input[name='student_img']", function () {
+    readImageURL(this)
+});
+
 function readImageURL(input) {
-    if (input.files && input.files[0]) {
-        var reader = new FileReader();
-        reader.onload = function (e) {
-            $('#img--user_photo')
-                .attr('src', e.target.result)
-                .width(150)
-                ;
-        };
-        reader.readAsDataURL(input.files[0]);
-    }
+    $('#img--user_photo')[0].src = (window.URL ? URL : webkitURL).createObjectURL(input.files[0]);
 }
+
 $('body').on('submit', '#js-registration_form', function (e) {
     e.preventDefault();
     validate_form();    
@@ -1106,3 +1101,65 @@ validate_form();
         //         $('.div-strand').addClass('d-none');
         //     }
         // });  
+
+$('#js-contactForm').validate({
+    rules: {
+        name: "required",
+        subject: "required",            
+        email: {
+            required: true,
+            email: true
+        },
+        mobile: "required",
+        message: "required"
+    },
+    errorElement: "span" ,  
+    errorPlacement: function (error, element) {
+    error.addClass('invalid-feedback');
+    element.closest('.form-group').append(error);
+    },
+    highlight: function (element, errorClass, validClass) {
+    $(element).addClass('is-invalid');
+    },
+    unhighlight: function (element, errorClass, validClass) {
+    $(element).removeClass('is-invalid');
+    },                          
+    messages: {
+        name: "Please enter your first name",
+        email: "Please enter valid email address",
+        mobile: "Please enter your mobile/phone number",
+        message: "Please enter message",
+        subject: "Please enter subject"
+    },
+
+    submitHandler: function(form) {
+        var dataparam = $('#js-contactForm').serialize();
+            alertify.defaults.theme.ok = "btn btn-primary";
+            $.ajax({     
+                url: "/send-email",
+                type: "POST",
+                data        : dataparam,
+                datatype: 'json',
+                beforeSend: function() { 
+                    $('#preloader').removeClass('d-none');
+                },
+                success: function(res) {
+                    $('.help-block').html('');
+                    if (res.res_code == 1)
+                    {
+                        alertify.alert('<i style="color: red" class="fas fa-exclamation-triangle fa-lg"></i> Reminder',
+                            ''+res.res_msg+'', function(){
+                        });                                    
+                    }
+                    else
+                    {
+                        alertify.alert('<i style="color: green" class="fas fa-check-circle fa-lg"></i> Confirmation',
+                        "Your email successfully submitted. Thank you!", function(){
+                            $('#js-contactForm')[0].reset();
+                            $('#preloader').addClass('d-none');
+                        });                                
+                    }
+            }
+        });
+    }                
+});

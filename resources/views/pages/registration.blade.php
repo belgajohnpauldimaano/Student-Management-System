@@ -91,8 +91,7 @@
                         </button> 
                         <br/>
                         
-                        <input type="file" class="btn-upload-photo" style="display: none" id="student_img" name="student_img" src=""
-                         onchange="readImageURL(this);" accept="*/image">
+                        <input type="file" class="btn-upload-photo" style="display: none" id="student_img" name="student_img" accept="*/image">
                          <input type="hidden" id="default-img" value={{asset('/img/account/photo/blank-user.gif')}} />   
                          <div class="help-block text-red text-center" id="js-student_img">
                         </div>

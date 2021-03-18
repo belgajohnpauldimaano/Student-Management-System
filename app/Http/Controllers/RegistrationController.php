@@ -8,12 +8,14 @@ use Dotenv\Validator;
 use App\Models\SchoolYear;
 use Illuminate\Http\Request;
 use App\Mail\InformationEmail;
+use Illuminate\Support\Carbon;
 use App\Models\IncomingStudent;
 use App\Models\StudentEducation;
 use App\Models\StudentInformation;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 
 class RegistrationController extends Controller
 {
@@ -150,7 +152,7 @@ class RegistrationController extends Controller
                 $Incoming_student->save();
 
                 // $StudentInformation = StudentInformation::find()
-                
+                // go to observer
                 DB::commit();
                 
                 // $NewStudent = IncomingStudent::find($Incoming_student->id);
@@ -173,10 +175,11 @@ class RegistrationController extends Controller
     public function send_email(Request $request)
     {
         $rules = [
-            'name' => 'required',
-            'subject' => 'required',
-            'email' => 'email|required',
-            'message' => 'required'
+            'name'      => 'required',
+            'subject'   => 'required',
+            'email'     => 'email|required',
+            'mobile'    => 'required',
+            'message'   => 'required'
         ];        
         
         $Validator = \Validator($request->all(), $rules);
@@ -188,19 +191,29 @@ class RegistrationController extends Controller
 
         try
         {  
+            // $data = array(
+            //     'name'          =>  $request->name,
+            //     'email'         =>  $request->email,
+            //     'mobile'        =>  $request->mobile,
+            //     'subject'       =>  $request->subject,
+            //     'msg'       =>  $request->message,
+            //     'created_at'    =>  Carbon::now(),
+            //     'updated_at'    =>  Carbon::now()
+            // );
+            // $email = Email::insert($data);
             $email = new Email();
-            $email->name = $request->name;
-            $email->email = $request->email;
-            $email->subject = $request->subject;
-            $email->message = $request->message;   
-                     
+            $email->name     = $request->name;
+            $email->email    = $request->email;
+            $email->mobile   = $request->mobile;
+            $email->subject  = $request->subject;
+            $email->msg      = $request->message;
+            
             try{
                 $email->save();
-
-                $email = Email::find($email->id);
-                    Mail::to('info@sja-bataan.com')->from($request->email)->send(new InformationEmail($email));
+                // go to observer
+                // $email = Email::find($email->id);
                 return response()->json(['res_code' => 0, 'res_msg' => 'You have successfuly send your email! Thank you']);
-
+                
             }catch(\Exception $e){
                 Log::error($e->getMessage());
                 return response()->json(['res_code' => 1, 'res_msg' => $e->getMessage()]);

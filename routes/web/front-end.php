@@ -8,7 +8,7 @@ Route::get('/transcript-of-record', 'TranscriptOfRecordController@tor')->name('t
 
 Route::group(['middleware' => ['guest']], function () {
     Route::post('/registration/save', 'RegistrationController@store')->name('registration.store');
-    Route::post('send-email', 'RegistrationController@send_email')->name('inquiry.email');
+    Route::post('/send-email', 'RegistrationController@send_email')->name('inquiry.email');
     Route::post('/fetch-strand', 'HomePageController@fetch_strand')->name('fetch.strand');
     Route::post('/fetch-schoolyear', 'HomePageController@fetch_schoolyear')->name('fetch.schoolyear');
 });

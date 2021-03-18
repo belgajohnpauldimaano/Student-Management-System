@@ -29,7 +29,6 @@ class InformationEmail extends Mailable
      */
     public function build()
     {
-        return $this->view('mails.email_admin')
-                    ->subject('Online Inquiry');
+        return $this->replyTo($this->email)->view('mails.email_admin')->subject('Online Inquiry');
     }
 }

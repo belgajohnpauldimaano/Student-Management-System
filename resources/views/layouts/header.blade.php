@@ -26,7 +26,7 @@
     <link href="{{ asset('theme/lib/owlcarousel/assets/owl.carousel.min.css') }}" rel="stylesheet">
     <link href="{{ asset('theme/lib/lightbox/css/lightbox.min.css') }}" rel="stylesheet">
     <!-- Main Stylesheet File -->
-    <link href="{{ asset('theme/css/style.css?v=1') }}" rel="stylesheet">
+    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     <link href="{{ asset('img/sja-logo.png') }}" rel=icon>
 
     {{-- alertify --}}
@@ -44,6 +44,9 @@
 </head>
 
 <body>
+    <div id="preloader" class="d-none">
+        <img class="preloader" src="{{ asset('img/loader.gif')}}" alt="">
+    </div>
     @php
         $registration = App\Models\RegistrationButton::whereId(1)->first()->is_enabled;
     @endphp
