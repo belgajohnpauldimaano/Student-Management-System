@@ -24,7 +24,7 @@
                         </div>
                         <div class="form-group">
                             <div class="row">
-                                <div class="form-group input-grade_lvl col-md-6">
+                                <div class="form-group input-grade_lvl col-md-5">
                                     <label for="">I am Incoming</label>
                                     <br/>
                                     <div class="form-check form-check-inline">
@@ -36,7 +36,7 @@
                                         <label class="form-check-label" for="js-transferee_level11">Grade 11</label>
                                     </div>                                
                                 </div>
-                                <div class="form-group col-md-6" id="div-strand"></div>
+                                <div class="form-group col-md-7 input-strand" id="div-strand"></div>
                             </div>
                         </div>
                         <div class="form-group">
@@ -80,20 +80,21 @@
 
                     </div>
                     
-                    <div class="col-lg-4 align-items-stretch order-1 order-lg-2 text-center" style="border: 2px dashed #ccc">
-
-                        <p class="mt-2" ><i><small>Kindly upload Passport Size 2x2 with name tag</small></i></p>
-                        <img class="mt-0 profile-user-img img-responsive img-circle" id="img--user_photo" src="{{  asset('/img/account/photo/blank-user.gif') }}" 
-                        style="width:150px; height:150px;  border-radius:50%; ">
-                        <br/><br/>
-                        <button type="button" class="btn btn-sm btn-flat btn-primary btn--update-photo" title="Change photo">
-                            Upload a photo
-                        </button> 
-                        <br/>
-                        
-                        <input type="file" class="btn-upload-photo" style="display: none" id="student_img" name="student_img" accept="*/image">
-                         <input type="hidden" id="default-img" value={{asset('/img/account/photo/blank-user.gif')}} />   
-                         <div class="help-block text-red text-center" id="js-student_img">
+                    <div class="col-lg-4 align-items-stretch order-1 order-lg-2 text-center">
+                        <div style="border: 2px dashed #ccc" class="p-3">
+                            <p><i><small>Kindly upload Passport Size 2x2 with name tag</small></i></p>
+                            <img class="mt-0 profile-user-img img-responsive img-circle" id="img--user_photo" src="{{  asset('/img/account/photo/blank-user.gif') }}" 
+                            style="width:150px; height:150px;  border-radius:50%; ">
+                            <br/><br/>
+                            <button type="button" class="btn btn-sm btn-flat btn-primary btn--update-photo" title="Change photo">
+                                Upload a photo
+                            </button> 
+                            <br/>
+                            
+                            <input type="file" class="btn-upload-photo" style="display: none" id="student_img" name="student_img" accept="*/image">
+                            <input type="hidden" id="default-img" value={{asset('/img/account/photo/blank-user.gif')}} />   
+                            <div class="help-block text-red text-center" id="js-student_img">
+                            </div>
                         </div>
                     </div>
                                                    
@@ -155,11 +156,20 @@
                     </div>
                     <div class="form-group col-md-4 input-gender">
                         <label for="">Gender </label>
-                        <select name="gender" id="gender" class="form-control form-control-sm">
+                        {{-- <select name="gender" id="gender" class="form-control form-control-sm">
                             <option value="">Select gender</option>
                             <option value="1">Male</option>
                             <option value="2">Female</option>
-                        </select>
+                        </select> --}}
+                        <br/>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="gender" id="js-male" value="1">
+                            <label class="form-check-label" for="js-male">Male</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="gender" id="js-female" value="2">
+                            <label class="form-check-label" for="js-female">Female</label>
+                        </div>
                         <div class="help-block text-red text-left" id="js-gender">
                         </div>
                     </div>
@@ -315,7 +325,7 @@
                      <div class="form-group col-md-4 input-no_siblings">
                         <label for="">No. of your siblings (do not include yourself)</label>
                         <select name="no_siblings" id="no_siblings" class="form-control form-control-sm">
-                            <option value="0">Select No. of your siblings</option>
+                            <option value="">Select No. of your siblings</option>
                             @for ( $x = 0 ; $x < 15; $x++)
                                <option>{{ $x }}</option>
                             @endfor

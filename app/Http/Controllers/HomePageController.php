@@ -27,28 +27,38 @@ class HomePageController extends Controller
        ]);
     }
 
+    private function password()
+    {
+        return $password = encrypt("123456");
+    }
+
     public function fetch_strand (Request $request)
     {
         $strands =  Strand::where('status', 1)->orderby('strand', 'desc')->get();
 
-        $data = '<label for="">Strand </label>;
-                    <select name="strand" id="strand" class="form-control form-control-sm">
-                        <option value="0">Select Strand</option>';
-        if (!$strands->isEmpty()) 
-        {
-            foreach ($strands as $strand) 
-            {
-                $data .= '
-                    <option value="'. $strand->id .'">'. $strand->strand .'</option>
-                ';
-            }
-        } 
+        // $data = '<label for="">Strand </label>;
+        //             <select name="strand" id="strand" class="form-control form-control-sm">
+        //                 <option value="0">Select Strand</option>';
+        // if (!$strands->isEmpty()) 
+        // {
+        //     foreach ($strands as $strand) 
+        //     {
+        //         $data .= '
+        //             <option value="'. $strand->id .'">'. $strand->strand .'</option>
+        //         ';
+        //     }
+        // } 
         
-        $data .='</select>
-                    <div class="help-block text-red text-left" id="js-strand">
-                    </div>';
+        // $data .='</select>
+        //             <div class="help-block text-red text-left" id="js-strand">
+        //             </div>';
+        $password = $this->password();
 
-        return $data;
+        // return $strands;
+        return response()->json([
+            'strands'       => CryptoJsAes::encrypt($strands, $password),
+            'data'              => $password
+        ], 200);
     }
 
     public function fetch_schoolyear(Request $request)
@@ -69,7 +79,7 @@ class HomePageController extends Controller
             }
         }
 
-        $password = encrypt("123456");
+        $password = $this->password();
         
         return response()->json([
             'school_year'       => CryptoJsAes::encrypt($school_year,$password),

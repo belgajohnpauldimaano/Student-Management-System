@@ -24,6 +24,7 @@ class AddStudentInformationsTable extends Migration
             $table->string('mother_fb_acct')->nullable();
             $table->string('guardian_fb_acct')->nullable();
             $table->integer('no_siblings')->nullable();
+            $table->integer('age');
         });
     }
 

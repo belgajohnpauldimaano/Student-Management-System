@@ -9,5 +9,10 @@ trait HasSchoolYear{
     {
         return $this->hasOne(SchoolYear::class, 'id', 'school_year_id');
     }
+
+    public function lastYear()
+    {
+        return $this->hasOne(SchoolYear::class, 'id', 'last_sy_attended');
+    }
     
 }

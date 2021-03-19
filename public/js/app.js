@@ -37174,10 +37174,11 @@ $("#terms").change(function (e) {
     }
 });
 
-// $(document).on("change", "input[name='grade_level']", function (e) {
+var validateStrand = false;
+var gradeLvl = null;
 $("input[name='grade_level']").change(function (e) {
     e.preventDefault();
-    var gradeLvl = $(this).val();
+    gradeLvl = $(this).val();
 
     $('#div-strand').empty();
     if (gradeLvl == '11') {
@@ -37188,7 +37189,29 @@ $("input[name='grade_level']").change(function (e) {
                 '_token': $('input[name=_token]').val()
             },
             success: function success(res) {
-                $('#div-strand').html(res);
+                // $('#div-strand').html(res); 
+                var strands = CryptoJSAesJson.decrypt(res.strands.toString(), res.data);
+                var len = strands.length;
+
+                $("#div-strand").append('<label>&nbsp;</label>\n                    <select  name="strand" id="strand_data" class="form-control form-control-sm">');
+                $("#strand_data").empty();
+                $("#strand_data").append("<option value='0'>Select Strand</option>");
+                for (var i = 0; i < len; i++) {
+                    var id = strands[i]['id'];
+                    var name = strands[i]['strand'];
+                    $("#strand_data").append("<option value='" + id + "'>" + name + "</option>");
+                }
+                $("#div-strand").append('</select>\n                        <div class="help-block text-red text-left" id="js-strand">\n                    </div>');
+
+                $('#strand_data').change(function () {
+                    check_strand();
+                });
+
+                $('#strand_data').focusin(function () {
+                    check_strand();
+                });
+
+                validateStrand = true;
             }
         });
     }
@@ -37205,249 +37228,215 @@ function readImageURL(input) {
 $('body').on('submit', '#js-registration_form', function (e) {
     e.preventDefault();
     validate_form();
+
+    // if (gradeLvl == 11)
+    // {
+    //     alert('11 is here')
+
+    // } else {
+    //     alert('other level is here')
+    // }
+    // alert(gradeLvl)
     var formData = new FormData($(this)[0]);
     // alertify.defaults.transition = "slide";
     alertify.defaults.theme.ok = "btn btn-primary btn-flat";
     alertify.defaults.theme.cancel = "btn btn-danger btn-flat";
     alertify.confirm('<i style="color: #0069d9" class="fas fa-question-circle"></i> Confirmation', 'Are you sure you want to register now? Please make sure your input are all correct. Thank you', function () {
 
-        if ($('#lrn').val() != '' && $('#reg_type').val() != '' && $('#grade_lvl').val() != '' && $('#first_name').val() != '' && $('#middle_name').val() != '' && $('#last_name').val() != '' && $("#student_email").val() != '' && $('#phone').val().length == 13 && $('#guardian').val() != '' && $('#address').val() != '' && $('#birthday').val() != '' && $('#gender').val() != '' && $('#student_img').val() != '' && $('#mother_name').val() != '' && $('#father_name').val() != '' && $('#p_address').val() != '' && $('#gwa').val() != '' && $('#last_sy_attended').val() != '' && $('#school_address').val() != '' && $("input[name='school_type']").is(':checked') && $('#school_name').val() != '' && $('#citizenship').val() != '' && $('#religion').val() != '' && $('#age').val() != '' && $('#place_of_birth').val() != '' && $('#fb_acct').val() != '' && $("input[name='grade_level']").is(':checked')) {
-            $.ajax({
-                type: 'POST',
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                },
-                url: "/registration/save",
-                data: formData,
-                processData: false,
-                contentType: false,
-                success: function success(res) {
-                    $('.help-block').html('');
-                    if (res.res_code == 1) {
-                        alertify.alert('<i style="color: red" class="fas fa-exclamation-triangle fa-lg"></i> Reminder', '' + res.res_msg + '', function () {
-                            $('.input-lrn').addClass('has-error');
-                            $('.input-lrn').removeClass('has-success');
-                            $('#js-lrn').css('color', 'red').text('You must enter your LRN.');
-                        });
-                    } else {
-                        alertify.alert('<i style="color: green" class="fas fa-check-circle fa-lg"></i> Confirmation', "Your information successfully submitted. Please wait the confirmation from Admission Office. Thank you!", function () {
-                            $('#js-registration_form')[0].reset();
-                            var source = $("#default-img").val();
-                            $('#img--user_photo').attr('src', source);
-                            $('#div-strand').empty();
-                            $('#js-registration').modal('hide');
-                        });
-                    }
-                }
-            });
-        } else {
+        if ($('#lrn').val() != '' && $('#reg_type').val() != '' && $('#grade_lvl').val() != '' && $('#first_name').val() != '' && $('#middle_name').val() != '' && $('#last_name').val() != '' && $("#student_email").val() != '' && $('#phone').val().length == 13 && $('#guardian').val() != '' && $('#address').val() != '' && $('#birthday').val() != '' && $('#gender').val() != '' && $('#student_img').val() != '' && $('#mother_name').val() != '' && $('#father_name').val() != '' && $('#p_address').val() != '' && $('#gwa').val() != '' && $('#last_sy_attended').val() != '' && $('#school_address').val() != '' && $("input[name='school_type']").is(':checked') && $('#school_name').val() != '' && $('#citizenship').val() != '' && $('#religion').val() != '' && $('#age').val() != '' && $('#place_of_birth').val() != '' && $('#fb_acct').val() != '' && $("input[name='grade_level']").is(':checked') && $('#no_siblings').val() != '') {
 
+            if (gradeLvl == 11) {
+                if ($('#strand_data').val() == 0 || $('#strand_data').val() == null) {
+                    alertify.alert('<i style="color: red" class="fas fa-exclamation-circle"></i> Error', "Please fill out all fields! Thank you", function () {
+                        showValidateFields();
+                        validateStrand == true ? check_strand() : '';
+                    });
+                } else {
+                    saveForm(formData);
+                }
+            } else {
+                saveForm(formData);
+            }
+        } else {
             alertify.alert('<i style="color: red" class="fas fa-exclamation-circle"></i> Error', "Please fill out all fields! Thank you", function () {
-                check_lrn();
-                check_regtype();
-                check_grade_lvl();
-                check_first_name();
-                check_middle_name();
-                check_last_name();
-                check_email();
-                check_phone();
-                check_guardian();
-                check_gender();
-                check_birthday();
-                check_address();
-                check_image();
-                check_p_address();
-                check_father_name();
-                check_mother_name();
-                check_fb_acct();
-                check_place_of_birth();
-                check_input_age();
-                check_religion();
-                check_citizenship();
-                check_school_name();
-                check_school_type();
-                check_school_address();
-                check_last_sy_attended();
-                check_gwa();
-                check_father_occupation();
-                check_mother_occupation();
-                check_father_fb_acct();
-                check_mother_fb_acct();
-                check_guardian_fb_acct();
-                check_no_siblings();
-                check_is_esc();
+                showValidateFields();
+                validateStrand == true ? check_strand() : '';
             });
         }
     }, function () {
-        check_lrn();
-        check_regtype();
-        check_grade_lvl();
-        check_first_name();
-        check_middle_name();
-        check_last_name();
-        check_email();
-        check_phone();
-        check_guardian();
-        check_gender();
-        check_birthday();
-        check_address();
-        check_image();
-        check_p_address();
-        check_father_name();
-        check_mother_name();
-        check_fb_acct();
-        check_place_of_birth();
-        check_input_age();
-        check_religion();
-        check_citizenship();
-        check_school_name();
-        check_school_type();
-        check_school_address();
-        check_last_sy_attended();
-        check_gwa();
-        check_father_occupation();
-        check_mother_occupation();
-        check_father_fb_acct();
-        check_mother_fb_acct();
-        check_guardian_fb_acct();
-        check_no_siblings();
-        check_is_esc();
+        showValidateFields();
+        validateStrand == true ? check_strand() : '';
     });
 });
+
+function saveForm(formData) {
+    $.ajax({
+        type: 'POST',
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+        url: "/registration/save",
+        data: formData,
+        processData: false,
+        contentType: false,
+        success: function success(res) {
+            $('.help-block').html('');
+            if (res.res_code == 1) {
+                alertify.alert('<i style="color: red" class="fas fa-exclamation-triangle fa-lg"></i> Reminder', '' + res.res_msg + '', function () {
+                    $('.input-lrn').addClass('has-error');
+                    $('.input-lrn').removeClass('has-success');
+                    $('#js-lrn').css('color', 'red').text('You must enter your LRN.');
+                });
+            } else {
+                alertify.alert('<i style="color: green" class="fas fa-check-circle fa-lg"></i> Confirmation', "Your information successfully submitted. Please wait the confirmation from Admission Office. Thank you!", function () {
+                    $('#js-registration_form')[0].reset();
+                    var source = $("#default-img").val();
+                    $('#img--user_photo').attr('src', source);
+                    $('#div-strand').empty();
+                    $('#js-registration').modal('hide');
+                    location.reload();
+                });
+            }
+        }
+    });
+}
+
+function showValidateFields() {
+    check_lrn();
+    check_regtype();
+    check_grade_lvl();
+    check_first_name();
+    check_middle_name();
+    check_last_name();
+    check_email();
+    check_phone();
+    check_guardian();
+    check_gender();
+    check_birthday();
+    check_address();
+    check_image();
+    check_p_address();
+    check_father_name();
+    check_mother_name();
+    check_fb_acct();
+    check_place_of_birth();
+    check_input_age();
+    check_religion();
+    check_citizenship();
+    check_school_name();
+    check_school_type();
+    check_school_address();
+    check_last_sy_attended();
+    check_gwa();
+    check_father_occupation();
+    check_mother_occupation();
+    check_father_fb_acct();
+    check_mother_fb_acct();
+    check_guardian_fb_acct();
+    check_no_siblings();
+    check_is_esc();
+}
 
 validate_form();
 
 function validate_form() {
-
     $('#lrn').keyup(function () {
         check_lrn();
     });
-
     $('#lrn').focusin(function () {
         check_lrn();
     });
-
     $('#reg_type').change(function () {
         check_regtype();
     });
-
     $('#reg_type').focusin(function () {
         check_regtype();
     });
-
     // $('#grade_lvl').change(function() {
     $(document).on("change", "input[name='grade_level']", function (e) {
         check_grade_lvl();
     });
-
     $("input[name='grade_level']").focusin(function () {
         check_grade_lvl();
     });
-
     $('#first_name').keyup(function () {
         check_first_name();
     });
-
     $('#first_name').focusin(function () {
         check_first_name();
     });
-
     $('#middle_name').keyup(function () {
         check_middle_name();
     });
-
     $('#middle_name').focusin(function () {
         check_middle_name();
     });
-
     $('#last_name').keyup(function () {
         check_last_name();
     });
-
     $('#last_name').focusin(function () {
         check_last_name();
     });
-
     $('#student_email').keyup(function () {
         check_email();
     });
-
     $('#student_email').focusin(function () {
         check_email();
     });
-
     $('#phone').keyup(function () {
         check_phone();
     });
-
     $('#phone').focusin(function () {
         check_phone();
     });
-
     $('#guardian').keyup(function () {
         check_guardian();
     });
-
     $('#guardian').focusin(function () {
         check_guardian();
     });
-
     $('#gender').change(function () {
         check_gender();
     });
-
     $('#gender').focusin(function () {
         check_gender();
     });
-
     $('#birthday').change(function () {
         check_birthday();
     });
-
     $('#birthday').focusin(function () {
         check_birthday();
     });
-
     $('#address').keyup(function () {
         check_address();
     });
-
     $('#address').focusin(function () {
         check_address();
     });
-
     $('.btn--update-photo').focusin(function () {
         check_image();
     });
-
     $('#student_img').change(function () {
         check_image();
     });
-
     $('#p_address').focusin(function () {
         check_p_address();
     });
-
     $('#p_address').keyup(function () {
         check_p_address();
     });
-
     $('#father_name').focusin(function () {
         check_father_name();
     });
-
     $('#father_name').keyup(function () {
         check_father_name();
     });
-
     $('#mother_name').focusin(function () {
         check_mother_name();
     });
-
     $('#mother_name').keyup(function () {
         check_mother_name();
     });
-
     $('#fb_acct').keyup(function () {
         check_fb_acct();
     });
@@ -37461,96 +37450,82 @@ function validate_form() {
     $('#place_of_birth').focusin(function () {
         check_place_of_birth();
     });
-
     $('#age').keyup(function () {
         check_input_age();
     });
     $('#age').focusin(function () {
         check_input_age();
     });
-
     $('#religion').keyup(function () {
         check_religion();
     });
     $('#religion').focusin(function () {
         check_religion();
     });
-
     $('#citizenship').keyup(function () {
         check_citizenship();
     });
     $('#citizenship').focusin(function () {
         check_citizenship();
     });
-
     $('#school_name').keyup(function () {
         check_school_name();
     });
     $('#school_name').focusin(function () {
         check_school_name();
     });
-
     $("input[name='school_type']").change(function () {
         check_school_type();
     });
     $("input[name='school_type']").focusin(function () {
         check_school_type();
     });
-
     $('#school_address').keyup(function () {
         check_school_address();
     });
     $('#school_address').focusin(function () {
         check_school_address();
     });
-
     $('#last_sy_attended').keyup(function () {
         check_last_sy_attended();
     });
     $('#last_sy_attended').focusin(function () {
         check_last_sy_attended();
     });
-
     $('#gwa').keyup(function () {
         check_gwa();
     });
     $('#gwa').focusin(function () {
         check_gwa();
     });
-
     $('#father_occupation').keyup(function () {
         check_father_occupation();
     });
     $('#father_occupation').focusin(function () {
         check_father_occupation();
     });
-
     $('#mother_occupation').keyup(function () {
         check_mother_occupation();
     });
     $('#mother_occupation').focusin(function () {
         check_mother_occupation();
     });
-
     $('#father_fb_acct').keyup(function () {
         check_father_fb_acct();
     });
     $('#father_fb_acct').focusin(function () {
         check_father_fb_acct();
     });
-
     $('#mother_fb_acct').keyup(function () {
         check_mother_fb_acct();
     });
     $('#mother_fb_acct').focusin(function () {
         check_mother_fb_acct();
     });
-
     // $("input[name='is_esc']").change(function(){
     $(document).on("change", "input[name='is_esc']", function (e) {
         check_is_esc();
     });
-
     $(document).on("focusin", "input[name='is_esc']", function (e) {
         check_is_esc();
     });
@@ -37566,18 +37541,15 @@ function validate_form() {
     $('#no_siblings').change(function () {
         check_no_siblings();
     });
-
     $('#no_siblings').focusin(function () {
         check_no_siblings();
     });
 
     // 
-
 }
 
 function check_lrn() {
     var x = $('#lrn').val();
-
     if (x != '') {
         $('.input-lrn').addClass('has-success');
         $('.input-lrn').removeClass('has-error');
@@ -37589,9 +37561,22 @@ function check_lrn() {
     }
 }
 
+function check_strand() {
+    var x = $('#strand_data').val();
+    if (x != '0') {
+        $('.input-strand').addClass('has-success');
+        $('.input-strand').removeClass('has-error');
+        $('#js-strand').text('').css('color', 'green');
+        validateStrand = true;
+    } else {
+        $('.input-strand').addClass('has-error');
+        $('.input-strand').removeClass('has-success');
+        $('#js-strand').css('color', 'red').text('You must select your strand.');
+        validateStrand = false;
+    }
+}
 function check_regtype() {
     var x = $('#reg_type').val();
-
     if (x != '') {
         $('.input-reg_type').addClass('has-success');
         $('.input-reg_type').removeClass('has-error');
@@ -37602,7 +37587,6 @@ function check_regtype() {
         $('#js-reg_type').css('color', 'red').text('You must select your registration type.');
     }
 }
-
 function check_grade_lvl() {
     // alert(gradeLvl
     var x = $("input[name='grade_level']").is(':checked');
@@ -37617,10 +37601,8 @@ function check_grade_lvl() {
         $('#js-grade_level').css('color', 'red').text('You must select your incoming grade level.');
     }
 }
-
 function check_fb_acct() {
     var x = $('#fb_acct').val();
-
     if (x != '') {
         $('.input-fb_acct').addClass('has-success');
         $('.input-fb_acct').removeClass('has-error');
@@ -37634,7 +37616,6 @@ function check_fb_acct() {
 //
 function check_place_of_birth() {
     var x = $('#place_of_birth').val();
-
     if (x != '') {
         $('.input-place_of_birth').addClass('has-success');
         $('.input-place_of_birth').removeClass('has-error');
@@ -37645,10 +37626,8 @@ function check_place_of_birth() {
         $('#js-place_of_birth').css('color', 'red').text('You must enter your place of birth.');
     }
 }
-
 function check_input_age() {
     var x = $('#age').val();
-
     if (x != '') {
         $('.input-age').addClass('has-success');
         $('.input-age').removeClass('has-error');
@@ -37659,10 +37638,8 @@ function check_input_age() {
         $('#js-age').css('color', 'red').text('You must enter your age.');
     }
 }
-
 function check_religion() {
     var x = $('#religion').val();
-
     if (x != '') {
         $('.input-religion').addClass('has-success');
         $('.input-religion').removeClass('has-error');
@@ -37673,10 +37650,8 @@ function check_religion() {
         $('#js-religion').css('color', 'red').text('You must enter your religion.');
     }
 }
-
 function check_citizenship() {
     var x = $('#citizenship').val();
-
     if (x != '') {
         $('.input-citizenship').addClass('has-success');
         $('.input-citizenship').removeClass('has-error');
@@ -37687,10 +37662,8 @@ function check_citizenship() {
         $('#js-citizenship').css('color', 'red').text('You must enter your citizenship.');
     }
 }
-
 function check_school_name() {
     var x = $('#school_name').val();
-
     if (x != '') {
         $('.input-school_name').addClass('has-success');
         $('.input-school_name').removeClass('has-error');
@@ -37701,7 +37674,6 @@ function check_school_name() {
         $('#js-school_name').css('color', 'red').text('You must enter your school name.');
     }
 }
-
 function check_school_type() {
     var x = $("input[name='school_type']").is(':checked');
     if (x) {
@@ -37714,10 +37686,8 @@ function check_school_type() {
         $('#js-school_type').css('color', 'red').text('You must enter your school type.');
     }
 }
-
 function check_school_address() {
     var x = $('#school_address').val();
-
     if (x != '') {
         $('.input-school_address').addClass('has-success');
         $('.input-school_address').removeClass('has-error');
@@ -37728,10 +37698,8 @@ function check_school_address() {
         $('#js-school_address').css('color', 'red').text('You must enter your school address.');
     }
 }
-
 function check_last_sy_attended() {
     var x = $('#last_sy_attended').val();
-
     if (x != '') {
         $('.input-last_sy_attended').addClass('has-success');
         $('.input-last_sy_attended').removeClass('has-error');
@@ -37742,10 +37710,8 @@ function check_last_sy_attended() {
         $('#js-last_sy_attended').css('color', 'red').text('You must enter your last year attended.');
     }
 }
-
 function check_gwa() {
     var x = $('#gwa').val();
-
     if (x != '') {
         $('.input-gwa').addClass('has-success');
         $('.input-gwa').removeClass('has-error');
@@ -37756,7 +37722,6 @@ function check_gwa() {
         $('#js-gwa').css('color', 'red').text('You must enter your average (GWA).');
     }
 }
-
 function check_is_esc() {
 
     var x = $("input[name='is_esc']").is(':checked');
@@ -37770,10 +37735,8 @@ function check_is_esc() {
         $('#js-is_esc').css('color', 'red').text('You must select the esc.');
     }
 }
-
 function check_father_occupation() {
     var x = $('#father_occupation').val();
-
     if (x != '') {
         $('.input-father_occupation').addClass('has-success');
         $('.input-father_occupation').removeClass('has-error');
@@ -37784,10 +37747,8 @@ function check_father_occupation() {
         $('#js-father_occupation').css('color', 'red').text("You must enter your father's occupation.");
     }
 }
-
 function check_mother_occupation() {
     var x = $('#mother_occupation').val();
-
     if (x != '') {
         $('.input-mother_occupation').addClass('has-success');
         $('.input-mother_occupation').removeClass('has-error');
@@ -37798,10 +37759,8 @@ function check_mother_occupation() {
         $('#js-mother_occupation').css('color', 'red').text("You must enter your mother's occupation.");
     }
 }
-
 function check_father_fb_acct() {
     var x = $('#father_fb_acct').val();
-
     if (x != '') {
         $('.input-father_fb_acct').addClass('has-success');
         $('.input-father_fb_acct').removeClass('has-error');
@@ -37812,10 +37771,8 @@ function check_father_fb_acct() {
         $('#js-father_fb_acct').css('color', 'red').text("You must enter your father's fb/messenger account.");
     }
 }
-
 function check_mother_fb_acct() {
     var x = $('#mother_fb_acct').val();
-
     if (x != '') {
         $('.input-mother_fb_acct').addClass('has-success');
         $('.input-mother_fb_acct').removeClass('has-error');
@@ -37826,10 +37783,8 @@ function check_mother_fb_acct() {
         $('#js-mother_fb_acct').css('color', 'red').text("You must enter your mother's fb/messenger account.");
     }
 }
-
 function check_guardian_fb_acct() {
     var x = $('#guardian_fb_acct').val();
-
     if (x != '') {
         $('.input-guardian_fb_acct').addClass('has-success');
         $('.input-guardian_fb_acct').removeClass('has-error');
@@ -37840,11 +37795,9 @@ function check_guardian_fb_acct() {
         $('#js-guardian_fb_acct').css('color', 'red').text("You must enter your guardian's fb/messenger account.");
     }
 }
-
 function check_no_siblings() {
     var x = $('#no_siblings').val();
-
-    if (x != '0') {
+    if (x != '') {
         $('.input-no_siblings').addClass('has-success');
         $('.input-no_siblings').removeClass('has-error');
         $('#js-no_siblings').text('').css('color', 'green');
@@ -37854,10 +37807,8 @@ function check_no_siblings() {
         $('#js-no_siblings').css('color', 'red').text("You must select how many siblings you have.");
     }
 }
-
 function check_first_name() {
     var x = $('#first_name').val();
-
     if (x != '') {
         $('.input-first_name').addClass('has-success');
         $('.input-first_name').removeClass('has-error');
@@ -37868,10 +37819,8 @@ function check_first_name() {
         $('#js-first_name').css('color', 'red').text('You must enter your first name.');
     }
 }
-
 function check_middle_name() {
     var x = $('#middle_name').val();
-
     if (x != '') {
         $('.input-middle_name').addClass('has-success');
         $('.input-middle_name').removeClass('has-error');
@@ -37882,10 +37831,8 @@ function check_middle_name() {
         $('#js-middle_name').css('color', 'red').text('You must enter your middle name.');
     }
 }
-
 function check_last_name() {
     var x = $('#last_name').val();
-
     if (x != '') {
         $('.input-last_name').addClass('has-success');
         $('.input-last_name').removeClass('has-error');
@@ -37899,7 +37846,6 @@ function check_last_name() {
 
 function check_email() {
     var email = $("#student_email").val();
-
     if (email != 0) {
         if (isValidEmailAddress(email)) {
             $('.input-student_email').addClass('has-success');
@@ -37916,12 +37862,10 @@ function check_email() {
         $('#js-student_email').css('color', 'red').text('You must enter your email address.');
     }
 }
-
 function isValidEmailAddress(emailAddress) {
     var pattern = new RegExp(/^(("[\w-\s]+")|([\w-]+(?:\.[\w-]+)*)|("[\w-\s]+")([\w-]+(?:\.[\w-]+)*))(@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$)|(@\[?((25[0-5]\.|2[0-4][0-9]\.|1[0-9]{2}\.|[0-9]{1,2}\.))((25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\.){2}(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\]?$)/i);
     return pattern.test(emailAddress);
 }
-
 function check_phone() {
     var phone = $('#phone').val();
 
@@ -37935,7 +37879,6 @@ function check_phone() {
         $('#js-phone').css('color', 'red').text('You must enter your phone number.');
     }
 }
-
 function check_guardian() {
     var guardian = $('#guardian').val();
 
@@ -37949,7 +37892,6 @@ function check_guardian() {
         $('#js-guardian').css('color', 'red').text("You must enter your guardian's name.");
     }
 }
-
 function check_father_name() {
     var x = $('#father_name').val();
 
@@ -37963,7 +37905,6 @@ function check_father_name() {
         $('#js-father_name').css('color', 'red').text("You must enter your father's name.");
     }
 }
-
 function check_mother_name() {
     var x = $('#mother_name').val();
 
@@ -37977,7 +37918,6 @@ function check_mother_name() {
         $('#js-mother_name').css('color', 'red').text("You must enter your mother's name.");
     }
 }
-
 function check_address() {
     var address = $('#address').val();
 
@@ -38005,7 +37945,6 @@ function check_p_address() {
         $('#js-p_address').css('color', 'red').text('You must enter your permanent address.');
     }
 }
-
 function check_birthday() {
     var birthdate = $('#birthday').val();
 
@@ -38019,24 +37958,22 @@ function check_birthday() {
         $('#js-birthdate').css('color', 'red').text('You must select your birthdate.');
     }
 }
-
 function check_gender() {
-    var x = $('#gender').val();
-
-    if (x != '') {
+    // var x = $('#gender').val();
+    var x = $("input[name='gender']").is(':checked');
+    if (x) {
         $('.input-gender').addClass('has-success');
         $('.input-gender').removeClass('has-error');
         $('#js-gender').text('').css('color', 'green');
     } else {
         $('.input-gender').addClass('has-error');
         $('.input-gender').removeClass('has-success');
-        $('#js-gender').css('color', 'red').text('You must select your Grave level.');
+        $('#js-gender').css('color', 'red').text('You must select your gender.');
     }
 }
 
 function check_image() {
     var image = $('#student_img').val();
-
     if (image != '') {
         $('.btn--update-photo').addClass('has-success');
         $('.btn--update-photo').removeClass('has-error');

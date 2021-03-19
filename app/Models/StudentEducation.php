@@ -2,10 +2,13 @@
 
 namespace App\Models;
 
+use App\Traits\HasSchoolYear;
 use Illuminate\Database\Eloquent\Model;
 
 class StudentEducation extends Model
 {
+    use HasSchoolYear;
+    
     protected $fillable = [
         'student_information_id', 
         'school_name', 

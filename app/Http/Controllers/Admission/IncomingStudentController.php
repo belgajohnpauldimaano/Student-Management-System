@@ -80,13 +80,15 @@ class IncomingStudentController extends Controller
         $IncomingStudent = NULL;
         if ($request->id)
         {
-            $IncomingStudent = StudentInformation::with(['incomingStudent','user'])
+            $IncomingStudent = StudentInformation::with(['incomingStudent','user','studentEducation'])
                 ->whereHas('incomingStudent', function($q) use ($SchoolYear) {
                     $q->where('school_year_id', $SchoolYear->id);
                 })
                 ->whereId($request->id)
                 // ->where('status','!=',0)
                 ->first();
+
+            // return json_encode($IncomingStudent);
             // $IncomingStudent = StudentInformation::join('incoming_students','incoming_students.student_id', '=' ,'student_informations.id')    
             //     ->join('users', 'users.id', '=', 'student_informations.user_id')                                   
             //     ->selectRaw('

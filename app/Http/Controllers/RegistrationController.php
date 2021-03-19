@@ -72,23 +72,21 @@ class RegistrationController extends Controller
         DB::beginTransaction();
         try{
 
-                $SchoolYear = SchoolYear::where('current', 1)
-                    ->where('status', 1)
-                    ->orderBY('id', 'DESC')
-                    ->first();
+                // $SchoolYear = SchoolYear::where('current', 1)
+                //     ->where('status', 1)
+                //     ->orderBY('id', 'DESC')
+                //     ->first();
 
-            // if($again == 0){
-                $checkUser = User::where('username', $request->lrn)->first();
-                if ($checkUser) 
-                {
-                    // DB::rollBack();
-                    return response()->json([
-                        'res_code' => 1,'res_msg' => 
-                        'LRN already used. Please contact the administrator to confirm it. Thank you'
-                        ]);
-                }
-            // }else{
-           
+                // $checkUser = User::where('username', $request->lrn)->first();
+                // if ($checkUser) 
+                // {
+                //     DB::rollBack();
+                //     return response()->json([
+                //         'res_code' => 1,'res_msg' => 
+                //         'LRN already used. Please contact the administrator to confirm it. Thank you'
+                //     ]);
+                // }
+            
                 $User = new User();
                 $User->username = $request->lrn;
                 $User->password = bcrypt($request->first_name . '.' . $request->last_name);
@@ -96,31 +94,32 @@ class RegistrationController extends Controller
                 $User->status = 0;
                 $User->save();
 
-                $StudentInformation                 = new StudentInformation();
-                $StudentInformation->first_name     = $request->first_name;
-                $StudentInformation->middle_name    = $request->middle_name;
-                $StudentInformation->last_name      = $request->last_name;
-                $StudentInformation->c_address      = $request->address;
-                $StudentInformation->p_address      = $request->p_address;
-                $StudentInformation->birthdate      = date('Y-m-d', strtotime($request->birthdate));
-                $StudentInformation->gender         = $request->gender;
-                $StudentInformation->guardian       = $request->guardian;
-                $StudentInformation->mother_name    = $request->mother_name;
-                $StudentInformation->father_name    = $request->father_name;            
-                $StudentInformation->user_id        = $User->id;
-                $StudentInformation->email          = $request->student_email;
-                $StudentInformation->contact_number = $request->phone;
-                $StudentInformation->religion       = $request->religion;
-                $StudentInformation->citizenship    = $request->citizenship;
-                $StudentInformation->fb_acct        = $request->fb_acct;
-                $StudentInformation->father_occupation = $request->father_occupation;
-                $StudentInformation->mother_occupation = $request->mother_occupation;
-                $StudentInformation->father_fb_acct = $request->father_fb_acct;
-                $StudentInformation->mother_fb_acct = $request->mother_fb_acct;
-                $StudentInformation->place_of_birth = $request->place_of_birth;
-                $StudentInformation->guardian_fb_acct = $request->guardian_fb_acct;
-                $StudentInformation->no_siblings = $request->no_siblings;
-                $StudentInformation->isEsc          = $request->is_esc;
+                $StudentInformation                     = new StudentInformation();
+                $StudentInformation->first_name         = $request->first_name;
+                $StudentInformation->middle_name        = $request->middle_name;
+                $StudentInformation->last_name          = $request->last_name;
+                $StudentInformation->c_address          = $request->address;
+                $StudentInformation->p_address          = $request->p_address;
+                $StudentInformation->birthdate          = date('Y-m-d', strtotime($request->birthdate));
+                $StudentInformation->gender             = $request->gender;
+                $StudentInformation->guardian           = $request->guardian;
+                $StudentInformation->mother_name        = $request->mother_name;
+                $StudentInformation->father_name        = $request->father_name;            
+                $StudentInformation->user_id            = $User->id;
+                $StudentInformation->age                = $request->age;
+                $StudentInformation->email              = $request->student_email;
+                $StudentInformation->contact_number     = $request->phone;
+                $StudentInformation->religion           = $request->religion;
+                $StudentInformation->citizenship        = $request->citizenship;
+                $StudentInformation->fb_acct            = $request->fb_acct;
+                $StudentInformation->father_occupation  = $request->father_occupation;
+                $StudentInformation->mother_occupation  = $request->mother_occupation;
+                $StudentInformation->father_fb_acct     = $request->father_fb_acct;
+                $StudentInformation->mother_fb_acct     = $request->mother_fb_acct;
+                $StudentInformation->place_of_birth     = $request->place_of_birth;
+                $StudentInformation->guardian_fb_acct   = $request->guardian_fb_acct;
+                $StudentInformation->no_siblings        = $request->no_siblings;
+                $StudentInformation->isEsc              = $request->is_esc;
                 $imageName = time().'.'.$request->student_img->getClientOriginalExtension();
                 $request->student_img->move(public_path('img/account/photo/'), $imageName);
                 $StudentInformation->photo = $imageName;
@@ -137,6 +136,7 @@ class RegistrationController extends Controller
                 // $StudentEducation->incoming_grade           = $request->grade_level;
                 $StudentEducation->strand                   = $request->grade_level == 11 ? $request->strand : '0';
                 $transfer = 1;
+                
                 if($request->grade_level == 7 || $request->grade_level == 11)
                 {
                     $transfer = 2;
@@ -146,7 +146,7 @@ class RegistrationController extends Controller
 
                 $Incoming_student = new IncomingStudent();
                 $Incoming_student->student_id = $StudentInformation->id;
-                $Incoming_student->school_year_id = $SchoolYear->id;
+                $Incoming_student->school_year_id = $request->sy;
                 $Incoming_student->grade_level_id = $request->grade_level;
                 $Incoming_student->student_type = $transfer;
                 $Incoming_student->save();

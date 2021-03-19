@@ -7,15 +7,17 @@ use App\Traits\HasUser;
 use App\Models\Enrollment;
 use App\Models\TuitionFee;
 use Illuminate\Http\Request;
+use App\Traits\HasAdmissions;
 use App\Traits\HasTransaction;
 use App\Models\PaymentCategory;
 use App\Models\StudentCategory;
+use App\Models\StudentEducation;
 use App\Models\TransactionDiscount;
 use Illuminate\Database\Eloquent\Model;
 
 class StudentInformation extends Model
 {
-    use HasTransaction, HasUser;
+    use HasTransaction, HasUser, HasAdmissions;
     
     public function enrolled_class ()
     {        
@@ -47,12 +49,7 @@ class StudentInformation extends Model
         return $this->hasMany(TransactionDiscount::class, 'transaction_month_paid_id', 'id' );
     }
     
-    public function incomingStudent()
-    {
-        return $this->hasOne(IncomingStudent::class, 'student_id', 'id');
-    }
-
-
+    
     // public function student(){
     //     return $this->belongsTo(StudentInformation::class);
     // }
@@ -81,6 +78,7 @@ class StudentInformation extends Model
         'mother_fb_acct',//
         'guardian_fb_acct',//
         'no_siblings',//
-        'isEsc'
+        'isEsc',
+        'age'
     ];
 }
