@@ -1,16 +1,16 @@
 <?php
 
-namespace App\Mail;
+namespace App\Mail\Student\Admission;
 
+use PDF;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
-class NotifyApproveAdmission extends Mailable
+class ApproveStudentAccountMail extends Mailable
 {
     use Queueable, SerializesModels;
-
     public $student;
     /**
      * Create a new message instance.
@@ -29,6 +29,8 @@ class NotifyApproveAdmission extends Mailable
      */
     public function build()
     {
-        return $this->view('mails.student_account_activation_admission')->subject('Account Activation');
+        // $pdf = PDF::loadView('control_panel_admission.incoming.partials.print', compact('student'));
+        return $this->view('mails.student.admission.student_account_activation')
+            ->subject('Account Activation');
     }
 }

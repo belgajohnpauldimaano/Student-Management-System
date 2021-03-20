@@ -1,7 +1,7 @@
 <div class="modal fade" tabindex="-1" role="dialog">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
-            
+
             <div class="box-body">
                 <div class="modal-header">
                     <h4 style="margin-right: 5em;" class="modal-title">
@@ -11,7 +11,7 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-            
+
                 <div class="modal-body">
                     <div class="row">
                         <div class="col-md-6 d-flex flex-column text-left order-2 order-lg-1">
@@ -25,7 +25,7 @@
                                         <span class="badge badge-{{$IncomingStudent->incomingStudent->approval ? $IncomingStudent->incomingStudent->approval == 'Approved' ? 'success' : 'danger' : 'danger'}}">
                                             {{$IncomingStudent->incomingStudent->approval}}
                                         </span>
-                                    </div>                          
+                                    </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="">

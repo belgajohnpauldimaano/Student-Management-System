@@ -1,25 +1,26 @@
 <?php
 
-namespace App\Mail;
+namespace App\Mail\Student\Finance\Payment;
 
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Contracts\Queue\ShouldQueue;
-use App\StudentInformation;
+use App\Transaction;
+use App\PaymentCategory;
 
-class ApproveStudentAccountMail extends Mailable
+class SendMail extends Mailable
 {
     use Queueable, SerializesModels;
-    public $student;
+    public $payment;
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct($student)
+    public function __construct($payment)
     {
-        $this->student = $student;
+        $this->payment = $payment; 
     }
 
     /**
@@ -29,6 +30,8 @@ class ApproveStudentAccountMail extends Mailable
      */
     public function build()
     {
-        return $this->view('mails.student_account_activation')->subject('Account Activation');
+        return $this->view('mails.student.finance.payment.enrollment_mail')
+            ->subject('Online Payment Register Confirmation');
+        
     }
 }

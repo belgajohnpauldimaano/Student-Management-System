@@ -1,19 +1,18 @@
 <?php
 
-namespace App\Mail;
+namespace App\Mail\Student\Finance\Payment;
 
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Contracts\Queue\ShouldQueue;
-use App\Models\Transaction;
-use App\Models\PaymentCategory;
+use App\Transaction;
+use App\PaymentCategory;
 
-class NotifyAdminMail extends Mailable
+class sendManualStudentMail extends Mailable
 {
     use Queueable, SerializesModels;
     public $payment;
-
     /**
      * Create a new message instance.
      *
@@ -31,7 +30,8 @@ class NotifyAdminMail extends Mailable
      */
     public function build()
     {
-        return $this->view('mails.notify_admin')
-            ->subject('Online Enrollment Confirmation');
+        return $this->view('mails.student.finance.payment.enrollment_manual_mail')
+            ->subject('Manual Billing Confirmation');
+        
     }
 }

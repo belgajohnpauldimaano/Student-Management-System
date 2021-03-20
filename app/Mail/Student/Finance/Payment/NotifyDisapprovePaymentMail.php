@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Mail;
+namespace App\Mail\Student\Finance\Payment;
 
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
@@ -28,7 +28,7 @@ class NotifyDisapprovePaymentMail extends Mailable
      */
     public function build()
     {
-        return $this->view('mails.disapproved_finance')
+        return $this->view('mails.student.finance.payment.disapproved_finance')
             ->subject('Online Payment Confirmation');
     }
 }

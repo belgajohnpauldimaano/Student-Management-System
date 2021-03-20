@@ -2,9 +2,8 @@
 
 namespace App\Observers;
 
-use App\Models\Email;
-use App\Mail\InformationEmail;
 use Illuminate\Support\Facades\Mail;
+use App\Mail\Contact\InformationEmail;
 
 class EmailObserver
 {

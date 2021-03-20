@@ -14,5 +14,10 @@ trait HasSchoolYear{
     {
         return $this->hasOne(SchoolYear::class, 'id', 'last_sy_attended');
     }
+
+    public function schoolYears()
+    {
+        return SchoolYear::where('status', 1)->get();
+    }
     
 }

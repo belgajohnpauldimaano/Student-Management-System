@@ -1,24 +1,26 @@
 <?php
 
-namespace App\Mail;
+namespace App\Mail\Admission;
 
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
+use App\Models\IncomingStudent;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
-class OnlineAppointmentMail extends Mailable
+class NotifyNewRegisterStudentAdminMail extends Mailable
 {
     use Queueable, SerializesModels;
-    public $hasAppointment;
+
+    public $payload;
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct($hasAppointment)
+    public function __construct($payload)
     {
-        $this->hasAppointment = $hasAppointment; 
+        $this->payload = $payload;
     }
 
     /**
@@ -28,7 +30,6 @@ class OnlineAppointmentMail extends Mailable
      */
     public function build()
     {
-        return $this->view('mails.online_appointment_mail')
-            ->subject('Online Appointment Confirmation');
+        return $this->view('mails.admission.newly_registered')->subject('Account Activation');
     }
 }

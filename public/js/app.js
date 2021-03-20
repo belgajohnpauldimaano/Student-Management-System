@@ -37229,19 +37229,13 @@ $('body').on('submit', '#js-registration_form', function (e) {
     e.preventDefault();
     validate_form();
 
-    // if (gradeLvl == 11)
-    // {
-    //     alert('11 is here')
-
-    // } else {
-    //     alert('other level is here')
-    // }
-    // alert(gradeLvl)
     var formData = new FormData($(this)[0]);
     // alertify.defaults.transition = "slide";
     alertify.defaults.theme.ok = "btn btn-primary btn-flat";
     alertify.defaults.theme.cancel = "btn btn-danger btn-flat";
     alertify.confirm('<i style="color: #0069d9" class="fas fa-question-circle"></i> Confirmation', 'Are you sure you want to register now? Please make sure your input are all correct. Thank you', function () {
+
+        $('#preloader').removeClass('d-none');
 
         if ($('#lrn').val() != '' && $('#reg_type').val() != '' && $('#grade_lvl').val() != '' && $('#first_name').val() != '' && $('#middle_name').val() != '' && $('#last_name').val() != '' && $("#student_email").val() != '' && $('#phone').val().length == 13 && $('#guardian').val() != '' && $('#address').val() != '' && $('#birthday').val() != '' && $('#gender').val() != '' && $('#student_img').val() != '' && $('#mother_name').val() != '' && $('#father_name').val() != '' && $('#p_address').val() != '' && $('#gwa').val() != '' && $('#last_sy_attended').val() != '' && $('#school_address').val() != '' && $("input[name='school_type']").is(':checked') && $('#school_name').val() != '' && $('#citizenship').val() != '' && $('#religion').val() != '' && $('#age').val() != '' && $('#place_of_birth').val() != '' && $('#fb_acct').val() != '' && $("input[name='grade_level']").is(':checked') && $('#no_siblings').val() != '') {
 
@@ -37249,6 +37243,7 @@ $('body').on('submit', '#js-registration_form', function (e) {
                 if ($('#strand_data').val() == 0 || $('#strand_data').val() == null) {
                     alertify.alert('<i style="color: red" class="fas fa-exclamation-circle"></i> Error', "Please fill out all fields! Thank you", function () {
                         showValidateFields();
+                        $('#preloader').addClass('d-none');
                         validateStrand == true ? check_strand() : '';
                     });
                 } else {
@@ -37260,11 +37255,13 @@ $('body').on('submit', '#js-registration_form', function (e) {
         } else {
             alertify.alert('<i style="color: red" class="fas fa-exclamation-circle"></i> Error', "Please fill out all fields! Thank you", function () {
                 showValidateFields();
+                $('#preloader').addClass('d-none');
                 validateStrand == true ? check_strand() : '';
             });
         }
     }, function () {
         showValidateFields();
+        // $('#preloader').addClass('d-none');
         validateStrand == true ? check_strand() : '';
     });
 });
@@ -37395,10 +37392,10 @@ function validate_form() {
     $('#guardian').focusin(function () {
         check_guardian();
     });
-    $('#gender').change(function () {
+    $("input[name='gender']").change(function () {
         check_gender();
     });
-    $('#gender').focusin(function () {
+    $("input[name='gender']").focusin(function () {
         check_gender();
     });
     $('#birthday').change(function () {

@@ -50,7 +50,7 @@ function getSchoolYear()
             {
                 $("#last_sy_attended").append("<option>201"+x+"-201"+(x+1)+"</option>");
             }
-
+            
             getModal();
         }
     });
@@ -131,14 +131,6 @@ $('body').on('submit', '#js-registration_form', function (e) {
     e.preventDefault();
     validate_form();
     
-    // if (gradeLvl == 11)
-    // {
-    //     alert('11 is here')
-        
-    // } else {
-    //     alert('other level is here')
-    // }
-    // alert(gradeLvl)
     var formData = new FormData($(this)[0]);
     // alertify.defaults.transition = "slide";
     alertify.defaults.theme.ok = "btn btn-primary btn-flat";
@@ -146,6 +138,7 @@ $('body').on('submit', '#js-registration_form', function (e) {
     alertify.confirm('<i style="color: #0069d9" class="fas fa-question-circle"></i> Confirmation',
         'Are you sure you want to register now? Please make sure your input are all correct. Thank you', function () {
         
+        $('#preloader').removeClass('d-none');
           
         if(
             $('#lrn').val() != '' && $('#reg_type').val() != '' && $('#grade_lvl').val() != '' &&
@@ -166,6 +159,7 @@ $('body').on('submit', '#js-registration_form', function (e) {
                 {
                     alertify.alert('<i style="color: red" class="fas fa-exclamation-circle"></i> Error',"Please fill out all fields! Thank you", function(){   
                         showValidateFields();
+                        $('#preloader').addClass('d-none');
                         validateStrand == true ? check_strand() : '';
                     });
                     
@@ -181,12 +175,14 @@ $('body').on('submit', '#js-registration_form', function (e) {
         }else{
             alertify.alert('<i style="color: red" class="fas fa-exclamation-circle"></i> Error',"Please fill out all fields! Thank you", function(){   
                 showValidateFields();
+                $('#preloader').addClass('d-none');
                 validateStrand == true ? check_strand() : '';
             });
         }
             
     }, function(){  
         showValidateFields();
+        // $('#preloader').addClass('d-none');
         validateStrand == true ? check_strand() : '';
     });
 });
@@ -326,10 +322,10 @@ function validate_form(){
     $('#guardian').focusin(function() {
         check_guardian()
     });
-    $('#gender').change(function() {
+    $("input[name='gender']").change(function (){
         check_gender()
     });
-    $('#gender').focusin(function() {
+    $("input[name='gender']").focusin(function (){
         check_gender()
     });
     $('#birthday').change(function() {

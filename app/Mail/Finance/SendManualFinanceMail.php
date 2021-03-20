@@ -1,26 +1,26 @@
 <?php
 
-namespace App\Mail;
+namespace App\Mail\Finance;
 
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use App\Transaction;
+use App\PaymentCategory;
 
-class NotifyDisapproveAdmission extends Mailable
+class SendManualFinanceMail extends Mailable
 {
     use Queueable, SerializesModels;
-
-    public $student;
-
+    public $payment;
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct($student)
+    public function __construct($payment)
     {
-        $this->student = $student;
+        $this->payment = $payment; 
     }
 
     /**
@@ -30,6 +30,8 @@ class NotifyDisapproveAdmission extends Mailable
      */
     public function build()
     {
-        return $this->view('mails.student_account_disapproved_admission')->subject('Account Activation');
+        return $this->view('mails.finance.notify_finance_manual')
+            ->subject('Manual Billing Confirmation');
+        
     }
 }

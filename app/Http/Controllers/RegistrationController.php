@@ -123,7 +123,7 @@ class RegistrationController extends Controller
                 $imageName = time().'.'.$request->student_img->getClientOriginalExtension();
                 $request->student_img->move(public_path('img/account/photo/'), $imageName);
                 $StudentInformation->photo = $imageName;
-                // $StudentInformation->status = 0;    
+                $StudentInformation->status = 0;
                 $StudentInformation->save();
 
                 $StudentEducation = new StudentEducation();
@@ -154,7 +154,6 @@ class RegistrationController extends Controller
                 // $StudentInformation = StudentInformation::find()
                 // go to observer
                 DB::commit();
-                
                 // $NewStudent = IncomingStudent::find($Incoming_student->id);
                 
                 // dd($request->all());

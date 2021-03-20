@@ -7,6 +7,7 @@ use App\Models\Enrollment;
 use App\Models\SchoolYear;
 use App\Models\ClassDetail;
 use Illuminate\Http\Request;
+use App\Traits\HasSchoolYear;
 use App\Models\ClassSubjectDetail;
 use App\Models\StudentInformation;
 use Illuminate\Support\Facades\DB;
@@ -17,6 +18,8 @@ use App\Models\StudentEnrolledSubject;
 
 class GradeSheetController extends Controller
 {
+
+    use HasSchoolYear;
 
     private function student()
     {
@@ -101,7 +104,7 @@ class GradeSheetController extends Controller
     public function index (Request $request)
     {
         $StudentInformation = $this->student();        
-        $School_years = SchoolYear::where('status', 1)->get();
+        $School_years = $this->schoolYears();
         $SchoolYear = SchoolYear::where('current', 1)
             ->where('status', 1)
             ->first();

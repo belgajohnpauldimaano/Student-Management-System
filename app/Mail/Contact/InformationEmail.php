@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Mail;
+namespace App\Mail\Contact;
 
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
@@ -29,6 +29,6 @@ class InformationEmail extends Mailable
      */
     public function build()
     {
-        return $this->replyTo($this->email)->view('mails.email_admin')->subject('Online Inquiry');
+        return $this->replyTo($this->email)->view('mails.contact.email_admin')->subject('Online Inquiry');
     }
 }

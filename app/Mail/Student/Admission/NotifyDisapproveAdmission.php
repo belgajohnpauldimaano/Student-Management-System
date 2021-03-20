@@ -1,15 +1,16 @@
 <?php
 
-namespace App\Mail;
+namespace App\Mail\Student\Admission;
 
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
-class NotifyDisapproveStudentMail extends Mailable
+class NotifyDisapproveAdmission extends Mailable
 {
     use Queueable, SerializesModels;
+
     public $student;
 
     /**
@@ -29,6 +30,6 @@ class NotifyDisapproveStudentMail extends Mailable
      */
     public function build()
     {
-        return $this->view('mails.student_account_disapproved')->subject('Account Activation');
+        return $this->view('mails.student.admission.student_account_disapproved_admission')->subject('Account Activation');
     }
 }

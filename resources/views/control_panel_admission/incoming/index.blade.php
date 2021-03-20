@@ -36,18 +36,31 @@
             </ul>
         </div>
         <div class="card-header">
-                <div class="col-md-8 m-auto">
+                <div class="col-md-9 m-auto">
                     <h6 class="box-title">Search</h6>
                     <form id="js-form_search">
                         {{ csrf_field() }}
                         <div class="row">
-                            <div class="col-md-9">
-                                <div id="js-form_search" class="form-group" style="padding-left:0;padding-right:0">
-                                    <input type="text" class="form-control form-control-sm form-control form-control-sm" name="search">
+                            <div class="col-md-3">
+                                <div class="form-group input-school_year p-0">
+                                    <select name="school_year" id="school_year" class="form-control form-control-sm">                            
+                                        <option value="0">
+                                            - Select School Year -
+                                        </option>
+                                        @foreach ($School_years as $item)
+                                            <option value="{{ $item->id }}">{{ $item->school_year }}</option>
+                                        @endforeach      
+                                    </select>
+                                    <div class="help-block text-red text-left" id="js-school_year"></div>
                                 </div>
                             </div>
-                            <div class="col-md-3">
-                                <button type="submit" class="btn btn-success">Search</button>
+                            <div class="col-md-6">
+                                <div id="js-form_search" class="form-group" style="padding-left:0;padding-right:0">
+                                    <input type="text" class="form-control form-control-sm" name="search">
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <button type="submit" class="btn btn-sm btn-success">Search</button>
                             </div>
                         </div>
                     </form>

@@ -4,8 +4,9 @@ namespace App\Observers;
 
 use App\Models\IncomingStudent;
 use Illuminate\Support\Facades\Mail;
-use App\Mail\NotifyNewRegisterStudentMail;
-use App\Mail\NotifyNewRegisterStudentAdminMail;
+use App\Mail\Admission\NotifyNewRegisterStudentAdminMail;
+use App\Mail\Student\Admission\NotifyNewRegisterStudentMail;
+
 
 class IncomingStudentObserver
 {
