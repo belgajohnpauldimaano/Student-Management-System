@@ -68,11 +68,9 @@ class StudentClassListController extends Controller
 
         $ClassDetail = $ClassDetail->paginate(10);
 
-        $NotyetApprovedCount = $this->notYetApproved();
-        
         // return json_encode($ClassDetail);
         return view('control_panel_finance.class_details.index', 
-            compact('ClassDetail', 'SchoolYear','NotyetApprovedCount'));
+            compact('ClassDetail', 'SchoolYear'));
     }
 
     public function studentList(Request $request, $id){

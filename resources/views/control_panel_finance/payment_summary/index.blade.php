@@ -240,7 +240,6 @@
             {
                 window.open("{{ route('finance.summary.print') }}?school_year="+school_year+"&total="+total+"&date_from="+date_from+"&date_to="+date_to, '', 'height=800,width=800')
             }
-            
         })
 
         $('.btn-fetch_record').click(function(){

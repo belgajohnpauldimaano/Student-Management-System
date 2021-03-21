@@ -33,40 +33,24 @@
                     <td>{{number_format($data->tuition_amt,2)}}</td>
                     <td>{{number_format($data->misc_amt,2)}}</td>
                     <td>
-                        @php 
-                            $other = \App\Models\TransactionOtherFee::where('student_id', $data->student_id)
-                                ->where('school_year_id', $data->school_year_id)
-                                ->where('transaction_id', $data->transaction_id)
-                                ->where('isSuccess', 1)
-                                ->sum('item_price');
-                            echo number_format($other, 2);
-                        @endphp
+                        {{ $data->other_total }}
                     </td>
                     <td>
-                        @php 
-                            $discount = \App\Models\TransactionDiscount::where('student_id', $data->student_id)
-                                ->where('school_year_id', $data->school_year_id)
-                                ->where('isSuccess', 1)
-                                ->sum('discount_amt');
-                            echo number_format($discount, 2);
-                        @endphp
+                        {{ $data->discount_total }}
                         {{-- {{number_format($data->discount_amt, 2)}} --}}
                     </td>
                     <td>
-                        {{number_format(($data->tuition_amt + $data->misc_amt + $other) - $discount, 2)}}
+                        {{ $data->total_fees }}
                     </td>
-                    <td>{{number_format($data->payment,2)}}</td>
-                    <td>{{number_format($data->balance,2)}}</td>
+                    <td>{{number_format($data->payment, 2)}}</td>
+                    <td>{{number_format($data->balance, 2)}}</td>
                     <td>
-                        <span class="badge {{ $data->approval ? $data->approval =='Approved' ? 'badge-success' : 'badge-danger' : 'label-danger'}}">
-                        {{ $data->approval ? $data->approval =='Approved' ? 'Approved' : 'Not yet approved' : 'Not yet approved'}}
-                        </span>
+                        {!! $data->payment_status !!}
                     </td>
                     <td>
                         <a class="btn btn-sm btn-primary btn-view-modal" title="View" data-id="{{$data->transaction_id}}"  data-monthly_id="{{$data->transact_monthly_id}}"><i class="fas fa-eye"></i></a>
                         {{-- <a class="btn btn-sm btn-success btn-approve" title="Approve" data-id="{{$data->transact_monthly_id}}"><i class="fas fa-thumbs-up"></i></a> --}}
                         <a class="btn btn-sm btn-danger btn-disapprove" title="Disapprove" data-id="{{$data->transact_monthly_id}}"><i class="fas fa-thumbs-down"></i></a>
-                        
                     </td>
                 </tr>
             @endforeach

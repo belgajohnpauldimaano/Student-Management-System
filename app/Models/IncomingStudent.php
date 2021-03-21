@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Models\Strand;
+use App\Traits\HasGradeSheet;
 use App\Traits\HasSchoolYear;
 use App\Models\StudentInformation;
 use Illuminate\Database\Eloquent\Model;

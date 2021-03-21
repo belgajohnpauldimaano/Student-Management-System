@@ -1,6 +1,7 @@
 <?php
 namespace App\Traits;
 
+use App\Models\Strand;
 use App\Models\IncomingStudent;
 use App\Models\StudentEducation;
 
@@ -65,4 +66,27 @@ trait HasAdmissions{
         }
         
     }
+
+   
+    public function getAdmissionStrandAttribute()
+    {
+        try {
+            $strand = Strand::whereId($this->studentEducation->strand)->first()->strand;
+            return $strand;
+        } catch (\Throwable $th) {
+            return 'NA';
+        }
+    }
+
+    public function getAdmissionSyAttribute()
+    {
+        try {
+            $sy = $this->incoming_student->schoolYear->school_year;
+            return $sy;
+        } catch (\Throwable $th) {
+            return 'NA';
+        }
+    }
+
+    
 }

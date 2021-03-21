@@ -20,7 +20,7 @@
             </tr>
         </thead>
         <tbody>
-            @foreach($NotyetApproved as $key => $data)
+            @forelse($NotyetApproved as $key => $data)
                 <tr>
                     <td>{{$key + 1}} </td>
                     <td>{{$data->student_name}}</td>
@@ -62,9 +62,7 @@
                         @endphp
                     <td>{{number_format($incoming_bal,2)}}</td>
                     <td>
-                        <span class="badge {{ $data->approval ? $data->approval =='Approved' ? 'badge-success' : 'badge-danger' : 'badge-danger'}}">
-                        {{ $data->approval ? $data->approval =='Approved' ? 'Approved' : 'Not yet approved' : 'Not yet approved'}}
-                        </span>
+                        {!! $data->payment_status !!}
                     </td>
                     <td width="15%">
                         <a class="btn btn-sm btn-primary btn-view-modal" title="View" data-id="{{$data->transaction_id}}" data-monthly_id="{{$data->transact_monthly_id}}"><i class="fas fa-eye"></i></a>
@@ -72,7 +70,11 @@
                         <a class="btn btn-sm btn-danger btn-disapprove" title="Disapprove" data-id="{{$data->transact_monthly_id}}"><i class="fas fa-thumbs-down"></i></a>
                     </td>
                 </tr>
-            @endforeach
+            @empty
+                <tr class="text-center">
+                    <th colspan="13">No Data Record Found</th>
+                </tr>
+            @endforelse
         </tbody>
     </table>
 </div>

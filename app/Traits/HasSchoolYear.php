@@ -19,5 +19,12 @@ trait HasSchoolYear{
     {
         return SchoolYear::where('status', 1)->get();
     }
+
+    public function schoolYearActiveStatus()
+    {
+        return SchoolYear::where('current', 1)
+            ->where('status', 1)
+            ->first();
+    }
     
 }

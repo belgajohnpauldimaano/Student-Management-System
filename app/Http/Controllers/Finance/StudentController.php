@@ -122,11 +122,10 @@ class StudentController extends Controller
                                 ->paginate(10);
                         }   
                     
-                    $NotyetApprovedCount = $this->notYetApproved();
-    
+                    
                     // return json_encode(['student_info' => $StudentInformation]);
                     return view('control_panel_finance.student_information.partials.data_list', 
-                        compact('StudentInformation','Transaction','School_year_id','hasUser', 'NotyetApprovedCount','School_years','sy_transaction','transactionSchoolYear','transactionMonth'))->render();
+                        compact('StudentInformation','Transaction','School_year_id','hasUser','School_years','sy_transaction','transactionSchoolYear','transactionMonth'))->render();
 
                 }catch(\Exception $e){                
                     return '<div class="box-body"><div class="row"><table class="table"><tbody><tr><th style="text-align:center"><img src="https://cdn.iconscout.com/icon/free/png-256/data-not-found-1965034-1662569.png" alt="no data"/><br/>Sorry, there is no data found.</th></tr></tbody></table></div></div>';
@@ -148,7 +147,7 @@ class StudentController extends Controller
         $NotyetApprovedCount = $this->notYetApproved();
         // return json_encode(['student_info' => $StudentInformation]);
         return view('control_panel_finance.student_information.index', 
-            compact('StudentInformation','Transaction','School_year_id','hasUser','NotyetApprovedCount','School_years','sy_transaction','transactionSchoolYear','transactionMonth'));
+            compact('StudentInformation','Transaction','School_year_id','hasUser','School_years','sy_transaction','transactionSchoolYear','transactionMonth'));
     }
 
     public function modal_data (Request $request) 

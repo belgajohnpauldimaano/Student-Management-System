@@ -6,7 +6,6 @@ use App\Models\Payroll;
 use App\Models\Document;
 use App\Traits\HasDocuments;
 use Illuminate\Http\Request;
-use App\Traits\hasNotYetApproved;
 use App\Models\FacultyInformation;
 use App\Models\FinanceInformation;
 use App\Http\Controllers\Controller;
@@ -15,21 +14,20 @@ use App\Models\RegistrarInformation;
 
 class PayrollController extends Controller
 {
-    use hasNotYetApproved, HasDocuments;
+    use HasDocuments;
     
     public function index(Request $request)
     {
-        $NotyetApprovedCount = $this->notYetApproved();
         $payroll_dates = Payroll::whereStatus(1)->orderBy('payroll_date', 'ASC')->distinct(['payroll_date'])->get(['payroll_date']);
         $payroll = Payroll::where('status', 1)->orderBy('payroll_date', 'ASC')->where('payroll_date', 'like', '%'.$request->search.'%')->paginate(10);
         if($request->ajax())
         {
             return view('control_panel_finance.payroll.partials.data_list', 
-                compact('payroll','NotyetApprovedCount','payroll_dates'))->render();
+                compact('payroll','payroll_dates'))->render();
         }
 
         return view('control_panel_finance.payroll.index', 
-            compact('payroll','NotyetApprovedCount','payroll_dates'));
+            compact('payroll','payroll_dates'));
     }
 
     public function modal_data (Request $request) 

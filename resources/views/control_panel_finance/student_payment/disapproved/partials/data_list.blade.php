@@ -21,7 +21,7 @@
             </tr>
         </thead>
         <tbody>
-            @foreach($Disapproved as $key => $data)
+            @forelse($Disapproved as $key => $data)
                 <tr>
                     <td>{{$key + 1}}</td>
                     <td>{{$data->student_name}}</td>
@@ -81,7 +81,11 @@
                         </div>  --}}
                     </td>
                 </tr>
-            @endforeach
+            @empty
+                <tr>
+                    <th>No Data Record Found</th>
+                </tr>
+            @endforelse
         </tbody>
     </table>
 </div>

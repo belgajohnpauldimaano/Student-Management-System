@@ -4,14 +4,14 @@ namespace App\Http\Controllers\Finance;
 
 use App\Models\SchoolYear;
 use App\Models\Transaction;
+use Illuminate\Http\Request;
+use App\Traits\HasSchoolYear;
 use App\Models\PaymentCategory;
 use App\Models\StudentInformation;
 use App\Models\TransactionDiscount;
 use App\Models\TransactionOtherFee;
-use Illuminate\Http\Request;
-use App\Models\TransactionMonthPaid;
-use App\Traits\hasNotYetApproved;
 use App\Http\Controllers\Controller;
+use App\Models\TransactionMonthPaid;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Mail\NotifyDisapprovePaymentMail;
 use App\Exports\StudentPaymentApprovedExport;
@@ -20,15 +20,13 @@ use App\Mail\NotifyStudentApprovedFinanceMail;
 
 class StudentPaymentController extends Controller
 {
-    use hasNotYetApproved;
+    use HasSchoolYear;
 
-    public function index(Request $request)
+    private function studentPayment($request)
     {
-        $SchoolYear = SchoolYear::where('current', 1)
-            ->where('status', 1)
-            ->first();
+        $SchoolYear = $this->schoolYearActiveStatus();
 
-        $NotyetApproved = StudentInformation::join('transactions','transactions.student_id', '=' ,'student_informations.id')    
+        return StudentInformation::join('transactions','transactions.student_id', '=' ,'student_informations.id')    
                 ->join('transaction_month_paids', 'transaction_month_paids.student_id', '=', 'student_informations.id')                                   
                 ->join('payment_categories', 'payment_categories.id', '=', 'transactions.payment_category_id')
                 ->join('student_categories', 'student_categories.id', '=', 'payment_categories.student_category_id')
@@ -56,69 +54,32 @@ class StudentPaymentController extends Controller
                 ->where('transaction_month_paids.school_year_id', $SchoolYear->id)
                 ->where('student_informations.status', 1)
                 ->where('transaction_month_paids.isSuccess', 1)
-                ->where('transaction_month_paids.approval', 'Not yet approved')
                 ->orderBy('transaction_month_paids.id', 'DESC')
-                ->distinct()
-                ->paginate(10, ['transaction_id']);
+                ->distinct();
+    }
 
-            $NotyetApprovedCount = $this->notYetApproved();
+    public function index(Request $request)
+    {
         
+        $NotyetApproved = $this->studentPayment($request)
+            ->where('transaction_month_paids.approval', 'Not yet approved')->paginate(10, ['transaction_id']);
+
         if ($request->ajax())
         {
            return view('control_panel_finance.student_payment.not_yet_approved.partials.data_list', 
-            compact('NotyetApproved', 'NotyetApprovedCount','SchoolYear'));
+            compact('NotyetApproved','SchoolYear'));
         } 
 
         
         return view('control_panel_finance.student_payment.not_yet_approved.index', 
-            compact('NotyetApproved','SchoolYear','NotyetApprovedCount'));
+            compact('NotyetApproved','SchoolYear'));
     }
 
     public function approved(Request $request)
     {
-        $SchoolYear = SchoolYear::where('current', 1)
-            ->where('status', 1)
-            ->first();
-
-        $Approved = StudentInformation::join('transactions','transactions.student_id', '=' ,'student_informations.id')    
-                ->join('transaction_month_paids', 'transaction_month_paids.student_id', '=', 'student_informations.id')                                   
-                ->join('payment_categories', 'payment_categories.id', '=', 'transactions.payment_category_id')
-                ->join('student_categories', 'student_categories.id', '=', 'payment_categories.student_category_id')
-                ->join('tuition_fees', 'tuition_fees.id', '=', 'payment_categories.tuition_fee_id')
-                ->join('misc_fees', 'misc_fees.id', '=', 'payment_categories.misc_fee_id')   
-                ->selectRaw('
-                    CONCAT(student_informations.last_name, ", ", student_informations.first_name, " " ,  student_informations.middle_name) AS student_name,
-                    CONCAT(payment_categories.grade_level_id," - ", student_categories.student_category) AS student_level,
-                    tuition_fees.tuition_amt,
-                    misc_fees.misc_amt,
-                    transaction_month_paids.payment,
-                    transaction_month_paids.balance,
-                    transaction_month_paids.approval,
-                    transaction_month_paids.isSuccess,
-                    transaction_month_paids.id as transact_monthly_id,
-                    student_informations.id AS student_id,
-                    transaction_month_paids.transaction_id,
-                    transactions.school_year_id
-                ')
-                ->where(function ($query) use ($request) {
-                    $query->where('student_informations.first_name', 'like', '%'.$request->search.'%');
-                    $query->orWhere('student_informations.middle_name', 'like', '%'.$request->search.'%');
-                    $query->orWhere('student_informations.last_name', 'like', '%'.$request->search.'%');
-                })
-                ->where('transaction_month_paids.school_year_id', $SchoolYear->id)
-                ->where('student_informations.status', 1)
-                ->where('transaction_month_paids.isSuccess', 1)
-                ->where('transaction_month_paids.approval', 'Approved')
-                ->orderBy('transaction_month_paids.id', 'DESC')
-                ->distinct()
-                ->paginate(10, ['transaction_id']);
-
-                $NotyetApprovedCount = $this->notYetApproved();
-
-        // return json_encode($Approved);10
-
-        $NotyetApprovedCount = $this->notYetApproved();
-
+        $Approved = $this->studentPayment($request)
+            ->where('transaction_month_paids.approval', 'Approved')->paginate(10, ['transaction_id']);
+        
         if ($request->ajax())
         {
             return view('control_panel_finance.student_payment.approved.partials.data_list', 
@@ -131,49 +92,13 @@ class StudentPaymentController extends Controller
 
     public function disapproved(Request $request)
     {
-        $SchoolYear = SchoolYear::where('current', 1)
-            ->where('status', 1)
-            ->first();
+        $Disapproved = $this->studentPayment($request)
+            ->where('transaction_month_paids.approval', 'Disapproved')->paginate(10, ['transaction_id']);
 
-        $Disapproved = StudentInformation::join('transactions','transactions.student_id', '=' ,'student_informations.id')    
-                ->join('transaction_month_paids', 'transaction_month_paids.student_id', '=', 'student_informations.id')                                   
-                ->join('payment_categories', 'payment_categories.id', '=', 'transactions.payment_category_id')
-                ->join('student_categories', 'student_categories.id', '=', 'payment_categories.student_category_id')
-                ->join('tuition_fees', 'tuition_fees.id', '=', 'payment_categories.tuition_fee_id')
-                ->join('misc_fees', 'misc_fees.id', '=', 'payment_categories.misc_fee_id')   
-                ->selectRaw('
-                    CONCAT(student_informations.last_name, ", ", student_informations.first_name, " " ,  student_informations.middle_name) AS student_name,
-                    CONCAT(payment_categories.grade_level_id," - ", student_categories.student_category) AS student_level,
-                    tuition_fees.tuition_amt,
-                    misc_fees.misc_amt,
-                    transaction_month_paids.payment,
-                    transaction_month_paids.balance,
-                    transaction_month_paids.approval,
-                    transaction_month_paids.isSuccess,
-                    transaction_month_paids.id as transact_monthly_id,
-                    student_informations.id AS student_id,
-                    transaction_month_paids.transaction_id,
-                    transactions.school_year_id
-                ')
-                ->where(function ($query) use ($request) {
-                    $query->where('student_informations.first_name', 'like', '%'.$request->search.'%');
-                    $query->orWhere('student_informations.middle_name', 'like', '%'.$request->search.'%');
-                    $query->orWhere('student_informations.last_name', 'like', '%'.$request->search.'%');
-                })
-                ->where('transaction_month_paids.school_year_id', $SchoolYear->id)
-                ->where('student_informations.status', 1)
-                ->where('transaction_month_paids.isSuccess', 1)
-                ->where('transaction_month_paids.approval', 'Disapproved')
-                ->orderBy('transaction_month_paids.id', 'DESC')
-                ->distinct()
-                ->paginate(10, ['transaction_id']);
-                
-                $NotyetApprovedCount = $this->notYetApproved();
-       
-            if ($request->ajax())
-            {
-                return view('control_panel_finance.student_payment.disapproved.partials.data_list', compact('Disapproved', 'NotyetApprovedCount'));
-            } 
+        if ($request->ajax())
+        {
+            return view('control_panel_finance.student_payment.disapproved.partials.data_list', compact('Disapproved', 'NotyetApprovedCount'));
+        } 
         
         return view('control_panel_finance.student_payment.disapproved.index', 
             compact('Disapproved','SchoolYear','NotyetApprovedCount'));

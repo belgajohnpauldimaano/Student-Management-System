@@ -49,10 +49,9 @@ class StudentInformation extends Model
         return $this->hasMany(TransactionDiscount::class, 'transaction_month_paid_id', 'id' );
     }
     
-    
-    // public function student(){
-    //     return $this->belongsTo(StudentInformation::class);
-    // }
+    public function student(){
+        return $this->belongsTo(StudentInformation::class);
+    }
 
     protected $table = 'student_informations';
 

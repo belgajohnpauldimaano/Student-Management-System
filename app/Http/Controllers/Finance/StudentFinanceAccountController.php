@@ -75,9 +75,8 @@ class StudentFinanceAccountController extends Controller
                 ->distinct()
                 ->paginate(10, ['transactions.id']);
 
-                $NotyetApprovedCount = $this->notYetApproved();
-
-            return view('control_panel_finance.student_finance_account.partials.data_list', compact('Unpaid','Paid','NotyetApprovedCount'));
+            return view('control_panel_finance.student_finance_account.partials.data_list',
+                 compact('Unpaid','Paid'));
         } 
 
         $SchoolYear = SchoolYear::where('current', 1)
@@ -130,9 +129,7 @@ class StudentFinanceAccountController extends Controller
             ->distinct()
             ->paginate(10, ['transactions.id']);
 
-            $NotyetApprovedCount = $this->notYetApproved();
-        
-        return view('control_panel_finance.student_finance_account.index', compact('Unpaid','Paid','NotyetApprovedCount'));
+        return view('control_panel_finance.student_finance_account.index', compact('Unpaid','Paid'));
     }
 
     public function modal_data (Request $request) 

@@ -6,7 +6,7 @@
                 <div class="input-group-addon">
                     <i class="fa fa-calendar"></i>
                 </div>
-                <input type="text" name="date_from" id="date_from" data-date-format="yyyy/m/d" class="form-control pull-right">
+                <input type="text" name="date_from" id="date_from" data-date-format="yyyy/m/d" class="form-control form-control-sm  pull-right">
             </div>
             <div class="help-block text-red text-left" id="js-date_from">
             </div>
@@ -18,7 +18,7 @@
                 <div class="input-group-addon">
                     <i class="fa fa-calendar"></i>
                 </div>
-                <input type="text" name="date_to" id="date_to" data-date-format="yyyy/m/d" class="form-control pull-right">                
+                <input type="text" name="date_to" id="date_to" data-date-format="yyyy/m/d" class="form-control form-control-sm  pull-right">                
             </div>
             <div class="help-block text-red text-left" id="js-date_to">
             </div>

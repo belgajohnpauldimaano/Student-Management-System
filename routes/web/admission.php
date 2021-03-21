@@ -19,6 +19,7 @@ Route::group(['prefix' => 'admission', 'middleware' => ['auth', 'userroles'], 'r
             Route::post('modal', 'IncomingStudentController@modal_data')->name('admission.incoming.modal');
             Route::post('approve', 'IncomingStudentController@approve')->name('admission.incoming.approve');
             Route::post('disapprove', 'IncomingStudentController@disapprove')->name('admission.incoming.disapprove');
+            Route::get('print', 'IncomingStudentController@print')->name('admission.incoming.print');
             Route::get('/export_excel/excel', 'IncomingStudentController@excel')->name('export_excel.excel.admission');
         });
             

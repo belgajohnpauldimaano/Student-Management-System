@@ -26,9 +26,18 @@
                             </span>
                         </td>
                         <td  class="text-center">
-                            <a class="btn btn-sm btn-primary btn-view-modal" data-id="{{$item->student_id}}"><i class="fas fa-eye"></i></a>
-                            <a class="btn btn-sm btn-success btn-approve" data-id="{{$item->student_id}}"><i class="fas fa-thumbs-up"></i></a>
-                            <a class="btn btn-sm btn-danger btn-disapprove" data-id="{{$item->student_id}}"><i class="fas fa-thumbs-down"></i></a>
+                            <a class="btn btn-sm btn-primary btn-view-modal" data-id="{{$item->student_id}}">
+                                <i class="fas fa-eye"></i>
+                            </a>
+                            <a class="btn btn-sm btn-success btn-approve" data-id="{{$item->student_id}}">
+                                <i class="fas fa-thumbs-up"></i>
+                            </a>
+                            <a class="btn btn-sm btn-danger btn-disapprove" data-id="{{$item->student_id}}">
+                                <i class="fas fa-thumbs-down"></i>
+                            </a>
+                            <a class="btn btn-sm btn-warning btn-print" data-id="{{$item->student_id}}">
+                                <i class="fas fa-print"></i>
+                            </a>
                         </td>
                     </tr>
                 @endforeach

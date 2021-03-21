@@ -201,7 +201,11 @@
               <li class="nav-item">
                 <a class="nav-link {{request()->routeIs('admission.incoming') ? 'active' : '' }}"
                    href="{{ route('admission.incoming', ['tab' => 'not-yet-approved']) }}">
-                  <i class="fa fa-info-circle fa-lg"></i> <p>Incoming Student</p>
+                   <i class="fa fa-info-circle fa-lg"></i>
+                      <span class="{{$IncomingStudentCount == 0 ? '' : 'badge badge-info'}} right">
+                        {{$IncomingStudentCount == 0 ? '' : $IncomingStudentCount}}
+                      </span>
+                   <p>Incoming Student</p>
                 </a>
               </li>
               <li class="nav-item">
@@ -306,7 +310,11 @@
               <li class="nav-item">
                 <a class="nav-link {{request()->routeIs('admission.incoming') ? 'active' : '' }}"
                    href="{{ route('admission.incoming', ['tab' => 'not-yet-approved']) }}">
-                  <i class="fa fa-info-circle fa-lg"></i> <p>Incoming Student</p>
+                      <i class="fa fa-info-circle fa-lg"></i>
+                      <span class="{{$IncomingStudentCount == 0 ? '' : 'badge badge-info'}} right">
+                        {{$IncomingStudentCount == 0 ? '' : $IncomingStudentCount}}
+                      </span>
+                      <p>Incoming Student</p>
                 </a>
               </li>
               <li class="nav-item">

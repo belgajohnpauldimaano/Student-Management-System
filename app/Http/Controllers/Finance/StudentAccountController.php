@@ -110,8 +110,6 @@ class StudentAccountController extends Controller
         $student_payment_category = PaymentCategory::with('misc_fee','tuition')
             ->where('grade_level_id',  $grade_level_id)->first();
         
-            $NotyetApprovedCount = $this->notYetApproved();
-
         if($Transaction){
         
             $Payment =  PaymentCategory::where('id', $Transaction->payment_category_id)->first();
@@ -172,7 +170,7 @@ class StudentAccountController extends Controller
             compact('StudentInformation','Profile','Gradelvl','Discount','OtherFee','SchoolYear','StudentCategory','PaymentCategory','Transaction'
                     ,'Stud_cat_payment','Payment','MiscFee_payment','Tuitionfee_payment','School_year_id','Transaction_disc','TransactionMonthPaid'
                     ,'Account','TransactionOR','AccountOthers','Downpayment','student_payment_category','grade_level_id', 'others','TransactionDiscount'
-                    ,'NotyetApprovedCount','HasTransactionDiscount','ClassDetail'
+                    ,'HasTransactionDiscount','ClassDetail'
                 ));
     }
 
@@ -769,7 +767,6 @@ class StudentAccountController extends Controller
         // $stud_stats = $request->stud_status;
         $StudentInformation = StudentInformation::with(['user'])->where('id', $request->studid)->first();
         $balance = $request->balance;
-        
 
         // if($stud_stats == 0){
 

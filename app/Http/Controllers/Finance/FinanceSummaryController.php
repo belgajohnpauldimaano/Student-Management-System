@@ -9,29 +9,22 @@ use App\Models\FinanceInformation;
 use App\Models\StudentInformation;
 use Illuminate\Http\Request;
 use App\Models\TransactionMonthPaid;
-use App\Traits\hasNotYetApproved;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 
 class FinanceSummaryController extends Controller
 {
-    use hasNotYetApproved;
-    
     public function index(Request $request)
     {
-        $NotyetApprovedCount = $this->notYetApproved();
         $School_years = SchoolYear::where('status', 1)->orderBy('id', 'Desc')->get();
-        return view('control_panel_finance.payment_summary.index', compact('NotyetApprovedCount','School_years'));
+        return view('control_panel_finance.payment_summary.index', compact('School_years'));
     }
     
     function fetch_record(Request $request)
     {
         if($request->ajax())
         {
-            // $SchoolYear = SchoolYear::where('current', 1)
-            //     ->where('status', 1)
-            //     ->first();  
-
+            
             if($request->date_from != '' && $request->date_to != '' && $request->school_year != 0)
             {      
                 $data = StudentInformation::join('transactions','transactions.student_id', '=' ,'student_informations.id')    

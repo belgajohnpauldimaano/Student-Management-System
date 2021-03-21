@@ -221,6 +221,13 @@
             });            
         });
 
+        $('body').on('click', '.btn-print', function (e) {
+            e.preventDefault()
+            var id = $(this).data('id');
+            var tab = '{{ $tab }}';
+            window.open("{{ route('admission.incoming.print') }}?id="+id+"&tab="+tab, '', 'height=800,width=800')
+        })
+
         $('body').on('submit', '#js-form_search', function (e) {
             e.preventDefault();
             fetch_data();

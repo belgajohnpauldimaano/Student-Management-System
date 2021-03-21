@@ -1,10 +1,9 @@
-<!DOCTYPE html>
-<html>
-<head>
- <title>Laravel 8 Send Email Example</title>
-</head>
-<body>
- 
+@extends('control_panel.layouts.print_layout')
+@section ('content_title')
+    Student Information
+@endsection
+
+@section ('content')
     <p style="text-align: right;">Date: {{ $updated_at ? date_format(date_create($updated_at), 'F d, Y h:i A') : '' }}</p>
 
    <p>Dear {{$full_name}},</p>
@@ -16,6 +15,4 @@
        <li>password: {{$password}}</li>
    </ul>
    <p>Security advisory, please do not share your credentials to anyone. Thank you</p>
- 
-</body>
-</html> 
+@endsection

@@ -4,7 +4,7 @@
             <div class="col-md-3">
                 <label class="control-label">- School year -</label>                                            
                 <div class="input-group input-school_year">
-                    <select name="school_year" id="school_year" class="form-control ">                            
+                    <select name="school_year" id="school_year" class="form-control form-control-sm ">                            
                         <option value="0">
                             - Select School Year -
                             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -21,7 +21,7 @@
             <div class="col-md-3">
                 <label class="control-label">- Filter Category -</label>                                            
                 <div class="input-group input-category_type">
-                    <select name="category_type" id="category_type" class="form-control ">                            
+                    <select name="category_type" id="category_type" class="form-control form-control-sm ">                            
                         <option value="2">
                             - Select Category -
                             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -40,7 +40,7 @@
                     <div class="input-group-prepend">
                       <span class="input-group-text"><i class="far fa-calendar-alt"></i></span>
                     </div>
-                    <input type="text" name="date_from" id="date_from" data-date-format="yyyy/m/d" class="form-control float-right">
+                    <input type="text" name="date_from" id="date_from" data-date-format="yyyy/m/d" class="form-control form-control-sm float-right">
                 </div>
                 <div class="help-block text-red text-left" id="js-date_from">
                 </div>
@@ -52,7 +52,7 @@
                     <div class="input-group-prepend">
                       <span class="input-group-text"><i class="far fa-calendar-alt"></i></span>
                     </div>
-                    <input type="text" name="date_to" id="date_to" data-date-format="yyyy/m/d" class="form-control float-right">                
+                    <input type="text" name="date_to" id="date_to" data-date-format="yyyy/m/d" class="form-control form-control-sm float-right">                
                 </div>
                 <div class="help-block text-red text-left" id="js-date_to">
                 </div>

@@ -5,6 +5,7 @@ use App\Models\SchoolYear;
 use App\Models\Transaction;
 use App\Models\PaymentCategory;
 use App\Models\StudentCategory;
+use App\Models\TransactionDiscount;
 use App\Models\TransactionOtherFee;
 use App\Models\TransactionMonthPaid;
 
@@ -56,4 +57,47 @@ trait HasTransaction{
         return $this->hasOne(Transaction::class, 'id', 'id');
     }
 
+    private function otherComputation()
+    {
+        return $other = TransactionOtherFee::where('student_id', $this->student_id)
+                ->where('school_year_id', $this->school_year_id)
+                ->where('transaction_id', $this->transaction_id)
+                ->where('isSuccess', 1)
+                ->sum('item_price');
+    }
+
+    private function discountComputation()
+    {
+        return $discount = TransactionDiscount::where('student_id', $this->student_id)
+            ->where('school_year_id', $this->school_year_id)
+            ->where('isSuccess', 1)
+            ->sum('discount_amt');
+    }
+
+    public function getOtherTotalAttribute()
+    {
+        $other = $this->otherComputation();
+        return number_format($other, 2);
+    }
+
+    public function getDiscountTotalAttribute()
+    {
+        $discount = $this->discountComputation();
+        return number_format($discount, 2);
+    }
+
+    public function getTotalFeesAttribute()
+    {
+        $other = $this->otherComputation();
+        $discount = $this->discountComputation();
+        return number_format(($this->tuition_amt + $this->misc_amt + $other) - $discount, 2);
+    }
+
+    public function getPaymentStatusAttribute()
+    {
+        $status = $this->approval ? $this->approval =='Approved' ? 'badge-success' : 'badge-danger' : 'label-danger';
+        $status_text = $this->approval ? $this->approval =='Approved' ? 'Approved' : 'Not yet approved' : 'Not yet approved';
+        
+        return '<span class="badge '.$status.'">'.$status_text.'</span>';
+    }
 }

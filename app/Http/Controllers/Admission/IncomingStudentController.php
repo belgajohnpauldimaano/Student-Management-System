@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 use App\Traits\HasSchoolYear;
 use App\Models\IncomingStudent;
 use App\Models\StudentInformation;
-use App\Traits\hasIncomingStudents;
+// use App\Traits\hasIncomingStudents;
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\User;
 use Illuminate\Support\Facades\Mail;
@@ -21,11 +21,11 @@ use App\Mail\Student\Admission\NotifyDisapproveStudentMail;
 
 class IncomingStudentController extends Controller
 {
-    use hasIncomingStudents, HasSchoolYear;
+    use HasSchoolYear;
     
     public function index(Request $request)
     {
-        $IncomingStudentCount = $this->IncomingStudentCount(); 
+        // $IncomingStudentCount = $this->IncomingStudentCount(); 
         $School_years = $this->schoolYears();
         $tab = $request->tab;
         $SchoolYear = SchoolYear::where('current', 1)
@@ -72,10 +72,10 @@ class IncomingStudentController extends Controller
         $IncomingStudent = $query->orderBY('incoming_students.id', 'desc')->paginate(10);
 
         if($request->ajax()){
-            return view('control_panel_admission.incoming.partials.data_list', compact('IncomingStudent','IncomingStudentCount','tab','School_years'))->render();
+            return view('control_panel_admission.incoming.partials.data_list', compact('IncomingStudent','tab','School_years'))->render();
         }
         
-        return view('control_panel_admission.incoming.index', compact('IncomingStudentCount','tab','IncomingStudent','School_years'));
+        return view('control_panel_admission.incoming.index', compact('tab','IncomingStudent','School_years'));
     }
 
     public function modal_data(Request $request)
@@ -87,14 +87,7 @@ class IncomingStudentController extends Controller
         $IncomingStudent = NULL;
         if ($request->id)
         {
-            $IncomingStudent = StudentInformation::with(['incomingStudent','user','studentEducation'])
-                // ->whereHas('incomingStudent', function($q) use ($SchoolYear) {
-                //     $q->where('school_year_id', $SchoolYear->id);
-                // })
-                ->whereId($request->id)
-                // ->where('status','!=',0)
-                ->first();
-
+            $IncomingStudent = $this->incomingStudent($request);
             // return json_encode($IncomingStudent);
         }
         return view('control_panel_admission.incoming.partials.modal_data', compact('IncomingStudent'))->render();
@@ -102,10 +95,6 @@ class IncomingStudentController extends Controller
 
     public function approve(Request $request)
     {
-        // $SchoolYear = SchoolYear::where('current', 1)
-        //     ->where('status', 1)
-        //     ->first(); 
-        
         $StudentInformation = StudentInformation::where('id', $request->id)->first();
 
         $name = $StudentInformation->first_name.' '.$StudentInformation->last_name;
@@ -119,19 +108,14 @@ class IncomingStudentController extends Controller
             $Approved->approval = 'Approved';
 
             $User = User::where('id', $StudentInformation->user_id)->first();
-
+            $IncomingStudent = $this->incomingStudent($request);
             
             if ($User)
             {
                 $User->status = 1;
                 $StudentInformation->status = 1;
-                $data = array(
-                    'email'         =>  $StudentInformation->email,
-                    'updated_at'    =>  $StudentInformation->updated_at,
-                    'full_name'     =>  $StudentInformation->full_name,
-                    'username'      =>  $StudentInformation->user->username,
-                    'password'      =>  $StudentInformation->first_name.'.'.$StudentInformation->last_name
-                );
+
+                $data = $this->studentData($IncomingStudent);
 
                 try{
                     if($Approved->save() && $User->save() && $StudentInformation->save())
@@ -144,8 +128,7 @@ class IncomingStudentController extends Controller
                             $message->to($data["email"], 'sjai')
                             ->subject('Activation')
                             ->attachData($pdf->output(), "RegistrationForm.pdf");
-                        });
-                        
+                        });                        
                         // Mail::to($StudentInformation->email)->send(new ApproveStudentAccountMail($student));
                         // Mail::to('admission@sja-bataan.com')->send(new NotifyApproveAdmission($student));
                         
@@ -166,10 +149,6 @@ class IncomingStudentController extends Controller
 
     public function disapprove(Request $request)
     {
-        // $SchoolYear = SchoolYear::where('current', 1)
-        //     ->where('status', 1)
-        //     ->first(); 
-        
         $StudentInformation = StudentInformation::where('id', $request->id)->first();
 
         $name = $StudentInformation->first_name.' '.$StudentInformation->last_name;  
@@ -178,9 +157,7 @@ class IncomingStudentController extends Controller
         // $incoming_student->approval = 'Disapproved';
         // $incoming_student->saved();
 
-        $Disapproved = IncomingStudent::where('student_id', $request->id)
-            // ->where('school_year_id', $SchoolYear->id)
-            ->first();
+        $Disapproved = IncomingStudent::where('student_id', $request->id)->first();
 
         if($Disapproved)
         {
@@ -210,6 +187,69 @@ class IncomingStudentController extends Controller
         }      
                 
         return response()->json(['res_code' => 1, 'res_msg' => 'Invalid request.']);
+    }
+
+    public function print(Request $request)
+    {
+        if($request->id && $request->tab)
+        {
+            $IncomingStudent = $this->incomingStudent($request);
+            $data = $this->studentData($IncomingStudent);
+            return json_encode($data);
+
+            return view('control_panel_admission.incoming.partials.print', compact('data'));
+            $pdf = \PDF::loadView('control_panel_registrar.student_enrollment.partials.print', compact('data'));
+            return $pdf->stream();
+        }
+    }
+
+    private function incomingStudent($request)
+    {
+        return StudentInformation::with(['incomingStudent','user','studentEducation'])
+                ->whereId($request->id)
+                ->first();
+    }
+
+    private function studentData($IncomingStudent)
+    {
+        return $data = array(
+                    'email'         =>  $IncomingStudent->email,
+                    'updated_at'    =>  $IncomingStudent->updated_at,
+                    'full_name'     =>  $IncomingStudent->full_name,
+                    'username'      =>  $IncomingStudent->user->username,
+                    'password'      =>  $IncomingStudent->first_name.'.'.$IncomingStudent->last_name,
+                    'p_address'     =>  $IncomingStudent->p_address,
+                    'c_address'     =>  $IncomingStudent->c_address,
+                    'birthdate'     =>  $IncomingStudent->birthdate,
+                    'place_of_birth' =>  $IncomingStudent->place_of_birth,
+                    'age'           =>  $IncomingStudent->age,
+                    'religion'      =>  $IncomingStudent->religion,
+                    'catholic'      =>  $IncomingStudent->catholic,
+                    'citizenship'   =>  $IncomingStudent->citizenship,
+                    'fb_acct'       =>  $IncomingStudent->fb_acct,
+                    'photo'         =>  $IncomingStudent->photo,
+                    'contact_number'      =>  $IncomingStudent->contact_number,
+                    'email'         =>  $IncomingStudent->email,
+                    'father_name'   =>  $IncomingStudent->father_name,
+                    'mother_name'   =>  $IncomingStudent->mother_name,
+                    'father_occupation'   =>  $IncomingStudent->father_occupation,
+                    'father_fb_acct'      =>  $IncomingStudent->father_fb_acct,
+                    'mother_occupation'   =>  $IncomingStudent->mother_occupation,
+                    'mother_fb_acct'      =>  $IncomingStudent->mother_fb_acct,
+                    'guardian_fb_acct'    =>  $IncomingStudent->guardian_fb_acct,
+                    'no_siblings'   =>  $IncomingStudent->no_siblings,
+                    'is_esc'        =>  $IncomingStudent->isEsc,
+                    'gender'        =>  $IncomingStudent->gender,
+                    'school_year'   =>  $IncomingStudent->admission_sy,
+                    'grade_level'   =>  $IncomingStudent->incomingStudent->grade_level_id,
+                    'student_type'  => $IncomingStudent->incomingStudent->student_type == 1 ? 'Transferee' : 'Freshman',
+                    'school_name'  => $IncomingStudent->admission_school_name,
+                    'school_type'  => $IncomingStudent->admission_school_type,
+                    'school_address'    => $IncomingStudent->admission_school_address,
+                    'last_sy_attended'  => $IncomingStudent->school_year,
+                    'gw_average'  => $IncomingStudent->admission_gwa,
+                    'strand'      => $IncomingStudent->admission_strand
+                );
     }
 
     public function excel(Request $request)

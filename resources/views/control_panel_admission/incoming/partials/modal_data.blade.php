@@ -33,10 +33,16 @@
                                         {{$IncomingStudent->incomingStudent->student_type == 1 ? 'Transferee' : 'Freshman'}}
                                     </div>
 
-                                    <div class=" mt-1">
+                                    <div class=" mt-1" style="line-height: 15px;">
                                         <label for="">Incoming Student level: </label>
                                         Grade {{$IncomingStudent->incomingStudent->grade_level_id ? $IncomingStudent->incomingStudent->grade_level_id : ''}}
                                     </div>
+                                    @if($IncomingStudent->incomingStudent->grade_level_id == 11)
+                                    <div class=" mt-3" style="line-height: 15px;">
+                                        <label for="">Strand: </label>
+                                        {{$IncomingStudent->admission_strand}}
+                                    </div>
+                                    @endif
                                 </div>
                                 <div class="col-md-6 ">
                                     <div class="">

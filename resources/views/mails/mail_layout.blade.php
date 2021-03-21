@@ -13,7 +13,7 @@
         <div style="padding: 20px">
             <h3 style="text-align:center; margin-bottom:10px">
                 St. John's Academy Inc.<br/>
-                Online Registration Confirmation
+                Online Confirmation
             </h3>
             <br/>
                 @yield('content')            
