@@ -26,7 +26,7 @@
   <link rel="stylesheet" href="{{ asset('cms-new/plugins/jqvmap/jqvmap.min.css') }}">  
   {{-- new theme --}}
   <link rel="stylesheet" href="{{ asset('cms-new/dist/css/adminlte.min.css') }}">
-  <link rel="stylesheet" href="{{ asset('cms-new/dist/css/adminlte.min.css.map') }}">
+  {{-- <link rel="stylesheet" href="{{ asset('cms-new/dist/css/adminlte.min.css.map') }}"> --}}
   {{-- <link rel="stylesheet" href="{{ asset('cms-new/plugins/css/adminlte.min.css') }}"> --}}
   <!-- overlayScrollbars -->
   <link rel="stylesheet" href="{{ asset('cms-new/plugins/overlayScrollbars/css/OverlayScrollbars.min.css') }}">

@@ -84,9 +84,8 @@ trait HasAdmissions{
             $sy = $this->incoming_student->schoolYear->school_year;
             return $sy;
         } catch (\Throwable $th) {
-            return 'NA';
+            return $this->incomingStudent->schoolYear->school_year;
         }
     }
 
-    
 }

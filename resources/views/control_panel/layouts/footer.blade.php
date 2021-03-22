@@ -23,7 +23,7 @@
 <!-- AdminLTE App -->
 {{-- <script src="{{ asset('cms-new/dist/js/adminlte.js') }}"></script> --}}
 <script src="{{ asset('cms-new/dist/js/adminlte.min.js') }}"></script>
-<script src="{{ asset('cms-new/dist/js/adminlte.min.js.map') }}"></script>
+{{-- <script src="{{ asset('cms-new/dist/js/adminlte.min.js.map') }}"></script> --}}
 <!-- jQuery UI 1.11.4 -->
 <script src="{{ asset('cms-new/plugins/jquery-ui/jquery-ui.min.js') }}"></script>
 

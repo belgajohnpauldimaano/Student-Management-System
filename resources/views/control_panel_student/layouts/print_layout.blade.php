@@ -8,7 +8,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" type="text/css" media="screen" href="main.css" />
     <script src="main.js"></script>
-    <style>
+    @yield('scripts')
+   <style>
             * {
                 font-family: Arial, Times, serif;
             }
@@ -136,5 +137,6 @@
 </head>
 <body>
     @yield('content')
+    
 </body>
 </html>

@@ -100,7 +100,6 @@ class IncomingStudentController extends Controller
         $name = $StudentInformation->first_name.' '.$StudentInformation->last_name;
 
         $Approved = IncomingStudent::where('student_id', $request->id)
-            // ->where('school_year_id', $SchoolYear->id)
             ->first();
             
         if($Approved)
@@ -115,17 +114,20 @@ class IncomingStudentController extends Controller
                 $User->status = 1;
                 $StudentInformation->status = 1;
 
-                $data = $this->studentData($IncomingStudent);
+                
+                // return $data;
 
-                try{
+                // try{
                     if($Approved->save() && $User->save() && $StudentInformation->save())
                     {
                         $student = StudentInformation::find($request->id);
                         
-                        $pdf = PDF::loadView('control_panel_admission.incoming.partials.print', $data);
+                        $data = $this->studentData($IncomingStudent);
+                        $pdf = PDF::loadView('control_panel_admission.incoming.partials.attach_email', $data);
+                        $pdf->setPaper('Legal', 'portrait');
 
                         Mail::send('mails.student.admission.student_account_activation', $data, function($message)use( $data, $pdf) {
-                            $message->to($data["email"], 'sjai')
+                            $message->to($data["email"], config('app.name'))
                             ->subject('Activation')
                             ->attachData($pdf->output(), "RegistrationForm.pdf");
                         });                        
@@ -136,9 +138,9 @@ class IncomingStudentController extends Controller
                     }else{
                         return response()->json(['res_code' => 1, 'res_msg' => 'Sorry approval has error.']);
                     }
-                }catch(\Exception $e){
-                    return response()->json(['res_code' => 1, 'res_msg' => 'Sorry approval has error.']);
-                }               
+                // }catch(\Exception $e){
+                //     return response()->json(['res_code' => 1, 'res_msg' => 'Sorry approval has error.']);
+                // }               
             }
         }      
                 
@@ -195,10 +197,10 @@ class IncomingStudentController extends Controller
         {
             $IncomingStudent = $this->incomingStudent($request);
             $data = $this->studentData($IncomingStudent);
-            return json_encode($data);
+            // return json_encode($data);
 
             return view('control_panel_admission.incoming.partials.print', compact('data'));
-            $pdf = \PDF::loadView('control_panel_registrar.student_enrollment.partials.print', compact('data'));
+            $pdf = PDF::loadView('control_panel_registrar.student_enrollment.partials.print', compact('data'));
             return $pdf->stream();
         }
     }
@@ -212,43 +214,47 @@ class IncomingStudentController extends Controller
 
     private function studentData($IncomingStudent)
     {
-        return $data = array(
-                    'email'         =>  $IncomingStudent->email,
-                    'updated_at'    =>  $IncomingStudent->updated_at,
-                    'full_name'     =>  $IncomingStudent->full_name,
-                    'username'      =>  $IncomingStudent->user->username,
-                    'password'      =>  $IncomingStudent->first_name.'.'.$IncomingStudent->last_name,
-                    'p_address'     =>  $IncomingStudent->p_address,
-                    'c_address'     =>  $IncomingStudent->c_address,
-                    'birthdate'     =>  $IncomingStudent->birthdate,
-                    'place_of_birth' =>  $IncomingStudent->place_of_birth,
-                    'age'           =>  $IncomingStudent->age,
-                    'religion'      =>  $IncomingStudent->religion,
-                    'catholic'      =>  $IncomingStudent->catholic,
-                    'citizenship'   =>  $IncomingStudent->citizenship,
-                    'fb_acct'       =>  $IncomingStudent->fb_acct,
-                    'photo'         =>  $IncomingStudent->photo,
-                    'contact_number'      =>  $IncomingStudent->contact_number,
-                    'email'         =>  $IncomingStudent->email,
-                    'father_name'   =>  $IncomingStudent->father_name,
-                    'mother_name'   =>  $IncomingStudent->mother_name,
-                    'father_occupation'   =>  $IncomingStudent->father_occupation,
-                    'father_fb_acct'      =>  $IncomingStudent->father_fb_acct,
-                    'mother_occupation'   =>  $IncomingStudent->mother_occupation,
-                    'mother_fb_acct'      =>  $IncomingStudent->mother_fb_acct,
-                    'guardian_fb_acct'    =>  $IncomingStudent->guardian_fb_acct,
-                    'no_siblings'   =>  $IncomingStudent->no_siblings,
-                    'is_esc'        =>  $IncomingStudent->isEsc,
-                    'gender'        =>  $IncomingStudent->gender,
-                    'school_year'   =>  $IncomingStudent->admission_sy,
-                    'grade_level'   =>  $IncomingStudent->incomingStudent->grade_level_id,
-                    'student_type'  => $IncomingStudent->incomingStudent->student_type == 1 ? 'Transferee' : 'Freshman',
-                    'school_name'  => $IncomingStudent->admission_school_name,
-                    'school_type'  => $IncomingStudent->admission_school_type,
+        return  $data = array(
+                    'email'             =>  $IncomingStudent->email,
+                    'updated_at'        =>  $IncomingStudent->updated_at,
+                    'full_name'         =>  $IncomingStudent->full_name,
+                    'f_name'            =>  $IncomingStudent->first_name,
+                    'm_name'            =>  $IncomingStudent->middle_name,
+                    'l_name'            =>  $IncomingStudent->last_name,
+                    'username'          =>  $IncomingStudent->user->username,
+                    'password'          =>  $IncomingStudent->first_name.'.'.$IncomingStudent->last_name,
+                    'p_address'         =>  $IncomingStudent->p_address,
+                    'c_address'         =>  $IncomingStudent->c_address,
+                    'birthdate'         =>  date_format(date_create($IncomingStudent->birthdate), 'F d, Y'),
+                    'place_of_birth'    =>  $IncomingStudent->place_of_birth,
+                    'age'               =>  $IncomingStudent->age,
+                    'religion'          =>  $IncomingStudent->religion,
+                    // 'catholic'          =>  $IncomingStudent->catholic,
+                    'citizenship'       =>  $IncomingStudent->citizenship,
+                    'fb_acct'           =>  $IncomingStudent->fb_acct,
+                    'photo'             =>  $IncomingStudent->photo,
+                    'contact_number'    =>  $IncomingStudent->contact_number,
+                    'email'             =>  $IncomingStudent->email,
+                    'father_name'       =>  $IncomingStudent->father_name,
+                    'mother_name'       =>  $IncomingStudent->mother_name,
+                    'father_occupation' =>  $IncomingStudent->father_occupation,
+                    'father_fb_acct'    =>  $IncomingStudent->father_fb_acct,
+                    'mother_occupation' =>  $IncomingStudent->mother_occupation,
+                    'mother_fb_acct'    =>  $IncomingStudent->mother_fb_acct,
+                    'guardian_fb_acct'  =>  $IncomingStudent->guardian_fb_acct,
+                    'guardian'          =>  $IncomingStudent->guardian,
+                    'no_siblings'       =>  $IncomingStudent->no_siblings,
+                    'is_esc'            =>  $IncomingStudent->isEsc == 1 ? 'Yes' : 'No',
+                    'gender'            =>  $IncomingStudent->gender == 1 ? 'Male' : 'Female',
+                    'school_year'       =>  $IncomingStudent->admission_sy,
+                    'grade_level'       =>  $IncomingStudent->incomingStudent->grade_level_id,
+                    'student_type'      => $IncomingStudent->incomingStudent->student_type == 1 ? 'Transferee' : 'Freshman',
+                    'school_name'       => $IncomingStudent->admission_school_name,
+                    'school_type'       => $IncomingStudent->admission_school_type,
                     'school_address'    => $IncomingStudent->admission_school_address,
                     'last_sy_attended'  => $IncomingStudent->school_year,
-                    'gw_average'  => $IncomingStudent->admission_gwa,
-                    'strand'      => $IncomingStudent->admission_strand
+                    'gw_average'        => $IncomingStudent->admission_gwa,
+                    'strand'            => $IncomingStudent->admission_strand
                 );
     }
 

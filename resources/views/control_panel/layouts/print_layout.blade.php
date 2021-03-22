@@ -23,11 +23,14 @@
             color : #dd4b39 !important;
         }
         small {
-            font-size : 10px;
-        }  --}}
-        * {
-            font-family: Arial, Times, serif;
+            font-size : 11px !important;
+        } 
+        @font-face {
+            font-family: Arial, Times, serif ;
         }
+        *   {
+                font-family: Arial, Times, serif;
+            }
         .page-break {
             page-break-after: always;
         }
@@ -62,7 +65,14 @@
             margin:0;
         }
         .heading2-title {
-            font-family: "Old English Text MT", Times, serif;
+            font-family: "Old English Text MT", Times, serif !important;
+        }
+
+        @font-face {
+            font-family: 'old-english';
+            src: url('/fonts/OLD.ttf') format("truetype");
+            font-weight: 400; 
+            font-style: normal; 
         }
         .heading2-subtitle {
             font-size: 12px;
@@ -80,8 +90,16 @@
 
         .logo {
             position: absolute;
-            top: 10px;
-            left: 10px;
+            top: 1em;
+            left: 1em;
+            padding-left: 2em
+        }
+
+        .s_photo {
+            position: absolute;
+            top: 1.5em;
+            right: 1em;
+            padding-right: 4em
         }
         .report-progress {
             text-align: center;
@@ -90,11 +108,53 @@
         }
         .table-student-info {
             width: 100%;
+        }
+        
+        .table-student-info th, .table-student-info td {
+            border: none;
+            padding: 0 2px 2px 2px;
+        }
+        .text-red{
+            color: red;
+        }
+        .table-student-info {
+            width: 100%;
         }            
         .table-student-info th, .table-student-info td {
             border: none;
             padding: 0 2px 2px 2px;
         }
+        .b-top{
+                border-bottom: 3px solid #dd4b39;
+                margin-top: 0;
+                width: 64%;
+                margin: auto;
+            }
+        p{
+            font-size: 14px
+        }
+        .box-field{
+            border: 1px solid black ;
+            padding: 2px;
+            width: 99% !important;
+            display: inline-block;  
+        }
+        .w-100{
+            width: 99.5% !important;
+        }
+        .m2{
+            margin: 5px 0 0 0 ;
+        }
+        .m3{
+            margin: 10px 0 0 0 ;
+        }
+        .underline-field{
+            border-bottom: 1px solid black ;
+            padding: 2px;
+            width: 99% !important;
+            display: inline-block;  
+        }
+        
     </style>
 </head>
 <body>

@@ -4,21 +4,21 @@
 @endsection
 
 @section ('content')
-<div style="padding: 1em">
+<div style="padding: .5em">
     <table class="table-student-info" style="margin-bottom: 40px">
         <thead>
             <tr>
                 <td style="width: 15% !important">
                     <img style="" class="logo deped-bataan-logo" width="100" 
-                        src="{{ asset('img/sja-logo.png') }}" />
+                        src="img/sja-logo.png" />
                 </td>
-                <td style="width: 60% !important">
+                <td style="width: 60% !important">                    
                     <img style="margin-left: 20px" class=""  
-                        src="{{ asset('img/head.png') }}" />
+                        src="img/head.png" />                    
                 </td>
                 <td style="width: 25% !important">
                     <img style="" class="s_photo" width="100" 
-                        src="{{ asset('img/account/photo/'.$data['photo']) }}" />
+                        src="img/account/photo/{{ $photo }}" />
                 </td>
             </tr>
         </thead>
@@ -26,7 +26,7 @@
 
     @include('control_panel_admission.incoming.partials.data_print_email')    
 
-    <div style="padding: 1px 10px 1px 10px !important; background: rgb(222,222,222); margin-top: 3.5em">
+    <div style="padding: 1px 10px 1px 10px !important; background: rgb(222,222,222); margin-top: 1em">
         <p style="text-align: justify">
             <i>
                 I hereby declare that all information provided in this application form and all supporting documents are true and
@@ -37,7 +37,7 @@
         </p>
     </div>
     
-    <table class="table-student-info text-center" style="margin-top: 2.5em">
+    <table class="table-student-info text-center" style="margin-top: 2em">
         <thead>
             <tr>
                 <td style="width: 40% !important">
@@ -60,7 +60,6 @@
 
     <p style="margin-bottom: -15em">
         <i><b>Note:<br/> Data gathered will be used for students application purposes only</b></i>
-    </p>
-   
+    </p>   
 </div>
 @endsection
