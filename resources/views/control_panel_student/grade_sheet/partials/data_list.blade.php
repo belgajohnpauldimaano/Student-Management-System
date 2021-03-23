@@ -10,7 +10,6 @@
                         } catch (\Throwable $th) {
                             echo 'No Grades and Section';
                         }
-
                     @endphp
                 </i>
                 </b>

@@ -7,6 +7,7 @@ use App\Models\Transaction;
 use Illuminate\Http\Request;
 use App\Traits\HasSchoolYear;
 use App\Models\PaymentCategory;
+use App\Traits\hasNotYetApproved;
 use App\Models\StudentInformation;
 use App\Models\TransactionDiscount;
 use App\Models\TransactionOtherFee;
@@ -20,7 +21,7 @@ use App\Mail\NotifyStudentApprovedFinanceMail;
 
 class StudentPaymentController extends Controller
 {
-    use HasSchoolYear;
+    use HasSchoolYear,  hasNotYetApproved;
 
     private function studentPayment($request)
     {
@@ -60,19 +61,16 @@ class StudentPaymentController extends Controller
 
     public function index(Request $request)
     {
-        
+        $notYetApprovedCount = $this->notYetApproved();
         $NotyetApproved = $this->studentPayment($request)
             ->where('transaction_month_paids.approval', 'Not yet approved')->paginate(10, ['transaction_id']);
-
         if ($request->ajax())
         {
            return view('control_panel_finance.student_payment.not_yet_approved.partials.data_list', 
-            compact('NotyetApproved','SchoolYear'));
-        } 
-
-        
+            compact('NotyetApproved','SchoolYear','notYetApprovedCount'));
+        }
         return view('control_panel_finance.student_payment.not_yet_approved.index', 
-            compact('NotyetApproved','SchoolYear'));
+            compact('NotyetApproved','SchoolYear','notYetApprovedCount'));
     }
 
     public function approved(Request $request)

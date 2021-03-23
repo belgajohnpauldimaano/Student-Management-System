@@ -15,7 +15,7 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach ($IncomingStudent as $item)
+                @forelse ($IncomingStudent as $item)
                     <tr>
                         <td>{{$item->student_name}}</td>
                         <td class="text-center">{{$item->student_type == '1' ? 'Transferee' : 'Freshman'}}</td>
@@ -40,7 +40,13 @@
                             </a>
                         </td>
                     </tr>
-                @endforeach
+                @empty
+                    <tr>
+                        <th class="text-center" colspan="5">
+                            No Data Available
+                        </th>
+                    </tr>
+                @endforelse
             </tbody>
         </table>
     </div>

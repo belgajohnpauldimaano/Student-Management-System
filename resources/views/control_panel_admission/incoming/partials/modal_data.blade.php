@@ -97,7 +97,7 @@
                             <div class="col-md-6">
                                 <div class="">
                                     <label for="">Birthdate: </label>
-                                    {{$IncomingStudent->birthdate ? $IncomingStudent->birthdate : 'NA'}}
+                                    {{$IncomingStudent->birthdate ? date_format(date_create($IncomingStudent->birthdate), 'F d, Y') : 'NA'}}
                                 </div>
                             </div>
                             <div class="col-md-6">
@@ -250,7 +250,7 @@
                         'success btn-approve' : 
                         'danger btn-disapprove'}} 
                         float-right"
-                         data-id="{{$IncomingStudent->student_id}}">
+                         data-id="{{$IncomingStudent->incomingStudent->student_id}}">
                         {{ $IncomingStudent->incomingStudent->approval ? $IncomingStudent->incomingStudent->approval =='Approved' ? 'Dispprove' : 'Approve' : 'Dispprove'}}
                     </button>
                 </div>     

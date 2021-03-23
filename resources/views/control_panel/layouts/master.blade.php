@@ -158,51 +158,11 @@
                   <i class="fa fa-info-circle fa-lg"></i> <p>Student Information</p>
                 </a>
               </li>
-              {{-- <li class="nav-item">
-                <a href="#" class="nav-link 
-                  {{
-                    request()->routeIs('admission.incoming_student') ? 'active menu-open' : '' || 
-                    request()->routeIs('admission.Approved') ? 'active menu-open' : '' || 
-                    request()->routeIs('admission.Disapproved') ? 'active menu-open' : ''
-                  }}
-                ">
-                  <i class="fas fa-users fa-lg"></i>
-                    <p>Incoming Student</p>
-                  <i class="fas fa-angle-left right"></i>
-                </a>
-                <ul class="nav nav-treeview 
-                  {{
-                    request()->routeIs('admission.incoming_student') ? 'd-block' : '' || 
-                    request()->routeIs('admission.Approved') ? 'd-block' : '' || 
-                    request()->routeIs('admission.Disapproved') ? 'd-block' : ''
-                  }}
-                ">
-                    
-                    <li class="nav-item">
-                      <a class="nav-link {{request()->routeIs('admission.incoming_student') ? 'active' : '' }}"
-                         href="{{ route('admission.incoming_student')}}">
-                        <i class="far fa-circle nav-icon fa-1x"></i> <p>Not yet Approved</p>
-                      </a>
-                    </li>
-                    <li class="nav-item">
-                      <a class="nav-link {{request()->routeIs('admission.Approved') ? 'active' : '' }}"
-                         href="{{ route('admission.Approved')}}">
-                        <i class="far fa-circle nav-icon fa-1x"></i> <p>Approved</p>
-                      </a>
-                    </li>
-                    <li class="nav-item">
-                      <a class="nav-link {{request()->routeIs('admission.Disapproved') ? 'active' : '' }}"
-                         href="{{ route('admission.Disapproved')}}">
-                        <i class="far fa-circle nav-icon fa-1x"></i> <p>Disapproved</p>
-                      </a>
-                    </li>
-                </ul>
-              </li> --}}
               <li class="nav-item">
                 <a class="nav-link {{request()->routeIs('admission.incoming') ? 'active' : '' }}"
                    href="{{ route('admission.incoming', ['tab' => 'not-yet-approved']) }}">
                    <i class="fa fa-info-circle fa-lg"></i>
-                      <span class="{{$IncomingStudentCount == 0 ? '' : 'badge badge-info'}} right">
+                      <span class="{{$IncomingStudentCount == 0 ? '' : 'badge badge-info'}} js-incoming_stud right">
                         {{$IncomingStudentCount == 0 ? '' : $IncomingStudentCount}}
                       </span>
                    <p>Incoming Student</p>
@@ -311,7 +271,7 @@
                 <a class="nav-link {{request()->routeIs('admission.incoming') ? 'active' : '' }}"
                    href="{{ route('admission.incoming', ['tab' => 'not-yet-approved']) }}">
                       <i class="fa fa-info-circle fa-lg"></i>
-                      <span class="{{$IncomingStudentCount == 0 ? '' : 'badge badge-info'}} right">
+                      <span class="{{$IncomingStudentCount == 0 ? '' : 'badge badge-info'}} js-incoming_stud right">
                         {{$IncomingStudentCount == 0 ? '' : $IncomingStudentCount}}
                       </span>
                       <p>Incoming Student</p>
@@ -494,55 +454,13 @@
                   <i class="fa fa-home fa-fw fa-lg"></i> <p>Dashboard</p>
                 </a>
               </li>
-              {{-- <li class="nav-item">
-                  <a href="#" class="nav-link
-                    {{
-                      request()->routeIs('admission.incoming_student') ? 'active menu-open' : '' || 
-                      request()->routeIs('admission.Approved') ? 'active menu-open' : '' || 
-                      request()->routeIs('admission.Disapproved') ? 'active menu-open' : ''
-                    }}
-                  ">
-                    <i class="fas fa-users fa-lg"></i>
-                      <span class="{{$IncomingStudentCount == 0 ? '' : 'badge badge-info'}} right">
-                        {{$IncomingStudentCount == 0 ? '' : $IncomingStudentCount}}
-                      </span>
-                      <p>Incoming Student</p>
-                    <i class="fas fa-angle-left right"></i>
-                  </a>
-                  <ul class="nav nav-treeview 
-                    {{
-                      request()->routeIs('admission.incoming_student') ? 'd-block' : '' || 
-                      request()->routeIs('admission.Approved') ? 'd-block' : '' || 
-                      request()->routeIs('admission.Disapproved') ? 'd-block' : ''
-                    }}
-                  ">
-                    
-                    <li class="nav-item">
-                      <a class="nav-link {{request()->routeIs('admission.incoming_student') ? 'active' : '' }}"
-                         href="{{ route('admission.incoming_student')}}">
-                        <i class="far fa-circle nav-icon fa-1x"></i> <p>Not yet Approved</p>
-                      </a>
-                    </li>
-                    <li class="nav-item">
-                      <a class="nav-link {{request()->routeIs('admission.Approved') ? 'active' : '' }}"
-                         href="{{ route('admission.Approved')}}">
-                        <i class="far fa-circle nav-icon fa-1x"></i> <p>Approved</p>
-                      </a>
-                    </li>
-                    <li class="nav-item">
-                      <a class="nav-link {{request()->routeIs('admission.Disapproved') ? 'active' : '' }}"
-                         href="{{ route('admission.Disapproved')}}">
-                        <i class="far fa-circle nav-icon fa-1x"></i> <p>Disapproved</p>
-                      </a>
-                    </li>
-                  </ul>
-              </li> --}}
               <li class="nav-item">
                 <a class="nav-link {{request()->routeIs('admission.incoming') ? 'active' : '' }}"
                    href="{{ route('admission.incoming', ['tab' => 'not-yet-approved']) }}">
-                  <i class="fa fa-info-circle fa-lg"></i><span class="{{$IncomingStudentCount == 0 ? '' : 'badge badge-info'}} right">
+                  <i class="fa fa-info-circle fa-lg"></i>
+                    <span class="{{$IncomingStudentCount == 0 ? '' : 'badge badge-info '}} js-incoming_stud right">
                         {{$IncomingStudentCount == 0 ? '' : $IncomingStudentCount}}
-                      </span> <p>Incoming Student</p>
+                    </span> <p>Incoming Student</p>
                 </a>
               </li>
               <li class="nav-item">
@@ -698,7 +616,7 @@
                       <a class="nav-link {{request()->routeIs('finance.student_payment.not_yet_approved') ? 'active' : '' }}"
                          href="{{ route('finance.student_payment.not_yet_approved')}}">
                         <i class="far fa-circle nav-icon fa-1x"></i> <p>Not yet Approved</p>
-                        <span class="{{$NotyetApprovedCount == 0 ? '' : 'badge badge-info'}} right">
+                        <span class="{{$NotyetApprovedCount == 0 ? '' : 'badge badge-info'}} right js-notYetApprovedCount">
                            {{$NotyetApprovedCount == 0 ? '' : $NotyetApprovedCount}}
                         </span>
                       </a>

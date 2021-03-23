@@ -8,6 +8,8 @@ use App\Models\Enrollment;
 use App\Models\TuitionFee;
 use Illuminate\Http\Request;
 use App\Traits\HasAdmissions;
+use App\Traits\HasGradeSheet;
+use App\Traits\HasSchoolYear;
 use App\Traits\HasTransaction;
 use App\Models\PaymentCategory;
 use App\Models\StudentCategory;
@@ -17,7 +19,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class StudentInformation extends Model
 {
-    use HasTransaction, HasUser, HasAdmissions;
+    use HasTransaction, HasUser, HasAdmissions, HasSchoolYear;
     
     public function enrolled_class ()
     {        
@@ -52,6 +54,7 @@ class StudentInformation extends Model
     public function student(){
         return $this->belongsTo(StudentInformation::class);
     }
+    
 
     protected $table = 'student_informations';
 

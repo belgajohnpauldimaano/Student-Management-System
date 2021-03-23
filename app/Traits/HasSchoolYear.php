@@ -17,7 +17,7 @@ trait HasSchoolYear{
 
     public function schoolYears()
     {
-        return SchoolYear::where('status', 1)->get();
+        return SchoolYear::where('status', 1)->orderBy('school_year', 'DESC')->get();
     }
 
     public function schoolYearActiveStatus()
@@ -26,5 +26,11 @@ trait HasSchoolYear{
             ->where('status', 1)
             ->first();
     }
+
+    public function accountSchoolYears()
+    {
+        return SchoolYear::where('status', 1)->orderBy('school_year', 'DESC')->get();
+    }
+
     
 }

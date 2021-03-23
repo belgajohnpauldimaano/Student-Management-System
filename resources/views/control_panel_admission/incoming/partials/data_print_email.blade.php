@@ -25,7 +25,7 @@
                         $grade = $grade_level;
                     }
                 @endphp
-                <td {{ $grade == 11 ? '' : 'colspan="2"' }}>
+                <td>
                     <p class="m0">I am Incoming: 
                         <b>Grade 
                             {{ $grade }}

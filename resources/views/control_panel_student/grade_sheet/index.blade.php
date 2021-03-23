@@ -27,12 +27,15 @@
                         <h5 class="box-title">Filter</h5>
                         {{-- <label class="control-label">- School year -</label> --}}
                         <div class="form-group input-school_year p-0">
-                            <select name="school_year" id="school_year" class="form-control form-control-sm">                            
+                            <select name="school_year" id="school_year" class="form-control form-control-sm">
                                 <option value="0">
                                     - Select School Year -
                                 </option>
                                 @foreach ($School_years as $item)
-                                    <option value="{{ $item->id }}">{{ $item->school_year }}</option>
+                                    {{-- <option value="{{ $item->id }}">{{ $item->enrolled_class }}</option> --}}
+                                    @foreach ($item->enrolled_class as $data)
+                                        <option value="{{ $data->classDetail->schoolYear->id }}">{{ $data->classDetail->schoolYear->school_year }}</option>
+                                    @endforeach
                                 @endforeach      
                             </select>
                         </div>

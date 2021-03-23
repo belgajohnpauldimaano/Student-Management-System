@@ -72,9 +72,9 @@
                     <div class="col-md-12">
                         <div class="js-data-container">
                             @if($tab == 'approved')
-                            <a href="{{ route('export_excel.excel.admission') }}" class="btn btn-success">
-                                <i class="fas fa-file-excel"></i> Export to Excel
-                            </a>
+                                <a href="{{ route('export_excel.excel.admission') }}" class="btn btn-success" style="margin-bottom: -4em">
+                                    <i class="fas fa-file-excel"></i> Export to Excel
+                                </a>
                             @endif
                             @include('control_panel_admission.incoming.partials.data_list')
                         </div>
@@ -103,10 +103,30 @@
                 success     : function (res) {
                     loader_overlay();
                     $('.js-data-container').html(res);
+                    countIncomingStudent();
+                    
+                    //js-incoming_stud
                 }
             });
         }
 
+        function countIncomingStudent()
+        {
+            var incomingStudent = {{ $IncomingStudentCount }};
+            var totalCount = (incomingStudent - 1);
+            
+            if(totalCount > 0){
+                $('.js-incoming_stud').empty();
+                $('.js-incoming_stud').addClass('badge badge-info');
+                $('.js-incoming_stud').append(totalCount);
+            }
+
+            if(totalCount < 0)
+            {
+                $('.js-incoming_stud').empty();
+                $('.js-incoming_stud').removeClass('badge badge-info');
+            }
+        }
         // $('.nav-item').click(function(e){
         //     e.preventDefault();
         //     loader_overlay();
@@ -150,6 +170,7 @@
                                     type    : 'success'
                                 });
                                 $('.js-modal_holder .modal').modal('hide');
+                                countIncomingStudent();
                                 fetch_data();
                             }
                         }

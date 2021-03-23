@@ -24,7 +24,14 @@
                 @forelse($Enrollment_first_sem as $key => $data)
                     <tr>
                         <td>
-                            {{$data['subject']->subject ? $data['subject']->subject : $data->subject->subject}}
+                            @php
+                                try {
+                                    echo $data['subject']->subject ? $data['subject']->subject : $data->subject->subject;
+                                } catch (\Throwable $th) {
+                                    echo $data['subject'];
+                                }
+                            @endphp 
+                            
                         </td>                        
                         <td style="text-align: center">
                             {{round($data['fir_g'])}}

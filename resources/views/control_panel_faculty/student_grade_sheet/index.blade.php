@@ -13,7 +13,7 @@
             <i class="fas fa-2x fa-sync-alt fa-spin"></i>
         </div>
         <div class="card-header">
-            <div class="col-8 m-auto">
+            <div class="col-10 m-auto">
                 <h5 class="box-title">Filter</h5>
                 @if($ClassSubjectDetail->grade_level <= 10)
                     <form id="js-form_search">
@@ -21,13 +21,13 @@
                         <div class="row">
                             <div class="col-md-4">
                                 <div class="form-group" style="padding-right:0">
-                                <select name="search_sy" id="search_sy" class="form-control form-control-sm form-control form-control-sm-sm search_sy">
-                                    {{-- <option value="">Select SY</option> --}}
-                                    @foreach ($SchoolYear as $data)
-                                        <option value="{{ $data->id }}">{{ $data->school_year }}</option>
-                                    @endforeach
-                                </select>
-                            </div> 
+                                    <select name="search_sy" id="search_sy" class="form-control form-control-sm form-control form-control-sm-sm search_sy">
+                                        {{-- <option value="">Select SY</option> --}}
+                                        @foreach ($SchoolYear as $data)
+                                            <option value="{{ $data->id }}">{{ $data->school_year }}</option>
+                                        @endforeach
+                                    </select>
+                                </div> 
                             </div>
                             <div class="col-md-8">
                                 <div class="form-group" style="padding-right:0">
@@ -72,6 +72,7 @@
                             <div class="col-md-12">
                                 <button type="submit" class="btn btn-success float-right">Search</button>
                             </div>
+                        </div>
                     </form>
                 @endif
             </div>
@@ -80,7 +81,7 @@
         <div class="card-body">
             <div class="row">
                 <div class="col-md-12">
-                    <div class="js-data-container mt-2"></div>
+                    <div class="js-data-container"></div>
                 </div>
             </div>
         </div>

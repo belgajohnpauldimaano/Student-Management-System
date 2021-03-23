@@ -85,7 +85,6 @@ class GradeSheetController extends Controller
             ->where('enrollments.status', 1)
             ->where('class_details.status', 1)
             ->where('class_subject_details.status', 1)
-            // ->where('class_subject_details.sem', 1)
             ->where('class_details.school_year_id', $request->school_year)
             ->orderBy('class_subject_details.class_subject_order', 'ASC');
 
@@ -100,8 +99,12 @@ class GradeSheetController extends Controller
 
     public function index (Request $request)
     {
-        $StudentInformation = $this->student();        
-        $School_years = $this->schoolYears();
+        $StudentInformation = $this->student();
+        
+        $School_years = StudentInformation::whereId($StudentInformation->id)->get();
+
+        // return json_encode($School_years->enrolled_class);
+
         $SchoolYear = $this->schoolYearActiveStatus();
         
         if($request->ajax())
@@ -339,15 +342,17 @@ class GradeSheetController extends Controller
                                         $grade = $StudentEnrolledSubject->where('subject_id', $item->subject_id)->where('sem', 1)->first();
                                         
                                         // return json_encode($grade);
-                                        $subject = ClassSubjectDetail::where('id', $grade->class_subject_details_id)                                        
+                                        $subject = ClassSubjectDetail::where('id', $grade['class_subject_details_id'])               
+                                        // $subject = ClassSubjectDetail::where('id', $grade->class_subject_details_id)                                        
                                             ->orderBY('class_subject_order', 'ASC')->first();
+                                            
                                         $sum = 0;
 
-                                        $first = $grade->fir_g > 0 ? $grade->fir_g : 0;
-                                        $second = $grade->sec_g > 0 ? $grade->sec_g : 0;
+                                        $first = $grade['fir_g'] > 0 ? $grade['fir_g'] : 0;
+                                        $second = $grade['sec_g'] > 0 ? $grade['sec_g'] : 0;
 
-                                        $sum += $grade->fir_g > 0 ? $grade->fir_g : 0;
-                                        $sum += $grade->sec_g > 0 ? $grade->sec_g : 0;
+                                        $sum += $grade['fir_g'] > 0 ? $grade['fir_g'] : 0;
+                                        $sum += $grade['sec_g'] > 0 ? $grade['sec_g'] : 0;
                                     
                                         $divisor = 0;
                                         $divisor += $first > 0 ? 1 : 0;
@@ -477,11 +482,11 @@ class GradeSheetController extends Controller
             'subject'                   =>      $subject ? $subject->subject : $item->classSubject->subject,
             'room_code'                 =>      $item->room_code,
             'section'                   =>      $item->section,
-            'grade_id'                  =>      $grade->id,
-            'fir_g'                     =>      $grade->fir_g,
-            'sec_g'                     =>      $grade->sec_g,
-            'thi_g'                     =>      $grade->thi_g,
-            'fou_g'                     =>      $grade->fou_g,
+            'grade_id'                  =>      $grade['id'],
+            'fir_g'                     =>      $grade['fir_g'],
+            'sec_g'                     =>      $grade['sec_g'],
+            'thi_g'                     =>      $grade['thi_g'],
+            'fou_g'                     =>      $grade['fou_g'],
             'final_g'                   =>      $final,
             'grade_status'              =>      $grade_status,
             'divisor'                   =>      $divisor,

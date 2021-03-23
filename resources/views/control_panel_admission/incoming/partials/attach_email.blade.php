@@ -9,12 +9,12 @@
         <thead>
             <tr>
                 <td style="width: 15% !important">
-                    <img style="" class="logo deped-bataan-logo" width="100" 
+                    <img style="" class="logo deped-bataan-logo" width="100"
                         src="img/sja-logo.png" />
                 </td>
-                <td style="width: 60% !important">                    
-                    <img style="margin-left: 20px" class=""  
-                        src="img/head.png" />                    
+                <td style="width: 60% !important">
+                    <img style="margin-left: 20px" class=""
+                        src="img/head.png" />
                 </td>
                 <td style="width: 25% !important">
                     <img style="" class="s_photo" width="100" 
@@ -24,7 +24,7 @@
         </thead>
     </table>
 
-    @include('control_panel_admission.incoming.partials.data_print_email')    
+    @include('control_panel_admission.incoming.partials.data_print_email')
 
     <div style="padding: 1px 10px 1px 10px !important; background: rgb(222,222,222); margin-top: 1em">
         <p style="text-align: justify">

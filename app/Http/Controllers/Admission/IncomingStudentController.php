@@ -9,6 +9,8 @@ use App\Traits\HasSchoolYear;
 use App\Models\IncomingStudent;
 use App\Models\StudentInformation;
 // use App\Traits\hasIncomingStudents;
+use Illuminate\Support\Facades\DB;
+use App\Traits\hasIncomingStudents;
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\User;
 use Illuminate\Support\Facades\Mail;
@@ -21,11 +23,11 @@ use App\Mail\Student\Admission\NotifyDisapproveStudentMail;
 
 class IncomingStudentController extends Controller
 {
-    use HasSchoolYear;
+    use HasSchoolYear, hasIncomingStudents;
     
     public function index(Request $request)
     {
-        // $IncomingStudentCount = $this->IncomingStudentCount(); 
+        $IncomingStudentCount = $this->IncomingStudentCount();
         $School_years = $this->schoolYears();
         $tab = $request->tab;
         $SchoolYear = SchoolYear::where('current', 1)
@@ -52,6 +54,11 @@ class IncomingStudentController extends Controller
                     });
                 // ->where('incoming_students.school_year_id', $SchoolYear->id);
 
+            if($request->school_year)
+            {
+                $query->where('incoming_students.school_year_id', $request->school_year);
+            }
+
             if($tab == 'not-yet-approved'){
                 $query->where('incoming_students.approval','=','Not yet Approved');
                         $query->where('users.status', 0);
@@ -65,25 +72,21 @@ class IncomingStudentController extends Controller
             }
 
             else if($tab == 'disapproved'){
-                $query->where('incoming_students.approval','=','Disapproved')->where('users.status', 0);
+                $query->where('incoming_students.approval','=','Disapproved')->where('users.status', 0);    
                 $tab = 'disapproved';
             }
 
         $IncomingStudent = $query->orderBY('incoming_students.id', 'desc')->paginate(10);
 
         if($request->ajax()){
-            return view('control_panel_admission.incoming.partials.data_list', compact('IncomingStudent','tab','School_years'))->render();
+            return view('control_panel_admission.incoming.partials.data_list', compact('IncomingStudent','tab','School_years','IncomingStudentCount'))->render();
         }
         
-        return view('control_panel_admission.incoming.index', compact('tab','IncomingStudent','School_years'));
+        return view('control_panel_admission.incoming.index', compact('tab','IncomingStudent','School_years','IncomingStudentCount'));
     }
 
     public function modal_data(Request $request)
     {
-        // $SchoolYear = SchoolYear::where('current', 1)
-        // ->where('status', 1)
-        // ->first(); 
-
         $IncomingStudent = NULL;
         if ($request->id)
         {
@@ -113,11 +116,9 @@ class IncomingStudentController extends Controller
             {
                 $User->status = 1;
                 $StudentInformation->status = 1;
-
-                
                 // return $data;
-
-                // try{
+                DB::beginTransaction();
+                try{
                     if($Approved->save() && $User->save() && $StudentInformation->save())
                     {
                         $student = StudentInformation::find($request->id);
@@ -130,17 +131,20 @@ class IncomingStudentController extends Controller
                             $message->to($data["email"], config('app.name'))
                             ->subject('Activation')
                             ->attachData($pdf->output(), "RegistrationForm.pdf");
-                        });                        
+                        });
+
+                        DB::commit();
                         // Mail::to($StudentInformation->email)->send(new ApproveStudentAccountMail($student));
                         // Mail::to('admission@sja-bataan.com')->send(new NotifyApproveAdmission($student));
-                        
                         return response()->json(['res_code' => 0, 'res_msg' => 'Student '.$name.' status successfully approved!.']);
                     }else{
+                        DB::rollBack();
                         return response()->json(['res_code' => 1, 'res_msg' => 'Sorry approval has error.']);
                     }
-                // }catch(\Exception $e){
-                //     return response()->json(['res_code' => 1, 'res_msg' => 'Sorry approval has error.']);
-                // }               
+                }catch(\Exception $e){
+                    DB::rollBack();
+                    return response()->json(['res_code' => 1, 'res_msg' => 'Sorry approval has error.']);
+                }               
             }
         }      
                 
@@ -171,18 +175,22 @@ class IncomingStudentController extends Controller
             {
                 $User->status = 0;
                 $StudentInformation->status = 0;
+                DB::beginTransaction();
                 try{
                     if($Disapproved->save() && $User->save() && $StudentInformation->save())
                     {
                         $student = StudentInformation::find($request->id);
                         Mail::to($StudentInformation->email)->send(new NotifyDisapproveStudentMail($student));
+                        DB::commit();
                         // Mail::to('admission@sja-bataan.com')->send(new NotifyDisapproveAdmission($student));
                     
                         return response()->json(['res_code' => 0, 'res_msg' => 'Student '.$name.' status successfully Disapproved!.']);
                     }else{
+                        DB::rollBack();
                         return response()->json(['res_code' => 1, 'res_msg' => 'Sorry approval has error.']);
                     }   
                 }catch(\Exception $e){
+                    DB::rollBack();
                     return response()->json(['res_code' => 1, 'res_msg' => 'Sorry approval has error.']);
                 }                 
             }
@@ -248,13 +256,13 @@ class IncomingStudentController extends Controller
                     'gender'            =>  $IncomingStudent->gender == 1 ? 'Male' : 'Female',
                     'school_year'       =>  $IncomingStudent->admission_sy,
                     'grade_level'       =>  $IncomingStudent->incomingStudent->grade_level_id,
-                    'student_type'      => $IncomingStudent->incomingStudent->student_type == 1 ? 'Transferee' : 'Freshman',
-                    'school_name'       => $IncomingStudent->admission_school_name,
-                    'school_type'       => $IncomingStudent->admission_school_type,
-                    'school_address'    => $IncomingStudent->admission_school_address,
-                    'last_sy_attended'  => $IncomingStudent->school_year,
-                    'gw_average'        => $IncomingStudent->admission_gwa,
-                    'strand'            => $IncomingStudent->admission_strand
+                    'student_type'      =>  $IncomingStudent->incomingStudent->student_type == 1 ? 'Transferee' : 'Freshman',
+                    'school_name'       =>  $IncomingStudent->admission_school_name,
+                    'school_type'       =>  $IncomingStudent->admission_school_type,
+                    'school_address'    =>  $IncomingStudent->admission_school_address,
+                    'last_sy_attended'  =>  $IncomingStudent->school_year,
+                    'gw_average'        =>  $IncomingStudent->admission_gwa,
+                    'strand'            =>  $IncomingStudent->admission_strand
                 );
     }
 

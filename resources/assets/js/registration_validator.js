@@ -182,7 +182,7 @@ $('body').on('submit', '#js-registration_form', function (e) {
             
     }, function(){  
         showValidateFields();
-        // $('#preloader').addClass('d-none');
+        $('#preloader').addClass('d-none');
         validateStrand == true ? check_strand() : '';
     });
 });

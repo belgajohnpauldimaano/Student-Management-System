@@ -184,6 +184,19 @@
                 success     : function (res) {
                     loader_overlay();
                     $('.js-data-container').html(res);
+                    var notYetApprovedCount = {{ $notYetApprovedCount }};
+                    if(notYetApprovedCount > 0){
+                        $('.js-notYetApprovedCount').empty();
+                        $('.js-notYetApprovedCount').addClass('badge badge-info');
+                        $('.js-notYetApprovedCount').append(notYetApprovedCount);
+                    }
+
+                    if(notYetApprovedCount < 0)
+                    {
+                        $('.js-notYetApprovedCount').empty();
+                        $('.js-notYetApprovedCount').removeClass('badge badge-info');
+                    }
+                    
                 }
             });
         }
