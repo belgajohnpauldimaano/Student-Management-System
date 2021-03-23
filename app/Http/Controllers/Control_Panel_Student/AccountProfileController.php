@@ -11,21 +11,19 @@ use Illuminate\Support\Facades\Auth;
 
 class AccountProfileController extends Controller
 {
+    use HasStudentDetails;
+
     public function view_my_profile (Request $request)
     {
-        $User = Auth::user();
-        $Profile = StudentInformation::where('user_id', $User->id)->first();
-        $SchoolYear = SchoolYear::where('current', 1)
-            ->where('status', 1)
-            ->first();  
+        $Profile = $this->student();
+        
         // $RegistrarInformation = collect(RegistrarInformation::DEPARTMENTS); 
-        return view('control_panel_student.account_profile.index', compact('User', 'Profile','SchoolYear'));
+        return view('control_panel_student.account_profile.index', compact('User', 'Profile'));
     }
 
     public function fetch_profile (Request $request)
     {
-        $User = Auth::user();
-        $Profile = StudentInformation::where('user_id', $User->id)->first();
+        $Profile = $this->student();
         // return json_encode($Profile);
         //  date('Y-m-d', strtotime($request->birthdate));
         return response()->json(['res_code' => 0, 'res_msg' => '', 'Profile' => $Profile]);
@@ -56,8 +54,7 @@ class AccountProfileController extends Controller
             return response()->json(['res_code' => 1, 'res_msg' => 'Please fill all required fields.', 'res_error_msg' => $validator->getMessageBag()]);
         }
 
-        $User = Auth::user();
-        $Profile = StudentInformation::where('user_id', $User->id)->first();
+        $Profile = $Profile = $this->student();
         $Profile->first_name = $request->first_name;
         $Profile->middle_name = $request->middle_name;
         $Profile->last_name = $request->last_name;

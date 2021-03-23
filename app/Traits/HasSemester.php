@@ -6,6 +6,6 @@ use App\Models\Semester;
 trait HasSemester{
     public function semester()
     {
-        return $semester = Semester::whereCurrent(1)->first();
+        return Semester::whereCurrent(1)->first();
     }
 }

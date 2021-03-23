@@ -27,7 +27,7 @@
                         <h5 class="box-title">Filter</h5>
                         {{-- <label class="control-label">- School year -</label> --}}
                         <div class="form-group input-school_year p-0">
-                            <select name="school_year" id="school_year" class="form-control">                            
+                            <select name="school_year" id="school_year" class="form-control form-control-sm">                            
                                 <option value="0">
                                     - Select School Year -
                                 </option>
@@ -40,7 +40,7 @@
                     </div>
                     <div class="col-4">
                         <h5 class="box-title">&nbsp;</h5>
-                        <button type="submit" class="btn btn-primary">
+                        <button type="submit" class="btn btn-sm btn-primary">
                             Search
                         </button>
                         {{-- <button type="button" class="btn btn-primary btn_clear" style="display: none">

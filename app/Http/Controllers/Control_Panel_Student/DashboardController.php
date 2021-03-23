@@ -4,7 +4,9 @@ namespace App\Http\Controllers\Control_Panel_Student;
 
 use App\Models\SchoolYear;
 use Illuminate\Http\Request;
+use App\Traits\HasSchoolYear;
 use App\Models\OnlineAppointment;
+use App\Traits\HasStudentDetails;
 use App\Models\StudentInformation;
 use App\Http\Controllers\Controller;
 use App\Models\TransactionMonthPaid;
@@ -13,16 +15,12 @@ use App\Models\StudentTimeAppointment;
 
 class DashboardController extends Controller
 {
+    use HasStudentDetails, HasSchoolYear;
+    
     public function index (Request $request) 
     {
-        $User = Auth::user();
-
-        $StudentInformation = StudentInformation::where('user_id', $User->id)
-            ->first();
-
-        $SchoolYear = SchoolYear::where('current', 1)
-            ->where('status', 1)
-            ->first();  
+        $StudentInformation = $this->student();
+        $SchoolYear = $this->schoolYearActiveStatus();
 
         $AppointedCount = StudentTimeAppointment::with('appointment')
                 ->whereStudentId($StudentInformation->id)
@@ -52,7 +50,7 @@ class DashboardController extends Controller
 
         
         return view('control_panel_student.dashboard.index',
-            compact('StudentInformation','OnlineAppointment', 'Appointed','StudentInformation', 'SchoolYear',
+            compact('StudentInformation','OnlineAppointment', 'Appointed','StudentInformation',
             'hasAppointment','AppointedCount','AlreadyEnrolled'));
     }
 

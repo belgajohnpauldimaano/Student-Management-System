@@ -7,7 +7,9 @@ use App\Models\Enrollment;
 use App\Models\SchoolYear;
 use App\Models\ClassDetail;
 use Illuminate\Http\Request;
+use App\Traits\HasGradeLevel;
 use App\Traits\HasSchoolYear;
+use App\Traits\HasStudentDetails;
 use App\Models\ClassSubjectDetail;
 use App\Models\StudentInformation;
 use Illuminate\Support\Facades\DB;
@@ -19,12 +21,7 @@ use App\Models\StudentEnrolledSubject;
 class GradeSheetController extends Controller
 {
 
-    use HasSchoolYear;
-
-    private function student()
-    {
-        return StudentInformation::where('user_id', Auth::user()->id)->first();
-    }
+    use HasSchoolYear, HasStudentDetails, HasGradeLevel;
 
     public function classDetail($Enrollment)
     {
@@ -49,7 +46,7 @@ class GradeSheetController extends Controller
                     ->first();
     }
 
-    private function enrollment($request,$has_schoolyear,$sem){
+    private function enrollment($request, $has_schoolyear,$sem){
 
         $StudentInformation = $this->student();
 
@@ -105,9 +102,7 @@ class GradeSheetController extends Controller
     {
         $StudentInformation = $this->student();        
         $School_years = $this->schoolYears();
-        $SchoolYear = SchoolYear::where('current', 1)
-            ->where('status', 1)
-            ->first();
+        $SchoolYear = $this->schoolYearActiveStatus();
         
         if($request->ajax())
         {
@@ -115,12 +110,11 @@ class GradeSheetController extends Controller
             $enrolled = 0;
             
             try{
-                $has_schoolyear = Enrollment::with(['classDetail', 'faculty', 'section', 'subject'])
-                    ->whereStatus(1)
+                $has_schoolyear = $this->gradeLevel()->whereStudentInformationId($StudentInformation->id)
+                    ->select('enrollments.student_information_id', 'enrollments.class_details_id', 'enrollments.id')
                     ->whereHas('classDetail', function($query) use ($request) {
                         $query->where('school_year_id', $request->school_year);
                     })
-                    ->whereStudentInformationId($StudentInformation->id)
                     ->first();
                 // return json_encode($has_schoolyear->classDetail->grade_level);
             }catch(\Exception $e){
@@ -465,7 +459,7 @@ class GradeSheetController extends Controller
             }    
         }
         $GradeSheet = 0;
-        return view('control_panel_student.grade_sheet.index', compact('GradeSheet','School_years','SchoolYear'));
+        return view('control_panel_student.grade_sheet.index', compact('GradeSheet','School_years'));
         
     }
 
@@ -500,9 +494,7 @@ class GradeSheetController extends Controller
     {
         $StudentInformation = $this->student();
 
-        $SchoolYear = SchoolYear::where('current', 1)
-            ->where('status', 1)
-            ->first();
+        $SchoolYear = $this->schoolYearActiveStatus();
         
         if ($StudentInformation) 
         {

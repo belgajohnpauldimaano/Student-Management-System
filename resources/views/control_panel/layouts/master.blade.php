@@ -12,7 +12,7 @@
               <i class="fas fa-bars text-lg"></i></a>
           </li>
           <li class="nav-item d-none d-sm-inline-block">
-            {{-- <a href="#" class="nav-link">School Year: {{ $SchoolYear->school_year }}</a> --}}
+            <a href="#" class="nav-link">School Year: {{ $SchoolYear->school_year }}</a>
           </li>
         </ul>
         <ul class="navbar-nav ml-auto">
@@ -102,9 +102,9 @@
 
         <div class="form-inline mt-2">
           <div class="input-group" data-widget="sidebar-search">
-            <input class="form-control form-control-sidebar" type="search" placeholder="Search" aria-label="Search">
+            <input class="form-control form-control-sm form-control-sidebar" type="search" placeholder="Search" aria-label="Search">
             <div class="input-group-append">
-              <button class="btn btn-sidebar">
+              <button class="btn btn-sm btn-sidebar">
                 <i class="fas fa-search fa-fw"></i>
               </button>
             </div>

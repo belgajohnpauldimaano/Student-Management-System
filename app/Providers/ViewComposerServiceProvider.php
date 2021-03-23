@@ -2,14 +2,18 @@
 
 namespace App\Providers;
 
+use App\Traits\HasSchoolYear;
 use App\Models\IncomingStudent;
+use App\Traits\hasNotYetApproved;
 use App\Models\RegistrationButton;
+use App\Traits\hasIncomingStudents;
 use App\Models\TransactionMonthPaid;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
 
 class ViewComposerServiceProvider extends ServiceProvider
 {
+    use HasSchoolYear, hasIncomingStudents, hasNotYetApproved;
     /**
      * Register services.
      *
@@ -33,13 +37,15 @@ class ViewComposerServiceProvider extends ServiceProvider
         });
 
         View::composer('control_panel.layouts.master', function ($view) {
-            $IncomingStudentCount = IncomingStudent::where('approval', 'Not yet Approved')->count();
-            return $view->with('IncomingStudentCount', $IncomingStudentCount);
+            $SchoolYear = $this->schoolYearActiveStatus();
+            $NotyetApprovedCount    = $this->notYetApproved();
+            $IncomingStudentCount   = $this->IncomingStudentCount();
+            return $view->with('IncomingStudentCount', $IncomingStudentCount)->with('NotyetApprovedCount', $NotyetApprovedCount)->with('SchoolYear', $SchoolYear);
         });
 
-        View::composer('control_panel.layouts.master', function ($view) {
-            $NotyetApprovedCount = TransactionMonthPaid::where('approval', 'Not yet Approved')->where('isSuccess', 1)->count();
-            return $view->with('NotyetApprovedCount', $NotyetApprovedCount);
+        View::composer('control_panel_student.layouts.master', function ($view) {
+            $SchoolYear = $this->schoolYearActiveStatus();
+            return $view->with('SchoolYear', $SchoolYear);
         });
 
     }

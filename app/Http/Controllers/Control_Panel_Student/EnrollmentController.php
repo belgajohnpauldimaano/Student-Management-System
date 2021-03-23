@@ -12,9 +12,11 @@ use App\Models\DiscountFee;
 use App\Models\Transaction;
 use Illuminate\Http\Request;
 use App\Mail\NotifyAdminMail;
+use App\Traits\HasSchoolYear;
 use App\Models\DownpaymentFee;
 use App\Models\IncomingStudent;
 use App\Models\PaymentCategory;
+use App\Traits\HasStudentDetails;
 use App\Models\StudentInformation;
 use Illuminate\Support\Facades\DB;
 use App\Models\TransactionDiscount;
@@ -25,19 +27,14 @@ use Illuminate\Support\Facades\Auth;
 
 class EnrollmentController extends Controller
 {
+    use HasStudentDetails, HasSchoolYear;
 
     public function index(Request $request)
     {    
-        $User = Auth::user();
-        
-        $StudentInformation = StudentInformation::where('user_id', $User->id)
-            ->first();
-            
-        $SchoolYear = SchoolYear::where('current', 1)
-            ->where('status', 1)
-            ->first();
+        $StudentInformation = $this->student();
+        $SchoolYear = $this->schoolYearActiveStatus();
 
-        $findSchoolYear = ClassDetail::where('school_year_id' , $SchoolYear->id)->first();       
+        $findSchoolYear = ClassDetail::where('school_year_id' , $SchoolYear->id)->first();
         
         // if($findSchoolYear){  
             $IncomingStudentCount = IncomingStudent::where('student_id', $StudentInformation->id)
@@ -66,7 +63,7 @@ class EnrollmentController extends Controller
 
                 $Downpayment = DownpaymentFee::where('status', 1)->where('grade_level_id', $IncomingStudentCount->grade_level_id)->get();
 
-                $Profile = StudentInformation::where('user_id', $User->id)->first();
+                $Profile = $this->student();
                 
                 // discount
                 $Discount = DiscountFee::where('status', 1)->where('current', 1)->where('apply_to', 1)->get();
@@ -146,7 +143,7 @@ class EnrollmentController extends Controller
                                     
                     $Downpayment = DownpaymentFee::where('status', 1)->where('grade_level_id', $grade_level_id)->get();
 
-                    $Profile = StudentInformation::where('user_id', $User->id)->first();
+                    $Profile = $this->student();
 
                     // discount
                     $Discount =  DiscountFee::where('status', 1)->where('current', 1)->where('apply_to', 1)->get();        
@@ -199,22 +196,17 @@ class EnrollmentController extends Controller
     
     public function save(Request $request)
     {
-        $User = \Auth::user();
-        $StudentInformation = StudentInformation::where('user_id', $User->id)->first();
         $mytime = Carbon::now();
 
-        $SchoolYear = SchoolYear::where('current', 1)
-            ->where('status', 1)
-            ->first();
+        $StudentInformation = $this->student();
+        $SchoolYear = $this->schoolYearActiveStatus();
 
         $AlreadyEnrolled = TransactionMonthPaid::whereStudentId($StudentInformation->id)
             ->whereSchoolYearId($SchoolYear->id)
             ->where('isSuccess', 1)
             ->whereApproval('Approved')
             ->orderBy('id', 'Desc')
-            ->first();
-
-        
+            ->first();        
 
         if(!$AlreadyEnrolled){
             $rules = [
@@ -415,13 +407,10 @@ class EnrollmentController extends Controller
 
     public function save_data(Request $request)
     {
-        $User = \Auth::user();
-        $StudentInformation = StudentInformation::where('user_id', $User->id)->first();
-        $mytime = Carbon::now();
+        $StudentInformation = $this->student();
+        $SchoolYear = $this->schoolYearActiveStatus();
 
-        $SchoolYear = SchoolYear::where('current', 1)
-            ->where('status', 1)
-            ->first();
+        $mytime = Carbon::now();
 
         $AlreadyEnrolled = TransactionMonthPaid::whereStudentId($StudentInformation->id)
             ->whereSchoolYearId($SchoolYear->id)
@@ -429,8 +418,6 @@ class EnrollmentController extends Controller
             ->whereApproval('Approved')
             ->orderBy('id', 'Desc')
             ->first();
-
-        
 
         if(!$AlreadyEnrolled){
             $rules = [

@@ -76,7 +76,7 @@
   </nav>
   {{-- </header> --}}
   <!-- Left side column. contains the logo and sidebar -->
-  <aside class="main-sidebar elevation-4 sidebar-dark-danger">
+  <aside class="main-sidebar elevation-4 sidebar-light-danger">
     <!-- Brand Logo -->
     <a href="/" class="brand-link navbar-danger">
       <img src="{{ asset('/img/sja-logo.png') }}"  class="brand-image img-circle elevation-3" style="height: 35px; opacity: .8">
@@ -86,9 +86,9 @@
     <div class="sidebar">
       <div class="form-inline mt-2">
         <div class="input-group" data-widget="sidebar-search">
-          <input class="form-control form-control-sidebar" type="search" placeholder="Search" aria-label="Search">
+          <input class="form-control form-control-sm form-control-sidebar" type="search" placeholder="Search" aria-label="Search">
           <div class="input-group-append">
-            <button class="btn btn-sidebar">
+            <button class="btn btn-sm btn-sidebar">
               <i class="fas fa-search fa-fw"></i>
             </button>
           </div>
