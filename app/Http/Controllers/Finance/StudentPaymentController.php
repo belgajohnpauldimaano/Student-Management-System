@@ -142,6 +142,7 @@ class StudentPaymentController extends Controller
 
     public function approve(Request $request)
     {
+        $notYetApprovedCount = $this->notYetApproved();
         $Student_id = TransactionMonthPaid::where('id', $request->id)->first();
         $StudentInformation = StudentInformation::where('status', 1)
              ->where('id', $Student_id->student_id)->first();
@@ -161,7 +162,11 @@ class StudentPaymentController extends Controller
                 $payment = TransactionMonthPaid::find($request->id);
                         \Mail::to($Approve->email)->send(new NotifyStudentApprovedFinanceMail($payment));
 
-                return response()->json(['res_code' => 0, 'res_msg' => 'Student '.$name.' payment status successfully approved.']);
+                return response()->json([
+                    'res_code'  => 0,
+                    'res_msg'   => 'Student '.$name.' payment status successfully approved.',
+                    'count'     => $notYetApprovedCount
+                    ]);
             }
         }
         return response()->json(['res_code' => 1, 'res_msg' => 'Invalid request.'.$request->incoming_bal]);

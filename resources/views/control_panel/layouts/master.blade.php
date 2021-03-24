@@ -162,7 +162,7 @@
                 <a class="nav-link {{request()->routeIs('admission.incoming') ? 'active' : '' }}"
                    href="{{ route('admission.incoming', ['tab' => 'not-yet-approved']) }}">
                    <i class="fa fa-info-circle fa-lg"></i>
-                      <span class="{{$IncomingStudentCount == 0 ? '' : 'badge badge-info'}} js-incoming_stud right">
+                      <span class="{{$IncomingStudentCount == 0 ? 'd-none' : ''}}badge badge-info js-incoming_stud right">
                         {{$IncomingStudentCount == 0 ? '' : $IncomingStudentCount}}
                       </span>
                    <p>Incoming Student</p>
@@ -271,7 +271,7 @@
                 <a class="nav-link {{request()->routeIs('admission.incoming') ? 'active' : '' }}"
                    href="{{ route('admission.incoming', ['tab' => 'not-yet-approved']) }}">
                       <i class="fa fa-info-circle fa-lg"></i>
-                      <span class="{{$IncomingStudentCount == 0 ? '' : 'badge badge-info'}} js-incoming_stud right">
+                      <span class="{{$IncomingStudentCount == 0 ? 'd-none' : ''}}badge badge-info js-incoming_stud right">
                         {{$IncomingStudentCount == 0 ? '' : $IncomingStudentCount}}
                       </span>
                       <p>Incoming Student</p>
@@ -458,7 +458,7 @@
                 <a class="nav-link {{request()->routeIs('admission.incoming') ? 'active' : '' }}"
                    href="{{ route('admission.incoming', ['tab' => 'not-yet-approved']) }}">
                   <i class="fa fa-info-circle fa-lg"></i>
-                    <span class="{{$IncomingStudentCount == 0 ? '' : 'badge badge-info '}} js-incoming_stud right">
+                    <span class="{{$IncomingStudentCount == 0 ? 'd-none' : ''}}badge badge-info js-incoming_stud right">
                         {{$IncomingStudentCount == 0 ? '' : $IncomingStudentCount}}
                     </span> <p>Incoming Student</p>
                 </a>
@@ -616,7 +616,7 @@
                       <a class="nav-link {{request()->routeIs('finance.student_payment.not_yet_approved') ? 'active' : '' }}"
                          href="{{ route('finance.student_payment.not_yet_approved')}}">
                         <i class="far fa-circle nav-icon fa-1x"></i> <p>Not yet Approved</p>
-                        <span class="{{$NotyetApprovedCount == 0 ? '' : 'badge badge-info'}} right js-notYetApprovedCount">
+                        <span class="{{$NotyetApprovedCount == 0 ? 'd-none' : ''}}badge badge-info right js-notYetApprovedCount">
                            {{$NotyetApprovedCount == 0 ? '' : $NotyetApprovedCount}}
                         </span>
                       </a>

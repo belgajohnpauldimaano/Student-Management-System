@@ -103,43 +103,23 @@
                 success     : function (res) {
                     loader_overlay();
                     $('.js-data-container').html(res);
-                    countIncomingStudent();
-                    
-                    //js-incoming_stud
                 }
             });
         }
 
-        function countIncomingStudent()
+        function countIncomingStudent(incomingCount)
         {
-            var incomingStudent = {{ $IncomingStudentCount }};
-            var totalCount = (incomingStudent - 1);
-            
+            var totalCount = parseFloat(incomingCount - 1);
+            console.log(totalCount)
             if(totalCount > 0){
                 $('.js-incoming_stud').empty();
-                $('.js-incoming_stud').addClass('badge badge-info');
                 $('.js-incoming_stud').append(totalCount);
             }
-
-            if(totalCount < 0)
-            {
-                $('.js-incoming_stud').empty();
-                $('.js-incoming_stud').removeClass('badge badge-info');
+            if(totalCount <= 0){
+                $('.js-incoming_stud').addClass('d-none');
             }
         }
-        // $('.nav-item').click(function(e){
-        //     e.preventDefault();
-        //     loader_overlay();
-        //     setTimeout(
-        //         function() 
-        //         {
-        //             $('#js-loader-overlay').addClass('d-none')
-        //             fetch_data ()
-        //         }, 
-        //     500);
-            
-        // })
-
+        
         $('body').on('click', '.btn-approve', function (e) {
                 e.preventDefault();
                 var id = $(this).data('id');
@@ -170,7 +150,9 @@
                                     type    : 'success'
                                 });
                                 $('.js-modal_holder .modal').modal('hide');
-                                countIncomingStudent();
+                                
+                                var incomingCount = res.count;
+                                countIncomingStudent(incomingCount);
                                 fetch_data();
                             }
                         }

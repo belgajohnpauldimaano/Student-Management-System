@@ -98,6 +98,8 @@ class IncomingStudentController extends Controller
 
     public function approve(Request $request)
     {
+        $IncomingStudentCount = $this->IncomingStudentCount();
+
         $StudentInformation = StudentInformation::where('id', $request->id)->first();
 
         $name = $StudentInformation->first_name.' '.$StudentInformation->last_name;
@@ -136,7 +138,11 @@ class IncomingStudentController extends Controller
                         DB::commit();
                         // Mail::to($StudentInformation->email)->send(new ApproveStudentAccountMail($student));
                         // Mail::to('admission@sja-bataan.com')->send(new NotifyApproveAdmission($student));
-                        return response()->json(['res_code' => 0, 'res_msg' => 'Student '.$name.' status successfully approved!.']);
+                        return response()->json([
+                            'res_code'  => 0, 
+                            'res_msg'   => 'Student '.$name.' status successfully approved!.',
+                            'count'     => $IncomingStudentCount
+                        ]);
                     }else{
                         DB::rollBack();
                         return response()->json(['res_code' => 1, 'res_msg' => 'Sorry approval has error.']);

@@ -184,24 +184,22 @@
                 success     : function (res) {
                     loader_overlay();
                     $('.js-data-container').html(res);
-                    var notYetApprovedCount = {{ $notYetApprovedCount }};
-                    if(notYetApprovedCount > 0){
-                        $('.js-notYetApprovedCount').empty();
-                        $('.js-notYetApprovedCount').addClass('badge badge-info');
-                        $('.js-notYetApprovedCount').append(notYetApprovedCount);
-                    }
-
-                    if(notYetApprovedCount < 0)
-                    {
-                        $('.js-notYetApprovedCount').empty();
-                        $('.js-notYetApprovedCount').removeClass('badge badge-info');
-                    }
-                    
                 }
             });
         }
 
-        
+        function countIncomingStudent(incomingCount)
+        {
+            var totalCount = parseFloat(incomingCount - 1);
+            console.log(totalCount)
+            if(totalCount > 0){
+                $('.js-notYetApprovedCount').empty();
+                $('.js-notYetApprovedCount').append(totalCount);
+            }
+            if(totalCount <= 0){
+                $('.js-notYetApprovedCount').addClass('d-none');
+            }
+        }
 
         $('body').on('click', '.btn-approve', function (e) {
                 e.preventDefault();
@@ -234,8 +232,10 @@
                                     type    : 'success'
                                 });
                                 $('.js-modal_holder .modal').modal('hide');
-                                // fetch_data();
-                                location.reload();
+                                var incomingCount = res.count;
+                                countIncomingStudent(incomingCount);
+                                fetch_data();
+                                // location.reload();
                             }
                         }
                     });
