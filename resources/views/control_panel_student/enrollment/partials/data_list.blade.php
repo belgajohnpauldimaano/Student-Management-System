@@ -35,7 +35,7 @@
 
                       </select>
                     <div class="help-block text-left" id="js-payment_category"></div>
-                    <button type="button" id="btn_method" class="btn btn-primary float-right mt-2">Submit</button>
+                    <button type="button" id="btn_method" class="btn btn-sm btn-primary float-right mt-2">Submit</button>
                   </div>
             </div>
         </div>

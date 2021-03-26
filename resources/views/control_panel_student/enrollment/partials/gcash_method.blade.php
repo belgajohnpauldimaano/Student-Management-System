@@ -38,7 +38,7 @@
         {{$isPaid ? $isPaid ? 'PAID' : '' : ''}}
     </h2>
             
-    <form id="#js-bank-form" class="js-bank-form" enctype="multipart/form-data">
+    <form id="#js-gcash-form" class="js-gcash-form" enctype="multipart/form-data">
         {{ csrf_field() }}
         <div class="row">
             <div class="col-md-6">    
@@ -167,7 +167,7 @@
                 
             </div>
             <div class="col-md-6">
-                <div class="card card-default" style="height: 550px;">
+                <div class="card card-default">
                     <div class="card-header" style="height: 55px;">
                         <h3 class="card-title"><i class="fas fa-file-upload"></i> Upload with Gcash</h3>
                     </div>

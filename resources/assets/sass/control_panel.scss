@@ -1,0 +1,30 @@
+// Fonts
+// @import url("https://fonts.googleapis.com/css?family=Raleway:300,400,600");
+
+// Variables
+// @import "variables";
+
+// @import "/style";
+
+// Bootstrap
+// @import "~bootstrap/scss/bootstrap";
+@import "../../../public/cms-new/dist/css/adminlte.min.css";
+@import "../../../public/cms-new/plugins/select2/css/select2.min.css";
+@import "../../../public/cms-new/plugins/icheck-bootstrap/icheck-bootstrap.min.css";
+@import "../../../public/cms-new/plugins/jqvmap/jqvmap.min.css";
+@import "../../../public/cms-new/plugins/overlayScrollbars/css/OverlayScrollbars.min.css";
+@import "../../../public/cms-new/plugins/daterangepicker/daterangepicker.css";
+@import "../../../public/cms-new/plugins/summernote/summernote-bs4.min.css";
+@import "../../../public/cms-new/plugins/dropzone/min/dropzone.min.css";
+@import "../../../public/cms/plugins/alertifyjs/css/alertify.min.css";
+@import "../../../public/cms/plugins/alertifyjs/css/themes/bootstrap.min.css";
+@import "../../../public/cms/plugins/jquery-toast-plugin/jquery.toast.min.css";
+@import "../../../public/cms/plugins/datepicker/datepicker3.css";
+@import "../../../public/cms/plugins/timepicker/jquery.timepicker.css";
+@import "../../../public/cms/plugins/datetimepicker/datetimepicker.css";
+@import "../../../public/cms/style.css";
+
+.navbar-laravel {
+  background-color: #fff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
+}

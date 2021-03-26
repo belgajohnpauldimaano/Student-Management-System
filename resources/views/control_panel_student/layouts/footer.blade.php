@@ -3,7 +3,7 @@
     <div class="pull-right hidden-xs">
       <b>Version</b> 1
     </div>
-    <strong>Copyright &copy; 2021 <a href="#">St. John's Academy Inc</a>.</strong> 
+    <strong>Copyright &copy; {{$year}} <a href="#">St. John's Academy Inc</a>.</strong> 
                         
   </footer>
 

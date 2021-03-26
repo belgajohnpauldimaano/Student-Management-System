@@ -924,130 +924,6 @@ function check_image(){
     }
 }
 
-
-                
-
-// $(window).on('load',function(){            
-		// 	$('#js_reservation').modal({
-		// 			backdrop: 'static',
-		// 			keyboard: false
-		// 	}, 'show');
-        // }); 
-
-        // $grade7_list = "{{ asset('json/grade7_list.json') }}";
-        // $.getJSON($grade7_list, function(data){
-        //         var company_table = '';
-        //         $.each(data, function(key, value){
-        //             company_table += '<tr align="center">';
-        //             company_table += '<td>'+value.column0+'';
-        //             company_table += '<td>'+value.column1+'';
-        //             });
-               
-        //         $("#reservation_grade7 tbody").html("");
-        //         $('#reservation_grade7 tbody').append(company_table);
-        // });
-
-
-        // $url_reservatoin = "{{ asset('json/list_reservation.json') }}";
-        // $.getJSON($url_reservatoin, function(data){
-        //         var company_table = '';
-        //         $.each(data, function(key, value){
-        //             company_table += '<tr align="center">';
-        //             company_table += '<td>'+value.column0+'';
-        //             company_table += '<td>'+value.column1+'';
-        //             company_table += '<td>'+value.column2+'';
-        //         });
-               
-        //         $("#reservation tbody").html("");
-        //         $('#reservation tbody').append(company_table);
-        // });
-
-        // $entrance_passer = "{{ asset('json/entrance_passer.json') }}";
-        // $.getJSON($entrance_passer, function(data){
-        //         var passer_table = '';
-        //         $.each(data, function(key, value){
-        //             passer_table += '<tr align="center">';
-        //             passer_table += '<td style="width: 10%">'+value.column0+'';
-        //             passer_table += '<td>'+value.column2+'';
-        //         });
-               
-        //         $("#passer tbody").html("");
-        //         $('#passer tbody').append(passer_table);
-        // });
-
-        // $waiting_jan2020 = "{{ asset('json/waiting_jan2020.json') }}";
-        // $.getJSON($waiting_jan2020, function(data){
-        //         var passer_table = '';
-        //         $.each(data, function(key, value){
-        //             passer_table += '<tr align="center">';
-        //             passer_table += '<td style="width: 10%">'+value.column0+'';
-        //             passer_table += '<td>'+value.column2+'';
-        //         });
-               
-        //         $("#waiting_jan_2020 tbody").html("");
-        //         $('#waiting_jan_2020 tbody').append(passer_table);
-        // });
-
-        // $list_feb2020 = "{{ asset('json/list_feb2020.json') }}";
-        // $.getJSON($list_feb2020, function(data){
-        //         var passer_table = '';
-        //         $.each(data, function(key, value){
-        //             passer_table += '<tr align="center">';
-        //             passer_table += '<td style="width: 10%">'+value.column0+'';
-        //             passer_table += '<td>'+value.column2+'';
-        //         });
-               
-        //         $("#list_feb2020 tbody").html("");
-        //         $('#list_feb2020 tbody').append(passer_table);
-        // });
-
-        // $waiting_feb2020 = "{{ asset('json/waiting_feb2020.json') }}";
-        // $.getJSON($waiting_feb2020, function(data){
-        //         var passer_table = '';
-        //         $.each(data, function(key, value){
-        //             passer_table += '<tr align="center">';
-        //             passer_table += '<td style="width: 10%">'+value.column0+'';
-        //             passer_table += '<td>'+value.column2+'';
-        //         });
-               
-        //         $("#waiting_feb2020 tbody").html("");
-        //         $('#waiting_feb2020 tbody').append(passer_table);
-        // });
-
-            // signature for application
-            // var signaturePad = new SignaturePad(document.getElementById('signature-pad'), {
-            //     backgroundColor: 'rgba(255, 255, 255, 0)',
-            //     penColor: 'rgb(0, 0, 0)'
-            // });
-
-            // var saveButton = document.getElementById('save');
-            // var cancelButton = document.getElementById('clear');
-
-            // saveButton.addEventListener('click', function(event) {
-            //     var data = signaturePad.toDataURL();
-            //     console.log(data);
-            // });
-
-            // cancelButton.addEventListener('click', function(event) {
-            //     signaturePad.clear();
-            // });
-
-            // var  terms = $('#terms').val();
-            // if( terms != 1){  
-                
-            // } 
-
-        
-        // $("input[name='grade_level']").change(function() {
-        //     // alert()
-        //     let g_level = $("input[name='grade_level']").val();
-        //     if(g_level === '11'){
-        //         $('.div-strand').removeClass('d-none');
-        //     }else{
-        //         $('.div-strand').addClass('d-none');
-        //     }
-        // });  
-
 $('#js-contactForm').validate({
     rules: {
         name: "required",
@@ -1094,7 +970,8 @@ $('#js-contactForm').validate({
                     if (res.res_code == 1)
                     {
                         alertify.alert('<i style="color: red" class="fas fa-exclamation-triangle fa-lg"></i> Reminder',
-                            ''+res.res_msg+'', function(){
+                            '' + res.res_msg + '', function () {
+                                $('#preloader').addClass('d-none');
                         });                                    
                     }
                     else

@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers\Control_Panel_Student;
 
+use App\Models\User;
 use App\Models\SchoolYear;
 use Illuminate\Http\Request;
+use App\Traits\HasStudentDetails;
 use App\Models\StudentInformation;
 use App\Http\Controllers\Controller;
 use App\Models\RegistrarInformation;
@@ -16,7 +18,8 @@ class AccountProfileController extends Controller
     public function view_my_profile (Request $request)
     {
         $Profile = $this->student();
-        
+        $User   =  User::whereId($Profile->user_id)->first();
+        // return ;
         // $RegistrarInformation = collect(RegistrarInformation::DEPARTMENTS); 
         return view('control_panel_student.account_profile.index', compact('User', 'Profile'));
     }

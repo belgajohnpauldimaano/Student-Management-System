@@ -41,7 +41,13 @@
     <h2 class="{{$isPaid ? $isPaid ? 'overlay-paid' : '' : ''}}">
         {{$isPaid ? $isPaid ? 'PAID' : '' : ''}}
     </h2>
-            
+    
+    @if($previousYear)
+        <h2>not yet paid</h2>
+    @else
+        <h2>paid</h2>
+    @endif
+
     <form id="#js-bank-form" class="js-bank-form" enctype="multipart/form-data">
         {{ csrf_field() }}
         <div class="row">
@@ -86,22 +92,22 @@
                                     <input type="hidden" name="other_price" value="{{$PaymentCategory->other_fee->other_fee_amt}}">
                                     <p>{{$PaymentCategory->other_fee->other_fee_name}} - (₱ {{number_format($PaymentCategory->other_fee->other_fee_amt, 2) }})</p>
                                 @endif
-                            
                             @endif  
                             
                             <label for="e_discount">Discount Fee</label>
                             <div class="checkbox" style="margin-top: -2.5px;">
                                 @foreach ($Discount as $item)                
-                                    <label>                      
-                                    <?php 
-                                        $hasAlreadyDiscount = \App\Models\TransactionDiscount::where('student_id', $StudentInformation->id)
-                                            ->where('school_year_id', $SchoolYear->id)->where('discount_type', $item->disc_type)
-                                            ->where('isSuccess', 1)
-                                            ->first();
-                                    ?>
-                                    <input type="checkbox" {{$AlreadyEnrolled ? $hasAlreadyDiscount ? 'disabled' : '' : '' }} class="discountBankSelected" name="discount_bank[]" value="{{$item->id}}"
-                                        data-type="{{$item->disc_type}}" 
-                                        data-fee="{{$item->disc_amt}}">
+                                    <label>
+                                        @php
+                                            $hasAlreadyDiscount = \App\Models\TransactionDiscount::where('student_id', $StudentInformation->id)
+                                                ->where('school_year_id', $SchoolYear->id)->where('discount_type', $item->disc_type)
+                                                ->where('isSuccess', 1)
+                                                ->first();
+                                        @endphp 
+                                        
+                                        <input type="checkbox" {{$AlreadyEnrolled ? $hasAlreadyDiscount ? 'disabled' : '' : '' }} class="discountBankSelected" name="discount_bank[]" value="{{$item->id}}"
+                                            data-type="{{$item->disc_type}}" 
+                                            data-fee="{{$item->disc_amt}}">
                                         <span style="{{$AlreadyEnrolled ? $hasAlreadyDiscount ? 'text-decoration: line-through;color: red;' : '' : '' }}">{{$item->disc_type}} ({{number_format($item->disc_amt, 2)}}) <b> </span></b>
                                     </label> 
                                     &nbsp;&nbsp;               
@@ -167,7 +173,7 @@
                 
             </div>
             <div class="col-md-6">
-                <div class="card card-default" style="height: 550px;">
+                <div class="card card-default">
                     <div class="card-header" style="height: 55px;">
                         <h3 class="card-title"><i class="fas fa-file-upload"></i> Upload with Bank</h3>
                     </div>
@@ -228,4 +234,5 @@
             </div>
         </div>
     </form>
+    
  </div>
