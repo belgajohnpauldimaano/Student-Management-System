@@ -13,10 +13,11 @@ use App\Models\TransactionDiscount;
 use App\Models\TransactionOtherFee;
 use App\Http\Controllers\Controller;
 use App\Models\TransactionMonthPaid;
+use Illuminate\Support\Facades\Mail;
 use Maatwebsite\Excel\Facades\Excel;
-use App\Mail\NotifyDisapprovePaymentMail;
 use App\Exports\StudentPaymentApprovedExport;
-use App\Mail\NotifyStudentApprovedFinanceMail;
+use App\Mail\Student\Finance\Payment\NotifyDisapprovePaymentMail;
+use App\Mail\Student\Finance\Payment\NotifyStudentApprovedFinanceMail;
 
 
 class StudentPaymentController extends Controller
@@ -166,7 +167,7 @@ class StudentPaymentController extends Controller
                     'res_code'  => 0,
                     'res_msg'   => 'Student '.$name.' payment status successfully approved.',
                     'count'     => $notYetApprovedCount
-                    ]);
+                ]);
             }
         }
         return response()->json(['res_code' => 1, 'res_msg' => 'Invalid request.'.$request->incoming_bal]);
@@ -174,6 +175,7 @@ class StudentPaymentController extends Controller
 
     public function disapprove(Request $request)
     {
+        $notYetApprovedCount = $this->notYetApproved();
         $Student_id = TransactionMonthPaid::where('id', $request->id)->first();
         $StudentInformation = StudentInformation::where('status', 1)
             ->where('id', $Student_id->student_id)->first();
@@ -201,7 +203,11 @@ class StudentPaymentController extends Controller
             $payment = TransactionMonthPaid::find($request->id);
                     \Mail::to($NotyetApproved->email)->send(new NotifyDisapprovePaymentMail($payment));
                     
-            return response()->json(['res_code' => 0, 'res_msg' => 'Student '.$name.' payment status successfully disapproved.']);
+            return response()->json([
+                'res_code'  => 0, 
+                'res_msg'   => 'Student '.$name.' payment status successfully disapproved.',
+                'count'     => $notYetApprovedCount
+            ]);
         }
         return response()->json(['res_code' => 1, 'res_msg' => 'Invalid request.']);
     }

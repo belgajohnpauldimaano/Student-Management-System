@@ -4,12 +4,14 @@ namespace App\Http\Controllers\Faculty;
 
 use App\Models\SchoolYear;
 use Illuminate\Http\Request;
+use App\Traits\HasFacultyDetails;
 use App\Models\ClassSubjectDetail;
 use App\Models\FacultyInformation;
 use App\Http\Controllers\Controller;
 
 class HomeController extends Controller
 {
+    use HasFacultyDetails;
     public function index(){
         
         return view('control_panel_faculty.home.index');
@@ -20,17 +22,13 @@ class HomeController extends Controller
         return view('control_panel_faculty.home.partials.modal_data', compact('type'))->render(); 
     }
 
-    private function faculty(){
-        return $faculty_id = FacultyInformation::where('user_id', \Auth::user()->id)->first()->id;
-    }
-
     private function schoolYear(){
         return $School_year_id = SchoolYear::whereStatus(1)->whereCurrent(1)->orderBy('school_year', 'DESC')->first()->id;
     }
 
     private function sectionList(Request $request){
         
-        $faculty_id = $this->faculty();
+        $faculty_id = $this->faculty()->id;
         $School_year_id = $this->schoolYear();
 
         return $ClassSubjectDetail = ClassSubjectDetail::join('class_details', 'class_details.id', '=', 'class_subject_details.class_details_id')
@@ -56,7 +54,7 @@ class HomeController extends Controller
 
     public function createAssessment(Request $request)
     {
-        $faculty_id = $this->faculty();
+        $faculty_id = $this->faculty()->id;
         $School_year_id = $this->schoolYear();
 
         $ClassSubjectDetail = ClassSubjectDetail::join('class_details', 'class_details.id', '=', 'class_subject_details.class_details_id')

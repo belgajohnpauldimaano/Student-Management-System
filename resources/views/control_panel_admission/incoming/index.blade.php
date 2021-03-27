@@ -192,6 +192,8 @@
                                 });
                                 loader_overlay();
                                 $('.js-modal_holder .modal').modal('hide');
+                                var incomingCount = res.count;
+                                countIncomingStudent(incomingCount);
                                 fetch_data();
                             }
                         }

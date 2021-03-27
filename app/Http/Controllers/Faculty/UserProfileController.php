@@ -6,6 +6,7 @@ use App\Models\Payroll;
 use Illuminate\Http\Request;
 use App\Models\FacultySeminar;
 use App\Models\FacultyEducation;
+use App\Traits\HasFacultyDetails;
 use App\Models\FacultyInformation;
 use Illuminate\Support\FacadesAuth;
 use App\Http\Controllers\Controller;
@@ -13,18 +14,25 @@ use Illuminate\Support\Facades\Auth;
 
 class UserProfileController extends Controller
 {
+    use HasFacultyDetails;
+    
+    private function user()
+    {
+        return Auth::user();
+    } 
+    
     public function view_my_profile (Request $request)
     {
-        $User = Auth::user();
-        $Profile = FacultyInformation::where('user_id', $User->id)->first();
+        $User = $this->user();
+        $Profile = $this->faculty();
         $FacultyInformation = collect(FacultyInformation::DEPARTMENTS);
         $payroll = Payroll::whereEmployeeId($Profile->id)->whereStatus(1)->orderBy('payroll_date','DESC')->get();
         return view('control_panel_faculty.user_profile.index', compact('User', 'Profile', 'FacultyInformation', 'payroll'));
     }
     public function fetch_profile (Request $request)
     {
-        $User = Auth::user();
-        $Profile = FacultyInformation::where('user_id', $User->id)->first();
+        $User = $this->user();
+        $Profile = $this->faculty();
         return response()->json(['res_code' => 0, 'res_msg' => '', 'Profile' => $Profile]);
     }
     public function update_profile (Request $request) 
@@ -41,8 +49,8 @@ class UserProfileController extends Controller
         {   
             return response()->json(['res_code' => 1, 'res_msg' => 'Please fill all required fields.', 'res_error_msg' => $validator->getMessageBag()]);
         }
-        $User = Auth::user();
-        $Profile = FacultyInformation::where('user_id', $User->id)->first();
+        $User = $this->user();
+        $Profile = $this->faculty();
 
         $Profile->first_name = $request->first_name;
         $Profile->middle_name = $request->middle_name;
@@ -69,8 +77,8 @@ class UserProfileController extends Controller
         $destinationPath = public_path('/img/account/photo/');
         $request->user_photo->move($destinationPath, $name);
 
-        $User = Auth::user();
-        $Profile = FacultyInformation::where('user_id', $User->id)->first();
+        $User = $this->user();
+        $Profile = $this->faculty();
 
         if ($Profile->photo) 
         {
@@ -126,8 +134,8 @@ class UserProfileController extends Controller
 
     public function educational_attainment (Request $request) 
     {
-        $User = Auth::user();
-        $Profile = FacultyInformation::where('user_id', $User->id)->first();
+        $User = $this->user();
+        $Profile = $this->faculty();
         
         try {
             $FacultyEducation = FacultyEducation::where('faculty_id', $Profile->id)->get();
@@ -197,8 +205,8 @@ class UserProfileController extends Controller
             return response()->json(['res_code' => 1, 'res_msg' => 'Please fill required fields', 'res_error_msg' => $validator->getMessageBag()]);
         }
 
-        $User = Auth::user();
-        $Profile = FacultyInformation::where('user_id', $User->id)->first();
+        $User = $this->user();
+        $Profile = $this->faculty();
 
         if ($request->educ_id) 
         {
@@ -242,8 +250,8 @@ class UserProfileController extends Controller
     }
     public function trainings_seminars (Request $request) 
     {   
-        $User = Auth::user();
-        $Profile = FacultyInformation::where('user_id', $User->id)->first();
+        $User = $this->user();
+        $Profile = $this->faculty();
         $FacultySeminar = FacultySeminar::where('faculty_id', $Profile->id)->get();
 
         try {
@@ -370,8 +378,9 @@ class UserProfileController extends Controller
         }
         else 
         {
-            $User = Auth::user();
-            $Profile = FacultyInformation::where('user_id', $User->id)->first();
+            $User = $this->user();
+            $Profile = $this->faculty();
+            
             $FacultySeminar = new FacultySeminar();
             $FacultySeminar->title          = $request->title;
             $FacultySeminar->date_from      = $request->seminar_date_from ? date('Y-m-d', strtotime($request->seminar_date_from)) : NULL;

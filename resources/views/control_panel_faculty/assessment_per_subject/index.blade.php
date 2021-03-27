@@ -7,7 +7,7 @@
 @section ('content')
     <div class="card">
         <div class="col-md-12">
-            <a href="{{ route('faculty.assessment') }}" style="margin-top: -3em" class="btn-success btn float-right">
+            <a href="{{ route('faculty.assessment') }}" style="margin-top: -3em" class="btn-success btn btn-sm float-right">
                 <i class="fas fa-arrow-left"></i> back
             </a>
         </div>
@@ -44,12 +44,12 @@
                         <div class="row">
                             <div class="col-md-9">
                                 <div id="js-form_search" class="form-group" style="padding-left:0;padding-right:0">
-                                    <input type="text" class="form-control form-control" name="search">
+                                    <input type="text" class="form-control form-control-sm" name="search">
                                 </div>
                             </div>
                             <div class="col-md-3">
-                                <button type="submit" class="btn btn-success">Search</button>
-                                <a href="#" type="button" class="btn btn-danger" id="js-button-add">
+                                <button type="submit" class="btn btn-sm btn-success">Search</button>
+                                <a href="#" type="button" class="btn btn-sm btn-danger" id="js-button-add">
                                     <i class="fa fa-plus"></i> Create
                                 </a>
                             </div>
@@ -210,8 +210,8 @@
                 var self = $(this);
                 var id = $(this).data('id');
                 alertify.defaults.transition = "slide";
-                alertify.defaults.theme.ok = "btn btn-primary ";
-                alertify.defaults.theme.cancel = "btn btn-danger ";
+                alertify.defaults.theme.ok = "btn btn-sm btn-primary ";
+                alertify.defaults.theme.cancel = "btn btn-sm btn-danger ";
                 alertify.confirm('Confirmation', 'Are you sure you want to move this to archive?', function(){  
                     $.ajax({
                         url         : "{{ route('faculty.assessment.archive') }}",
@@ -252,8 +252,8 @@
                 let id = $(this).data('id');
                 let type = $(this).data('type');
                 alertify.defaults.transition = "slide";
-                alertify.defaults.theme.ok = "btn btn-primary ";
-                alertify.defaults.theme.cancel = "btn btn-danger ";
+                alertify.defaults.theme.ok = "btn btn-sm btn-primary ";
+                alertify.defaults.theme.cancel = "btn btn-sm btn-danger ";
                 alertify.confirm('Confirmation', 'Are you sure you want to mark this as '+type+'?', function(){  
                     $.ajax({
                         url         : "{{ route('faculty.assessment.publish') }}",
@@ -292,8 +292,8 @@
                 e.preventDefault();
                 var id = $(this).data('id');
                 alertify.defaults.transition = "slide";
-                alertify.defaults.theme.ok = "btn btn-primary ";
-                alertify.defaults.theme.cancel = "btn btn-danger ";
+                alertify.defaults.theme.ok = "btn btn-sm btn-primary ";
+                alertify.defaults.theme.cancel = "btn btn-sm btn-danger ";
                 alertify.confirm('Confirmation', 'Are you sure you want to delete this question?', function(){  
                     $.ajax({
                         url         : "{{ route('faculty.question.delete', $ClassSubjectDetail->id) }}",
@@ -342,8 +342,8 @@
                 e.preventDefault();
                 var id = $(this).data('id');
                 alertify.defaults.transition = "slide";
-                alertify.defaults.theme.ok = "btn btn-primary ";
-                alertify.defaults.theme.cancel = "btn btn-danger ";
+                alertify.defaults.theme.ok = "btn btn-sm btn-primary ";
+                alertify.defaults.theme.cancel = "btn btn-sm btn-danger ";
                 alertify.confirm('Confirmation', 'Are you sure you want to deactivate?', function(){  
                     $.ajax({
                         url         : "{{ route('finance.maintenance.disc_fee.deactivate_data') }}",
@@ -381,8 +381,8 @@
                 var id = $(this).data('id');
                 var toggle_title = $(this).data('toggle_title');
                 alertify.defaults.transition = "slide";
-                alertify.defaults.theme.ok = "btn btn-primary ";
-                alertify.defaults.theme.cancel = "btn btn-danger ";
+                alertify.defaults.theme.ok = "btn btn-sm btn-primary ";
+                alertify.defaults.theme.cancel = "btn btn-sm btn-danger ";
                 alertify.confirm('Confirmation', 'Are you sure you want to '+toggle_title+' ?', function(){  
                     $.ajax({
                         url         : "{{ route('finance.maintenance.disc_fee.toggle_current_sy') }}",

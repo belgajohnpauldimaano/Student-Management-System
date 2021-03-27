@@ -42,10 +42,15 @@
         {{$isPaid ? $isPaid ? 'PAID' : '' : ''}}
     </h2>
     
-    @if($previousYear)
-        <h2>not yet paid</h2>
-    @else
-        <h2>paid</h2>
+    @if($previousYear->status != 0)
+        <div class="callout callout-info">
+          <h5>Reminder to your account in school year {{ $previousYear->schoolyear->school_year }}!</h5>
+          <p>
+              <i class=" text-danger">
+                Please settle your balance before you can proceed a new transaction for the new school year. Thank you!
+            </i>
+          </p>
+        </div>
     @endif
 
     <form id="#js-bank-form" class="js-bank-form" enctype="multipart/form-data">
@@ -67,15 +72,18 @@
                     <div class="card-body">
                         <input type="hidden" name="payment-cat" value="over the counter - bank">
                         <div class="form-group col-lg-12" style="margin-top: 10px">
-                            <h4>
-                                {{$AlreadyEnrolled ? 'You are enrolled to ' : 'You are incoming' }} Grade-level <i style="color:red">
-                                @if($IncomingStudentCount)
-                                {{$IncomingStudentCount->grade_level_id}}
-                                @else
-                                {{$ClassDetail->grade_level}}
-                                @endif
-                                </i>
-                            </h4>
+                            <div class="callout callout-success">
+                                <h4>
+                                    {{$AlreadyEnrolled ? 'You are enrolled to ' : 'You are incoming' }} Grade-level <i style="color:red">
+                                    @if($IncomingStudentCount)
+                                        {{$IncomingStudentCount->grade_level_id}}
+                                    @else
+                                        {{$grade_level_id}}
+                                    @endif
+                                    </i>
+                                </h4>
+                            </div>
+                            
                             <br/>
                             <label for="exampleInputEmail1">Available Tuition Fee and Misc Fee</label>
                             @if($Tuition)
@@ -213,10 +221,19 @@
                         </div> 
 
                         <div class="form-group col-lg-12 input-bank_image ">
-                            <img id="image-receipt" style="cursor: pointer; padding-top: 20px" src="images/avatar.png" width="200">
+                            <img id="image-receipt" src="{{ asset('img/receipt/reciept-placeholder.jpg') }}" width="200">
                             <br/>
                             <label for="bank_image">Image of receipt deposit slip</label><br/>                       
-                            <input type="file" id="bank_image" name="bank_image" src="" onchange="readImageURL(this);" accept="*/image">
+                            {{-- <input type="file" id="bank_image" name="bank_image" src="" onchange="readImageURL(this);" accept="*/image"> --}}
+                            <div class="input-group">
+                                <div class="custom-file">
+                                    <input type="file" class="custom-file-input input-receipt-img" style="cursor: pointer !important" id="bank_image" name="bank_image" onchange="readImageURL(this);" accept="*/image">
+                                    <label class="custom-file-label label-receipt-img" style="cursor: pointer !important" for="bank_image">Choose file</label>
+                                </div>
+                                <div class="input-group-append">
+                                    <span class="input-group-text">Upload</span>
+                                </div>
+                            </div>
                             <div class="help-block text-left" id="js-bank_image"></div>
                         </div>
 

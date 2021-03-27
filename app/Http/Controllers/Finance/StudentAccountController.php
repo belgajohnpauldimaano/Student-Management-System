@@ -15,6 +15,7 @@ use App\Models\Transaction;
 use Illuminate\Http\Request;
 use App\Mail\NotifyAdminMail;
 use App\Models\Mail\SendMail;
+use App\Traits\HasSchoolYear;
 use App\Models\DownpaymentFee;
 use App\Models\IncomingStudent;
 use App\Models\PaymentCategory;
@@ -22,8 +23,6 @@ use App\Models\StudentCategory;
 use App\Traits\hasNotYetApproved;
 use App\Models\FinanceInformation;
 use App\Models\StudentInformation;
-use App\Mail\SendManualFinanceMail;
-use App\Mail\sendManualStudentMail;
 use App\Models\TransactionDiscount;
 use App\Models\TransactionOtherFee;
 use App\Http\Controllers\Controller;
@@ -31,10 +30,12 @@ use App\Models\TransactionMonthPaid;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Crypt;
+use App\Mail\Finance\SendManualFinanceMail;
+use App\Mail\Student\Finance\Payment\sendManualStudentMail;
 
 class StudentAccountController extends Controller
 {
-    use hasNotYetApproved;
+    use hasNotYetApproved, HasSchoolYear;
     
     public function index(Request $request){
         $stud_id = Crypt::decrypt($request->c);
@@ -42,8 +43,7 @@ class StudentAccountController extends Controller
         
         if(!$request->school_year)
         {
-            $School_year_id = SchoolYear::where('status', 1)
-                ->where('current', 1)->first()->id; 
+            $School_year_id = $this->schoolYearActiveStatus()->id; 
         }
         else
         {
@@ -70,13 +70,19 @@ class StudentAccountController extends Controller
             // return $Enrollment->class_details_id;
             // if(!$request->class_details){
                 $ClassDetail = ClassDetail::where('id', $Enrollment->class_details_id)
+                    ->where('school_year_id', $School_year_id)
                     ->whereStatus(1)->whereCurrent(1)->latest()->first();
             // }else{
             //     $ClassDetail = ClassDetail::where('id', $request->class_details)
             //         ->whereStatus(1)->whereCurrent(1)->latest()->first();
             // }            
 
-            $grade_level_id = ($ClassDetail->grade_level);
+            try {
+                $grade_level_id = ($ClassDetail->grade_level);
+            } catch (\Throwable $th) {
+                $grade_level_id = SchoolYear::where('id', '<', $School_year_id)->where('status',1)->max('id');
+            }
+            
         }
         else
         {
@@ -303,8 +309,8 @@ class StudentAccountController extends Controller
                 // this transaction will send to the customer
                 $payment = Transaction::find($Transaction->id);
                 try{
-                    \Mail::to($request->email)->send(new sendManualStudentMail($payment));
-                    \Mail::to('info@sja-bataan.com')->cc('finance@sja-bataan.com')->send(new SendManualFinanceMail($payment));
+                    Mail::to($request->email)->send(new sendManualStudentMail($payment));
+                    Mail::to('info@sja-bataan.com')->cc('finance@sja-bataan.com')->send(new SendManualFinanceMail($payment));
                     // echo 'send';
                 }catch(\Exception $e){
                     \Log::error($e->getMessage());
@@ -426,8 +432,8 @@ class StudentAccountController extends Controller
             {
                 $payment = Transaction::find($Transaction->id);
                 try{
-                    \Mail::to($request->email)->send(new sendManualStudentMail($payment));
-                    \Mail::to('info@sja-bataan.com')->cc('finance@sja-bataan.com')->send(new SendManualFinanceMail($payment));
+                    Mail::to($request->email)->send(new sendManualStudentMail($payment));
+                    Mail::to('info@sja-bataan.com')->cc('finance@sja-bataan.com')->send(new SendManualFinanceMail($payment));
                     // echo 'send';
                 }catch(\Exception $e){
                     \Log::error($e->getMessage());

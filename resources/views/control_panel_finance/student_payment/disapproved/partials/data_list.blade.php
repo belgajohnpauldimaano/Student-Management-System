@@ -82,8 +82,8 @@
                     </td>
                 </tr>
             @empty
-                <tr>
-                    <th>No Data Record Found</th>
+                <tr class="text-center">
+                    <th colspan="12">No Data Record Found</th>
                 </tr>
             @endforelse
         </tbody>

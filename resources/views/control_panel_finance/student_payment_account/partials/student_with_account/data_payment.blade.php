@@ -1,8 +1,8 @@
 <form id="js-form_payment_transaction">
     {{ csrf_field() }} 
     @if ($StudentInformation)
-        <input type="text" name="id" value="{{ $StudentInformation->id }}">
-        <input type="text" id='stud_status' name="stud_status" value="1">
+        <input type="hidden" name="id" value="{{ $StudentInformation->id }}">
+        <input type="hidden" id='stud_status' name="stud_status" value="1">
         <input type="hidden" name="no_months_paid" value="{{$Transaction->no_month_paid}}" />                    
     @endif
 

@@ -77,7 +77,7 @@
         
         $(function () {
             
-            $('body').on('click', '#btn-upload-paroll', function (e) {
+            $('body').on('click', '#btn-upload-payroll', function (e) {
                 e.preventDefault()
                 $('#payroll').click()
             })
@@ -86,7 +86,7 @@
                 if (val.length > 1) {
                     $('#btn-upload-payroll').text(val[val.length - 1])
                 } else {
-                    $('#btn-upload-paryoll').text('Choose file')
+                    $('#btn-upload-payroll').text('Choose file')
                 }
             })
 

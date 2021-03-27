@@ -100,4 +100,77 @@ trait HasTransaction{
         
         return '<span class="badge '.$status.'">'.$status_text.'</span>';
     }
+
+    private function transactionMonth($School_year_id)
+    {
+        return TransactionMonthPaid::where('student_id', $this->id)
+               ->where('school_year_id', $School_year_id)
+               ->whereApproval('Approved')->latest()->orderBY('id', 'DESC')->first();
+    }
+
+    public function getFinanceTransactionBalAttribute()
+    {
+        $transactionMonth = $this->transactionMonth($this->school_year_id);
+
+        if($transactionMonth){
+            $result = number_format($transactionMonth->balance, 2);
+        }else{
+            $result = '<span class="badge badge-warning">None</span> ';
+        }
+        
+        return $result;
+    }
+
+    public function getFinanceStudentBalAttribute()
+    {
+        $school_year = $this->schoolYearActiveStatus();
+
+        $transactionMonth = $this->transactionMonth($school_year->id);
+        
+        if($transactionMonth){
+            $result = number_format($transactionMonth->balance, 2);
+        }else{
+            $result = '<span class="badge badge-warning">None</span>';
+        }
+        return $result;
+    }
+
+    public function transactionAccount($school_year_id)
+    {
+        return $Transaction = Transaction::with('payment_cat')
+            ->where('school_year_id', $school_year_id)
+            ->where('student_id',$this->id)
+            ->first();
+    }
+
+    public function getTransactionStatusAttribute()
+    {
+        
+        $school_year = $this->school_year_id;
+        $Transaction = $this->transactionAccount($school_year);
+        try {
+            $result_badge   = $Transaction->status == 1 ? 'badge-danger' : 'badge-success';
+            $result_status  = $Transaction->status == 1 ? 'Not-Paid' : 'Paid';
+            $result = '<span class="badge '.$result_badge.'">'.$result_status.'</span>';
+        } catch (\Throwable $th) {
+            $result = '<span class="badge badge-danger">Not-Paid</span>';
+        }
+
+        return $result;
+    }
+
+    public function getTransactionStatusNotFilteredAttribute()
+    {
+        $school_year = $this->schoolYearActiveStatus()->id;
+        $Transaction = $this->transactionAccount($school_year);
+        try {
+            $result_badge   = $Transaction->status == 1 ? 'badge-danger' : 'badge-success';
+            $result_status  = $Transaction->status == 1 ? 'Not-Paid' : 'Paid';
+            $result = '<span class="badge '.$result_badge.'">'.$result_status.'</span>';
+        } catch (\Throwable $th) {
+            $result = '<span class="badge badge-warning">None</span>';
+        }
+
+        return $result;
+    }
 }

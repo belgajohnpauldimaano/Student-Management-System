@@ -16,9 +16,12 @@ use Illuminate\Support\Facades\Auth;
 
 class DemographicProfileController extends Controller
 {
+    use HasFacultyDetails;
+
     public function index(Request $request)
     {
-        $FacultyInformation = FacultyInformation::where('user_id', Auth::user()->id)->first();
+        $FacultyInformation = $this->faculty();
+        
         $school_year_id = SchoolYear::where('current', 1)->where('status', 1)->first()->id;
 
         $ClassDetail = ClassDetail::with(['section','room','schoolYear','adviserData'])

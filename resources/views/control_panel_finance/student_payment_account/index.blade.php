@@ -256,7 +256,7 @@
 
                         var id_qty = item_id+'.'+col2+'.'+price+'.'+col1;
                     
-                        var action = '<button id="btnremove" class="btn btn-sm  btn-danger js-btnRemove"><i class="far fa-trash-alt"></i></button>';                   
+                        var action = '<button id="btnremove" class="btn btn-sm btn-flat btn-danger js-btnRemove"><i class="far fa-trash-alt"></i></button>';                   
                         var input_description = '<input type="hidden" name="id_qty[]" class="selected_description" value='+id_qty+'>';                    
                         var row = $(this).closest("tr").html();
                         $("#others_result tbody").append("<tr><td>" + col1 + "</td><td class='quantity' style='text-align: center'> " + col2 + "</td><td class='inputed_price' style='text-align: right'><span class='total_price' style='display:none'>" +total+ "</span>" + currencyFormat(total) + "</td><td  style='text-align: center'>"+action+" " +input_description+"</td></tr>");
@@ -348,8 +348,6 @@
                             $('#datepicker').datepicker({
                                 autoclose: true
                             }); 
-
-                            $('.select2').select2();
 
                             get_payment_monthly();
                             $(".js-discount").on("click", function () {
@@ -444,8 +442,8 @@
                 e.preventDefault();
                 var id = $(this).data('id');
                 alertify.defaults.transition = "slide";
-                alertify.defaults.theme.ok = "btn btn-primary ";
-                alertify.defaults.theme.cancel = "btn btn-danger ";
+                alertify.defaults.theme.ok = "btn btn-primary btn-flat";
+                alertify.defaults.theme.cancel = "btn btn-danger btn-flat";
                 alertify.confirm('Confirmation', 'Are you sure you want to delete?', function(){  
                     $.ajax({
                         url         : "{{ route('finance.delete_transaction') }}",
@@ -626,8 +624,8 @@
             });
 
             function error(){
-                alertify.defaults.theme.ok = "btn btn-primary ";                
-                alertify.defaults.theme.cancel = "btn btn-danger ";
+                alertify.defaults.theme.ok = "btn btn-primary btn-flat";                
+                alertify.defaults.theme.cancel = "btn btn-danger btn-flat";
                 alertify.confirm('<i style="color: red" class="fas fa-question-circle"></i> Warning', 
                      'Please save first before your print it', function(){                     
                          // location.reload();
@@ -728,8 +726,8 @@
                     $('#js-btn-done').css('display', 'block');
                     $('#js-btn-done').click(function(e){
                         e.preventDefault();
-                        alertify.defaults.theme.ok = "btn btn-primary ";
-                        alertify.defaults.theme.cancel = "btn btn-danger ";
+                        alertify.defaults.theme.ok = "btn btn-primary btn-flat";
+                        alertify.defaults.theme.cancel = "btn btn-danger btn-flat";
                         alertify.confirm('<i style="color: #0069d9" class="fas fa-question-circle"></i> Confirmation', 
                             'You can not print it if you click this done. Thank you', function(){                     
                                 location.reload();
@@ -742,15 +740,15 @@
 
             function totalNegativeError()
             {
-                alertify.defaults.theme.ok = "btn btn-primary ";                
-                alertify.defaults.theme.cancel = "btn btn-danger ";
+                alertify.defaults.theme.ok = "btn btn-primary btn-flat";                
+                alertify.defaults.theme.cancel = "btn btn-danger btn-flat";
                 alertify.confirm('<i style="color: red" class="fas fa-exclamation-circle"></i> Warning', 
                      'Please input the correct payment, please try again.', function(){                     
                         
                      }, function(){  
                 });
             }
-            //save transaction 
+
             $('body').on('submit', '#js-form_payment_transaction', function (e) {
                 e.preventDefault();
                 // if(final_total >= 0 || less_total >= 0)
@@ -777,8 +775,8 @@
                                     $('#js-' + err).html('<code> '+ res.res_error_msg[err] +' </code>');
                                 }
                             }
-                            
-                            if(res.res_code == 0){
+                            else
+                            {
                                 // $('.js-modal_holder .modal').modal('hide');
                                 show_toast_alert({
                                     heading : 'Success',
@@ -797,6 +795,7 @@
                                 disable = true;
                                 btnSaveDisabled();
                                 displayDone();
+
                                 fetch_data();
                             }
                         }
@@ -855,8 +854,8 @@
                 e.preventDefault();
                 var id = $(this).data('id');
                 alertify.defaults.transition = "slide";
-                alertify.defaults.theme.ok = "btn btn-primary ";
-                alertify.defaults.theme.cancel = "btn btn-danger ";
+                alertify.defaults.theme.ok = "btn btn-primary btn-flat";
+                alertify.defaults.theme.cancel = "btn btn-danger btn-flat";
                 alertify.confirm('Confirmation', 'Are you sure you want the status paid? <i style="color: red">Note: The account of student will be paid in the whole year</i>.', function(){  
                     $.ajax({
                         url         : "{{ route('finance.student_acct.paid') }}",
@@ -897,8 +896,8 @@
                 e.preventDefault();
                 var id = $(this).data('id');
                 alertify.defaults.transition = "slide";
-                alertify.defaults.theme.ok = "btn btn-primary ";
-                alertify.defaults.theme.cancel = "btn btn-danger ";
+                alertify.defaults.theme.ok = "btn btn-primary btn-flat";
+                alertify.defaults.theme.cancel = "btn btn-danger btn-flat";
                 alertify.confirm('Confirmation', 'Are you sure you want the status unpaid?', function(){  
                     $.ajax({
                         url         : "{{ route('finance.student_acct.unpaid') }}",
@@ -997,8 +996,8 @@
                 e.preventDefault();
                 var id = $(this).data('id');
                 alertify.defaults.transition = "slide";
-                alertify.defaults.theme.ok = "btn btn-primary ";
-                alertify.defaults.theme.cancel = "btn btn-danger ";
+                alertify.defaults.theme.ok = "btn btn-primary btn-flat";
+                alertify.defaults.theme.cancel = "btn btn-danger btn-flat";
                 alertify.confirm('Confirmation', 'Are you sure you want to deactivate?', function(){  
                     $.ajax({
                         url         : "{{ route('admin.student.information.deactivate_data') }}",
@@ -1101,8 +1100,8 @@
                 var id = $(this).data('id');
                 var category = $(this).data('category');
                 alertify.defaults.transition = "slide";
-                alertify.defaults.theme.ok = "btn btn-primary ";
-                alertify.defaults.theme.cancel = "btn btn-danger ";
+                alertify.defaults.theme.ok = "btn btn-primary btn-flat";
+                alertify.defaults.theme.cancel = "btn btn-danger btn-flat";
                 alertify.confirm('Confirmation', 'Are you sure you want to delete the data that you have selected?', function(){  
                     $.ajax({
                         url         : "{{ route('finance.data_delete') }}",
@@ -1138,8 +1137,8 @@
                 e.preventDefault();
                 var id = $(this).data('id');
                 alertify.defaults.transition = "slide";
-                alertify.defaults.theme.ok = "btn btn-primary ";
-                alertify.defaults.theme.cancel = "btn btn-danger ";
+                alertify.defaults.theme.ok = "btn btn-primary btn-flat";
+                alertify.defaults.theme.cancel = "btn btn-danger btn-flat";
                 alertify.confirm('<i style="color: red" class="fas fa-exclamation-triangle fa-lg"></i> Reminder', 'This function will delete the entire transaction, do you want to proceed?', function(){  
                     $.ajax({
                         url         : "{{ route('finance.delete_all_transaction') }}",

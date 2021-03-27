@@ -29,7 +29,7 @@
                             </span>
                         </td>
                         <td>
-                            <a class="btn btn-primary" 
+                            <a class="btn btn-sm btn-primary" 
                                 href="{{ route('finance.student_list', encrypt($data->id)) }}?school_year={{ encrypt($data->schoolyearid) }}" 
                             >
                                 <i class="fas fa-eye"></i> View List

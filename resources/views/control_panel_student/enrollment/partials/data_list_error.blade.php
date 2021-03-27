@@ -3,13 +3,13 @@
 <div class="row" id="selector_payment">
   <div class="col-md-12">
     
-    <div class="box box-primary">
+    <div class="card card-default">
       
-      <div class="box-header with-border">
-        <h3 class="box-title col-lg-12">Enrollment Method</h3>
+      <div class="card-header">
+        <h5 class="box-title"></h5>
       </div>
       
-      <div class="box-body justify-content-center" style="height: 20em">
+      <div class="card-body">
         
         @if (session('error') || session('success'))
           <button id="btn-success-alert" 
@@ -19,8 +19,8 @@
           </button>   
         @endif
         
-          <div class="form-group col-lg-6 col-lg-offset-3" id="form_method">
-              <h4>This account maybe not updated. Please contact the administrator. Thank you</h4>
+          <div class="form-group" id="form_method">
+              @include('errors.404')
           </div>
                     
        </div>

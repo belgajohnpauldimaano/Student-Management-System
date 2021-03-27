@@ -23,7 +23,7 @@
             </tr>
         </thead>
         <tbody>
-            @foreach($Approved as $key => $data)
+            @forelse($Approved as $key => $data)
                 <tr>
                     <td>{{$key + 1}}</td>
                     <td>{{$data->student->full_name}}</td>
@@ -53,7 +53,11 @@
                         <a class="btn btn-sm btn-danger btn-disapprove" title="Disapprove" data-id="{{$data->transact_monthly_id}}"><i class="fas fa-thumbs-down"></i></a>
                     </td>
                 </tr>
-            @endforeach
+             @empty
+                <tr class="text-center">
+                    <th colspan="12">No Data Record Found</th>
+                </tr>
+            @endforelse
         </tbody>
     </table> 
 </div>

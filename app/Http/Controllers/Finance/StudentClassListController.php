@@ -162,6 +162,7 @@ class StudentClassListController extends Controller
         $StudentInformation = [];
 
         $Enrollment = Enrollment::join('student_informations', 'student_informations.id', '=', 'enrollments.student_information_id')
+            ->join('class_details', 'class_details.id', '=', 'enrollments.class_details_id')
             ->join('users', 'users.id', '=', 'student_informations.user_id')
             ->where(function ($query) use ($request) {
                 if ($request->search_fn)
@@ -188,7 +189,8 @@ class StudentClassListController extends Controller
                 student_informations.id AS id,
                 users.username,
                 student_informations.last_name, student_informations.first_name, student_informations.middle_name,
-                enrollments.id AS enrollment_id
+                enrollments.id AS enrollment_id,
+                class_details.school_year_id
             ")
             ->where('class_details_id', $_id)
             ->where('enrollments.status', 1)

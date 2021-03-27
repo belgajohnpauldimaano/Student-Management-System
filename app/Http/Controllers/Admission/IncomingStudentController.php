@@ -161,8 +161,8 @@ class IncomingStudentController extends Controller
 
     public function disapprove(Request $request)
     {
+        $IncomingStudentCount = $this->IncomingStudentCount();
         $StudentInformation = StudentInformation::where('id', $request->id)->first();
-
         $name = $StudentInformation->first_name.' '.$StudentInformation->last_name;  
         
         // $incoming_student = IncomingStudent::where('student_id', $request->id)->first();
@@ -190,7 +190,11 @@ class IncomingStudentController extends Controller
                         DB::commit();
                         // Mail::to('admission@sja-bataan.com')->send(new NotifyDisapproveAdmission($student));
                     
-                        return response()->json(['res_code' => 0, 'res_msg' => 'Student '.$name.' status successfully Disapproved!.']);
+                        return response()->json([
+                            'res_code' => 0, 
+                            'res_msg' => 'Student '.$name.' status successfully Disapproved!.',
+                            'count'     => $IncomingStudentCount
+                        ]);
                     }else{
                         DB::rollBack();
                         return response()->json(['res_code' => 1, 'res_msg' => 'Sorry approval has error.']);

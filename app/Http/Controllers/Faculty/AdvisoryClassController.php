@@ -13,6 +13,7 @@ use App\Models\ClassDetail;
 use Illuminate\Http\Request;
 use App\Models\SectionDetail;
 use App\Models\SubjectDetail;
+use App\Traits\HasFacultyDetails;
 use App\Models\ClassSubjectDetail;
 use App\Models\FacultyInformation;
 use App\Models\StudentInformation;
@@ -26,9 +27,11 @@ use App\Models\StudentEnrolledSubject;
 
 class AdvisoryClassController extends Controller
 {
+    use HasFacultyDetails;
+
     public function index (Request $request) 
     {        
-        $FacultyInformation = FacultyInformation::where('user_id', Auth::user()->id)->first();
+        $FacultyInformation = $this->faculty();
         
         $SchoolYear = SchoolYear::where('status', 1)->where('current', 1)->first();
 
@@ -44,7 +47,7 @@ class AdvisoryClassController extends Controller
     
     public function view_class_list (Request $request) 
     {
-        $FacultyInformation = FacultyInformation::where('user_id', Auth::user()->id)->first();
+        $FacultyInformation = $this->faculty();
 
         try {
             $class_id = Crypt::decrypt($request->c);
@@ -105,7 +108,7 @@ class AdvisoryClassController extends Controller
 
     public function manage_attendance (Request $request) 
     {
-        $FacultyInformation = FacultyInformation::where('user_id', Auth::user()->id)->first();
+        $FacultyInformation = $this->faculty();
         try {
             $class_id = Crypt::decrypt($request->c);
             $enrollment_id = Crypt::decrypt($request->enr);
@@ -184,7 +187,7 @@ class AdvisoryClassController extends Controller
 
     public function save_attendance (Request $request) 
     {
-        $FacultyInformation = FacultyInformation::where('user_id', Auth::user()->id)->first();
+        $FacultyInformation = $this->faculty();
         try {
             
             $class_id = Crypt::decrypt($request->c);

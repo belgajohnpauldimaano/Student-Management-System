@@ -93,9 +93,9 @@
                             {{--  <input type="text" class="form-control form-control-sm" name="birthdate" value="{{ $StudentInformation ? $StudentInformation->birthdate : '' }}">  --}}
                             <div class="input-group date">
                                 <div class="input-group-prepend">
-                                <span class="input-group-text">
-                                    <i class="far fa-calendar-alt"></i>
-                                </span>
+                                    <span class="input-group-text">
+                                        <i class="far fa-calendar-alt"></i>
+                                    </span>
                                 </div>
                                 <input type="text" name="birthdate" class="form-control form-control-sm pull-right" id="datepicker"
                                 value="{{ $StudentInformation ? date_format(date_create($StudentInformation->birthdate), 'F d, Y') : '' }}">

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Faculty;
 use App\Models\Assessment;
 use App\Models\SchoolYear;
 use Illuminate\Http\Request;
+use App\Traits\HasFacultyDetails;
 use App\Models\ClassSubjectDetail;
 use App\Models\FacultyInformation;
 use App\Http\Controllers\Controller;
@@ -12,9 +13,7 @@ use Illuminate\Support\Facades\Auth;
 
 class AssessmentController extends Controller
 {
-    private function faculty(){
-        return $faculty_id = FacultyInformation::where('user_id', \Auth::user()->id)->first()->id;
-    }
+    use HasFacultyDetails;
 
     private function schoolYear(){
         return $School_year_id = SchoolYear::whereStatus(1)->whereCurrent(1)->orderBy('school_year', 'DESC')->first()->id;
@@ -22,7 +21,7 @@ class AssessmentController extends Controller
 
     public function index(Request $request)
     {
-        $faculty_id = $this->faculty();
+        $faculty_id = $this->faculty()->id;
         $School_year_id = $this->schoolYear();
 
         $ClassSubjectDetail = ClassSubjectDetail::join('class_details', 'class_details.id', '=', 'class_subject_details.class_details_id')

@@ -28,9 +28,11 @@ use Illuminate\Validation\Validator;
 
 class GradeSheetController extends Controller
 {    
+    use HasFacultyDetails;
+    
     public function index (Request $request) 
     {
-        $FacultyInformation = FacultyInformation::where('user_id', \Auth::user()->id)->first();
+        $FacultyInformation = $this->faculty();
         // return json_encode(['FacultyInformation' => $FacultyInformation, 'Auth' => \Auth::user()]);
         $SchoolYear = SchoolYear::where('status', 1)->where('current', 1)->orderBy('current', 'ASC')->orderBy('school_year', 'DESC')->get();
 
@@ -96,7 +98,7 @@ class GradeSheetController extends Controller
 
     public function list_students_by_class (Request $request)
     {
-        $FacultyInformation = FacultyInformation::where('user_id', \Auth::user()->id)->first();
+        $FacultyInformation = $this->faculty();
 
         $faculty_id = TeacherSubject::join('class_subject_details','class_subject_details.id', '=', 'teacher_subjects.class_subject_details_id')
             ->join('class_details', 'class_details.id', '=', 'class_subject_details.class_details_id')
@@ -234,7 +236,7 @@ class GradeSheetController extends Controller
 
     public function list_students_by_class_print (Request $request) 
     {
-        $FacultyInformation = FacultyInformation::where('user_id', \Auth::user()->id)->first();
+        $FacultyInformation = $this->faculty();
         // return json_encode(['FacultyInformation' => $FacultyInformation, 'req' => $request->all()]);
 
         // $faculty_id = TeacherSubject::join('class_subject_details','class_subject_details.id', '=', 'teacher_subjects.class_subject_details_id')
@@ -374,7 +376,7 @@ class GradeSheetController extends Controller
     
     public function list_class_subject_details (Request $request) 
     {
-        $FacultyInformation = FacultyInformation::where('user_id', \Auth::user()->id)->first(); 
+        $FacultyInformation = $this->faculty(); 
        
         $faculty_id = TeacherSubject::join('class_subject_details','class_subject_details.id', '=', 'teacher_subjects.class_subject_details_id')
             ->join('class_details', 'class_details.id', '=', 'class_subject_details.class_details_id')
@@ -457,7 +459,7 @@ class GradeSheetController extends Controller
 
     public function list_class_subject_details1 (Request $request) 
     {
-        $FacultyInformation = FacultyInformation::where('user_id', \Auth::user()->id)->first();  
+        $FacultyInformation = $this->faculty();  
         $faculty_id = TeacherSubject::join('class_subject_details','class_subject_details.id', '=', 'teacher_subjects.class_subject_details_id')
             ->join('class_details', 'class_details.id', '=', 'class_subject_details.class_details_id')
             ->select(\DB::raw('  
@@ -578,7 +580,7 @@ class GradeSheetController extends Controller
 
     public function list_students_by_class1 (Request $request) 
     {
-        $FacultyInformation = FacultyInformation::where('user_id', \Auth::user()->id)->first();
+        $FacultyInformation = $this->faculty();
         $faculty_id = TeacherSubject::where('faculty_id', $FacultyInformation->id)->first();
         
         if($faculty_id)
@@ -706,7 +708,7 @@ class GradeSheetController extends Controller
     public function list_students_by_class_print_senior (Request $request) 
     {
         
-        $FacultyInformation = FacultyInformation::where('user_id', \Auth::user()->id)->first();
+        $FacultyInformation = $this->faculty();
 
         $faculty_id = TeacherSubject::where('faculty_id', $FacultyInformation->id)->first();
         
@@ -1003,7 +1005,7 @@ class GradeSheetController extends Controller
     }
     public function finalize_grade (Request $request) 
     {
-        $FacultyInformation = FacultyInformation::where('user_id', \Auth::user()->id)->first();
+        $FacultyInformation = $this->faculty();
         $ClassSubjectDetail = ClassSubjectDetail::where('class_subject_details.id', $request->id)
             ->where('faculty_id', $FacultyInformation->id)
             ->first();

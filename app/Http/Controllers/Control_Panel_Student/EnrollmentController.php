@@ -10,6 +10,7 @@ use App\Models\ClassDetail;
 use App\Models\DiscountFee;
 use App\Models\Transaction;
 use Illuminate\Http\Request;
+use App\Traits\HasGradeLevel;
 use App\Traits\HasSchoolYear;
 use App\Models\DownpaymentFee;
 use App\Models\IncomingStudent;
@@ -28,14 +29,26 @@ use App\Mail\Student\Finance\Payment\SendMail;
 
 class EnrollmentController extends Controller
 {
-    use HasStudentDetails, HasSchoolYear;
+    use HasStudentDetails, HasSchoolYear, HasGradeLevel;
 
     private function alreadyEnrolled($StudentInformation, $SchoolYear)
     {
-        $prev_sy = $this->prevYear($SchoolYear);
-        $sy = $prev_sy ? $prev_sy : $SchoolYear->id;
+        $preSy = $this->prevYear($SchoolYear);
+
+        try {
+            $previousYear = Transaction::whereStudentId($StudentInformation)
+                ->whereSchoolYearId($preSy)->first();
+        } catch (\Throwable $th) {
+            $previousYear = null;
+        }
+
+        if($previousYear->status==0){
+            $sy = $SchoolYear;
+        }else{
+            $sy = $preSy;
+        }
         
-        return TransactionMonthPaid::whereStudentId($StudentInformation->id)
+        return  TransactionMonthPaid::whereStudentId($StudentInformation)
                     ->whereSchoolYearId($sy)
                     ->where('isSuccess', 1)
                     ->whereApproval('Approved')
@@ -54,6 +67,16 @@ class EnrollmentController extends Controller
         return SchoolYear::where('id', '<', $SchoolYearId)->where('status',1)->max('id');
     }
 
+    private function checkSchoolYear($StudentInformation, $SchoolYear)
+    {
+        return $this->gradeLevel()->whereStudentInformationId($StudentInformation->id)
+                    ->select('enrollments.student_information_id', 'enrollments.class_details_id', 'enrollments.id')
+                    ->whereHas('classDetail', function($query) use ($SchoolYear) {
+                        $query->where('school_year_id', $SchoolYear);
+                    })
+                    ->first();
+    }
+
     public function index(Request $request)
     {    
         $StudentInformation = $this->student();
@@ -62,9 +85,11 @@ class EnrollmentController extends Controller
         $findSchoolYear = ClassDetail::where('school_year_id' , $SchoolYear->id)->first();
         
         $previousUserID = $this->prevYear($SchoolYear);
+        // return json_encode($previousUserID);
         
         try {
-            $previousYear = Transaction::whereStudentId($StudentInformation->id)->whereSchoolYearId($previousUserID)->first()->status;
+            $previousYear = Transaction::whereStudentId($StudentInformation->id)
+                ->whereSchoolYearId($previousUserID)->first();
         } catch (\Throwable $th) {
             $previousYear = null;
         }
@@ -77,11 +102,16 @@ class EnrollmentController extends Controller
 
             if($IncomingStudentCount){
                 
-                $isPaid = Transaction::where('student_id' , $StudentInformation->id)->where('status', 0)->first();
-                $AlreadyEnrolled = $this->alreadyEnrolled($StudentInformation, $SchoolYear);
+                $isPaid = Transaction::where('student_id' , $StudentInformation->id)->where('status', 0)
+                    ->whereSchoolYearId($SchoolYear->id)->first();
+                    
+                $AlreadyEnrolled = $this->alreadyEnrolled($StudentInformation->id, $SchoolYear->id);
+                
                 $Tuition = PaymentCategory::where('grade_level_id', $IncomingStudentCount->grade_level_id)->first();
+                
                 $PaymentCategory = PaymentCategory::with('misc_fee','tuition')
                     ->where('grade_level_id',  $IncomingStudentCount->grade_level_id)->first();
+                    
                 if($Tuition){
                     $hasOtherfee = PaymentCategory::where('grade_level_id',  $IncomingStudentCount->grade_level_id)->first();
                 }
@@ -89,10 +119,13 @@ class EnrollmentController extends Controller
                 $Profile = $this->student();                
                 // discount
                 $Discount = DiscountFee::where('status', 1)->where('current', 1)->where('apply_to', 1)->get();                
-                $TransactionDiscount = TransactionDiscount::where('student_id', $StudentInformation->id)->where('school_year_id', $SchoolYear->id)->where('isSuccess', 1)->get();
-                $TransactionDiscountTotal = TransactionDiscount::where('student_id', $StudentInformation->id)->where('school_year_id', $SchoolYear->id)
-                        ->where('isSuccess', 1)
-                        ->sum('discount_amt');
+                $TransactionDiscount = TransactionDiscount::where('student_id', $StudentInformation->id)
+                    ->where('school_year_id', $SchoolYear->id)
+                    ->where('isSuccess', 1)->get();
+                $TransactionDiscountTotal = TransactionDiscount::where('student_id', $StudentInformation->id)
+                    ->where('school_year_id', $SchoolYear->id)
+                    ->where('isSuccess', 1)
+                    ->sum('discount_amt');
                 
                 if($Tuition){
                     $tuition_fee = $PaymentCategory->tuition->tuition_amt;
@@ -116,32 +149,37 @@ class EnrollmentController extends Controller
                     compact('AlreadyEnrolled','grade_level', 'GradeSheet', 'ClassDetail','PaymentCategory','Downpayment','sum_total_item', 'hasOtherfee',
                     'Profile','StudentInformation','Tuition','Enrollment','User','SchoolYear','Discount', 'IncomingStudentCount','previousYear',
                     'TransactionDiscount','TransactionDiscountTotal','isPaid'));
-                return json_encode(['GradeSheetData' => $GradeSheetData,]);
+                // return json_encode(['GradeSheetData' => $GradeSheetData,]);
 
             }else{
 
                 if ($StudentInformation) 
                 {
-                    $isPaid = Transaction::where('student_id' , $StudentInformation->id)->where('status', 0)->first();
-                    $Enrollment = Enrollment::where('student_information_id', $StudentInformation->id)
-                        ->where('status', 1)
-                        ->where('current', 1)
-                        ->orderBy('id', 'DESC')
-                        ->first();
-                    $GradeSheet = 0;
+                    $isPaid = Transaction::where('student_id' , $StudentInformation->id)
+                        ->whereSchoolYearId($SchoolYear->id)->where('status', 0)->first();
+                    $GradeSheet = 1;
+                    try {
+                        $has_schoolyear = $this->checkSchoolYear($StudentInformation, $SchoolYear->id);
+                        $grade_level_id = $has_schoolyear->classDetail->grade_level;
+                    } catch (\Throwable $th) {
+                        //throw $th;
+                        $AlreadyEnrolled = $this->alreadyEnrolled($StudentInformation->id, $SchoolYear->id);
+                        $has_schoolyear = $this->checkSchoolYear($StudentInformation, $previousUserID);
 
-                    if($Enrollment){
-                        $GradeSheet = 1;
+                        // return json_encode($AlreadyEnrolled);
+                        if(!empty($AlreadyEnrolled->status))
+                        {
+                            $notPaid = 0;
+                        }else{
+                            $notPaid = 1;
+                        }
 
-                        $ClassDetail = ClassDetail::whereId($Enrollment->class_details_id)
-                            ->whereStatus(1)->whereCurrent(1)->orderBY('grade_level', 'DESC')->first();
-                    }else{
-                        $GradeSheet = 0;
-                        return view('control_panel_student.enrollment.index', compact('GradeSheet'));
+                        $grade_level_id = ($has_schoolyear->classDetail->grade_level + $notPaid);
                     }
+                    // return json_encode($grade_level_id);
                     
-                    $AlreadyEnrolled = $this->alreadyEnrolled($StudentInformation, $SchoolYear);
-                    $grade_level_id = ($ClassDetail->grade_level + 1);
+                    $AlreadyEnrolled = $this->alreadyEnrolled($StudentInformation->id, $SchoolYear->id);
+                    // $grade_level_id = ($ClassDetail->grade_level + 1);
                     $Tuition = PaymentCategory::where('grade_level_id', $grade_level_id)->first();
                     $PaymentCategory = PaymentCategory::with('misc_fee','tuition')
                                     ->where('grade_level_id', $grade_level_id)->first();
@@ -174,18 +212,10 @@ class EnrollmentController extends Controller
                         }
                     }
                     
-                    try {
-                        return view('control_panel_student.enrollment.index', 
-                        compact('AlreadyEnrolled','grade_level','GradeSheet', 'ClassDetail','PaymentCategory','Downpayment','sum_total_item','hasOtherfee','isPaid','previousYear',
+                    return view('control_panel_student.enrollment.index', 
+                        compact('AlreadyEnrolled','grade_level','GradeSheet', 'grade_level_id','PaymentCategory','Downpayment','sum_total_item','hasOtherfee','isPaid','previousYear',
                         'Profile','StudentInformation','Tuition','Enrollment','User','SchoolYear','Discount', 'IncomingStudentCount','TransactionDiscount','TransactionDiscountTotal'));
-                    } catch (\Throwable $th) {
-                        return view('control_panel_student.enrollment.index', 
-                        compact('AlreadyEnrolled','GradeSheet', 'ClassDetail','PaymentCategory','Downpayment','isPaid','previousYear',
-                        'Profile','StudentInformation','Tuition','Enrollment','User','SchoolYear','Discount', 'IncomingStudentCount','TransactionDiscount','TransactionDiscountTotal'));
-                    }
-                    
-                    return json_encode(['GradeSheetData' => $GradeSheetData,]);
-                        
+                   
                 }else{
                     echo "Invalid request";
                 }
@@ -207,26 +237,26 @@ class EnrollmentController extends Controller
         $StudentInformation = $this->student();
         $SchoolYear = $this->schoolYearActiveStatus();
 
-        $AlreadyEnrolled = $this->alreadyEnrolled($StudentInformation, $SchoolYear);        
+        $AlreadyEnrolled = $this->alreadyEnrolled($StudentInformation->id, $SchoolYear->id);        
 
         if(!$AlreadyEnrolled){
             $rules = [
-                'bank_tution_amt' => 'required',
-                'bank_phone' => 'required',
-                'bank_email' => 'email|required',
-                'bank'=>'required',
-                'bank_transaction_id'=>'required',
-                'bank_pay_fee' => 'required',
-                'bank_image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:5120',
+                'bank_tution_amt'       => 'required',
+                'bank_phone'            => 'required',
+                'bank_email'            => 'email|required',
+                'bank'                  =>'required',
+                'bank_transaction_id'   =>'required',
+                'bank_pay_fee'          => 'required',
+                'bank_image'            => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:5120',
             ];
         }else{
             $rules = [                  
-                'bank_phone' => 'required',
-                'bank_email' => 'email|required',
-                'bank'=>'required',
-                'bank_transaction_id'=>'required',
-                'bank_pay_fee' => 'required',
-                'bank_image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:5120',
+                'bank_phone'            => 'required',
+                'bank_email'            => 'email|required',
+                'bank'                  =>'required',
+                'bank_transaction_id'   =>'required',
+                'bank_pay_fee'          => 'required',
+                'bank_image'            => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:5120',
             ];
         }
         
@@ -404,7 +434,7 @@ class EnrollmentController extends Controller
 
         $mytime = Carbon::now();
 
-        $AlreadyEnrolled = $this->alreadyEnrolled($StudentInformation, $SchoolYear); 
+        $AlreadyEnrolled = $this->alreadyEnrolled($StudentInformation->id, $SchoolYear->id);
 
         if(!$AlreadyEnrolled){
             $rules = [
@@ -593,57 +623,61 @@ class EnrollmentController extends Controller
 
     public function modal_data(Request $request){
         
-        $previousUserID = $this->prevYear($request->school_year_id);
+        // $previousUserID = $this->prevYear($request->school_year_id);
+        $SchoolYear = $request->school_year_id;
+        $StudentInformation = $request->id;
+        $previousUserID = $this->alreadyEnrolled($StudentInformation, $SchoolYear);
 
         if($previousUserID){
-            $sy = $previousUserID;
+            $sy = $previousUserID->school_year_id;
         }else{
-            $sy = $request->school_year_id;
+            $sy = $SchoolYear;
         }
+        
 
-        $hasTransaction = TransactionMonthPaid::where('student_id', $request->id)
+        $hasTransaction = TransactionMonthPaid::where('student_id', $StudentInformation)
             ->where('school_year_id', $sy)
             ->where('isSuccess', 1)
             ->orderBY('id', 'desc')
             ->first();        
 
-        $Discount = TransactionDiscount::where('student_id', $request->id)
+        $Discount = TransactionDiscount::where('student_id', $StudentInformation)
             ->where('school_year_id', $sy)
             ->where('isSuccess', 1)
             ->sum('discount_amt');
 
-        $payment = TransactionMonthPaid::where('student_id', $request->id)
+        $payment = TransactionMonthPaid::where('student_id', $StudentInformation)
             ->where('school_year_id', $sy)
             ->where('isSuccess', 1)
             ->sum('payment');
 
-        $Discount_amt = TransactionDiscount::where('student_id', $request->id)
+        $Discount_amt = TransactionDiscount::where('student_id', $StudentInformation)
             ->where('school_year_id', $sy)->where('isSuccess', 1)
             ->get();
 
         $Transaction_history = NULL;
 
-        if ($request->id && $sy)
+        if ($StudentInformation && $sy)
         {
             
-            $Transaction_history = Transaction::where('student_id', $request->id)
+            $Transaction_history = Transaction::where('student_id', $StudentInformation)
                 ->where('school_year_id', $sy)
                 ->orderBY('id', 'desc')
                 ->get();
 
-            $Transaction = TransactionMonthPaid::where('student_id', $request->id)
+            $Transaction = TransactionMonthPaid::where('student_id', $StudentInformation)
                 ->where('school_year_id', $sy)->where('isSuccess', 1)
                 ->orderBY('id', 'desc')
                 ->get();
             
             if($hasTransaction){
                 
-                $OtherFee = TransactionOtherFee::where('student_id', $request->id)
+                $OtherFee = TransactionOtherFee::where('student_id', $StudentInformation)
                     ->where('school_year_id', $sy)->where('transaction_id', $Transaction_history[0]->id)
                     ->where('isSuccess', 1)
                     ->get();
                 
-                $Other_price = TransactionOtherFee::where('student_id', $request->id)
+                $Other_price = TransactionOtherFee::where('student_id', $StudentInformation)
                     ->where('school_year_id', $sy)->where('transaction_id', $Transaction_history[0]->id)
                     ->where('isSuccess', 1)
                     ->sum('item_price');

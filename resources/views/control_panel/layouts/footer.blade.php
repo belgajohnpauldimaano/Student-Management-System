@@ -10,6 +10,9 @@
 <!-- ./wrapper -->
 <script src="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/alertify.min.js"></script>
 <script src="{{ asset('js/control_panel.js') }}"></script>
+<script src="{{ asset('cms-new/plugins/summernote/summernote-bs4.min.js') }}"></script>
+<script src="{{ asset('cms-new/plugins/moment/moment.min.js') }}"></script>
+
 @yield('scripts')
 	<script>
 		function loader_overlay($target_class = '') {

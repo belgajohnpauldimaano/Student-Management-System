@@ -6,7 +6,7 @@
 
 @section ('content')
     <div class="float-right" style="margin-top: -3em">
-        <a class="btn btn-danger" href="{{ route('finance.class_details') }}">
+        <a class="btn btn-sm btn-danger" href="{{ route('finance.class_details') }}">
             <i class="far fa-list-alt fa-lg"></i> <span>Switch View</span>
         </a>
     </div>
@@ -55,8 +55,8 @@
                         <div class="col-md-2">
                             <label class="control-label">&nbsp;</label>
                             <div class="form-group input-school_year">
-                                <button type="submit" class="btn btn-success">Search</button>
-                                <button type="button" class="float-right btn btn-danger  btn_clear" style="display: none">
+                                <button type="submit" class="btn btn-sm btn-success">Search</button>
+                                <button type="button" class="float-right btn btn-sm btn-danger  btn_clear" style="display: none">
                                     <i class="fa fa-refresh"></i> Clear
                                 </button>
                             </div>
@@ -324,7 +324,7 @@
 
            
             function error(){
-                alertify.defaults.theme.ok = "btn btn-primary";
+                alertify.defaults.theme.ok = "btn btn-sm btn-primary";
                 alertify
                 .alert("Please save first before your print it.", function(){
                     // alertify.message('OK');
@@ -412,8 +412,8 @@
                 e.preventDefault();
                 var id = $(this).data('id');
                 alertify.defaults.transition = "slide";
-                alertify.defaults.theme.ok = "btn btn-primary";
-                alertify.defaults.theme.cancel = "btn btn-danger";
+                alertify.defaults.theme.ok = "btn btn-sm btn-primary";
+                alertify.defaults.theme.cancel = "btn btn-sm btn-danger";
                 alertify.confirm('Confirmation', 'Are you sure you want to deactivate?', function(){  
                     $.ajax({
                         url         : "{{ route('admin.student.information.deactivate_data') }}",

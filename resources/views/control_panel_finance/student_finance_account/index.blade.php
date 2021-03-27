@@ -142,7 +142,7 @@
                             </div>
                         </div>
                         <div class="col-md-4">
-                            <button type="submit" class="btn btn-success">Search</button>
+                            <button type="submit" class="btn btn-sm btn-success">Search</button>
                         </div>
                     </div>
                 </form>
@@ -188,8 +188,8 @@
                 e.preventDefault();
                 var id = $(this).data('id');
                 alertify.defaults.transition = "slide";
-                alertify.defaults.theme.ok = "btn btn-primary";
-                alertify.defaults.theme.cancel = "btn btn-danger";
+                alertify.defaults.theme.ok = "btn btn-sm btn-primary";
+                alertify.defaults.theme.cancel = "btn btn-sm btn-danger";
                 alertify.confirm('Confirmation', 'Are you sure you want the status paid? <i style="color: red">Note: The account of student will be paid in the whole year</i>.', function(){  
                     $.ajax({
                         url         : "{{ route('finance.student_acct.paid') }}",
@@ -226,8 +226,8 @@
                 e.preventDefault();
                 var id = $(this).data('id');
                 alertify.defaults.transition = "slide";
-                alertify.defaults.theme.ok = "btn btn-primary";
-                alertify.defaults.theme.cancel = "btn btn-danger";
+                alertify.defaults.theme.ok = "btn btn-sm btn-primary";
+                alertify.defaults.theme.cancel = "btn btn-sm btn-danger";
                 alertify.confirm('Confirmation', 'Are you sure you want the status unpaid?', function(){  
                     $.ajax({
                         url         : "{{ route('finance.student_acct.unpaid') }}",

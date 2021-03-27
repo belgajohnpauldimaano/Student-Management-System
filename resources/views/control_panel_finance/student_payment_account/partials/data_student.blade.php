@@ -1,5 +1,5 @@
 <div class="row invoice-info">
-    <div class="col-sm-3 invoice-col">
+    <div class="col-sm-3 invoice-col order-2 order-lg-1">
         <label for="">Username:</label> 
         <p style="margin-top: -5px">{{ $StudentInformation ? $StudentInformation->user->username : '' }}</p> 
 
@@ -13,7 +13,7 @@
         <p style="margin-top: -5px">{{ $StudentInformation ? $StudentInformation->contact_number == '' ? 'NA' : $StudentInformation->contact_number : ''}}</p> --}}
     </div>
     <!-- /.col -->
-    <div class="col-sm-3 invoice-col">
+    <div class="col-sm-3 invoice-col order-3 order-lg-2">
         <label for="">Parent/Guardian: </label>
         <p style="margin-top: -5px">{{ $StudentInformation ? $StudentInformation->guardian == '' ? 'NA' : $StudentInformation->guardian : ''}}</p>
 
@@ -24,7 +24,7 @@
         <p style="margin-top: -5px">{{ $StudentInformation ? $StudentInformation->c_address == '' ? 'NA' :  $StudentInformation->c_address : ''}}</p>
     </div>
     <!-- /.col -->
-    <div class="col-sm-3 invoice-col">
+    <div class="col-sm-3 invoice-col order-4 order-lg-3">
         <label for="">School Year: </label>
         <p style="margin-top: -5px">
             @php
@@ -66,14 +66,20 @@
             @endphp Grade-level:
         </label>
 
-        <p style="margin-top: -5px">            
-            {{ $ClassDetail == '0' ? '' : $ClassDetail->section->section.' - ' }} {{ $grade_level_id ? $grade_level_id : 'none' }}
-            {{-- {{ $ClassDetail }} --}}
+        <p style="margin-top: -5px">
+            @php
+                try {
+                    echo $ClassDetail == '0' ? '' : $ClassDetail->section->section.' - ';
+                } catch (\Throwable $th) {
+                    echo 'No section assigned yet. Grade level - ';
+                }
+            @endphp
+            {{ $grade_level_id ? $grade_level_id : 'none' }}
         </p>
         
     </div>
     <!-- /.col -->
-    <div align="center" class="col-sm-3 invoice-col">
+    <div align="center" class="col-sm-3 invoice-col order-1 order-lg-4">
         <div class="form-group">
             @if ($Profile)
                 <img class="profile-user-img img-responsive img-circle" id="img--user_photo" src="{{ $Profile->photo ? \File::exists(public_path('/img/account/photo/'.$Profile->photo)) ? asset('/img/account/photo/'.$Profile->photo) : asset('/img/account/photo/blank-user.gif') : asset('/img/account/photo/blank-user.gif') }}" style="width:150px; height:150px;  border-radius:50%;">

@@ -10,19 +10,20 @@ use App\Models\TuitionFee;
 use App\Models\ClassDetail;
 use App\Models\DiscountFee;
 use App\Models\Transaction;
+use Illuminate\Http\Request;
+use App\Traits\HasSchoolYear;
 use App\Models\PaymentCategory;
 use App\Models\StudentCategory;
+use App\Traits\hasNotYetApproved;
 use App\Models\StudentInformation;
 use App\Models\TransactionDiscount;
 use App\Models\TransactionOtherFee;
-use Illuminate\Http\Request;
-use App\Models\TransactionMonthPaid;
-use App\Traits\hasNotYetApproved;
 use App\Http\Controllers\Controller;
+use App\Models\TransactionMonthPaid;
 
 class StudentController extends Controller
 {
-    use hasNotYetApproved;
+    use hasNotYetApproved, HasSchoolYear;
     
     public function listSection(Request $request)
     {
@@ -41,113 +42,105 @@ class StudentController extends Controller
 
     public function index (Request $request) 
     {
-        $School_years = SchoolYear::where('status', 1)->orderBY('school_year', 'DESC')->get();       
-
-        $School_year_id = SchoolYear::where('status', 1)
-            ->where('current', 1)->first()->id;
+        $School_years = $this->schoolYears();
+        $School_year_id = $this->schoolYearActiveStatus();
 
         $sy_transaction =  $request->school_year;
 
-        $transactionSchoolYear = Transaction::first();
-        $transactionMonth = TransactionMonthPaid::first();
+        $transactionSchoolYear = Transaction::where('school_year_id', $sy_transaction)->first();
+        
+        $query = StudentInformation::with(['user', 'enrolled_class:student_information_id,id', 'finance_transaction'])
+            ->select('gender','id','status','user_id', 'first_name', 'middle_name', 'last_name');
+
+            if($request->search)
+            {
+                $hasUser = '0';  
+
+                $query->where(function ($q) use ($request) {
+                    $q->where('first_name', 'like', '%'.$request->search.'%');
+                    $q->orWhere('middle_name', 'like', '%'.$request->search.'%');
+                    $q->orWhere('last_name', 'like', '%'.$request->search.'%');
+                    // $query->orWhere('enrollments.class_details_id', 'like', '%'.$request->section_list.'%'$request->section_list);
+                });
+
+                $StudentInformation = $query->where('status', 1)
+                    ->orderBY('last_name', 'ASC')
+                    ->paginate(10);
+            }
+            else
+            {
+                $hasUser = '0';  
+
+                $StudentInformation = $query->where('status', 1)
+                    ->orderBY('last_name', 'ASC')
+                    ->paginate(10);
+            }
+                        
+            if($request->section_list || $request->school_year != 0)
+            {
+                $hasUser = '1';  
+
+                $query_join = StudentInformation::join('enrollments', 'enrollments.student_information_id', '=','student_informations.id')
+                    ->join('users', 'users.id', '=', 'student_informations.user_id')          
+                    ->join('class_details', 'class_details.id', '=', 'enrollments.class_details_id')
+                    ->selectRaw('
+                        student_informations.last_name,
+                        student_informations.first_name,
+                        student_informations.middle_name,
+                        student_informations.gender,
+                        student_informations.status,
+                        student_informations.id,
+                        class_details.school_year_id,
+                        class_details.id as class_details_id,
+                        users.username
+                    ');
+
+                $query_join->where(function ($q) use ($request) {
+                    $q->where('first_name', 'like', '%'.$request->search.'%');
+                    $q->orWhere('middle_name', 'like', '%'.$request->search.'%');
+                    $q->orWhere('last_name', 'like', '%'.$request->search.'%');
+                    // $query->orWhere('enrollments.class_details_id', 'like', '%'.$request->section_list.'%'$request->section_list);
+                });
+                
+                $query_join->where('enrollments.class_details_id', $request->section_list);  
+
+                $query_join->where('class_details.school_year_id', $sy_transaction);
+
+                $StudentInformation = $query_join->where('student_informations.status', 1)
+                    ->orderBY('student_informations.last_name', 'ASC')
+                    ->distinct('student_informations.id')
+                    ->paginate(10);
+            }
 
         if ($request->ajax())
         {
-            
             try{
-                    $Transaction = Transaction::with('payment_cat')
-                        ->where('school_year_id', $sy_transaction)
-                        ->where('student_id', $request->id)
-                        ->where('status', 1)->first();                    
+                // return json_encode(['student_info' => $StudentInformation]);
+                return view('control_panel_finance.student_information.partials.data_list', 
+                    compact('StudentInformation','School_year_id','hasUser','School_years','sy_transaction','transactionSchoolYear'))->render();
 
-                    $query = StudentInformation::with(['user', 'enrolled_class', 'finance_transaction']);
-
-                        if($request->search)
-                        {
-                            $hasUser = '0';  
-
-                            $query->where(function ($q) use ($request) {
-                                $q->where('first_name', 'like', '%'.$request->search.'%');
-                                $q->orWhere('middle_name', 'like', '%'.$request->search.'%');
-                                $q->orWhere('last_name', 'like', '%'.$request->search.'%');
-                                // $query->orWhere('enrollments.class_details_id', 'like', '%'.$request->section_list.'%'$request->section_list);
-                            });
-
-                            $StudentInformation = $query->where('status', 1)
-                                ->orderBY('last_name', 'ASC')
-                                ->paginate(10);
-                        }
-                        else
-                        {
-                            $hasUser = '0';  
-
-                            $StudentInformation = $query->where('status', 1)
-                                ->orderBY('last_name', 'ASC')
-                                ->paginate(10);
-                        }
-                        
-                        if($request->section_list || $request->school_year != 0)
-                        {
-                            $hasUser = '1';  
-
-                            $query_join = StudentInformation::join('enrollments', 'enrollments.student_information_id', '=','student_informations.id')
-                                ->join('users', 'users.id', '=', 'student_informations.user_id')          
-                                ->join('class_details', 'class_details.id', '=', 'enrollments.class_details_id')
-                                ->selectRaw('
-                                    student_informations.last_name,
-                                    student_informations.first_name,  
-                                    student_informations.middle_name,
-                                    student_informations.gender,
-                                    student_informations.status,
-                                    student_informations.id,
-                                    class_details.school_year_id,
-                                    class_details.id as class_details_id,
-                                    users.username                       
-                                ');
-
-                            $query_join->where(function ($q) use ($request) {
-                                $q->where('first_name', 'like', '%'.$request->search.'%');
-                                $q->orWhere('middle_name', 'like', '%'.$request->search.'%');
-                                $q->orWhere('last_name', 'like', '%'.$request->search.'%');
-                                // $query->orWhere('enrollments.class_details_id', 'like', '%'.$request->section_list.'%'$request->section_list);
-                            });
-                            
-                            $query_join->where('enrollments.class_details_id', $request->section_list);  
-
-                            $query_join->where('class_details.school_year_id', $sy_transaction);
-
-                            $StudentInformation = $query_join->where('student_informations.status', 1)
-                                ->orderBY('student_informations.last_name', 'ASC')
-                                ->distinct('student_informations.id')
-                                ->paginate(10);
-                        }   
-                    
-                    
-                    // return json_encode(['student_info' => $StudentInformation]);
-                    return view('control_panel_finance.student_information.partials.data_list', 
-                        compact('StudentInformation','Transaction','School_year_id','hasUser','School_years','sy_transaction','transactionSchoolYear','transactionMonth'))->render();
-
-                }catch(\Exception $e){                
-                    return '<div class="box-body"><div class="row"><table class="table"><tbody><tr><th style="text-align:center"><img src="https://cdn.iconscout.com/icon/free/png-256/data-not-found-1965034-1662569.png" alt="no data"/><br/>Sorry, there is no data found.</th></tr></tbody></table></div></div>';
-                }
+            }catch(\Exception $e){                
+                return `<div class="box-body">
+                    <div class="row">
+                    <table class="table">
+                        <tbody>
+                            <tr>
+                                <th style="text-align:center">
+                                    <img src="https://cdn.iconscout.com/icon/free/png-256/data-not-found-1965034-1662569.png" alt="no data"/>
+                                        <br/>Sorry, there is no data found. Or please combine the filter year and section. Thank you!
+                                </th>
+                            </tr>
+                        </tbody>
+                    </table>
+                    </div>
+                </div>`;
+            }
         }
         
-        $StudentInformation = StudentInformation::with(['user', 'enrolled_class', 'finance_transaction'])
-            ->where('status', 1)
-            ->orderBY('last_name', 'ASC')
-            ->paginate(10);
-        
-        $hasUser = '0';
-
-        $Transaction = Transaction::with('payment_cat')
-            ->where('school_year_id', $School_year_id)
-            ->where('student_id', $request->id)
-            ->where('status', 1)->first();
-
-        $NotyetApprovedCount = $this->notYetApproved();
+        // return json_encode($StudentInformation);
         // return json_encode(['student_info' => $StudentInformation]);
         return view('control_panel_finance.student_information.index', 
-            compact('StudentInformation','Transaction','School_year_id','hasUser','School_years','sy_transaction','transactionSchoolYear','transactionMonth'));
+            compact('StudentInformation','School_year_id','hasUser','School_years','sy_transaction','transactionSchoolYear'));
     }
 
     public function modal_data (Request $request) 

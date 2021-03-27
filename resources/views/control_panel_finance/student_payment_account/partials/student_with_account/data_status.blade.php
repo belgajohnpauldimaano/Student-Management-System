@@ -2,22 +2,28 @@
     <div class="col-lg-12"> 
         <div class="card">
             <div class="card-header">
-                <h4>Payment Account:</h4>
-                <div>
-                    @if($Transaction->status == 1)
-                        <button type="button" class="float-right btn btn-success btn-sm btn-paid" 
-                            data-id="{{ $Transaction->id }}" id="js-button-paid">
-                            <i class="fas fa-check"></i> Paid
-                        </button>
-                    @else
-                        <button type="button" class="float-right btn btn-danger btn-sm btn-unpaid" 
-                            data-id="{{ $Transaction->id }}" id="js-button-paid">
-                            <i class="fas fa-check"></i> Unpaid
-                        </button>
-                    @endif
-                    <button type="button" class="float-right btn btn-danger btn-sm mr-3" data-id="{{ $Transaction->id }}"  id="js-button-delete">
-                        <i class="fas fa-trash"></i> Delete Entire Transaction
-                    </button>
+                <div class="row">
+                    <div class="col-md-6 order-0">
+                        <h4>Payment Account:</h4>
+                    </div>
+                    <div class="col-md-6 order-1">
+                        <div>
+                            @if($Transaction->status == 1)
+                                <button type="button" class="float-right btn btn-success btn-sm btn-paid" 
+                                    data-id="{{ $Transaction->id }}" id="js-button-paid">
+                                    <i class="fas fa-check"></i> Paid
+                                </button>
+                            @else
+                                <button type="button" class="float-right btn btn-danger btn-sm btn-unpaid" 
+                                    data-id="{{ $Transaction->id }}" id="js-button-paid">
+                                    <i class="fas fa-check"></i> Unpaid
+                                </button>
+                            @endif
+                            <button type="button" class="float-right btn btn-danger btn-sm mr-3" data-id="{{ $Transaction->id }}"  id="js-button-delete">
+                                <i class="fas fa-trash"></i> Delete Entire Transaction
+                            </button>
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="card-body">

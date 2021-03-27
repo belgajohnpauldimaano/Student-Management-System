@@ -37,8 +37,19 @@
     <h2 class="{{$isPaid ? $isPaid ? 'overlay-paid' : '' : ''}}">
         {{$isPaid ? $isPaid ? 'PAID' : '' : ''}}
     </h2>
+
+    @if($previousYear->status != 0)
+        <div class="callout callout-info">
+          <h5>Reminder to your account in school year {{ $previousYear->schoolyear->school_year }}!</h5>
+          <p>
+              <i class=" text-danger">
+                Please settle your balance before you can proceed a new transaction for the new school year. Thank you!
+            </i>
+          </p>
+        </div>
+    @endif
             
-    <form id="#js-gcash-form" class="js-gcash-form" enctype="multipart/form-data">
+    <form id="js-gcash-form">
         {{ csrf_field() }}
         <div class="row">
             <div class="col-md-6">    
@@ -55,27 +66,19 @@
                     </div>
                     <!-- /.card-header -->
                     <div class="card-body">
-                        <div class="box-header with-border">
-                            <h3 class="box-title">{{$AlreadyEnrolled ? 'Registration' : 'Enrollment' }} Form </h3>
-                            <a class="d-lg-none d-block btn btn-sm btn-info pull-right btn-transaction-history" 
-                                data-id="{{$StudentInformation->id}}" 
-                                data-school_year_id="{{$SchoolYear->id}}" 
-                                href="#" style="margin-top: -10px">
-                                <i class="fas fa-history"></i> Transaction History
-                            </a>
-                        </div>
-                            
                         <input type="hidden" name="payment-cat" value="Transfer - Gcash">
                         <div class="form-group col-lg-12" style="margin-top: 10px">
-                            <h4>
-                                {{$AlreadyEnrolled ? 'You are enrolled to ' : 'You are incoming' }} Grade-level <i style="color:red">
-                                @if($IncomingStudentCount)
-                                {{$IncomingStudentCount->grade_level_id}}
-                                @else
-                                {{$ClassDetail->grade_level}}
-                                @endif
-                                </i>
-                            </h4>
+                            <div class="callout callout-success">
+                                <h4>
+                                    {{$AlreadyEnrolled ? 'You are enrolled to ' : 'You are incoming' }} Grade-level <i style="color:red">
+                                    @if($IncomingStudentCount)
+                                        {{$IncomingStudentCount->grade_level_id}}
+                                    @else
+                                        {{$grade_level_id}}
+                                    @endif
+                                    </i>
+                                </h4>
+                            </div>
                             <br/>
                             <label for="exampleInputEmail1">Available Tuition Fee and Misc Fee</label>
                             @if($Tuition)
@@ -195,10 +198,19 @@
                             <div class="help-block text-left" id="js-gcash_pay_fee"></div>
                         </div> 
                         <div class="form-group col-lg-12 input-gcash_image ">
-                            <img id="image-receipt-gcash" style="cursor: pointer; padding-top: 20px" src="images/avatar.png" width="200">
+                            <img id="image-receipt-gcash" src="{{ asset('img/receipt/reciept-placeholder.jpg') }}" width="200">
                             <br/>
                             <label for="gcash_image">Image of receipt from Gcash transaction</label>
-                            <input type="file" id="gcash_image" name="gcash_image" src="" onchange="readImageURLGcash(this);" accept="*/image">
+                            {{-- <input type="file" id="gcash_image" name="gcash_image" src="" onchange="readImageURLGcash(this);" accept="*/image"> --}}
+                            <div class="input-group">
+                                <div class="custom-file">
+                                    <input type="file" class="custom-file-input input-receipt-img" style="cursor: pointer !important" id="gcash_image" name="gcash_image" onchange="readImageURLGcash(this);" accept="*/image">
+                                    <label class="custom-file-label label-receipt-img" style="cursor: pointer !important" for="gcash_image">Choose file</label>
+                                </div>
+                                <div class="input-group-append">
+                                    <span class="input-group-text">Upload</span>
+                                </div>
+                            </div>
                             <div class="help-block text-left" id="js-gcash_image"></div>
                         </div>
                         <div class="checkbox col-lg-12">

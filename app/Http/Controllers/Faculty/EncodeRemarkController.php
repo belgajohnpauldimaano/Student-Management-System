@@ -16,9 +16,11 @@ use Illuminate\Support\Facades\Crypt;
 
 class EncodeRemarkController extends Controller
 {
+    use HasFacultyDetails;
+
     public function index (Request $request)
     {
-        $FacultyInformation = FacultyInformation::where('user_id', Auth::user()->id)->first();
+        $FacultyInformation = $this->faculty();
         $SchoolYear = SchoolYear::whereCurrent(1)->whereStatus(1)->first();
         
         // return json_encode($DateRemarks);
@@ -119,7 +121,7 @@ class EncodeRemarkController extends Controller
     public function save(Request $request)
     {
         $stud_id = $request->stud_id;
-        $class_detail_id = \Crypt::decrypt($request->print_sy);
+        $class_detail_id = Crypt::decrypt($request->print_sy);
         $s_year = $request->s_year;
         $e_id = $request->e_id;
         

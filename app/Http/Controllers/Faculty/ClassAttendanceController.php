@@ -8,6 +8,7 @@ use App\Models\Enrollment;
 use App\Models\SchoolYear;
 use App\Models\ClassDetail;
 use Illuminate\Http\Request;
+use App\Traits\HasFacultyDetails;
 use App\Models\ClassSubjectDetail;
 use App\Models\FacultyInformation;
 use Illuminate\Support\Facades\DB;
@@ -18,9 +19,11 @@ use Illuminate\Support\Facades\Crypt;
 
 class ClassAttendanceController extends Controller
 {
+    use HasFacultyDetails;
+    
     public function index (Request $request)
     {
-        $FacultyInformation = FacultyInformation::where('user_id', Auth::user()->id)->first();
+        $FacultyInformation = $this->faculty();
         $school_year = SchoolYear::whereCurrent(1)->whereStatus(1)->first();
         $sem = Semester::whereCurrent(1)->first();
 
@@ -290,7 +293,7 @@ class ClassAttendanceController extends Controller
 
     public function print_attendance(Request $request)
     {
-        $FacultyInformation = FacultyInformation::where('user_id', Auth::user()->id)->first();
+        $FacultyInformation = $this->faculty();
         $school_year = SchoolYear::whereCurrent(1)->whereStatus(1)->first();
         
         $Semester = ClassSubjectDetail::join('class_details', 'class_details.id', '=', 'class_subject_details.class_details_id')
@@ -534,7 +537,7 @@ class ClassAttendanceController extends Controller
         $class_id = ClassDetail::whereId(Crypt::decrypt($request->class_id))->first();
         $school_year = SchoolYear::whereCurrent(1)->whereStatus(1)->first();
         $sem = Semester::whereCurrent(1)->first();
-        $FacultyInformation = FacultyInformation::where('user_id', Auth::user()->id)->first();
+        $FacultyInformation = $this->faculty();
 
         $Semester = ClassSubjectDetail::join('class_details', 'class_details.id', '=', 'class_subject_details.class_details_id')
             ->join('section_details', 'section_details.id', '=', 'class_details.section_id')

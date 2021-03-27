@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use App\Traits\HasGradeSheet;
 use Illuminate\Support\Facades;
 use App\Models\Grade_sheet_first;
+use App\Traits\HasFacultyDetails;
 use App\Models\ClassSubjectDetail;
 use App\Models\FacultyInformation;
 use Illuminate\Support\Facades\DB;
@@ -19,9 +20,11 @@ use App\Models\StudentEnrolledSubject;
 
 class StudentGradeSheetController extends Controller
 {
+    use HasFacultyDetails;
+
     public function index (Request $request)
     {
-        $FacultyInformation = FacultyInformation::where('user_id', Auth::user()->id)->first();
+        $FacultyInformation = $this->faculty();
         
         $SchoolYear  = SchoolYear::where('status', 1)->where('current', 1)->orderBy('current', 'ASC')->orderBy('school_year', 'DESC')->get();
         $class_id = Crypt::decrypt($request->c);        
@@ -48,7 +51,7 @@ class StudentGradeSheetController extends Controller
 
     public function listQuarterSem (Request $request)
     {
-        $FacultyInformation = FacultyInformation::where('user_id', Auth::user()->id)->first(); 
+        $FacultyInformation = $this->faculty(); 
         
         if($request->semester_grades == "3rd")
         {
@@ -78,7 +81,7 @@ class StudentGradeSheetController extends Controller
     {
         $quarter = $request->quarter_grades != '' ? $request->quarter_grades : $request->quarter;
         $sy_id = Crypt::decrypt($request->search_sy != '' ? $request->search_sy : $request->search_school_year);
-        $FacultyInformation = FacultyInformation::where('user_id', Auth::user()->id)->first(); 
+        $FacultyInformation = $this->faculty(); 
         $sem = $request->semester_grades;
 
         $class_detail = ClassDetail::with('section', 'classSubjectDetail')

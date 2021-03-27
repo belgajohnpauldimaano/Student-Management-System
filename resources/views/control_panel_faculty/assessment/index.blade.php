@@ -21,7 +21,7 @@
                             </div>
                         </div>
                         <div class="col-md-2">
-                            <button type="submit" class="btn btn-success">Search</button>
+                            <button type="submit" class="btn btn-sm btn-success">Search</button>
                         </div>
                     </div>
                 </form>
@@ -35,7 +35,7 @@
                         <div class="row" id="js-assessment-subject-container">
                             @foreach ($ClassSubjectDetail as $item)
                                 <div class="col-md-3">
-                                    <a href="{{ route('faculty.assessment_subject', [encrypt($item->id), 'tab' => 'unpublished'] ) }}" class="small-box bg-primary btn js-assessment-subject">
+                                    <a href="{{ route('faculty.assessment_subject', [encrypt($item->id), 'tab' => 'unpublished'] ) }}" class="small-box bg-primary btn btn-sm js-assessment-subject">
                                         <div class="inner" style="height: 150px;">
                                             <h4>{{ $item->section }} {{ $item->grade_level }}</h4>
 
@@ -140,8 +140,8 @@
                 e.preventDefault();
                 var id = $(this).data('id');
                 alertify.defaults.transition = "slide";
-                alertify.defaults.theme.ok = "btn btn-primary ";
-                alertify.defaults.theme.cancel = "btn btn-danger ";
+                alertify.defaults.theme.ok = "btn btn-sm btn-primary ";
+                alertify.defaults.theme.cancel = "btn btn-sm btn-danger ";
                 alertify.confirm('Confirmation', 'Are you sure you want to deactivate?', function(){  
                     $.ajax({
                         url         : "{{ route('finance.maintenance.disc_fee.deactivate_data') }}",
@@ -179,8 +179,8 @@
                 var id = $(this).data('id');
                 var toggle_title = $(this).data('toggle_title');
                 alertify.defaults.transition = "slide";
-                alertify.defaults.theme.ok = "btn btn-primary ";
-                alertify.defaults.theme.cancel = "btn btn-danger ";
+                alertify.defaults.theme.ok = "btn btn-sm btn-primary ";
+                alertify.defaults.theme.cancel = "btn btn-sm btn-danger ";
                 alertify.confirm('Confirmation', 'Are you sure you want to '+toggle_title+' ?', function(){  
                     $.ajax({
                         url         : "{{ route('finance.maintenance.disc_fee.toggle_current_sy') }}",

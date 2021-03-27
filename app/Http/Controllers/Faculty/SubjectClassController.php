@@ -3,31 +3,35 @@
 namespace App\Http\Controllers\Faculty;
 
 use App\Models\Room;
+use Barryvdh\DomPDF\PDF;
 use App\Models\Enrollment;
 use App\Models\SchoolYear;
 use App\Models\ClassDetail;
+use Illuminate\Http\Request;
 use App\Models\SectionDetail;
 use App\Models\SubjectDetail;
-use Barryvdh\DomPDF\PDF;
+use App\Traits\HasSchoolYear;
+use App\Traits\HasFacultyDetails;
 use App\Models\ClassSubjectDetail;
 use App\Models\FacultyInformation;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 
 class SubjectClassController extends Controller
 {
+    use HasFacultyDetails, HasSchoolYear;
+    
     public function index (Request $request) 
     {
-        // $FacultyInformation = FacultyInformation::where('user_id', \Auth::user()->id)->first();
+        // $FacultyInformation = $this->faculty();
         // return json_encode(['FacultyInformation' => $FacultyInformation, 'Auth' => \Auth::user()]);
-        $SchoolYear = SchoolYear::where('status', 1)->orderBy('school_year', 'DESC')->get();
+        $SchoolYear = $this->accountSchoolYears();
         return view('control_panel_faculty.subject_class_details.index', compact('SchoolYear'));
     }
     public function list_students_by_class (Request $request) 
     {
-        $FacultyInformation = FacultyInformation::where('user_id', \Auth::user()->id)->first();
+        $FacultyInformation = $this->faculty();
 
         $EnrollmentMale = Enrollment::join('class_subject_details', 'class_subject_details.class_details_id', '=', 'enrollments.class_details_id')
                     ->join('class_details', 'class_details.id', '=', 'class_subject_details.class_details_id')
@@ -87,7 +91,7 @@ class SubjectClassController extends Controller
     }
     public function list_students_by_class_print (Request $request) 
     {
-        $FacultyInformation = FacultyInformation::where('user_id', \Auth::user()->id)->first();
+        $FacultyInformation = $this->faculty();
 
         // $Enrollment = Enrollment::join('class_subject_details', 'class_subject_details.class_details_id', '=', 'enrollments.class_details_id')
         //             ->join('class_details', 'class_details.id', '=', 'class_subject_details.class_details_id')
@@ -165,7 +169,7 @@ class SubjectClassController extends Controller
     }
     public function list_class_subject_details (Request $request) 
     {
-        $FacultyInformation = FacultyInformation::where('user_id', \Auth::user()->id)->first();
+        $FacultyInformation = $this->faculty();
         $ClassSubjectDetail = ClassSubjectDetail::join('class_details', 'class_details.id', '=', 'class_subject_details.class_details_id')
             ->join('subject_details', 'subject_details.id', '=', 'class_subject_details.subject_id')
             ->join('section_details', 'section_details.id', '=', 'class_details.section_id')
@@ -233,7 +237,7 @@ class SubjectClassController extends Controller
 
     public function class_schedules (Request $request)
     {
-        $FacultyInformation = FacultyInformation::where('user_id', \Auth::user()->id)->first();
+        $FacultyInformation = $this->faculty();
         $SchoolYear         = SchoolYear::whereStatus(1)->whereCurrent(1)->first()->id;
 
         $ClassSubjectDetail = ClassSubjectDetail::where('faculty_id', $FacultyInformation->id)
@@ -267,7 +271,7 @@ class SubjectClassController extends Controller
 
     public function class_schedules_print (Request $request)
     {
-        $FacultyInformation = FacultyInformation::where('user_id', \Auth::user()->id)->first();
+        $FacultyInformation = $this->faculty();
         $SchoolYear         = SchoolYear::where('status', 1)->orderBy('current', 'ASC')->orderBy('school_year', 'ASC')->get();
         $ClassSubjectDetail = ClassSubjectDetail::where('faculty_id', $FacultyInformation->id)
             ->join('class_details', 'class_details.id', '=', 'class_subject_details.class_details_id')
@@ -306,7 +310,7 @@ class SubjectClassController extends Controller
     
     // public function class_schedules (Request $request)
     // {
-    //     $FacultyInformation = FacultyInformation::where('user_id', \Auth::user()->id)->first();
+    //     $FacultyInformation = $this->faculty();
     //     $SchoolYear         = SchoolYear::where('status', 1)->orderBy('current', 'ASC')->orderBy('school_year', 'ASC')->get();
     //     $ClassSubjectDetail = ClassSubjectDetail::where('faculty_id', $FacultyInformation->id)
     //     ->join('subject_details', 'subject_details.id', '=', 'class_subject_details.subject_id')

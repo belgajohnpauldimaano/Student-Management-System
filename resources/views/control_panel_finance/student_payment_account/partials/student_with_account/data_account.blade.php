@@ -3,6 +3,10 @@
     
     
 
+    <button type="button" class="float-right btn btn-primary btn-md" 
+        data-id="{{ $StudentInformation->id }}" id="js-button-payment">
+        <i class="fas fa-plus"></i> Add Payment
+    </button>
     <div>
         <div class="card mt-5">
               <div class="card-header">
@@ -17,10 +21,7 @@
                         <a class="nav-link" href="#discount-history" data-toggle="tab">Discount(s)</a>
                     </li>
                 </ul>
-                <button type="button" class="float-right btn btn-primary btn-md" style="margin-top: -2.3em"
-                    data-id="{{ $StudentInformation->id }}" id="js-button-payment">
-                    <i class="fas fa-plus"></i> Add Payment
-                </button>
+                
               </div><!-- /.card-header -->
               <div class="card-body">
                 <div class="tab-content">

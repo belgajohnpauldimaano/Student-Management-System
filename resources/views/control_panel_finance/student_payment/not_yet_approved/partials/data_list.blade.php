@@ -72,7 +72,7 @@
                 </tr>
             @empty
                 <tr class="text-center">
-                    <th colspan="13">No Data Record Found</th>
+                    <th colspan="12">No Data Record Found</th>
                 </tr>
             @endforelse
         </tbody>

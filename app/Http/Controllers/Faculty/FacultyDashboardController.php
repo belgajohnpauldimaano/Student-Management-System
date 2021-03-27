@@ -12,10 +12,12 @@ use Illuminate\Support\Facades\Auth;
 
 class FacultyDashboardController extends Controller
 {
+    use HasFacultyDetails;
+
     public function index (Request $request) 
     {
         $request->id;
-        $FacultyInformation = FacultyInformation::where('user_id', \Auth::user()->id)->first();
+        $FacultyInformation = $this->faculty();
         $SchoolYear         = SchoolYear::where('current', 1)->first();
 
         $StudentInformation_tagged_student = \DB::table('student_informations')
