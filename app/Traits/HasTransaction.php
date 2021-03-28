@@ -12,9 +12,9 @@ use App\Models\TransactionMonthPaid;
 trait HasTransaction{
 
     // public function schoolYear($sy_transaction){
-    //     $school_year = $sy_transaction;     
-    //     return $school_year;   
-    // }   
+    //     $school_year = $sy_transaction;
+    //     return $school_year;
+    // }
 
     public function transactions()
     {
@@ -28,10 +28,10 @@ trait HasTransaction{
     }
 
     public function paymentCat()
-    {        
+    {
          return $this->hasOne(PaymentCategory::class);
     }
-    
+
     public function transactionStudCategory() {
         return $this->hasManyThrough(PaymentCategory::class, StudentCategory::class);
     }
@@ -173,4 +173,6 @@ trait HasTransaction{
 
         return $result;
     }
+
+    
 }

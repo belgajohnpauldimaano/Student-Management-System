@@ -43,7 +43,7 @@
         $('#btn-success-alert').click(function(e){
             e.preventDefault();
             var value = $(this).data('value');
-            alertify.defaults.theme.ok = "btn btn-sm btn-primary btn-flat";
+            alertify.defaults.theme.ok = "btn btn-sm btn-primary";
             alertify
             .alert('Confirmation', value, function(){
                 // alertify.message('OK');
@@ -98,8 +98,8 @@
 
                     var formData = new FormData($(this)[0]);
                             alertify.defaults.transition = "slide";
-                            alertify.defaults.theme.ok = "btn btn-sm btn-primary btn-flat";
-                            alertify.defaults.theme.cancel = "btn btn-sm btn-danger btn-flat";
+                            alertify.defaults.theme.ok = "btn btn-sm btn-primary";
+                            alertify.defaults.theme.cancel = "btn btn-sm btn-danger";
                             alertify.confirm('Confirmation', 'Are you sure you want to submit? Please double check your information. Thank you', function(){  
                                 $.ajax({
                                     url         : "{{ route('student.enrollment.save_data') }}",
@@ -158,7 +158,7 @@
                                             )
                                             {  
                                                 $('#preloader').hide();
-                                                alertify.defaults.theme.ok = "btn btn-sm btn-primary btn-flat";
+                                                alertify.defaults.theme.ok = "btn btn-sm btn-primary";
                                                 alertify
                                                 .alert('Confirmation', res.res_msg, function(){
                                                     alertify.message('OK');
@@ -192,8 +192,8 @@
                             
                             var formData = new FormData($(this)[0]);
                             alertify.defaults.transition = "slide";
-                            alertify.defaults.theme.ok = "btn btn-sm btn-primary btn-flat";
-                            alertify.defaults.theme.cancel = "btn btn-sm btn-danger btn-flat";
+                            alertify.defaults.theme.ok = "btn btn-sm btn-primary";
+                            alertify.defaults.theme.cancel = "btn btn-sm btn-danger";
                             alertify.confirm('Confirmation', 'Are you sure you want to submit? Please double check your information. Thank you', function(){  
                                 $.ajax({
                                     url         : "{{ route('student.enrollment.save_data') }}",
@@ -252,7 +252,7 @@
                                             )
                                             {  
                                                 $('#preloader').hide();
-                                                alertify.defaults.theme.ok = "btn btn-sm btn-primary btn-flat";
+                                                alertify.defaults.theme.ok = "btn btn-sm btn-primary";
                                                 alertify
                                                 .alert('Confirmation', res.res_msg, function(){
                                                     alertify.message('OK');
@@ -308,8 +308,8 @@
 
                     var formData = new FormData($(this)[0]);            
                             alertify.defaults.transition = "slide";
-                            alertify.defaults.theme.ok = "btn btn-sm btn-primary btn-flat";
-                            alertify.defaults.theme.cancel = "btn btn-sm btn-danger btn-flat";
+                            alertify.defaults.theme.ok = "btn btn-sm btn-primary";
+                            alertify.defaults.theme.cancel = "btn btn-sm btn-danger";
                             alertify.confirm('Confirmation', 'Are you sure you want to submit? Please double check your information. Thank you', function(){  
                                 $.ajax({
                                     url         : "{{ route('student.enrollment.save') }}",
@@ -366,7 +366,7 @@
                                             {  
                                                 $('#preloader').hide();
 
-                                                alertify.defaults.theme.ok = "btn btn-sm btn-primary btn-flat";
+                                                alertify.defaults.theme.ok = "btn btn-sm btn-primary";
                                                 alertify
                                                 .alert('Confirmation', res.res_msg, function(){
                                                     alertify.message('OK');
@@ -401,8 +401,8 @@
                             
                             var formData = new FormData($(this)[0]);            
                             alertify.defaults.transition = "slide";
-                            alertify.defaults.theme.ok = "btn btn-sm btn-primary btn-flat";
-                            alertify.defaults.theme.cancel = "btn btn-sm btn-danger btn-flat";
+                            alertify.defaults.theme.ok = "btn btn-sm btn-primary";
+                            alertify.defaults.theme.cancel = "btn btn-sm btn-danger";
                             alertify.confirm('Confirmation', 'Are you sure you want to submit? Please double check your information. Thank you', function(){  
                                 $.ajax({
                                     url         : "{{ route('student.enrollment.save') }}",
@@ -460,7 +460,7 @@
                                             {  
                                                 $('#preloader').hide();
 
-                                                alertify.defaults.theme.ok = "btn btn-sm btn-primary btn-flat";
+                                                alertify.defaults.theme.ok = "btn btn-sm btn-primary";
                                                 alertify
                                                 .alert('Confirmation', res.res_msg, function(){
                                                     alertify.message('OK');
@@ -496,7 +496,7 @@
         // $('.btnpaypal').click(function(){
         //     loader_overlay();
         // })
-        alertify.defaults.theme.ok = "btn btn-sm btn-primary btn-flat";
+        alertify.defaults.theme.ok = "btn btn-sm btn-primary";
         $('body').on('submit', '#js-checkout-form', function (e) {
             e.preventDefault();    
 
@@ -521,8 +521,8 @@
                     // alert('none')
                     var formData = new FormData($(this)[0]);
                     alertify.defaults.transition = "slide";
-                    alertify.defaults.theme.ok = "btn btn-sm btn-primary btn-flat";
-                    alertify.defaults.theme.cancel = "btn btn-sm btn-danger btn-flat";
+                    alertify.defaults.theme.ok = "btn btn-sm btn-primary";
+                    alertify.defaults.theme.cancel = "btn btn-sm btn-danger";
                     alertify.confirm('Confirmation', 'Are you sure you want to submit? Please double check your information. Thank you', function(){  
                         $.ajax({
                             url         : "{{ route('student.create-payment.paypal') }}",
@@ -583,8 +583,8 @@
 
                             var formData = new FormData($(this)[0]);
                             alertify.defaults.transition = "slide";
-                            alertify.defaults.theme.ok = "btn btn-sm btn-primary btn-flat";
-                            alertify.defaults.theme.cancel = "btn btn-sm btn-danger btn-flat";
+                            alertify.defaults.theme.ok = "btn btn-sm btn-primary";
+                            alertify.defaults.theme.cancel = "btn btn-sm btn-danger";
                             alertify.confirm('Confirmation', 'Are you sure you want to submit? Please double check your information. Thank you', function(){  
                                 $.ajax({
                                     url         : "{{ route('student.create-payment.paypal') }}",

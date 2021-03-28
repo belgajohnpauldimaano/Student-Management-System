@@ -36,16 +36,19 @@ class EnrollmentController extends Controller
         $preSy = $this->prevYear($SchoolYear);
 
         try {
-            $previousYear = Transaction::whereStudentId($StudentInformation)
-                ->whereSchoolYearId($preSy)->first();
+            $previousYear = $this->checkPrevYear($StudentInformation, $preSy);
         } catch (\Throwable $th) {
             $previousYear = null;
         }
 
-        if($previousYear->status==0){
+        try {
+            if($previousYear->status==0){
+                $sy = $SchoolYear;
+            }else{
+                $sy = $preSy;
+            }
+        } catch (\Throwable $th) {
             $sy = $SchoolYear;
-        }else{
-            $sy = $preSy;
         }
         
         return  TransactionMonthPaid::whereStudentId($StudentInformation)
@@ -54,6 +57,12 @@ class EnrollmentController extends Controller
                     ->whereApproval('Approved')
                     ->orderBy('id', 'Desc')
                     ->first();
+    }
+
+    private function previousYear()
+    {
+        return Transaction::whereStudentId($StudentInformation->id)
+                ->whereSchoolYearId($previousUserID)->first();
     }
 
     private function prevYear($SchoolYear)
@@ -77,6 +86,12 @@ class EnrollmentController extends Controller
                     ->first();
     }
 
+    private function checkPrevYear($StudentInformation, $previousUserID)
+    {
+        return Transaction::whereStudentId($StudentInformation)
+                ->whereSchoolYearId($previousUserID)->first();
+    }
+
     public function index(Request $request)
     {    
         $StudentInformation = $this->student();
@@ -88,8 +103,7 @@ class EnrollmentController extends Controller
         // return json_encode($previousUserID);
         
         try {
-            $previousYear = Transaction::whereStudentId($StudentInformation->id)
-                ->whereSchoolYearId($previousUserID)->first();
+            $previousYear = $this->checkPrevYear($StudentInformation->id, $previousUserID); 
         } catch (\Throwable $th) {
             $previousYear = null;
         }
@@ -104,7 +118,7 @@ class EnrollmentController extends Controller
                 
                 $isPaid = Transaction::where('student_id' , $StudentInformation->id)->where('status', 0)
                     ->whereSchoolYearId($SchoolYear->id)->first();
-                    
+                  
                 $AlreadyEnrolled = $this->alreadyEnrolled($StudentInformation->id, $SchoolYear->id);
                 
                 $Tuition = PaymentCategory::where('grade_level_id', $IncomingStudentCount->grade_level_id)->first();
@@ -419,12 +433,18 @@ class EnrollmentController extends Controller
             $payment = Transaction::find($Enrollment->transaction_id);
             try{
                 Mail::to($request->bank_email)->send(new SendMail($payment));
-                Mail::to('inquiry@sja-bataan.com')->cc('finance@sja-bataan.com')->send(new NotifyAdminMail($payment));
+                // Mail::to('inquiry@sja-bataan.com')->cc('finance@sja-bataan.com')->send(new NotifyAdminMail($payment));
+                Mail::to('inquiry@sja-bataan.com')->send(new NotifyAdminMail($payment));
             }catch(\Exception $e){
                 \Log::error($e->getMessage());
             }
             
         return response()->json(['res_code' => 0, 'res_msg' => 'You have successfully accomplished the form. Check your email for review of Finance Dept. Thank you!']);
+    }
+
+    public function save_transaction()
+    {
+
     }
 
     public function save_data(Request $request)
@@ -435,25 +455,35 @@ class EnrollmentController extends Controller
         $mytime = Carbon::now();
 
         $AlreadyEnrolled = $this->alreadyEnrolled($StudentInformation->id, $SchoolYear->id);
+        $previousUserID = $this->prevYear($SchoolYear);
+        $previousYear = $this->checkPrevYear($StudentInformation->id, $previousUserID);
 
-        if(!$AlreadyEnrolled){
+        $hasBalance = null;
+        if($previousYear->status == 1)
+        {
+            $hasBalance = 1;
+            $SchoolYear = $previousUserID;
+        }
+
+        // return json_encode($previousYear);
+        if(!$AlreadyEnrolled || !$hasBalance){
             $rules = [
-                'gcash_tution_amt' => 'required',
-                'gcash_phone' => 'required',
-                'gcash_email' => 'email|required',
-                'Gcash'=>'required',
-                'gcash_transaction_id'=>'required',
-                'gcash_pay_fee' => 'required',
-                'gcash_image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:5120',
+                'gcash_tution_amt'      =>  'required',
+                'gcash_phone'           =>  'required',
+                'gcash_email'           =>  'email|required',
+                'Gcash'                 =>  'required',
+                'gcash_transaction_id'  =>  'required',
+                'gcash_pay_fee'         =>  'required',
+                'gcash_image'           =>  'required|image|mimes:jpeg,png,jpg,gif,svg|max:5120',
             ];
         }else{
             $rules = [                  
-                'gcash_phone' => 'required',
-                'gcash_email' => 'email|required',
-                'Gcash'=>'required',
-                'gcash_transaction_id'=>'required',
-                'gcash_pay_fee' => 'required',
-                'gcash_image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:5120',
+                'gcash_phone'           =>  'required',
+                'gcash_email'           =>  'email|required',
+                'Gcash'                 =>  'required',
+                'gcash_transaction_id'  =>  'required',
+                'gcash_pay_fee'         =>  'required',
+                'gcash_image'           =>  'required|image|mimes:jpeg,png,jpg,gif,svg|max:5120',
             ];
         }
 
@@ -470,21 +500,17 @@ class EnrollmentController extends Controller
             $Enrollment_total = $request->gcash_tution_total - $request->gcash_pay_fee;
         }
         
-        $checkAccount = TransactionDiscount::where('school_year_id', $SchoolYear->id)
+        $checkAccount = TransactionDiscount::where('school_year_id', $SchoolYear)
             ->where('student_id', $StudentInformation->id)
             ->first();
-
         
-        $checkAccount1 = Transaction::where('school_year_id', $SchoolYear->id)
-            ->where('student_id', $StudentInformation->id)
+        $transaction = Transaction::where('school_year_id', $SchoolYear)
+            ->where('student_id', $StudentInformation->id)->where('status', 1)
             ->first();
 
-        if($checkAccount1){
-            $TransactionAccount = Transaction::where('school_year_id', $SchoolYear->id)
-                ->where('student_id', $StudentInformation->id)
-                ->first();
-
-            $transaction_paid = TransactionOtherFee::where('transaction_id', $TransactionAccount->id)
+        if($transaction){
+            
+            $transaction_paid = TransactionOtherFee::where('transaction_id', $transaction->id)
                 ->where('student_id', $StudentInformation->id)
                 ->where('isSuccess', '')
                 ->orderBY('id', 'DESC')
@@ -498,17 +524,17 @@ class EnrollmentController extends Controller
             }
 
             $Enrollment = new TransactionMonthPaid();
-            $Enrollment->or_no = $request->gcash_transaction_id;
-            $Enrollment->student_id = $StudentInformation->id;
-            $Enrollment->payment = $request->gcash_pay_fee;
-            $Enrollment->school_year_id = $SchoolYear->id;
-            $Enrollment->balance = $Enrollment_total;
-            $Enrollment->email = $request->gcash_email;
-            $Enrollment->number = $request->gcash_phone;
+            $Enrollment->or_no          = $request->gcash_transaction_id;
+            $Enrollment->student_id     = $StudentInformation->id;
+            $Enrollment->payment        = $request->gcash_pay_fee;
+            $Enrollment->school_year_id = $SchoolYear;
+            $Enrollment->balance        = $Enrollment_total;
+            $Enrollment->email          = $request->gcash_email;
+            $Enrollment->number         = $request->gcash_phone;
             $Enrollment->payment_option = 'Gcash';
             $Enrollment->online_charges = 0.00;
-            $Enrollment->isSuccess = 1;
-            $Enrollment->transaction_id = $TransactionAccount->id;            
+            $Enrollment->isSuccess      = 1;
+            $Enrollment->transaction_id = $transaction->id;            
             // image
             $imageName = time().'.'.$request->gcash_image->getClientOriginalExtension();
             $request->gcash_image->move(public_path('/img/receipt/'), $imageName);           
@@ -519,22 +545,24 @@ class EnrollmentController extends Controller
             if($request->discount_bank != 0){
                 foreach($request->discount_bank as $get_data){
                     $DiscountFee = DiscountFee::where('id', $get_data)
-                        ->where('apply_to', 1)//finance|student
+                        ->where('apply_to', 1)
                         ->where('current', 1)
-                        ->where('status', 1)->first();                        
+                        ->where('status', 1)
+                        ->first();
+                        
                     $DiscountFeeSave = new TransactionDiscount();
                     $DiscountFeeSave->student_id = $StudentInformation->id;
                     $DiscountFeeSave->discount_amt = $DiscountFee->disc_amt;
                     $DiscountFeeSave->discount_type = $DiscountFee->disc_type;        
                     $DiscountFeeSave->transaction_month_paid_id = $Enrollment->id;                
-                    $DiscountFeeSave->school_year_id = $SchoolYear->id;
+                    $DiscountFeeSave->school_year_id = $SchoolYear;
                     $DiscountFeeSave->category = $DiscountFee->category;
                     $DiscountFeeSave->save();
                 }    
             }
             
             // existing other fee not successful
-            $transaction_paid = TransactionOtherFee::where('transaction_id', $TransactionAccount->id)
+            $transaction_paid = TransactionOtherFee::where('transaction_id', $transaction->id)
                 ->where('student_id', $StudentInformation->id)
                 ->where('isSuccess', '')
                 ->orderBY('id', 'DESC')
@@ -550,24 +578,24 @@ class EnrollmentController extends Controller
 
             $EnrollmentTransaction = new Transaction();
             $EnrollmentTransaction->payment_category_id = $request->gcash_tution_amt;
-            $EnrollmentTransaction->student_id = $StudentInformation->id;
-            $EnrollmentTransaction->school_year_id = $SchoolYear->id;    
+            $EnrollmentTransaction->student_id          = $StudentInformation->id;
+            $EnrollmentTransaction->school_year_id      = $SchoolYear;    
             foreach($request->downpayment as $get_data){
                 $EnrollmentTransaction->downpayment_id = $get_data;  
-            }                          
+            }
             $EnrollmentTransaction->save();
 
             $Enrollment = new TransactionMonthPaid();
-            $Enrollment->or_no = $request->gcash_transaction_id;
-            $Enrollment->student_id = $StudentInformation->id;
-            $Enrollment->payment = $request->gcash_pay_fee;
-            $Enrollment->school_year_id = $SchoolYear->id;
-            $Enrollment->balance = $Enrollment_total;
-            $Enrollment->email = $request->gcash_email;
-            $Enrollment->number = $request->gcash_phone;
+            $Enrollment->or_no          = $request->gcash_transaction_id;
+            $Enrollment->student_id     = $StudentInformation->id;
+            $Enrollment->payment        = $request->gcash_pay_fee;
+            $Enrollment->school_year_id = $SchoolYear;
+            $Enrollment->balance        = $Enrollment_total;
+            $Enrollment->email          = $request->gcash_email;
+            $Enrollment->number         = $request->gcash_phone;
             $Enrollment->payment_option = 'Gcash';
             $Enrollment->online_charges = 0.00;
-            $Enrollment->isSuccess = 1;
+            $Enrollment->isSuccess      = 1;
             $Enrollment->transaction_id = $EnrollmentTransaction->id;            
             // image
             $imageName = time().'.'.$request->gcash_image->getClientOriginalExtension();
@@ -582,35 +610,77 @@ class EnrollmentController extends Controller
                         ->where('current', 1)
                         ->where('status', 1)->first();                        
                     $DiscountFeeSave = new TransactionDiscount();
-                    $DiscountFeeSave->student_id = $StudentInformation->id;
-                    $DiscountFeeSave->discount_amt = $DiscountFee->disc_amt;
-                    $DiscountFeeSave->discount_type = $DiscountFee->disc_type;        
+                    $DiscountFeeSave->student_id        = $StudentInformation->id;
+                    $DiscountFeeSave->discount_amt      = $DiscountFee->disc_amt;
+                    $DiscountFeeSave->discount_type     = $DiscountFee->disc_type;        
                     $DiscountFeeSave->transaction_month_paid_id = $Enrollment->id;                
-                    $DiscountFeeSave->school_year_id = $SchoolYear->id;
-                    $DiscountFeeSave->category = $DiscountFee->category;
+                    $DiscountFeeSave->school_year_id    = $SchoolYear;
+                    $DiscountFeeSave->category          = $DiscountFee->category;
                     $DiscountFeeSave->save();
                 }    
             }                   
             
             if($request->other_id){
                 $Other = new TransactionOtherFee();
-                $Other->transaction_id = $EnrollmentTransaction->id;
-                $Other->student_id = $StudentInformation->id;
-                $Other->others_fee_id = $request->other_id;
-                $Other->school_year_id = $SchoolYear->id;
-                $Other->item_qty = 1;
-                $Other->item_price = $request->other_price;
-                $Other->other_name = $request->other_name;
-                $Other->isSuccess = 1;
+                $Other->transaction_id  = $EnrollmentTransaction->id;
+                $Other->student_id      = $StudentInformation->id;
+                $Other->others_fee_id   = $request->other_id;
+                $Other->school_year_id  = $SchoolYear;
+                $Other->item_qty        = 1;
+                $Other->item_price      = $request->other_price;
+                $Other->other_name      = $request->other_name;
+                $Other->isSuccess       = 1;
                 $Other->save();
             }           
             
         }   
 
         try{
-            $payment = Transaction::find($Enrollment->transaction_id);
+            
+            // $data = array(
+            //         'email'             =>  $payment->student->email,
+            //         'updated_at'        =>  $IncomingStudent->updated_at,
+            //         'full_name'         =>  $payment->student->full_name,
+            //         'f_name'            =>  $payment->student->first_name,
+            //         'stud_level'        =>  $payment->payment_cat->stud_category->student_category.'-'.$payment->payment_cat->grade_level_id,
+            //         'tuition_fee'       =>  number_format($payment->payment_cat->tuition->tuition_amt, 2),
+            //         'misc_fee'          =>  number_format($payment->payment_cat->misc_fee->misc_amt, 2),
+            //         'other_fee_name'    =>  $payment->transaction_other_name,
+            //         'other_fee'         =>  $payment->transaction_other_fee,
+            //         'religion'          =>  $IncomingStudent->religion,
+            //         'citizenship'       =>  $IncomingStudent->citizenship,
+            //         'fb_acct'           =>  $IncomingStudent->fb_acct,
+            //         'photo'             =>  $IncomingStudent->photo,
+            //         'contact_number'    =>  $IncomingStudent->contact_number,
+            //         'email'             =>  $IncomingStudent->email,
+            //         'father_name'       =>  $IncomingStudent->father_name,
+            //         'mother_name'       =>  $IncomingStudent->mother_name,
+            //         'father_occupation' =>  $IncomingStudent->father_occupation,
+            //         'father_fb_acct'    =>  $IncomingStudent->father_fb_acct,
+            //         'mother_occupation' =>  $IncomingStudent->mother_occupation,
+            //         'mother_fb_acct'    =>  $IncomingStudent->mother_fb_acct,
+            //         'guardian_fb_acct'  =>  $IncomingStudent->guardian_fb_acct,
+            //         'guardian'          =>  $IncomingStudent->guardian,
+            //         'no_siblings'       =>  $IncomingStudent->no_siblings,
+            //         'is_esc'            =>  $IncomingStudent->isEsc == 1 ? 'Yes' : 'No',
+            //         'gender'            =>  $IncomingStudent->gender == 1 ? 'Male' : 'Female',
+            //         'school_year'       =>  $IncomingStudent->admission_sy,
+            //         'grade_level'       =>  $IncomingStudent->incomingStudent->grade_level_id,
+            //         'student_type'      =>  $IncomingStudent->incomingStudent->student_type == 1 ? 'Transferee' : 'Freshman',
+            //         'school_name'       =>  $IncomingStudent->admission_school_name,
+            //         'school_type'       =>  $IncomingStudent->admission_school_type,
+            //         'school_address'    =>  $IncomingStudent->admission_school_address,
+            //         'last_sy_attended'  =>  $IncomingStudent->school_year,
+            //         'gw_average'        =>  $IncomingStudent->admission_gwa,
+            //         'strand'            =>  $IncomingStudent->admission_strand
+            //     );
+
+                $payment = Transaction::find($Enrollment->transaction_id);
+            
+                // return json_encode([$payment->transactionDiscounts]);
             Mail::to($request->gcash_email)->send(new SendMail($payment));
-            Mail::to('inquiry@sja-bataan.com')->cc('finance@sja-bataan.com')->send(new NotifyAdminMail($payment));
+            // Mail::to('inquiry@sja-bataan.com')->cc('finance@sja-bataan.com')->send(new NotifyAdminMail($payment));
+            // Mail::to('inquiry@sja-bataan.com')->send(new NotifyAdminMail($payment));
         }catch(\Exception $e){
             \Log::error($e->getMessage());
         }

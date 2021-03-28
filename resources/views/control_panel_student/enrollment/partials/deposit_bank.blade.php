@@ -42,16 +42,20 @@
         {{$isPaid ? $isPaid ? 'PAID' : '' : ''}}
     </h2>
     
-    @if($previousYear->status != 0)
-        <div class="callout callout-info">
-          <h5>Reminder to your account in school year {{ $previousYear->schoolyear->school_year }}!</h5>
-          <p>
-              <i class=" text-danger">
-                Please settle your balance before you can proceed a new transaction for the new school year. Thank you!
-            </i>
-          </p>
-        </div>
-    @endif
+    @php
+        try {
+            echo '<div class="callout callout-info">
+                <h5>Reminder to your account in school year '. $previousYear->schoolyear->school_year .'!</h5>
+                <p>
+                    <i class=" text-danger">
+                        Please settle your balance before you can proceed a new transaction for the new school year. Thank you!
+                    </i>
+                </p>
+            </div>';
+        } catch (\Throwable $th) {
+            echo null;
+        }
+    @endphp
 
     <form id="#js-bank-form" class="js-bank-form" enctype="multipart/form-data">
         {{ csrf_field() }}
