@@ -1,7 +1,7 @@
 @extends('control_panel.layouts.master')
 
 @section ('content_title')
-    Assessment | {{ $ClassSubjectDetail->classDetail->grade->id . '-' .$ClassSubjectDetail->classDetail->section->section }}
+    Assessment | {{ $ClassSubjectDetail->classDetail->grade->id . '-' .$ClassSubjectDetail->classDetail->section->section }} | {{ $ClassSubjectDetail->subject->subject }}
 @endsection
 
 @section ('content')
@@ -15,9 +15,9 @@
             <i class="fas fa-2x fa-sync-alt fa-spin"></i>
         </div>
         <div class="card-header p-2">
-            <h5 class="float-right pt-2 pr-2">
+            {{-- <h5 class="float-right pt-2 pr-2">
                 Subject: <span class="text-red"><i>{{ $ClassSubjectDetail->subject->subject }}</i></span>
-            </h5>
+            </h5> --}}
             <ul class="nav nav-pills">
                 <li class="nav-item">
                     <a class="nav-link {{ $tab ? $tab == 'unpublished' ? 'active' : '' : '' }}" href="{{ route('faculty.assessment_subject', [encrypt($ClassSubjectDetail->id), 'tab' => 'unpublished']) }}" >
@@ -160,6 +160,7 @@
                     }
                 });
             });
+            
 
 
             $('body').on('submit', '#js-assessment-create-form', function (e) {

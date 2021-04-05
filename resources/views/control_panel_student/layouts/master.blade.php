@@ -115,7 +115,8 @@
           </li> 
           <li class="nav-item">
             <a class="{{request()->routeIs('student.class_schedule.index') ? 'active' : '' }} nav-link" href="{{ route('student.class_schedule.index') }}">
-              <i class="fa fa-calendar nav-icon"></i> <p>Class Schedule</p></a>
+              <i class="fa fa-calendar nav-icon"></i> <p>Class Schedule</p>
+            </a>
           </li>
           <li class=" nav-item">
             <a class="nav-link {{request()->routeIs('student.grade_sheet.index') ? 'active' : '' }}" href="{{ route('student.grade_sheet.index') }}">
@@ -136,7 +137,9 @@
             <a class="nav-link" href=""><i class="far fa-file nav-icon"></i> <p>Assignment</p></a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href=""><i class="fas fa-edit nav-icon"></i> <p>Assessment</p></a>
+            <a class="{{request()->routeIs('student.assessment.index') ? 'active' : '' }} nav-link" href="{{ route('student.assessment.index') }}">
+              <i class="fas fa-edit nav-icon"></i> <p>Assessment</p></a>
+            </a>
           </li>
 
           {{-- <li class="nav-header">PROFILE</li>

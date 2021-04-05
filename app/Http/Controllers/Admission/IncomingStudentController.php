@@ -158,13 +158,11 @@ class IncomingStudentController extends Controller
         
     }
 
-
     public function disapprove(Request $request)
     {
         $IncomingStudentCount = $this->IncomingStudentCount();
         $StudentInformation = StudentInformation::where('id', $request->id)->first();
         $name = $StudentInformation->first_name.' '.$StudentInformation->last_name;  
-        
         // $incoming_student = IncomingStudent::where('student_id', $request->id)->first();
         // $incoming_student->approval = 'Disapproved';
         // $incoming_student->saved();

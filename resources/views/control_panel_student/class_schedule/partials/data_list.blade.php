@@ -1,13 +1,13 @@
 
     <div class="js-data-container col-md-12">
         <div class="table-responsive">
-            <table class="table table-sm no-margin table-striped table-bordered">
+            <table class="table table-sm no-margin table-striped table-bordered table-hover">
                 <thead>
                     <tr>
                         <th>Schedule</th>
                         <th>Subject</th>
-                        <th>Room</th>
-                        <th>Grade & Section</th>
+                        {{-- <th>Room</th> --}}
+                        {{-- <th>Grade & Section</th> --}}
                         <th>Faculty</th>
                     </tr>
                 </thead>
@@ -48,9 +48,9 @@
                             @endphp
                             <tr>
                                 <td>{{ rtrim($daysDisplay, '/') }}</td>
-                                <td>{{ $data->subject_code . ' ' . $data->subject }}</td>
-                                <td>{{ 'Room' . $data->room_code }}</td>
-                                <td>{{ $data->grade_level . ' ' . $data->section }}</td>
+                                <td>{{ $data->subject }}</td>
+                                {{-- <td>{{ 'Room' . $data->room_code }}</td> --}}
+                                {{-- <td>{{ $data->grade_level . ' ' . $data->section }}</td> --}}
                                 <td>{{ $data->faculty_name }}</td>
                             </tr>
                         @endforeach                        

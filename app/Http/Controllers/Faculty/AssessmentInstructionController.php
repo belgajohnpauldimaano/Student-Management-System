@@ -21,7 +21,8 @@ class AssessmentInstructionController extends Controller
         $Assessment = Assessment::whereId($instruction->instructionable_id)->first();
         $ClassSubjectDetail = ClassSubjectDetail::whereId($Assessment->class_subject_details_id)->first();
         // return json_encode($Assessment);
-        return view('control_panel_faculty.assessment_per_subject._index', compact('Assessment','ClassSubjectDetail','instruction','tab','question'))->render();
+        return view('control_panel_faculty.assessment_per_subject._index', 
+            compact('Assessment','ClassSubjectDetail','instruction','tab','question'))->render();
     }
     
     public function saveInstruction(Request $request){
@@ -61,13 +62,13 @@ class AssessmentInstructionController extends Controller
                 return response()->json([
                     'res_code'  => 0,
                     'res_msg'   =>
-                    'Question data successfully updated.',
+                    'Instruction data successfully updated.',
                     'data'      => encrypt($instruction->instructionable_id),
                 ],200);
             }else{
                 return response()->json([
                     'res_code'  => 0,
-                    'res_msg'   => 'Question data successfully saved.',
+                    'res_msg'   => 'Instruction data successfully saved.',
                     'data'      => encrypt($instruction->instructionable_id),
                 ],201);
             }

@@ -11,4 +11,6 @@ trait HasGradeLevel{
         return  Enrollment::with(['classDetail'])
                     ->whereStatus(1);
     }
+
+    
 }

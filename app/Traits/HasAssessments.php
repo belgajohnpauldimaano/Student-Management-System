@@ -3,7 +3,9 @@ namespace App\Traits;
 
 use Storage;
 use App\Models\Assessment;
+use App\Models\ClassDetail;
 use App\Models\QuestionAnswer;
+use App\Models\ClassSubjectDetail;
 
 trait HasAssessments{
     public function getExamPeriodBadgeAttribute(){
@@ -56,5 +58,22 @@ trait HasAssessments{
     public function getAnswerAttribute(){
     
         return QuestionAnswer::where('question_id', $this->question_id)->where('order_number', $this->order_number)->first();
+    }
+
+    
+    // public function classDetail()
+    // {
+    //    return $this->hasOne(ClassDetail::class, 'id','class_details_id')
+    //     ->whereStatus(1);
+    // }
+
+    private function subjectDetails($id)
+    {
+        return $ClassSubjectDetail = ClassSubjectDetail::with('classDetail')->whereId($id)->first();
+    }
+
+    public function assessments($id)
+    {
+        return Assessment::whereClassSubjectDetailsId($id)->orderBY('id', 'desc');
     }
 }

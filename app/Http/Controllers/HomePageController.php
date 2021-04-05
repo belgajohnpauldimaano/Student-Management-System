@@ -57,7 +57,7 @@ class HomePageController extends Controller
         // return $strands;
         return response()->json([
             'strands'       => CryptoJsAes::encrypt($strands, $password),
-            'data'              => $password
+            'data'          => $password
         ], 200);
     }
 

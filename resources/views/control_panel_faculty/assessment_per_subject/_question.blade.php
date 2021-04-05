@@ -132,16 +132,20 @@
                                                             <i class="text-red">
                                                                 <small>({{ $item->answerMultipleChoice->points_per_question }} point {{ $item->answerMultipleChoice->points_per_question > 1 ? 's' : '' }} )</small>
                                                             </i>
+                                                            <div class="row">
                                                             @foreach ($item->options as $key => $option)
-                                                                <div class="form-group clearfix mt-3">
-                                                                    <div class="icheck-{{ $item->answerMultipleChoice->correct_option_answer == $key+1 ? 'success' : 'danger' }} d-inline">
-                                                                        <input type="radio" {{ $item->answerMultipleChoice->correct_option_answer == $key+1 ? 'checked' : '' }} name="options_answer[{{ $item->id }}]" id="option-{{ $option->id }}" value="{{ $option->order_number }}">
-                                                                        <label for="option-{{ $option->id }}">
-                                                                            {{ $option->option_title }}
-                                                                        </label>
+                                                                <div class="col-md-6">
+                                                                    <div class="form-group clearfix mt-3">
+                                                                        <div class="icheck-{{ $item->answerMultipleChoice->correct_option_answer == $key+1 ? 'success' : 'danger' }} d-inline">
+                                                                            <input type="radio" {{ $item->answerMultipleChoice->correct_option_answer == $key+1 ? 'checked' : '' }} name="options_answer[{{ $item->id }}]" id="option-{{ $option->id }}" value="{{ $option->order_number }}">
+                                                                            <label for="option-{{ $option->id }}">
+                                                                                {{ $option->option_title }}
+                                                                            </label>
+                                                                        </div>
                                                                     </div>
                                                                 </div>
                                                             @endforeach
+                                                            </div>
                                                         @endif
                                                     </td>
                                                     <td>

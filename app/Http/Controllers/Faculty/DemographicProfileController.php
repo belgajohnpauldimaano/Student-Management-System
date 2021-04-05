@@ -6,6 +6,7 @@ use App\Models\Enrollment;
 use App\Models\SchoolYear;
 use App\Models\ClassDetail;
 use Illuminate\Http\Request;
+use App\Traits\HasFacultyDetails;
 use App\Models\ClassSubjectDetail;
 use App\Models\FacultyInformation;
 use App\Models\StudentInformation;

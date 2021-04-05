@@ -19,7 +19,23 @@ class ClassDetail extends Model
         $semester = Semester::whereCurrent(1)->first()->id;
         return $this->hasMany(ClassSubjectDetail::class, 'class_details_id')
             ->where('status', '!=', 0)
-            ->where('sem', $semester);
+            // ->where('sem', $semester)
+            ->orderBy('class_subject_order', 'ASC');
+    }
+
+    public function classSubjects ()
+    {
+        $semester = Semester::whereCurrent(1)->first()->id;
+        
+        $query = $this->hasMany(ClassSubjectDetail::class, 'class_details_id')
+            ->where('status', '!=', 0)
+            ->orderBy('class_subject_order', 'ASC');
+            
+        if($this->grade_level > 10)
+        {
+            $query->where('sem', $semester);
+        }
+        return $result = $query;;
     }
 
     public function section (){

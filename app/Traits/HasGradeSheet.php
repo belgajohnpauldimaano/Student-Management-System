@@ -92,4 +92,37 @@ trait HasGradeSheet{
     public function studentEnrolledSubject(){
         return $this->hasOne(StudentEnrolledSubject::class, 'class_subject_details_id', 'class_subject_details_id');
     }
+
+    public function studentMale()
+    {
+        return $this->student()->where('gender', 1);
+    }
+
+    private function enrollmentInfo()
+    {
+        return Enrollment::join('student_informations', 'student_informations.id', '=', 'enrollments.student_information_id')
+            ->leftJoin('student_exam_details', 'student_exam_details.student_information_id', '=', 'enrollments.id')
+            ->select(
+                'student_informations.id', 
+                'student_informations.first_name', 'student_informations.middle_name', 'student_informations.last_name',
+                'student_informations.gender', 'student_informations.status', 'enrollments.id', 'enrollments.class_details_id',
+                'student_exam_details.status as exam_status'
+                )
+            ->orderBy('student_informations.last_name', 'ASC')
+            ->where('class_details_id', $this->id)
+            ->where('enrollments.status', 1)
+            ->where('student_informations.status', 1)
+            ->where('student_exam_details.status');
+    }
+
+    public function getEnrolledMaleStudentsAttribute()
+    {
+        return $this->enrollmentInfo()->where('student_informations.gender', 1)
+            ->get();
+    }
+    public function getEnrolledFemaleStudentsAttribute()
+    {
+        return $this->enrollmentInfo()->where('student_informations.gender', 2)
+            ->get();
+    }
 }

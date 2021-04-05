@@ -22,9 +22,7 @@ trait HasSchoolYear{
 
     public function schoolYearActiveStatus()
     {
-        return SchoolYear::where('current', 1)
-            ->where('status', 1)
-            ->first();
+        return SchoolYear::where('current', 1)->where('status', 1)->first();
     }
 
     public function accountSchoolYears()

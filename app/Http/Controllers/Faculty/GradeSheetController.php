@@ -6,25 +6,26 @@ use PDF;
 use App\Models\Enrollment;
 use App\Models\SchoolYear;
 use App\Models\ClassDetail;
+use Illuminate\Http\Request;
 use App\Models\SectionDetail;
 use App\Models\SubjectDetail;
 use App\Models\TeacherSubject;
 use App\Models\Grade_sheet_first;
 use App\Models\Grade_sheet_third;
+use App\Traits\HasFacultyDetails;
 use App\Models\ClassSubjectDetail;
 use App\Models\FacultyInformation;
 use App\Models\Grade11_Second_Sem;
 use App\Models\Grade_sheet_fourth;
 use App\Models\Grade_sheet_second;
-use Illuminate\Http\Request;
-use App\Models\Grade_sheet_firstsem;
-use App\Models\StudentEnrolledSubject;
 use Illuminate\Support\Facades\DB;
-use App\Models\Grade_sheet_firstsemsecond;
-use App\Models\Grade_sheet_secondsemsecond;
 use App\Http\Controllers\Controller;
+use App\Models\Grade_sheet_firstsem;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Validator;
+use App\Models\StudentEnrolledSubject;
+use App\Models\Grade_sheet_firstsemsecond;
+use App\Models\Grade_sheet_secondsemsecond;
 
 class GradeSheetController extends Controller
 {    

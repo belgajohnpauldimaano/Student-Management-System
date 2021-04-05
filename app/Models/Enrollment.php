@@ -6,6 +6,7 @@ use App\Traits\HasUser;
 use App\Models\ClassDetail;
 use App\Traits\HasGradeSheet;
 use App\Traits\HasTransaction;
+use App\Models\TransactionMonthPaid;
 use App\Models\StudentEnrolledSubject;
 use Illuminate\Database\Eloquent\Model;
 

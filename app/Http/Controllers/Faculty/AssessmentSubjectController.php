@@ -5,17 +5,15 @@ namespace App\Http\Controllers\Faculty;
 use App\Models\Semester;
 use App\Models\Assessment;
 use Illuminate\Http\Request;
+use App\Traits\HasAssessments;
 use App\Models\ClassSubjectDetail;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Crypt;
 
 class AssessmentSubjectController extends Controller
 {
-    private function subjectDetails($id)
-    {
-        return $ClassSubjectDetail = ClassSubjectDetail::whereId($id)->first();
-    }
-
+    use HasAssessments;
+    
     private function semester(){
         return $semester = Semester::whereCurrent(1)->first()->id;
     }
@@ -27,7 +25,7 @@ class AssessmentSubjectController extends Controller
         $id = Crypt::decrypt($request->class_subject_details_id);
         $ClassSubjectDetail = $this->subjectDetails($id);
         $semester = $this->semester();
-        $query = Assessment::whereClassSubjectDetailsId($id)->orderBY('id', 'desc');
+        $query = $this->assessments($id);
         
         if($tab == 'unpublished'){
             $query->where('exam_status', 0);
@@ -71,7 +69,7 @@ class AssessmentSubjectController extends Controller
 
     public function edit(Request $request){
 
-        $tab = $request->tab ? $request->tab : 'setup';
+        $tab =  $request->tab ? $request->tab : 'setup';
         $question = $request->question;
         $instruction=null;
         $id = Crypt::decrypt($request->class_subject_details_id);
@@ -86,6 +84,52 @@ class AssessmentSubjectController extends Controller
         
         return view('control_panel_faculty.assessment_per_subject._index', 
             compact('ClassSubjectDetail','Assessment','instruction','tab','question'))->render();
+    }
+
+    protected $sleepTime = 5;
+    protected $timeoutTime = 30;
+
+    function setTimeout($timeout) {
+        $this->timeoutTime = $timeout;
+    }
+
+    function setSleep($sleep) {
+        $this->sleepTime = $sleepTime;
+    }
+
+    public function getDataStudent(Request $request)
+    {
+        $id = Crypt::decrypt($request->class_subject_details_id);
+        $Assessment = Assessment::whereId($id)->first();
+        // return json_encode($Assessment);
+        $ClassSubjectDetail = $this->subjectDetails($Assessment->class_subject_details_id);
+
+        $student_male =  $ClassSubjectDetail->classDetail->enrolled_male_students;
+        $student_female =  $ClassSubjectDetail->classDetail->enrolled_female_students;
+
+        session_write_close();
+        $attempts=1;
+        
+        foreach($student_male as $male)
+        {
+            if($male->exam_status == null && $attempts < 1)
+            {
+                usleep(100);
+                $status = $male->refresh()->status;
+                $attempts++;
+            }
+            else
+            {
+                return response()->json([
+                    'student_male'   => $student_male,
+                    'student_female' => $student_female
+                ], 200);
+                
+            }
+            
+        }
+
+        
     }
     
     public function save(Request $request){
@@ -114,7 +158,6 @@ class AssessmentSubjectController extends Controller
 
         try {
             //code...
-           
             if ($request->id)
             {
                 $Assessment = Assessment::whereId($request->id)->first();

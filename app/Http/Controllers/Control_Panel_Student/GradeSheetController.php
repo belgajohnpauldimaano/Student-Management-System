@@ -46,7 +46,7 @@ class GradeSheetController extends Controller
                     ->first();
     }
 
-    private function enrollment($request, $has_schoolyear,$sem){
+    private function enrollment($request, $has_schoolyear, $sem){
 
         $StudentInformation = $this->student();
 

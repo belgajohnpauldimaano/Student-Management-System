@@ -13,7 +13,6 @@ try {
     require('../../../public/cms/plugins/jquery-toast-plugin/jquery.toast.min.js');
     require('../../../public/cms/plugins/timepicker/bootstrap-timepicker.min.js');
     require('../../../public/cms/plugins/datepicker/bootstrap-datepicker.js');
-    require('./enrollment.js');
-
+    // require('./enrollment.js');
 } catch (e) { }
 

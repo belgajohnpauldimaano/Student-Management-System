@@ -17,11 +17,13 @@ let mix = require('laravel-mix');
 //         processCssUrls: false,
 //     });;
 
-mix.js('resources/assets/js/control_panel.js', 'public/js').version()
-mix.sass('resources/assets/sass/control_panel.scss', 'public/css')
-    .options({
-        processCssUrls: false,
-    });
+mix.js('resources/assets/js/student_assessment.js', 'public/js').version()
+// mix.js('resources/assets/js/control_panel.js', 'public/js').version()
+mix.js('resources/assets/js/assessment.js', 'public/js').version()
+// mix.sass('resources/assets/sass/control_panel.scss', 'public/css')
+//     .options({
+//         processCssUrls: false,
+//     });
 
 // Full API
 // mix.js(src, output);

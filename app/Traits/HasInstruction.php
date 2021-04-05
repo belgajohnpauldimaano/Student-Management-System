@@ -25,7 +25,15 @@ trait HasInstruction{
     }
 
     public function questions(){
-        return $this->hasMany(Question::class, 'assessment_id', 'instructionable_id')
-            ->whereQuestionType($this->question_type)->where('status', 1);
+        
+        $query = $this->hasMany(Question::class, 'assessment_id', 'instructionable_id')
+            ->whereQuestionType($this->question_type)
+            ->where('status', 1);
+        if($this->randomly_ordered == 1){
+            $query->inRandomOrder();
+        }
+        
+        return $result = $query;
+
     }
 }

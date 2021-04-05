@@ -3,9 +3,10 @@
 namespace App\Http\Controllers\Faculty;
 
 use App\Models\SchoolYear;
+use Illuminate\Http\Request;
+use App\Traits\HasFacultyDetails;
 use App\Models\ClassSubjectDetail;
 use App\Models\FacultyInformation;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
