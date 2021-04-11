@@ -19,17 +19,18 @@ Route::group(['prefix' => 'student', 'middleware' => ['auth', 'userroles'], 'rol
         });
     
         // assessment
-        Route::group(['prefix' => 'student-assessment'], function(){
+        Route::group(['prefix' => 'assessment'], function(){
             Route::get('subject-list', 'AssessmentController@index')->name('student.assessment.index');
         });
 
-        Route::group(['prefix' => 'student-assessment/subject/{id}'], function(){
-           Route::get('subject-details', 'AssessmentController@subject')->name('student.assessment.subject.details');
-           Route::post('subject-details', 'AssessmentController@subject')->name('student.assessment.subject.details');
-           Route::get('get-data', 'AssessmentController@getAssessmentData')->name('student.assessment.get.data');
-           
-           Route::get('take-assessment', 'AssessmentController@takeAssessment')->name('student.take.assessment');
-           Route::post('take-assessment', 'AssessmentController@takeAssessment')->name('student.take.assessment');
+        Route::group(['prefix' => 'assessment/subject/{id}'], function(){
+            Route::get('subject-details', 'AssessmentController@subject')->name('student.assessment.subject.details');
+            Route::post('subject-details', 'AssessmentController@subject')->name('student.assessment.subject.details');
+            Route::get('get-data', 'AssessmentController@getAssessmentData')->name('student.assessment.get.data');
+            Route::get('take-assessment', 'AssessmentController@takeAssessment')->name('student.take.assessment');
+            Route::post('take-assessment', 'AssessmentController@takeAssessment')->name('student.take.assessment');
+            Route::post('redirect-assessment', 'AssessmentController@redirectAssessment')->name('student.redirect.assessment');
+            Route::get('redirect-assessment', 'AssessmentController@redirectAssessment')->name('student.redirect.assessment');
         });
         
         // Route::post('paypal', 'PaymentController@payWithpaypal');

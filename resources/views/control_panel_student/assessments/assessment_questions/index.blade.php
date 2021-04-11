@@ -66,10 +66,10 @@
     <script src="{{ asset('cms/plugins/datetimepicker/datetimepicker.js') }}"></script>
     <script src="{{ asset('js/student_assessment.js') }}"></script>
     <script>
-        
         var time_assessment = $('#js_minutes').val();
         var page = 1;
         function fetch_data () {
+            
             var formData = new FormData($('#js-form_search')[0]);
             formData.append('page', page);
             loader_overlay();

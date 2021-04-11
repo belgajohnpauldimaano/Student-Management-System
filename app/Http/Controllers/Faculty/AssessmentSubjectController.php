@@ -2,17 +2,23 @@
 
 namespace App\Http\Controllers\Faculty;
 
+use Carbon\Carbon;
 use App\Models\Semester;
 use App\Models\Assessment;
+use App\Models\Enrollment;
+use App\Models\Instruction;
 use Illuminate\Http\Request;
+use App\Traits\HasGradeSheet;
 use App\Traits\HasAssessments;
+use App\Traits\HasInstruction;
+use App\Traits\HasFacultyDetails;
 use App\Models\ClassSubjectDetail;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Crypt;
 
 class AssessmentSubjectController extends Controller
 {
-    use HasAssessments;
+    use HasAssessments, HasGradeSheet;
     
     private function semester(){
         return $semester = Semester::whereCurrent(1)->first()->id;
@@ -74,8 +80,9 @@ class AssessmentSubjectController extends Controller
         $instruction=null;
         $id = Crypt::decrypt($request->class_subject_details_id);
         $Assessment = Assessment::whereId($id)->first();
-        // return json_encode($Assessment);
+        
         $ClassSubjectDetail = $this->subjectDetails($Assessment->class_subject_details_id);
+
         if($request->ajax())
         {
              return view('control_panel_faculty.assessment_per_subject.partials.data_list_question', 
@@ -86,50 +93,70 @@ class AssessmentSubjectController extends Controller
             compact('ClassSubjectDetail','Assessment','instruction','tab','question'))->render();
     }
 
-    protected $sleepTime = 5;
-    protected $timeoutTime = 30;
-
-    function setTimeout($timeout) {
-        $this->timeoutTime = $timeout;
-    }
-
-    function setSleep($sleep) {
-        $this->sleepTime = $sleepTime;
-    }
-
     public function getDataStudent(Request $request)
     {
-        $id = Crypt::decrypt($request->class_subject_details_id);
-        $Assessment = Assessment::whereId($id)->first();
-        // return json_encode($Assessment);
+        $dt = Carbon::now();
+        $id = Crypt::decrypt($request->class_subject_details_id);//assessment_id
+        $Assessment = Assessment::whereId($id)->select()->first();
+        $question_total = $Assessment->QuestionsCount;
         $ClassSubjectDetail = $this->subjectDetails($Assessment->class_subject_details_id);
-
-        $student_male =  $ClassSubjectDetail->classDetail->enrolled_male_students;
-        $student_female =  $ClassSubjectDetail->classDetail->enrolled_female_students;
-
-        session_write_close();
-        $attempts=1;
         
-        foreach($student_male as $male)
-        {
-            if($male->exam_status == null && $attempts < 1)
-            {
-                usleep(100);
-                $status = $male->refresh()->status;
-                $attempts++;
-            }
-            else
-            {
-                return response()->json([
-                    'student_male'   => $student_male,
-                    'student_female' => $student_female
-                ], 200);
-                
-            }
+        // return json_encode($ClassSubjectDetail);
+
+        $data = null; // our return data
+        $timeout = 30; // timeout in seconds
+        $now = time(); // start time
+        $attempt=1;
+
+        // loop for $timeout seconds from $now until we get $data
+        while((time() - $now) < $timeout) {
+            // fetch $data
+            $student_male  =  $this->enrollmentInfo($Assessment->class_subject_details_id)
+                ->where('student_informations.gender', 1)->get();
+            $student_female =  $this->enrollmentInfo($Assessment->class_subject_details_id)
+                ->where('student_informations.gender', 2)->get();
+            $student = $this->enrollmentInfo($Assessment->class_subject_details_id)->get();
+
+            return json_encode($student);
+                // if($data->exam_status != null)
+                // {
+                //     $attempt ++;
+                //     return response()->json([
+                //         'student_male'      => $student_male,
+                //         'student_female'    => $student_female,
+                //         'question_total'    => $question_total,
+                //         'assess_data'       => $Assessment
+                //     ], 200);
+                    
+                // }
+                // else
+                // {
+                //     usleep(20000);
+                //     // sleep(2);
+                // }
+
+                // break;
+                // usleep(20000);
             
+
+            // if we got $data, break the loop
+            // if (!empty($student)) break;
+            
+            // wait 1 sec to check for new $data
+            // usleep(20000);
         }
 
-        
+        // if (!empty($student)) $student = array('status'=>null);
+
+        // return response()->json([
+        //     'student_male'      => $student_male,
+        //     'student_female'    => $student_female,
+        //     'question_total'    => $question_total,
+        //     'assess_data'       => $Assessment
+        // ], 200);
+
+        // session_write_close();
+       
     }
     
     public function save(Request $request){

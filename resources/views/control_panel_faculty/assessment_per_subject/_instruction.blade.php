@@ -134,8 +134,8 @@
                 e.preventDefault();
                 var id = $(this).data('id');
                 alertify.defaults.transition = "slide";
-                alertify.defaults.theme.ok = "btn btn-primary ";
-                alertify.defaults.theme.cancel = "btn btn-danger ";
+                alertify.defaults.theme.ok = "btn btn-sm btn-primary ";
+                alertify.defaults.theme.cancel = "btn btn-sm btn-danger ";
                 alertify.confirm('Confirmation', 'Are you sure you want to deactivate?', function(){  
                     $.ajax({
                         url         : "{{ route('finance.maintenance.disc_fee.deactivate_data') }}",
@@ -173,8 +173,8 @@
                 var id = $(this).data('id');
                 var toggle_title = $(this).data('toggle_title');
                 alertify.defaults.transition = "slide";
-                alertify.defaults.theme.ok = "btn btn-primary ";
-                alertify.defaults.theme.cancel = "btn btn-danger ";
+                alertify.defaults.theme.ok = "btn btn-sm btn-primary ";
+                alertify.defaults.theme.cancel = "btn btn-sm btn-danger ";
                 alertify.confirm('Confirmation', 'Are you sure you want to '+toggle_title+' ?', function(){  
                     $.ajax({
                         url         : "{{ route('finance.maintenance.disc_fee.toggle_current_sy') }}",

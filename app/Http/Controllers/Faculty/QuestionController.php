@@ -27,9 +27,10 @@ class QuestionController extends Controller
         $ClassSubjectDetail = $this->subjectDetails($Assessment->class_subject_details_id);
         $instructions = Instruction::orderBY('order_number', 'Asc')
             ->whereInstructionableId($Assessment->id)->where('status', 1)->get();
+        $tab = $request->tab;
         
         return view('control_panel_faculty.assessment_per_subject._question', 
-            compact('ClassSubjectDetail','Assessment','instructions'));
+            compact('ClassSubjectDetail','Assessment','instructions','tab'));
     }
 
     public function archiveIndex(Request $request){

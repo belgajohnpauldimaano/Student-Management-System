@@ -2,10 +2,14 @@
 namespace App\Traits;
 
 use Storage;
+use App\Models\Question;
 use App\Models\Assessment;
+use App\Models\Enrollment;
 use App\Models\ClassDetail;
+use App\Models\Instruction;
 use App\Models\QuestionAnswer;
 use App\Models\ClassSubjectDetail;
+use App\Models\StudentExamDetails;
 
 trait HasAssessments{
     public function getExamPeriodBadgeAttribute(){
@@ -69,11 +73,39 @@ trait HasAssessments{
 
     private function subjectDetails($id)
     {
-        return $ClassSubjectDetail = ClassSubjectDetail::with('classDetail')->whereId($id)->first();
+        return ClassSubjectDetail::whereId($id)->first();
     }
+
+    public function enrolled()
+    {
+        return $this->hasOneThrough(Enrollment::class, 'class_details_id', 'id');
+    }
+
+    // public function assessment()
+    // {
+    //     return $this->hasOne(Assessment::class, 'class_subject_details_id', 'id')->where('exam_status', 1);
+    // }
 
     public function assessments($id)
     {
-        return Assessment::whereClassSubjectDetailsId($id)->orderBY('id', 'desc');
+        return Assessment::leftJoin('student_exam_details', 'student_exam_details.assessment_id', '=', 'assessments.id')
+            ->select('assessments.*','student_exam_details.status','student_exam_details.assessment_id','student_exam_details.assessment_outcome')
+            ->whereClassSubjectDetailsId($id)
+            ->orderBY('id', 'desc');
+    }
+
+    public function studentExamDetails()
+    {
+        return $this->hasMany(StudentExamDetails::class ,'assessment_id', 'id')->whereStatus(1);
+    }
+    
+    public function getQuestionsCountAttribute()
+    {
+        return $this->hasMany(Question::class ,'assessment_id', 'id')->whereStatus(1)->count();
+    }
+  
+    public function getCheckOrderAttribute($x)
+    {
+        return Instruction::whereInstructionable_id($this->id);
     }
 }

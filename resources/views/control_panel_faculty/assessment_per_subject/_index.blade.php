@@ -10,7 +10,7 @@
             <i class="fas fa-2x fa-sync-alt fa-spin"></i>
         </div>
         <div class="col-md-12">
-            <a href="{{ route('faculty.assessment_subject', [encrypt($ClassSubjectDetail->id), 'tab' => $Assessment->assessment_status ] ) }}" style="margin-top: -3em" class="btn-success btn float-right">
+            <a href="{{ route('faculty.assessment_subject', [encrypt($ClassSubjectDetail->id), 'tab' => $Assessment->assessment_status ] ) }}" style="margin-top: -3em" class="btn-success btn btn-sm float-right">
                 <i class="fas fa-arrow-left"></i> back
             </a>
         </div>
@@ -86,61 +86,4 @@
     <script src="{{ asset('cms/plugins/datetimepicker/datetimepicker.js') }}"></script>
     <script src="{{ asset('cms-new/dist/js/pages/dashboard.js') }}"></script>
     <script src="{{ asset('js/assessment.js') }}"></script>
-    <script>
-        
-        $(function () {
-
-            // $('body').on('click', '#js-button-add, .js-btn_update_sy', function (e) {
-            //     e.preventDefault();
-            //     var id = $(this).data('id');
-            //     $.ajax({
-            //         url : "{{ route('faculty.assessment_subject.edit', [$ClassSubjectDetail->id, 'tab' => $tab] ) }}",
-            //         type : 'POST',
-            //         data : { _token : '{{ csrf_token() }}', id : id },
-            //         success : function (res) {
-            //             $('.js-modal_holder').html(res);
-            //             $('.js-modal_holder .modal').modal({ backdrop : 'static' });
-                        
-
-            //         }
-            //     });
-            // });
-
-            // $('body').on('submit', '#js-assessment-create-form, #js-assessment-update-form', function (e) {
-            //     e.preventDefault();
-            //     var formData = new FormData($(this)[0]);
-            //     $.ajax({
-            //         url         : "{{ route('faculty.assessment_subject.save_data', $ClassSubjectDetail->id) }}",
-            //         type        : 'POST',
-            //         data        : formData,
-            //         processData : false,
-            //         contentType : false,
-            //         success     : function (res) {
-            //             $('.help-block').html('');
-            //             if (res.res_code == 1)
-            //             {
-            //                 show_toast_alert({
-            //                     heading : 'Error',
-            //                     message : res.res_msg,
-            //                     type    : 'error'
-            //                 });
-            //             }
-            //             else
-            //             {
-            //                 show_toast_alert({
-            //                     heading : 'Success',
-            //                     message : res.res_msg,
-            //                     type    : 'success'
-            //                 });
-            //                 // fetch_data();
-            //             }
-            //         }
-            //     });
-            // });
-
-            
-
-            
-        });
-    </script>
 @endsection

@@ -16,9 +16,7 @@
         </thead>
         <tbody>
             @forelse ($Assessment as $item)
-
                 <tr>
-                    {{-- {{ $item }} --}}
                     <td class="align-middle">
                         <i class="far fa-file"></i> {{ $item->title }}
                     </td>
@@ -35,9 +33,15 @@
                         {!! $item->exam_status_badge !!}
                     </td>
                     <td class="align-middle" style="width: 15%">
-                        <a href="#" data-id="{{ encrypt($item->class_subject_details_id) }}" type="button" class="btn btn-sm btn-danger" id="js-button-take">
-                            <i class="fas fa-edit nav-icon"></i> Take Assessment
-                        </a>
+                        @if($item->status != 3)
+                            <a href="#" data-id="{{ encrypt($item->class_subject_details_id) }}" type="button" class="btn btn-sm btn-danger" id="js-button-take">
+                                <i class="fas fa-edit nav-icon"></i> Take Assessment
+                            </a>
+                        @else
+                            <a href="#" data-id="{{ encrypt($item->class_subject_details_id) }}" type="button" class="btn btn-sm btn-primary" id="js-button-take">
+                                <i class="fas fa-eye nav-icon"></i> View
+                            </a>
+                        @endif
                     </td>
                 </tr>
             @empty

@@ -1,6 +1,6 @@
 <div class="float-right" style="margin-top: -.5em">
     @if($Assessment != null)
-        <a href="{{ route('faculty.question', [encrypt($Assessment->id), 'tab' => 'questions'] ) }}" class="btn btn-info">
+        <a href="{{ route('faculty.question', [encrypt($Assessment->id), 'tab' => 'instruction'] ) }}" class="btn btn-sm btn-info">
             <i class="far fa-eye fa-lg"></i> Preview
         </a>
     @endif
@@ -43,7 +43,7 @@
                 <select class="form-control form-control-sm" name="part_number" style="width: 100%;">
                     @for ($x = 1; $x < 11; $x++)
                         <option value="{{ $x }}" {{ ($instruction != null ? ($instruction->order_number == $x ? 'selected' : '') : '') }}>
-                            {{ $x }}
+                            {{ $x }} <span class="text-red">{{ $Assessment->check_order->whereOrderNumber($x)->first() ? ' *used' : '' }}</span>
                         </option>
                     @endfor
                 </select>
@@ -51,7 +51,7 @@
             </div>
         </div>
         <div class="mt-1 float-right">
-            <button type="submit" id="btn-instructions-type-selected" class="btn btn-primary">
+            <button type="submit" id="btn-instructions-type-selected" class="btn btn-sm btn-primary">
                 <i class="fas fa-save"></i> Save
             </button>
         </div>

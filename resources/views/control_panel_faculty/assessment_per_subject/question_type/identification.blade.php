@@ -42,7 +42,7 @@
         </div>
     </div>
     <hr>
-    <button type="button" class="btn btn-sm btn-outline-danger" id="btn-add-option-identification">
+    <button type="button" class="btn btn-sm btn-sm btn-outline-danger" id="btn-add-option-identification">
         <i class="fas fa-plus"></i> Add Question
     </button>
     <hr>

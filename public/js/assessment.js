@@ -98,15 +98,30 @@ function getStudentData() {
             var mlen = student_male.length;
             var flen = student_female.length;
             output += '<tr class="bg-primary">\n                            <td colspan="6">Male</td>\n                        </tr>';
+            var total_question = res.question_total;
             for (var i = 0; i < mlen; i++) {
                 // console.log(student_male[i]['last_name'])
+
                 output += '<tr>';
                 output += '<td>' + (i + 1) + '. </td>';
                 output += '<td>' + student_male[i]['last_name'] + ', ' + student_male[i]['first_name'] + ' ' + student_male[i]['middle_name'] + '</td>';
-                output += '<td>0/10</td>';
-                output += '<td>start time</td>';
-                output += '<td>status</td>';
-                output += '<td class="text-center">\n                                <a class="btn btn-sm btn-primary btn-view-modal" data-id="">\n                                    <i class="fas fa-eye"></i>\n                                </a>\n                                <a class="btn btn-sm btn-success btn-approve" data-id="">\n                                    <i class="fas fa-thumbs-up"></i>\n                                </a>\n                                <a class="btn btn-sm btn-danger btn-disapprove" data-id="">\n                                    <i class="fas fa-thumbs-down"></i>\n                                </a>\n                            </td>';
+                output += '<td>0/' + total_question + '</td>';
+                if (student_male[i]['time_start'] != null) {
+                    output += '<td>' + student_male[i]['time_start'] + '</td>';
+                } else {
+                    output += '<td>00:00</td>';
+                }
+
+                if (student_male[i]['exam_status'] == 1) {
+                    output += '<td><span class="badge badge-primary">on-going</span></td>';
+                } else if (student_male[i]['exam_status'] == 2) {
+                    output += '<td><span class="badge badge-warning">pending</span></td>';
+                } else if (student_male[i]['exam_status'] == 3) {
+                    output += '<td><span class="badge badge-success">done</span></td>';
+                } else if (student_male[i]['exam_status'] == null) {
+                    output += '<td><span class="badge badge-warning">pending</span></td>';
+                }
+                output += '<td class="text-center">\n                                <a class="btn btn-sm btn-primary btn-view-modal" data-id="">\n                                    <i class="fas fa-eye"></i>\n                                </a>\n                                <a class="btn btn-sm btn-danger btn-disapprove" data-id="">\n                                    reset\n                                </a>\n                            </td>';
             }
             output += '<tr class="bg-red">\n                            <td colspan="6">Female</td>\n                        </tr>';
             for (var i = 0; i < flen; i++) {
@@ -114,10 +129,22 @@ function getStudentData() {
                 output += '<tr>';
                 output += '<td>' + (i + 1) + '. </td>';
                 output += '<td>' + student_female[i]['last_name'] + ', ' + student_female[i]['first_name'] + ' ' + student_female[i]['middle_name'] + '</td>';
-                output += '<td>0/10</td>';
-                output += '<td>start time</td>';
-                output += '<td>status</td>';
-                output += '<td class="text-center">\n                                <a class="btn btn-sm btn-primary btn-view-modal" data-id="">\n                                    <i class="fas fa-eye"></i>\n                                </a>\n                                <a class="btn btn-sm btn-success btn-approve" data-id="">\n                                    <i class="fas fa-thumbs-up"></i>\n                                </a>\n                                <a class="btn btn-sm btn-danger btn-disapprove" data-id="">\n                                    <i class="fas fa-thumbs-down"></i>\n                                </a>\n                            </td>';
+                output += '<td>0/' + total_question + '</td>';
+                if (student_female[i]['time_start'] != null) {
+                    output += '<td>' + student_female[i]['time_start'] + '</td>';
+                } else {
+                    output += '<td>00:00</td>';
+                }
+                if (student_female[i]['exam_status'] == 1) {
+                    output += '<td><span class="badge badge-primary">on-going</span></td>';
+                } else if (student_female[i]['exam_status'] == 2) {
+                    output += '<td><span class="badge badge-warning">pending</span></td>';
+                } else if (student_female[i]['exam_status'] == 3) {
+                    output += '<td><span class="badge badge-success">done</span></td>';
+                } else if (student_female[i]['exam_status'] == null) {
+                    output += '<td><span class="badge badge-warning">pending</span></td>';
+                }
+                output += '<td class="text-center">\n                                <a class="btn btn-sm btn-primary btn-view-modal" data-id="">\n                                    <i class="fas fa-eye"></i>\n                                </a>\n                                <a class="btn btn-sm btn-danger btn-disapprove" data-id="">\n                                    reset\n                                </a>\n                            </td>';
             }
             $('#table-monitoring tbody').html("");
             $('#table-monitoring tbody').html(output);
@@ -251,6 +278,7 @@ $('body').on('click', '.js-btn_archived', function (e) {
     e.preventDefault();
     var self = $(this);
     var id = $(this).data('id');
+
     alertify.defaults.transition = "slide";
     alertify.defaults.theme.ok = "btn btn-primary ";
     alertify.defaults.theme.cancel = "btn btn-danger ";
@@ -374,8 +402,9 @@ function examType() {
         setTimeout(function () {
             $('#js-loader-overlay').addClass('d-none');
         }, 1000);
-        var url = "faculty/assessment/subject/" + assessment_id + "/edit-assessment?tab=questions&question=" + question_type + "";
-        // url = url.replace(':slug', slug);
+
+        // alert(question_type)
+        var url = location.protocol + '//' + location.host + "/faculty/assessment/subject/" + assessment_id + "/edit-assessment?tab=questions&question=" + question_type;
         window.location.href = url;
     }
 }

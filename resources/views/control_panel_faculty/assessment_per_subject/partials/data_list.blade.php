@@ -18,7 +18,7 @@
             @forelse ($Assessment as $item)
                 <tr>
                     <td class="align-middle">
-                        <a class="btn btn-link" href="{{ route('faculty.assessment_subject.edit', [encrypt($item->id),'tab' => 'setup']) }}">
+                        <a class="btn btn-sm btn-sm btn-link" href="{{ route('faculty.assessment_subject.edit', [encrypt($item->id),'tab' => 'setup']) }}">
                             <i class="far fa-file"></i> {{ $item->title }}
                         </a>
                     </td>
@@ -36,8 +36,8 @@
                     </td>
                     <td class="align-middle" style="width: 11%">
                         <div class="btn-group btn-group-sm">
-                            <button type="button" class="btn btn-danger"><i class="fas fa-cog"></i> Action</button>
-                            <button type="button" class="btn btn-danger dropdown-toggle dropdown-icon" data-toggle="dropdown">
+                            <button type="button" class="btn btn-sm btn-danger"><i class="fas fa-cog"></i> Action</button>
+                            <button type="button" class="btn btn-sm btn-danger dropdown-toggle dropdown-icon" data-toggle="dropdown">
                                 <span class="sr-only">Toggle Dropdown</span>
                             </button>
                             <div class="dropdown-menu dropdown-menu-right">

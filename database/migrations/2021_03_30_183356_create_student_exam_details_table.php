@@ -18,6 +18,7 @@ class CreateStudentExamDetailsTable extends Migration
             $table->string('time_start');
             $table->bigInteger('assessment_id');
             $table->bigInteger('student_information_id');
+            $table->integer('score')->nullable();
             $table->bigInteger('assessment_outcome')->comment('1 pass 0 is fail');
             $table->tinyInteger('status')->comment('1-student started exam, 2-not started, 3 done');
             $table->timestamps();

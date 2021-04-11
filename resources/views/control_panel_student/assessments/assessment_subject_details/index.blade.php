@@ -21,24 +21,43 @@
                 <span class="text-red"><i>{{ $ClassSubjectDetail->subject->subject }}</i></span>
             </h5>
         </div>
+        <div class="card-header p-2">
+            {{-- <h5 class="float-right pt-2 pr-2">
+                Subject: <span class="text-red"><i>{{ $ClassSubjectDetail->subject->subject }}</i></span>
+            </h5> --}}
+            <ul class="nav nav-pills">
+                <li class="nav-item">
+                    <a class="nav-link {{ $tab ? $tab == 'new' ? 'active' : '' : '' }}"
+                        href="{{ route('student.assessment.subject.details', [encrypt($ClassSubjectDetail->id), 'tab' => 'new']) }}">
+                        New
+                    </a>
+                </li>
+                <li class="nav-item ">
+                    <a class="nav-link {{ $tab ? $tab == 'old' ? 'active' : '' : '' }}"
+                    href="{{ route('student.assessment.subject.details', [encrypt($ClassSubjectDetail->id), 'tab' => 'old']) }}">
+                        Old
+                    </a>
+                </li>
+            </ul>
+        </div>
         <div class="card-header">
-                <div class="col-md-8 m-auto">
-                    <h6 class="box-title">Search</h6>
-                    <form id="js-form_search">
-                        {{ csrf_field() }}
-                        <div class="row">
-                            <div class="col-md-9 m-auto">
-                                <div id="js-form_search" class="form-group" style="padding-left:0;padding-right:0">
-                                    <input type="text" class="form-control form-control-sm" name="search">
-                                </div>
-                            </div>
-                            <div class="col-md-3">
-                                <button type="submit" class="btn btn-sm btn-success">Search</button>
+            <div class="col-md-8 m-auto">
+                <h6 class="box-title">Search</h6>
+                <form id="js-form_search">
+                    {{ csrf_field() }}
+                    <div class="row">
+                        <div class="col-md-9 m-auto">
+                            <div id="js-form_search" class="form-group" style="padding-left:0;padding-right:0">
+                                <input type="text" class="form-control form-control-sm" name="search">
                             </div>
                         </div>
-                    </form>
-                </div>
+                        <div class="col-md-3">
+                            <button type="submit" class="btn btn-sm btn-success">Search</button>
+                        </div>
+                    </div>
+                </form>
             </div>
+        </div>
         <div class="card-body">
             <div class="tab-content">
                 <div class="row">

@@ -180,6 +180,6 @@
     </div>
     
     <div class="modal-footer">
-        <button type="submit" class="btn btn-primary"><i class="far fa-save fa-lg"></i> {{ $Assessment != null ? 'Update' : 'Save' }}</button>
+        <button type="submit" class="btn btn-sm btn-primary"><i class="far fa-save fa-lg"></i> {{ $Assessment != null ? 'Update' : 'Save' }}</button>
     </div>
 </form>

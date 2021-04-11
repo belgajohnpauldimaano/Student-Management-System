@@ -34,6 +34,7 @@ trait HasInstruction{
         }
         
         return $result = $query;
-
     }
+
+    
 }

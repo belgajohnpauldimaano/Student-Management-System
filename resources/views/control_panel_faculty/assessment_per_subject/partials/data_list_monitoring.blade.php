@@ -23,7 +23,7 @@
                 <thead>
                     <th>No.</th>
                     <th>Student Name</th>
-                    <th>Grades</th>
+                    <th>Score</th>
                     <th>Start Time</th>
                     <th>Status</th>
                     <th class="text-center">Action</th>

@@ -78,19 +78,30 @@ $('body').on('click', '#js-button-take', function (e) {
     alertify.defaults.theme.cancel = "btn btn-sm btn-danger";
     alertify.confirm('Reminder', 'The time will start when you take the assessment. Take the assessment? ', function () {
 
-        // $.ajax({
-        //     url : "student-take-assessment?class_subject_details_id="+id, 
-        //     type : 'POST',
-        //     data : { _token : '{{ csrf_token() }}', id : id },
-        //     success : function (res) {
-        //         $('.js-modal_holder').html(res);
-        //         $('.js-modal_holder .modal').modal({ backdrop : 'static' });
+        $.ajax({
+            url: "/student/assessment/subject/" + id + "/take-assessment",
+            type: 'POST',
+            data: { _token: $('input[name=_token]').val(), id: id },
+            success: function success(res) {
+                if (res.res_code == 1) {
+                    show_toast_alert({
+                        heading: 'Error',
+                        message: res.res_msg,
+                        type: 'error'
+                    });
+                } else {
+                    // show_toast_alert({
+                    //     heading : 'Success',
+                    //     message : res.res_msg,
+                    //     type    : 'success'
+                    // });
 
-
-        //     }
-        // });
-        var url = "take-assessment?id=" + id;
-        window.location.href = url;
+                    // var url = location.protocol + '//' + location.host + "/student/assessment/subject/"+res.id+"/subject-details";
+                    var url = "redirect-assessment?id=" + id;
+                    window.location.href = url;
+                }
+            }
+        });
     }, function () {});
 });
 

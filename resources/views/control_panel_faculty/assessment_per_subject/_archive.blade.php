@@ -7,7 +7,7 @@
 @section ('content')
     <div class="card card-default">
         <div class="col-md-12">
-            <a href="{{ route('faculty.question', [encrypt($Assessment->id), 'tab' => 'questions'] ) }}" style="margin-top: -3em" class="btn-success btn float-right">
+            <a href="{{ route('faculty.question', [encrypt($Assessment->id), 'tab' => 'questions'] ) }}" style="margin-top: -3em" class="btn-success btn btn-sm float-right">
                 <i class="fas fa-arrow-left"></i> back
             </a>
         </div>
@@ -49,8 +49,8 @@
                                         </td>
                                         <td>
                                             <div class="btn-group btn-group-sm">
-                                                <button type="button" class="btn btn-success"><i class="fas fa-cog"></i> Action</button>
-                                                <button type="button" class="btn btn-success dropdown-toggle dropdown-icon" data-toggle="dropdown">
+                                                <button type="button" class="btn btn-sm btn-success"><i class="fas fa-cog"></i> Action</button>
+                                                <button type="button" class="btn btn-sm btn-success dropdown-toggle dropdown-icon" data-toggle="dropdown">
                                                     <span class="sr-only">Toggle Dropdown</span>
                                                 </button>
                                                 <div class="dropdown-menu dropdown-menu-right">
@@ -208,8 +208,8 @@
                 e.preventDefault();
                 var id = $(this).data('id');
                 alertify.defaults.transition = "slide";
-                alertify.defaults.theme.ok = "btn btn-primary ";
-                alertify.defaults.theme.cancel = "btn btn-danger ";
+                alertify.defaults.theme.ok = "btn btn-sm btn-primary ";
+                alertify.defaults.theme.cancel = "btn btn-sm btn-danger ";
                 alertify.confirm('Confirmation', 'Are you sure you want to move this as active?', function(){  
                     $.ajax({
                         url         : "{{ route('faculty.question.active', $ClassSubjectDetail->id) }}",
@@ -248,8 +248,8 @@
                 e.preventDefault();
                 var id = $(this).data('id');
                 alertify.defaults.transition = "slide";
-                alertify.defaults.theme.ok = "btn btn-primary ";
-                alertify.defaults.theme.cancel = "btn btn-danger ";
+                alertify.defaults.theme.ok = "btn btn-sm btn-primary ";
+                alertify.defaults.theme.cancel = "btn btn-sm btn-danger ";
                 alertify.confirm('Confirmation', 'Are you sure you want to delete this question?', function(){  
                     $.ajax({
                         url         : "{{ route('faculty.question.delete', $ClassSubjectDetail->id) }}",
@@ -290,8 +290,8 @@
                 var id = $(this).data('id');
                 var toggle_title = $(this).data('toggle_title');
                 alertify.defaults.transition = "slide";
-                alertify.defaults.theme.ok = "btn btn-primary ";
-                alertify.defaults.theme.cancel = "btn btn-danger ";
+                alertify.defaults.theme.ok = "btn btn-sm btn-primary ";
+                alertify.defaults.theme.cancel = "btn btn-sm btn-danger ";
                 alertify.confirm('Confirmation', 'Are you sure you want to '+toggle_title+' ?', function(){  
                     $.ajax({
                         url         : "{{ route('finance.maintenance.disc_fee.toggle_current_sy') }}",

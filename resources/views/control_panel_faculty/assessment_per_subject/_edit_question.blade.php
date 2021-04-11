@@ -7,7 +7,7 @@
 @section ('content')
     <div class="card card-default">
         <div class="col-md-12">
-            <a href="{{ route('faculty.question', [encrypt($Assessment->id), 'tab' => 'questions'] ) }}" style="margin-top: -3em" class="btn-success btn float-right">
+            <a href="{{ route('faculty.question', [encrypt($Assessment->id), 'tab' => 'questions'] ) }}" style="margin-top: -3em" class="btn-success btn btn-sm float-right">
                 <i class="fas fa-arrow-left"></i> back
             </a>
         </div>
@@ -143,7 +143,7 @@
                 </div>
             </div>
             <div class="card-footer clearfix">
-                <button type="submit" class="btn btn-danger float-right">
+                <button type="submit" class="btn btn-sm btn-danger float-right">
                     <i class="fas fa-save"></i> Update
                 </button>
             </div>

@@ -1,6 +1,6 @@
 <div class="float-right" style="margin-top: -.5em">
     @if($Assessment != null)
-        <a href="{{ route('faculty.question', [encrypt($Assessment->id), 'tab' => 'questions'] ) }}" class="btn btn-info">
+        <a href="{{ route('faculty.question', [encrypt($Assessment->id), 'tab' => 'questions'] ) }}" class="btn btn-sm btn-sm btn-info">
             <i class="far fa-eye fa-lg"></i> Preview
         </a>
     @endif
@@ -21,7 +21,7 @@
     </select>
     <div class="help-block text-red" id="js-question_type"></div>
     <div class="mt-1 float-right">
-        <button type="button" id="btn-question-type-selected" class="btn btn-primary">
+        <button type="button" id="btn-question-type-selected" class="btn btn-sm btn-primary">
             <i class="far fa-hand-pointer fa-lg"></i> Select
         </button>
     </div>
@@ -109,7 +109,7 @@
                        
                     </div>
                     <div class="card-footer clearfix">
-                        <button type="submit" class="btn btn-primary float-right">
+                        <button type="submit" class="btn btn-sm btn-primary float-right">
                             <i class="fas fa-save"></i> Save
                         </button>
                     </div>
