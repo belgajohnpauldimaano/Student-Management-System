@@ -14,4 +14,22 @@ class StudentExamDetails extends Model
         'assessment_outcome',
         'status'
     ];
+
+    public function getStudentStatusAttribute()
+    {
+        $status = [
+            '',
+            'on-going', 
+            'published', 
+            'archived' 
+        ];
+
+        $color = [
+            '',
+            'success', 
+            'info', 
+            'danger' 
+        ];
+        return '<span class="badge bg-'.$color[$this->status].'">'.$status[$this->status].'</span>';
+    }
 }

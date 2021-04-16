@@ -2,6 +2,7 @@
 namespace App\Traits;
 
 use App\Models\Question;
+use App\Models\Assessment;
 use App\Models\Instruction;
 use App\Models\AnswerOption;
 use App\Models\QuestionAnswer;
@@ -29,12 +30,14 @@ trait HasInstruction{
         $query = $this->hasMany(Question::class, 'assessment_id', 'instructionable_id')
             ->whereQuestionType($this->question_type)
             ->where('status', 1);
-        if($this->randomly_ordered == 1){
-            $query->inRandomOrder();
-        }
+
+            $random = Assessment::whereId($this->instructionable_id)->first();
+            
+            if($random->randomly_ordered == 1){
+                $query->inRandomOrder();
+            }
         
         return $result = $query;
     }
-
     
 }

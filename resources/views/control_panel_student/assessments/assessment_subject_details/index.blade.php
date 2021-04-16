@@ -40,12 +40,12 @@
                 </li>
             </ul>
         </div>
-        <div class="card-header">
+        {{-- <div class="card-header"> --}}
             <div class="col-md-8 m-auto">
-                <h6 class="box-title">Search</h6>
+                {{-- <h6 class="box-title">Search</h6> --}}
                 <form id="js-form_search">
                     {{ csrf_field() }}
-                    <div class="row">
+                    {{-- <div class="row">
                         <div class="col-md-9 m-auto">
                             <div id="js-form_search" class="form-group" style="padding-left:0;padding-right:0">
                                 <input type="text" class="form-control form-control-sm" name="search">
@@ -54,10 +54,10 @@
                         <div class="col-md-3">
                             <button type="submit" class="btn btn-sm btn-success">Search</button>
                         </div>
-                    </div>
+                    </div> --}}
                 </form>
             </div>
-        </div>
+        {{-- </div> --}}
         <div class="card-body">
             <div class="tab-content">
                 <div class="row">

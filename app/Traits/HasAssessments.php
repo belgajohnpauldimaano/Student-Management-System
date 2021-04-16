@@ -12,29 +12,7 @@ use App\Models\ClassSubjectDetail;
 use App\Models\StudentExamDetails;
 
 trait HasAssessments{
-    public function getExamPeriodBadgeAttribute(){
-        if($this->period == 1){
-            return '<span class="badge bg-success">Prelims</span>';
-        }
-        if($this->period == 2){
-            return '<span class="badge bg-primary">Midterms</span>';
-        }
-        if($this->period == 3){
-            return '<span class="badge bg-info">Finals</span>';
-        }
-    }
-
-    public function getExamStatusBadgeAttribute(){
-        if($this->exam_status == 0){
-            return '<span class="badge bg-danger">Unpublish</span>';
-        }
-        if($this->exam_status == 1){
-            return '<span class="badge bg-success">Publish</span>';
-        }
-        if($this->exam_status == 2){
-            return '<span class="badge bg-warning">Archive</span>';
-        }
-    }
+    
 
     public function getQuestionAttribute(){
         $question_type = [
@@ -78,7 +56,7 @@ trait HasAssessments{
 
     public function enrolled()
     {
-        return $this->hasOneThrough(Enrollment::class, 'class_details_id', 'id');
+        return $this->hasOne(Enrollment::class, 'class_details_id', 'id');
     }
 
     // public function assessment()
@@ -88,9 +66,7 @@ trait HasAssessments{
 
     public function assessments($id)
     {
-        return Assessment::leftJoin('student_exam_details', 'student_exam_details.assessment_id', '=', 'assessments.id')
-            ->select('assessments.*','student_exam_details.status','student_exam_details.assessment_id','student_exam_details.assessment_outcome')
-            ->whereClassSubjectDetailsId($id)
+        return Assessment::whereClassSubjectDetailsId($id)
             ->orderBY('id', 'desc');
     }
 

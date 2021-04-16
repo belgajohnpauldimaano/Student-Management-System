@@ -4,9 +4,11 @@ namespace App\Http\Controllers\Control_Panel_Student;
 
 use Carbon\Carbon;
 use App\Models\Assessment;
+use App\Models\Enrollment;
 use App\Models\Instruction;
 use Illuminate\Http\Request;
 use App\Traits\HasGradeLevel;
+use App\Traits\HasGradeSheet;
 use App\Traits\HasSchoolYear;
 use App\Traits\HasAssessments;
 use App\Traits\HasStudentDetails;
@@ -18,26 +20,6 @@ class AssessmentController extends Controller
 {
     use HasStudentDetails, HasSchoolYear, HasGradeLevel, HasAssessments;
 
-    private function assessmentStudent($id, $tab)
-    {
-        $query = Assessment::join('class_subject_details', 'class_subject_details.class_details_id', '=', 'assessments.class_subject_details_id')
-            ->leftJoin('student_exam_details', 'student_exam_details.assessment_id', '=', 'assessments.id')
-            ->select('assessments.*','student_exam_details.status','student_exam_details.assessment_id','student_exam_details.assessment_outcome')
-            ->whereClassSubjectDetailsId($id)
-            ->orderBY('id', 'desc');
-            
-        if($tab == 'new')
-        {
-            $query->orWhere('student_exam_details.status','!=', 3);
-        }
-
-        if($tab == 'old')
-        {
-            $query->Where('student_exam_details.status', 3);
-        }
-
-        return $query;
-    }
     
     public function index(Request $request)
     {
@@ -59,18 +41,55 @@ class AssessmentController extends Controller
     public function subject(Request $request)
     {
         $tab = $request->tab;
+        $dt =  Carbon::now();
+        // return json_encode($dt);
+
         if($tab == null)
         {
             $tab = 'new';
         }
+        
         $id = Crypt::decrypt($request->id);
         $ClassSubjectDetail = $this->subjectDetails($id);
+        $StudentInformation = $this->student()->id;
+
+        $query = Enrollment::join('class_subject_details', 'class_subject_details.class_details_id', '=', 'enrollments.class_details_id')
+            ->join('assessments', 'assessments.class_subject_details_id', '=', 'class_subject_details.id')
+            // ->leftJoin('student_exam_details', 'student_exam_details.assessment_id', '=', 'assessments.id')
+            ->where('class_subject_details.id', $id)
+            ->where('enrollments.student_information_id', $StudentInformation)
+            ->select('class_subject_details.id as class_subject_details_id',
+                'assessments.id as assessment_id','assessments.period', 'assessments.date_time_publish','assessments.exam_status',
+                'assessments.date_time_expiration','assessments.attempt_limit','assessments.title'
+                // 'student_exam_details.status','student_exam_details.assessment_id',
+                // 'student_exam_details.assessment_outcome'
+            )
+            ->orderBY('assessments.id', 'desc');
         
-        $Assessment = $this->assessmentStudent($id, $tab)->whereExamStatus(1)->paginate(10);
-        
-        // return json_encode($ClassSubjectDetail);
+        try {
+            if($query->first()->assessment_id){
+                if($tab == 'new')
+                {
+                    // $query->where('student_exam_details.status','!=', 3);
+                        // $query->where('assessments.date_time_publish','>=', $dt->toDateTimeString());
+                        // $query->where('assessments.date_time_expiration','<=', $dt->toDateTimeString());
+                }
+
+                if($tab == 'old')
+                {
+                    // $query->orWhere('student_exam_details.status', 3);
+                }
+            }
+        } catch (\Throwable $th) {
+            //throw $th;
+        }
+       
+
+        $Assessment = $query->whereExamStatus(1)->paginate(10);
+
+        // return json_encode($Assessment);
         return view('control_panel_student.assessments.assessment_subject_details.index',
-            compact('ClassSubjectDetail', 'Assessment', 'tab'));
+            compact('ClassSubjectDetail', 'Assessment', 'tab', 'dt'));
     }
 
     public function getAssessmentData($id)
@@ -81,40 +100,39 @@ class AssessmentController extends Controller
             'assessment'   => $Assessment
         ], 200);
     }
-    
-    private $StudentInformation;
+    // private $StudentInformation;
 
     private function examStudentDetail($assessment_id)
     {
-        $this->StudentInformation = $this->student()->id;
+        $StudentInformation = $this->student()->id;
         return  StudentExamDetails::where('assessment_id', $assessment_id)
-            ->where('student_information_id', $this->StudentInformation)->first();
+            ->where('student_information_id', $StudentInformation)->first();
     }
 
     private function saveAssessmentDetails($id)
     {
+        $StudentInformation = $this->student()->id;
         $dt = Carbon::now();
-        $assessment = $this->assessments($id)->first();
-        $student_exam = $this->examStudentDetail($assessment->id);
+        // $assessment = $this->assessments($id)->first();
+        $student_exam = $this->examStudentDetail($id);
 
         if(!$student_exam)
         {
             $student_exam = new StudentExamDetails;
             $student_exam->time_start               =   $dt->toDateTimeString();
-            $student_exam->assessment_id            =   $assessment->id;
-            $student_exam->student_information_id   =   $this->StudentInformation;
+            $student_exam->assessment_id            =   $id;
+            $student_exam->student_information_id   =   $StudentInformation;
             $student_exam->assessment_outcome       =   2;
             $student_exam->status                   =   1;
             $student_exam->save();
         }
-        
     }
 
     public function takeAssessment(Request $request)
     {
         $id = Crypt::decrypt($request->id);
         // return json_encode($instructions);
-        $assessment = $this->assessments($id)->first();
+        // $assessment = $this->assessmentData($id)->first();
         $student_exam = $this->examStudentDetail($id);
         // return json_encode($student_exam);
         // return json_encode($this->StudentInformation);
@@ -133,19 +151,33 @@ class AssessmentController extends Controller
         }
         // return response
         return response()->json([
-            'id'        =>  encrypt($id)
+            'id'  =>  encrypt($id)
         ],200);
     }
-
-   
 
     public function redirectAssessment(Request $request, $id)
     {
         $id = Crypt::decrypt($request->id);
-        $ClassSubjectDetail = $this->subjectDetails($id);
-        $Assessment = $this->assessments($id)->whereExamStatus(1)->first();
-        $instructions = Instruction::whereInstructionableId($Assessment->id)->get();
-        
-        return view('control_panel_student.assessments.assessment_questions.index', compact('ClassSubjectDetail','Assessment','instructions'));
+        $Assessment = $this->assessmentData($id);
+        // $Assessment = $this->assessments($id)->whereExamStatus(1)->first();
+        $student_exam = $this->examStudentDetail($id);
+        $ClassSubjectDetail = $this->subjectDetails($Assessment->class_subject_details_id);
+        $instructions = Instruction::whereInstructionableId($id)->get();
+
+        // return json_encode($instructions);
+        return view('control_panel_student.assessments.assessment_questions.index', 
+            compact('ClassSubjectDetail','Assessment','instructions', 'student_exam'));
+    }
+
+    private function assessmentData($id)
+    {
+        return Assessment::whereId($id)->whereExamStatus(1)->first();
+    }
+
+    public function save(Request $request)
+    {
+        return response()->json([
+            'you save your work!'
+        ],200);
     }
 }

@@ -7,43 +7,24 @@
         <thead>
             <tr>
                 <th>Assessment Name</th>
-                <th>Exam Period</th>
-                <th>Date Publish</th>
-                <th>Date Expiration</th>
-                <th>Status</th>
-                <th>Actions</th>
+                <th class="text-center">Exam Period</th>
+                <th class="text-center">Date Publish</th>
+                <th class="text-center">Date Expiration</th>
+                <th class="text-center">Status</th>
+                <th class="text-center">Actions</th>
             </tr>
         </thead>
         <tbody>
             @forelse ($Assessment as $item)
-                <tr>
-                    <td class="align-middle">
-                        <i class="far fa-file"></i> {{ $item->title }}
-                    </td>
-                    <td class="align-middle" style="width: 11%">
-                        {!! $item->exam_period_badge !!}
-                    </td>
-                    <td class="align-middle" style="width: 15%">
-                        {{ $item->date_time_publish }}
-                    </td>
-                    <td class="align-middle" style="width: 15%">
-                        {{ $item->date_time_expiration }}
-                    </td>
-                    <td class="align-middle" style="width: 5%">
-                        {!! $item->exam_status_badge !!}
-                    </td>
-                    <td class="align-middle" style="width: 15%">
-                        @if($item->status != 3)
-                            <a href="#" data-id="{{ encrypt($item->class_subject_details_id) }}" type="button" class="btn btn-sm btn-danger" id="js-button-take">
-                                <i class="fas fa-edit nav-icon"></i> Take Assessment
-                            </a>
-                        @else
-                            <a href="#" data-id="{{ encrypt($item->class_subject_details_id) }}" type="button" class="btn btn-sm btn-primary" id="js-button-take">
-                                <i class="fas fa-eye nav-icon"></i> View
-                            </a>
-                        @endif
-                    </td>
-                </tr>
+                @if($tab == 'new')
+                    @if($dt->between($item->date_time_publish, $item->date_time_expiration, true))
+                        @include('control_panel_student.assessments.assessment_subject_details.partials.data_table')
+                    @endif
+                @else
+                    @if($item->date_time_expiration < $dt->toDateTimeString())
+                        @include('control_panel_student.assessments.assessment_subject_details.partials.data_table')
+                    @endif
+                @endif
             @empty
                 <tr>
                     <th colspan="6" class="text-center">

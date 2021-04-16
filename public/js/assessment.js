@@ -218,7 +218,6 @@ $('body').on('submit', '#js-instruction-form', function (e) {
                 // url = url.replace('slug', slug);
                 var url = location.protocol + '//' + location.host + "/faculty/assessment/subject/questions/" + assessment_id;
                 window.location.href = url;
-
                 // fetch_data();
             }
         }

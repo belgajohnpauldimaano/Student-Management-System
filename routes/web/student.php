@@ -31,6 +31,7 @@ Route::group(['prefix' => 'student', 'middleware' => ['auth', 'userroles'], 'rol
             Route::post('take-assessment', 'AssessmentController@takeAssessment')->name('student.take.assessment');
             Route::post('redirect-assessment', 'AssessmentController@redirectAssessment')->name('student.redirect.assessment');
             Route::get('redirect-assessment', 'AssessmentController@redirectAssessment')->name('student.redirect.assessment');
+            Route::post('save-data', 'AssessmentController@save')->name('student.save.assessment');
         });
         
         // Route::post('paypal', 'PaymentController@payWithpaypal');

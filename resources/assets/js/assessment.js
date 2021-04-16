@@ -3,7 +3,6 @@ var class_subject_detail_id = $('#class_subject_detail_id').val();
 var page = $('#tab').val();
 
 
-
 var attempt = 0;
 // monitoring get student assessment data status
 if(page == 'monitoring'){
@@ -190,7 +189,6 @@ $('body').on('submit', '#js-instruction-form', function (e) {
                 // url = url.replace('slug', slug);
                 var url = location.protocol + '//' + location.host + "/faculty/assessment/subject/questions/"+assessment_id;
                 window.location.href = url;
-                
                 // fetch_data();
             }
         }

@@ -13,6 +13,7 @@ use App\Traits\HasAssessments;
 use App\Traits\HasInstruction;
 use App\Traits\HasFacultyDetails;
 use App\Models\ClassSubjectDetail;
+use App\Models\StudentExamDetails;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Crypt;
 
@@ -108,55 +109,58 @@ class AssessmentSubjectController extends Controller
         $now = time(); // start time
         $attempt=1;
 
+        $id = $Assessment->class_subject_details_id;
+        $assessment_id = $Assessment->id;
+
+            $student_male = $this->enrollmentInfo($id, $assessment_id)->where('student_informations.gender', 1)->get();
+            $student_female = $this->enrollmentInfo($id, $assessment_id)->where('student_informations.gender', 2)->get();
+
+            $student_male = $student_male->map(function($item, $key) use ($id, $assessment_id){
+                return $this->studentData($item, $assessment_id);
+            });
+
+            $student_female = $student_female->map(function($item, $key) use ($id, $assessment_id){
+                return $this->studentData($item, $assessment_id);
+            });
+            
+
         // loop for $timeout seconds from $now until we get $data
         while((time() - $now) < $timeout) {
-            // fetch $data
-            $student_male  =  $this->enrollmentInfo($Assessment->class_subject_details_id)
-                ->where('student_informations.gender', 1)->get();
-            $student_female =  $this->enrollmentInfo($Assessment->class_subject_details_id)
-                ->where('student_informations.gender', 2)->get();
-            $student = $this->enrollmentInfo($Assessment->class_subject_details_id)->get();
-
-            return json_encode($student);
-                // if($data->exam_status != null)
-                // {
-                //     $attempt ++;
-                //     return response()->json([
-                //         'student_male'      => $student_male,
-                //         'student_female'    => $student_female,
-                //         'question_total'    => $question_total,
-                //         'assess_data'       => $Assessment
-                //     ], 200);
-                    
-                // }
-                // else
-                // {
-                //     usleep(20000);
-                //     // sleep(2);
-                // }
-
-                // break;
-                // usleep(20000);
-            
-
-            // if we got $data, break the loop
-            // if (!empty($student)) break;
-            
-            // wait 1 sec to check for new $data
-            // usleep(20000);
+            return response()->json([
+                'student_male'      => $student_male,
+                'student_female'    => $student_female,
+                'question_total'    => $question_total,
+                'assess_data'       => $Assessment
+            ], 200);
         }
+    }
 
-        // if (!empty($student)) $student = array('status'=>null);
+    private function studentData($item, $assessment_id)
+    {
+        $student_exam_detail = StudentExamDetails::where('assessment_id', $assessment_id)
+                ->where('student_information_id', $item->student_information_id)->first();
+        $status;
+        $time_start;
 
-        // return response()->json([
-        //     'student_male'      => $student_male,
-        //     'student_female'    => $student_female,
-        //     'question_total'    => $question_total,
-        //     'assess_data'       => $Assessment
-        // ], 200);
-
-        // session_write_close();
-       
+        try {
+            $status = $student_exam_detail->status == null ? 2 : $student_exam_detail->status;
+            $time_start = $student_exam_detail->time_start == null ? '0:00' : $student_exam_detail->time_start;
+        } catch (\Throwable $th) {
+            $status = 2;
+            $time_start = '0:00';
+        }
+        
+        $data = [
+            'class_details_id'  =>  $item->class_details_id,
+            'exam_status'       =>  $status,
+            'first_name'        =>  $item->first_name,
+            'middle_name'       =>  $item->middle_name,
+            'last_name'         =>  $item->last_name,
+            'status'            =>  $item->status,
+            'time_start'        =>  $time_start,
+            'gender'            =>  $item->gender
+        ];
+        return $data;
     }
     
     public function save(Request $request){

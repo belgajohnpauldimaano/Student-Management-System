@@ -93,23 +93,26 @@ trait HasGradeSheet{
         return $this->hasOne(StudentEnrolledSubject::class, 'class_subject_details_id', 'class_subject_details_id');
     }
 
-    private function enrollmentInfo($id)
+    private function enrollmentInfo($id, $assessment_id)
     {
-        return Enrollment::join('class_subject_details', 'class_subject_details.class_details_id', '=', 'enrollments.class_details_id')
+        $student = Enrollment::join('class_subject_details', 'class_subject_details.class_details_id', '=', 'enrollments.class_details_id')
             ->join('class_details', 'class_details.id', '=', 'class_subject_details.class_details_id')
+            ->join('assessments', 'assessments.class_subject_details_id', '=', 'class_subject_details.id')
             ->join('student_informations', 'student_informations.id', '=', 'enrollments.student_information_id')
-            ->leftJoin('student_exam_details', 'student_exam_details.student_information_id', '=', 'enrollments.student_information_id')
             ->select(
-                'student_informations.id', 
+                'student_informations.id as student_information_id', 
                 'student_informations.first_name', 'student_informations.middle_name', 'student_informations.last_name',
-                'student_informations.gender', 'student_informations.status', 'enrollments.id', 'enrollments.class_details_id',
-                'student_exam_details.status as exam_status', 'student_exam_details.time_start'
-                )
+                'student_informations.gender', 'student_informations.status', 
+                'enrollments.id', 'enrollments.class_details_id'
+            )
             ->with('faculty')
             ->orderBy('student_informations.last_name', 'ASC')
+            ->where('assessments.id', $assessment_id)
             ->where('class_subject_details.id', $id)
             ->where('enrollments.status', 1)
             ->where('student_informations.status', 1);
+            
+        return $student;        
     }
 
 }
