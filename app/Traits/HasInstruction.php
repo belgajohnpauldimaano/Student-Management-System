@@ -6,6 +6,7 @@ use App\Models\Assessment;
 use App\Models\Instruction;
 use App\Models\AnswerOption;
 use App\Models\QuestionAnswer;
+use App\Models\StudentExamRecord;
 
 trait HasInstruction{
     
@@ -23,6 +24,10 @@ trait HasInstruction{
 
     public function options(){
         return $this->hasMany(AnswerOption::class, 'question_id')->orderBy('order_number', 'ASC');
+    }
+
+    public function studentAnswerRecord(){
+        return $this->hasOne(StudentExamRecord::class, 'question_id', 'id')->orderBy('id', 'ASC');
     }
 
     public function questions(){

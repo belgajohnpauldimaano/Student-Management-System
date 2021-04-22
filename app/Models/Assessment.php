@@ -26,4 +26,6 @@ class Assessment extends Model
     ];
 
     use HasAssessments;
+
+    
 }

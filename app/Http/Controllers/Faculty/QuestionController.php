@@ -214,12 +214,12 @@ class QuestionController extends Controller
                         
                         $questionAnswerArray = [];
                         foreach ($correct_answer as $key => $value) {
-                            $questionAnswerArray[$key]['question_id'] = ($question->id + $key);
-                            $questionAnswerArray[$key]['correct_option_answer'] = $value;
-                            $questionAnswerArray[$key]['points_per_question'] = $points_per_question[$key];
-                            $questionAnswerArray[$key]['order_number'] = 1;
-                            $questionAnswerArray[$key]['created_at'] = Carbon::now();
-                            $questionAnswerArray[$key]['updated_at'] = Carbon::now();
+                            $questionAnswerArray[$key]['question_id']           =   ($question->id + $key);
+                            $questionAnswerArray[$key]['correct_option_answer'] =   $value;
+                            $questionAnswerArray[$key]['points_per_question']   =   $points_per_question[$key];
+                            $questionAnswerArray[$key]['order_number']          =   1;
+                            $questionAnswerArray[$key]['created_at']            =   Carbon::now();
+                            $questionAnswerArray[$key]['updated_at']            =   Carbon::now();
                         }
                         QuestionAnswer::insert($questionAnswerArray);
 

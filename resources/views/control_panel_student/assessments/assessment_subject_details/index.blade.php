@@ -25,6 +25,7 @@
             {{-- <h5 class="float-right pt-2 pr-2">
                 Subject: <span class="text-red"><i>{{ $ClassSubjectDetail->subject->subject }}</i></span>
             </h5> --}}
+            <input type="hidden" id="tab" value="{{ $tab}}">
             <ul class="nav nav-pills">
                 <li class="nav-item">
                     <a class="nav-link {{ $tab ? $tab == 'new' ? 'active' : '' : '' }}"

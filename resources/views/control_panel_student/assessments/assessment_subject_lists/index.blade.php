@@ -27,23 +27,4 @@
 
 @section ('scripts')
 
-    {{-- <script>
-        var page = 1;
-        function fetch_data () {
-            var formData = new FormData($('#js-form_search')[0]);
-            formData.append('page', page);
-            loader_overlay();
-            $.ajax({
-                url : "student-assessment-subject-list",
-                type : 'POST',
-                data : formData,
-                processData : false,
-                contentType : false,
-                success     : function (res) {
-                    loader_overlay();
-                    $('.js-data-container').html(res);
-                }
-            });
-        }
-    </script> --}}
 @endsection

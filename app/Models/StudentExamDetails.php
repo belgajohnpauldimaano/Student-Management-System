@@ -2,16 +2,17 @@
 
 namespace App\Models;
 
+use App\Models\Assessment;
 use Illuminate\Database\Eloquent\Model;
 
 class StudentExamDetails extends Model
 {
     protected $fillable = [
-        'student_information_id',
-        'assessment_id',
         'time_start',
+        'assessment_id',
         'student_information_id',
         'assessment_outcome',
+        'score',
         'status'
     ];
 
@@ -20,8 +21,8 @@ class StudentExamDetails extends Model
         $status = [
             '',
             'on-going', 
-            'published', 
-            'archived' 
+            'pending', 
+            'done' 
         ];
 
         $color = [
@@ -32,4 +33,6 @@ class StudentExamDetails extends Model
         ];
         return '<span class="badge bg-'.$color[$this->status].'">'.$status[$this->status].'</span>';
     }
+
+    
 }

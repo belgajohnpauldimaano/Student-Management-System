@@ -137,7 +137,11 @@
                                                                 <div class="col-md-6">
                                                                     <div class="form-group clearfix mt-3">
                                                                         <div class="icheck-{{ $item->answerMultipleChoice->correct_option_answer == $key+1 ? 'success' : 'danger' }} d-inline">
-                                                                            <input type="radio" {{ $item->answerMultipleChoice->correct_option_answer == $key+1 ? 'checked' : '' }} name="options_answer[{{ $item->id }}]" id="option-{{ $option->id }}" value="{{ $option->order_number }}">
+                                                                            <input type="radio" {{ $item->answerMultipleChoice->correct_option_answer == $key+1 ? 'checked' : '' }} 
+                                                                                name="options_answer[{{ $item->id }}]" 
+                                                                                id="option-{{ $option->id }}" 
+                                                                                value="{{ $option->order_number }}"
+                                                                            >
                                                                             <label for="option-{{ $option->id }}">
                                                                                 {{ $option->option_title }}
                                                                             </label>

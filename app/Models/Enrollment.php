@@ -6,6 +6,7 @@ use App\Traits\HasUser;
 use App\Models\ClassDetail;
 use App\Traits\HasGradeSheet;
 use App\Traits\HasTransaction;
+use App\Models\StudentExamDetails;
 use App\Models\TransactionMonthPaid;
 use App\Models\StudentEnrolledSubject;
 use Illuminate\Database\Eloquent\Model;
@@ -54,4 +55,32 @@ class Enrollment extends Model
     //     return $this->hasOne(TransactionMonthPaid::class, 'student_id', 'id')->whereApproval('Approved')->latest();
     // }
     
+    public function getAssessmentButtonAttribute()
+    {
+        $query = StudentExamDetails::where('assessment_id', $this->assessment_id)->where('student_information_id', $this->student_information_id)->first();
+        
+        try {
+            if($query->status != 3)
+            {
+                $result = '<a href="#" data-id="'.encrypt($query->assessment_id).'" 
+                    type="button" class="btn btn-sm btn-danger" id="js-button-take">
+                    <i class="fas fa-edit nav-icon"></i> Take Assessment
+                </a>';
+            }else{
+                $result = '<a href="#" data-id="'.encrypt($query->assessment_id).'" 
+                type="button" class="btn btn-sm btn-primary" id="js-button-view">
+                    <i class="fas fa-eye nav-icon"></i> View
+                </a>';
+            }
+        } catch (\Throwable $th) {
+                $result = '<a href="#" data-id="'.encrypt($this->assessment_id).'" 
+                    type="button" class="btn btn-sm btn-danger" id="js-button-take">
+                    <i class="fas fa-edit nav-icon"></i> Take Assessment
+                </a>';
+        }
+        
+
+        return $result;
+        
+    }
 }

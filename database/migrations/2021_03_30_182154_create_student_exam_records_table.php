@@ -18,7 +18,7 @@ class CreateStudentExamRecordsTable extends Migration
             $table->bigInteger('student_information_id');
             $table->bigInteger('assessment_id');
             $table->bigInteger('question_id');
-            $table->String('student_answer_option')->nullable();
+            $table->integer('student_answer_option')->nullable();
             $table->tinyInteger('student_answer_option_status')->default(0);
             $table->tinyInteger('remarks');
             $table->timestamps();

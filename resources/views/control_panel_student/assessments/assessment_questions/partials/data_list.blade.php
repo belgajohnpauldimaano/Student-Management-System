@@ -89,18 +89,28 @@
                                         </i>
                                         <div class="row">
                                             @foreach ($item->options as $key => $option)
-                                                <div class="col-md-6 form-student {{ $student_exam->status != 3 ? '' : ($item->answerMultipleChoice->correct_option_answer == $key+1 ? 'bg-success rounded' : '') }}" style="">
+                                                <div class="col-md-6 form-student {{ $student_exam->status != 3 ? '' : ($item->answerMultipleChoice->correct_option_answer == $key+1 ? 'correct-bg rounded' : '') }}">
                                                     <div class="form-group clearfix mt-3">
-                                                        <div class="icheck-danger d-inline ">
-                                                            <input type="radio"
-                                                              
-                                                            name="options_answer[{{ $item->id }}]" id="option-{{ $option->id }}" value="{{ $option->order_number }}">
+                                                        <div class="icheck-{{ $student_exam->status != 3 ? 'danger' : ($item->answerMultipleChoice->correct_option_answer == $key+1 ? 'success' : 'danger') }} d-inline ">                                                            
+                                                            <input type="radio" 
+                                                                {{ $student_exam->status != 3 ? '' : ($item->studentAnswerRecord->student_answer_option == $key+1 ? 'checked disabled' : 'disabled') }} 
+                                                                name="options_answer{{ $student_exam->status != 3 ? 's' : ''}}[{{ $item->id }}]" 
+                                                                id="option-{{ $option->id }}" 
+                                                                value="{{ $option->order_number }}"
+                                                            >
                                                             <label for="option-{{ $option->id }}">
                                                                 {{ $option->option_title }}
                                                             </label>
                                                         </div>
                                                     </div>
-                                                </div>
+                                                     @if(($loop->last))
+                                                        <input type="radio" hidden checked name="options_answers[{{ $item->id }}]" id="option-{{ $option->id }}-0" value="0">
+                                                    @endif
+                                                </div>    
+                                            @endforeach
+                                            @foreach ($item->options as $key => $option)
+                                                <input type="hidden" name="question_id{{ $key }}" value="{{ $option->question_id }}">
+                                                @break
                                             @endforeach
                                         </div>
                                     @endif

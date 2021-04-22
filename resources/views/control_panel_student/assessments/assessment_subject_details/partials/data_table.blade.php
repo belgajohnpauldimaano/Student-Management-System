@@ -15,16 +15,6 @@
         {!! $item->exam_status_badge !!}
     </td>
     <td class="align-middle text-center" style="width: 15%">
-        @if($item->status != 3)
-            <a href="#" data-id="{{ encrypt($item->assessment_id) }}" 
-                type="button" class="btn btn-sm btn-danger" id="js-button-take">
-                <i class="fas fa-edit nav-icon"></i> Take Assessment
-            </a>
-        @else
-            <a href="#" data-id="{{ encrypt($item->assessment_id) }}" 
-                type="button" class="btn btn-sm btn-primary" id="js-button-take">
-                <i class="fas fa-eye nav-icon"></i> View
-            </a>
-        @endif
+        {!! $item->assessment_button !!}
     </td>
 </tr>

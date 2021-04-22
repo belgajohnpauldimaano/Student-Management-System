@@ -405,7 +405,6 @@ function examType(){
         var url = location.protocol + '//' + location.host + "/faculty/assessment/subject/" + assessment_id + "/edit-assessment?tab=questions&question=" + question_type;
         window.location.href=url;
         
-        
     }
 }
 
