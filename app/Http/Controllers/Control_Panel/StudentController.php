@@ -20,10 +20,11 @@ class StudentController extends Controller
     use hasIncomingStudents, HasUser;
     
 
-    private function student($request)
+    private function student($id)
     {
-        return StudentInformation::where('id', $request->id)->first();
+        return StudentInformation::where('id', $id)->first();
     }
+
     public function index (Request $request) 
     {
         $IncomingStudentCount = $this->IncomingStudentCount();

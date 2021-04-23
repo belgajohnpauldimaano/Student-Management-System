@@ -125,7 +125,7 @@
                 var semester = $('#semester').val();
                 if (print_sy < 1) {
                     
-                    alertify.defaults.theme.ok = "btn btn-primary btn-flat";
+                    alertify.defaults.theme.ok = "btn btn-primary";
                     alertify
                     .alert('<i style="color: red" class="fas fa-exclamation-triangle"></i> Warning',"Please select school year.", function(){
                         // alertify.message('OK');
@@ -135,7 +135,7 @@
                 
                 if (semester < 1) {
                     
-                    alertify.defaults.theme.ok = "btn btn-primary btn-flat";
+                    alertify.defaults.theme.ok = "btn btn-primary";
                     alertify
                     .alert('<i style="color: red" class="fas fa-exclamation-triangle"></i> Warning',"Please select semester.", function(){
                         // alertify.message('OK');
@@ -151,8 +151,8 @@
                 
                 var id = $(this).data('id');
                 var type = $(this).data('type');
-                alertify.defaults.theme.ok = "btn btn-primary btn-flat";
-                alertify.defaults.theme.cancel = "btn btn-danger btn-flat";
+                alertify.defaults.theme.ok = "btn btn-primary";
+                alertify.defaults.theme.cancel = "btn btn-danger";
                 alertify.confirm('<i style="color: red" class="fas fa-exclamation-triangle"></i> Warning',"Do you want to reset the password?", function(){  
                     
                     $.ajax({
@@ -228,8 +228,8 @@
                 e.preventDefault();
                 var id = $(this).data('id');
                 alertify.defaults.transition = "slide";
-                alertify.defaults.theme.ok = "btn btn-primary btn-flat";
-                alertify.defaults.theme.cancel = "btn btn-danger btn-flat";
+                alertify.defaults.theme.ok = "btn btn-primary";
+                alertify.defaults.theme.cancel = "btn btn-danger";
                 alertify.confirm('Confirmation', 'Are you sure you want to activate?', function(){  
                     $.ajax({
                         url         : "{{ route('admin.student.information.activate_data') }}",
@@ -265,8 +265,8 @@
                 e.preventDefault();
                 var id = $(this).data('id');
                 alertify.defaults.transition = "slide";
-                alertify.defaults.theme.ok = "btn btn-primary btn-flat";
-                alertify.defaults.theme.cancel = "btn btn-danger btn-flat";
+                alertify.defaults.theme.ok = "btn btn-primary";
+                alertify.defaults.theme.cancel = "btn btn-danger";
                 alertify.confirm('Confirmation', 'Are you sure you want to deactivate?', function(){  
                     $.ajax({
                         url         : "{{ route('admin.student.information.deactivate_data') }}",
