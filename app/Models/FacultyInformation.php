@@ -3,13 +3,17 @@
 namespace App\Models;
 
 use App\Traits\HasUser;
+use App\Traits\HasImage;
 use App\Models\SchoolYear;
 use App\Models\ClassDetail;
 use App\Models\ClassSubjectDetail;
 use Illuminate\Database\Eloquent\Model;
+use Symfony\Component\HttpFoundation\File\File;
 
 class FacultyInformation extends Model
 {
+    use HasUser, HasImage;
+
     const DEPARTMENTS = [
         ['id' => 1, 'department_name' => 'Business'],
         ['id' => 2, 'department_name' => 'Voc Tech'],
@@ -17,8 +21,6 @@ class FacultyInformation extends Model
         ['id' => 4, 'department_name' => 'Mathematics'],
         ['id' => 5, 'department_name' => 'Science'],
     ];
-
-    use HasUser;
 
     protected $table = 'faculty_informations';
 
@@ -46,5 +48,8 @@ class FacultyInformation extends Model
         return $this->hasOne(ClassDetail::class, 'id', 'class_details_id')->whereStatus(1)
             ->whereSchoolYearId($SchoolYear->id)->first();
     }    
+
+    
 }
+
  

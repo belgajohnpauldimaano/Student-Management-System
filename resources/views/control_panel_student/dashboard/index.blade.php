@@ -46,7 +46,7 @@
               <div class="card-body p-0">
                 <ul class="products-list product-list-in-card pl-2 pr-2">
                   <li class="item">
-                    <div class="product-img">
+                    {{-- <div class="product-img">
                       <img src="https://adminlte.io/themes/v3/dist/img/default-150x150.png" alt="Product Image" class="img-size-50">
                     </div>
                     <div class="product-info">
@@ -54,7 +54,8 @@
                       <span class="product-description">
                         Pang-uri
                       </span>
-                    </div>
+                    </div> --}}
+                      No reminder yet
                   </li>                  
                 </ul>
               </div>
@@ -81,7 +82,7 @@
               <div class="card-body p-0">
                 <ul class="products-list product-list-in-card pl-2 pr-2">
                   <li class="item">
-                    <div class="product-img">
+                    {{-- <div class="product-img">
                       <img src="https://adminlte.io/themes/v3/dist/img/default-150x150.png" alt="Product Image" class="img-size-50">
                     </div>
                     <div class="product-info">
@@ -89,7 +90,8 @@
                       <span class="product-description">
                         Pang-uri
                       </span>
-                    </div>
+                    </div> --}}
+                    No Addedd Lesson yet
                   </li>                  
                 </ul>
               </div>
@@ -119,7 +121,7 @@
               <div class="card-body p-0">
                 <ul class="products-list product-list-in-card pl-2 pr-2">
                   <li class="item">
-                    <div class="product-img">
+                    {{-- <div class="product-img">
                       <img src="https://adminlte.io/themes/v3/dist/img/default-150x150.png" alt="Product Image" class="img-size-50">
                     </div>
                     <div class="product-info">
@@ -127,7 +129,8 @@
                       <span class="product-description">
                         Pang-uri
                       </span>
-                    </div>
+                    </div> --}}
+                    No Appointments yet
                   </li>                  
                 </ul>
               </div>

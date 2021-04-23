@@ -18,7 +18,7 @@
         <ul class="navbar-nav ml-auto">
           <!-- Notifications Dropdown Menu -->
           <li class="nav-item dropdown">
-            @include('control_panel.layouts.notification')
+            {{-- @include('control_panel.layouts.notification') --}}
           </li>
           <li class="nav-item">
             <a class="nav-link" data-widget="fullscreen"
@@ -30,11 +30,7 @@
             <a class="nav-link" data-toggle="dropdown"
             href="#">
               <img style="width: 30px ;margin-top: -8px;"
-                src="{{ \Auth::user()->get_user_data()->photo ? 
-                  \File::exists(public_path('/img/account/photo/'. 
-                  \Auth::user()->get_user_data()->photo)) ? asset('/img/account/photo/'. 
-                  \Auth::user()->get_user_data()->photo) : asset('/img/account/photo/blank-user.gif') : 
-                  asset('/img/account/photo/blank-user.gif') }}" class="user-image elevation-2" alt="User Image"
+                src="{{ Auth::user()->get_user_data()->photo_profile }}" class="user-image elevation-2" alt="User Image"
               >
               <span class="hidden-xs">{{ \Auth::user()->get_user_data()->full_name }}</span>
             </a>
@@ -42,12 +38,8 @@
               <a href="#" class="dropdown-item">
                   <!-- Message Start -->
                   <div class="text-center">
-                    <img style="width: 100px; margin-top: -5px;" src="{{ \Auth::user()->get_user_data()->photo ? 
-                    \File::exists(public_path('/img/account/photo/'. 
-                    \Auth::user()->get_user_data()->photo)) ? asset('/img/account/photo/'. 
-                    \Auth::user()->get_user_data()->photo) : asset('/img/account/photo/blank-user.gif') : 
-                    asset('/img/account/photo/blank-user.gif') }}" class="profile-user-img img-responsive img-circle elevation-2" alt="User Image"
-                    >
+                    <img style="width: 100px; margin-top: -5px;" src="{{ Auth::user()->get_user_data()->photo_profile }}" 
+                    class="profile-user-img img-responsive img-circle elevation-2" alt="User Image" >
                     <br/>
                     <p>
                       {{ \Auth::user()->get_user_data()->full_name }}<br/>
@@ -354,12 +346,12 @@
             
             {{--  Faculty Menu  --}}
             @if (Auth::user()->role == 4)
-              <li class="nav-item">
+              {{-- <li class="nav-item">
                 <a class="nav-link {{request()->routeIs('faculty.home') ? 'active' : '' }}"
                    href="{{ route('faculty.home') }}">
                   <i class="fa fa-home fa-fw fa-lg"></i> <p>Home</p>
                 </a>
-              </li>
+              </li> --}}
               <li class="nav-item">
                 <a class="nav-link {{request()->routeIs('faculty.dashboard') ? 'active' : '' }}"
                    href="{{ route('faculty.dashboard') }}">
@@ -411,7 +403,7 @@
                   <i class="fa fa-users fa-lg"></i> <p>My Advisory Class</p>
                 </a>
               </li>
-              <li class="nav-header">LMS</li>
+              {{-- <li class="nav-header">LMS</li>
               <li class="nav-item">
                 <a class="nav-link"
                    href="">
@@ -443,7 +435,7 @@
                    href="{{ route('faculty.assessment') }}">
                   <i class="fas fa-user-clock fa-lg"></i> <p>Assessment</p>
                 </a>
-              </li>
+              </li> --}}
             @endif
 
             {{-- Admission --}}

@@ -9,11 +9,13 @@ use App\Models\StudentInformation;
 use App\Models\AdmissionInformation;
 use App\Models\RegistrarInformation;
 use Illuminate\Notifications\Notifiable;
+use Symfony\Component\HttpFoundation\File\File;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class User extends Authenticatable
 {
     use Notifiable;
+    
     protected $username = 'username';
     /**
      * The attributes that are mass assignable.
@@ -70,7 +72,7 @@ class User extends Authenticatable
         return false;
     }
 
-    public function get_user_data ()
+    public function get_user_data()
     {
         $UserInformation = NULL;
         if ($this->role == 0 || $this->role == 1)

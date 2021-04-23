@@ -18,7 +18,7 @@
       <ul class="navbar-nav ml-auto">
         <!-- Notifications Dropdown Menu -->
         <li class="nav-item dropdown">
-          @include('control_panel.layouts.notification')
+          {{-- @include('control_panel.layouts.notification') --}}
         </li>
         <li class="nav-item">
           <a class="nav-link" data-widget="fullscreen" href="#" role="button">
@@ -27,25 +27,17 @@
         </li>
         <li class="nav-item dropdown">
           <a class="nav-link" data-toggle="dropdown" href="#">
-            <img style="width: 30px; margin-top: -5px;"
-               src="{{ \Auth::user()->get_user_data()->photo ? 
-                \File::exists(public_path('/img/account/photo/'. 
-                \Auth::user()->get_user_data()->photo)) ? asset('/img/account/photo/'. 
-                \Auth::user()->get_user_data()->photo) : asset('/img/account/photo/blank-user.gif') : 
-                asset('/img/account/photo/blank-user.gif') }}" class="img-circle elevation-2" alt="User Image"
-            >
+            <img style="width: 30px ;margin-top: -8px;"
+                src="{{ Auth::user()->get_user_data()->photo_profile }}" class="user-image elevation-2" alt="User Image"
+              >
             <span class="hidden-xs">{{ \Auth::user()->get_user_data()->full_name }}</span>
           </a>
           <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
             <a href="#" class="dropdown-item">
                 <!-- Message Start -->
                 <div class="text-center">
-                  <img width="70" src="{{ \Auth::user()->get_user_data()->photo ? 
-                  \File::exists(public_path('/img/account/photo/'. 
-                  \Auth::user()->get_user_data()->photo)) ? asset('/img/account/photo/'. 
-                  \Auth::user()->get_user_data()->photo) : asset('/img/account/photo/blank-user.gif') : 
-                  asset('/img/account/photo/blank-user.gif') }}" class="img-circle elevation-2" alt="User Image"
-                  >
+                  <img style="width: 100px; margin-top: -5px;" src="{{ Auth::user()->get_user_data()->photo_profile }}" 
+                    class="profile-user-img img-responsive img-circle elevation-2" alt="User Image" >
                   <br/>
                   <p>
                     <span class="hidden-xs">{{ \Auth::user()->get_user_data()->full_name }}</span><br/>
@@ -123,7 +115,7 @@
               <i class="fas fa-file-alt nav-icon""></i> <p>Grade Sheet</p></a>
           </li>
           
-          <li class="nav-header">CAMPUS LMS</li>
+          {{-- <li class="nav-header">CAMPUS LMS</li>
           <li class="nav-item">
             <a class="nav-link" href=""><i class="fas fa-file nav-icon"></i> <p>Current Lesson</p></a>
           </li>
@@ -140,14 +132,14 @@
             <a class="{{request()->routeIs('student.assessment.index') ? 'active' : '' }} nav-link" href="{{ route('student.assessment.index') }}">
               <i class="fas fa-edit nav-icon"></i> <p>Assessment</p></a>
             </a>
-          </li>
+          </li> --}}
 
-          {{-- <li class="nav-header">PROFILE</li>
+          <li class="nav-header">PROFILE</li>
           <li class="nav-item">
             <a class="{{request()->routeIs('student.my_account.index') ? 'active' : '' }} nav-link" href="{{ route('student.my_account.index') }}">
               <i class="fa fa-user nav-icon"></i> <p>My Profile</p>
             </a>
-          </li> --}}
+          </li>
         </ul>
       </nav>
     </div>    

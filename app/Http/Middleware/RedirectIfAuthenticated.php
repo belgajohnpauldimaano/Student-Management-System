@@ -34,7 +34,7 @@ class RedirectIfAuthenticated
                 }
                 else if ($request->user()->role == 4) 
                 {
-                    return redirect()->route('faculty.home');
+                    return redirect()->route('faculty.dashboard');
                 }
                 else if ($request->user()->role == 5) 
                 {
