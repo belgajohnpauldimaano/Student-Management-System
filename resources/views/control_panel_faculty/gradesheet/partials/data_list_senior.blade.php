@@ -88,13 +88,14 @@
                             @else
                                 {{$AdvisorySubject->count() + 5}}
                             @endif
-
-                            @if($quarter == '3rd')
-                                {{ $AdvisorySubject->count() * 2 }}
-                            @endif
                         @else
-                            {{$AdvisorySubject->count() + 4}}
-                        @endif
+                            @if($quarter == '4th' && $sem == '2nd')
+                                {{($AdvisorySubject->count() * 3) + 6}}
+                            @else
+                                {{$AdvisorySubject->count() + 4}}
+                            @endif
+                            
+                        @endif                    
                     ">
                         <b>Male</b>
                     </td>
@@ -430,13 +431,14 @@
                             @else
                                 {{$AdvisorySubject->count() + 5}}
                             @endif
-
-                            @if($quarter == '3rd')
-                                {{ $AdvisorySubject->count() * 2 }}
-                            @endif
                         @else
-                            {{$AdvisorySubject->count() + 4}}
-                        @endif                   
+                            @if($quarter == '4th' && $sem == '2nd')
+                                {{($AdvisorySubject->count() * 3) + 6}}
+                            @else
+                                {{$AdvisorySubject->count() + 4}}
+                            @endif
+                            
+                        @endif                    
                     ">
                         <b>Female</b>
                     </td>

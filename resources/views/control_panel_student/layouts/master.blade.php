@@ -36,7 +36,7 @@
             <a href="#" class="dropdown-item">
                 <!-- Message Start -->
                 <div class="text-center">
-                  <img width="70" src="{{ Auth::user()->get_user_data()->photo_profile }}" class="img-circle elevation-2" alt="User Image"
+                  <img width="70" src="{{ Auth::user()->get_user_data()->photo_profile }}" class="img-circle img-circle elevation-2" alt="User Image"
                   >
                   <br/>
                   <p>
