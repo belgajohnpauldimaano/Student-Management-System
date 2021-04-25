@@ -104,4 +104,15 @@ trait HasUser{
             return '<span class="badge bg-orange">Registrar</span>';
         }        
     }
+
+    public function getPhotoProfileAttribute()
+    {
+        $imagePath = $this->photo ? 
+            public_path('/img/account/photo/'. 
+            $this->photo) ? asset('/img/account/photo/'. 
+            $this->photo) : asset('/img/account/photo/blank-user.gif') : 
+            asset('/img/account/photo/blank-user.gif');
+
+        return  $imagePath;
+    }
 }

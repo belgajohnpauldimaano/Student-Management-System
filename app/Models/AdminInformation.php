@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class AdminInformation extends Model
 {
-    use HasUser, HasImage;
+    use HasUser;
 
     protected $table = 'admin_informations';
 

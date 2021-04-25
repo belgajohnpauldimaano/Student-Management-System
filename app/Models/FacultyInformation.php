@@ -3,7 +3,6 @@
 namespace App\Models;
 
 use App\Traits\HasUser;
-use App\Traits\HasImage;
 use App\Models\SchoolYear;
 use App\Models\ClassDetail;
 use App\Models\ClassSubjectDetail;
@@ -12,7 +11,7 @@ use Symfony\Component\HttpFoundation\File\File;
 
 class FacultyInformation extends Model
 {
-    use HasUser, HasImage;
+    use HasUser;
 
     const DEPARTMENTS = [
         ['id' => 1, 'department_name' => 'Business'],

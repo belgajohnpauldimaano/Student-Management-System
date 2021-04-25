@@ -30,7 +30,7 @@
             <a class="nav-link" data-toggle="dropdown"
             href="#">
               <img style="width: 30px ;margin-top: -8px;"
-                src="{{ \Auth::user()->get_user_data()->photo_profile }}" class="user-image elevation-2" alt="User Image"
+                src="{{ \Auth::user()->get_user_data()->photo_profile }}" class="user-image img-circle elevation-2" alt="User Image"
               >
               <span class="hidden-xs">{{ \Auth::user()->get_user_data()->full_name }}</span>
             </a>
@@ -750,7 +750,8 @@
                 </ul>
               </li>
             @endif
-            {{-- <li class="nav-item">
+            <li class="nav-header">PROFILE</li>
+            <li class="nav-item">
               @if (Auth::user()->role == 3)
                 <a class="nav-link {{request()->routeIs('registrar.my_account.index') ? 'active' : '' }}"
                    href="{{ route('registrar.my_account.index') }}">
@@ -777,7 +778,7 @@
                   <i class="fa fa-user fa-lg"></i> <p>My Account</p>
                 </a>
               @endif
-            </li> --}}
+            </li>
           </ul>
         </nav>
       </div>

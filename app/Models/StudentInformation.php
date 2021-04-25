@@ -20,7 +20,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class StudentInformation extends Model
 {
-    use HasTransaction, HasUser, HasAdmissions, HasSchoolYear, HasImage;
+    use HasTransaction, HasUser, HasAdmissions, HasSchoolYear;
     
     public function enrolled_class ()
     {        
