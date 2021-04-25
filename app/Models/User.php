@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Traits\HasImage;
 use App\Models\AdminInformation;
 use App\Models\FacultyInformation;
 use App\Models\FinanceInformation;
@@ -14,7 +15,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class User extends Authenticatable
 {
-    use Notifiable;
+    use Notifiable, HasImage;
     
     protected $username = 'username';
     /**

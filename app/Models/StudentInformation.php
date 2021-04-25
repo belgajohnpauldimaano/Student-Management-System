@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Models\MiscFee;
 use App\Traits\HasUser;
+use App\Traits\HasImage;
 use App\Models\Enrollment;
 use App\Models\TuitionFee;
 use Illuminate\Http\Request;
@@ -19,7 +20,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class StudentInformation extends Model
 {
-    use HasTransaction, HasUser, HasAdmissions, HasSchoolYear;
+    use HasTransaction, HasUser, HasAdmissions, HasSchoolYear, HasImage;
     
     public function enrolled_class ()
     {        

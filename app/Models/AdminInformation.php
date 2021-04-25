@@ -2,12 +2,13 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
 use App\Traits\HasUser;
+use App\Traits\HasImage;
+use Illuminate\Database\Eloquent\Model;
 
 class AdminInformation extends Model
 {
-    use HasUser;
+    use HasUser, HasImage;
 
     protected $table = 'admin_informations';
 

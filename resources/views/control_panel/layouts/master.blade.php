@@ -30,7 +30,7 @@
             <a class="nav-link" data-toggle="dropdown"
             href="#">
               <img style="width: 30px ;margin-top: -8px;"
-                src="{{ Auth::user()->get_user_data()->photo_profile }}" class="user-image elevation-2" alt="User Image"
+                src="{{ \Auth::user()->get_user_data()->photo_profile }}" class="user-image elevation-2" alt="User Image"
               >
               <span class="hidden-xs">{{ \Auth::user()->get_user_data()->full_name }}</span>
             </a>
