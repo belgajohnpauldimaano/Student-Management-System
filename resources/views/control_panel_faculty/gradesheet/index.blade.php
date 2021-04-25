@@ -91,9 +91,10 @@
                                         <option value="3rd">Third Quarter</option>
                                         <option value="4th">Fourth Quarter</option>
                                         <option value="">-------------------------------AVERAGE--------------------------------</option>
-                                        <option value="1st-2nd">First - Second Quarter Average</option>
+                                        <option value="average">Average</option>
+                                        {{-- <option value="1st-2nd">First - Second Quarter Average</option>
                                         <option value="1st-3rd">First - Second - Third Quarter Average</option>
-                                        <option value="1st-4th">First - Second - Third - Fourth Quarter Average</option>       
+                                        <option value="1st-4th">First - Second - Third - Fourth Quarter Average</option>        --}}
                                     </select>
                                 </div>              
                             </div>
@@ -178,7 +179,7 @@
         $(function(){            
             $('body').on('change', '#search_school_year', function () {
                 $.ajax({
-                    url : "{{ route('faculty.MyAdvisoryClass.list_class_subject_details') }}",
+                    
                     type : 'POST',
                     data        : {_token: '{{ csrf_token() }}', search_school_year: $('#search_school_year').val()},
                     success     : function (res) {
@@ -200,7 +201,7 @@
 
             $('body').on('change', '#search_sy', function () {
                 $.ajax({
-                    url : "{{ route('faculty.MyAdvisoryClass.list_quarter') }}",
+                    
                     type : 'POST',
                     data        : {_token: '{{ csrf_token() }}', search_sy: $('#search_sy').val()},
                     success     : function (res) {
