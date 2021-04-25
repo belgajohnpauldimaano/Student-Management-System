@@ -126,40 +126,17 @@ class StudentGradeSheetController extends Controller
             // return json_encode($no_second_sem);
         }
         
-        $Grade_sheet_males = Enrollment::join('class_details','class_details.id','=','enrollments.class_details_id')
-            ->join('student_informations','student_informations.id','=','enrollments.student_information_id')  
-            ->where('class_details.section_id', $class_detail->section->id)
-            ->where('class_details.school_year_id', $sy_id)
+        $Grade_sheet_males = $this->enrollment($class_detail->section->id, $sy_id)
             ->whereRaw('student_informations.gender = 1')
-            ->where('enrollments.status', 1)
-            ->selectRaw("                    
-                    student_informations.last_name, 
-                    student_informations.first_name, 
-                    student_informations.middle_name
-                    ,enrollments.id
-            ")
-            ->orderBY('last_name','ASC')
             ->get();
 
         // return json_encode($Grade_sheet_males);
 
-        $Grade_sheet_females = Enrollment::join('class_details','class_details.id','=','enrollments.class_details_id')
-            ->join('student_informations','student_informations.id','=','enrollments.student_information_id')  
-            ->where('class_details.section_id', $class_detail->section->id)
-            ->where('class_details.school_year_id', $sy_id)
-            ->where('enrollments.status', 1)
+        $Grade_sheet_females = $this->enrollment($class_detail->section->id, $sy_id)
             ->whereRaw('student_informations.gender = 2')
-            ->selectRaw("                    
-                    student_informations.last_name, 
-                    student_informations.first_name, 
-                    student_informations.middle_name
-                    ,enrollments.id
-            ")
-            ->orderBY('last_name','ASC')
             ->get();
 
         $subject_grades = StudentEnrolledSubject::first();
-    
         
         return view('control_panel_faculty.gradesheet.partials.data_list', 
             compact( 'subject_grades','AdvisorySubject','class_detail','Grade_sheet_males','Grade_sheet_females','quarter','sem','no_second_sem'))
@@ -210,37 +187,12 @@ class StudentGradeSheetController extends Controller
                 $no_second_sem = 'No data found';
                 // return json_encode($no_second_sem);
             }
-            
-            $Grade_sheet_males = Enrollment::join('class_details','class_details.id','=','enrollments.class_details_id')
-                ->join('student_informations','student_informations.id','=','enrollments.student_information_id')  
-                ->where('class_details.section_id', $class_detail->section->id)
-                ->where('class_details.school_year_id', $sy_id)
-                ->whereRaw('student_informations.gender = 1')
-                ->where('enrollments.status', 1)
-                ->selectRaw("                    
-                        student_informations.last_name, 
-                        student_informations.first_name, 
-                        student_informations.middle_name
-                        ,enrollments.id
-                ")
-                ->orderBY('last_name','ASC')
-                ->get();
 
+            $Grade_sheet_males = $this->enrollment($class_detail->section->id, $sy_id)->whereRaw('student_informations.gender = 1')
+                ->get();
             // return json_encode($Grade_sheet_males);
 
-            $Grade_sheet_females = Enrollment::join('class_details','class_details.id','=','enrollments.class_details_id')
-                ->join('student_informations','student_informations.id','=','enrollments.student_information_id')  
-                ->where('class_details.section_id', $class_detail->section->id)
-                ->where('class_details.school_year_id', $sy_id)
-                ->whereRaw('student_informations.gender = 2')
-                ->where('enrollments.status', 1)
-                ->selectRaw("                    
-                        student_informations.last_name, 
-                        student_informations.first_name, 
-                        student_informations.middle_name
-                        ,enrollments.id
-                ")
-                ->orderBY('last_name','ASC')
+            $Grade_sheet_females = $this->enrollment($class_detail->section->id, $sy_id)->whereRaw('student_informations.gender = 2')
                 ->get();
 
             $subject_grades = StudentEnrolledSubject::first();
@@ -254,5 +206,20 @@ class StudentGradeSheetController extends Controller
             $pdf->setPaper('Legal', 'portrait');
                 return $pdf->stream();
         }
+    }
+
+    private function enrollment($id, $sy_id){
+        return Enrollment::join('class_details','class_details.id','=','enrollments.class_details_id')
+            ->join('student_informations','student_informations.id','=','enrollments.student_information_id')  
+            ->where('class_details.section_id', $id)
+            ->where('class_details.school_year_id', $sy_id)
+            ->where('enrollments.status', 1)
+            ->selectRaw("                    
+                    student_informations.last_name, 
+                    student_informations.first_name, 
+                    student_informations.middle_name
+                    ,enrollments.id
+            ")
+            ->orderBY('last_name','ASC');
     }
 }

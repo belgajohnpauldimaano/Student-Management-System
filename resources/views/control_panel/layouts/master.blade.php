@@ -30,11 +30,7 @@
             <a class="nav-link" data-toggle="dropdown"
             href="#">
               <img style="width: 30px ;margin-top: -8px;"
-                src="{{ \Auth::user()->get_user_data()->photo ? 
-                  \File::exists(public_path('/img/account/photo/'. 
-                  \Auth::user()->get_user_data()->photo)) ? asset('/img/account/photo/'. 
-                  \Auth::user()->get_user_data()->photo) : asset('/img/account/photo/blank-user.gif') : 
-                  asset('/img/account/photo/blank-user.gif') }}" class="user-image elevation-2" alt="User Image"
+                src="{{ Auth::user()->get_user_data()->photo_profile }}" class="user-image elevation-2" alt="User Image"
               >
               <span class="hidden-xs">{{ \Auth::user()->get_user_data()->full_name }}</span>
             </a>
@@ -42,11 +38,7 @@
               <a href="#" class="dropdown-item">
                   <!-- Message Start -->
                   <div class="text-center">
-                    <img style="width: 100px; margin-top: -5px;" src="{{ \Auth::user()->get_user_data()->photo ? 
-                    \File::exists(public_path('/img/account/photo/'. 
-                    \Auth::user()->get_user_data()->photo)) ? asset('/img/account/photo/'. 
-                    \Auth::user()->get_user_data()->photo) : asset('/img/account/photo/blank-user.gif') : 
-                    asset('/img/account/photo/blank-user.gif') }}" class="profile-user-img img-responsive img-circle elevation-2" alt="User Image"
+                    <img style="width: 100px; margin-top: -5px;" src="{{ Auth::user()->get_user_data()->photo_profile }}" class="profile-user-img img-responsive img-circle elevation-2" alt="User Image"
                     >
                     <br/>
                     <p>
@@ -96,7 +88,6 @@
         <img src="{{ asset('/img/sja-logo.png') }}"  class="brand-image img-circle elevation-3" style="height: 35px; opacity: .8">
         <span class="brand-text font-weight-bold text-white">ST. JOHN'S ACADEMY INC.</span>
       </a>
-
       <!-- sidebar menu: : style can be found in sidebar.less -->
       <div class="sidebar">
 

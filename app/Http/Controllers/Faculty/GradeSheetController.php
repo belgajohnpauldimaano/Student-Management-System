@@ -392,7 +392,7 @@ class GradeSheetController extends Controller
                 teacher_subjects.faculty_id
             '))
             ->where('teacher_subjects.faculty_id', $FacultyInformation->id)
-            // ->where('class_details.school_year_id', $request->search_sy)
+            ->where('class_details.school_year_id', $request->search_sy)
             ->where('teacher_subjects.status', 1)
             ->first();
 

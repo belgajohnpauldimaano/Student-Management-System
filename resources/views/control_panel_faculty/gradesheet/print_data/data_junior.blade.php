@@ -1,6 +1,6 @@
-<div class="table-responsive ">
-    <table class="table table-sm table-bordered table-hover">
-        <thead style="position: sticky;top: 0" class="thead-dark"> 
+<div class="table-responsive table-responsive-sm">
+    <table class="table table-sm table-head-fixed table-bordered table-hover text-nowrap">
+        <thead style="position: sticky;top: 0"> 
             @if($quarter == '1st' || $quarter == '2nd' || $quarter == '3rd' || $quarter == '4th')
             <tr>
                 <th>#</th>
@@ -34,12 +34,42 @@
                     <th class="text-center">REMARKS</th>
                 </tr>
             @endif
+            @if($quarter == 'average')
+                <tr>
+                    <th>#</th>
+                    <th>Student Name</th>
+                    @foreach ($AdvisorySubject as $item)
+                        <th class="text-center" colspan="5">
+                            {{$item->subject->subject_code}}
+                        </th>
+                    @endforeach
+                    <th class="text-center" colspan="2">G.A.</th>
+                    <th class="text-center">REMARKS</th>
+                </tr>
+                <tr>
+                    <th colspan="2"></th>
+                    @foreach ($AdvisorySubject as $item)
+                        <th>1st</th>
+                        <th>2nd</th>
+                        <th>3rd</th>
+                        <th>4th</th>
+                        <th class="text-red">AVE</th>
+                    @endforeach
+                    <th class="text-center" colspan="3"></th>
+                </tr>
+            @endif
         </thead>
         <tbody>            
-            <tr>
-                <td colspan="13">
-                    <b>Male</b>
-                </td>
+            <tr class="bg-danger">
+                @if($quarter == 'average')
+                    <td colspan="{{ (($AdvisorySubject->count() * 5) + 5) }}">
+                        <b>Male</b>
+                    </td>
+                @else
+                    <td colspan="13">
+                        <b>Male</b>
+                    </td>
+                @endif
             </tr>        
             @foreach ($Grade_sheet_males as $key => $item)
                 @php 
@@ -54,6 +84,7 @@
                     $divisor = $AdvisorySubject->count();
                     $g_status = 0;
                     $inc = 0;
+                    $average = 0;
                 @endphp
                 <tr>
                     <td class="text-center">{{$key+1}}.</td>
@@ -62,11 +93,10 @@
                     </td>
                     @if($quarter == '1st' || $quarter == '2nd' || $quarter == '3rd' || $quarter == '4th')
                         @foreach ($AdvisorySubject as $key => $sub)
-                            <td class="text-center">                       
+                            <td class="text-center">
                                 @php 
                                     $sub_grade = $subject_grades
                                         ->where('enrollments_id',$item->id)
-                                        // ->where('subject_id', $sub->subject_id)
                                         ->where('class_subject_details_id', $sub->id)
                                         ->where('status', 1)
                                         ->first();                      
@@ -184,7 +214,7 @@
                                         }
                                     }
                                     $final = $sum / $divisor;                                                                
-                                @endphp                        
+                                @endphp
                             </td>
                         @endforeach
                     @endif
@@ -265,13 +295,69 @@
                             </td>
                         @endif
                     @endif
+                    @if($quarter == 'average')
+                        @foreach ($AdvisorySubject as $key => $sub)
+                            @php 
+                                $sub_grade = $subject_grades
+                                   ->where('enrollments_id',$item->id)
+                                   ->where('class_subject_details_id', $sub->id)
+                                   ->where('status', 1)
+                                   ->first();
+
+                                if($sub_grade['fir_g'] < 80)
+                                {
+                                    $g_status += 1;
+                                }
+
+                                if($sub_grade['sec_g'] < 80)
+                                {
+                                    $g_status += 1;
+                                }
+
+                                if($sub_grade['thi_g'] < 80)
+                                {
+                                    $g_status += 1;
+                                }
+
+                                if($sub_grade['fou_g'] < 80)
+                                {
+                                    $g_status += 1;
+                                }
+
+                                $sum += $sub_grade['fir_g'];
+                                echo '<td class="text-center">'.number_format(round($sub_grade['fir_g'])).'</td>';
+
+                                $sum += $sub_grade['sec_g'];
+                                echo '<td class="text-center">'.number_format(round($sub_grade['sec_g'])).'</td>';
+
+                                $sum += $sub_grade['thi_g'];
+                                echo '<td class="text-center">'.number_format(round($sub_grade['thi_g'])).'</td>';
+
+                                $sum += $sub_grade['fou_g'];
+                                echo '<td class="text-center">'.number_format(round($sub_grade['fou_g'])).'</td>';
+
+                                $total = round($sub_grade['fir_g'] + $sub_grade['sec_g'] + $sub_grade['thi_g'] + $sub_grade['fou_g']) / 4; 
+
+                                echo '<td class="text-center text-red">'.number_format(round($total)).'</td>';
+
+                                $average += round($total);
+                                $final = $average / $divisor;
+
+                            @endphp                        
+                        @endforeach
+                    @endif
+
                     
+                    @if($quarter == 'average')
                     <td class="text-center">
+                        {{number_format($final, 2)}}
+                    </td>
+                    @endif
+                    <td class="text-center text-red">
                         {{number_format(round($final))}}                
                     </td>
                     <td class="text-center">
                         @if($isEmpty != 'na')
-                            {{-- {{ $g_status }} --}}
                             @if(round($final) > 74 && round($final) <= 89)
                                 Passed
                             @elseif(round($final) >= 90 && round($final) <= 94)
@@ -303,11 +389,17 @@
                     </td>
                 </tr>
             @endforeach
-            <tr>
-            <td colspan="13">
-                <b>Female</b>
-            </td>
-            </tr>
+            <tr class="bg-yellow">
+                @if($quarter == 'average')
+                    <td colspan="{{ (($AdvisorySubject->count() * 5) + 5) }}">
+                        <b>Female</b>
+                    </td>
+                @else
+                    <td colspan="13">
+                        <b>Female</b>
+                    </td>
+                @endif
+            </tr>        
             @foreach ($Grade_sheet_females as $key => $item)
                 @php 
                     $final;
@@ -321,6 +413,7 @@
                     $divisor = $AdvisorySubject->count();
                     $g_status = 0;
                     $inc = 0;
+                    $average = 0;
                 @endphp
                 <tr>
                     <td class="text-center">{{$key+1}}.</td>
@@ -329,11 +422,10 @@
                     </td>
                     @if($quarter == '1st' || $quarter == '2nd' || $quarter == '3rd' || $quarter == '4th')
                         @foreach ($AdvisorySubject as $key => $sub)
-                            <td class="text-center">                       
+                            <td class="text-center">
                                 @php 
                                     $sub_grade = $subject_grades
                                         ->where('enrollments_id',$item->id)
-                                        // ->where('subject_id', $sub->subject_id)
                                         ->where('class_subject_details_id', $sub->id)
                                         ->where('status', 1)
                                         ->first();                      
@@ -451,7 +543,7 @@
                                         }
                                     }
                                     $final = $sum / $divisor;                                                                
-                                @endphp                        
+                                @endphp
                             </td>
                         @endforeach
                     @endif
@@ -532,13 +624,69 @@
                             </td>
                         @endif
                     @endif
+                    @if($quarter == 'average')
+                        @foreach ($AdvisorySubject as $key => $sub)
+                            @php 
+                                $sub_grade = $subject_grades
+                                   ->where('enrollments_id',$item->id)
+                                   ->where('class_subject_details_id', $sub->id)
+                                   ->where('status', 1)
+                                   ->first();
+
+                                if($sub_grade['fir_g'] < 80)
+                                {
+                                    $g_status += 1;
+                                }
+
+                                if($sub_grade['sec_g'] < 80)
+                                {
+                                    $g_status += 1;
+                                }
+
+                                if($sub_grade['thi_g'] < 80)
+                                {
+                                    $g_status += 1;
+                                }
+
+                                if($sub_grade['fou_g'] < 80)
+                                {
+                                    $g_status += 1;
+                                }
+
+                                $sum += $sub_grade['fir_g'];
+                                echo '<td class="text-center">'.number_format(round($sub_grade['fir_g'])).'</td>';
+
+                                $sum += $sub_grade['sec_g'];
+                                echo '<td class="text-center">'.number_format(round($sub_grade['sec_g'])).'</td>';
+
+                                $sum += $sub_grade['thi_g'];
+                                echo '<td class="text-center">'.number_format(round($sub_grade['thi_g'])).'</td>';
+
+                                $sum += $sub_grade['fou_g'];
+                                echo '<td class="text-center">'.number_format(round($sub_grade['fou_g'])).'</td>';
+
+                                $total = round($sub_grade['fir_g'] + $sub_grade['sec_g'] + $sub_grade['thi_g'] + $sub_grade['fou_g']) / 4; 
+
+                                echo '<td class="text-center text-red">'.number_format(round($total)).'</td>';
+
+                                $average += round($total);
+                                $final = $average / $divisor;
+
+                            @endphp                        
+                        @endforeach
+                    @endif
+
                     
+                    @if($quarter == 'average')
                     <td class="text-center">
+                        {{number_format($final, 2)}}
+                    </td>
+                    @endif
+                    <td class="text-center text-red">
                         {{number_format(round($final))}}                
                     </td>
                     <td class="text-center">
                         @if($isEmpty != 'na')
-                            {{-- {{ $g_status }} --}}
                             @if(round($final) > 74 && round($final) <= 89)
                                 Passed
                             @elseif(round($final) >= 90 && round($final) <= 94)
@@ -570,6 +718,8 @@
                     </td>
                 </tr>
             @endforeach
+            
+            
         </tbody>
     </table>
 </div>

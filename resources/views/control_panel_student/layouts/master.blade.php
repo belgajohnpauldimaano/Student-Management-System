@@ -28,11 +28,7 @@
         <li class="nav-item dropdown">
           <a class="nav-link" data-toggle="dropdown" href="#">
             <img style="width: 30px; margin-top: -5px;"
-               src="{{ \Auth::user()->get_user_data()->photo ? 
-                \File::exists(public_path('/img/account/photo/'. 
-                \Auth::user()->get_user_data()->photo)) ? asset('/img/account/photo/'. 
-                \Auth::user()->get_user_data()->photo) : asset('/img/account/photo/blank-user.gif') : 
-                asset('/img/account/photo/blank-user.gif') }}" class="img-circle elevation-2" alt="User Image"
+               src="{{ Auth::user()->get_user_data()->photo_profile }}" class="img-circle elevation-2" alt="User Image"
             >
             <span class="hidden-xs">{{ \Auth::user()->get_user_data()->full_name }}</span>
           </a>
@@ -40,11 +36,7 @@
             <a href="#" class="dropdown-item">
                 <!-- Message Start -->
                 <div class="text-center">
-                  <img width="70" src="{{ \Auth::user()->get_user_data()->photo ? 
-                  \File::exists(public_path('/img/account/photo/'. 
-                  \Auth::user()->get_user_data()->photo)) ? asset('/img/account/photo/'. 
-                  \Auth::user()->get_user_data()->photo) : asset('/img/account/photo/blank-user.gif') : 
-                  asset('/img/account/photo/blank-user.gif') }}" class="img-circle elevation-2" alt="User Image"
+                  <img width="70" src="{{ Auth::user()->get_user_data()->photo_profile }}" class="img-circle elevation-2" alt="User Image"
                   >
                   <br/>
                   <p>
