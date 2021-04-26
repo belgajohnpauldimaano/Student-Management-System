@@ -70,7 +70,7 @@
                     @include('control_panel_faculty.assessment_per_subject.partials.data_list_instruction')
                 </div>
                 <div class="{{ $tab ? $tab == 'questions' ? 'active' : '' : '' }} tab-pane" id="questions">
-                    @include('control_panel_faculty.assessment_per_subject.partials.data_list_question')                    
+                    @include('control_panel_faculty.assessment_per_subject.partials.data_list_question')
                 </div>                
                 <div class="{{ $tab ? $tab == 'monitoring' ? 'active' : '' : '' }} tab-pane" id="monitoring">
                     @include('control_panel_faculty.assessment_per_subject.partials.data_list_monitoring')

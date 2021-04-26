@@ -120,7 +120,7 @@
         <p class="p0 m0 student-info">Quarter : <b><i>{{ $quarter }}</i></b></p>
     @else
         <p class="p0 m0 student-info">
-            Semester &amp; Quarter : <b><i>{{ $sem }} | 
+            Semester &amp; Quarter : <b><i>{{ $sem == '3rd' ? 'Average' : $sem }} | 
                 @if($class_detail->grade->id >10)
                     @if($sem == 2)
                         {{ $quarter == '3rd' ? '1st' : '2nd'}}

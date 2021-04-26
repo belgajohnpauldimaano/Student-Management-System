@@ -139,7 +139,7 @@ trait HasTransaction{
     {
         return $Transaction = Transaction::with('payment_cat')
             ->where('school_year_id', $school_year_id)
-            ->where('student_id',$this->id)
+            ->where('student_id', $this->id)
             ->first();
     }
 
@@ -174,5 +174,6 @@ trait HasTransaction{
         return $result;
     }
 
+    
     
 }

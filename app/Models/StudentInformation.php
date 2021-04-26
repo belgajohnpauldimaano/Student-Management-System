@@ -20,6 +20,34 @@ use Illuminate\Database\Eloquent\Model;
 class StudentInformation extends Model
 {
     use HasTransaction, HasUser, HasAdmissions, HasSchoolYear;
+
+    protected $table = 'student_informations';
+
+    protected $fillable = [
+        'first_name', //
+        'middle_name', //
+        'last_name',//
+        'c_address',//
+        'p_address',//
+        'email',//
+        'contact_number',//
+        'photo',//
+        'user_id',//
+        'current',//
+        'status',//
+        'religion',//
+        'citizenship',//
+        'fb_acct',//
+        'place_of_birth',//
+        'father_occupation',//
+        'father_fb_acct',//
+        'mother_occupation',//
+        'mother_fb_acct',//
+        'guardian_fb_acct',//
+        'no_siblings',//
+        'isEsc',
+        'age'
+    ];
     
     public function enrolled_class ()
     {        
@@ -56,31 +84,5 @@ class StudentInformation extends Model
     }
     
 
-    protected $table = 'student_informations';
-
-    protected $fillable = [
-        'first_name', //
-        'middle_name', //
-        'last_name',//
-        'c_address',//
-        'p_address',//
-        'email',//
-        'contact_number',//
-        'photo',//
-        'user_id',//
-        'current',//
-        'status',//
-        'religion',//
-        'citizenship',//
-        'fb_acct',//
-        'place_of_birth',//
-        'father_occupation',//
-        'father_fb_acct',//
-        'mother_occupation',//
-        'mother_fb_acct',//
-        'guardian_fb_acct',//
-        'no_siblings',//
-        'isEsc',
-        'age'
-    ];
+    
 }

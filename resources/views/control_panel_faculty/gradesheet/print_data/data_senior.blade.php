@@ -1,6 +1,16 @@
 <div class="table-responsive table-responsive-sm">
-    <table class="table table-sm table-bordered table-hover">
-        <thead style="position: sticky;top: 0" class="thead-dark"> 
+    <table class="table table-sm table-head-fixed table-bordered table-hover text-nowrap">
+        <thead style="position: sticky;top: 0">
+            @if ($quarter == '1st-2nd' && $sem == '3rd')
+                <tr>
+                    <th colspan="2"></th>
+                    <th class="text-center" colspan="{{$AdvisorySubject->where('sem',1)->count()}}">First Sem</th>
+                    <th class="text-center" colspan="{{$AdvisorySubject->where('sem',2)->count()}}">Second Sem</th>                
+                    <th colspan="3"></th>
+                </tr>
+            @endif
+        </thead>
+        <thead style="position: sticky;top: 0"> 
             @if($quarter == '1st' && $sem == '1st' || $quarter == '3rd' && $sem == '2nd')
             <tr>
                 <th>#</th>
@@ -12,13 +22,8 @@
                 <th class="text-center">REMARKS</th>
             </tr>
             @endif
+            
             @if($quarter == '1st-2nd' && $sem == '3rd')
-            <tr>
-                <th colspan="2"></th>
-                <th class="text-center" colspan="{{$AdvisorySubject->where('sem',1)->count()}}">First Sem</th>
-                <th class="text-center" colspan="{{$AdvisorySubject->where('sem',2)->count()}}">Second Sem</th>                
-                <th colspan="2"></th>
-            </tr>
             <tr>
                 <th>#</th>
                 <th>Student Name</th>
@@ -30,7 +35,7 @@
                 @empty
                     <th class="text-center">No Second Sem yet</th>
                 @endforelse        
-                <th class="text-center">G.A.</th>
+                <th class="text-center" colspan="2">G.A.</th>
                 <th class="text-center">REMARKS</th>
             </tr>
             @endif
@@ -80,16 +85,22 @@
                     No Data Found
                 </th>
             @else
-                <tr>
+                <tr class="bg-danger">
                     <td colspan="
                         @if($AdvisorySubject->where('sem',2)->count()=='')
                             @if($quarter == '2nd' && $sem == '1st' || $quarter == '4th' && $sem == '2nd')
                                 {{($AdvisorySubject->count() * 3) + 6}}
                             @else
+                                {{$AdvisorySubject->count() + 6}}
+                            @endif
+                            
+                        @else
+                            @if($quarter == '4th' && $sem == '2nd')
+                                {{($AdvisorySubject->count() * 3) + 6}}
+                            @else
                                 {{$AdvisorySubject->count() + 5}}
                             @endif
-                        @else
-                            {{$AdvisorySubject->count() + 4}}
+                            
                         @endif                    
                     ">
                         <b>Male</b>
@@ -110,6 +121,8 @@
                         $g_status = 0;
                         $inc = 0;
                         $divisor = $AdvisorySubject->count();
+                        $sum_fir=0;
+                        $sum_sec=0;
                     @endphp
                     <tr>
                         <td class="text-center">{{$key+1}}.</td>
@@ -279,11 +292,13 @@
                                             
                                             $fir += round($sub_grade['fir_g']);
                                             $sec += round($sub_grade['sec_g']);
-                                            $final_first = round($fir + $sec);
-                                            
-                                            
+
+                                            // $final_first = round($fir) + round($sec);                                            
+                                           
                                             $fg = round($sub_grade['fir_g'] + $sub_grade['sec_g']); 
+                                            $sum_fir += number_format(round($fg) / 2);
                                             echo $first = number_format(round($fg) / 2);
+                                            
                                             if($sub_grade['fir_g'] < 80)
                                             {
                                                 $g_status += 1;
@@ -318,9 +333,10 @@
                                             $fou += round($sub_grade['fou_g']);
 
                                             try {
-                                                $final_sec = round($thi + $fou);
+                                                $final_sec = round($thi) + round($fou);
                                                 $fg = round($sub_grade['thi_g'] + $sub_grade['fou_g']); 
-
+                                                $sum_sec += number_format(round($fg) / 2);
+                                                
                                                 if($sub_grade['thi_g'] < 80)
                                                 {
                                                     $g_status += 1;
@@ -348,13 +364,16 @@
                                     </td>
                                 @endforelse
                                 @php
-                                    $div = $divisor * 2;
+                                    // $div = $divisor * 2;
                                     if($sub_grade['fir_g'] == 0.00 && $sub_grade['sec_g'] == 0.00 && $sub_grade['thi_g'] == 0.00 && $sub_grade['fou_g'] == 0.00)
                                     {
                                         $isEmpty = 'na';
                                     }   
+                                    // $final_first = $sum_fir;
+                                    // $final_sec  = $sum_sec;
+                                    // echo $second.' - ';
                                     try {
-                                        $final = ($final_first + $final_sec) / $div;
+                                        $final = (round($sum_fir) + round($sum_sec)) / $divisor;
                                     } catch (\Throwable $th) {
                                         $final = $final_first / $div;
                                     }
@@ -373,7 +392,20 @@
                             @endphp           
                         </td>
                         @endif
-                        <td class="text-center text-red">
+                        
+                        @if($quarter == '1st-2nd' && $sem == '3rd')
+                            <td class="text-center text-green">
+                                @php
+                                    try {
+                                        echo number_format(($final), 2);
+                                    } catch (\Throwable $th) {
+                                        $final = '';
+                                    }
+                                @endphp
+                            </td>
+                        @endif
+                        
+                        <td class="text-center text-green">
                             @php
                                 try {
                                     echo number_format(round($final));
@@ -418,21 +450,26 @@
                     </tr>
                 @endforeach
                 
-                <tr>
+                <tr class="bg-yellow">
                     <td colspan="
                         @if($AdvisorySubject->where('sem',2)->count()=='')
                             @if($quarter == '2nd' && $sem == '1st' || $quarter == '4th' && $sem == '2nd')
                                 {{($AdvisorySubject->count() * 3) + 6}}
                             @else
-                                {{$AdvisorySubject->count() + 5}}
+                                {{$AdvisorySubject->count() + 6}}
                             @endif
                         @else
-                            {{$AdvisorySubject->count() + 4}}
-                        @endif                   
+                            @if($quarter == '4th' && $sem == '2nd')
+                                {{($AdvisorySubject->count() * 3) + 6}}
+                            @else
+                                {{$AdvisorySubject->count() + 5}}
+                            @endif
+                            
+                        @endif                    
                     ">
                         <b>Female</b>
                     </td>
-                </tr>
+                </tr>        
                 @foreach ($Grade_sheet_females as $key => $item)
                     @php 
                         $final;
@@ -448,6 +485,8 @@
                         $g_status = 0;
                         $inc = 0;
                         $divisor = $AdvisorySubject->count();
+                        $sum_fir=0;
+                        $sum_sec=0;
                     @endphp
                     <tr>
                         <td class="text-center">{{$key+1}}.</td>
@@ -617,11 +656,13 @@
                                             
                                             $fir += round($sub_grade['fir_g']);
                                             $sec += round($sub_grade['sec_g']);
-                                            $final_first = round($fir + $sec);
-                                            
-                                            
+
+                                            // $final_first = round($fir) + round($sec);                                            
+                                           
                                             $fg = round($sub_grade['fir_g'] + $sub_grade['sec_g']); 
+                                            $sum_fir += number_format(round($fg) / 2);
                                             echo $first = number_format(round($fg) / 2);
+                                            
                                             if($sub_grade['fir_g'] < 80)
                                             {
                                                 $g_status += 1;
@@ -656,9 +697,10 @@
                                             $fou += round($sub_grade['fou_g']);
 
                                             try {
-                                                $final_sec = round($thi + $fou);
+                                                $final_sec = round($thi) + round($fou);
                                                 $fg = round($sub_grade['thi_g'] + $sub_grade['fou_g']); 
-
+                                                $sum_sec += number_format(round($fg) / 2);
+                                                
                                                 if($sub_grade['thi_g'] < 80)
                                                 {
                                                     $g_status += 1;
@@ -686,13 +728,16 @@
                                     </td>
                                 @endforelse
                                 @php
-                                    $div = $divisor * 2;
+                                    // $div = $divisor * 2;
                                     if($sub_grade['fir_g'] == 0.00 && $sub_grade['sec_g'] == 0.00 && $sub_grade['thi_g'] == 0.00 && $sub_grade['fou_g'] == 0.00)
                                     {
                                         $isEmpty = 'na';
                                     }   
+                                    // $final_first = $sum_fir;
+                                    // $final_sec  = $sum_sec;
+                                    // echo $second.' - ';
                                     try {
-                                        $final = ($final_first + $final_sec) / $div;
+                                        $final = (round($sum_fir) + round($sum_sec)) / $divisor;
                                     } catch (\Throwable $th) {
                                         $final = $final_first / $div;
                                     }
@@ -711,7 +756,18 @@
                             @endphp           
                         </td>
                         @endif
-                        <td class="text-center text-red">
+                        @if($quarter == '1st-2nd' && $sem == '3rd')
+                            <td class="text-center text-green">
+                                @php
+                                    try {
+                                        echo number_format(($final), 2);
+                                    } catch (\Throwable $th) {
+                                        $final = '';
+                                    }
+                                @endphp
+                            </td>
+                        @endif
+                        <td class="text-center text-green">
                             @php
                                 try {
                                     echo number_format(round($final));

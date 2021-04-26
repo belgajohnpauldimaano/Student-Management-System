@@ -1,124 +1,6 @@
 @extends('control_panel.layouts.master')
 
 @section ('styles') 
-<style>
-    /* Styles the thumbnail */
-
-    a.lightbox img {
-        height: 300px;
-        border: 3px solid white;
-        box-shadow: 0px 0px 8px rgba(0,0,0,.3);
-        /* margin: 94px 20px 20px 20px; */
-    }
-
-    /* Styles the lightbox, removes it from sight and adds the fade-in transition */
-
-    .lightbox-target {
-        position: fixed;
-        top: -100%;
-        width: 100%;
-        background: rgba(0,0,0,.7);
-        width: 100%;
-        opacity: 0;
-        -webkit-transition: opacity .5s ease-in-out;
-        -moz-transition: opacity .5s ease-in-out;
-        -o-transition: opacity .5s ease-in-out;
-        transition: opacity .5s ease-in-out;
-        overflow: hidden;
-    }
-
-    /* Styles the lightbox image, centers it vertically and horizontally, adds the zoom-in transition and makes it responsive using a combination of margin and absolute positioning */
-
-    .lightbox-target img {
-        margin: auto;
-        /* position: absolute; */
-        top: 0;
-        left:0;
-        right:0;
-        bottom: 0;
-        max-height: 0%;
-        max-width: 0%;
-        border: 3px solid white;
-        box-shadow: 0px 0px 8px rgba(0,0,0,.3);
-        box-sizing: border-box;
-        -webkit-transition: .5s ease-in-out;
-        -moz-transition: .5s ease-in-out;
-        -o-transition: .5s ease-in-out;
-        transition: .5s ease-in-out;
-    }
-
-    /* Styles the close link, adds the slide down transition */
-
-    a.lightbox-close {
-        display: block;
-        width:50px;
-        height:50px;
-        box-sizing: border-box;
-        background: white;
-        color: black;
-        text-decoration: none;
-        position: absolute;
-        top: -80px;
-        right: 0;
-        -webkit-transition: .5s ease-in-out;
-        -moz-transition: .5s ease-in-out;
-        -o-transition: .5s ease-in-out;
-        transition: .5s ease-in-out;
-    }
-
-    /* Provides part of the "X" to eliminate an image from the close link */
-
-    a.lightbox-close:before {
-        content: "";
-        display: block;
-        height: 30px;
-        width: 1px;
-        background: black;
-        position: absolute;
-        left: 26px;
-        top:10px;
-        -webkit-transform:rotate(45deg);
-        -moz-transform:rotate(45deg);
-        -o-transform:rotate(45deg);
-        transform:rotate(45deg);
-    }
-
-    /* Provides part of the "X" to eliminate an image from the close link */
-
-    a.lightbox-close:after {
-        content: "";
-        display: block;
-        height: 30px;
-        width: 1px;
-        background: black;
-        position: absolute;
-        left: 26px;
-        top:10px;
-        -webkit-transform:rotate(-45deg);
-        -moz-transform:rotate(-45deg);
-        -o-transform:rotate(-45deg);
-        transform:rotate(-45deg);
-    }
-
-    /* Uses the :target pseudo-class to perform the animations upon clicking the .lightbox-target anchor */
-
-    .lightbox-target:target {
-        opacity: 1;
-        top: 0;
-        bottom: 0;
-        left: 0;
-    }
-
-    .lightbox-target:target img {
-        max-height: 100%;
-        max-width: 100%;
-    }
-
-    .lightbox-target:target a.lightbox-close {
-        top: 0px;
-       
-    }
-</style>
 @endsection
 
 @section ('content_title')
@@ -131,30 +13,66 @@
                 <i class="fas fa-2x fa-sync-alt fa-spin"></i>
             </div>
         <div class="card-header">
-            <div class="col-md-8 m-auto">
-                <h6 class="box-title">Search</h6>
-                <form id="js-form_search">
-                    {{ csrf_field() }}
-                    <div class="row">
-                        <div class="col-md-8">
-                            <div id="js-form_search" class="form-group" style="padding-left:0;padding-right:0">
-                                <input type="text" class="form-control form-control-sm" name="search">
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <button type="submit" class="btn btn-sm btn-success">Search</button>
-                        </div>
-                    </div>
-                </form>
-            </div>
+            <ul class="nav nav-pills">
+                <li class="nav-item">
+                    <a class="nav-link {{ $tab ? $tab == 'not-paid' ? 'active' : '' : '' }}" 
+                    href="{{ route('finance.student_acct', ['tab' => 'not-paid']) }}">Not yet Paid</a>
+                </li>                                
+                <li class="nav-item">
+                    <a class="nav-link {{ $tab ? $tab == 'paid' ? 'active' : '' : '' }}" 
+                    href="{{ route('finance.student_acct', ['tab' => 'paid']) }}">Paid</a>
+                </li>        
+            </ul>
+            
         </div>
         <!-- /.card-header -->
         <div class="card-body">
             <div class="row">
                 <div class="col-md-12">
-                    <div class="js-data-container">
-                        @include('control_panel_finance.student_finance_account.partials.data_list')
-                    </div>
+                        <div class="table-responsive">                                           
+                            <div class="card">
+                                <div class="card-header p-2">
+                                    <div class="col-md-8 m-auto">
+                                        <h6 class="box-title">Search</h6>
+                                        <form id="js-form_search">
+                                            {{ csrf_field() }}
+                                            <div class="row">
+                                                <div class="col-md-3">
+                                                    {{-- <label class="control-label">- School year -</label> --}}
+                                                    <div class="input-school_year">
+                                                        <select name="school_year" id="school_year" class="form-control form-control-sm ">
+                                                            <option value="0">
+                                                                - School Year -
+                                                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                                            </option>
+                                                            @foreach ($School_years as $item)
+                                                                <option value="{{ $item->id }}">{{ $item->school_year }}</option>
+                                                            @endforeach
+                                                        </select>
+                                                    </div>
+                                                    <div class="help-block text-red text-left" id="js-school_year">
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-7">
+                                                    <div id="js-form_search" class="form-group" style="padding-left:0;padding-right:0">
+                                                        <input type="text" class="form-control form-control-sm" name="search">
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-2">
+                                                    <button type="submit" class="btn btn-sm btn-success">Search</button>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                                <div class="card-body">
+                                    <div class="js-data-container">                 
+                                        @include('control_panel_finance.student_finance_account.partials.data_list')
+                                    </div>
+                                </div>                  
+                            </div> 
+                        </div>
+                    
                 </div>
             </div>
         </div>
@@ -172,7 +90,7 @@
             formData.append('page', page);
             loader_overlay();
             $.ajax({
-                url : "{{ route('finance.student_acct') }}",
+                url : "{{ route('finance.student_acct', ['tab' => $tab] ) }}",
                 type : 'POST',
                 data : formData,
                 processData : false,
@@ -294,29 +212,5 @@
 
         });
 
-        transactionHistoryTableStorage();
-
-        function transactionHistoryTableStorage()
-        {
-            $('a[data-toggle="tab"]').click(function (e) {
-                e.preventDefault();
-                $(this).tab('show');
-            });
-
-            $('a[data-toggle="tab"]').on("shown.bs.tab", function (e) {
-                var id = $(e.target).attr("href");
-                localStorage.setItem('selectedTab', id)
-            });
-
-            var selectedTab = localStorage.getItem('selectedTab');
-
-            if (selectedTab != null) {
-                $('a[data-toggle="tab"][href="' + selectedTab + '"]').tab('show');
-            }
-        }   
-
-       
-
-        
     </script>
 @endsection

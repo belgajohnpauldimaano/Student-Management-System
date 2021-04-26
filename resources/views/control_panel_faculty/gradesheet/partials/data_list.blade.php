@@ -20,7 +20,7 @@
                 $quarter == '2nd' && $sem == '1st'      || 
                 $quarter == '4th' && $sem == '2nd'
             )
-                {{$sem}} -
+                {{ $sem == '3rd' ? 'Average' : $sem }} -
             @endif
             {{ $quarter }}
         </i>
