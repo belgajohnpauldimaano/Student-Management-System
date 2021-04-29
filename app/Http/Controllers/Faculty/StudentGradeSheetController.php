@@ -111,12 +111,7 @@ class StudentGradeSheetController extends Controller
                 ->orderBy('class_subject_order', 'ASC');
         }
 
-        $AdvisorySubject = $query->with(['subject','classDetail','faculty'])
-            ->whereClassDetailsId($class_detail->id)
-            ->whereStatus(1)
-            ->orderBy('class_subject_order', 'ASC')
-            ->get();
-
+        $AdvisorySubject = $this->advisorySubject($query, $class_detail->id);
             // return json_encode($AdvisorySubject);
 
         $no_second_sem = '';
@@ -173,12 +168,8 @@ class StudentGradeSheetController extends Controller
                     ->orderBy('class_subject_order', 'ASC');
             }
 
-            $AdvisorySubject = $query->with(['subject','classDetail','faculty'])
-                ->whereClassDetailsId($class_id)
-                ->whereStatus(1)
-                ->orderBy('class_subject_order', 'ASC')
-                ->get();
-
+            $AdvisorySubject = $this->advisorySubject($query, $class_id);
+            
             // return json_encode($AdvisorySubject);
 
             $no_second_sem = '';
@@ -206,6 +197,20 @@ class StudentGradeSheetController extends Controller
             $pdf->setPaper('Legal', 'portrait');
                 return $pdf->stream();
         }
+    }
+
+    private function advisorySubject($query, $class_detail_id)
+    {
+        return $query->with([
+            'subject:id,subject_code,subject',
+            'classDetail:id,school_year_id,grade_level,adviser_id',
+            'faculty:id,first_name,middle_name,last_name'
+            ])
+            ->select('id','class_details_id','faculty_id','subject_id','sem')
+            ->whereClassDetailsId($class_detail_id)
+            ->whereStatus(1)
+            ->orderBy('class_subject_order', 'ASC')
+            ->get();
     }
 
     private function enrollment($id, $sy_id){

@@ -1,5 +1,5 @@
 <div class="table-responsive">      
-    <div class="float-right">
+    <div class="col-md-12 float-right float-lg-right">
         {{ $StudentInformation ? $StudentInformation->links() : '' }}
     </div>
     <table class="table no-margin table-hover table-sm">

@@ -32,7 +32,7 @@
               <img style="width: 30px ;margin-top: -8px;"
                 src="{{ Auth::user()->get_user_data()->photo_profile }}" class="user-image img-circle elevation-2" alt="User Image"
               >
-              <span class="hidden-xs">{{ \Auth::user()->get_user_data()->full_name }}</span>
+              <span class="hidden-xs d-none">{{ \Auth::user()->get_user_data()->full_name }}</span>
             </a>
             <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
               <a href="#" class="dropdown-item">
@@ -583,7 +583,7 @@
                   <i class="fas fa-pen-square fa-lg"></i> <p>Student Enrollment/Billing</p>
                 </a>
               </li> --}}
-              <li class="nav-item">
+              {{-- <li class="nav-item">
                 <a href="#" class="nav-link
                   {{
                     request()->routeIs('finance.student_payment.not_yet_approved') ? 'active menu-open' : '' || 
@@ -596,13 +596,9 @@
                   <i class="fas fa-angle-left right"></i>
                 </a>
                 <ul class="nav nav-treeview d-block
-                  {{-- {{
-                    request()->routeIs('finance.student_payment.not_yet_approved') ? 'd-block' : '' || 
-                    request()->routeIs('finance.student_payment.approved') ? 'd-block' : '' || 
-                    request()->routeIs('finance.student_payment.disapproved') ? 'd-block' : ''
-                  }} --}}
+                  
                 ">
-                  {{--  Admin Menu  --}}
+                 
                     <li class="nav-item">
                       <a class="nav-link {{request()->routeIs('finance.student_payment.not_yet_approved') ? 'active' : '' }}"
                          href="{{ route('finance.student_payment.not_yet_approved')}}">
@@ -625,6 +621,15 @@
                       </a>
                     </li>
                   </ul>
+              </li> --}}
+              <li class="nav-item">
+                <a class="nav-link {{request()->routeIs('finance.student_payment.index') ? 'active' : '' }}"
+                   href="{{ route('finance.student_payment.index') }}">
+                  <i class="fas fa-clipboard-list fa-lg"></i> <p>Student Payment</p> 
+                    <span class="{{$NotyetApprovedCount == 0 ? 'd-none' : ''}}badge badge-info right js-notYetApprovedCount">
+                      {{$NotyetApprovedCount == 0 ? '' : $NotyetApprovedCount}}
+                    </span>
+                </a>
               </li>
               {{-- </span></a></li> --}}
               <li class="nav-item">
@@ -749,7 +754,8 @@
                 </ul>
               </li>
             @endif
-            {{-- <li class="nav-item">
+            <li class="nav-header">MY PROFILE</li>
+            <li class="nav-item">
               @if (Auth::user()->role == 3)
                 <a class="nav-link {{request()->routeIs('registrar.my_account.index') ? 'active' : '' }}"
                    href="{{ route('registrar.my_account.index') }}">
@@ -776,7 +782,7 @@
                   <i class="fa fa-user fa-lg"></i> <p>My Account</p>
                 </a>
               @endif
-            </li> --}}
+            </li>
           </ul>
         </nav>
       </div>

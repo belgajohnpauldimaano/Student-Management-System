@@ -29,7 +29,9 @@
                                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                     </option>
                                     @foreach ($School_years as $item)
-                                        <option value="{{ $item->id }}">{{ $item->school_year }}</option>
+                                        @if($item->school_year != '2018-2019' && $item->school_year != '2019-2020')
+                                            <option value="{{ $item->id }}">{{ $item->school_year }}</option>
+                                        @endif
                                     @endforeach
                                 </select>
                             </div>

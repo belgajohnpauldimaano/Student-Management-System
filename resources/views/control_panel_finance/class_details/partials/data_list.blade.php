@@ -1,4 +1,4 @@
-<div class="table-responsive table-hover">  
+<div class="table-responsive">
     <div class="float-right">
         {{ $ClassDetail ? $ClassDetail->links() : '' }}
     </div>

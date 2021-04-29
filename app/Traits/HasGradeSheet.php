@@ -115,4 +115,9 @@ trait HasGradeSheet{
         return $student;        
     }
 
+    public function getSeniorFinalAveAttribute()
+    {
+        return $this->general_avg;
+    }
+
 }

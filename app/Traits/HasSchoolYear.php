@@ -30,5 +30,10 @@ trait HasSchoolYear{
         return SchoolYear::where('status', 1)->orderBy('school_year', 'DESC')->get();
     }
 
-    
+    public function schoolYearLatest()
+    {
+        return SchoolYear::where('current', 1)
+            ->where('status', 1)->orderBy('id', 'desc')
+            ->first();
+    }
 }

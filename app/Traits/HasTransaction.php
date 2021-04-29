@@ -1,6 +1,7 @@
 <?php
 namespace App\Traits;
 
+use App\Models\OtherFee;
 use App\Models\SchoolYear;
 use App\Models\Transaction;
 use App\Models\PaymentCategory;
@@ -174,6 +175,28 @@ trait HasTransaction{
         return $result;
     }
 
+    public function getBalanceAccountAttribute()
+    {
+        $bal = TransactionMonthPaid::where('transaction_id', $this->transactions_id)
+            ->where('approval', 'Approved')
+            ->ORDERBY('id', 'DESC')
+            ->first();
+            
+        $other_fee_amt = OtherFee::where('id', $this->other_fee_id)->first()->other_fee_amt;
+        
+        $Discount_amt = TransactionDiscount::where('student_id', $this->student_id)
+            ->where('school_year_id', $this->school_year_id)
+            ->where('isSuccess', 1)
+            ->sum('discount_amt');
+            
+        if($bal){
+            $result = number_format($bal->balance, 2);
+        }else{
+            $result = number_format(($this->tuition_amt + $this->misc_amt + $other_fee_amt) - ($Discount_amt),2);
+        }
+
+        return $result;
+    }
     
     
 }

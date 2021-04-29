@@ -324,7 +324,6 @@
                                         @php 
                                             $sub_grade = $subject_grades
                                                 ->where('enrollments_id',$item->id)
-                                                // ->where('subject_id', $sub->subject_id)
                                                 ->where('class_subject_details_id', $sub->id)
                                                 ->where('status', 1)
                                                 ->first(); 
@@ -500,7 +499,6 @@
                                     @php 
                                         $sub_grade = $subject_grades
                                             ->where('enrollments_id',$item->id)
-                                            // ->where('subject_id', $sub->subject_id)
                                             ->where('class_subject_details_id', $sub->id)
                                             ->where('status', 1)
                                             ->first();                       

@@ -27,7 +27,7 @@
                             <td></td>
                         @else
                             <td></td>
-                        @endif                            
+                        @endif
                         <td></td>
                     @endif
                 @endif
@@ -41,6 +41,7 @@
             <td style="text-align: right; padding-right: 1em" colspan="3"><b>General Average</b></td>
             <td>
                 <b>
+
                     @if($data->thi_g == 0 && $data->fou_g == 0)
                         
                     @elseif($data->thi_g != 0 && $data->fou_g != 0)
@@ -73,7 +74,7 @@
         </td>
         <td style="width: 100px; text-align: center">
             @if($data->thi_g != 0 && $data->fou_g != 0)
-                <b>{{round($general_avg, 0)}}</b>
+                <b>{{round($general_avg_senior, 0)}}</b>
             @endif
         </td>
         

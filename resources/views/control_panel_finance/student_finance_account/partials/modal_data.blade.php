@@ -1,12 +1,14 @@
 <div class="modal fade" tabindex="-1" role="dialog">
-    <div class="modal-dialog" role="document">
+    <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="box-body">
                 <div class="modal-header">
                     <h4 style="margin-right: 5em;" class="modal-title">
                         Student Payment Account Information
                     </h4>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
                 </div>
                 <div class="modal-body">                    
                     <div class="row">                        
@@ -29,7 +31,7 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="">Status</label><br/>
-                                <span class="label {{ $Modal_data->status ? $Modal_data->status ==0 ? 'label-success' : 'label-danger' : 'label-success'}}">
+                                <span class="badge {{ $Modal_data->status ? $Modal_data->status ==0 ? 'badge-success' : 'badge-danger' : 'badge-success'}}">
                                     {{ $Modal_data->status ? $Modal_data->status == 0 ? 'Paid' : 'Not yet paid' : 'Paid'}}
                                     {{-- {{ $Modal_data->status ? $Modal_data->status == 0 ? 'Unpaid' : 'Paid' : 'Unpaid'}} --}}
                                 </span>

@@ -4,27 +4,25 @@ namespace App\Http\Controllers\Finance;
 
 use App\Models\SchoolYear;
 use App\Models\Transaction;
+use Illuminate\Http\Request;
+use App\Traits\HasSchoolYear;
+use App\Traits\hasNotYetApproved;
 use App\Models\StudentInformation;
 use App\Models\TransactionDiscount;
 use App\Models\TransactionOtherFee;
-use Illuminate\Http\Request;
-use App\Models\TransactionMonthPaid;
-use App\Traits\hasNotYetApproved;
 use App\Http\Controllers\Controller;
+use App\Models\TransactionMonthPaid;
 
 class StudentFinanceAccountController extends Controller
 {
-    use hasNotYetApproved;
+    use hasNotYetApproved, HasSchoolYear;
     
     public function index(Request $request){
 
         $tab = $request->tab ? $request->tab : 'not-paid';
 
-        $SchoolYear = SchoolYear::where('current', 1)
-            ->where('status', 1)
-            ->first();
-
-        $School_years = SchoolYear::where('status', 1)->orderBy('id', 'Desc')->get();
+        $SchoolYear = $this->schoolYearLatest();
+        $School_years = $this->schoolYears();
 
         $query = StudentInformation::join('transactions','transactions.student_id', '=' ,'student_informations.id')  
             ->join('transaction_month_paids', 'transaction_month_paids.transaction_id', '=' ,'transactions.id')                            
@@ -38,7 +36,7 @@ class StudentFinanceAccountController extends Controller
                 payment_categories.other_fee_id,
                 student_informations.id as student_information_id,
                 transactions.student_id,
-                transactions.id,
+                transactions.id as transactions_id,
                 tuition_fees.tuition_amt,
                 misc_fees.misc_amt, transactions.school_year_id, transactions.status
             ')
@@ -49,6 +47,7 @@ class StudentFinanceAccountController extends Controller
             })
             ->where('student_informations.status', 1)
             ->orderBy('student_name', 'ASC')
+            ->where('transactions.school_year_id', $request->school_year ? $request->school_year : $SchoolYear->id)
             ->where('transaction_month_paids.isSuccess', 1);
 
         if($tab == 'paid')
