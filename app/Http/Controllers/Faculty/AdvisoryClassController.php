@@ -592,8 +592,7 @@ class AdvisoryClassController extends Controller
                     
 
                     if($grade_level > 10){
-                        if($semester == 1)
-                        {
+                        if($semester == 1){
                             $lacking_unit = $item->s1_lacking_unit;
                         }else{
                             $lacking_unit = $item->s2_lacking_unit;
@@ -601,7 +600,7 @@ class AdvisoryClassController extends Controller
                     }
 
                     if($grade_level < 11){
-                        $lacking_unit = $item->lacking_unit;
+                        $lacking_unit = $item->j_lacking_unit;
                     }
 
                     if($grade_level > 10){

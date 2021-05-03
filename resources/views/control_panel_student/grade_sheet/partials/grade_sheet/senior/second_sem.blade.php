@@ -201,10 +201,10 @@
                 @elseif(round($general_avg) < 75)                     
                    <strong>Failed</strong>
                 @else 
-                ________________________________
+                _________________
                 @endif
             @else
-            ________________________________
+            _________________
             @endif        
        
         </td>                
@@ -215,7 +215,7 @@
             Lacking units in:______<u>
                 @php
                     try {
-                        echo $GradeSheetData[0]->grade_level == 11 ? $GradeSheetData[0]->lacking_unit : '';
+                        echo $GradeSheetData[0]->lacking_unit;
                     } catch (\Throwable $th) {
                         echo '_______________';
                     }
@@ -228,7 +228,7 @@
             Date:_______<u>
                 @php
                     try {
-                       echo date_format(date_create($DateRemarks->s_date1), 'F d, Y');
+                       echo date_format(date_create($DateRemarks->s_date2), 'F d, Y');
                     } catch (\Throwable $th) {
                         echo '';
                     }    

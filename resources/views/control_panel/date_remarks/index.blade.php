@@ -11,22 +11,21 @@
             </div>
         <div class="card-header">
             <div class="col-md-8 m-auto">
-                    <h6 class="box-title">Search</h6>
-                    <form id="js-form_search">
-                        {{ csrf_field() }}
-                        <div class="row">
-                            <div class="col-md-8">
-                                <div id="js-form_search" class="form-group" style="padding-left:0;padding-right:0">
-                                    <input type="text" class="form-control form-control-sm" name="search">
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <button type="submit" class="btn btn-success">Search</button>
-                                <button type="button" class="btn btn-danger" id="js-button-add"><i class="fa fa-plus"></i> Add</button>
+                <h6 class="box-title">Search</h6>
+                <form id="js-form_search">
+                    {{ csrf_field() }}
+                    <div class="row">
+                        <div class="col-md-8">
+                            <div id="js-form_search" class="form-group" style="padding-left:0;padding-right:0">
+                                <input type="text" class="form-control form-control-sm" name="search">
                             </div>
                         </div>
-                    </form>
-                
+                        <div class="col-md-4">
+                            <button type="submit" class="btn btn-success">Search</button>
+                            <button type="button" class="btn btn-danger" id="js-button-add"><i class="fa fa-plus"></i> Add</button>
+                        </div>
+                    </div>
+                </form>                
             </div>
         </div>
         <!-- /.card-header -->

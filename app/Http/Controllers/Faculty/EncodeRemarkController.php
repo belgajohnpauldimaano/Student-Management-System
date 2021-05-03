@@ -104,10 +104,11 @@ class EncodeRemarkController extends Controller
                     "))
                     ->orderBY('student_name', 'ASC')
                     ->get();
+
+                // return json_encode($EnrollmentMale);
                 $hasData = 1;
                 return view('control_panel_faculty.encode_remarks.index', 
-                    compact('hasData','EnrollmentMale','EnrollmentFemale','ClassSubjectDetail','SchoolYear','DateRemarks','Semester_id'))
-                    ->render();
+                    compact('hasData','EnrollmentMale','EnrollmentFemale','ClassSubjectDetail','SchoolYear','DateRemarks','Semester_id'));
             }
             else{
                 $hasData = 0;
@@ -128,8 +129,7 @@ class EncodeRemarkController extends Controller
         
         try {
             
-            $Student_info = Enrollment::where('student_information_id', $stud_id)
-                ->where('id', $e_id)
+            $Student_info = Enrollment::where('student_information_id', $stud_id)->where('id', $e_id)
                 ->where('class_details_id', $class_detail_id)->first();
                 
                 $Student_info->eligible_transfer = $request->eligible_transfer;

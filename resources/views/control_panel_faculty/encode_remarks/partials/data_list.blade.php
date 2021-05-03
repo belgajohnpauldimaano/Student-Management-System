@@ -26,15 +26,22 @@
                                 <td>{{ $key + 1 }}.</td>
                                 <td>{{ $data->student_name }}</td>                            
                                 <td> 
-                                    @if($Semester_id == 1)                                    
-                                        <input type="text" class="form-control form-control-sm" name="eligible_transfer" value="{{$data->eligible_transfer}}" placeholder="none">                                     
-                                    @else
-                                        <input type="text" class="form-control form-control-sm" name="eligible_transfer" 
-                                        placeholder="Grade">                                             
-                                    @endif                                 
+                                    @if($ClassSubjectDetail->grade_level > 10)
+                                        {{-- @if($Semester_id == 1)
+                                            <input type="text" class="form-control form-control-sm" name="eligible_transfer" value="{{$data->eligible_transfer}}" placeholder="none">                                     
+                                        @else
+                                            <input type="text" class="form-control form-control-sm" name="eligible_transfer" 
+                                            placeholder="Grade">   
+                                        @endif --}}
+                                        <input type="text" class="form-control form-control-sm" name="eligible_transfer" value="{{$data->eligible_transfer}}" placeholder="none">
+                                    @endif
+                                    
+                                    @if($ClassSubjectDetail->grade_level <= 10)
+                                        <input type="text" class="form-control form-control-sm" name="eligible_transfer" value="{{$data->eligible_transfer}}" placeholder="none">
+                                    @endif
                                 </td>
                                 <td>
-                                    @if($ClassSubjectDetail->grade_level < 11) 
+                                    @if($ClassSubjectDetail->grade_level < 11)
                                         <input type="text" class="form-control form-control-sm" name="jlacking_units" value="{{ $data->j_lacking_unit }}" placeholder="none"> 
                                     @elseif($ClassSubjectDetail->grade_level > 10)
                                         @if($Semester_id == 1)
@@ -59,7 +66,6 @@
                                             @if($Semester_id == 1)
                                                 <input type="text" name="date" disabled class="tbdatepicker form-control form-control-sm pull-right" 
                                                     id="tbdatepicker" placeholder="11/11/2000" value="{{ $DateRemarks->s_date1 ? $DateRemarks->s_date1 : '' }}"
-                                                    
                                                 >
                                             @else
                                                 <input type="text" name="date" disabled class="tbdatepicker form-control form-control-sm pull-right" 
@@ -145,12 +151,19 @@
                                 <td>{{ $key + 1 }}.</td>
                                 <td>{{ $data->student_name }}</td>                            
                                 <td> 
-                                    @if($Semester_id == 1)                                    
-                                        <input type="text" class="form-control form-control-sm" name="eligible_transfer" value="{{$data->eligible_transfer}}" placeholder="none">                                     
-                                    @else
-                                        <input type="text" class="form-control form-control-sm" name="eligible_transfer" 
-                                            placeholder="Grade">                                             
-                                    @endif     
+                                    @if($ClassSubjectDetail->grade_level > 10)
+                                        {{-- @if($Semester_id == 1)
+                                            <input type="text" class="form-control form-control-sm" name="eligible_transfer" value="{{$data->eligible_transfer}}" placeholder="none">                                     
+                                        @else
+                                            <input type="text" class="form-control form-control-sm" name="eligible_transfer" 
+                                            placeholder="Grade">   
+                                        @endif --}}
+                                        <input type="text" class="form-control form-control-sm" name="eligible_transfer" value="{{$data->eligible_transfer}}" placeholder="none">
+                                    @endif
+                                    
+                                    @if($ClassSubjectDetail->grade_level <= 10)
+                                        <input type="text" class="form-control form-control-sm" name="eligible_transfer" value="{{$data->eligible_transfer}}" placeholder="none">
+                                    @endif
                                 </td>
                                 <td>
                                     @if($ClassSubjectDetail->grade_level < 11) 
