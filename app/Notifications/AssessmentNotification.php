@@ -3,11 +3,11 @@
 namespace App\Notifications;
 
 use Illuminate\Bus\Queueable;
-use Illuminate\Notifications\Notification;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
+use Illuminate\Notifications\Notification;
 
-class NotificationMail extends Notification
+class AssessmentNotification extends Notification
 {
     use Queueable;
 
@@ -29,7 +29,7 @@ class NotificationMail extends Notification
      */
     public function via($notifiable)
     {
-        return ['mail','database'];
+        return ['mail'];
     }
 
     /**
@@ -56,13 +56,6 @@ class NotificationMail extends Notification
     {
         return [
             //
-        ];
-    }
-
-    public function toDatabase(){
-        return [
-            'amount' => 1000
-            // 'in'
         ];
     }
 }

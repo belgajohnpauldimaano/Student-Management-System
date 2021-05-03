@@ -376,6 +376,7 @@ class StudentController extends Controller
                                 ['key' => 'Feb',],
                                 ['key' => 'Mar',],
                                 ['key' => 'Apr',],
+                                ['key' => 'May',],
                                 ['key' => 'total']
                             ];       
                         }
@@ -393,6 +394,7 @@ class StudentController extends Controller
                             ['key' => 'Feb',],
                             ['key' => 'Mar',],
                             ['key' => 'Apr',],
+                            ['key' => 'May',],
                             ['key' => 'total'],
                         ];
                     }
@@ -422,16 +424,16 @@ class StudentController extends Controller
                         {
                             $attendance_data = json_decode(json_encode([
                                 'days_of_school' => [
-                                    0, 0, 0, 0, 
+                                    0, 0, 0, 0, 0
                                 ],
                                 'days_present' => [
-                                    0, 0, 0, 0, 
+                                    0, 0, 0, 0, 0
                                 ],
                                 'days_absent' => [
-                                    0, 0, 0, 0, 
+                                    0, 0, 0, 0, 0
                                 ],
                                 'times_tardy' => [
-                                    0, 0, 0, 0, 
+                                    0, 0, 0, 0, 0
                                 ]
                             ]));
                         }
@@ -441,16 +443,16 @@ class StudentController extends Controller
                     {
                         $attendance_data = json_decode(json_encode([
                             'days_of_school' => [
-                                0, 0, 0, 0, 0, 0, 0, 0, 0,
+                                0, 0, 0, 0, 0, 0, 0, 0, 0, 0
                             ],
                             'days_present' => [
-                                0, 0, 0, 0, 0, 0, 0, 0, 0,
+                                0, 0, 0, 0, 0, 0, 0, 0, 0, 0
                             ],
                             'days_absent' => [
-                                0, 0, 0, 0, 0, 0, 0, 0, 0,
+                                0, 0, 0, 0, 0, 0, 0, 0, 0, 0
                             ],
                             'times_tardy' => [
-                                0, 0, 0, 0, 0, 0, 0, 0, 0,
+                                0, 0, 0, 0, 0, 0, 0, 0, 0, 0
                             ]
                         ]));
                     }

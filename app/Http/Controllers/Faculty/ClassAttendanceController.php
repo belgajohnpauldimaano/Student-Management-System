@@ -110,8 +110,8 @@ class ClassAttendanceController extends Controller
                 ->orderBY('student_name', 'ASC')
                 ->get();
 
-            if('2020-2021' == $school_year->school_year)
-            {
+                if('2020-2021' == $school_year->school_year)
+                {
                     if($Semester->grade_level > 10)
                     {
                         if($Semester->sem == 1)
@@ -133,6 +133,7 @@ class ClassAttendanceController extends Controller
                                 ['key' => 'Feb',],
                                 ['key' => 'Mar',],
                                 ['key' => 'Apr',],
+                                ['key' => 'May',],
                                 ['key' => 'total']
                             ];      
                         }
@@ -151,6 +152,7 @@ class ClassAttendanceController extends Controller
                             ['key' => 'Feb',],
                             ['key' => 'Mar',],
                             ['key' => 'Apr',],
+                            ['key' => 'May',],
                             ['key' => 'total'],
                         ];      
                     }                    

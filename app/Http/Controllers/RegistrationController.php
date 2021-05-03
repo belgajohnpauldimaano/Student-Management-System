@@ -159,13 +159,11 @@ class RegistrationController extends Controller
                 // dd($request->all());
                 return response()->json(['res_code' => 0, 'res_msg' => 'You have successfuly registered!']);
             //  }
-        }
-        catch(\Exception $e){
+        }catch(\Exception $e){
             // do task when error
             // insert query
             DB::rollBack();
             Log::error($e->getMessage());
-            
             // $again = 1;
             return response()->json(['res_code' => 1, 'res_msg' => 'Please check all fields and submit again.']);
         }

@@ -724,6 +724,7 @@ class AdvisoryClassController extends Controller
                                 ['key' => 'Feb',],
                                 ['key' => 'Mar',],
                                 ['key' => 'Apr',],
+                                ['key' => 'May',],
                                 ['key' => 'total']
                             ];       
                         }
@@ -741,6 +742,7 @@ class AdvisoryClassController extends Controller
                             ['key' => 'Feb',],
                             ['key' => 'Mar',],
                             ['key' => 'Apr',],
+                            ['key' => 'May',],
                             ['key' => 'total'],
                         ];
                     }
