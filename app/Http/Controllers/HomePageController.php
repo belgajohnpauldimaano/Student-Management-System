@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Strand;
 
 use App\Models\Article;
+use App\Models\GradeLevel;
 use App\Models\SchoolYear;
 use Illuminate\Http\Request;
 use Nullix\CryptoJsAes\CryptoJsAes;

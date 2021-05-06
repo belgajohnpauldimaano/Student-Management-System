@@ -5,13 +5,13 @@
 @endsection
 
 @section ('content')
-        @if($ClassDetail->section_grade_level == 7)
+        @if($ClassDetail->grade_level == 7)
             <p class="grade7"></p>
-        @elseif($ClassDetail->section_grade_level == 8)
+        @elseif($ClassDetail->grade_level == 8)
             <p class="grade8"></p>
-        @elseif($ClassDetail->section_grade_level == 9)
+        @elseif($ClassDetail->grade_level == 9)
             <p class="grade9"></p>
-        @elseif($ClassDetail->section_grade_level == 10)
+        @elseif($ClassDetail->grade_level == 10)
             <p class="grade10"></p>
         @elseif($ClassDetail->grade_level == 11)
 
@@ -44,6 +44,8 @@
             @endif
             
         @endif
+
+        {{-- {{ $ClassDetail->grade_level }} --}}
         
         @php 
             try {

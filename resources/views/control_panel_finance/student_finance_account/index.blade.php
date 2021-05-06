@@ -16,7 +16,7 @@
             <ul class="nav nav-pills">
                 <li class="nav-item">
                     <a class="nav-link {{ $tab ? $tab == 'not-paid' ? 'active' : '' : '' }}" 
-                    href="{{ route('finance.student_acct', ['tab' => 'not-paid']) }}">Not yet Paid</a>
+                    href="{{ route('finance.student_acct', ['tab' => 'not-paid']) }}">Not Paid</a>
                 </li>                                
                 <li class="nav-item">
                     <a class="nav-link {{ $tab ? $tab == 'paid' ? 'active' : '' : '' }}" 

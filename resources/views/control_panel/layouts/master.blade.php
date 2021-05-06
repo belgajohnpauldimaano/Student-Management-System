@@ -2,7 +2,7 @@
 
 
 <body class="sidebar-mini layout-fixed layout-navbar-fixed layout-footer-fixed text-sm">
-<div class="wrapper">    
+<div class="wrapper">
   <!-- Navbar Right Menu -->
   <nav class="main-header navbar navbar-expand border-bottom-0 navbar-dark navbar-danger">
         <ul class="navbar-nav">
@@ -22,7 +22,7 @@
           </li>
           <li class="nav-item">
             <a class="nav-link" data-widget="fullscreen"
-            href="#" role="button">            
+            href="#" role="button">
               <i class="fas fa-expand-arrows-alt text-lg"></i>
             </a>
           </li>
@@ -84,7 +84,7 @@
   <!-- Left side column. contains the logo and sidebar -->
   <aside class="main-sidebar elevation-4 sidebar-light-danger">
       <!-- Brand Logo -->
-      <a href="/" class="brand-link navbar-danger">
+      <a class="brand-link navbar-danger">
         <img src="{{ asset('/img/sja-logo.png') }}"  class="brand-image img-circle elevation-3" style="height: 35px; opacity: .8">
         <span class="brand-text font-weight-bold text-white">ST. JOHN'S ACADEMY INC.</span>
       </a>
@@ -245,222 +245,14 @@
             {{--  Admin Menu End  --}}
             
             {{--  Registrar Menu  --}}
-            @if (Auth::user()->role == 3)
-              <li class="nav-item">
-                <a class="nav-link {{request()->routeIs('registrar.dashboard') ? 'active' : '' }}"
-                   href="{{ route('registrar.dashboard') }}">
-                  <i class="fa fa-home fa-fw fa-lg"></i> <p>Dashboard</p>
-                </a>
-              </li>
-              {{-- <li class="nav-item">
-                <a class="nav-link {{request()->routeIs('admission.incoming_student') ? 'active' : '' }}"
-                   href="{{ route('admission.incoming_student') }}">
-                  <i class="fas fa-users fa-lg"></i> <p>Incoming Student</p>
-                </a>
-              </li> --}}
-              <li class="nav-item">
-                <a class="nav-link {{request()->routeIs('admission.incoming') ? 'active' : '' }}"
-                   href="{{ route('admission.incoming', ['tab' => 'not-yet-approved']) }}">
-                      <i class="fa fa-info-circle fa-lg"></i>
-                      <span class="{{$IncomingStudentCount == 0 ? 'd-none' : ''}}badge badge-info js-incoming_stud right">
-                        {{$IncomingStudentCount == 0 ? '' : $IncomingStudentCount}}
-                      </span>
-                      <p>Incoming Student</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link {{request()->routeIs('registrar.class_details') ? 'active' : '' }}"
-                   href="{{ route('registrar.class_details') }}">
-                  <i class="fa fa-list-alt fa-lg "></i> <p>Class Lists</p>
-                </a>
-              </li>  
-              <li class="nav-item">
-                <a href="#" class="nav-link ">
-                  <i class="fas fa-users fa-lg"></i>                   
-                    <p>Student Sectioning</p>
-                  <i class="fas fa-angle-left right"></i>
-                </a>
-                {{-- <a href="{{ route('registrar.student_admission') }}">
-                  <i class="fas fa-users fa-lg"></i> <p>Student Admission</p>
-                </a> --}}
-                  <ul class="nav nav-treeview">
-                    {{--  Admin Menu  --}}
-                      <li class="nav-item">
-                        <a class="nav-link {{request()->routeIs('registrar.student_admission.grade7') ? 'active' : '' }}"
-                           href="{{ route('registrar.student_admission.grade7')}}">
-                          <i class="far fa-circle nav-icon fa-1x"></i> <p>Grade 7</p>
-                        </a>
-                      </li>
-                      <li class="nav-item">
-                        <a class="nav-link {{request()->routeIs('registrar.student_admission.grade8') ? 'active' : '' }}"
-                           href="{{ route('registrar.student_admission.grade8')}}">
-                          <i class="far fa-circle nav-icon fa-1x"></i> <p>Grade 8</p>
-                        </a>
-                      </li>
-                      <li class="nav-item">
-                        <a class="nav-link {{request()->routeIs('registrar.student_admission.grade9') ? 'active' : '' }}"
-                           href="{{ route('registrar.student_admission.grade9')}}">
-                          <i class="far fa-circle nav-icon fa-1x"></i> <p>Grade 9</p>
-                        </a>
-                      </li>
-                      <li class="nav-item">
-                        <a class="nav-link {{request()->routeIs('registrar.student_admission.grade10') ? 'active' : '' }}"
-                           href="{{ route('registrar.student_admission.grade10')}}">
-                          <i class="far fa-circle nav-icon fa-1x"></i> <p>Grade 10</p>
-                        </a>
-                      </li>
-                      <li class="nav-item">
-                        <a class="nav-link {{request()->routeIs('registrar.student_admission.grade11') ? 'active' : '' }}"
-                           href="{{ route('registrar.student_admission.grade11')}}">
-                          <i class="far fa-circle nav-icon fa-1x"></i> <p>Grade 11</p>
-                        </a>
-                      </li>
-                      <li class="nav-item">
-                        <a class="nav-link {{request()->routeIs('registrar.student_admission.grade12') ? 'active' : '' }}"
-                           href="{{ route('registrar.student_admission.grade12')}}">
-                          <i class="far fa-circle nav-icon fa-1x"></i> <p>Grade 12</p>
-                        </a>
-                      </li>
-                  </ul>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link {{request()->routeIs('shared.faculty_class_schedules.index') ? 'active' : '' }}"
-                   href="{{ route('shared.faculty_class_schedules.index') }}">
-                  <i class="far fa-calendar fa-lg"></i> <p>Faculty Class Schedule</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link {{request()->routeIs('admin.faculty_information') ? 'active' : '' }}"
-                   href="{{ route('admin.faculty_information') }}">
-                  <i class="fa fa-info-circle fa-lg"></i> <p>Faculty Information</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link {{request()->routeIs('admin.student.information') ? 'active' : '' }}"
-                   href="{{ route('admin.student.information') }}">
-                  <i class="fa fa-info-circle fa-lg"></i> <p>Student Information</p>
-                </a>
-              </li>           
-            @endif
+            @include('control_panel.layouts.inc.registrar')
             
             {{--  Faculty Menu  --}}
-            @if (Auth::user()->role == 4)
-              <li class="nav-item">
-                <a class="nav-link {{request()->routeIs('faculty.home') ? 'active' : '' }}"
-                   href="{{ route('faculty.home') }}">
-                  <i class="fa fa-home fa-fw fa-lg"></i> <p>Home</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link {{request()->routeIs('faculty.dashboard') ? 'active' : '' }}"
-                   href="{{ route('faculty.dashboard') }}">
-                  <i class="fas fa-tachometer-alt fa-lg"></i> <p>Dashboard</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link {{request()->routeIs('faculty.subject_class') ? 'active' : '' }}"
-                   href="{{ route('faculty.subject_class') }}">
-                <i class="fas fa-list fa-lg"></i> <p>Subject Class</p></a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link {{request()->routeIs('faculty.faculty_class_schedules') ? 'active' : '' }}"
-                   href="{{ route('faculty.faculty_class_schedules') }}">
-                  <i class="far fa-calendar fa-lg"></i> <p>Faculty Class Schedules</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link {{request()->routeIs('faculty.student_grade_sheet') ? 'active' : '' }}"
-                   href="{{ route('faculty.student_grade_sheet') }}">
-                  <i class="far fa-edit fa-lg"></i> <p>Encode Student Grades</p>
-                </a>
-              </li>
-              {{-- <li class="nav-item"><a href="{{ route('faculty.DataStudent') }}">
-                  <i class="far fa-circle nav-icon fa-1x"></i> <p>Make Data for GradeSheet</p>
-                </a>
-              </li> --}}
-              <li class="nav-item">
-                <a class="nav-link {{request()->routeIs('faculty.class-attendance.index') ? 'active' : '' }}"
-                   href="{{ route('faculty.class-attendance.index') }}">
-                  <i class="far fa-edit fa-lg"></i> <p>Encode Class Attendance</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link {{request()->routeIs('faculty.encode-remarks.index') ? 'active' : '' }}"
-                   href="{{ route('faculty.encode-remarks.index') }}">
-                  <i class="far fa-edit fa-lg"></i> <p>Print Class Card</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link {{request()->routeIs('faculty.class_demographic_profile.index') ? 'active' : '' }}"
-                   href="{{ route('faculty.class_demographic_profile.index') }}">
-                  <i class="fa fa-info-circle fa-lg"></i> <p>Demographic Profile</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link {{request()->routeIs('faculty.advisory_class.index*') ? 'active' : '' }}"
-                   href="{{ route('faculty.advisory_class.index') }}">
-                  <i class="fa fa-users fa-lg"></i> <p>My Advisory Class</p>
-                </a>
-              </li>
-              <li class="nav-header">LMS</li>
-              <li class="nav-item">
-                <a class="nav-link"
-                   href="">
-                  <i class="fas fa-book fa-lg"></i> <p>My Lesson</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link"
-                   href="">
-                  <i class="far fa-edit fa-lg"></i> <p>Assignment</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link 
-                {{
-                  request()->routeIs('faculty.assessment') ? 'active' : '' || 
-                  request()->routeIs('finance.assessment_subject.create') ? 'active' : '' || 
-                  request()->routeIs('faculty.assessment_subject') ? 'active' : '' ||
-                  request()->routeIs('faculty.assessment.archive') ? 'active' : '' ||
-                  request()->routeIs('faculty.assessment.publish') ? 'active' : '' ||
-
-                  request()->routeIs('faculty.assessment_subject') ? 'active' : '' ||
-                  request()->routeIs('faculty.assessment_subject.create') ? 'active' : '' ||
-                  request()->routeIs('faculty.assessment_subject.edit') ? 'active' : '' ||
-
-                  request()->routeIs('faculty.question') ? 'active' : '' ||
-                  request()->routeIs('faculty.question.edit') ? 'active' : '' 
-                }}"
-                   href="{{ route('faculty.assessment') }}">
-                  <i class="fas fa-user-clock fa-lg"></i> <p>Assessment</p>
-                </a>
-              </li>
-            @endif
+            @include('control_panel.layouts.inc.faculty')
 
             {{-- Admission --}}
-            @if (Auth::user()->role == 7)
-              <li class="nav-item">
-                <a class="nav-link {{request()->routeIs('admission.dashboard') ? 'active' : '' }}"
-                   href="{{ route('admission.dashboard') }}">
-                  <i class="fa fa-home fa-fw fa-lg"></i> <p>Dashboard</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link {{request()->routeIs('admission.incoming') ? 'active' : '' }}"
-                   href="{{ route('admission.incoming', ['tab' => 'not-yet-approved']) }}">
-                  <i class="fa fa-info-circle fa-lg"></i>
-                    <span class="{{$IncomingStudentCount == 0 ? 'd-none' : ''}}badge badge-info js-incoming_stud right">
-                        {{$IncomingStudentCount == 0 ? '' : $IncomingStudentCount}}
-                    </span> <p>Incoming Student</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link {{request()->routeIs('admin.student.information') ? 'active' : '' }}"
-                   href="{{ route('admin.student.information') }}">
-                  <i class="fa fa-info-circle fa-lg"></i> <p>Student Information</p>
-                </a>
-              </li>
-            @endif
+            @include('control_panel.layouts.inc.admission')
+
             {{--  
             @if (Auth::user()->role == 3)
             @endif               --}}
@@ -560,200 +352,8 @@
             @endif
 
             {{-- Finance Menu --}}
-            @if (Auth::user()->role == 6 )
-              <li class="nav-item">
-                <a class="nav-link {{request()->routeIs('finance.dashboard') ? 'active' : '' }}"
-                   href="{{ route('finance.dashboard') }}">
-                  <i class="fa fa-home fa-fw fa-lg"></i> <p>Dashboard</p>
-                </a>
-              </li>
-              {{-- <li class="nav-item"><a href="{{ route('finance.student_account') }}">
-                  <i class="fas fa-pen-square fa-lg"></i> <p>Student Enrollment</p>
-                </a>
-              </li> --}}
-              {{-- <li class="nav-item"><a href="{{ route('finance.student_payment') }}">&nbsp;
-                <i class="fas fa-clipboard-list fa-lg"></i> <p>Student Payment </i> --}}
-              <li class="nav-item">
-                <a class="nav-link {{request()->routeIs('finance.student_account') ? 'active' : '' }}"
-                   href="{{ route('finance.student_account') }}">
-                  <i class="fas fa-pen-square fa-lg"></i> <p>Student Enrollment/Billing</p>
-                </a>
-              </li>
-              {{-- <li class="nav-item"><a href="{{ route('finance.class_details') }}">
-                  <i class="fas fa-pen-square fa-lg"></i> <p>Student Enrollment/Billing</p>
-                </a>
-              </li> --}}
-              {{-- <li class="nav-item">
-                <a href="#" class="nav-link
-                  {{
-                    request()->routeIs('finance.student_payment.not_yet_approved') ? 'active menu-open' : '' || 
-                    request()->routeIs('finance.student_payment.approved') ? 'active menu-open' : '' || 
-                    request()->routeIs('finance.student_payment.disapproved') ? 'active menu-open' : ''
-                  }}
-                ">
-                  <i class="fas fa-clipboard-list fa-lg"></i>
-                    <p>Student Payment</p>
-                  <i class="fas fa-angle-left right"></i>
-                </a>
-                <ul class="nav nav-treeview d-block
-                  
-                ">
-                 
-                    <li class="nav-item">
-                      <a class="nav-link {{request()->routeIs('finance.student_payment.not_yet_approved') ? 'active' : '' }}"
-                         href="{{ route('finance.student_payment.not_yet_approved')}}">
-                        <i class="far fa-circle nav-icon fa-1x"></i> <p>Not yet Approved</p>
-                        <span class="{{$NotyetApprovedCount == 0 ? 'd-none' : ''}}badge badge-info right js-notYetApprovedCount">
-                           {{$NotyetApprovedCount == 0 ? '' : $NotyetApprovedCount}}
-                        </span>
-                      </a>
-                    </li>
-                    <li class="nav-item">
-                      <a class="nav-link {{request()->routeIs('finance.student_payment.approved') ? 'active' : '' }}"
-                         href="{{ route('finance.student_payment.approved')}}">
-                        <i class="far fa-circle nav-icon fa-1x"></i> <p>Approved</p>
-                      </a>
-                    </li>
-                    <li class="nav-item">
-                      <a class="nav-link {{request()->routeIs('finance.student_payment.disapproved') ? 'active' : '' }}"
-                         href="{{ route('finance.student_payment.disapproved')}}">
-                        <i class="far fa-circle nav-icon fa-1x"></i> <p>Disapproved</p>
-                      </a>
-                    </li>
-                  </ul>
-              </li> --}}
-              <li class="nav-item">
-                <a class="nav-link {{request()->routeIs('finance.student_payment.index') ? 'active' : '' }}"
-                   href="{{ route('finance.student_payment.index') }}">
-                  <i class="fas fa-clipboard-list fa-lg"></i> <p>Student Payment</p> 
-                    <span class="{{$NotyetApprovedCount == 0 ? 'd-none' : ''}}badge badge-info right js-notYetApprovedCount">
-                      {{$NotyetApprovedCount == 0 ? '' : $NotyetApprovedCount}}
-                    </span>
-                </a>
-              </li>
-              {{-- </span></a></li> --}}
-              <li class="nav-item">
-                <a class="nav-link {{request()->routeIs('finance.student_acct') ? 'active' : '' }}"
-                   href="{{ route('finance.student_acct') }}">
-                  <i class="fa fa-info-circle fa-lg"></i> <p>Student Account</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link {{request()->routeIs('finance.summary') ? 'active' : '' }}"
-                   href="{{ route('finance.summary') }}">
-                  <i class="fa fa-info-circle fa-lg"></i> <p>Payment Summary</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link {{request()->routeIs('finance.summary.subsidy_discount') ? 'active' : '' }}"
-                   href="{{ route('finance.summary.subsidy_discount') }}">
-                  <i class="fa fa-info-circle fa-lg"></i> <p>Discount/Subsidy Summary</p>
-                </a>
-              </li>
-              {{-- <li class="nav-item"><a href="{{ route('finance.summary') }}">
-                <i class="fa fa-info-circle fa-lg"></i> <p>Section Summary</p>
-              </a>
-              </li> --}}
-              <li class="nav-item">
-                <a class="nav-link {{request()->routeIs('finance.online_appointment.date_time') ? 'active' : '' }}"
-                   href="{{ route('finance.online_appointment.date_time') }}">
-                  <i class="far fa-calendar-check fa-lg"></i> <p>Online Appointment</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link {{request()->routeIs('finance.payroll') ? 'active' : '' }}"
-                   href="{{ route('finance.payroll') }}">
-                  <i class="fas fa-file-invoice fa-lg"></i> <p>Employee Payroll</p>
-                </a>
-              </li>
-
-              {{-- <li class="nav-item"><a href="{{ route('registrar.class_details') }}">
-                  <i class="fa fa-list-alt fa-lg "></i> <p>Report</p>
-                </a>
-              </li> --}}
-              <li class="nav-header">MAINTENANCE/SETTINGS</li>
-              <li class="nav-item">
-                <a href="#" class="nav-link
-                  {{
-                      request()->routeIs('finance.maintenance.tuition_fee') ? 'active menu-open' : '' ||
-                      request()->routeIs('finance.maintenance.downpayment') ? 'active menu-open' : '' ||
-                      request()->routeIs('finance.maintenance.misc_fee') ? 'active menu-open' : '' ||
-                      request()->routeIs('finance.maintenance.subsidy') ? 'active menu-open' : '' ||
-                      request()->routeIs('finance.maintenance.disc_fee') ? 'active menu-open' : '' ||
-                      request()->routeIs('finance.maintenance.payment_category') ? 'active menu-open' : '' ||
-                      request()->routeIs('finance.maintenance.other_fee') ? 'active menu-open' : '' ||
-                      request()->routeIs('finance.maintenance.queue') ? 'active menu-open' : ''
-                  }}
-                ">
-                  <i class="fa fa-cog fa-lg "></i> <p>Maintenance</p>
-                  {{-- <span class="badge badge-info">
-                    5
-                  </span> --}}
-                  <i class="fas fa-angle-left right"></i>
-                </a>
-                <ul class="nav nav-treeview
-                  {{
-                      request()->routeIs('finance.maintenance.tuition_fee') ? 'd-block' : '' ||
-                      request()->routeIs('finance.maintenance.downpayment') ? 'd-block' : '' ||
-                      request()->routeIs('finance.maintenance.misc_fee') ? 'd-block' : '' ||
-                      request()->routeIs('finance.maintenance.subsidy') ? 'd-block' : '' ||
-                      request()->routeIs('finance.maintenance.disc_fee') ? 'd-block' : '' ||
-                      request()->routeIs('finance.maintenance.payment_category') ? 'd-block' : '' ||
-                      request()->routeIs('finance.maintenance.other_fee') ? 'd-block' : '' ||
-                      request()->routeIs('finance.maintenance.queue') ? 'd-block' : ''
-                  }}
-                ">
-                    <li class="nav-item">
-                      <a class="nav-link {{request()->routeIs('finance.maintenance.tuition_fee') ? 'active' : '' }}"
-                         href="{{ route('finance.maintenance.tuition_fee') }}">
-                        <i class="far fa-circle nav-icon fa-1x"></i> <p>Tuition Fee</p>
-                      </a>
-                    </li>
-                    <li class="nav-item">
-                      <a class="nav-link {{request()->routeIs('finance.maintenance.downpayment') ? 'active' : '' }}"
-                         href="{{ route('finance.maintenance.downpayment') }}">
-                        <i class="far fa-circle nav-icon fa-1x"></i> <p>Downpayment Fee</p>
-                      </a>
-                    </li>
-                    <li class="nav-item">
-                      <a class="nav-link {{request()->routeIs('finance.maintenance.misc_fee') ? 'active' : '' }}"
-                         href="{{ route('finance.maintenance.misc_fee') }}">
-                        <i class="far fa-circle nav-icon fa-1x"></i> <p>Miscellaneous Fee</p>
-                      </a>
-                    </li>
-                    <li class="nav-item">
-                      <a class="nav-link {{request()->routeIs('finance.maintenance.subsidy') ? 'active' : '' }}"
-                         href="{{ route('finance.maintenance.subsidy') }}">
-                        <i class="far fa-circle nav-icon fa-1x"></i> <p>Subsidy</p>
-                      </a>
-                    </li>
-                    <li class="nav-item">
-                      <a class="nav-link {{request()->routeIs('finance.maintenance.disc_fee') ? 'active' : '' }}"
-                         href="{{ route('finance.maintenance.disc_fee') }}">
-                        <i class="far fa-circle nav-icon fa-1x"></i> <p>Discount</p>
-                      </a>
-                    </li>
-                    <li class="nav-item">
-                      <a class="nav-link {{request()->routeIs('finance.maintenance.payment_category') ? 'active' : '' }}"
-                         href="{{ route('finance.maintenance.payment_category') }}">
-                        <i class="far fa-circle nav-icon fa-1x"></i> <p>Payment Category</p>
-                      </a>
-                    </li>
-                    <li class="nav-item">
-                      <a class="nav-link {{request()->routeIs('finance.maintenance.other_fee') ? 'active' : '' }}"
-                         href="{{ route('finance.maintenance.other_fee') }}">
-                        <i class="far fa-circle nav-icon fa-1x"></i> <p>Other Fee</p>
-                      </a>
-                    </li>
-                    <li class="nav-item">
-                      <a class="nav-link {{request()->routeIs('finance.maintenance.queue') ? 'active' : '' }}"
-                         href="{{ route('finance.maintenance.queue') }}">
-                        <i class="far fa-circle nav-icon fa-1x"></i> <p>Online Appointment Set-up</p>
-                      </a>
-                    </li>
-                </ul>
-              </li>
-            @endif
+            @include('control_panel.layouts.inc.finance')
+            
             <li class="nav-header">MY PROFILE</li>
             <li class="nav-item">
               @if (Auth::user()->role == 3)
@@ -807,14 +407,14 @@
     <section class="content">
       <!-- Info boxes -->
       <div class="row">
-            <div class="col-sm-12">
-              <div class="row">
-                  <div class="col-sm-12">
-                      <div class="js-messages_holder" style="display:none"></div>
-                  </div>
+        <div class="col-sm-12">
+          <div class="row">
+              <div class="col-sm-12">
+                  <div class="js-messages_holder" style="display:none"></div>
               </div>
-              @yield('content')
-            </div>
+          </div>
+          @yield('content')
+        </div>
       </div>
       <!-- /.row -->
     </section>

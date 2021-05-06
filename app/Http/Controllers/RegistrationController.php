@@ -141,7 +141,7 @@ class RegistrationController extends Controller
                 {
                     $transfer = 2;
                 }
-                $StudentEducation->is_transferee           = $transfer;
+                $StudentEducation->is_transferee = $transfer;
                 $StudentEducation->save();
 
                 $Incoming_student = new IncomingStudent();

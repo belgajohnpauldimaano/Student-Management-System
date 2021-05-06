@@ -36,7 +36,6 @@ Route::group(['prefix' => 'student', 'middleware' => ['auth', 'userroles'], 'rol
         
         // Route::post('paypal', 'PaymentController@payWithpaypal');
         // Route::get('status', 'PaymentController@getPaymentStatus');
-
         Route::group(['prefix' => 'class-schedule'], function() {
             Route::get('', 'ClassScheduleController@index')->name('student.class_schedule.index');
             Route::post('', 'ClassScheduleController@index')->name('student.class_schedule.index');

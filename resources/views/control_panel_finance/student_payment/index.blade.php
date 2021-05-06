@@ -3,7 +3,7 @@
 @section ('content_title')
     Student Payment /
     @if($tab == 'not-yet-approved')
-        Not yet approved
+        Pending Approval
     @endif
     @if($tab == 'approved')
         Approved
@@ -23,7 +23,7 @@
                 <li class="nav-item">
                     <a class="nav-link {{ $tab ? $tab == 'not-yet-approved' ? 'active' : '' : '' }}" 
                         href="{{ route('finance.student_payment.index', ['tab' => 'not-yet-approved']) }}">
-                        Not yet Approved
+                        Pending Approval
                         
                         <span class="{{$notYetApprovedCount == null ? ($notYetApprovedCount == 0 ? 'd-none' : '') : ''}}badge badge-info right js-notYetApprovedCount">
                             {{$notYetApprovedCount == null ? ($notYetApprovedCount == 0 ? '' : $notYetApprovedCount) : ''}}
@@ -39,7 +39,7 @@
                 <li class="nav-item">
                     <a class="nav-link {{ $tab ? $tab == 'disapproved' ? 'active' : '' : '' }}" 
                         href="{{ route('finance.student_payment.index', ['tab' => 'disapproved']) }}">
-                        Disapproved
+                        Rejected
                     </a>
                 </li> 
             </ul>

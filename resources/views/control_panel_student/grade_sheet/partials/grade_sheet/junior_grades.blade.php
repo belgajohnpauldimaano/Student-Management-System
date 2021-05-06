@@ -286,16 +286,18 @@
                 <table border="0" style="width: 100%; margin-top: -100px; margin-bottom: 0em">     
             @elseif($Signatory->adviser->id == 20 || $Signatory->adviser->id == 59 || $Signatory->adviser->id == 21)
                 <table border="0" style="width: 100%; margin-top: -85px; margin-bottom: 0em">
-            @elseif($Signatory->adviser->id== 68|| $Signatory->adviser->id == 10|| $Signatory->adviser->id == 11 || $Signatory->adviser->id == 14 || $Signatory->adviser->id == 30)
+            @elseif($Signatory->adviser->id== 68|| $Signatory->adviser->id == 10|| $Signatory->adviser->id == 11 || $Signatory->adviser->id == 14)
                 <table border="0" style="width: 100%; margin-top: -90px; margin-bottom: 0em">
             @elseif($Signatory->adviser->id == 66)
                 <table border="0" style="width: 100%; margin-top: -90px; margin-bottom: 0em">
+            @elseif($Signatory->adviser->id == 30)
+                <table border="0" style="width: 100%; margin-top: -80px; margin-bottom: 0em">
             @elseif($Signatory->adviser->id == 26 || $Signatory->adviser->id == 28 || $Signatory->adviser->id == 65 || $Signatory->adviser->id == 23 || $Signatory->adviser->id == 62 || $Signatory->adviser->id == 19
               || $Signatory->adviser->id == 45 || $Signatory->adviser->id == 37 || $Signatory->adviser->id == 60  || $Signatory->adviser->id == 25 || $Signatory->adviser->id== 67)
                 <table border="0" style="width: 100%; margin-top: -80px; margin-bottom: 0em">                         
             @else
                 <table border="0" style="width: 100%; margin-top: -80px; margin-bottom: 0em">
-            @endif   
+            @endif      
                 <tr>
                     <td style="border: 0; width: 50%; height: 100px">
                         <span style="margin-left: 2em; text-transform: uppercase">

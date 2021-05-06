@@ -154,6 +154,62 @@
             width: 99% !important;
             display: inline-block;  
         }
+
+        .logo {
+                position: absolute;
+            }
+            .sja-logo {
+                top: 10px;
+                right: 10px;
+            }
+            .deped-bataan-logo {
+                top: 10px;
+                left: 10px;
+            }
+            .report-progress {
+                text-align: center;
+                font-size: 12px;
+                font-weight: 700;
+            }
+            .report-progress-left {
+                text-align: left;
+                font-size: 12px;
+                font-weight: 700;
+            }
+            .grade7{
+                border-bottom: 6px solid green;
+                margin-top: 0in;
+            }
+            .stem{
+                border-bottom: 6px solid green;
+                margin-top: -10px;
+            }
+            .grade8{
+                border-bottom: 6px solid yellow;
+                margin-top: 0in;
+            }
+            .abm{
+                border-bottom: 6px solid yellow;
+                margin-top: -10px;
+            }
+            .grade9{
+                border-bottom: 6px solid #bb0a1e;
+                margin-top: 0in;
+            }
+            .grade10{
+                border-bottom: 6px solid blue;
+                margin-top: 0in;
+            }
+            .humss{
+                border-bottom: 6px solid blue;
+                margin-top: -10px;
+            }
+            .less-m-top{
+                margin-top: -12px;
+            }
+            .less-m-top2{
+                margin-top: -5px;
+            }
         
     </style>
 </head>

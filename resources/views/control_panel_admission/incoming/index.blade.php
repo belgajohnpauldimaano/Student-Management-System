@@ -18,7 +18,7 @@
                 <li class="nav-item">
                     <a class="nav-link {{ $tab ? $tab == 'not-yet-approved' ? 'active' : '' : '' }}" 
                         href="{{ route('admission.incoming', ['tab' => 'not-yet-approved']) }}" >
-                        Not Yet Approved
+                        Pending Approval
                     </a>
                 </li>
                 <li class="nav-item">
@@ -30,7 +30,7 @@
                 <li class="nav-item">
                     <a class="nav-link {{ $tab ? $tab == 'disapproved' ? 'active' : '' : '' }}" 
                         href="{{ route('admission.incoming', ['tab' => 'disapproved']) }}" >
-                        Disapproved
+                        Rejected
                     </a>
                 </li>
             </ul>

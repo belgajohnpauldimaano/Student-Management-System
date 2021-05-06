@@ -18,11 +18,11 @@ class AddStudentInformationsTable extends Migration
             $table->string('citizenship')->nullable();
             $table->string('fb_acct')->nullable();
             $table->text('place_of_birth')->nullable();
-            $table->string('father_occupation')->nullable();
-            $table->string('father_fb_acct')->nullable();
-            $table->string('mother_occupation')->nullable();
-            $table->string('mother_fb_acct')->nullable();
-            $table->string('guardian_fb_acct')->nullable();
+            // $table->string('father_occupation')->nullable();
+            // $table->string('father_fb_acct')->nullable();
+            // $table->string('mother_occupation')->nullable();
+            // $table->string('mother_fb_acct')->nullable();
+            // $table->string('guardian_fb_acct')->nullable();
             $table->integer('no_siblings')->nullable();
             $table->integer('age');
         });
@@ -40,11 +40,11 @@ class AddStudentInformationsTable extends Migration
             $table->dropColumn('citizenship');
             $table->dropColumn('fb_acct');
             $table->dropColumn('place_of_birth');
-            $table->dropColumn('father_occupation');
-            $table->dropColumn('father_fb_acct');
-            $table->dropColumn('mother_occupation');
-            $table->dropColumn('mother_fb_acct');
-            $table->dropColumn('guardian_fb_acct');
+            // $table->dropColumn('father_occupation');
+            // $table->dropColumn('father_fb_acct');
+            // $table->dropColumn('mother_occupation');
+            // $table->dropColumn('mother_fb_acct');
+            // $table->dropColumn('guardian_fb_acct');
             $table->dropColumn('no_siblings');
         });
     }
