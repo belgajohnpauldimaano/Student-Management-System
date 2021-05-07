@@ -16,7 +16,7 @@ let mix = require('laravel-mix');
 //     .options({
 //         processCssUrls: false,
 //     });;
-
+mix.js('resources/assets/js/registration_validator.js', 'public/js').version()
 mix.js('resources/assets/js/student_assessment.js', 'public/js').version()
 // mix.js('resources/assets/js/control_panel.js', 'public/js').version()
 mix.js('resources/assets/js/assessment.js', 'public/js').version()

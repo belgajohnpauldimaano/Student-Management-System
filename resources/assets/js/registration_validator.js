@@ -4,8 +4,7 @@ $('.btn--update-photo').click(function(){
 
 getSchoolYear();
 
-function getModal() {
-    
+function getModal() {    
     $('.btn-enroll').click(function (e) {
         e.preventDefault();
         
@@ -985,4 +984,44 @@ $('#js-contactForm').validate({
             }
         });
     }                
+});
+
+$('#addNomination').click(function () {
+    nomination_json.push({
+        mode: $('select[name="controll_mode_cargo"').val(),
+        from: $('input[name="controll_from_cargo"]').val(),
+        to: $('input[name="controll_to_cargo"]').val(),
+        cycle: $('select[name="controll_cycle_cargo"]').val(),
+        tonnage: $('input[name="controll_tonnage_cargo"]').val()
+    });
+    // $('.clearNomination')
+    $("#dynamic_nomination").append(
+        '<div class="col-lg-6" id="row' + nomination_count + '">' +
+        '<div class="alert alert-primary p-1" role="alert">' +
+        '<div class="bg-primary p-2 m-1 text-light">' +
+        '<a type="button" class="close" id="' + nomination_count + '">' +
+        '<span aria-hidden="true">&times;</span>' +
+        '</a>' +
+        '<small><strong>Mode of transpo</strong> - <i>' + nomination_json[nomination_count].mode + ' </i></small><br />' +
+        '<small><strong>From country</strong> - <i>' + nomination_json[nomination_count].from + ' </i></small><br />' +
+        '<small><strong>To country</strong> - <i>' + nomination_json[nomination_count].to + ' </i></small><br />' +
+        '<small><strong>Cycle</strong> - <i>' + nomination_json[nomination_count].cycle + ' </i></small><br />' +
+        '<small><strong>Monthly Tonnage - ' + nomination_json[nomination_count].tonnage + ' </strong></small>' +
+        '</div>' +
+        '</div>' +
+        '</div>' +
+        ' <input type="hidden" value="' + nomination_json[nomination_count].mode + '" name="controll_mode[]" />' +
+        ' <input type="hidden" value="' + nomination_json[nomination_count].from + '" name="controll_from[]" />' +
+        ' <input type="hidden" value="' + nomination_json[nomination_count].to + '" name="controll_to[]" />' +
+        ' <input type="hidden" value="' + nomination_json[nomination_count].cycle + '" name="controll_cycle[]" />' +
+        ' <input type="hidden" value="' + nomination_json[nomination_count].tonnage + '" name="controll_tonnage[]" />'
+    );
+    nomination_count++
+    $('input[name="nomination_count"]').val(nomination_count);
+    console.log(nomination_json);
+    $(".emptySelectedNomination option:first").prop("selected", "selected");
+    $("#cycle option:first").prop("selected", "selected");
+    $('.emptyNomination').val('');
+    // $(".emptySelectedNomination").val('');
+    // $("#cycle").val('');
 });
