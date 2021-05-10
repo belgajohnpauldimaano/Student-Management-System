@@ -258,7 +258,8 @@
                         </td>
                         <td style="border: 0; width: 50%;">
                             <center>
-                                @if($Signatory->adviser->id == 26 || $Signatory->adviser->id == 28 || $Signatory->adviser->id == 66 || $Signatory->adviser->id == 10|| $Signatory->adviser->id == 11)
+                                @if($Signatory->adviser->id == 26 || $Signatory->adviser->id == 28 || $Signatory->adviser->id == 66 || $Signatory->adviser->id == 10 
+                                || $Signatory->adviser->id == 11)
                                     <img class="profile-user-img img-responsive img-circle" 
                                         id="img--user_photo" 
                                         src="{{ asset('/img/signature/principal_signature.png') }}" 
@@ -269,7 +270,19 @@
                                         id="img--user_photo" 
                                         src="{{ asset('/img/signature/principal_signature.png') }}" 
                                         style="width:170px; margin-top: 2.5em"
-                                    >            
+                                    >   
+                                @elseif($Signatory->adviser->id == 14) 
+                                    <img class="profile-user-img img-responsive img-circle" 
+                                        id="img--user_photo" 
+                                        src="{{ asset('/img/signature/principal_signature.png') }}" 
+                                        style="width:170px; margin-top: -1em"
+                                    >   
+                                 @elseif($Signatory->adviser->id == 68) 
+                                    <img class="profile-user-img img-responsive img-circle" 
+                                        id="img--user_photo" 
+                                        src="{{ asset('/img/signature/principal_signature.png') }}" 
+                                        style="width:170px; margin-top: -1em"
+                                    >   
                                 @else
                                     <img class="profile-user-img img-responsive img-circle" 
                                         id="img--user_photo" 
@@ -286,8 +299,14 @@
                 <table border="0" style="width: 100%; margin-top: -100px; margin-bottom: 0em">     
             @elseif($Signatory->adviser->id == 20 || $Signatory->adviser->id == 59 || $Signatory->adviser->id == 21)
                 <table border="0" style="width: 100%; margin-top: -85px; margin-bottom: 0em">
-            @elseif($Signatory->adviser->id== 68|| $Signatory->adviser->id == 10|| $Signatory->adviser->id == 11 || $Signatory->adviser->id == 14)
+            @elseif($Signatory->adviser->id == 10|| $Signatory->adviser->id == 11)
                 <table border="0" style="width: 100%; margin-top: -90px; margin-bottom: 0em">
+            @elseif($Signatory->adviser->id == 14)
+                <table border="0" style="width: 100%; margin-top: -90px; margin-bottom: 0em">
+            @elseif($Signatory->adviser->id == 68)
+                <table border="0" style="width: 100%; margin-top: -85px; margin-bottom: 0em">
+            @elseif($Signatory->adviser->id == 88)
+                <table border="0" style="width: 100%; margin-top: -103px; margin-bottom: 0em">        
             @elseif($Signatory->adviser->id == 66)
                 <table border="0" style="width: 100%; margin-top: -90px; margin-bottom: 0em">
             @elseif($Signatory->adviser->id == 30)
@@ -297,7 +316,7 @@
                 <table border="0" style="width: 100%; margin-top: -80px; margin-bottom: 0em">                         
             @else
                 <table border="0" style="width: 100%; margin-top: -80px; margin-bottom: 0em">
-            @endif      
+            @endif   
                 <tr>
                     <td style="border: 0; width: 50%; height: 100px">
                         <span style="margin-left: 2em; text-transform: uppercase">
