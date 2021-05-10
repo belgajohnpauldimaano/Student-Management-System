@@ -1,10 +1,9 @@
-                        
 <div class="table-responsive">                            
-    <div class="active tab-pane" id="js-notyetapproved">     
+    <div class="active tab-pane" id="js-notyetapproved">
         <div class="float-right">
             {{ $IncomingStudent ? $IncomingStudent->links() : '' }}
         </div>                             
-        <table class="table table-sm no-margin table-bordered table-hover">
+        <table class="table table-sm no-margin table-condensed table-hover">
             <thead>
                 <tr>
                     <th>Name</th>

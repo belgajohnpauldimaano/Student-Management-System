@@ -50,7 +50,7 @@ class RedirectIfAuthenticated
                 }
                 if ($request->user()->role == 8) 
                 {
-                    // return redirect()->route('admission.dashboard');
+                    return redirect()->route('examiner.home');
                 }
             }
         }

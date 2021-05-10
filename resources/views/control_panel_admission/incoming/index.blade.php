@@ -1,8 +1,6 @@
 @extends('control_panel.layouts.master')
 
-@section ('styles') 
-
-@endsection
+@section ('styles') @endsection
 
 @section ('content_title')
     Incoming Student

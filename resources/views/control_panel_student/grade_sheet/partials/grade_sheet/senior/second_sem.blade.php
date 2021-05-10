@@ -41,7 +41,6 @@
             <td style="text-align: right; padding-right: 1em" colspan="3"><b>General Average</b></td>
             <td>
                 <b>
-
                     @if($data->thi_g == 0 && $data->fou_g == 0)
                         
                     @elseif($data->thi_g != 0 && $data->fou_g != 0)
@@ -186,9 +185,8 @@
 
     <tr style="margin-top: .5em">
         <td colspan="3" style="border: 0">Eligible to transfer and admission to:
-        
             @if(round($GradeSheetData[0]->thi_g) != 0 && round($GradeSheetData[0]->fou_g) != 0)
-                @if(round($general_avg) > 74)  
+                @if(round($general_avg_senior) > 74)  
                     <strong><u>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;                                      
                     @php
                         try {
@@ -198,7 +196,7 @@
                         }
                     @endphp    
                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</u></strong>
-                @elseif(round($general_avg) < 75)                     
+                @elseif(round($general_avg_senior) < 75)                     
                    <strong>Failed</strong>
                 @else 
                 _________________

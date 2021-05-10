@@ -75,7 +75,6 @@ $('.btn--update-photo').click(function () {
 getSchoolYear();
 
 function getModal() {
-
     $('.btn-enroll').click(function (e) {
         e.preventDefault();
 

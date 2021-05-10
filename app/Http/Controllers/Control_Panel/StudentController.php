@@ -14,11 +14,16 @@ use App\Traits\hasIncomingStudents;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use App\Models\StudentEnrolledSubject;
+use App\Helpers\GradeSheetService\GradeSheetService;
 
 class StudentController extends Controller
 {
     use hasIncomingStudents, HasUser;
     
+    private $gradeSheetInfo;
+    public function __construct(GradeSheetService $gradeSheetInfo){
+        $this->gradeSheetInfo = $gradeSheetInfo;
+    }
 
     private function student($id)
     {
@@ -73,7 +78,6 @@ class StudentController extends Controller
         $destinationPath = public_path('/img/account/photo/');
         $request->user_photo->move($destinationPath, $name);
 
-    //    / $User = \Auth::user();
         if($request->id)
         {
             $Profile = StudentInformation::where('id', $request->id)->first();
@@ -176,6 +180,7 @@ class StudentController extends Controller
         
         
     }
+    
     public function deactivate_data (Request $request) 
     {
         $StudentInformation = $this->student($request->id);
@@ -270,7 +275,7 @@ class StudentController extends Controller
 
         $StudentInformation = StudentInformation::with(['user'])->where('id', $request->id)->first();
         
-        try {
+        // try {
             if ($StudentInformation) 
             {
                 $ClassDetail = ClassDetail::with('section')->whereId($request->cid)->whereStatus(1)->first();
@@ -278,77 +283,19 @@ class StudentController extends Controller
                 // return json_encode($ClassDetail->schoolYear->school_year);
                 $DateRemarks = DateRemark::where('school_year_id', $ClassDetail->school_year_id)->first();
                 
-                $Signatory = ClassDetail::with('student_enrollment')
-                    ->where('school_year_id', $ClassDetail->school_year_id)
-                    ->whereHas('student_enrollment', function ($query) use ($StudentInformation) {
-                        $query->where('student_information_id', $StudentInformation->id);
-                    })
-                    ->whereStatus(1)
-                    ->first();
+                $Signatory = $this->gradeSheetInfo->signatory($ClassDetail->school_year_id, $StudentInformation);
 
                 // return json_encode($Signatory->adviser->e_signature);
                 
+                $query = $this->gradeSheetInfo->gradeSheet($StudentInformation->id, $ClassDetail->school_year_id);
                 
-                // $Enrollment = Enrollment::with('classDetail','faculty','section','subject')
-                //     // ->whereHas('class_subjects', function ($query) use ($ClassDetail) {
-                //     //     $query->where('school_year_id', $ClassDetail->school_year_id);
-                //     // })                    
-                //     ->where('student_information_id', $StudentInformation->id)
-                //     ->whereStatus(1)
-                //     ->get();
+                if($semester==1 || $semester==2) 
+                {
+                    $query->where('class_subject_details.sem', $semester);
+                }
 
-                // $Enrollment = ClassDetail::with('student_enrollment','class_subjects','faculty')
-                //     ->where('school_year_id', $ClassDetail->school_year_id)
-                //     ->whereHas('student_enrollment', function ($query) use ($StudentInformation) {
-                //         $query->where('student_information_id', $StudentInformation->id);
-                //     })
-                //     ->whereStatus(1)
-                //     ->first();
-
-                // return json_encode($Enrollment);
-
-                $query = Enrollment::join('class_details', 'class_details.id', '=', 'enrollments.class_details_id')
-                        ->join('class_subject_details', 'class_subject_details.class_details_id', '=', 'class_details.id')
-                        ->join('rooms', 'rooms.id', '=', 'class_details.room_id')
-                        ->join('faculty_informations', 'faculty_informations.id', '=', 'class_subject_details.faculty_id')
-                        ->join('section_details', 'section_details.id', '=', 'class_details.section_id')
-                        ->join('subject_details', 'subject_details.id', '=', 'class_subject_details.subject_id')
-                        ->where('student_information_id', $StudentInformation->id)
-                        ->where('class_subject_details.status', '!=', 0)
-                        ->where('enrollments.status', 1)
-                        ->where('class_details.status', 1)
-                        ->where('class_details.school_year_id', $ClassDetail->school_year_id)
-                        ->select(\DB::raw("
-                            enrollments.id as enrollment_id,
-                            enrollments.j_lacking_unit,
-                            enrollments.s1_lacking_unit,
-                            enrollments.s2_lacking_unit,
-                            enrollments.eligible_transfer,
-                            enrollments.attendance,
-                            enrollments.attendance_first,enrollments.attendance_second,
-                            class_details.grade_level,
-                            class_subject_details.id as class_subject_details_id,
-                            class_subject_details.class_days,
-                            class_subject_details.class_time_from,
-                            class_subject_details.class_time_to,
-                            class_subject_details.status as grade_status,
-                            CONCAT(faculty_informations.last_name, ', ', faculty_informations.first_name, ' ', faculty_informations.middle_name) as faculty_name,
-                            faculty_informations.e_signature,
-                            subject_details.id AS subject_id,
-                            subject_details.subject_code,
-                            subject_details.subject,
-                            rooms.room_code,
-                            section_details.section,
-                            class_details.school_year_id as school_year_id
-                        "))
-                        ->orderBy('class_subject_details.class_subject_order', 'ASC');
-
-                        if($semester==1 || $semester==2) 
-                        {
-                            $query->where('class_subject_details.sem', $semester);
-                        }
-
-                    $Enrollment = $query->get();
+                $Enrollment = $query->get();
+                $final_grade = $this->gradeSheetInfo->gradeSheet($StudentInformation->id, $ClassDetail->school_year_id)->get();
 
                 $SchoolYear = SchoolYear::whereId($ClassDetail->school_year_id)
                     ->first();
@@ -612,21 +559,23 @@ class StudentController extends Controller
                         ]));
                     }
                 }
-                
+
                 $GradeSheetData = [];
                 $grade_level = 1;
                 $sub_total = 0;
                 $general_avg = 0;
                 $subj_count = 0;
                 $grade_status = $Enrollment[0]->grade_status;
-                
+
                 // return json_encode(['c' => count($Enrollment),'Enrollment' => $Enrollment,'StudentInformation' => $StudentInformation, ]);
                 if ($StudentInformation && count($Enrollment)>0)
                 {
-                    $StudentEnrolledSubject = StudentEnrolledSubject::where('enrollments_id', $Enrollment[0]->enrollment_id)
-                        ->get();
+                    $StudentEnrolledSubject = StudentEnrolledSubject::where('enrollments_id', $Enrollment[0]->enrollment_id)->get();
 
                     $grade_level = $Enrollment[0]->grade_level;
+                    
+                    $general_avg_senior = $this->gradeSheetInfo->seniorFinalGrade($final_grade, $StudentEnrolledSubject, $grade_level, $grade_status, $semester);
+                    
                     if ($Enrollment[0]->attendance) {
                         if($Enrollment[0]->grade_level > 10)
                         {
@@ -646,6 +595,8 @@ class StudentController extends Controller
                             $attendance_data = json_decode($Enrollment[0]->attendance);
                         }
                     }
+
+                    
                     // return json_encode(['a' => $StudentEnrolledSubject->count(), 'b' => $Enrollment->count(), 'StudentEnrolledSubject'=> $StudentEnrolledSubject, 'Enrollment' => $Enrollment]);
                     $GradeSheetData = $Enrollment->map(function ($item, $key) use ($StudentEnrolledSubject, $grade_level, $grade_status, $semester) {
                         // $grade = $StudentEnrolledSubject->firstWhere('subject_id', $item->subject_id);
@@ -750,7 +701,7 @@ class StudentController extends Controller
                     }
                 }
                 $GradeSheetData = json_decode(json_encode($GradeSheetData));
-                
+
                 $student_attendance = [
                     'attendance_data'   => $attendance_data,
                     'table_header'      => $table_header,
@@ -762,7 +713,7 @@ class StudentController extends Controller
                 // return json_encode(['a' => $GradeSheetData, 'subj_count' => $subj_count, 'general_avg' => $general_avg]);
                 return view('control_panel_student.grade_sheet.partials.print',
                     compact('GradeSheetData', 'grade_level', 'StudentInformation', 'ClassDetail', 'general_avg', 'student_attendance', 'table_header',
-                        'Signatory','DateRemarks','Enrollment','semester'));
+                        'Signatory','DateRemarks','Enrollment','semester','general_avg_senior'));
                         
                 $pdf = \PDF::loadView('control_panel_student.grade_sheet.partials.print',
                     compact('GradeSheetData', 'grade_level', 'StudentInformation', 'ClassDetail','Signatory','DateRemarks','Enrollment','semester'));
@@ -773,9 +724,9 @@ class StudentController extends Controller
             else {
                 return "Invalid request";
             }
-        } catch (\Throwable $th) {
-            return view('errors.404');
-        }
+        // } catch (\Throwable $th) {
+        //     return view('errors.404');
+        // }
         
     }
 }
