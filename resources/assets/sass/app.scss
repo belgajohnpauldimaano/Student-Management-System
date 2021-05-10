@@ -9,6 +9,15 @@
 // Bootstrap
 @import "~bootstrap/scss/bootstrap";
 
+// asset
+@import "../../../public/cms/plugins/datepicker/datepicker3.css";
+// @import "../../../public/theme/lib/bootstrap/css/bootstrap.min.css";
+// @import "../../../public/theme/lib/font-awesome/css/font-awesome.min.css";
+// @import "../../../public/theme/lib/animate/animate.min.css";
+// @import "../../../public/theme/lib/ionicons/css/ionicons.min.css";
+// @import "../../../public/theme/lib/owlcarousel/assets/owl.carousel.min.css";
+// @import "../../../public/theme/lib/lightbox/css/lightbox.min.css";
+
 .navbar-laravel {
   background-color: #fff;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);

@@ -112,7 +112,7 @@
     <div class="form-group col-md-4 input-sibling_grade_level">
         <label for="">Grade Level</label>
         <select name="sibling_grade_level" id="sibling_grade_level" class="form-control form-control-sm">
-            <option value="">Select Level</option>
+            <option value="0">Select Level</option>
             @for ( $x = 1 ; $x < 13; $x++)
                <option>{{ $x }}</option>
             @endfor
@@ -121,23 +121,21 @@
         </div>
     </div>
     <div class="form-group col-md-12 m-0 p-0">
-        <button type="button" name="addSibling" id="addSibling" class="btn btn-sm btn-primary float-right mt-1" disabled>
+        <button type="button" id="addSibling" class="btn btn-sm btn-primary float-right mt-1" disabled>
             <i class="fas fa-plus"></i> Add
         </button>
     </div>
 
-    <table class="table table-sm table-condensed mt-3">
+    <table id="sibling_table" class="table table-sm table-condensed table-hover mt-3 d-none">
         <thead>
             <tr>
+                {{-- <th>No.</th> --}}
                 <th width="70%">Name</th>
-                <th>Grade Level</th>
+                <th class="text-center">Grade Level</th>
+                <th class="text-center">Action</th>
             </tr>
         </thead>
-        <tbody>
-            <tr>
-                <td>name</td>
-                <td>grade level</td>
-            </tr>
-        </tbody>
+        <tbody></tbody>
     </table>
+
 </div>

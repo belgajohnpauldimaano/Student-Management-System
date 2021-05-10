@@ -150,6 +150,12 @@
                 </a>
               </li>
               <li class="nav-item">
+                <a class="nav-link {{request()->routeIs('admin.examiner_information') ? 'active' : '' }}"
+                   href="{{ route('admin.examiner_information') }}">
+                  <i class="fa fa-info-circle fa-lg"></i> <p>Examiner Information</p>
+                </a>
+              </li>
+              <li class="nav-item">
                 <a class="nav-link {{request()->routeIs('admission.incoming') ? 'active' : '' }}"
                    href="{{ route('admission.incoming', ['tab' => 'not-yet-approved']) }}">
                    <i class="fa fa-info-circle fa-lg"></i>

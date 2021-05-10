@@ -25,6 +25,7 @@
     <link href="{{ asset('theme/lib/ionicons/css/ionicons.min.css') }}" rel="stylesheet">
     <link href="{{ asset('theme/lib/owlcarousel/assets/owl.carousel.min.css') }}" rel="stylesheet">
     <link href="{{ asset('theme/lib/lightbox/css/lightbox.min.css') }}" rel="stylesheet">
+    
     <!-- Main Stylesheet File -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     <link href="{{ asset('img/sja-logo.png') }}" rel=icon>
@@ -81,8 +82,16 @@
                     <li class="menu"><a href="{{ route('facilities') }}">Facilities</a></li>
                     <li class="menu-has-children"><a href="#">FAQs</a>
                         <ul>
-                            <li><a href="{{route('pages.faqs')}}">Frequently Asked Questions</a></li>
-                            <li><a href="{{ route('pages.faqs_on_distance_learning') }}">Frequently Asked Questions on Distance Learning</a></li>
+                            <li>
+                                <a href="{{route('pages.faqs')}}">
+                                    Frequently Asked Questions
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{{ route('pages.faqs_on_distance_learning') }}">
+                                    Frequently Asked Questions on Distance Learning
+                                </a>
+                            </li>
                         </ul>
                     </li>
                     @if($data == 1)
@@ -95,8 +104,6 @@
                     <li class="menu">
                         <a class="btn-login" href="{{ route('login') }}"><i class="fas fa-sign-in-alt"></i> Login</a>
                     </li>
-                   
-                   
                 </ul>
             </nav>
             <!-- #nav-menu-container -->

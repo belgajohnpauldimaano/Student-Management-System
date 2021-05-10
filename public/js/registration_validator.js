@@ -60,7 +60,7 @@
 /******/ 	__webpack_require__.p = "/";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 0);
+/******/ 	return __webpack_require__(__webpack_require__.s = 1);
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -81,6 +81,57 @@ function getModal() {
         $('#js-registration').modal({
             backdrop: 'static',
             keyboard: false
+        });
+
+        $('input[name="sibling_name"]').keyup(function () {
+            data_sibling_attr();
+            // $('#addSibling').prop('disabled', false);
+        });
+
+        $(document).on("change", 'select[name="sibling_grade_level"]', function (e) {
+            data_sibling_attr();
+            // $('#addSibling').prop('disabled', false);
+        });
+
+        function data_sibling_attr() {
+
+            if ($('input[name="sibling_name"]').val() != '' && $('select[name="sibling_grade_level"]').val() != 0) {
+                // alert('dfsdf')
+                $('#addSibling').prop('disabled', false);
+            }
+        }
+
+        var sibling_count = 0;
+        sibling_json = [];
+
+        $("#addSibling").click(function () {
+
+            $('#sibling_table').removeClass('d-none');
+
+            sibling_json.push({
+                name: $('input[name="sibling_name"]').val(),
+                grade_level: $('select[name="sibling_grade_level"]').val()
+            });
+
+            $("#sibling_table tbody").append('<tr>\n                <td>' + sibling_json[sibling_count].name + '<input type="hidden" name="stud_sibling_name[]" value="' + sibling_json[sibling_count].name + '" /></td>\n                <td class="text-center">' + sibling_json[sibling_count].grade_level + '<input type="hidden" name="stud_sibling_grade_level[]" value="' + sibling_json[sibling_count].grade_level + '" /></td>\n                <td class="text-center"><button type="button" class="btn btn-sm btn-danger btn-remove-student"><i class="fas fa-minus-circle"></i> remove</button></td>\n            </tr>');
+            sibling_count++;
+            $('input[name="sibling_name"]').val('');
+            $('#sibling_grade_level option:first').prop("selected", "selected");
+
+            $('#addSibling').prop('disabled', true);
+            // console.log(sibling_json);
+        });
+
+        $("#sibling_table").on('click', '.btn-remove-student', function (e) {
+            e.preventDefault();
+            var self = $(this);
+            alertify.defaults.transition = "slide";
+            alertify.defaults.theme.ok = "btn btn-primary ";
+            alertify.defaults.theme.cancel = "btn btn-danger ";
+            alertify.confirm('Confirmation', 'Are you sure you want to remove?', function () {
+                // $(this).closest("tr").remove();
+                self.closest('tr').remove();
+            }, function () {});
         });
     });
 }
@@ -1000,29 +1051,9 @@ $('#js-contactForm').validate({
     }
 });
 
-$('#addNomination').click(function () {
-    nomination_json.push({
-        mode: $('select[name="controll_mode_cargo"').val(),
-        from: $('input[name="controll_from_cargo"]').val(),
-        to: $('input[name="controll_to_cargo"]').val(),
-        cycle: $('select[name="controll_cycle_cargo"]').val(),
-        tonnage: $('input[name="controll_tonnage_cargo"]').val()
-    });
-    // $('.clearNomination')
-    $("#dynamic_nomination").append('<div class="col-lg-6" id="row' + nomination_count + '">' + '<div class="alert alert-primary p-1" role="alert">' + '<div class="bg-primary p-2 m-1 text-light">' + '<a type="button" class="close" id="' + nomination_count + '">' + '<span aria-hidden="true">&times;</span>' + '</a>' + '<small><strong>Mode of transpo</strong> - <i>' + nomination_json[nomination_count].mode + ' </i></small><br />' + '<small><strong>From country</strong> - <i>' + nomination_json[nomination_count].from + ' </i></small><br />' + '<small><strong>To country</strong> - <i>' + nomination_json[nomination_count].to + ' </i></small><br />' + '<small><strong>Cycle</strong> - <i>' + nomination_json[nomination_count].cycle + ' </i></small><br />' + '<small><strong>Monthly Tonnage - ' + nomination_json[nomination_count].tonnage + ' </strong></small>' + '</div>' + '</div>' + '</div>' + ' <input type="hidden" value="' + nomination_json[nomination_count].mode + '" name="controll_mode[]" />' + ' <input type="hidden" value="' + nomination_json[nomination_count].from + '" name="controll_from[]" />' + ' <input type="hidden" value="' + nomination_json[nomination_count].to + '" name="controll_to[]" />' + ' <input type="hidden" value="' + nomination_json[nomination_count].cycle + '" name="controll_cycle[]" />' + ' <input type="hidden" value="' + nomination_json[nomination_count].tonnage + '" name="controll_tonnage[]" />');
-    nomination_count++;
-    $('input[name="nomination_count"]').val(nomination_count);
-    console.log(nomination_json);
-    $(".emptySelectedNomination option:first").prop("selected", "selected");
-    $("#cycle option:first").prop("selected", "selected");
-    $('.emptyNomination').val('');
-    // $(".emptySelectedNomination").val('');
-    // $("#cycle").val('');
-});
-
 /***/ }),
 
-/***/ 0:
+/***/ 1:
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = __webpack_require__("./resources/assets/js/registration_validator.js");

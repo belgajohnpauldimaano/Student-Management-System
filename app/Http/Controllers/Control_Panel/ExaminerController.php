@@ -8,6 +8,6 @@ use Illuminate\Http\Request;
 class ExaminerController extends Controller
 {
     public function index(Request $request){
-        return view('control_panel.examiner');
+        return view('control_panel.examiner_information.index');
     }
 }

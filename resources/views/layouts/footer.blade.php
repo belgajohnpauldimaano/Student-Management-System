@@ -42,7 +42,9 @@
         </div>
         <div class="container">
             <div class="copyright">
-                &copy; Copyright <strong>St. John's</strong>. All Rights Reserved
+                &copy; Copyright <strong> <script>
+                        document.write(new Date().getFullYear());
+                        </script> St. John's</strong>. All Rights Reserved
             </div>
             {{-- <div class="credits">
                 Best <a href="https://bootstrapmade.com/">Bootstrap Templates</a> by BootstrapMade
@@ -52,39 +54,34 @@
     <!-- #footer -->
     <a href="#" class="back-to-top"><i class="fa fa-chevron-up"></i></a>
     <!-- JavaScript Libraries -->
-    <script src="{{ asset('theme/lib/jquery/jquery.min.js') }}"></script>
+    {{-- <script src="{{ asset('theme/lib/jquery/jquery.min.js') }}"></script>
     <script src="{{ asset('theme/lib/jquery/jquery-migrate.min.js') }}"></script>
     <script src="{{ asset('theme/lib/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
     <script src="{{ asset('theme/lib/easing/easing.min.js') }}"></script>
     <script src="{{ asset('theme/lib/superfish/hoverIntent.js') }}"></script>
-    <script src="{{ asset('theme/lib/superfish/superfish.min.js') }}"></script>
-    <script src="{{ asset('theme/lib/wow/wow.min.js') }}"></script>
-    <script src="{{ asset('theme/lib/waypoints/waypoints.min.js') }}"></script>
+    <script src="{{ asset('theme/lib/superfish/superfish.min.js') }}"></script> --}}
+    
+    {{-- <script src="{{ asset('theme/lib/waypoints/waypoints.min.js') }}"></script>
     <script src="{{ asset('theme/lib/counterup/counterup.min.js') }}"></script>
     <script src="{{ asset('theme/lib/owlcarousel/owl.carousel.min.js') }}"></script>
     <script src="{{ asset('theme/lib/isotope/isotope.pkgd.min.js') }}"></script>
     <script src="{{ asset('theme/lib/lightbox/js/lightbox.min.js') }}"></script>
-    <script src="{{ asset('theme/lib/touchSwipe/jquery.touchSwipe.min.js') }}"></script>
+    <script src="{{ asset('theme/lib/touchSwipe/jquery.touchSwipe.min.js') }}"></script> --}}
     <!-- Contact Form JavaScript File -->
-    <script src="{{ asset('theme/contactform/contactform.js') }}"></script>
+    {{-- <script src="{{ asset('theme/contactform/contactform.js') }}"></script> --}}
     <!-- Template Main Javascript File -->
-    <script src="{{ asset('theme/js/main.js') }}"></script>
+    {{-- <script src="{{ asset('theme/js/main.js') }}"></script> --}}
     {{-- alertify --}}
-    <script src="{{ asset('cms/plugins/alertifyjs/alertify.min.js') }}"></script>
-    <!-- jquery-toast-plugin -->
-    <script src="{{ asset('cms/plugins/jquery-toast-plugin/jquery.toast.min.js') }}"></script>
-    <!-- alertifyjs -->
-    <script src="{{ asset('cms/plugins/alertifyjs/alertify.min.js') }}"></script>
-    <script src="{{ asset('cms/plugins/datepicker/bootstrap-datepicker.js') }}"></script>
-    <link rel="stylesheet" href="{{ asset('cms/plugins/datepicker/datepicker3.css') }}">
-
-    <!-- Bootstrap 4 -->
-    {{-- <script src="{{ asset('cms-new/plugins/jquery/jquery.min.js') }}"></script>
-    <script src="{{ asset('cms-new/plugins/bootstrap/js/bootstrap.bundle.min.js') }}"></script> --}}
     
-    <!-- jquery-validation -->
-    <script src="{{ asset('cms-new/plugins/jquery-validation/jquery.validate.min.js') }}"></script>
-    <script src="{{ asset('cms-new/plugins/jquery-validation/additional-methods.min.js') }}"></script>
+    <!-- jquery-toast-plugin -->
+    {{-- <script src="{{ asset('cms/plugins/jquery-toast-plugin/jquery.toast.min.js') }}"></script> --}}
+    <!-- alertifyjs -->
+    
+    {{-- <script src="{{ asset('cms/plugins/datepicker/bootstrap-datepicker.js') }}"></script>
+    <link rel="stylesheet" href="{{ asset('cms/plugins/datepicker/datepicker3.css') }}"> --}}
+
+    <script src="{{ asset('theme/lib/wow/wow.min.js') }}"></script>
+    <script src="{{ asset('cms/plugins/alertifyjs/alertify.min.js') }}"></script>
     <script src="{{ asset('js/app.js') }}"></script>
     <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
     <script src="{{ asset('js/cryptojs-aes.min.js') }}"></script>
