@@ -33,7 +33,7 @@
                             <a href="#" class="linkedin"><i class="fa fa-linkedin"></i></a>
                         </div> --}}
                     </div>
-                    <div {{-- class="col-lg-3 col-md-6 footer-newsletter">
+                    {{-- <div class="col-lg-3 col-md-6 footer-newsletter">
                         <h4>Our Newsletter</h4>
                         <p>Tamen quem nulla quae legam multos aute sint culpa legam noster magna veniam enim veniam illum dolore legam minim quorum culpa amet magna export quem marada parida nodela caramase seza.</p>
                     </div> --}}
