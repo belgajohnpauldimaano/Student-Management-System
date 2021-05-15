@@ -84,19 +84,12 @@
     <div class="col-md-12">
         <div class="card">
             <div class="card-body">
-                @php
-                    $scholar_type = [
-                        "Employee's Child",
-                        "With High Honors",
-                        "With Highest Honors",
-                        "ESC Grantee",
-                        "Sibling Discount"
-                    ];
-                @endphp
-                @foreach($scholar_type as $key => $checkbox)
+                @foreach($scholar_types as $key => $checkbox)
                     <div class="form-check form-check-inline">
-                        <input type="checkbox" name="schoolar_type[]" class="form-check-input" id="check-box-{{$key}}">
-                        <label class="form-check-label" for="check-box-{{$key}}">{{$checkbox}}</label>
+                        <input type="checkbox" name="scholar_type[]" class="form-check-input" id="scholar_type-{{$key}}" value="{{ $checkbox['type'] }}">
+                        <label class="form-check-label" for="check-box-{{$key}}">
+                            {{ $checkbox['type']}}
+                        </label>
                     </div>
                 @endforeach
             </div>
@@ -137,5 +130,6 @@
         </thead>
         <tbody></tbody>
     </table>
+    <input type="hidden" value="0" name="sibling_count" />
 
 </div>

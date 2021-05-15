@@ -33,10 +33,23 @@ class ViewComposerServiceProvider extends ServiceProvider
     {
         $year = date('Y');
         $SchoolYear = $this->schoolYearActiveStatus();
-        
-        View::composer('layouts.header', function ($view) {
+            
+        View::composer('layouts.header', function ($view){
             $registration = RegistrationButton::whereId(1)->first()->is_enabled;
             return $view->with('data', $registration);
+        });
+
+        View::composer('pages.registration', function ($view){
+            $scholar_types = array(
+                ['id' => 1, 'type' => "Employee's Child"],
+                ['id' => 2, 'type' => "With High Honors"],
+                ['id' => 3, 'type' => "With Highest Honors"],
+                ['id' => 4, 'type' => "ESC Grantee"],
+                ['id' => 5, 'type' => "Sibling Discount"]
+            );
+            json_encode($scholar_types);
+            
+            return $view->with('scholar_types',$scholar_types);
         });
 
         View::composer('control_panel.layouts.master', function ($view) use($SchoolYear, $year) {

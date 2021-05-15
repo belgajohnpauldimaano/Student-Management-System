@@ -16,10 +16,10 @@ class CreateMotherInformationTable extends Migration
         Schema::create('mother_information', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->integer('student_information_id');
-            $table->string('name');
-            $table->string('occupation');
-            $table->string('fb_acct');
-            $table->string('number');
+            $table->string('name')->nullable();
+            $table->string('occupation')->nullable();
+            $table->string('fb_acct')->nullable();
+            $table->string('number')->nullable();
             $table->timestamps();
         });
     }

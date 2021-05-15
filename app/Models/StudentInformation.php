@@ -39,11 +39,11 @@ class StudentInformation extends Model
         'citizenship',//
         'fb_acct',//
         'place_of_birth',//
-        'father_occupation',//
-        'father_fb_acct',//
-        'mother_occupation',//
-        'mother_fb_acct',//
-        'guardian_fb_acct',//
+        // 'father_occupation',//
+        // 'father_fb_acct',//
+        // 'mother_occupation',//
+        // 'mother_fb_acct',//
+        // 'guardian_fb_acct',//
         'no_siblings',//
         'isEsc',
         'age'

@@ -2,20 +2,27 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
 use App\Models\User;
 use App\Models\Email;
 use Dotenv\Validator;
 use App\Models\SchoolYear;
 use Illuminate\Http\Request;
 use App\Mail\InformationEmail;
-use Illuminate\Support\Carbon;
 use App\Models\IncomingStudent;
 use App\Models\StudentEducation;
+use App\models\FatherInformation;
+use App\models\MotherInformation;
+use App\models\SiblingInformation;
 use App\Models\StudentInformation;
+use App\models\StudentScholarType;
 use Illuminate\Support\Facades\DB;
+use App\models\GuardianInformation;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
+use App\Models\StudentScholarCategory;
+use App\Notifications\RegistrationNotification;
 
 class RegistrationController extends Controller
 {
@@ -70,23 +77,8 @@ class RegistrationController extends Controller
 
         // $again = 0;
         DB::beginTransaction();
-        try{
+        // try{
 
-                // $SchoolYear = SchoolYear::where('current', 1)
-                //     ->where('status', 1)
-                //     ->orderBY('id', 'DESC')
-                //     ->first();
-
-                // $checkUser = User::where('username', $request->lrn)->first();
-                // if ($checkUser) 
-                // {
-                //     DB::rollBack();
-                //     return response()->json([
-                //         'res_code' => 1,'res_msg' => 
-                //         'LRN already used. Please contact the administrator to confirm it. Thank you'
-                //     ]);
-                // }
-            
                 $User = new User();
                 $User->username = $request->lrn;
                 $User->password = bcrypt($request->first_name . '.' . $request->last_name);
@@ -102,9 +94,6 @@ class RegistrationController extends Controller
                 $StudentInformation->p_address          = $request->p_address;
                 $StudentInformation->birthdate          = date('Y-m-d', strtotime($request->birthdate));
                 $StudentInformation->gender             = $request->gender;
-                $StudentInformation->guardian           = $request->guardian;
-                $StudentInformation->mother_name        = $request->mother_name;
-                $StudentInformation->father_name        = $request->father_name;            
                 $StudentInformation->user_id            = $User->id;
                 $StudentInformation->age                = $request->age;
                 $StudentInformation->email              = $request->student_email;
@@ -112,12 +101,7 @@ class RegistrationController extends Controller
                 $StudentInformation->religion           = $request->religion;
                 $StudentInformation->citizenship        = $request->citizenship;
                 $StudentInformation->fb_acct            = $request->fb_acct;
-                $StudentInformation->father_occupation  = $request->father_occupation;
-                $StudentInformation->mother_occupation  = $request->mother_occupation;
-                $StudentInformation->father_fb_acct     = $request->father_fb_acct;
-                $StudentInformation->mother_fb_acct     = $request->mother_fb_acct;
                 $StudentInformation->place_of_birth     = $request->place_of_birth;
-                $StudentInformation->guardian_fb_acct   = $request->guardian_fb_acct;
                 $StudentInformation->no_siblings        = $request->no_siblings;
                 $StudentInformation->isEsc              = $request->is_esc;
                 $imageName = time().'.'.$request->student_img->getClientOriginalExtension();
@@ -125,6 +109,7 @@ class RegistrationController extends Controller
                 $StudentInformation->photo = $imageName;
                 $StudentInformation->status = 0;
                 $StudentInformation->save();
+                
 
                 $StudentEducation = new StudentEducation();
                 $StudentEducation->student_information_id   = $StudentInformation->id;
@@ -144,29 +129,77 @@ class RegistrationController extends Controller
                 $StudentEducation->is_transferee = $transfer;
                 $StudentEducation->save();
 
+                $mother = new MotherInformation();
+                $mother->student_information_id = $StudentInformation->id;
+                $mother->name = $request->mother_name;
+                $mother->occupation = $request->mother_occupation;
+                $mother->fb_acct = $request->mother_fb_acct;
+                $mother->number = $request->mother_contact;
+                $mother->save();
+
+                $father = new FatherInformation();
+                $father->student_information_id = $StudentInformation->id;
+                $father->name = $request->father_name;
+                $father->occupation = $request->father_occupation;
+                $father->fb_acct = $request->father_fb_acct;
+                $father->number = $request->father_contact;
+                $father->save();
+
+                $guardian = new GuardianInformation();
+                $guardian->student_information_id = $StudentInformation->id;
+                $guardian->name = $request->guardian_name;
+                // $guardian->occupation = $request->guardian_occupation;
+                $guardian->fb_acct = $request->guardian_fb_acct;
+                $guardian->number = $request->guardian_contact;
+                $guardian->save();
+
                 $Incoming_student = new IncomingStudent();
                 $Incoming_student->student_id = $StudentInformation->id;
                 $Incoming_student->school_year_id = $request->sy;
                 $Incoming_student->grade_level_id = $request->grade_level;
                 $Incoming_student->student_type = $transfer;
                 $Incoming_student->save();
+                // scholar
+
+                if(count($request->scholar_type) > 0){
+                    foreach ($request->scholar_type as $key => $s) {
+                        // echo $scholar;
+                        StudentScholarType::create([
+                            'student_information_id' => $StudentInformation->id,
+                            'name'                   => $s
+                        ]);
+                    }
+                }
+                
+                // sibling
+                for ($sib = 0; $sib < $request->sibling_count; ++$sib) {
+                    if ($request->sibling_count > 0) {
+                        $sibling = new SiblingInformation();
+                        $sibling->student_information_id = $StudentInformation->id;
+                        $sibling->name                   = $request->stud_sibling_name[$sib];
+                        $sibling->grade_level_id         = $request->stud_sibling_grade_level[$sib];
+                        $sibling->save();
+                    }
+                }
 
                 // $StudentInformation = StudentInformation::find()
                 // go to observer
                 DB::commit();
-                // $NewStudent = IncomingStudent::find($Incoming_student->id);
+
+                $NewStudent = IncomingStudent::find($Incoming_student->id);
+                $User->notify(new RegistrationNotification($NewStudent));
                 
                 // dd($request->all());
                 return response()->json(['res_code' => 0, 'res_msg' => 'You have successfuly registered!']);
             //  }
-        }catch(\Exception $e){
-            // do task when error
-            // insert query
-            DB::rollBack();
-            Log::error($e->getMessage());
-            // $again = 1;
-            return response()->json(['res_code' => 1, 'res_msg' => 'Please check all fields and submit again.']);
-        }
+        // }catch(\Exception $e){
+        //     // do task when error
+        //     // insert query
+        //     DB::rollBack();
+        //     Log::error($e->getMessage());
+        //     // $again = 1;
+        //     return response()->json(['res_code' => 1, 'res_msg' => 'Please check all fields and submit again.']);
+        // }
     }   
     
     public function send_email(Request $request)
@@ -188,16 +221,6 @@ class RegistrationController extends Controller
 
         try
         {  
-            // $data = array(
-            //     'name'          =>  $request->name,
-            //     'email'         =>  $request->email,
-            //     'mobile'        =>  $request->mobile,
-            //     'subject'       =>  $request->subject,
-            //     'msg'       =>  $request->message,
-            //     'created_at'    =>  Carbon::now(),
-            //     'updated_at'    =>  Carbon::now()
-            // );
-            // $email = Email::insert($data);
             $email = new Email();
             $email->name     = $request->name;
             $email->email    = $request->email;

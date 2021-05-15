@@ -16,7 +16,7 @@ class CreateSiblingInformationTable extends Migration
         Schema::create('sibling_information', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->integer('student_information_id');
-            $table->integer('sibling_id')->comment('this is from the student information id');
+            $table->string('name');
             $table->string('grade_level_id');
             $table->timestamps();
         });

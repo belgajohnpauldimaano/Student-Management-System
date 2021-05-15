@@ -4,7 +4,7 @@ $('.btn--update-photo').click(function(){
 
 getSchoolYear();
 
-function getModal() {    
+function getModal() {
     $('.btn-enroll').click(function (e) {
         e.preventDefault();
         
@@ -12,68 +12,70 @@ function getModal() {
             backdrop: 'static',
             keyboard: false
         })
-        
-        $('input[name="sibling_name"]').keyup(function () {
-            data_sibling_attr();
-            // $('#addSibling').prop('disabled', false);
-        });
-
-        $(document).on("change", 'select[name="sibling_grade_level"]', function (e) {
-            data_sibling_attr();
-            // $('#addSibling').prop('disabled', false);
-        });
-
-        function data_sibling_attr() {
-            
-            if ($('input[name="sibling_name"]').val() != '' && $('select[name="sibling_grade_level"]').val() != 0)
-            {
-                // alert('dfsdf')
-                $('#addSibling').prop('disabled', false);
-            }
-        }
-        
-
-        var sibling_count = 0;
-        sibling_json = [];
-
-        $("#addSibling").click(function () {
-            
-            $('#sibling_table').removeClass('d-none');
-
-            sibling_json.push({
-                name:   $('input[name="sibling_name"]').val(),
-                grade_level :   $('select[name="sibling_grade_level"]').val(),
-            });
-
-            $("#sibling_table tbody").append(`<tr>
-                <td>`+sibling_json[sibling_count].name+`<input type="hidden" name="stud_sibling_name[]" value="`+sibling_json[sibling_count].name+`" /></td>
-                <td class="text-center">`+sibling_json[sibling_count].grade_level+`<input type="hidden" name="stud_sibling_grade_level[]" value="`+sibling_json[sibling_count].grade_level+`" /></td>
-                <td class="text-center"><button type="button" class="btn btn-sm btn-danger btn-remove-student"><i class="fas fa-minus-circle"></i> remove</button></td>
-            </tr>`);
-            sibling_count++
-            $('input[name="sibling_name"]').val('');
-            $('#sibling_grade_level option:first').prop("selected", "selected");
-
-            $('#addSibling').prop('disabled', true);
-            // console.log(sibling_json);
-        });
-
-        $("#sibling_table").on('click', '.btn-remove-student', function (e) {
-            e.preventDefault();
-            var self = $(this);
-            alertify.defaults.transition = "slide";
-            alertify.defaults.theme.ok = "btn btn-primary ";
-            alertify.defaults.theme.cancel = "btn btn-danger ";
-            alertify.confirm('Confirmation', 'Are you sure you want to remove?', function(){
-                // $(this).closest("tr").remove();
-                self.closest('tr').remove();
-            }, function(){  
-
-            });
-        });
-        
     })
 }
+
+// start
+    $('input[name="sibling_name"]').keyup(function () {
+        data_sibling_attr();
+    });
+    $(document).on("change", 'select[name="sibling_grade_level"]', function (e) {
+        data_sibling_attr();
+    });
+    function data_sibling_attr() {
+        
+        if ($('input[name="sibling_name"]').val() != '' && $('select[name="sibling_grade_level"]').val() != 0)
+        {
+            // alert('dfsdf')
+            $('#addSibling').prop('disabled', false);
+        }
+    }
+    
+    var sibling_count = 0;
+    sibling_json = [];
+    function siblingCountHide() {
+        if (sibling_count == 0)
+        {
+            $('#sibling_table').addClass('d-none');
+        }
+    }
+    
+    $("#addSibling").click(function () {
+        
+        $('#sibling_table').removeClass('d-none');
+        sibling_json.push({
+            name:   $('input[name="sibling_name"]').val(),
+            grade_level :   $('select[name="sibling_grade_level"]').val(),
+        });
+        $("#sibling_table tbody").append(`<tr>
+            <td>`+sibling_json[sibling_count].name+`<input type="hidden" name="stud_sibling_name[]" value="`+sibling_json[sibling_count].name+`" /></td>
+            <td class="text-center">`+sibling_json[sibling_count].grade_level+`<input type="hidden" name="stud_sibling_grade_level[]" value="`+sibling_json[sibling_count].grade_level+`" /></td>
+            <td class="text-center"><button type="button" class="btn btn-sm btn-danger btn-remove-student"><i class="fas fa-minus-circle"></i> remove</button></td>
+        </tr>`);
+        sibling_count++;
+        $('input[name="sibling_count"]').val(sibling_count);
+        $('input[name="sibling_name"]').val('');
+        $('#sibling_grade_level option:first').prop("selected", "selected");
+        $('#addSibling').prop('disabled', true);
+        // console.log(sibling_json);
+    });
+    $("#sibling_table").on('click', '.btn-remove-student', function (e) {
+        e.preventDefault();
+        var self = $(this);
+        alertify.defaults.transition = "slide";
+        alertify.defaults.theme.ok = "btn btn-primary ";
+        alertify.defaults.theme.cancel = "btn btn-danger ";
+        alertify.confirm('Confirmation', 'Are you sure you want to remove?', function(){
+            // $(this).closest("tr").remove();
+            self.closest('tr').remove();
+            sibling_count--;
+            $('input[name="sibling_count"]').val(sibling_count);
+            siblingCountHide();
+            
+        }, function(){  
+        });
+    });
+// end
 
 
 function getSchoolYear()
@@ -490,31 +492,38 @@ function validate_form(){
     $('#father_occupation').focusin(function (){
         check_father_occupation();
     })
+    $('#father_fb_acct').keyup(function (){
+        check_father_fb_acct();
+    })
+    $('#father_fb_acct').focusin(function (){
+        check_father_fb_acct();
+    })
+    $('#father_contact').keyup(function (){
+        check_father_contact();
+    })
+    $('#father_contact').focusin(function (){
+        check_father_contact();
+    })
+
     $('#mother_occupation').keyup(function (){
         check_mother_occupation();
     })
     $('#mother_occupation').focusin(function (){
         check_mother_occupation();
     })
-    $('#father_fb_acct').keyup(function (){
-        check_father_fb_acct();
-    })
-     $('#father_fb_acct').focusin(function (){
-        check_father_fb_acct();
-    })
     $('#mother_fb_acct').keyup(function (){
         check_mother_fb_acct();
     })
-     $('#mother_fb_acct').focusin(function (){
+    $('#mother_fb_acct').focusin(function (){
         check_mother_fb_acct();
     })
-    // $("input[name='is_esc']").change(function(){
-    $(document).on("change","input[name='is_esc']", function(e) {
-        check_is_esc();
-    });
-    $(document).on("focusin","input[name='is_esc']", function(e) {
-        check_is_esc();
-    });
+
+    $('#mother_contact').keyup(function (){
+        check_mother_contact();
+    })  
+    $('#mother_contact').focusin(function (){
+        check_mother_contact();
+    })    
     
     $('#guardian_fb_acct').keyup(function (){
         check_guardian_fb_acct();
@@ -523,12 +532,26 @@ function validate_form(){
     $('#guardian_fb_acct').focusin(function (){
         check_guardian_fb_acct();
     })
+    $('#guardian_contact').keyup(function (){
+        check_guardian_contact();
+    })
+    $('#guardian_contact').focusin(function (){
+        check_guardian_contact();
+    })
     
     $('#no_siblings').change(function(){
         check_no_siblings();
     });
     $('#no_siblings').focusin(function(){
         check_no_siblings();
+    });
+
+    // $("input[name='is_esc']").change(function(){
+    $(document).on("change","input[name='is_esc']", function(e) {
+        check_is_esc();
+    });
+    $(document).on("focusin","input[name='is_esc']", function(e) {
+        check_is_esc();
     });
     
     // 
@@ -743,6 +766,18 @@ function check_father_occupation(){
         $('#js-father_occupation').css('color', 'red').text("You must enter your father's occupation.");
     }
 }
+function check_father_contact(){
+    var x = $('#father_contact').val();
+    if(x != ''){
+        $('.input-father_contact').addClass('has-success');
+        $('.input-father_contact').removeClass('has-error');
+        $('#js-father_contact').text('').css('color', 'green');               
+    }else{
+        $('.input-father_contact').addClass('has-error');
+        $('.input-father_contact').removeClass('has-success');
+        $('#js-father_contact').css('color', 'red').text("You must enter your father's contact number.");
+    }
+}
 function check_mother_occupation(){
     var x = $('#mother_occupation').val();
     if(x != ''){
@@ -779,6 +814,18 @@ function check_mother_fb_acct(){
         $('#js-mother_fb_acct').css('color', 'red').text("You must enter your mother's fb/messenger account.");
     }
 }
+function check_mother_contact(){
+    var x = $('#mother_contact').val();
+    if(x != ''){
+        $('.input-mother_contact').addClass('has-success');
+        $('.input-mother_contact').removeClass('has-error');
+        $('#js-mother_contact').text('').css('color', 'green');               
+    }else{
+        $('.input-mother_contact').addClass('has-error');
+        $('.input-mother_contact').removeClass('has-success');
+        $('#js-mother_contact').css('color', 'red').text("You must enter your mother's contact number.");
+    }
+}
 function check_guardian_fb_acct(){
     var x = $('#guardian_fb_acct').val();
     if(x != ''){
@@ -789,6 +836,18 @@ function check_guardian_fb_acct(){
         $('.input-guardian_fb_acct').addClass('has-error');
         $('.input-guardian_fb_acct').removeClass('has-success');
         $('#js-guardian_fb_acct').css('color', 'red').text("You must enter your guardian's fb/messenger account.");
+    }
+}
+function check_guardian_contact(){
+    var x = $('#guardian_contact').val();
+    if(x != ''){
+        $('.input-guardian_contact').addClass('has-success');
+        $('.input-guardian_contact').removeClass('has-error');
+        $('#js-guardian_contact').text('').css('color', 'green');               
+    }else{
+        $('.input-guardian_contact').addClass('has-error');
+        $('.input-guardian_contact').removeClass('has-success');
+        $('#js-guardian_contact').css('color', 'red').text("You must enter your mother's contact number.");
     }
 }
 function check_no_siblings(){

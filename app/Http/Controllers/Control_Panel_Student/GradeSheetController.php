@@ -148,6 +148,7 @@ class GradeSheetController extends Controller
                                     ['key' => 'Feb',],
                                     ['key' => 'Mar',],
                                     ['key' => 'Apr',],
+                                    ['key' => 'May',],
                                     ['key' => 'total']
                                 ]; 
                             
@@ -161,6 +162,7 @@ class GradeSheetController extends Controller
                                     ['key' => 'Feb',],
                                     ['key' => 'Mar',],
                                     ['key' => 'Apr',],
+                                    ['key' => 'May',],
                                     ['key' => 'total'],
                                 ];      
                                 

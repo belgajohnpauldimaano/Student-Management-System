@@ -16,7 +16,7 @@ class CreateExaminerInformationTable extends Migration
         Schema::create('examiner_information', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('title');
-            $table->morphs('examinerable_type');
+            $table->morphs('examinerable');
             $table->timestamps();
         });
     }
