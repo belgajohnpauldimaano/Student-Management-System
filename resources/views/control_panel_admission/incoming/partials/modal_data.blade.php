@@ -4,7 +4,7 @@
 
             <div class="box-body">
                 <div class="modal-header">
-                    <h4 style="margin-right: 5em;" class="modal-title">
+                    <h4 style="margin-right: 5em;" class="modal-title  text-uppercase">
                         Student Information
                     </h4>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -66,7 +66,7 @@
                         </div>
                     </div>
                     <div class="row order-3 order-lg-3">
-                            <div class="col-md-12 mt-4">
+                            <div class="col-md-12 mt-4 text-uppercase">
                                 <h5>Personal Information</h5>
                                 <hr>
                             </div>
@@ -137,7 +137,7 @@
                                 </div>  
                             </div>
 
-                            <div class="col-md-12 mt-4">
+                            <div class="col-md-12 mt-4 text-uppercase">
                                 <h5>Educational Data</h5>
                                 <hr>
                             </div>
@@ -180,57 +180,69 @@
                             </div>
 
 
-                            <div class="col-md-12 mt-4">
+                            <div class="col-md-12 mt-4 text-uppercase">
                                 <h5>Family Information</h5>
                                 <hr>
                             </div>
                             <div class="col-md-6">
                                 <div class="">
                                     <label for="">Father name: </label>
-                                    {{$IncomingStudent->father_name ? $IncomingStudent->father_name : 'NA'}}
+                                    {{$IncomingStudent->father->name ? $IncomingStudent->father->name : 'NA'}}
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="">
                                     <label for="">Father Occupation: </label>
-                                    {{$IncomingStudent->father_occupation ? $IncomingStudent->father_occupation: 'NA'}}
+                                    {{$IncomingStudent->father->occupation ? $IncomingStudent->father->occupation: 'NA'}}
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="">
                                     <label for="">Father FB/Messenger Acct: </label>
-                                    {{$IncomingStudent->father_fb_acct ? $IncomingStudent->father_fb_acct : 'NA'}}
+                                    {{$IncomingStudent->father->fb_acct ? $IncomingStudent->father->fb_acct : 'NA'}}
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="">
+                                    <label for="">Father FB/Messenger Acct: </label>
+                                    {{$IncomingStudent->father->number ? $IncomingStudent->father->number : 'NA'}}
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="">
                                     <label for="">Mother name: </label>
-                                    {{$IncomingStudent->mother_name ? $IncomingStudent->mother_name : 'NA'}}
-                                </div>   
+                                    {{$IncomingStudent->mother->name ? $IncomingStudent->mother->name : 'NA'}}
+                                </div>
                             </div>
-                             <div class="col-md-6">
+                            <div class="col-md-6">
                                 <div class="">
                                     <label for="">Mother Occupation: </label>
-                                    {{$IncomingStudent->mother_occupation ? $IncomingStudent->mother_occupation : 'NA'}}
+                                    {{$IncomingStudent->mother->occupation ? $IncomingStudent->mother->occupation: 'NA'}}
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="">
                                     <label for="">Mother FB/Messenger Acct: </label>
-                                    {{$IncomingStudent->mother_fb_acct ? $IncomingStudent->mother_fb_acct : 'NA'}}
+                                    {{$IncomingStudent->mother->fb_acct ? $IncomingStudent->mother->fb_acct : 'NA'}}
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="">
+                                    <label for="">Mother FB/Messenger Acct: </label>
+                                    {{$IncomingStudent->mother->number ? $IncomingStudent->mother->number : 'NA'}}
                                 </div>
                             </div>
                             
                             <div class="col-md-6">
                                 <div class="">
                                     <label for="">Guardian: </label>
-                                    {{$IncomingStudent->guardian ? $IncomingStudent->guardian : 'NA'}}
+                                    {{$IncomingStudent->guardian->name ? $IncomingStudent->guardian->name : 'NA'}}
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="">
                                     <label for="">Guardian FB/Messenger Acct: </label>
-                                    {{$IncomingStudent->guardian_fb_acct ? $IncomingStudent->guardian_fb_acct : 'NA'}}
+                                    {{$IncomingStudent->guardian->fb_acct ? $IncomingStudent->guardian->fb_acct : 'NA'}}
                                 </div>
                             </div>
                             <div class="col-md-6">
@@ -239,6 +251,44 @@
                                     {{$IncomingStudent->no_siblings ? $IncomingStudent->no_siblings : 'NA'}}
                                 </div>
                             </div>
+
+                            <div class="col-md-12 mt-4 text-uppercase">
+                                <h5>Student Scholar Type</h5>
+                                <hr>
+                            </div>
+
+                            @foreach ($IncomingStudent->scholarTypes as $scholar)
+                                <div class="form-check form-check-inline">
+                                    <button class="btn btn-success btn-sm">
+                                        <i class="fas fa-check-circle"></i> {{ $scholar->name }}
+                                    </button>
+                                </div>
+                            @endforeach
+
+                            <div class="col-md-12 mt-4 text-uppercase">
+                                <h5>NAME OF BROTHER'S & SISTER(S) WHO ARE CURRENTLY ENROLLED</h5>
+                                <hr>
+                            </div>
+
+                            <table class="table table-sm table-condensed table-hover">
+                                <thead>
+                                    <th>Name</th>
+                                    <th class="text-center">Grade Level</th>
+                                </thead>
+                                <tbody>
+                                    @forelse ($IncomingStudent->siblings as $sibling)
+                                        <tr>
+                                            <td>{{ $sibling->name }}</td>
+                                            <td class="text-center">{{ $sibling->grade_level_id }}</td>
+                                        </tr>
+                                    @empty
+                                        <tr>
+                                            <th class="text-center" colspan="2">No Data</th class="text-center">
+                                        </tr>
+                                    @endforelse
+                                </tbody>
+                            </table>
+                            
                     </div>
                                         
                     

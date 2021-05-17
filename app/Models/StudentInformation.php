@@ -14,6 +14,8 @@ use App\Traits\HasTransaction;
 use App\Models\PaymentCategory;
 use App\Models\StudentCategory;
 use App\Models\StudentEducation;
+use App\models\SiblingInformation;
+use App\models\StudentScholarType;
 use App\Models\TransactionDiscount;
 use Illuminate\Database\Eloquent\Model;
 
@@ -83,6 +85,24 @@ class StudentInformation extends Model
         return $this->belongsTo(StudentInformation::class);
     }
     
+    public function father(){
+        return $this->hasOne(FatherInformation::class, 'student_information_id', 'id');
+    }
 
+    public function mother(){
+        return $this->hasOne(MotherInformation::class, 'student_information_id', 'id');
+    }
+
+    public function guardian(){
+        return $this->hasOne(GuardianInformation::class, 'student_information_id', 'id');
+    }
+
+    public function scholarTypes(){
+        return $this->hasMany(StudentScholarType::class, 'student_information_id', 'id');
+    }
+
+    public function siblings(){
+        return $this->hasMany(SiblingInformation::class, 'student_information_id', 'id');
+    }
     
 }
