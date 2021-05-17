@@ -204,7 +204,7 @@
                             </div>
                             <div class="col-md-6">
                                 <div class="">
-                                    <label for="">Father FB/Messenger Acct: </label>
+                                    <label for="">Father Contact no.: </label>
                                     {{$IncomingStudent->father->number ? $IncomingStudent->father->number : 'NA'}}
                                 </div>
                             </div>
@@ -228,7 +228,7 @@
                             </div>
                             <div class="col-md-6">
                                 <div class="">
-                                    <label for="">Mother FB/Messenger Acct: </label>
+                                    <label for="">Mother Contact no.: </label>
                                     {{$IncomingStudent->mother->number ? $IncomingStudent->mother->number : 'NA'}}
                                 </div>
                             </div>
@@ -243,6 +243,12 @@
                                 <div class="">
                                     <label for="">Guardian FB/Messenger Acct: </label>
                                     {{$IncomingStudent->guardian->fb_acct ? $IncomingStudent->guardian->fb_acct : 'NA'}}
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="">
+                                    <label for="">Guardian Contact no.: </label>
+                                    {{$IncomingStudent->guardian->number ? $IncomingStudent->guardian->number : 'NA'}}
                                 </div>
                             </div>
                             <div class="col-md-6">
@@ -272,8 +278,10 @@
 
                             <table class="table table-sm table-condensed table-hover">
                                 <thead>
-                                    <th>Name</th>
-                                    <th class="text-center">Grade Level</th>
+                                    <tr>
+                                        <th>Name</th>
+                                        <th class="text-center">Grade Level</th>
+                                    </tr>
                                 </thead>
                                 <tbody>
                                     @forelse ($IncomingStudent->siblings as $sibling)

@@ -7,7 +7,7 @@
                                     <th>Name</th>
                                     <th>Username</th>
                                     <th>Gender</th>
-                                    <th>Parent/Guardian</th>
+                                    {{-- <th>Parent/Guardian</th> --}}
                                     <th>Address</th>
                                     @if($isAdmin->role == 1)
                                     <th>Login URL <i style="color: red">(use other browser)</i></th>
@@ -24,10 +24,10 @@
                                             <td>{{ $data->user->username }}</td>
                                             <td>{{ ($data->gender == 1 ? 'Male' : 'Female') }}</td>
                                             {{-- <td>{{ $data->birthdate ? date_format(date_create($data->birthdate), 'F d, Y') : '' }}</td> --}}
-                                            <td>{{ $data->guardian }}</td>
+                                            {{-- <td>{{ $data->guardian }}</td> --}}
                                             <td>{{ $data->c_address }}</td>
                                             @if($isAdmin->role == 1)
-                                                <td  width="5%">{{ $data->loginlink }}</td>
+                                                <td  width="5%" class="text-wrap text-justify">{{ $data->loginlink }}</td>
                                             @endif
                                             <td>
                                                 <span class="badge badge-{{ $data->status == 1 ? 'success' : 'danger' }}">

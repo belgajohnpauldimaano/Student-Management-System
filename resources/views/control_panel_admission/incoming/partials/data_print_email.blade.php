@@ -368,8 +368,8 @@
                 </td>
             </tr>
             <tr>
-                <td style="width: 50% !important">
-                    <p class="m2 box-field">
+                <td colspan="2">
+                    <p class="m2 box-field w-100">
                         <b>
                             @php
                                 try {
@@ -381,6 +381,9 @@
                         </b>
                     </p><br/>Occupation
                 </td>
+                
+            </tr>
+            <tr>
                 <td style="width: 50% !important">
                     <p class="m2 box-field">
                         <b>
@@ -393,6 +396,19 @@
                             @endphp
                         </b>
                     </p><br/>FB/Messenger Acct
+                </td>
+                <td style="width: 50% !important">
+                    <p class="m2 box-field">
+                        <b>
+                            @php
+                                try {
+                                    echo $data['father_contact'];
+                                } catch (\Throwable $th) {
+                                    echo $father_contact;
+                                }
+                            @endphp
+                        </b>
+                    </p><br/>Contact No.
                 </td>
             </tr>
             <tr>
@@ -411,8 +427,8 @@
                 </td>
             </tr>
             <tr>
-                <td style="width: 50% !important">
-                    <p class="m2 box-field">
+                <td colspan="2">
+                    <p class="m2 box-field w-100">
                         <b>
                             @php
                                 try {
@@ -424,6 +440,8 @@
                         </b>
                     </p><br/>Occupation
                 </td>
+            </tr>
+            <tr>
                 <td style="width: 50% !important">
                     <p class="m2 box-field">
                         <b>
@@ -437,9 +455,22 @@
                         </b>
                     </p><br/>FB/Messenger Acct
                 </td>
+                <td style="width: 50% !important">
+                    <p class="m2 box-field">
+                        <b>
+                            @php
+                                try {
+                                    echo $data['mother_contact'];
+                                } catch (\Throwable $th) {
+                                    echo $mother_contact;
+                                }
+                            @endphp
+                        </b>
+                    </p><br/>Contact No.
+                </td>
             </tr>
             <tr>
-                <td style="width: 70% !important">
+                <td colspan="2">
                     <p class="m2 box-field">
                         <b>
                             @php
@@ -452,7 +483,9 @@
                         </b>
                     </p><br/>Parent/Guardian
                 </td>
-                <td style="width: 30% !important">
+            </tr>
+            <tr>
+                <td style="width: 50% !important">
                     <p class="m2 box-field">
                         <b>
                             @php
@@ -464,6 +497,19 @@
                             @endphp
                         </b>
                     </p><br/>FB/Messenger Acct
+                </td>
+                <td style="width: 50% !important">
+                    <p class="m2 box-field">
+                        <b>
+                            @php
+                                try {
+                                    echo $data['guardian_contact'];
+                                } catch (\Throwable $th) {
+                                    echo $guardian_contact;
+                                }
+                            @endphp
+                        </b>
+                    </p><br/>Contact No.
                 </td>
             </tr>
             <tr>
@@ -483,3 +529,82 @@
             </tr>
         </thead>
     </table>
+
+    <h4 class="m3"><b>STUDENT SCHOLAR TYPE</b></h4>
+    @php
+        $scholar_types = array(
+            ['id' => 1, 'type' => "Employee's Child"],
+            ['id' => 2, 'type' => "With High Honors"],
+            ['id' => 3, 'type' => "With Highest Honors"],
+            ['id' => 4, 'type' => "ESC Grantee"],
+            ['id' => 5, 'type' => "Sibling Discount"]
+        );
+        json_encode($scholar_types);
+    @endphp
+    <div class="m2">
+        <table class="table-student-info">
+            <tr>
+                @foreach($scholar_types as $key => $checkbox)
+                    <td>
+                        <div class="" >
+                            <input style="input[type='text'][disabled] {
+                                    background-color: #EBEBE4 !important;
+                                }"
+                                disabled
+                                type="checkbox" name="scholar_type[]" 
+                                class="form-check-input" id="scholar_type-{{$key}}" 
+                                value="{{ $checkbox['type'] }}" 
+                                @php
+                                    try {
+                                        $selected = \App\Models\StudentScholarType::where('student_information_id', $data['student_id'])
+                                            ->where('name', $checkbox['type'])->first();
+                                    } catch (\Throwable $th) {
+                                        $selected = \App\Models\StudentScholarType::where('student_information_id', $student_id)
+                                            ->where('name', $checkbox['type'])->first();
+                                    }
+                                    
+                                @endphp
+                                {{ $selected ? 'checked' : '' }} 
+                            >
+                            <label class="form-check-label" for="check-box-{{$key}}">
+                                {{ $checkbox['type']}}
+                            </label>
+                        </div>
+                    </td>
+                @endforeach
+            </tr>
+        </table>
+    </div>
+
+    <h4 class="m3"><b>NAME OF BROTHER'S & SISTER(S) WHO ARE CURRENTLY ENROLLED</b></h4>
+    
+    <div class="m2">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th class="text-center">Grade</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php
+                    try {
+                ?>
+                    @forelse ($data['siblings'] as $sibling)
+                        <tr>
+                            <td>{{ $sibling->name }}</td>
+                            <td class="text-center">{{ $sibling->grade_level_id }}</td>
+                        </tr>
+                    @empty
+                        <tr>
+                            <th class="text-center" colspan="2">No Data</th class="text-center">
+                        </tr>
+                    @endforelse
+                <?php
+                    } catch (\Throwable $th) {
+                        echo '<tr><th class="text-center" colspan="2">No Data</th class="text-center"></tr>';
+                    }
+                ?>
+            </tbody>
+        </table>
+    </div>

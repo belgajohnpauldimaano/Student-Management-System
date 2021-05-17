@@ -16,6 +16,7 @@ use App\Models\StudentCategory;
 use App\Models\StudentEducation;
 use App\models\SiblingInformation;
 use App\models\StudentScholarType;
+use App\models\GuardianInformation;
 use App\Models\TransactionDiscount;
 use Illuminate\Database\Eloquent\Model;
 

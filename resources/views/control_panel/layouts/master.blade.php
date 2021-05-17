@@ -18,7 +18,7 @@
         <ul class="navbar-nav ml-auto">
           <!-- Notifications Dropdown Menu -->
           <li class="nav-item dropdown">
-            @include('control_panel.layouts.notification')
+            {{-- @include('control_panel.layouts.notification') --}}
           </li>
           <li class="nav-item">
             <a class="nav-link" data-widget="fullscreen"

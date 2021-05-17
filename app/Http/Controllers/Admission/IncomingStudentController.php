@@ -119,8 +119,8 @@ class IncomingStudentController extends Controller
                 $User->status = 1;
                 $StudentInformation->status = 1;
                 // return $data;
-                DB::beginTransaction();
-                try{
+                // DB::beginTransaction();
+                // try{
                     if($Approved->save() && $User->save() && $StudentInformation->save())
                     {
                         $student = StudentInformation::find($request->id);
@@ -147,10 +147,10 @@ class IncomingStudentController extends Controller
                         DB::rollBack();
                         return response()->json(['res_code' => 1, 'res_msg' => 'Sorry approval has error.']);
                     }
-                }catch(\Exception $e){
-                    DB::rollBack();
-                    return response()->json(['res_code' => 1, 'res_msg' => 'Sorry approval has error.']);
-                }               
+                // }catch(\Exception $e){
+                //     DB::rollBack();
+                //     return response()->json(['res_code' => 1, 'res_msg' => 'Sorry approval has error.']);
+                // }               
             }
         }      
                 
@@ -231,6 +231,7 @@ class IncomingStudentController extends Controller
     private function studentData($IncomingStudent)
     {
         return  $data = array(
+                    'student_id'        =>  $IncomingStudent->incomingStudent->student_id,
                     'email'             =>  $IncomingStudent->email,
                     'updated_at'        =>  $IncomingStudent->updated_at,
                     'full_name'         =>  $IncomingStudent->full_name,
@@ -251,14 +252,17 @@ class IncomingStudentController extends Controller
                     'photo'             =>  $IncomingStudent->photo,
                     'contact_number'    =>  $IncomingStudent->contact_number,
                     'email'             =>  $IncomingStudent->email,
-                    'father_name'       =>  $IncomingStudent->father_name,
-                    'mother_name'       =>  $IncomingStudent->mother_name,
-                    'father_occupation' =>  $IncomingStudent->father_occupation,
-                    'father_fb_acct'    =>  $IncomingStudent->father_fb_acct,
-                    'mother_occupation' =>  $IncomingStudent->mother_occupation,
-                    'mother_fb_acct'    =>  $IncomingStudent->mother_fb_acct,
-                    'guardian_fb_acct'  =>  $IncomingStudent->guardian_fb_acct,
-                    'guardian'          =>  $IncomingStudent->guardian,
+                    'father_name'       =>  $IncomingStudent->father->name,
+                    'mother_name'       =>  $IncomingStudent->mother->name,
+                    'father_occupation' =>  $IncomingStudent->father->occupation ? $IncomingStudent->father->occupation : 'NA',
+                    'father_fb_acct'    =>  $IncomingStudent->father->fb_acct ? $IncomingStudent->father->fb_acct : 'NA',
+                    'father_contact'    =>  $IncomingStudent->father->number ? $IncomingStudent->father->number : 'NA',
+                    'mother_occupation' =>  $IncomingStudent->mother->occupation ? $IncomingStudent->mother->occupation : 'NA',
+                    'mother_fb_acct'    =>  $IncomingStudent->mother->fb_acct ? $IncomingStudent->mother->fb_acct : 'NA',
+                    'mother_contact'    =>  $IncomingStudent->mother->number ? $IncomingStudent->mother->number : 'NA',
+                    'guardian_fb_acct'  =>  $IncomingStudent->guardian->fb_acct ? $IncomingStudent->guardian->fb_acct : 'NA',
+                    'guardian_contact'  =>  $IncomingStudent->guardian->number ? $IncomingStudent->guardian->number : 'NA',
+                    'guardian'          =>  $IncomingStudent->guardian->name ? $IncomingStudent->guardian->name : 'NA',
                     'no_siblings'       =>  $IncomingStudent->no_siblings,
                     'is_esc'            =>  $IncomingStudent->isEsc == 1 ? 'Yes' : 'No',
                     'gender'            =>  $IncomingStudent->gender == 1 ? 'Male' : 'Female',
@@ -270,7 +274,8 @@ class IncomingStudentController extends Controller
                     'school_address'    =>  $IncomingStudent->admission_school_address,
                     'last_sy_attended'  =>  $IncomingStudent->school_year,
                     'gw_average'        =>  $IncomingStudent->admission_gwa,
-                    'strand'            =>  $IncomingStudent->admission_strand
+                    'strand'            =>  $IncomingStudent->admission_strand,
+                    'siblings'          =>  $IncomingStudent->siblings,
                 );
     }
 

@@ -54,11 +54,29 @@ function getModal() {
         </tr>`);
         sibling_count++;
         $('input[name="sibling_count"]').val(sibling_count);
+        clearSiblingField();
+        
+        if (sibling_count > 0)
+        {
+            $('#resetSibling').addClass('d-none');
+        }
+        // console.log(sibling_json);
+    });
+
+    $("#resetSibling").click(function () {
+        sibling_count = 0;
+        clearSiblingField();
+    });
+
+    function clearSiblingField()
+    {
         $('input[name="sibling_name"]').val('');
         $('#sibling_grade_level option:first').prop("selected", "selected");
         $('#addSibling').prop('disabled', true);
-        // console.log(sibling_json);
-    });
+        check_sibling_name();
+        $('.input-sibling_grade_level').addClass('has-success');
+        $('.input-sibling_grade_level').removeClass('has-error');
+    }
     $("#sibling_table").on('click', '.btn-remove-student', function (e) {
         e.preventDefault();
         var self = $(this);
@@ -75,6 +93,8 @@ function getModal() {
         }, function(){  
         });
     });
+
+    
 // end
 
 
@@ -213,7 +233,6 @@ $('body').on('submit', '#js-registration_form', function (e) {
             && $('#no_siblings').val() != ''
         )
         {
-            
             if (gradeLvl == 11)
             {
                 if ($('#strand_data').val() == 0 || $('#strand_data').val() == null)
@@ -223,8 +242,9 @@ $('body').on('submit', '#js-registration_form', function (e) {
                         $('#preloader').addClass('d-none');
                         validateStrand == true ? check_strand() : '';
                     });
-                    
+
                 } else {
+
                     saveForm(formData);
                 }
             }
@@ -239,6 +259,12 @@ $('body').on('submit', '#js-registration_form', function (e) {
                 $('#preloader').addClass('d-none');
                 validateStrand == true ? check_strand() : '';
             });
+
+            if ($('input[name="sibling_name"]').val() != '' || $('select[name="sibling_grade_level"]').val() != 0) {
+                // alert('ksdfsdfsdf');
+                check_sibling_name();
+                check_grade_level_sibling();
+            }
         }
             
     }, function(){  
@@ -251,40 +277,48 @@ $('body').on('submit', '#js-registration_form', function (e) {
 
 function saveForm(formData)
 {
-    $.ajax({
-            type: 'POST',
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            },
-            url         : "/registration/save",
-            data        : formData,
-            processData : false,
-            contentType : false,
-            success     : function (res) {
-                $('.help-block').html('');
-                if (res.res_code == 1)
-                {
-                    alertify.alert('<i style="color: red" class="fas fa-exclamation-triangle fa-lg"></i> Reminder',
-                        ''+res.res_msg+'', function(){
-                            $('.input-lrn').addClass('has-error');
-                            $('.input-lrn').removeClass('has-success');
-                            $('#js-lrn').css('color', 'red').text('You must enter your LRN.');
-                    });                                    
+    if ($('input[name="sibling_name"]').val() != '' || $('select[name="sibling_grade_level"]').val() != 0) {
+        // alert('ksdfsdfsdf');
+        check_sibling_name();
+        check_grade_level_sibling();
+        $('#preloader').addClass('d-none');
+    } else {        
+    
+        $.ajax({
+                type: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                url         : "/registration/save",
+                data        : formData,
+                processData : false,
+                contentType : false,
+                success     : function (res) {
+                    $('.help-block').html('');
+                    if (res.res_code == 1)
+                    {
+                        alertify.alert('<i style="color: red" class="fas fa-exclamation-triangle fa-lg"></i> Reminder',
+                            ''+res.res_msg+'', function(){
+                                $('.input-lrn').addClass('has-error');
+                                $('.input-lrn').removeClass('has-success');
+                                $('#js-lrn').css('color', 'red').text('You must enter your LRN.');
+                        });                                    
+                    }
+                    else
+                    {
+                        alertify.alert('<i style="color: green" class="fas fa-check-circle fa-lg"></i> Confirmation',
+                        "Your information successfully submitted. Please wait the confirmation from Admission Office. Thank you!", function(){
+                            $('#js-registration_form')[0].reset();                                    
+                            var source = $("#default-img").val();
+                            $('#img--user_photo').attr('src', source);
+                            $('#div-strand').empty();
+                            $('#js-registration').modal('hide');
+                            location.reload();
+                        });
+                    }
                 }
-                else
-                {
-                    alertify.alert('<i style="color: green" class="fas fa-check-circle fa-lg"></i> Confirmation',
-                    "Your information successfully submitted. Please wait the confirmation from Admission Office. Thank you!", function(){
-                        $('#js-registration_form')[0].reset();                                    
-                        var source = $("#default-img").val();
-                        $('#img--user_photo').attr('src', source);
-                        $('#div-strand').empty();
-                        $('#js-registration').modal('hide');
-                        location.reload();
-                    });
-                }
-            }
-    });
+        });
+    }
 }
 
 function showValidateFields()
@@ -318,8 +352,11 @@ function showValidateFields()
     check_father_occupation();
     check_mother_occupation();
     check_father_fb_acct();
+    check_father_contact();
     check_mother_fb_acct();
+    check_mother_contact();
     check_guardian_fb_acct();
+    check_guardian_contact();
     check_no_siblings();
     check_is_esc();
 }
@@ -564,11 +601,42 @@ function check_lrn(){
     if(x != ''){
         $('.input-lrn').addClass('has-success');
         $('.input-lrn').removeClass('has-error');
-        $('#js-lrn').text('Reminder: Double check your LRN!').css('color', 'green');               
+        $('#js-lrn').text('Reminder: Double check your LRN!').css('color', 'green');
     }else{
         $('.input-lrn').addClass('has-error');
         $('.input-lrn').removeClass('has-success');
         $('#js-lrn').css('color', 'red').text('You must enter your LRN.');
+    }
+}
+
+function check_sibling_name(){
+    var x = $('input[name="sibling_name"]').val();
+    if(x != ''){
+        $('.input-sibling-name').addClass('has-error');
+        $('.input-sibling-name').removeClass('has-success');
+        $('#js-input-sibling-name').css('color', 'red').text('You must enter the add button below to add your sibling or reset the button.');
+    }else{
+        $('.input-sibling-name').addClass('has-success');
+        $('.input-sibling-name').removeClass('has-error');
+        $('#js-input-sibling-name').text('').css('color', 'green');
+    }
+}
+
+function check_grade_level_sibling(){
+    // alert(gradeLvl
+    var x = $("input[name='sibling_grade_level']").is(':checked');
+    if(x)
+    {
+        // if(x!='')
+        $('.input-sibling_grade_level').addClass('has-success');
+        $('.input-sibling_grade_level').removeClass('has-error');
+        $('#js-sibling_grade_level').text('').css('color', 'green');
+    }
+    else
+    {
+        $('.input-sibling_grade_level').addClass('has-error');
+        $('.input-sibling_grade_level').removeClass('has-success');
+        // $('#js-sibling_grade_level').css('color', 'red').text('You must enter the add button below to add your sibling or reset the button.');
     }
 }
 

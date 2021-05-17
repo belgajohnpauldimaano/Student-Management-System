@@ -35,7 +35,9 @@
             <div class="row">
                 <div class="col-md-12">
                     <div class="js-data-container">
-                        @include('control_panel.student_information.partials.data_list')
+                        <div class="table-responsive">
+                            @include('control_panel.student_information.partials.data_list')
+                        </div>
                     </div>
                 </div>
             </div>

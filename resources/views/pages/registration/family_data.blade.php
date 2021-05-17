@@ -98,9 +98,11 @@
 </div>
 <hr>
 <div class="form-row mt-2">
-    <div class="form-group col-md-8">
+    <div class="form-group col-md-8 input-sibling-name">
         <label for=""><small>NAME OF BROTHER'S & SISTER(S) WHO ARE CURRENTLY ENROLLED</small></label>
         <input type="text" name="sibling_name" id="sibling_name" class="form-control form-control-sm">
+        <div class="help-block text-red text-left" id="js-input-sibling-name">
+        </div>
     </div>
     <div class="form-group col-md-4 input-sibling_grade_level">
         <label for="">Grade Level</label>
@@ -114,9 +116,13 @@
         </div>
     </div>
     <div class="form-group col-md-12 m-0 p-0">
-        <button type="button" id="addSibling" class="btn btn-sm btn-primary float-right mt-1" disabled>
+        <button type="button" id="resetSibling" class="btn btn-sm btn-danger float-right mt-1">
+            Reset
+        </button>
+        <button type="button" id="addSibling" class="btn btn-sm btn-primary float-right mt-1 mr-2" disabled>
             <i class="fas fa-plus"></i> Add
         </button>
+        
     </div>
 
     <table id="sibling_table" class="table table-sm table-condensed table-hover mt-3 d-none">

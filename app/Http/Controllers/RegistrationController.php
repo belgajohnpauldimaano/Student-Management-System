@@ -147,7 +147,7 @@ class RegistrationController extends Controller
 
                 $guardian = new GuardianInformation();
                 $guardian->student_information_id = $StudentInformation->id;
-                $guardian->name = $request->guardian_name;
+                $guardian->name = $request->guardian;
                 // $guardian->occupation = $request->guardian_occupation;
                 $guardian->fb_acct = $request->guardian_fb_acct;
                 $guardian->number = $request->guardian_contact;
